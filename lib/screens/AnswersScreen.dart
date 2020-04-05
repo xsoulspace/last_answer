@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
+import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class AnswersScreen extends StatelessWidget {
@@ -8,8 +10,7 @@ class AnswersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Answers'),
-        backgroundColor: Colors.blue,
+        title: Text(MainLocalizations.of(context).answers),
       ),
       body: Container(
         color: Colors.white,
@@ -32,14 +33,27 @@ class _AnswersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var answers = Provider.of<AnswersModel>(context);
+    var locale = Provider.of<LocaleModel>(context).current;
     return ListView.builder(
-      itemCount: answers.length(),
-      itemBuilder: (context, index) => ListTile(
-        leading: Icon(Icons.done),
-        title: Text(
-          answers.answers[index].title,
-        ),
-      ),
-    );
+        itemCount: answers.length(),
+        itemBuilder: (context, index) => Card(
+            margin: EdgeInsets.symmetric(vertical: 4),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      answers.answers[index].question.title.getProp(locale),
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                  Text(
+                    answers.answers[index].title,
+                  ),
+                ],
+              ),
+            )));
   }
 }

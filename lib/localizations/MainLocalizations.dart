@@ -8,7 +8,6 @@ class Language {
   static String ru = 'ru';
   static String en = 'en';
   static final List items = [ru, en];
-  static String get current => Intl.getCurrentLocale().replaceAll(RegExp(r'\_.*$'), '');
   static List get all => items;
 }
 
@@ -45,7 +44,6 @@ class MainLocalizations {
 class MainLocalizationsDelegate
     extends LocalizationsDelegate<MainLocalizations> {
   final Locale overridenLocale;
-  Locale get locale => overridenLocale;
 
   const MainLocalizationsDelegate(this.overridenLocale);
 

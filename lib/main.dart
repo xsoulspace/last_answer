@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
+import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:howtosolvequest/models/QuestionsModel.dart';
 import 'package:howtosolvequest/screens/AnswersScreen.dart';
 import 'package:howtosolvequest/screens/AskScreen.dart';
@@ -25,6 +26,7 @@ class _HowToSolveQuestState extends State<HowToSolveQuest> {
       providers: [
         ChangeNotifierProvider(create: (context) => AnswersModel()),
         ChangeNotifierProvider(create: (context) => QuestionsModel()),
+        ChangeNotifierProvider(create: (context) => LocaleModel()),
       ],
       child: MaterialApp(
         localizationsDelegates: [
@@ -48,7 +50,7 @@ class _HowToSolveQuestState extends State<HowToSolveQuest> {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.lightGreen,
         ),
         initialRoute: '/',
         routes: {

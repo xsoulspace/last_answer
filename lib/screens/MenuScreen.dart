@@ -1,13 +1,12 @@
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/components/CustomDialogComponent.dart';
+import 'package:howtosolvequest/entities/Answer.dart';
 import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
 import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'dart:html' as html;
 
 class MenuScreen extends StatelessWidget {
   @override
@@ -115,39 +114,60 @@ class SaveFile extends StatefulWidget {
 
 class _SaveFileState extends State<SaveFile> {
   _SaveFileState();
-  var decoder = Excel.createExcel();
-
-  var sheet = 'Result';
-  saveFile() async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-
-    decoder
-      ..updateCell(sheet, CellIndex.indexByString("A1"), "Here value of A1",
-          fontColorHex: "#1AFF1A", verticalAlign: VerticalAlign.Top)
-      ..updateCell(
-          sheet,
-          CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0),
-          "Here value of C1",
-          wrap: TextWrapping.WrapText)
-      ..updateCell(sheet, CellIndex.indexByString("A2"), "Here value of A2",
-          backgroundColorHex: "#1AFF1A")
-      ..updateCell(sheet, CellIndex.indexByString("E5"), "Here value of E5",
-          horizontalAlign: HorizontalAlign.Right);
-
-    // Save the file
-
-    decoder.encode().then((onValue) {
-      File(join(directory.path, '/result.xlsx'))
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(onValue);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    saveFile() async {
+      var decoder = Excel.createExcel();
+      var sheet = 'Sheet1';
+      int i = 1;
+      var answers = Provider.of<AnswersModel>(context);
+      List answ = answers.answersList;
+      for (Answer answer in answ) {
+        String cellAddressA = 'A${i.toString()}';
+        String cellAddressB = 'B${i.toString()}';
+
+        decoder
+          ..updateCell(
+              sheet, CellIndex.indexByString(cellAddressA), answer.title,
+              verticalAlign: VerticalAlign.Top)
+          ..updateCell(sheet, CellIndex.indexByString(cellAddressB),
+              answer.question.title.toString());
+        i++;
+      }
+
+      final blob = html.Blob([await decoder.encode()]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.document.createElement('a') as html.AnchorElement
+        ..href = url
+        ..style.display = 'none'
+        ..download = 'some_name.xlsx';
+      html.document.body.children.add(anchor);
+
+      // download
+      anchor.click();
+
+      // cleanup
+      html.document.body.children.remove(anchor);
+      html.Url.revokeObjectUrl(url);
+      // decoder.encode().then((onValue) {
+      //   File(join(directory.path, '/result.xlsx'))
+      //     ..createSync(recursive: true)
+      //     ..writeAsBytesSync(onValue);
+      // });
+      // var path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+      // var file = new File(join(path,'file.txt'));
+      // var sink = file.openWrite();
+      // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
+
+      // // Close the IOSink to free system resources.
+      // sink.close();
+    }
+
     return FlatButton(
-        onPressed: (){
+        onPressed: () {
           saveFile();
-        }, child: Text(MainLocalizations.of(context).save));
+        },
+        child: Text(MainLocalizations.of(context).save));
   }
 }

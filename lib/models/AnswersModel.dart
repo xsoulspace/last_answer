@@ -8,7 +8,7 @@ import 'package:howtosolvequest/entities/Question.dart';
 
 class AnswersModel extends ChangeNotifier {
   final Map<String, Answer> _answers = {};
-  get answersList=> _answers.values.toList();
+  List<Answer> get answersList=> _answers.values.toList();
 
   Answer getById(int id) => answersList.firstWhere((item) => item.hashCode == id);
   Answer getPosition(int position) {

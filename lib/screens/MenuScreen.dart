@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/components/CustomDialogComponent.dart';
@@ -117,7 +119,7 @@ class _SaveFileState extends State<SaveFile> {
 
   @override
   Widget build(BuildContext context) {
-    saveFile() async {
+    saveAsWeb() async {
       var decoder = Excel.createExcel();
       var sheet = 'Sheet1';
       int i = 1;
@@ -151,9 +153,9 @@ class _SaveFileState extends State<SaveFile> {
       // download
       anchor.click();
 
-      // cleanup
-      html.document.body.children.remove(anchor);
-      html.Url.revokeObjectUrl(url);
+      // // cleanup
+      // html.document.body.children.remove(anchor);
+      // html.Url.revokeObjectUrl(url);
       // decoder.encode().then((onValue) {
       //   File(join(directory.path, '/result.xlsx'))
       //     ..createSync(recursive: true)
@@ -168,10 +170,31 @@ class _SaveFileState extends State<SaveFile> {
       // sink.close();
     }
 
-    return FlatButton(
-        onPressed: () {
-          saveFile();
-        },
-        child: Text(MainLocalizations.of(context).save));
+    saveAs() async {
+      // await SimplePermissions.requestPermission(
+      //     Permission.WriteExternalStorage);
+      // bool checkPermission = await SimplePermissions.checkPermission(
+      //     Permission.WriteExternalStorage);
+      // if (checkPermission) {
+      //   //store file in documents folder
+
+      //   String dir =
+      //       (await getExternalStorageDirectory()).absolute.path + "/documents";
+      //   File f = new File("$dir" + "/filename.csv");
+      //   var sink = f.openWrite();
+      //   sink.write('FILE ACCESSED ${new DateTime.now()}\n');
+      //   sink.close();
+      // }
+    }
+
+    return Row(
+      children: <Widget>[
+        FlatButton(
+            onPressed: () {
+              saveAsWeb();
+            },
+            child: Text('Web')),
+      ],
+    );
   }
 }

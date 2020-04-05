@@ -82,7 +82,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               scrollDirection: Axis.horizontal,
               itemCount: questions.length(),
               itemBuilder: (context, index) => Container(
-                  width: 100.0,
+                  width: 120.0,
                   child: RaisedButton(onPressed: () {
                     setState(() {
                       question = questions.questions[index];

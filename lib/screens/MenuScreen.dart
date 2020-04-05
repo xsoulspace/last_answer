@@ -1,9 +1,13 @@
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/components/CustomDialogComponent.dart';
 import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
 import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class MenuScreen extends StatelessWidget {
   @override
@@ -57,9 +61,7 @@ class MenuScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            FlatButton(
-                onPressed: null,
-                child: Text(MainLocalizations.of(context).save)),
+            SaveFile(),
             buttonStart(),
             IconButton(
               onPressed: () {
@@ -103,5 +105,49 @@ class MenuScreen extends StatelessWidget {
         // )
       ],
     ));
+  }
+}
+
+class SaveFile extends StatefulWidget {
+  @override
+  _SaveFileState createState() => _SaveFileState();
+}
+
+class _SaveFileState extends State<SaveFile> {
+  _SaveFileState();
+  var decoder = Excel.createExcel();
+
+  var sheet = 'Result';
+  saveFile() async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+
+    decoder
+      ..updateCell(sheet, CellIndex.indexByString("A1"), "Here value of A1",
+          fontColorHex: "#1AFF1A", verticalAlign: VerticalAlign.Top)
+      ..updateCell(
+          sheet,
+          CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0),
+          "Here value of C1",
+          wrap: TextWrapping.WrapText)
+      ..updateCell(sheet, CellIndex.indexByString("A2"), "Here value of A2",
+          backgroundColorHex: "#1AFF1A")
+      ..updateCell(sheet, CellIndex.indexByString("E5"), "Here value of E5",
+          horizontalAlign: HorizontalAlign.Right);
+
+    // Save the file
+
+    decoder.encode().then((onValue) {
+      File(join(directory.path, '/result.xlsx'))
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(onValue);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+        onPressed: (){
+          saveFile();
+        }, child: Text(MainLocalizations.of(context).save));
   }
 }

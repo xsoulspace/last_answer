@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:howtosolvequest/l10n/messages_all.dart';
-// flutter pub run intl_translation:generate_from_arb \ --output-dir=lib/l10n --no-use-deferred-loading \ lib/l10n/intl_messages.arb lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
 // flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/locale/app_localization.dart
 // flutter pub run intl_translation:generate_from_arb \ --output-dir=lib/l10n --no-use-deferred-loading \ lib/main.dart lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
 class Language {
@@ -38,6 +37,22 @@ class MainLocalizations {
   String get lastAnswer {
     return Intl.message('Last Answer',
         name: 'lastAnswer', desc: 'menu title Last answer');
+  }
+  String get answer {
+    return Intl.message('Answer',
+        name: 'answer', desc: 'answer input');
+  }
+  String get newQuest {
+    return Intl.message('Start new Quest',
+        name: 'newQuest', desc: 'popup start');
+  }
+  String get newQuestDesc {
+    return Intl.message('This action will clear all previous answers. Be sure that you saved them, if its needed.',
+        name: 'newQuestDesc', desc: 'popup start desc');
+  }
+  String get newQuestStart {
+    return Intl.message('start',
+        name: 'newQuestStart', desc: 'popup start start');
   }
 }
 

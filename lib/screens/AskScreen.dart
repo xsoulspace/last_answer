@@ -8,7 +8,13 @@ import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:howtosolvequest/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
 
-class AskScreen extends StatelessWidget {
+class AskScreen extends StatefulWidget {
+  @override
+  _AskScreenState createState() => _AskScreenState();
+}
+
+class _AskScreenState extends State<AskScreen>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var answers = Provider.of<AnswersModel>(context);
@@ -38,17 +44,18 @@ class AskScreen extends StatelessWidget {
         ),
         body: Container(
             padding: EdgeInsets.all(16.0),
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Center(
-                  child: Text(answers.lastAnswer.title),
-                ),
-                QuestionsComponent(),
-                QuestionsAndInput()
-              ],
-            )));
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                      child: Text(answers.lastAnswer.title),
+                    ),
+                    QuestionsComponent(),
+                    QuestionsAndInput()
+                  ],
+                ))));
   }
 }
 

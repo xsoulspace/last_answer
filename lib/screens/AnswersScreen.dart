@@ -13,7 +13,6 @@ class AnswersScreen extends StatelessWidget {
         title: Text(MainLocalizations.of(context).answers),
       ),
       body: Container(
-        color: Colors.white,
         child: Column(
           children: [
             Expanded(

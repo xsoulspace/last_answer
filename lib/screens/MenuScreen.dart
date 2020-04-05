@@ -126,13 +126,17 @@ class _SaveFileState extends State<SaveFile> {
       for (Answer answer in answ) {
         String cellAddressA = 'A${i.toString()}';
         String cellAddressB = 'B${i.toString()}';
+        String cellAddressC = 'C${i.toString()}';
 
         decoder
-          ..updateCell(
-              sheet, CellIndex.indexByString(cellAddressA), answer.title,
-              verticalAlign: VerticalAlign.Top)
+          ..updateCell(sheet, CellIndex.indexByString(cellAddressA),
+              answer.question.title.ru)
           ..updateCell(sheet, CellIndex.indexByString(cellAddressB),
-              answer.question.title.toString());
+              answer.question.title.en)
+          ..updateCell(
+              sheet, CellIndex.indexByString(cellAddressC), answer.title,
+              verticalAlign: VerticalAlign.Top);
+
         i++;
       }
 

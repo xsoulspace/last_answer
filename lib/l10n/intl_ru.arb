@@ -1,0 +1,21 @@
+{
+  "@@last_modified": "2020-04-05T14:28:26.797589",
+  "answers": "Ответы",
+  "@answers": {
+    "description": "пункт меню, ссылающийся на ответы",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Сохранить",
+  "@save": {
+    "description": "пункт меню сохранить",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastAnswer": "Последний ответ",
+  "@lastAnswer": {
+    "description": "пункт меню последний ответ",
+    "type": "text",
+    "placeholders": {}
+  }
+}

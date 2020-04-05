@@ -2,16 +2,18 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:howtosolvequest/entities/LocaleTitle.dart';
 import 'package:howtosolvequest/entities/Question.dart';
 
 class QuestionsModel extends ChangeNotifier {
   final List<Question> _questions = [
-    Question('Why?', 1),
-    Question('Where?', 2),
-    Question('How?', 3),
-    Question('How to?', 4),
-    Question('What?', 5),
-    Question('For what?', 5),
+    Question(LocaleTitle('Why?', 'Почему?'), 1),
+    Question(LocaleTitle('How?', 'Как?'), 2),
+    Question(LocaleTitle('Where?', 'Где?'), 3),
+    Question(LocaleTitle('For what?', 'Зачем?'), 5),
+    Question(LocaleTitle('For who/what?', 'Для кого/чего?'), 5),
+    Question(LocaleTitle('What?', 'Что?'), 4),
+
   ];
   Question _chosenQuestion;
   QuestionsModel() {

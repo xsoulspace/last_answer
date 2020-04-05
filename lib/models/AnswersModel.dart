@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:howtosolvequest/entities/Answer.dart';
+import 'package:howtosolvequest/entities/LocaleTitle.dart';
 import 'package:howtosolvequest/entities/Question.dart';
 
 class AnswersModel extends ChangeNotifier {
@@ -13,7 +14,9 @@ class AnswersModel extends ChangeNotifier {
   }
 
   Answer get lastAnswer {
-    return _answers.length > 0 ? _answers.last : Answer('', Question('', 0), 0);
+    return _answers.length > 0
+        ? _answers.last
+        : Answer('', Question(LocaleTitle('', ''), 0), 0);
   }
 
   int length() => _answers.length;

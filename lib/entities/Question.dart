@@ -1,5 +1,7 @@
+import 'package:howtosolvequest/entities/LocaleTitle.dart';
+
 class Question {
-  String title;
+  LocaleTitle title;
   int id;
   Question(this.title, this.id);
 

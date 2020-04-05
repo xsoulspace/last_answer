@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/components/QuestionsComponent.dart';
+import 'package:howtosolvequest/entities/LocaleTitle.dart';
 import 'package:howtosolvequest/entities/Question.dart';
+import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
 import 'package:howtosolvequest/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,7 @@ class AskScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Last answer'),
+          title: Text(MainLocalizations.of(context).lastAnswer),
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -25,7 +27,7 @@ class AskScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/answers');
               },
-              child: Text('Answers'),
+              child: Text(MainLocalizations.of(context).answers),
             ),
           ],
         ),
@@ -51,14 +53,14 @@ class QuestionsAndInput extends StatefulWidget {
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
   String inputText;
-  Question question = Question('', 0);
+  Question question = Question(LocaleTitle('', ''), 0);
   final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     var answers = Provider.of<AnswersModel>(context);
     var questions = Provider.of<QuestionsModel>(context);
-
+    String locale = Language.current;
+    print({locale});
     return Column(
       children: <Widget>[
         SizedBox(height: 30),
@@ -78,7 +80,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                       });
                     },
                     child: Text(
-                      questions.questions[index].title,
+                      questions.questions[index].title.getProp(locale),
                     ),
                   )),
             )),
@@ -88,7 +90,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(question.title),
+            Text(question.title.getProp(locale)),
             IconButton(
               onPressed: () {
                 answers.add(inputText, question);

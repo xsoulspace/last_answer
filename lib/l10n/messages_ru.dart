@@ -21,8 +21,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "answer" : MessageLookupByLibrary.simpleMessage("Ответ"),
     "answers" : MessageLookupByLibrary.simpleMessage("Ответы"),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Последний ответ"),
+    "newQuest" : MessageLookupByLibrary.simpleMessage("Начать новый Квест"),
+    "newQuestCancel" : MessageLookupByLibrary.simpleMessage("отменить"),
+    "newQuestDesc" : MessageLookupByLibrary.simpleMessage("При продолжении - все старые ответы будут удалены. Не забудьте сохранить ответы, если нужны."),
+    "newQuestStart" : MessageLookupByLibrary.simpleMessage("начать"),
     "save" : MessageLookupByLibrary.simpleMessage("Сохранить")
   };
 }

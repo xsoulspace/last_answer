@@ -17,5 +17,35 @@
     "description": "menu title Last answer",
     "type": "text",
     "placeholders": {}
+  },
+  "answer": "Answer",
+  "@answer": {
+    "description": "answer input",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuest": "Start new Quest",
+  "@newQuest": {
+    "description": "popup start",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestDesc": "This action will clear all previous answers. Be sure that you saved them, if its needed.",
+  "@newQuestDesc": {
+    "description": "popup start desc",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestStart": "start",
+  "@newQuestStart": {
+    "description": "popup start start",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestCancel": "cancel",
+  "@newQuestCancel": {
+    "description": "popup start cancel",
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -21,8 +21,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "answer" : MessageLookupByLibrary.simpleMessage("Answer"),
     "answers" : MessageLookupByLibrary.simpleMessage("Answers"),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Last Answer"),
+    "newQuest" : MessageLookupByLibrary.simpleMessage("Start new Quest"),
+    "newQuestCancel" : MessageLookupByLibrary.simpleMessage("cancel"),
+    "newQuestDesc" : MessageLookupByLibrary.simpleMessage("This action will clear all previous answers. Be sure that you saved them, if its needed."),
+    "newQuestStart" : MessageLookupByLibrary.simpleMessage("start"),
     "save" : MessageLookupByLibrary.simpleMessage("Save")
   };
 }

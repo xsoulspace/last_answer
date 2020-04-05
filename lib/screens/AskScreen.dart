@@ -113,8 +113,8 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
           ],
         ),
         SizedBox(height: 30),
-        Center(
-          child: TextFormField(
+        Center(child: Consumer<LocaleModel>(builder: (context, locale, child) {
+          return TextFormField(
             controller: _controller,
             autofocus: true,
             minLines: 1,
@@ -124,9 +124,10 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               inputText = text;
             },
             decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Answer...'),
-          ),
-        )
+                border: OutlineInputBorder(),
+                labelText: MainLocalizations.of(context).answer),
+          );
+        }))
       ],
     );
   }

@@ -17,5 +17,35 @@
     "description": "пункт меню последний ответ",
     "type": "text",
     "placeholders": {}
+  },
+  "answer": "Ответ",
+  "@answer": {
+    "description": "ввод ответа",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuest": "Начать новый Квест",
+  "@newQuest": {
+    "description": "popup новый квест",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestDesc": "При продолжении - все старые ответы будут удалены. Не забудьте сохранить ответы, если нужны.",
+  "@newQuestDesc": {
+    "description": "popup новый desc",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestStart": "начать",
+  "@newQuestStart": {
+    "description": "popup новый начать",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestCancel": "отменить",
+  "@newQuestCancel": {
+    "description": "popup новый отменить",
+    "type": "text",
+    "placeholders": {}
   }
 }

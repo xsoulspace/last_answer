@@ -7,6 +7,8 @@ class Consts {
   Consts._();
 
   static const double padding = 16.0;
+  static const double radius = 5.0;
+  
 }
 
 class CustomDialog extends StatelessWidget {
@@ -24,7 +26,7 @@ class CustomDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consts.radius),
       ),
       elevation: 0.0,
       child: dialogContent(context),
@@ -38,14 +40,7 @@ class CustomDialog extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(Consts.padding),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: const Offset(0.0, 10.0),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(Consts.radius),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min, // To make the card compact

@@ -10,8 +10,16 @@ class AnswersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(MainLocalizations.of(context).answers),
-      ),
+          title: Text(MainLocalizations.of(context).answers),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/menu');
+              },
+              icon: Icon(Icons.done),
+              tooltip: 'complete',
+            ),
+          ]),
       body: Container(
         child: Column(
           children: [
@@ -45,12 +53,15 @@ class _AnswersList extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       answers.answers[index].question.title.getProp(locale),
-                      overflow: TextOverflow.visible,
                     ),
                   ),
-                  Text(
-                    answers.answers[index].title,
-                  ),
+                  Flexible(
+                      //We only want to wrap the text message with flexible widget
+                      child: Container(
+                    child: Text(
+                      answers.answers[index].title,
+                    ),
+                  ))
                 ],
               ),
             )));

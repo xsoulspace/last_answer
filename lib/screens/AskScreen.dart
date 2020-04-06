@@ -32,6 +32,13 @@ class _AskScreenState extends State<AskScreen>
               icon: Icon(Icons.done),
               tooltip: 'complete',
             ),
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/menu');
+              },
+              icon: Icon(Icons.settings),
+              tooltip: 'settings',
+            ),
             RaisedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/answers');
@@ -65,7 +72,7 @@ class QuestionsAndInput extends StatefulWidget {
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
   String inputText;
-  Question question = Question(LocaleTitle('', ''), 0);
+  Question question = Question(LocaleTitle('What?', 'Что?'), 0);
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {

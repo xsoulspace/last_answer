@@ -72,7 +72,7 @@ class MenuScreen extends StatelessWidget {
             ),
           ],
         ),
-        Divider(),
+        Divider(color: Theme.of(context).primaryColor,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -193,7 +193,7 @@ class _SaveFileState extends State<SaveFile> {
             onPressed: () {
               saveAsWeb();
             },
-            child: Text('Web')),
+            child: Text(MainLocalizations.of(context).save)),
       ],
     );
   }

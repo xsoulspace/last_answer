@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:howtosolvequest/components/CustomDialogComponent.dart';
-import 'package:howtosolvequest/entities/Answer.dart';
+import 'package:howtosolvequest/components/htmlSaveFileComponent.dart';
 import 'package:howtosolvequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvequest/models/AnswersModel.dart';
 import 'package:howtosolvequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
-import 'dart:html' as html;
 
 class MenuScreen extends StatelessWidget {
   @override
@@ -72,7 +70,9 @@ class MenuScreen extends StatelessWidget {
             ),
           ],
         ),
-        Divider(color: Theme.of(context).primaryColor,),
+        Divider(
+          color: Theme.of(context).primaryColor,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -120,57 +120,9 @@ class _SaveFileState extends State<SaveFile> {
   @override
   Widget build(BuildContext context) {
     saveAsWeb() async {
-      var decoder = Excel.createExcel();
-      var sheet = 'Sheet1';
-      int i = 1;
-      var answers = Provider.of<AnswersModel>(context);
-      List answ = answers.answersList;
-      for (Answer answer in answ) {
-        String cellAddressA = 'A${i.toString()}';
-        String cellAddressB = 'B${i.toString()}';
-        String cellAddressC = 'C${i.toString()}';
+      final h = HtmlSaveFileComponent(context);
+      await h.saveInWeb();
 
-        decoder
-          ..updateCell(sheet, CellIndex.indexByString(cellAddressA),
-              answer.question.title.ru)
-          ..updateCell(sheet, CellIndex.indexByString(cellAddressB),
-              answer.question.title.en)
-          ..updateCell(
-              sheet, CellIndex.indexByString(cellAddressC), answer.title,
-              verticalAlign: VerticalAlign.Top);
-
-        i++;
-      }
-
-      final blob = html.Blob([await decoder.encode()]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.document.createElement('a') as html.AnchorElement
-        ..href = url
-        ..style.display = 'none'
-        ..download = 'some_name.xlsx';
-      html.document.body.children.add(anchor);
-
-      // download
-      anchor.click();
-
-      // // cleanup
-      // html.document.body.children.remove(anchor);
-      // html.Url.revokeObjectUrl(url);
-      // decoder.encode().then((onValue) {
-      //   File(join(directory.path, '/result.xlsx'))
-      //     ..createSync(recursive: true)
-      //     ..writeAsBytesSync(onValue);
-      // });
-      // var path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
-      // var file = new File(join(path,'file.txt'));
-      // var sink = file.openWrite();
-      // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
-
-      // // Close the IOSink to free system resources.
-      // sink.close();
-    }
-
-    saveAs() async {
       // await SimplePermissions.requestPermission(
       //     Permission.WriteExternalStorage);
       // bool checkPermission = await SimplePermissions.checkPermission(
@@ -180,10 +132,10 @@ class _SaveFileState extends State<SaveFile> {
 
       //   String dir =
       //       (await getExternalStorageDirectory()).absolute.path + "/documents";
-      //   File f = new File("$dir" + "/filename.csv");
-      //   var sink = f.openWrite();
-      //   sink.write('FILE ACCESSED ${new DateTime.now()}\n');
-      //   sink.close();
+        // File f = new File("./filename.csv");
+        // var sink = f.openWrite();
+        // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
+        // sink.close();
       // }
     }
 

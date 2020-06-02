@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:howtosolvequest/entities/Answer.dart';
-import 'package:howtosolvequest/entities/LocaleTitle.dart';
-import 'package:howtosolvequest/entities/Question.dart';
+import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:howtosolvethequest/entities/LocaleTitle.dart';
+import 'package:howtosolvethequest/entities/Question.dart';
 
 class AnswersModel extends ChangeNotifier {
   final Map<String, Answer> _answers = {};

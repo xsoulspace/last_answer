@@ -1,4 +1,4 @@
-import 'package:howtosolvequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 
 class LocaleModel extends ChangeNotifier {

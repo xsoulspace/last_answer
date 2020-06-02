@@ -1,11 +1,15 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:howtosolvequest/components/CustomDialogComponent.dart';
-import 'package:howtosolvequest/components/htmlSaveFileComponent.dart';
-import 'package:howtosolvequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvequest/models/AnswersModel.dart';
-import 'package:howtosolvequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/components/CustomDialogComponent.dart';
+import 'package:howtosolvethequest/entities/Answer.dart';
+// import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:share/share.dart';
+
+// import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/AnswersModel.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -119,31 +123,49 @@ class _SaveFileState extends State<SaveFile> {
 
   @override
   Widget build(BuildContext context) {
-    saveAsWeb() async {
-      final h = HtmlSaveFileComponent(context);
-      await h.saveInWeb();
+    // saveAsWeb() async {
+    //   // FIXME: code to think
+    //   // await SimplePermissions.requestPermission(
+    //   //     Permission.WriteExternalStorage);
+    //   // bool checkPermission = await SimplePermissions.checkPermission(
+    //   //     Permission.WriteExternalStorage);
+    //   // if (checkPermission) {
+    //   //store file in documents folder
 
-      // await SimplePermissions.requestPermission(
-      //     Permission.WriteExternalStorage);
-      // bool checkPermission = await SimplePermissions.checkPermission(
-      //     Permission.WriteExternalStorage);
-      // if (checkPermission) {
-      //   //store file in documents folder
+    //   // String dir =
+    //   //     (await getExternalStorageDirectory()).absolute.path + "/documents";
+    //   // File f = new File("./filename.csv");
+    //   // var sink = f.openWrite();
+    //   // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
+    //   // sink.close();
 
-      //   String dir =
-      //       (await getExternalStorageDirectory()).absolute.path + "/documents";
-        // File f = new File("./filename.csv");
-        // var sink = f.openWrite();
-        // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
-        // sink.close();
-      // }
+    //   /** working code */
+    //   // final h = HtmlSaveFileComponent(context);
+    //   // await h.saveInWeb();
+      
+    // }
+    share(BuildContext context) {
+      final RenderBox box = context.findRenderObject();
+      AnswersModel answers = Provider.of<AnswersModel>(context);
+
+      List<Answer> answersList = answers.answersList;
+      LocaleModel locale =Provider.of<LocaleModel>(context);
+      final lang = locale.current;
+      final String answersAndQuestionsSentence = answersList.fold(
+          '',
+          (previousValue, element) =>
+              '$previousValue\nQ:${element.question.title.getProp(lang)} A:${element.title}; ');
+      Share.share(answersAndQuestionsSentence,
+          subject: 'HTSTQ: ${answersList.first}',
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }
 
     return Row(
       children: <Widget>[
         FlatButton(
             onPressed: () {
-              saveAsWeb();
+              share(context);
+              // saveAsWeb();
             },
             child: Text(MainLocalizations.of(context).save)),
       ],

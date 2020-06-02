@@ -1,10 +1,12 @@
 
 
+import 'dart:html';
+
 import 'package:excel/excel.dart';
-import 'package:howtosolvequest/entities/Answer.dart';
-import 'package:howtosolvequest/models/AnswersModel.dart';
+import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart';
+// import 'package:universal_html/html.dart';
 // import 'dart:html' as html;
 class HtmlSaveFileComponent{
   final context;
@@ -41,6 +43,5 @@ class HtmlSaveFileComponent{
 
       // download
       anchor.click();
-
     }
 }

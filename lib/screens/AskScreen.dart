@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:howtosolvequest/components/QuestionsComponent.dart';
-import 'package:howtosolvequest/entities/LocaleTitle.dart';
-import 'package:howtosolvequest/entities/Question.dart';
-import 'package:howtosolvequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvequest/models/AnswersModel.dart';
-import 'package:howtosolvequest/models/LocaleModel.dart';
-import 'package:howtosolvequest/models/QuestionsModel.dart';
+import 'package:howtosolvethequest/components/QuestionsComponent.dart';
+import 'package:howtosolvethequest/entities/LocaleTitle.dart';
+import 'package:howtosolvethequest/entities/Question.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/AnswersModel.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
 
 class AskScreen extends StatefulWidget {

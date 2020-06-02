@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvequest/models/AnswersModel.dart';
-import 'package:howtosolvequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/AnswersModel.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class AnswersScreen extends StatelessWidget {

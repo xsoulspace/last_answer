@@ -1,6 +1,6 @@
-# howtosolvequest
+# howtosolvethequest
 
-A new Flutter application.
+Answers & Questions About The Quest
 
 ## Getting Started
 

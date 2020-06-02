@@ -1,4 +1,4 @@
-import 'package:howtosolvequest/entities/Question.dart';
+import 'package:howtosolvethequest/entities/Question.dart';
 
 class Answer {
   String title;

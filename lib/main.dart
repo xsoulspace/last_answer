@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:howtosolvequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvequest/models/AnswersModel.dart';
-import 'package:howtosolvequest/models/LocaleModel.dart';
-import 'package:howtosolvequest/models/QuestionsModel.dart';
-import 'package:howtosolvequest/screens/AnswersScreen.dart';
-import 'package:howtosolvequest/screens/AskScreen.dart';
-import 'package:howtosolvequest/screens/MenuScreen.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/AnswersModel.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/models/QuestionsModel.dart';
+import 'package:howtosolvethequest/screens/AnswersScreen.dart';
+import 'package:howtosolvethequest/screens/AskScreen.dart';
+import 'package:howtosolvethequest/screens/MenuScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(HowToSolveQuest());
+  runApp(HowToSolveTheQuest());
 }
 
-class HowToSolveQuest extends StatefulWidget {
+class HowToSolveTheQuest extends StatefulWidget {
   @override
-  _HowToSolveQuestState createState() => _HowToSolveQuestState();
+  _HowToSolveTheQuestState createState() => _HowToSolveTheQuestState();
 }
 
-class _HowToSolveQuestState extends State<HowToSolveQuest> {
+class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   MainLocalizationsDelegate _localeOverrideDelegate =
       MainLocalizationsDelegate(Locale('ru', 'RU'));
 
@@ -53,11 +53,11 @@ class _HowToSolveQuestState extends State<HowToSolveQuest> {
 
           // Define the default TextTheme. Use this to specify the default
           // text styling for headlines, titles, bodies of text, and more.
-          textTheme: TextTheme(
-            headline5: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-          ),
+          // textTheme: TextTheme(
+          //   headline5: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          //   headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          // ),
         ),
         initialRoute: '/',
         routes: {

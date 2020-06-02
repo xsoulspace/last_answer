@@ -1,11 +1,11 @@
 {
-    "name": "how_to_solve_quest",
-    "short_name": "how_to_solve_quest",
+    "name": "howtosolvethequest",
+    "short_name": "howtosolvethequest",
     "start_url": ".",
-    "display": "minimal-ui",
+    "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Answers & Questions About The Quest",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

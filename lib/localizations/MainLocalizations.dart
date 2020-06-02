@@ -65,7 +65,7 @@ class MainLocalizationsDelegate
   final Locale overridenLocale;
 
   const MainLocalizationsDelegate(this.overridenLocale);
-
+  
   @override
   bool isSupported(Locale locale) => Language.all.contains(locale.languageCode);
 

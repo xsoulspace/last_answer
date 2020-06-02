@@ -17,6 +17,8 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
 
+    localeModel.loadSavedLocale();
+    
     cancelButton() {
       return RaisedButton(
         onPressed: () {

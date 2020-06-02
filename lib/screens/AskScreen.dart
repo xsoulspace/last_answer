@@ -32,13 +32,7 @@ class _AskScreenState extends State<AskScreen>
               icon: Icon(Icons.done),
               tooltip: 'complete',
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/menu');
-              },
-              icon: Icon(Icons.settings),
-              tooltip: 'settings',
-            ),
+
             RaisedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/answers');
@@ -80,7 +74,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
     var questions = Provider.of<QuestionsModel>(context);
     return Column(
       children: <Widget>[
-        SizedBox(height: 30),
+        SizedBox(height: 1),
         Divider(),
         SizedBox(height: 10),
         Container(
@@ -94,16 +88,16 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                     setState(() {
                       question = questions.questions[index];
                     });
-                  }, child:
+                  }, child: 
                       Consumer<LocaleModel>(builder: (context, locale, child) {
-                    return Text(
+                        return Text(
                       questions.questions[index].title.getProp(locale.current),
                     );
                   }))),
             )),
         SizedBox(height: 10),
         Divider(),
-        SizedBox(height: 30),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -119,7 +113,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             ),
           ],
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 10),
         Center(child: Consumer<LocaleModel>(builder: (context, locale, child) {
           return TextFormField(
             controller: _controller,

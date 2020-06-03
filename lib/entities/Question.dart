@@ -10,4 +10,11 @@ class Question {
 
   @override
   bool operator ==(Object other) => other is Question && other.id == id;
+  toJSONEncodable() {
+    Map<String, dynamic> m = new Map();
+
+    m['title'] = title;
+    m['id'] = id;
+    return m;
+  }
 }

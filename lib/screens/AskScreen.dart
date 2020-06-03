@@ -18,7 +18,6 @@ class _AskScreenState extends State<AskScreen>
   @override
   Widget build(BuildContext context) {
     var answers = Provider.of<AnswersModel>(context);
-
     return Scaffold(
         appBar: AppBar(
           title: Consumer<LocaleModel>(builder: (context, locale, child) {
@@ -105,8 +104,8 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               return Text(question.title.getProp(locale.current));
             }),
             IconButton(
-              onPressed: () {
-                answers.add(inputText, question);
+              onPressed: () async {
+                await answers.add(inputText, question);
                 _controller.clear();
               },
               icon: Icon(Icons.send),

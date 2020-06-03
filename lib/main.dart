@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvethequest/models/AnswersModel.dart';
@@ -10,6 +13,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  if (!kIsWeb && Platform.isMacOS) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
   runApp(HowToSolveTheQuest());
 }
 
@@ -18,9 +24,11 @@ class HowToSolveTheQuest extends StatefulWidget {
   _HowToSolveTheQuestState createState() => _HowToSolveTheQuestState();
 }
 
+Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
+
 class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   MainLocalizationsDelegate _localeOverrideDelegate =
-      MainLocalizationsDelegate(Locale('ru', 'RU'));
+      MainLocalizationsDelegate(systemLocale);
 
   @override
   Widget build(BuildContext context) {

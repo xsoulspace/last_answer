@@ -17,8 +17,6 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
 
-    localeModel.loadSavedLocale();
-    
     cancelButton() {
       return RaisedButton(
         onPressed: () {
@@ -30,8 +28,9 @@ class MenuScreen extends StatelessWidget {
 
     startButton() {
       return RaisedButton(
-        onPressed: () {
-          Provider.of<AnswersModel>(context).clearAll();
+        onPressed: () async {
+          var model = Provider.of<AnswersModel>(context);
+          await model.clearAll();
           Navigator.pushNamed(context, '/');
         },
         child: Text(MainLocalizations.of(context).newQuestStart),
@@ -83,13 +82,13 @@ class MenuScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
-                onPressed: () {
-                  localeModel.switchLang(Locale('ru', 'RU'));
+                onPressed: () async {
+                  await localeModel.switchLang(Locale('ru', 'RU'));
                 },
                 child: Text("Rus")),
             FlatButton(
-                onPressed: () {
-                  localeModel.switchLang(Locale('en', 'EN'));
+                onPressed: () async {
+                  await localeModel.switchLang(Locale('en', 'EN'));
                 },
                 child: Text("Eng")),
           ],
@@ -144,19 +143,19 @@ class _SaveFileState extends State<SaveFile> {
     //   /** working code */
     //   // final h = HtmlSaveFileComponent(context);
     //   // await h.saveInWeb();
-      
+
     // }
     share(BuildContext context) {
       final RenderBox box = context.findRenderObject();
       AnswersModel answers = Provider.of<AnswersModel>(context);
 
       List<Answer> answersList = answers.answersList;
-      LocaleModel locale =Provider.of<LocaleModel>(context);
+      LocaleModel locale = Provider.of<LocaleModel>(context);
       final lang = locale.current;
       final String answersAndQuestionsSentence = answersList.fold(
           '',
           (previousValue, element) =>
-              '$previousValue\nQ:${element.question.title.getProp(lang)} A:${element.title}; ');
+              '$previousValue\n${element.question.title.getProp(lang)} ${element.title}; ');
       Share.share(answersAndQuestionsSentence,
           subject: 'HTSTQ: ${answersList.first}',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
@@ -164,12 +163,12 @@ class _SaveFileState extends State<SaveFile> {
 
     return Row(
       children: <Widget>[
-        FlatButton(
-            onPressed: () {
-              share(context);
-              // saveAsWeb();
-            },
-            child: Text(MainLocalizations.of(context).save)),
+        IconButton(
+          onPressed: () {
+            share(context);
+          },
+          icon: Icon(Icons.share),
+        ),
       ],
     );
   }

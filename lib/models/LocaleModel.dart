@@ -15,11 +15,10 @@ class LocaleModel extends ChangeNotifier {
     StorageUtil.getInstance().then((inst) => _storage = inst);
   }
   static Future<Locale> loadSavedLocale() async {
-    
     StorageUtil store = await StorageUtil.getInstance();
     String localeStr = store.getString(Consts.locale);
-    
-    if (localeStr == null || localeStr == ''){
+
+    if (localeStr == null || localeStr == '') {
       Intl.defaultLocale = await findSystemLocale();
       return Locale(Intl.defaultLocale);
     }
@@ -33,11 +32,15 @@ class LocaleModel extends ChangeNotifier {
     return locale;
   }
 
-  switchLang(Locale locale) async {
-    await _storage.putString(Consts.locale, locale.languageCode);
+  notifyAndSetLang(Locale locale) {
     MainLocalizations.load(locale);
     _locale = locale;
     notifyListeners();
+  }
+
+  Future<void> switchLang(Locale locale) async {
+    await _storage.putString(Consts.locale, locale.languageCode);
+    notifyAndSetLang(locale);
   }
 
   String get current => _locale.languageCode;

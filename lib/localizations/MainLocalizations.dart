@@ -21,6 +21,7 @@ class MainLocalizations {
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
+      
       return MainLocalizations();
     });
   }

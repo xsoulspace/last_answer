@@ -31,7 +31,6 @@ class _AskScreenState extends State<AskScreen>
               icon: Icon(Icons.done),
               tooltip: 'complete',
             ),
-
             RaisedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/answers');
@@ -69,8 +68,8 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var answers = Provider.of<AnswersModel>(context);
-    var questions = Provider.of<QuestionsModel>(context);
+    AnswersModel answers = Provider.of<AnswersModel>(context);
+    QuestionsModel questions = Provider.of<QuestionsModel>(context);
     return Column(
       children: <Widget>[
         SizedBox(height: 1),
@@ -87,9 +86,9 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                     setState(() {
                       question = questions.questions[index];
                     });
-                  }, child: 
+                  }, child:
                       Consumer<LocaleModel>(builder: (context, locale, child) {
-                        return Text(
+                    return Text(
                       questions.questions[index].title.getProp(locale.current),
                     );
                   }))),

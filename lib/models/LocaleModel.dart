@@ -15,19 +15,26 @@ class LocaleModel extends ChangeNotifier {
     StorageUtil.getInstance().then((inst) => _storage = inst);
   }
   static Future<Locale> loadSavedLocale() async {
+    
     StorageUtil store = await StorageUtil.getInstance();
-    Intl.defaultLocale = await findSystemLocale();
-    String countryCode = store.getString(Consts.locale);
-    if (countryCode == null || countryCode == '')
-      return Locale(Intl.canonicalizedLocale(Intl.defaultLocale));
-    String localeCanon = Intl.canonicalizedLocale(countryCode);
-    Locale locale = Locale(localeCanon);
+    String localeStr = store.getString(Consts.locale);
+    
+    if (localeStr == null || localeStr == ''){
+      Intl.defaultLocale = await findSystemLocale();
+      return Locale(Intl.defaultLocale);
+    }
+    print('ini locale $localeStr');
+
+    String localeCanon = Intl.canonicalizedLocale(localeStr);
+    print('ini localeCanon $localeCanon');
+
+    Locale locale = Locale(localeCanon, localeCanon.toUpperCase());
+    print(locale.toString());
     return locale;
   }
 
   switchLang(Locale locale) async {
-    await _storage.putString(Consts.locale, _locale.countryCode);
-
+    await _storage.putString(Consts.locale, locale.languageCode);
     MainLocalizations.load(locale);
     _locale = locale;
     notifyListeners();

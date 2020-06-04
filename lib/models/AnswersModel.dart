@@ -14,11 +14,12 @@ class Consts {
 }
 
 class AnswersModel extends ChangeNotifier {
-  final LocalStorage storage = new LocalStorage('htstq_app');
+  LocalStorage storage; 
   final Map<String, Answer> _answers = {};
   List<Answer> get answersList => _answers.values.toList();
   // StorageUtil _storage;
   AnswersModel() {
+    storage = new LocalStorage('htstq_app');
     // StorageUtil.getInstance().then((inst) => _storage = inst);
     ini();
   }
@@ -34,6 +35,7 @@ class AnswersModel extends ChangeNotifier {
   void ini() async {
     // String answersStr = (_storage.getString(Consts.answers) ?? '');
     List answers = storage.getItem(Consts.answers);
+    print(answers);
     // print('olaola $answersStr');
     // if (answersStr == '') return;
     if (answers == null) {

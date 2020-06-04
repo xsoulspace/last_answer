@@ -15,7 +15,10 @@ class MainLocalizations {
   static Future<MainLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    print('main localizaions $name, $locale');
     final String localeName = Intl.canonicalizedLocale(name);
+    print('main localizaions $localeName');
+
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return MainLocalizations();
@@ -69,7 +72,7 @@ class MainLocalizations {
 
 class MainLocalizationsDelegate
     extends LocalizationsDelegate<MainLocalizations> {
-  final Future<Locale> overridenLocale;
+  final Locale overridenLocale;
 
   const MainLocalizationsDelegate(this.overridenLocale);
 

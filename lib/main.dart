@@ -12,10 +12,11 @@ import 'package:howtosolvethequest/screens/MenuScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
+
   runApp(HowToSolveTheQuest());
 }
 
@@ -24,14 +25,16 @@ class HowToSolveTheQuest extends StatefulWidget {
   _HowToSolveTheQuestState createState() => _HowToSolveTheQuestState();
 }
 
-Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
 
 class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
-  MainLocalizationsDelegate _localeOverrideDelegate =
-      MainLocalizationsDelegate(systemLocale);
+  _HowToSolveTheQuestState();
 
-  @override
-  Widget build(BuildContext context) {
+  
+
+  scaffoldApp(
+    BuildContext context,
+    MainLocalizationsDelegate _localeOverrideDelegate
+  ) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AnswersModel()),
@@ -39,16 +42,19 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
         ChangeNotifierProvider(create: (context) => LocaleModel()),
       ],
       child: MaterialApp(
+        localeListResolutionCallback: (locales, supportedLocales) {
+            return _localeOverrideDelegate.overridenLocale;
+        },
         localizationsDelegates: [
           // ... app-specific localization delegate[s] here
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
-          _localeOverrideDelegate
+          _localeOverrideDelegate,
         ],
         supportedLocales: [
-          const Locale('en', 'EN'), // English
           const Locale('ru', 'RU'), // Russian
+          const Locale('en', 'EN'), // English
         ],
         theme: ThemeData(
           // Define the default brightness and colors.
@@ -75,5 +81,33 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
         },
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
+
+    return FutureBuilder(
+        future: systemLocale, // stream data to listen for change
+        builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+          print('connection done ${snapshot.connectionState}');
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            print('connection done ${snapshot.data.toString()}');
+            MainLocalizationsDelegate _localeOverrideDelegate = MainLocalizationsDelegate(Locale('ru','RU'));
+            return scaffoldApp(context, _localeOverrideDelegate);
+          } else {
+
+            // TODO: make loader
+
+            return MaterialApp(
+              builder: (context, child) => Scaffold(
+                  backgroundColor: Colors.white,
+                  body: Column(
+                    children: [CircularProgressIndicator()],
+                  )),
+            );
+          }
+        });
   }
 }

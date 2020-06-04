@@ -32,15 +32,15 @@ class LocaleModel extends ChangeNotifier {
     return locale;
   }
 
-  notifyAndSetLang(Locale locale) {
-    MainLocalizations.load(locale);
-    _locale = locale;
+  notifyAboutLang() {
     notifyListeners();
   }
 
   Future<void> switchLang(Locale locale) async {
     await _storage.putString(Consts.locale, locale.languageCode);
-    notifyAndSetLang(locale);
+    MainLocalizations.load(locale);
+    _locale = locale;
+    notifyListeners();
   }
 
   String get current => _locale.languageCode;

@@ -40,7 +40,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   @override
   Widget build(BuildContext context) {
     Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
-
+    
     return FutureBuilder(
         future: systemLocale, // stream data to listen for change
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
@@ -72,6 +72,9 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
+    answersModel.ini();
+    
     return MaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         LocaleModel localeModel = Provider.of<LocaleModel>(context);

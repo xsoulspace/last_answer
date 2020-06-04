@@ -11,19 +11,15 @@ class Answer {
 
   @override
   bool operator ==(Object other) => other is Answer && other.id == id;
-  // toJSONEncodable() {
-  //   Map<String, dynamic> m = new Map();
+  
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'question': question.toJson(),
+        'id': id,
+      };
 
-  //   m['title'] = title;
-  //   m['question'] = question.toJSONEncodable();
-  //   m['id'] = id;
-  //   return m;
-  // }
-  // toJSONDecode(Map<String, dynamic> m) {
-
-  //   title = m['title'];
-  //   question = question.toJSONEncodable();
-  //   id = m['id'];
-  //   return m;
-  // }
+  Answer.fromJson(Map<String, dynamic> m)
+      : title = m['title'],
+        question = Question.fromJson(m['question']),
+        id = m['id'];
 }

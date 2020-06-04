@@ -15,46 +15,76 @@ class AskScreen extends StatefulWidget {
 
 class _AskScreenState extends State<AskScreen>
     with SingleTickerProviderStateMixin {
+  bool _isInitialized = false;
+
+  Future<void> loadLocaleAndAnswers() async {
+    if (_isInitialized) return;
+    LocaleModel localeModel = Provider.of<LocaleModel>(context);
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
+    print('we are here');
+    await answersModel.ini();
+    print('aaand are here');
+    localeModel.notifyAboutLang();
+    _isInitialized = true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var answers = Provider.of<AnswersModel>(context);
-    return Scaffold(
-        appBar: AppBar(
-          title: Consumer<LocaleModel>(builder: (context, locale, child) {
-            return Text((MainLocalizations.of(context).lastAnswer));
-          }),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/menu');
-              },
-              icon: Icon(Icons.done),
-              tooltip: 'complete',
-            ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/answers');
-              },
-              child: Consumer<LocaleModel>(builder: (context, locale, child) {
-                return Text((MainLocalizations.of(context).answers));
-              }),
-            ),
-          ],
-        ),
-        body: Container(
-            padding: EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                      child: Text(answers.lastAnswer.title),
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
+
+    return FutureBuilder(
+        future: loadLocaleAndAnswers(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                appBar: AppBar(
+                  title:
+                      Consumer<LocaleModel>(builder: (context, locale, child) {
+                    return Text((MainLocalizations.of(context).lastAnswer));
+                  }),
+                  actions: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/menu');
+                      },
+                      icon: Icon(Icons.done),
+                      tooltip: 'complete',
                     ),
-                    QuestionsComponent(),
-                    QuestionsAndInput()
+                    RaisedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/answers');
+                      },
+                      child: Consumer<LocaleModel>(
+                          builder: (context, locale, child) {
+                        return Text((MainLocalizations.of(context).answers));
+                      }),
+                    ),
                   ],
-                ))));
+                ),
+                body: Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Center(
+                              child: Text(answersModel.lastAnswer.title),
+                            ),
+                            QuestionsComponent(),
+                            QuestionsAndInput()
+                          ],
+                        ))));
+          } else {
+            return _circularSpinner();
+          }
+        });
+  }
+
+  Widget _circularSpinner() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
 

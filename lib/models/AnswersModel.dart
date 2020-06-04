@@ -23,13 +23,13 @@ class AnswersModel extends ChangeNotifier {
     StorageUtil.getInstance().then((inst) => _storage = inst);
   }
 
-  void ini() async {
+  Future<void> ini() async {
     if (_storage == null) {
       _storage = await StorageUtil.getInstance();
     }
     String answers = (_storage.getString(Consts.answers) ?? '');
     // List answers = storage.getItem(Consts.answers);
-    print(answers);
+    print('answers, $answers');
     // print('olaola $answersStr');
     // if (answersStr == '') return;
     if (answers == null) {

@@ -41,6 +41,7 @@ class _AnswersList extends StatelessWidget {
   Widget build(BuildContext context) {
     var answers = Provider.of<AnswersModel>(context);
     var locale = Provider.of<LocaleModel>(context).current;
+
     return ListView.builder(
         itemCount: answers.length(),
         itemBuilder: (context, index) => Card(

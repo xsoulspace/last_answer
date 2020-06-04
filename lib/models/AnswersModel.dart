@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:howtosolvethequest/entities/Answer.dart';
 import 'package:howtosolvethequest/entities/LocaleTitle.dart';
 import 'package:howtosolvethequest/entities/Question.dart';
-// import 'package:howtosolvethequest/utils/storage_util.dart';
+import 'package:howtosolvethequest/utils/storage_util.dart';
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
 
@@ -14,27 +14,21 @@ class Consts {
 }
 
 class AnswersModel extends ChangeNotifier {
-  LocalStorage storage; 
+  // LocalStorage storage;
   final Map<String, Answer> _answers = {};
   List<Answer> get answersList => _answers.values.toList();
-  // StorageUtil _storage;
+  StorageUtil _storage;
   AnswersModel() {
-    storage = new LocalStorage('htstq_app');
-    // StorageUtil.getInstance().then((inst) => _storage = inst);
-    ini();
+    // storage = new LocalStorage('htstq_app');
+    StorageUtil.getInstance().then((inst) => _storage = inst);
   }
-  // toJSONEncodable() {
-  //   return _answers
-  //       .map((key, item) {
-  //         return item.toJSONEncodable();
-  //       })
-  //       .values
-  //       .toList();
-  // }
 
   void ini() async {
-    // String answersStr = (_storage.getString(Consts.answers) ?? '');
-    List answers = storage.getItem(Consts.answers);
+    if (_storage == null) {
+      _storage = await StorageUtil.getInstance();
+    }
+    String answers = (_storage.getString(Consts.answers) ?? '');
+    // List answers = storage.getItem(Consts.answers);
     print(answers);
     // print('olaola $answersStr');
     // if (answersStr == '') return;
@@ -43,11 +37,7 @@ class AnswersModel extends ChangeNotifier {
     }
     // var answers = jsonDecode(answersStr);
     // print({answers, answersStr});
-
-    answers.forEach((answer) {
-      Answer answ = answer as Answer;
-      _answers.putIfAbsent(answ.title, () => answ);
-    });
+    fromJson(jsonDecode(answers));
     notifyListeners();
   }
 
@@ -81,16 +71,26 @@ class AnswersModel extends ChangeNotifier {
     // String encodedStr = jsonEncode(_answers.toString());
     // saving to storage
     // await _storage.putString(Consts.answers, encodedStr);
-    storage.setItem(Consts.answers, answersList);
+    String json = jsonEncode(toJson());
+    print(json);
+    await _storage.putString(Consts.answers, json);
+
+    // await storage.setItem(Consts.answers, json);
     notifyListeners();
   }
 
   Future<void> clearAll() async {
     _answers.clear();
     // clearing storage
-    await storage.clear();
+    // await storage.clear();
+    await _storage.putString(Consts.answers, '');
     notifyListeners();
-
-    // await _storage.putString(Consts.answers, '');
   }
+
+  toJson() => answersList.map((answer) => answer.toJson()).toList();
+
+  fromJson(List answers) => answers.forEach((answer) {
+        Answer newAnswer = Answer.fromJson(answer);
+        _answers.putIfAbsent(newAnswer.title, () => newAnswer);
+      });
 }

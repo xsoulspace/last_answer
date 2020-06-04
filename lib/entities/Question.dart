@@ -10,11 +10,12 @@ class Question {
 
   @override
   bool operator ==(Object other) => other is Question && other.id == id;
-  toJSONEncodable() {
-    Map<String, dynamic> m = new Map();
+  Map<String, dynamic> toJson() => {
+        'title': title.toJson(),
+        'id': id,
+      };
 
-    m['title'] = title;
-    m['id'] = id;
-    return m;
-  }
+  Question.fromJson(Map<String, dynamic> m)
+      : title = LocaleTitle.fromJson(m['title']),
+        id = m['id'];
 }

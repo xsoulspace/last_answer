@@ -30,6 +30,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
 
   scaffoldApp(
       BuildContext context, MainLocalizationsDelegate _localeOverrideDelegate) {
+    print(_localeOverrideDelegate.overridenLocale);
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => LocaleModel()),
       ChangeNotifierProvider(create: (context) => AnswersModel()),
@@ -40,14 +41,14 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   @override
   Widget build(BuildContext context) {
     Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
-    
+
     return FutureBuilder(
         future: systemLocale, // stream data to listen for change
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          print('connection done ${snapshot.connectionState}');
+          // print('connection done ${snapshot.connectionState}');
 
           if (snapshot.connectionState == ConnectionState.done) {
-            print('connection done ${snapshot.data.toString()}');
+            // print('connection done ${snapshot.data.toString()}');
             MainLocalizationsDelegate _localeOverrideDelegate =
                 MainLocalizationsDelegate(snapshot.data);
             return scaffoldApp(context, _localeOverrideDelegate);
@@ -58,6 +59,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
           }
         });
   }
+
   Widget _circularSpinner() {
     return Center(
       child: CircularProgressIndicator(),
@@ -74,6 +76,15 @@ class AppScaffold extends StatelessWidget {
     return MaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         Locale locale = _overridenLocaleDelegate.overridenLocale;
+        var isFoundLocale  =_overridenLocaleDelegate.isSupported(locale);
+        print(supportedLocales.toString());
+        print(locales.toString());
+        
+        // var isFoundLocale =supportedLocales.contains(locale);
+        print(isFoundLocale);
+        if (!isFoundLocale) {
+          return Locale('en', 'EN');
+        }
         return locale;
       },
       localizationsDelegates: [

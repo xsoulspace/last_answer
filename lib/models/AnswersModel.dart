@@ -68,8 +68,10 @@ class AnswersModel extends ChangeNotifier {
   }
 
   Future<void> clearAll() async {
+    print('cleaning');
     _answers.clear();
     // clearing storage
+    print('cleaning storage');
     await _storage.putString(Consts.answers, '');
     notifyListeners();
   }

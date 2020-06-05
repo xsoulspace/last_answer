@@ -36,11 +36,22 @@ class _AskScreenState extends State<AskScreen>
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     Widget lastAnswer() {
-      return Text(answersModel.lastAnswer.title ?? '');
+      return Text(
+        answersModel.lastAnswer.title ?? '',
+        softWrap: false,
+      );
     }
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/menu');
+            },
+            icon: Icon(Icons.done),
+            tooltip: 'complete',
+          ),
+          centerTitle: true,
           title: Consumer<LocaleModel>(builder: (context, locale, child) {
             return Text((MainLocalizations.of(context).lastAnswer));
           }),
@@ -49,17 +60,23 @@ class _AskScreenState extends State<AskScreen>
               onPressed: () {
                 Navigator.pushNamed(context, '/menu');
               },
-              icon: Icon(Icons.done),
-              tooltip: 'complete',
+              icon: Icon(Icons.help_outline),
             ),
-            RaisedButton(
+            IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/answers');
               },
-              child: Consumer<LocaleModel>(builder: (context, locale, child) {
-                return Text((MainLocalizations.of(context).answers));
-              }),
+              icon: Icon(Icons.import_contacts),
             ),
+            
+            // RaisedButton(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/answers');
+            //   },
+            //   child: Consumer<LocaleModel>(builder: (context, locale, child) {
+            //     return Text((MainLocalizations.of(context).answers));
+            //   }),
+            // ),
           ],
         ),
         body: Container(

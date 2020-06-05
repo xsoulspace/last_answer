@@ -29,7 +29,7 @@ class MenuScreen extends StatelessWidget {
     startButton() {
       return RaisedButton(
         onPressed: () async {
-          var model = Provider.of<AnswersModel>(context);
+          var model = Provider.of<AnswersModel>(context, listen:false);
           await model.clearAll();
           Navigator.pushNamed(context, '/');
         },
@@ -65,14 +65,14 @@ class MenuScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SaveFile(),
-            buttonStart(),
             IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios),
             ),
+            buttonStart(),
+            SaveFile(),
           ],
         ),
         Divider(

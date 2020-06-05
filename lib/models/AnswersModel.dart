@@ -32,7 +32,7 @@ class AnswersModel extends ChangeNotifier {
     print('answers, $answers');
     // print('olaola $answersStr');
     // if (answersStr == '') return;
-    if (answers == null) {
+    if (answers == null || answers == '') {
       return;
     }
     // var answers = jsonDecode(answersStr);

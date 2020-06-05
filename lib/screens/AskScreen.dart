@@ -7,6 +7,7 @@ import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:howtosolvethequest/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class AskScreen extends StatefulWidget {
   @override
@@ -24,7 +25,10 @@ class _AskScreenState extends State<AskScreen>
     print('we are here');
     await answersModel.ini();
     print('aaand are here');
-    localeModel.notifyAboutLang();
+    List<String> listLocale =Intl.defaultLocale.split("_");
+    Locale locale = Locale(listLocale[0],listLocale[1]);
+    print('new locale ${locale.toString()}');
+    localeModel.switchLang(locale);
     _isInitialized = true;
   }
 

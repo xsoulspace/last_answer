@@ -25,70 +25,68 @@ class _AskScreenState extends State<AskScreen>
     print('we are here');
     await answersModel.ini();
     print('aaand are here');
-    List<String> listLocale =Intl.defaultLocale.split("_");
-    Locale locale = Locale(listLocale[0],listLocale[1]);
+    List<String> listLocale = Intl.defaultLocale.split("_");
+    Locale locale = Locale(listLocale[0], listLocale[1]);
     print('new locale ${locale.toString()}');
-    localeModel.switchLang(locale);
+    await localeModel.switchLang(locale);
     _isInitialized = true;
   }
 
   @override
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
+    Widget lastAnswer() {
+      return Text(answersModel.lastAnswer.title ?? '');
+    }
 
-    return FutureBuilder(
-        future: loadLocaleAndAnswers(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Scaffold(
-                appBar: AppBar(
-                  title:
-                      Consumer<LocaleModel>(builder: (context, locale, child) {
-                    return Text((MainLocalizations.of(context).lastAnswer));
-                  }),
-                  actions: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/menu');
-                      },
-                      icon: Icon(Icons.done),
-                      tooltip: 'complete',
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/answers');
-                      },
-                      child: Consumer<LocaleModel>(
-                          builder: (context, locale, child) {
-                        return Text((MainLocalizations.of(context).answers));
-                      }),
-                    ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Consumer<LocaleModel>(builder: (context, locale, child) {
+            return Text((MainLocalizations.of(context).lastAnswer));
+          }),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/menu');
+              },
+              icon: Icon(Icons.done),
+              tooltip: 'complete',
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/answers');
+              },
+              child: Consumer<LocaleModel>(builder: (context, locale, child) {
+                return Text((MainLocalizations.of(context).answers));
+              }),
+            ),
+          ],
+        ),
+        body: Container(
+            padding: EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                        child: !_isInitialized
+                            ? FutureBuilder(
+                                future: loadLocaleAndAnswers(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<void> snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.done:
+                                      return lastAnswer();
+                                    default:
+                                      return CircularProgressIndicator();
+                                  }
+                                })
+                            : lastAnswer()),
+                    QuestionsComponent(),
+                    QuestionsAndInput()
                   ],
-                ),
-                body: Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Center(
-                              child: Text(answersModel.lastAnswer.title),
-                            ),
-                            QuestionsComponent(),
-                            QuestionsAndInput()
-                          ],
-                        ))));
-          } else {
-            return _circularSpinner();
-          }
-        });
-  }
-
-  Widget _circularSpinner() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+                ))));
   }
 }
 
@@ -138,6 +136,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             }),
             IconButton(
               onPressed: () async {
+                if (inputText == null || inputText == '') return;
                 await answers.add(inputText, question);
                 _controller.clear();
               },

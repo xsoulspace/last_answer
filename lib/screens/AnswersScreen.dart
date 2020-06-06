@@ -60,8 +60,8 @@ class _CopyIconState extends State<CopyIcon> with TickerProviderStateMixin {
   }
 
   dispose() {
-    super.dispose();
     cancelTimer();
+    super.dispose();
   }
 
 //

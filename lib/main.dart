@@ -7,8 +7,9 @@ import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:howtosolvethequest/models/QuestionsModel.dart';
 import 'package:howtosolvethequest/screens/AnswersScreen.dart';
-import 'package:howtosolvethequest/screens/AskScreen.dart';
 import 'package:howtosolvethequest/screens/MenuScreen.dart';
+import 'package:howtosolvethequest/screens/PhilosophyScreen.dart';
+import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -76,10 +77,10 @@ class AppScaffold extends StatelessWidget {
     return MaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         Locale locale = _overridenLocaleDelegate.overridenLocale;
-        var isFoundLocale  =_overridenLocaleDelegate.isSupported(locale);
+        var isFoundLocale = _overridenLocaleDelegate.isSupported(locale);
         print(supportedLocales.toString());
         print(locales.toString());
-        
+
         // var isFoundLocale =supportedLocales.contains(locale);
         print(isFoundLocale);
         if (!isFoundLocale) {
@@ -102,11 +103,11 @@ class AppScaffold extends StatelessWidget {
         // Define the default brightness and colors.
         brightness: Brightness.dark,
         primaryColor: Colors.lightGreen[800],
-        accentColor: Colors.lightGreen[50],
+        accentColor: Colors.lightGreen[800],
+
         buttonColor: Colors.lightGreen[900],
         // Define the default font family.
         fontFamily: 'Georgia',
-
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         // textTheme: TextTheme(
@@ -117,9 +118,10 @@ class AppScaffold extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => AskScreen(),
+        '/': (context) => ScaffoldAppBar(),
         '/menu': (context) => MenuScreen(),
         '/answers': (context) => AnswersScreen(),
+        '/philosophy': (context) => PhilosophyScreen(),
       },
     );
   }

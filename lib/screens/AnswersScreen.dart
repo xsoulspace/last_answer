@@ -2,39 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:flutter/services.dart';
 import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
-import 'package:clippy/server.dart' as clippy;
 
 class AnswersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text(MainLocalizations.of(context).answers),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/menu');
-              },
-              icon: Icon(Icons.done),
-              tooltip: 'complete',
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: _AnswersList(),
             ),
-          ]),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: _AnswersList(),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -60,7 +45,7 @@ class _CopyIconState extends State<CopyIcon> with TickerProviderStateMixin {
 
   Future<void> copyPressed() async {
     cancelTimer();
-    await clippy.write(_copyText);
+    await Clipboard.setData(ClipboardData(text: _copyText));
     setState(() {
       _iconStatus = CopyIconStatuses.done;
     });
@@ -129,9 +114,8 @@ class _AnswersList extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: SelectableText(
+                    child: Text(
                       questionTitle,
-                      showCursor: true,
                     ),
                   ),
                   Flexible(
@@ -139,6 +123,7 @@ class _AnswersList extends StatelessWidget {
                       child: Container(
                     child: SelectableText(
                       answerText,
+                      showCursor: true,
                     ),
                   )),
                 ],

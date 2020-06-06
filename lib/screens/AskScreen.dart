@@ -21,14 +21,14 @@ class _AskScreenState extends State<AskScreen>
   Future<void> loadLocaleAndAnswers() async {
     if (_isInitialized) return;
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
-    AnswersModel answersModel = Provider.of<AnswersModel>(context);
-    print('we are here');
-    await answersModel.ini();
-    print('aaand are here');
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
     print('new locale ${locale.toString()}');
     await localeModel.switchLang(locale);
+    AnswersModel answersModel = Provider.of<AnswersModel>(context, listen: false);
+    print('we are here');
+    await answersModel.ini();
+    print('aaand are here');
     _isInitialized = true;
   }
 
@@ -42,68 +42,31 @@ class _AskScreenState extends State<AskScreen>
       );
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/menu');
-            },
-            icon: Icon(Icons.done),
-            tooltip: 'complete',
-          ),
-          centerTitle: true,
-          title: Consumer<LocaleModel>(builder: (context, locale, child) {
-            return Text((MainLocalizations.of(context).lastAnswer));
-          }),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/menu');
-              },
-              icon: Icon(Icons.help_outline),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/answers');
-              },
-              icon: Icon(Icons.import_contacts),
-            ),
-            
-            // RaisedButton(
-            //   onPressed: () {
-            //     Navigator.pushNamed(context, '/answers');
-            //   },
-            //   child: Consumer<LocaleModel>(builder: (context, locale, child) {
-            //     return Text((MainLocalizations.of(context).answers));
-            //   }),
-            // ),
-          ],
-        ),
-        body: Container(
-            padding: EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                        child: !_isInitialized
-                            ? FutureBuilder(
-                                future: loadLocaleAndAnswers(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<void> snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.done:
-                                      return lastAnswer();
-                                    default:
-                                      return CircularProgressIndicator();
-                                  }
-                                })
-                            : lastAnswer()),
-                    QuestionsComponent(),
-                    QuestionsAndInput()
-                  ],
-                ))));
+    return Container(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                    child: !_isInitialized
+                        ? FutureBuilder(
+                            future: loadLocaleAndAnswers(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<void> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.done:
+                                  return lastAnswer();
+                                default:
+                                  return CircularProgressIndicator();
+                              }
+                            })
+                        : lastAnswer()),
+                QuestionsComponent(),
+                QuestionsAndInput()
+              ],
+            )));
   }
 }
 
@@ -173,8 +136,17 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               inputText = text;
             },
             decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Colors.lightGreen[50]),
+                fillColor: Colors.lightGreen[50],
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.lightGreen[50],
+                  ),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightGreen[50])),
                 labelText: MainLocalizations.of(context).answer),
+            cursorColor: Theme.of(context).accentColor,
           );
         }))
       ],

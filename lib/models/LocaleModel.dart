@@ -11,9 +11,12 @@ class Consts {
 class LocaleModel extends ChangeNotifier {
   Locale _locale = Locale('en', 'EN');
   StorageUtil _storage;
-  LocaleModel() {
-    StorageUtil.getInstance().then((inst) => _storage = inst);
+  _iniStorage() async {
+    if (_storage == null) {
+      _storage = await StorageUtil.getInstance();
+    }
   }
+
   static Future<Locale> loadSavedLocale() async {
     StorageUtil store = await StorageUtil.getInstance();
     String localeStr = store.getString(Consts.locale);
@@ -37,6 +40,7 @@ class LocaleModel extends ChangeNotifier {
   }
 
   Future<void> switchLang(Locale locale) async {
+    await _iniStorage();
     await _storage.putString(Consts.locale, locale.languageCode);
     MainLocalizations.load(locale);
     _locale = locale;

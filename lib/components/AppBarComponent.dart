@@ -30,7 +30,8 @@ class _AppBarComponentState extends State<AppBarComponent>
   initState() {
     super.initState();
     _animationTitleController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 3000));
+        vsync: this, duration: Duration(milliseconds: 1400));
+
     _animateTitle =
         Tween(begin: 0.0, end: 1.0).animate(_animationTitleController);
   }
@@ -43,10 +44,13 @@ class _AppBarComponentState extends State<AppBarComponent>
 
   Widget currentTitle() {
     String title(PagesModel pagesModel) {
-      if (_animationTitleController.isAnimating) {
+      final isPhilosophyPage =
+          pagesModel.currentPage == AppPagesNumerated.Philosophy.index;
+      if (isPhilosophyPage) {
         _animationTitleController.reset();
-        _animationTitleController.repeat(reverse: false, min: 0, max: 1);
+        _animationTitleController.forward();
       }
+
       switch (pagesModel.currentPage) {
         case 0:
           return MainLocalizations.of(context).lastAnswer;
@@ -73,7 +77,6 @@ class _AppBarComponentState extends State<AppBarComponent>
   @override
   Widget build(BuildContext context) {
     _animationTitleController.forward();
-
     return PreferredSize(
         preferredSize: Size(_height, _height),
         child: Consumer<PagesModel>(builder: (context, pagesModel, child) {

@@ -42,10 +42,16 @@ class _AppBarComponentState extends State<AppBarComponent>
     super.dispose();
   }
 
+  getIsPhilophyAndInspire(PagesModel pagesModel) {
+    return pagesModel.currentPage == AppPagesNumerated.Philosophy.index ||
+        pagesModel.currentPage == AppPagesNumerated.Inspire.index;
+  }
+
   Widget currentTitle() {
     String title(PagesModel pagesModel) {
       final isPhilosophyPage =
-          pagesModel.currentPage == AppPagesNumerated.Philosophy.index;
+          pagesModel.currentPage == AppPagesNumerated.Inspire.index;
+
       if (isPhilosophyPage) {
         _animationTitleController.reset();
         _animationTitleController.forward();
@@ -55,8 +61,11 @@ class _AppBarComponentState extends State<AppBarComponent>
         case 0:
           return MainLocalizations.of(context).lastAnswer;
         case 1:
+          FocusScope.of(context).requestFocus(new FocusNode());
           return MainLocalizations.of(context).answers;
         case 2:
+          return 'Philosophy & Inspiration';
+        case 3:
           return 'Philosophy & Inspiration';
         // return MainLocalizations.of(context).lastAnswer;
       }
@@ -80,8 +89,7 @@ class _AppBarComponentState extends State<AppBarComponent>
     return PreferredSize(
         preferredSize: Size(_height, _height),
         child: Consumer<PagesModel>(builder: (context, pagesModel, child) {
-          final isPhilosophyPage =
-              pagesModel.currentPage == AppPagesNumerated.Philosophy.index;
+          final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
           return AnimatedContainer(
               color: isPhilosophyPage
                   ? Theme.of(context).scaffoldBackgroundColor
@@ -95,12 +103,23 @@ class _AppBarComponentState extends State<AppBarComponent>
                   if (constraints.maxWidth > 600) {
                     return 250;
                   } else {
-                    return isPhilosophyPage? 70 : 150;
+                    return isPhilosophyPage ? 70 : 150;
                   }
                 }
 
                 return Stack(
                   children: <Widget>[
+                    Positioned(
+                      left: 5,
+                      top: 30,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/menu');
+                        },
+                        icon: Icon(Icons.playlist_add_check),
+                        tooltip: 'complete',
+                      ),
+                    ),
                     Positioned(
                       child: FadeTransition(
                         opacity: _animateTitle,

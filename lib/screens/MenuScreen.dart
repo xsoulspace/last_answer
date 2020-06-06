@@ -29,7 +29,7 @@ class MenuScreen extends StatelessWidget {
     startButton() {
       return RaisedButton(
         onPressed: () async {
-          var model = Provider.of<AnswersModel>(context, listen:false);
+          var model = Provider.of<AnswersModel>(context, listen: false);
           await model.clearAll();
           Navigator.pushNamed(context, '/');
         },
@@ -62,6 +62,18 @@ class MenuScreen extends StatelessWidget {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(bottom: 30),
+          child: Center(
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+              icon: Icon(Icons.home),
+              tooltip: 'home',
+            ),
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -76,6 +88,7 @@ class MenuScreen extends StatelessWidget {
           ],
         ),
         Divider(
+          height: 40,
           color: Theme.of(context).primaryColor,
         ),
         Row(
@@ -93,22 +106,6 @@ class MenuScreen extends StatelessWidget {
                 child: Text("Eng")),
           ],
         ),
-        // Divider(),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     FlatButton(
-        //         onPressed: () {
-        //           localeModel.switchLang(Locale('ru', 'RU'));
-        //         },
-        //         child: Text("Dark")),
-        //     FlatButton(
-        //         onPressed: () {
-        //           localeModel.switchLang(Locale('en', 'EN'));
-        //         },
-        //         child: Text("Light")),
-        //   ],
-        // )
       ],
     ));
   }

@@ -25,7 +25,8 @@ class _AskScreenState extends State<AskScreen>
     Locale locale = Locale(listLocale[0], listLocale[1]);
     print('new locale ${locale.toString()}');
     await localeModel.switchLang(locale);
-    AnswersModel answersModel = Provider.of<AnswersModel>(context, listen: false);
+    AnswersModel answersModel =
+        Provider.of<AnswersModel>(context, listen: false);
     print('we are here');
     await answersModel.ini();
     print('aaand are here');

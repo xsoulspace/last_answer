@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/models/PagesModel.dart';
 import 'package:howtosolvethequest/models/QuestionsModel.dart';
 import 'package:howtosolvethequest/screens/AnswersScreen.dart';
 import 'package:howtosolvethequest/screens/MenuScreen.dart';
@@ -36,6 +37,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
       ChangeNotifierProvider(create: (context) => LocaleModel()),
       ChangeNotifierProvider(create: (context) => AnswersModel()),
       ChangeNotifierProvider(create: (context) => QuestionsModel()),
+      ChangeNotifierProvider(create: (context) => PagesModel()),
     ], child: AppScaffold(_localeOverrideDelegate));
   }
 
@@ -54,8 +56,6 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
                 MainLocalizationsDelegate(snapshot.data);
             return scaffoldApp(context, _localeOverrideDelegate);
           } else {
-            // TODO: make loader
-
             return _circularSpinner();
           }
         });

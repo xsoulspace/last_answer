@@ -67,6 +67,7 @@ class AppPages extends StatefulWidget {
 enum AppPagesNumerated {
   AskScreen,
   AnswersScreen,
+  Philosophy
 }
 
 class _AppPagesState extends State<AppPages> {

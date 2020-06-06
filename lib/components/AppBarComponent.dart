@@ -57,7 +57,7 @@ class _AppBarComponentState extends State<AppBarComponent>
         case 1:
           return MainLocalizations.of(context).answers;
         case 2:
-          return 'Philosophy';
+          return 'Philosophy & Inspiration';
         // return MainLocalizations.of(context).lastAnswer;
       }
       return '';
@@ -95,7 +95,7 @@ class _AppBarComponentState extends State<AppBarComponent>
                   if (constraints.maxWidth > 600) {
                     return 250;
                   } else {
-                    return 150;
+                    return isPhilosophyPage? 70 : 150;
                   }
                 }
 

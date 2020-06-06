@@ -7,9 +7,7 @@ import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:howtosolvethequest/models/PagesModel.dart';
 import 'package:howtosolvethequest/models/QuestionsModel.dart';
-import 'package:howtosolvethequest/screens/AnswersScreen.dart';
 import 'package:howtosolvethequest/screens/MenuScreen.dart';
-import 'package:howtosolvethequest/screens/PhilosophyScreen.dart';
 import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -120,8 +118,6 @@ class AppScaffold extends StatelessWidget {
       routes: {
         '/': (context) => ScaffoldAppBar(),
         '/menu': (context) => MenuScreen(),
-        '/answers': (context) => AnswersScreen(),
-        '/philosophy': (context) => PhilosophyScreen(),
       },
     );
   }

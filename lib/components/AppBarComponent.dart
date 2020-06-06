@@ -23,8 +23,7 @@ class _AppBarComponentState extends State<AppBarComponent> {
   final double _height = 200.0;
 
   Widget currentTitle() {
-    PagesModel pagesModel = Provider.of<PagesModel>(context);
-    String title() {
+    String title(PagesModel pagesModel) {
       switch (pagesModel.currentPage) {
         case 1:
           return MainLocalizations.of(context).lastAnswer;
@@ -37,13 +36,15 @@ class _AppBarComponentState extends State<AppBarComponent> {
       return '';
     }
 
-    return Consumer<LocaleModel>(builder: (context, locale, child) {
-      return Text(
-        title(),
-        style: TextStyle(
-            fontSize: 24,
-            shadows: [Shadow(color: Colors.black54, blurRadius: 10.0)]),
-      );
+    return Consumer<PagesModel>(builder: (context, pagesModel, child) {
+      return Consumer<LocaleModel>(builder: (context, locale, child) {
+        return Text(
+          title(pagesModel),
+          style: TextStyle(
+              fontSize: 24,
+              shadows: [Shadow(color: Colors.black54, blurRadius: 10.0)]),
+        );
+      });
     });
   }
 

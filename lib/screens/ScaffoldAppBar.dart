@@ -6,6 +6,7 @@ import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:howtosolvethequest/models/PagesModel.dart';
 import 'package:howtosolvethequest/screens/AnswersScreen.dart';
 import 'package:howtosolvethequest/screens/AskScreen.dart';
+import 'package:howtosolvethequest/screens/PhilosophyScreen.dart';
 import 'package:provider/provider.dart';
 
 class ScaffoldAppBar extends StatelessWidget {
@@ -93,6 +94,7 @@ class _AppPagesState extends State<AppPages> {
       children: [
         AskScreen(),
         AnswersScreen(),
+        PhilosophyScreen(),
       ],
     );
   }

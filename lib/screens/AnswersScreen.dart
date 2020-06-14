@@ -107,16 +107,19 @@ class _AnswersList extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 4),
           child: Stack(children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(2, 14, 35, 14),
+              padding: EdgeInsets.fromLTRB(10, 14, 35, 14),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  SizedBox(
+                    width: 80,
                     child: Text(
                       questionTitle,
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
                   ),
                   Flexible(
                       //We only want to wrap the text message with flexible widget

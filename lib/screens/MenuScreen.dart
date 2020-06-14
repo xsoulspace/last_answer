@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:howtosolvethequest/components/CustomDialogComponent.dart';
 import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:howtosolvethequest/models/PagesModel.dart';
+import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 // import 'package:howtosolvethequest/entities/Answer.dart';
 import 'package:share/share.dart';
 
@@ -16,6 +18,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
+    PagesModel pagesModel = Provider.of<PagesModel>(context);
 
     cancelButton() {
       return RaisedButton(
@@ -31,7 +34,11 @@ class MenuScreen extends StatelessWidget {
         onPressed: () async {
           var model = Provider.of<AnswersModel>(context, listen: false);
           await model.clearAll();
-          Navigator.pushNamed(context, '/');
+          pagesModel.pageController.animateToPage(
+              AppPagesNumerated.AskScreen.index,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOutCirc);
+          Navigator.pop(context);
         },
         child: Text(MainLocalizations.of(context).newQuestStart),
         color: Theme.of(context).buttonTheme.colorScheme.error,
@@ -67,7 +74,11 @@ class MenuScreen extends StatelessWidget {
           child: Center(
             child: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                pagesModel.pageController.animateToPage(
+                    AppPagesNumerated.AskScreen.index,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOutCirc);
+                Navigator.pop(context);
               },
               icon: Icon(Icons.home),
               tooltip: 'home',

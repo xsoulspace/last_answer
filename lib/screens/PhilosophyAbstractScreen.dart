@@ -32,12 +32,12 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'How?',
+                                'What?',
                               ),
                             ),
                             Flexible(
-                                child: Text(
-                              'You can use: "Five Why"',
+                                child: SelectableText(
+                              'You can use: "Five whys"',
                             )),
                           ],
                         ),
@@ -56,8 +56,8 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               ),
                             ),
                             Flexible(
-                                child: Text(
-                              'Because this technique...',
+                                child: SelectableText(
+                              'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as "cause and effect" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys',
                             )),
                           ],
                         ),
@@ -72,51 +72,11 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'How?',
+                                'What else?',
                               ),
                             ),
                             Flexible(
-                                child: Text(
-                              'You can use: "Why–because analysis"',
-                            )),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.symmetric(vertical: 4),
-                      child: Padding(
-                        padding: EdgeInsets.all(14),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Why?',
-                              ),
-                            ),
-                            Flexible(
-                                child: Text(
-                              'Because this technique...',
-                            )),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.symmetric(vertical: 4),
-                      child: Padding(
-                        padding: EdgeInsets.all(14),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'How?',
-                              ),
-                            ),
-                            Flexible(
-                                child: Text(
+                                child: SelectableText(
                               'You can use: "PDCA (Plan-Do-Study-Act): Shewhart-Deming cycle"',
                             )),
                           ],
@@ -136,8 +96,8 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               ),
                             ),
                             Flexible(
-                                child: Text(
-                              'Because this technique...',
+                                child: SelectableText(
+                              'Because it most universal technique. It does not solid questions, as in "Five Whys", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA',
                             )),
                           ],
                         ),
@@ -152,11 +112,11 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'How?',
+                                'What else?',
                               ),
                             ),
                             Flexible(
-                                child: Text(
+                                child: SelectableText(
                               'You can use: "Six Sigma"',
                             )),
                           ],
@@ -176,8 +136,8 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               ),
                             ),
                             Flexible(
-                                child: Text(
-                              'Because this technique...',
+                                child: SelectableText(
+                              'Beacuse if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma',
                             )),
                           ],
                         ),

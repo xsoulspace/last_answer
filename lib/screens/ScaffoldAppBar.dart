@@ -65,7 +65,12 @@ class AppPages extends StatefulWidget {
   _AppPagesState createState() => _AppPagesState();
 }
 
-enum AppPagesNumerated { AskScreen, AnswersScreen, Inspire, Philosophy,  }
+enum AppPagesNumerated {
+  AskScreen,
+  AnswersScreen,
+  Inspire,
+  Philosophy,
+}
 
 class _AppPagesState extends State<AppPages> {
   PageController _pageController;
@@ -85,6 +90,7 @@ class _AppPagesState extends State<AppPages> {
   @override
   Widget build(BuildContext context) {
     PagesModel pagesModel = Provider.of<PagesModel>(context);
+    pagesModel.setPageController(_pageController);
 
     return PageView(
       controller: _pageController,

@@ -39,7 +39,7 @@ class _AskScreenState extends State<AskScreen>
     Widget lastAnswer() {
       return Text(
         answersModel.lastAnswer.title ?? '',
-        softWrap: false,
+        // softWrap: false,
       );
     }
 

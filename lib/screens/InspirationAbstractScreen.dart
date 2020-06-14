@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 class InspirationAbstract extends StatefulWidget {
   @override
@@ -8,6 +9,14 @@ class InspirationAbstract extends StatefulWidget {
 }
 
 class _InspirationAbstractState extends State<InspirationAbstract> {
+//   _launchURL() async {
+//   const url = 'mailto:xsoulspace@gmail.com?subject=IIB_Last_Answer	';
+//   if (await canLaunch(url)) {
+//     await launch(url);
+//   } else {
+//     throw 'Could not launch $url';
+//   }
+// }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +28,7 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                   children: <Widget>[
                     Container(
                       child: Center(
-                        child: Text('Inspiration Abstract'),
+                        child: Text('About Abstract'),
                       ),
                       margin: EdgeInsets.symmetric(vertical: 30),
                     ),
@@ -29,15 +38,18 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                         padding: EdgeInsets.all(14),
                         child: Row(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                            SizedBox(
+                              width: 100,
                               child: Text(
                                 'What for?',
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                            ),
                             Flexible(
                                 child: Text(
-                              'I purposed this app to solve problems complexity and thoughts understanding during project management with my collegues and just to make better each other understanding.',
+                              'I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
                             )),
                           ],
                         ),
@@ -49,15 +61,18 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                         padding: EdgeInsets.all(14),
                         child: Row(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                            SizedBox(
+                              width: 100,
                               child: Text(
-                                'What for?',
+                                'How?',
                               ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
                             ),
                             Flexible(
                                 child: Text(
-                              'I purposed this app to solve problems complexity and thoughts understanding during project management with my collegues and just to make better each other understanding.',
+                              'You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.',
                             )),
                           ],
                         ),
@@ -69,14 +84,18 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                         padding: EdgeInsets.all(14),
                         child: Row(
                           children: [
-                            Flexible(
+                            SizedBox(
+                              width: 100,
                               child: Text(
-                                'The reason, why app was build and inspired, because of whish to solve problems complexity and to make a tool, which will allows to make better each other understanding.',
+                                'Ideas Improvements Bugs?',
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                            ),
                             Flexible(
-                                child: Text(
-                              'Because of this, for any suggetions, bugs and improvements please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
+                                child: SelectableText(
+                              'Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
                             )),
                           ],
                         ),

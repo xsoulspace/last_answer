@@ -3,6 +3,7 @@ import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 
 class PagesModel extends ChangeNotifier {
   int _currentPage = AppPagesNumerated.AskScreen.index;
+  PageController _pageController;
   void setPage(AppPagesNumerated page) async {
     _currentPage = page.index;
     notifyListeners();
@@ -14,4 +15,8 @@ class PagesModel extends ChangeNotifier {
   }
 
   int get currentPage => _currentPage;
+  PageController get pageController => _pageController;
+  void setPageController(PageController controller){
+    _pageController = controller;
+  }
 }

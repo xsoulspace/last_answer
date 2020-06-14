@@ -47,15 +47,19 @@ class _AppBarComponentState extends State<AppBarComponent>
         pagesModel.currentPage == AppPagesNumerated.Inspire.index;
   }
 
+  int _previousPageIndex;
   Widget currentTitle() {
     String title(PagesModel pagesModel) {
       final isPhilosophyPage =
           pagesModel.currentPage == AppPagesNumerated.Inspire.index;
 
-      if (isPhilosophyPage) {
+      if (isPhilosophyPage &&
+          _previousPageIndex == AppPagesNumerated.AnswersScreen.index) {
         _animationTitleController.reset();
         _animationTitleController.forward();
       }
+
+      _previousPageIndex = pagesModel.currentPage;
 
       switch (pagesModel.currentPage) {
         case 0:
@@ -77,8 +81,8 @@ class _AppBarComponentState extends State<AppBarComponent>
       return Text(
         title(pagesModel),
         style: TextStyle(
-            fontSize: 24,
-            shadows: [Shadow(color: Colors.black54, blurRadius: 10.0)]),
+          fontSize: 24,
+        ),
       );
     });
   }
@@ -99,14 +103,6 @@ class _AppBarComponentState extends State<AppBarComponent>
               height: _height,
               child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                double titleXPosition() {
-                  if (constraints.maxWidth > 600) {
-                    return 250;
-                  } else {
-                    return isPhilosophyPage ? 70 : 150;
-                  }
-                }
-
                 return Stack(
                   children: <Widget>[
                     Positioned(
@@ -126,8 +122,25 @@ class _AppBarComponentState extends State<AppBarComponent>
                         child: currentTitle(),
                       ),
                       top: 40,
-                      left: titleXPosition(),
+                      left: 70,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 30),
+                          child: IconButton(
+                            onPressed: () {
+                              pagesModel.pageController.animateToPage(
+                                  AppPagesNumerated.AnswersScreen.index,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeOutCirc);
+                            },
+                            icon: Icon(Icons.import_contacts),
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 );
               }));

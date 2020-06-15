@@ -75,13 +75,27 @@ class _AppBarComponentState extends State<AppBarComponent>
       }
       return '';
     }
+    double getFontSize(PagesModel pagesModel){
+      switch (pagesModel.currentPage) {
+        case 0:
+          return 24;
+        case 1:
+          return 24;
+        case 2:
+          return 17;
+        case 3:
+          return 17;
+        // return MainLocalizations.of(context).lastAnswer;
+      }
+      return 24;
 
+    }
     return Consumer2<LocaleModel, PagesModel>(
         builder: (context, locale, pagesModel, child) {
       return Text(
         title(pagesModel),
         style: TextStyle(
-          fontSize: 24,
+          fontSize: getFontSize(pagesModel),
         ),
       );
     });

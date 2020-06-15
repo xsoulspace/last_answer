@@ -40,7 +40,10 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                         child: Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.only(left: 5),
+                            ),
+                            SizedBox(
+                              width: 80,
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
@@ -48,6 +51,9 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                                       .getProp(locale.current),
                                 );
                               }),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
                             ),
                             Flexible(
                               child: Consumer<LocaleModel>(

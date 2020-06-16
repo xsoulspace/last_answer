@@ -47,5 +47,95 @@
     "description": "popup новый отменить",
     "type": "text",
     "placeholders": {}
+  },
+  "philosophyAndInspirationTitle": "Философия & Вдохновление",
+  "@philosophyAndInspirationTitle": {
+    "description": "Philosopy & Inspiration",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractTitle": "Философия",
+  "@philosophyAbstractTitle": {
+    "description": "Philosophy Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractWhatElse": "Что ещё?",
+  "@philosophyAbstractWhatElse": {
+    "description": "Philosophy Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractFiveWhyesWhat": "Можно использовать: \"Пять почему\"",
+  "@philosophyAbstractFiveWhyesWhat": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractFiveWhyesWhy": "Потому что благодаря этой технике можно углубить область изучаемой или создаваемой идеи или проблемы. В качестве метода - используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",
+  "@philosophyAbstractFiveWhyesWhy": {
+    "description": "Description of Five Whyes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractPDSAWhy": "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",
+  "@philosophyAbstractPDSAWhy": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractPDSAWhat": "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",
+  "@philosophyAbstractPDSAWhat": {
+    "description": "Description of PDSA",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractSixSigmaWhy": "Ещё можно использовать: \"Шесть сигм\"",
+  "@philosophyAbstractSixSigmaWhy": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractSixSigmaWhat": "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",
+  "@philosophyAbstractSixSigmaWhat": {
+    "description": "Description of Six Sigma",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractTitle": "О приложении",
+  "@aboutAbstractTitle": {
+    "description": "About Abstract title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractWhatFor": "Зачем?",
+  "@aboutAbstractWhatFor": {
+    "description": "What For About Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractWhatForDescription": "Я занимаюсь разработкой этого приложения, чтоб помочь решат сложные проблемы просто, а так же облегчить понимание идей и проблем между людьми.",
+  "@aboutAbstractWhatForDescription": {
+    "description": "Description of About Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractHowDescription": "Можно использовать раздел философии, чтобы получить пример с какими техниками можно применять приложение.",
+  "@aboutAbstractHowDescription": {
+    "description": "Description of About Abstract How Description",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
+  "@aboutAbstractIdeasImprovementsBugs": {
+    "description": "Ideas Improvements Bugs",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractIdeasImprovementsBugsDescription": "Пожалуйста, оставьте отзыв в Google Play, App Store или отправьте на xsoulspace@gmail.com. Спасибо!",
+  "@aboutAbstractIdeasImprovementsBugsDescription": {
+    "description": "Ideas Improvements Bugs description",
+    "type": "text",
+    "placeholders": {}
   }
 }

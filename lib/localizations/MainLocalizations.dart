@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:howtosolvethequest/screens/PhilosophyAbstractScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:howtosolvethequest/l10n/messages_all.dart';
-
+// https://medium.com/@puneetsethi25/flutter-internationalization-switching-locales-manually-f182ec9b8ff0
 // flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/localizations/MainLocalizations.dart
 // flutter pub run intl_translation:generate_from_arb \ --output-dir=lib/l10n --no-use-deferred-loading \ lib/main.dart lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
 class Language {
@@ -21,7 +22,7 @@ class MainLocalizations {
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      
+
       return MainLocalizations();
     });
   }
@@ -69,6 +70,68 @@ class MainLocalizations {
     return Intl.message('cancel',
         name: 'newQuestCancel', desc: 'popup start cancel');
   }
+
+// PHILOSPHY ABSTRACT
+
+  String get philosophyAndInspirationTitle =>
+      Intl.message('Philosophy & Inspiration',
+          name: 'philosophyAndInspirationTitle',
+          desc: 'Philosopy & Inspiration');
+  String get philosophyAbstractTitle => Intl.message('Philosophy Abstract',
+      name: 'philosophyAbstractTitle', desc: 'Philosophy Abstract');
+  String get philosophyAbstractWhatElse => Intl.message('What else?',
+      name: 'philosophyAbstractWhatElse', desc: 'Philosophy Abstract');
+  String get philosophyAbstractFiveWhyesWhat =>
+      Intl.message('You can use: "Five whys"',
+          name: 'philosophyAbstractFiveWhyesWhat',
+          desc: 'Method that you can use');
+  String get philosophyAbstractFiveWhyesWhy => Intl.message(
+      'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as "cause and effect" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys',
+      name: 'philosophyAbstractFiveWhyesWhy',
+      desc: 'Description of Five Whyes');
+  String get philosophyAbstractPDSAWhy => Intl.message(
+      'You can use: "PDCA (Plan-Do-Study-Act): Shewhart-Deming cycle"',
+      name: 'philosophyAbstractPDSAWhy',
+      desc: 'Method that you can use');
+  String get philosophyAbstractPDSAWhat => Intl.message(
+      'Because it most universal technique. It does not solid questions, as in "Five Whys", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA',
+      name: 'philosophyAbstractPDSAWhat',
+      desc: 'Description of PDSA');
+  String get philosophyAbstractSixSigmaWhy =>
+      Intl.message('You can use: "Six Sigma"',
+          name: 'philosophyAbstractSixSigmaWhy',
+          desc: 'Method that you can use');
+  String get philosophyAbstractSixSigmaWhat => Intl.message(
+      'Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma',
+      name: 'philosophyAbstractSixSigmaWhat',
+      desc: 'Description of Six Sigma');
+
+// ABOUT ABSTRACT
+
+  String get aboutAbstractTitle => Intl.message(
+      'About Abstract',
+      name: 'aboutAbstractTitle',
+      desc: 'About Abstract title');
+  String get aboutAbstractWhatFor => Intl.message(
+      'What for?',
+      name: 'aboutAbstractWhatFor',
+      desc: 'What For About Abstract');
+  String get aboutAbstractWhatForDescription => Intl.message(
+      'I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
+      name: 'aboutAbstractWhatForDescription',
+      desc: 'Description of About Abstract');
+  String get aboutAbstractHowDescription => Intl.message(
+      'You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.',
+      name: 'aboutAbstractHowDescription',
+      desc: 'Description of About Abstract How Description');
+  String get aboutAbstractIdeasImprovementsBugs => Intl.message(
+      'Ideas Improvements Bugs?',
+      name: 'aboutAbstractIdeasImprovementsBugs',
+      desc: 'Ideas Improvements Bugs');
+  String get aboutAbstractIdeasImprovementsBugsDescription => Intl.message(
+      'Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
+      name: 'aboutAbstractIdeasImprovementsBugsDescription',
+      desc: 'Ideas Improvements Bugs description');
 }
 
 class MainLocalizationsDelegate

@@ -68,9 +68,9 @@ class _AppBarComponentState extends State<AppBarComponent>
           FocusScope.of(context).requestFocus(new FocusNode());
           return MainLocalizations.of(context).answers;
         case 2:
-          return 'Philosophy & Inspiration';
+          return MainLocalizations.of(context).philosophyAndInspirationTitle;
         case 3:
-          return 'Philosophy & Inspiration';
+          return MainLocalizations.of(context).philosophyAndInspirationTitle;
         // return MainLocalizations.of(context).lastAnswer;
       }
       return '';

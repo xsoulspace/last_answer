@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:howtosolvethequest/entities/LocaleTitle.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:provider/provider.dart';
 
 class PhilosophyAbstract extends StatefulWidget {
   @override
@@ -19,7 +23,13 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                   children: <Widget>[
                     Container(
                       child: Center(
-                        child: Text('Philosophy Abstract'),
+                        child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractTitle,
+                                );
+                              }),
                       ),
                       margin: EdgeInsets.symmetric(vertical: 30),
                     ),
@@ -31,14 +41,23 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'What?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  LocaleTitle('What?', 'Что?')
+                                      .getProp(locale.current),
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'You can use: "Five whys"',
-                            )),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractFiveWhyesWhat,
+                                );
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -51,14 +70,23 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Why?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  LocaleTitle('Why?', 'Почему?')
+                                      .getProp(locale.current),
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as "cause and effect" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys',
-                            )),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractFiveWhyesWhy,
+                                );
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -71,14 +99,22 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'What else?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return Text(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractWhatElse,
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'You can use: "PDCA (Plan-Do-Study-Act): Shewhart-Deming cycle"',
-                            )),
+                                child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractPDSAWhat,
+                                );
+                              }),),
                           ],
                         ),
                       ),
@@ -91,14 +127,22 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Why?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  LocaleTitle('Why?', 'Почему?')
+                                      .getProp(locale.current),
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'Because it most universal technique. It does not solid questions, as in "Five Whys", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA',
-                            )),
+                                child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractPDSAWhy,
+                                );
+                              }),),
                           ],
                         ),
                       ),
@@ -111,14 +155,22 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'What else?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return Text(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractWhatElse,
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'You can use: "Six Sigma"',
-                            )),
+                                child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractSixSigmaWhat,
+                                );
+                              }),),
                           ],
                         ),
                       ),
@@ -131,14 +183,22 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Why?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  LocaleTitle('Why?', 'Почему?')
+                                      .getProp(locale.current),
+                                );
+                              }),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'Beacuse if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma',
-                            )),
+                                child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .philosophyAbstractSixSigmaWhy,
+                                );
+                              }),),
                           ],
                         ),
                       ),

@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:howtosolvethequest/entities/LocaleTitle.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:provider/provider.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class InspirationAbstract extends StatefulWidget {
@@ -28,7 +32,12 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                   children: <Widget>[
                     Container(
                       child: Center(
-                        child: Text('About Abstract'),
+                        child: Consumer<LocaleModel>(
+                            builder: (context, locale, child) {
+                          return Text(
+                            MainLocalizations.of(context).aboutAbstractTitle,
+                          );
+                        }),
                       ),
                       margin: EdgeInsets.symmetric(vertical: 30),
                     ),
@@ -40,17 +49,26 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                           children: [
                             SizedBox(
                               width: 100,
-                              child: Text(
-                                'What for?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return Text(
+                                  MainLocalizations.of(context)
+                                      .aboutAbstractWhatFor,
+                                );
+                              }),
                             ),
                             Padding(
                               padding: EdgeInsets.only(right: 5),
                             ),
                             Flexible(
-                                child: Text(
-                              'I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
-                            )),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .aboutAbstractWhatForDescription,
+                                );
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -63,17 +81,26 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                           children: [
                             SizedBox(
                               width: 100,
-                              child: Text(
-                                'How?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  LocaleTitle('How?', 'Как?')
+                                      .getProp(locale.current),
+                                );
+                              }),
                             ),
                             Padding(
                               padding: EdgeInsets.only(right: 5),
                             ),
                             Flexible(
-                                child: Text(
-                              'You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.',
-                            )),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .aboutAbstractHowDescription,
+                                );
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -86,17 +113,26 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                           children: [
                             SizedBox(
                               width: 100,
-                              child: Text(
-                                'Ideas Improvements Bugs?',
-                              ),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return Text(
+                                  MainLocalizations.of(context)
+                                      .aboutAbstractIdeasImprovementsBugs,
+                                );
+                              }),
                             ),
                             Padding(
                               padding: EdgeInsets.only(right: 5),
                             ),
                             Flexible(
-                                child: SelectableText(
-                              'Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
-                            )),
+                              child: Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return SelectableText(
+                                  MainLocalizations.of(context)
+                                      .aboutAbstractIdeasImprovementsBugsDescription,
+                                );
+                              }),
+                            ),
                           ],
                         ),
                       ),

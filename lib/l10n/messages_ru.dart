@@ -21,6 +21,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "aboutAbstractHowDescription" : MessageLookupByLibrary.simpleMessage("Можно использовать раздел философии, чтобы получить пример с какими техниками можно применять приложение."),
+    "aboutAbstractIdeasImprovementsBugs" : MessageLookupByLibrary.simpleMessage("Идеи Улучшения Баги?"),
+    "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Пожалуйста, оставьте отзыв в Google Play, App Store или отправьте на xsoulspace@gmail.com. Спасибо!"),
+    "aboutAbstractTitle" : MessageLookupByLibrary.simpleMessage("О приложении"),
+    "aboutAbstractWhatFor" : MessageLookupByLibrary.simpleMessage("Зачем?"),
+    "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("Я занимаюсь разработкой этого приложения, чтоб помочь решат сложные проблемы просто, а так же облегчить понимание идей и проблем между людьми."),
     "answer" : MessageLookupByLibrary.simpleMessage("Ответ"),
     "answers" : MessageLookupByLibrary.simpleMessage("Ответы"),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Последний ответ"),
@@ -28,6 +34,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "newQuestCancel" : MessageLookupByLibrary.simpleMessage("отменить"),
     "newQuestDesc" : MessageLookupByLibrary.simpleMessage("При продолжении - все старые ответы будут удалены. Не забудьте сохранить ответы, если нужны."),
     "newQuestStart" : MessageLookupByLibrary.simpleMessage("начать"),
+    "philosophyAbstractFiveWhyesWhat" : MessageLookupByLibrary.simpleMessage("Можно использовать: \"Пять почему\""),
+    "philosophyAbstractFiveWhyesWhy" : MessageLookupByLibrary.simpleMessage("Потому что благодаря этой технике можно углубить область изучаемой или создаваемой идеи или проблемы. В качестве метода - используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему"),
+    "philosophyAbstractPDSAWhat" : MessageLookupByLibrary.simpleMessage("Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга"),
+    "philosophyAbstractPDSAWhy" : MessageLookupByLibrary.simpleMessage("Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\""),
+    "philosophyAbstractSixSigmaWhat" : MessageLookupByLibrary.simpleMessage("Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм"),
+    "philosophyAbstractSixSigmaWhy" : MessageLookupByLibrary.simpleMessage("Ещё можно использовать: \"Шесть сигм\""),
+    "philosophyAbstractTitle" : MessageLookupByLibrary.simpleMessage("Философия"),
+    "philosophyAbstractWhatElse" : MessageLookupByLibrary.simpleMessage("Что ещё?"),
+    "philosophyAndInspirationTitle" : MessageLookupByLibrary.simpleMessage("Философия & Вдохновление"),
     "save" : MessageLookupByLibrary.simpleMessage("Сохранить")
   };
 }

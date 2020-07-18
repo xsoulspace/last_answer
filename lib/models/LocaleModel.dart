@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:howtosolvethequest/utils/storage_util.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl_standalone.dart';
 
 class Consts {
   static const locale = 'locale';
+  static const localeEN = Locale('en', 'EN');
 }
 
 class LocaleModel extends ChangeNotifier {
@@ -22,6 +24,9 @@ class LocaleModel extends ChangeNotifier {
     String localeStr = store.getString(Consts.locale);
 
     if (localeStr == null || localeStr == '') {
+      if (kIsWeb) {
+        return Consts.localeEN;
+      }
       Intl.defaultLocale = await findSystemLocale();
       return Locale(Intl.defaultLocale);
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:howtosolvethequest/screens/PhilosophyAbstractScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:howtosolvethequest/l10n/messages_all.dart';
+
 // https://medium.com/@puneetsethi25/flutter-internationalization-switching-locales-manually-f182ec9b8ff0
 // flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/localizations/MainLocalizations.dart
 // flutter pub run intl_translation:generate_from_arb \ --output-dir=lib/l10n --no-use-deferred-loading \ lib/main.dart lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
@@ -71,7 +71,7 @@ class MainLocalizations {
         name: 'newQuestCancel', desc: 'popup start cancel');
   }
 
-// PHILOSPHY ABSTRACT
+  // PHILOSPHY ABSTRACT
 
   String get philosophyAndInspirationTitle =>
       Intl.message('Philosophy & Inspiration',
@@ -108,14 +108,10 @@ class MainLocalizations {
 
 // ABOUT ABSTRACT
 
-  String get aboutAbstractTitle => Intl.message(
-      'About Abstract',
-      name: 'aboutAbstractTitle',
-      desc: 'About Abstract title');
-  String get aboutAbstractWhatFor => Intl.message(
-      'What for?',
-      name: 'aboutAbstractWhatFor',
-      desc: 'What For About Abstract');
+  String get aboutAbstractTitle => Intl.message('About Abstract',
+      name: 'aboutAbstractTitle', desc: 'About Abstract title');
+  String get aboutAbstractWhatFor => Intl.message('What for?',
+      name: 'aboutAbstractWhatFor', desc: 'What For About Abstract');
   String get aboutAbstractWhatForDescription => Intl.message(
       'I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
       name: 'aboutAbstractWhatForDescription',
@@ -124,10 +120,10 @@ class MainLocalizations {
       'You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.',
       name: 'aboutAbstractHowDescription',
       desc: 'Description of About Abstract How Description');
-  String get aboutAbstractIdeasImprovementsBugs => Intl.message(
-      'Ideas Improvements Bugs?',
-      name: 'aboutAbstractIdeasImprovementsBugs',
-      desc: 'Ideas Improvements Bugs');
+  String get aboutAbstractIdeasImprovementsBugs =>
+      Intl.message('Ideas Improvements Bugs?',
+          name: 'aboutAbstractIdeasImprovementsBugs',
+          desc: 'Ideas Improvements Bugs');
   String get aboutAbstractIdeasImprovementsBugsDescription => Intl.message(
       'Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
       name: 'aboutAbstractIdeasImprovementsBugsDescription',

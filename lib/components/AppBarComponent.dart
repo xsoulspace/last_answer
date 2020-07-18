@@ -22,8 +22,6 @@ class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarComponentState extends State<AppBarComponent>
     with TickerProviderStateMixin {
-  final double _height = 200.0;
-
   AnimationController _animationTitleController;
   Animation<double> _animateTitle;
   @override
@@ -75,7 +73,8 @@ class _AppBarComponentState extends State<AppBarComponent>
       }
       return '';
     }
-    double getFontSize(PagesModel pagesModel){
+
+    double getFontSize(PagesModel pagesModel) {
       switch (pagesModel.currentPage) {
         case 0:
           return 24;
@@ -88,8 +87,8 @@ class _AppBarComponentState extends State<AppBarComponent>
         // return MainLocalizations.of(context).lastAnswer;
       }
       return 24;
-
     }
+
     return Consumer2<LocaleModel, PagesModel>(
         builder: (context, locale, pagesModel, child) {
       return Text(
@@ -104,60 +103,34 @@ class _AppBarComponentState extends State<AppBarComponent>
   @override
   Widget build(BuildContext context) {
     _animationTitleController.forward();
-    return PreferredSize(
-        preferredSize: Size(_height, _height),
-        child: Consumer<PagesModel>(builder: (context, pagesModel, child) {
-          final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
-          return AnimatedContainer(
-              color: isPhilosophyPage
-                  ? Theme.of(context).scaffoldBackgroundColor
-                  : Theme.of(context).primaryColor,
-              duration: Duration(seconds: 1),
-              curve: Curves.easeOutBack,
-              height: _height,
-              child: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                return Stack(
-                  children: <Widget>[
-                    Positioned(
-                      left: 5,
-                      top: 30,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/menu');
-                        },
-                        icon: Icon(Icons.playlist_add_check),
-                        tooltip: 'complete',
-                      ),
-                    ),
-                    Positioned(
-                      child: FadeTransition(
-                        opacity: _animateTitle,
-                        child: currentTitle(),
-                      ),
-                      top: 40,
-                      left: 70,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 30),
-                          child: IconButton(
-                            onPressed: () {
-                              pagesModel.pageController.animateToPage(
-                                  AppPagesNumerated.AnswersScreen.index,
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.easeOutCirc);
-                            },
-                            icon: Icon(Icons.import_contacts),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                );
-              }));
-        }));
+    return Consumer<PagesModel>(builder: (context, pagesModel, child) {
+      final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
+      return AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/menu');
+          },
+          icon: Icon(Icons.playlist_add_check),
+        ),
+        backgroundColor: isPhilosophyPage
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Theme.of(context).primaryColor,
+        title: FadeTransition(
+          opacity: _animateTitle,
+          child: currentTitle(),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              pagesModel.pageController.animateToPage(
+                  AppPagesNumerated.AnswersScreen.index,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeOutCirc);
+            },
+            icon: Icon(Icons.import_contacts),
+          ),
+        ],
+      );
+    });
   }
 }

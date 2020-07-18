@@ -60,10 +60,23 @@ class AnswersModel extends ChangeNotifier {
               question,
               _answers.length,
             ));
-    String json = jsonEncode(toJson());
-    print(json);
-    await _storage.putString(Consts.answers, json);
+    await _updateAnswersStorage();
+    notifyListeners();
+  }
 
+  Future<void> update(Answer oldAnswer, String newAnswer) async {
+    _answers.update(oldAnswer.title, (answer) {
+      answer.title = newAnswer;
+      print({oldAnswer, newAnswer, answer});
+      return answer;
+    });
+    await _updateAnswersStorage();
+    notifyListeners();
+  }
+
+  Future<void> remove(String answer) async {
+    _answers.remove(answer);
+    await _updateAnswersStorage();
     notifyListeners();
   }
 
@@ -74,6 +87,11 @@ class AnswersModel extends ChangeNotifier {
     print('cleaning storage');
     await _storage.putString(Consts.answers, '');
     notifyListeners();
+  }
+
+  Future<void> _updateAnswersStorage() async {
+    String json = jsonEncode(toJson());
+    await _storage.putString(Consts.answers, json);
   }
 
   toJson() => answersList.map((answer) => answer.toJson()).toList();

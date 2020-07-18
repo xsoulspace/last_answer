@@ -1,17 +1,29 @@
 import 'package:flutter/foundation.dart';
+import 'package:howtosolvethequest/entities/NamedLocale.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:howtosolvethequest/utils/storage_util.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 
-class Consts {
+class LocaleModelConsts {
   static const locale = 'locale';
   static const localeEN = Locale('en', 'EN');
+  static const localeRU = Locale('ru', 'RU');
+  static final List<NamedLocale> namedLocales = [
+    NamedLocale(
+      name: 'English',
+      locale: LocaleModelConsts.localeEN,
+    ),
+    NamedLocale(
+      name: 'Русский',
+      locale: LocaleModelConsts.localeRU,
+    ),
+  ];
 }
 
 class LocaleModel extends ChangeNotifier {
-  Locale _locale = Locale('en', 'EN');
+  Locale _locale = LocaleModelConsts.localeEN;
   StorageUtil _storage;
   _iniStorage() async {
     if (_storage == null) {
@@ -21,11 +33,11 @@ class LocaleModel extends ChangeNotifier {
 
   static Future<Locale> loadSavedLocale() async {
     StorageUtil store = await StorageUtil.getInstance();
-    String localeStr = store.getString(Consts.locale);
+    String localeStr = store.getString(LocaleModelConsts.locale);
 
     if (localeStr == null || localeStr == '') {
       if (kIsWeb) {
-        return Consts.localeEN;
+        return LocaleModelConsts.localeEN;
       }
       Intl.defaultLocale = await findSystemLocale();
       return Locale(Intl.defaultLocale);
@@ -46,11 +58,13 @@ class LocaleModel extends ChangeNotifier {
 
   Future<void> switchLang(Locale locale) async {
     await _iniStorage();
-    await _storage.putString(Consts.locale, locale.languageCode);
+    await _storage.putString(LocaleModelConsts.locale, locale.languageCode);
     MainLocalizations.load(locale);
     _locale = locale;
     notifyListeners();
   }
 
   String get current => _locale.languageCode;
+  NamedLocale get currentNamedLocale => LocaleModelConsts.namedLocales
+      .firstWhere((namedLocale) => _locale == namedLocale.locale);
 }

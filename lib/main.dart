@@ -12,6 +12,10 @@ import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+class ThemeColors {
+  static final lightAccent = Colors.lightGreen[50];
+}
+
 void main() async {
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
@@ -82,7 +86,7 @@ class AppScaffold extends StatelessWidget {
         // var isFoundLocale =supportedLocales.contains(locale);
         print(isFoundLocale);
         if (!isFoundLocale) {
-          return Locale('en', 'EN');
+          return LocaleModelConsts.localeEN;
         }
         return locale;
       },
@@ -94,8 +98,8 @@ class AppScaffold extends StatelessWidget {
         _overridenLocaleDelegate,
       ],
       supportedLocales: [
-        const Locale('ru', 'RU'), // Russian
-        const Locale('en', 'EN'), // English
+        LocaleModelConsts.localeRU, // Russian
+        LocaleModelConsts.localeEN, // English
       ],
       theme: ThemeData(
         // Define the default brightness and colors.

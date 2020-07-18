@@ -26,7 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!"),
     "aboutAbstractTitle" : MessageLookupByLibrary.simpleMessage("About Abstract"),
     "aboutAbstractWhatFor" : MessageLookupByLibrary.simpleMessage("What for?"),
-    "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),
+    "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("I\'m designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),
     "answer" : MessageLookupByLibrary.simpleMessage("Answer"),
     "answers" : MessageLookupByLibrary.simpleMessage("Answers"),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Last Answer"),

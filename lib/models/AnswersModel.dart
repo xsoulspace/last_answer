@@ -8,7 +8,7 @@ import 'package:howtosolvethequest/entities/Question.dart';
 import 'package:howtosolvethequest/utils/storage_util.dart';
 import 'dart:convert';
 
-class Consts {
+class AnswersModelConsts {
   static String answers = 'answers';
 }
 
@@ -24,7 +24,7 @@ class AnswersModel extends ChangeNotifier {
     if (_storage == null) {
       _storage = await StorageUtil.getInstance();
     }
-    String answers = (_storage.getString(Consts.answers) ?? '');
+    String answers = (_storage.getString(AnswersModelConsts.answers) ?? '');
     print('answers, $answers');
     if (answers == null || answers == '') {
       return;
@@ -85,13 +85,13 @@ class AnswersModel extends ChangeNotifier {
     _answers.clear();
     // clearing storage
     print('cleaning storage');
-    await _storage.putString(Consts.answers, '');
+    await _storage.putString(AnswersModelConsts.answers, '');
     notifyListeners();
   }
 
   Future<void> _updateAnswersStorage() async {
     String json = jsonEncode(toJson());
-    await _storage.putString(Consts.answers, json);
+    await _storage.putString(AnswersModelConsts.answers, json);
   }
 
   toJson() => answersList.map((answer) => answer.toJson()).toList();

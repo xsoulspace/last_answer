@@ -114,7 +114,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractWhatForDescription": "I'm disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
+  "aboutAbstractWhatForDescription": "I'm designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",
     "type": "text",

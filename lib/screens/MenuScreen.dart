@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:howtosolvethequest/components/CustomDialogComponent.dart';
 import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:howtosolvethequest/entities/NamedLocale.dart';
+import 'package:howtosolvethequest/main.dart';
 import 'package:howtosolvethequest/models/PagesModel.dart';
 import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 // import 'package:howtosolvethequest/entities/Answer.dart';
@@ -17,7 +19,7 @@ import 'package:provider/provider.dart';
 class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var localeModel = Provider.of<LocaleModel>(context);
+    LocaleModel localeModel = Provider.of<LocaleModel>(context);
     PagesModel pagesModel = Provider.of<PagesModel>(context);
 
     cancelButton() {
@@ -98,24 +100,31 @@ class MenuScreen extends StatelessWidget {
             SaveFile(),
           ],
         ),
-        Divider(
-          height: 40,
-          color: Theme.of(context).primaryColor,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-                onPressed: () async {
-                  await localeModel.switchLang(Locale('ru', 'RU'));
+        // Divider(
+        //   height: 40,
+        //   color: Theme.of(context).backgroundColor,
+        // ),
+        Padding(
+          padding: EdgeInsets.only(left: 25, top: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              DropdownButton<NamedLocale>(
+                value: localeModel.currentNamedLocale,
+                items: LocaleModelConsts.namedLocales
+                    .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
+                  print(namedLocale.toString());
+                  return DropdownMenuItem<NamedLocale>(
+                    value: namedLocale,
+                    child: Text(namedLocale.name),
+                  );
+                }).toList(),
+                onChanged: (NamedLocale namedLocale) async {
+                  await localeModel.switchLang(namedLocale.locale);
                 },
-                child: Text("Rus")),
-            FlatButton(
-                onPressed: () async {
-                  await localeModel.switchLang(Locale('en', 'EN'));
-                },
-                child: Text("Eng")),
-          ],
+              )
+            ],
+          ),
         ),
       ],
     ));

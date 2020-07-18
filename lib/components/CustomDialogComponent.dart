@@ -3,11 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Consts {
-  Consts._();
+class CutsomDialogConsts {
+  CutsomDialogConsts._();
   static const double padding = 16.0;
   static const double radius = 5.0;
-  
 }
 
 class CustomDialog extends StatelessWidget {
@@ -25,7 +24,7 @@ class CustomDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.radius),
+        borderRadius: BorderRadius.circular(CutsomDialogConsts.radius),
       ),
       elevation: 0.0,
       child: dialogContent(context),
@@ -35,11 +34,11 @@ class CustomDialog extends StatelessWidget {
   dialogContent(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(
-        Consts.padding,
+        CutsomDialogConsts.padding,
       ),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(Consts.radius),
+        borderRadius: BorderRadius.circular(CutsomDialogConsts.radius),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min, // To make the card compact
@@ -62,10 +61,7 @@ class CustomDialog extends StatelessWidget {
           SizedBox(height: 24.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              leftButton,
-              rightButton
-            ],
+            children: <Widget>[leftButton, rightButton],
           ),
         ],
       ),

@@ -50,9 +50,15 @@ class _AppBarComponentState extends State<AppBarComponent>
     String title(PagesModel pagesModel) {
       final isPhilosophyPage =
           pagesModel.currentPage == AppPagesNumerated.Inspire.index;
+      final isAnswersPage =
+          pagesModel.currentPage == AppPagesNumerated.AnswersScreen.index;
 
-      if (isPhilosophyPage &&
-          _previousPageIndex == AppPagesNumerated.AnswersScreen.index) {
+      final isToToogleAnimation = (isPhilosophyPage &&
+              _previousPageIndex == AppPagesNumerated.AnswersScreen.index) ||
+          (isAnswersPage &&
+              _previousPageIndex == AppPagesNumerated.Inspire.index);
+
+      if (isToToogleAnimation) {
         _animationTitleController.reset();
         _animationTitleController.forward();
       }
@@ -105,32 +111,87 @@ class _AppBarComponentState extends State<AppBarComponent>
     _animationTitleController.forward();
     return Consumer<PagesModel>(builder: (context, pagesModel, child) {
       final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
-      return AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/menu');
-          },
-          icon: Icon(Icons.playlist_add_check),
-        ),
-        backgroundColor: isPhilosophyPage
-            ? Theme.of(context).scaffoldBackgroundColor
-            : Theme.of(context).primaryColor,
-        title: FadeTransition(
+      return FadeTransition(
           opacity: _animateTitle,
-          child: currentTitle(),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              pagesModel.pageController.animateToPage(
-                  AppPagesNumerated.AnswersScreen.index,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOutCirc);
-            },
-            icon: Icon(Icons.import_contacts),
-          ),
-        ],
-      );
+          child: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/menu');
+              },
+              icon: Icon(Icons.playlist_add_check),
+            ),
+            backgroundColor: isPhilosophyPage
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Theme.of(context).primaryColor,
+            title: currentTitle(),
+            actions: <Widget>[
+              IconButton(
+                onPressed: () {
+                  pagesModel.pageController.animateToPage(
+                      AppPagesNumerated.AnswersScreen.index,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeOutCirc);
+                },
+                icon: Icon(Icons.import_contacts),
+              ),
+            ],
+          ));
     });
+
+    // PreferredSize(
+    //     preferredSize: Size.fromHeight(_height), // Size(_height, _height),
+    //     child: Consumer<PagesModel>(builder: (context, pagesModel, child) {
+    //       final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
+    //       return AnimatedContainer(
+    //           color: isPhilosophyPage
+    //               ? Theme.of(context).scaffoldBackgroundColor
+    //               : Theme.of(context).primaryColor,
+    //           duration: Duration(seconds: 1),
+    //           curve: Curves.easeOutBack,
+    //           height: _height,
+    //           child: LayoutBuilder(
+    //               builder: (BuildContext context, BoxConstraints constraints) {
+    //             return Stack(
+    //               children: <Widget>[
+    //                 Positioned(
+    //                   left: 5,
+    //                   top: kIsWeb ? 10 : 30,
+    //                   child: IconButton(
+    //                     onPressed: () {
+    //                       Navigator.pushNamed(context, '/menu');
+    //                     },
+    //                     icon: Icon(Icons.playlist_add_check),
+    //                     tooltip: 'complete',
+    //                   ),
+    //                 ),
+    //                 Positioned(
+    //                   child: FadeTransition(
+    //                     opacity: _animateTitle,
+    //                     child: currentTitle(),
+    //                   ),
+    //                   top: 40,
+    //                   left: 70,
+    //                 ),
+    //                 Row(
+    //                   mainAxisAlignment: MainAxisAlignment.end,
+    //                   children: [
+    //                     Padding(
+    //                       padding: EdgeInsets.only(top: kIsWeb ? 10 : 30),
+    //                       child: IconButton(
+    //                         onPressed: () {
+    //                           pagesModel.pageController.animateToPage(
+    //                               AppPagesNumerated.AnswersScreen.index,
+    //                               duration: Duration(milliseconds: 300),
+    //                               curve: Curves.easeOutCirc);
+    //                         },
+    //                         icon: Icon(Icons.import_contacts),
+    //                       ),
+    //                     )
+    //                   ],
+    //                 )
+    //               ],
+    //             );
+    //           }));
+    //     }));
   }
 }

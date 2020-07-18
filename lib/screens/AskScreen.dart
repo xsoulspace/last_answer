@@ -3,6 +3,7 @@ import 'package:howtosolvethequest/components/QuestionsComponent.dart';
 import 'package:howtosolvethequest/entities/LocaleTitle.dart';
 import 'package:howtosolvethequest/entities/Question.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/main.dart';
 import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
 import 'package:howtosolvethequest/models/QuestionsModel.dart';
@@ -137,15 +138,15 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               inputText = text;
             },
             decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.lightGreen[50]),
-                fillColor: Colors.lightGreen[50],
+                labelStyle: TextStyle(color: ThemeColors.lightAccent),
+                fillColor: ThemeColors.lightAccent,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.lightGreen[50],
+                    color: ThemeColors.lightAccent,
                   ),
                 ),
                 border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.lightGreen[50])),
+                    borderSide: BorderSide(color: ThemeColors.lightAccent)),
                 labelText: MainLocalizations.of(context).answer),
             cursorColor: Theme.of(context).accentColor,
           );

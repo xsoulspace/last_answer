@@ -94,14 +94,18 @@ class _CopyIconState extends State<CopyIcon> with TickerProviderStateMixin {
 }
 
 class _AnswersList extends StatelessWidget {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var answers = Provider.of<AnswersModel>(context);
-    var locale = Provider.of<LocaleModel>(context).current;
+    AnswersModel answers = Provider.of<AnswersModel>(context);
+    String locale = Provider.of<LocaleModel>(context).current;
+
     Widget textRow(dynamic index) {
-      final questionTitle =
-          answers.answers[index].question.title.getProp(locale);
-      final answerText = answers.answers[index].title;
+      final originalAnswer = answers.answers[index];
+      final questionTitle = originalAnswer.question.title.getProp(locale);
+      final answerText = originalAnswer.title;
+      _controller.text = answerText;
       final copyText = '$questionTitle $answerText';
       return Card(
           margin: EdgeInsets.symmetric(vertical: 4),
@@ -124,11 +128,30 @@ class _AnswersList extends StatelessWidget {
                   Flexible(
                       //We only want to wrap the text message with flexible widget
                       child: Container(
-                    child: SelectableText(
-                      answerText,
-                      showCursor: true,
+                          child: TextFormField(
+                    controller: _controller,
+                    autofocus: true,
+                    minLines: 1,
+                    maxLines: 7,
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (inputText) async {
+                      if (inputText == null || inputText == '') return;
+                      await answers.update(originalAnswer, inputText);
+                    },
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.lightGreen[50]),
+                      fillColor: Colors.lightGreen[50],
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.lightGreen[50],
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.lightGreen[50])),
+                      // labelText: MainLocalizations.of(context).answer
                     ),
-                  )),
+                    cursorColor: Theme.of(context).accentColor,
+                  ))),
                 ],
               ),
             ),

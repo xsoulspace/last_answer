@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-07-19T03:42:37.822252",
+  "@@last_modified": "2020-07-19T16:07:47.058923",
   "answers": "Answers",
   "@answers": {
     "description": "menu title points to answers",
@@ -63,6 +63,12 @@
   "successfullyDeleted": "Successfully deleted!",
   "@successfullyDeleted": {
     "description": "Successfully deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "successfullySaved": "Successfully saved!",
+  "@successfullySaved": {
+    "description": "Successfully saved",
     "type": "text",
     "placeholders": {}
   },

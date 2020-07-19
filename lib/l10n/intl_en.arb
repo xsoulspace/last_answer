@@ -138,6 +138,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "successfullySaved": "Successfully saved!",
+  "@successfullySaved": {
+    "description": "Successfully saved",
+    "type": "text",
+    "placeholders": {}
+  },
   "areYouSureYouWantToDeleteAnswer": "Are you want to delete answer?",
   "@areYouSureYouWantToDeleteAnswer": {
     "description": "Warning Title for answer delete",

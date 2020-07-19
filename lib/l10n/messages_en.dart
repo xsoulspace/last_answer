@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "philosophyAndInspirationTitle" : MessageLookupByLibrary.simpleMessage("Philosophy & Inspiration"),
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "successfullyDeleted" : MessageLookupByLibrary.simpleMessage("Successfully deleted!"),
+    "successfullySaved" : MessageLookupByLibrary.simpleMessage("Successfully saved!"),
     "theAnswerCannotBeEmpty" : MessageLookupByLibrary.simpleMessage("The answer cannot be empty")
   };
 }

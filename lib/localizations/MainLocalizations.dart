@@ -84,6 +84,11 @@ class MainLocalizations {
         name: 'successfullyDeleted', desc: 'Successfully deleted');
   }
 
+  String get successfullySaved {
+    return Intl.message('Successfully saved!',
+        name: 'successfullySaved', desc: 'Successfully saved');
+  }
+
   String get theAnswerCannotBeEmpty {
     return Intl.message('The answer cannot be empty',
         name: 'theAnswerCannotBeEmpty',

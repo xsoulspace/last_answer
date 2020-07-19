@@ -30,6 +30,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "successfullySaved": "Успешно сохранено!",
+  "@successfullySaved": {
+    "description": "Successfully saved",
+    "type": "text",
+    "placeholders": {}
+  },
   "successfullyDeleted": "Успешно удалено!",
   "@successfullyDeleted": {
     "description": "Successfully deleted",

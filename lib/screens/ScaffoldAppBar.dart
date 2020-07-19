@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/components/AppBarComponent.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
-import 'package:howtosolvethequest/models/PagesModel.dart';
-import 'package:howtosolvethequest/screens/AnswersScreen.dart';
-import 'package:howtosolvethequest/screens/AskScreen.dart';
-import 'package:howtosolvethequest/screens/InspirationAbstractScreen.dart';
-import 'package:howtosolvethequest/screens/PhilosophyAbstractScreen.dart';
+import 'package:lastanswer/components/AppBarComponent.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
+import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/screens/AnswersScreen.dart';
+import 'package:lastanswer/screens/AskScreen.dart';
+import 'package:lastanswer/screens/InspirationAbstractScreen.dart';
+import 'package:lastanswer/screens/PhilosophyAbstractScreen.dart';
 import 'package:provider/provider.dart';
 
 class ScaffoldAppBar extends StatelessWidget {

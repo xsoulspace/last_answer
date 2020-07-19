@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:howtosolvethequest/l10n/messages_all.dart';
+import 'package:lastanswer/l10n/messages_all.dart';
 
 // https://medium.com/@puneetsethi25/flutter-internationalization-switching-locales-manually-f182ec9b8ff0
 // flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/localizations/MainLocalizations.dart

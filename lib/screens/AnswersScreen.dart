@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:howtosolvethequest/entities/Answer.dart';
-import 'package:howtosolvethequest/entities/Question.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/main.dart';
-import 'package:howtosolvethequest/models/AnswersModel.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
-import 'package:howtosolvethequest/models/QuestionsModel.dart';
+import 'package:lastanswer/entities/Answer.dart';
+import 'package:lastanswer/entities/Question.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/main.dart';
+import 'package:lastanswer/models/AnswersModel.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
+import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
 
 class AnswersScreen extends StatelessWidget {

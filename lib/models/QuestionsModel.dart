@@ -2,8 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
-import 'package:howtosolvethequest/entities/Question.dart';
+import 'package:lastanswer/entities/LocaleTitle.dart';
+import 'package:lastanswer/entities/Question.dart';
 
 class QuestionsModel extends ChangeNotifier {
   final List<Question> _questions = [

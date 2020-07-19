@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
-import 'package:howtosolvethequest/models/PagesModel.dart';
-import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
+import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {

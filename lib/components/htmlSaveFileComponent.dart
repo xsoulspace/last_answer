@@ -2,9 +2,9 @@
 import 'dart:html';
 
 import 'package:excel/excel.dart';
-import 'package:howtosolvethequest/entities/Answer.dart';
-import 'package:howtosolvethequest/models/AnswersModel.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:lastanswer/entities/Answer.dart';
+import 'package:lastanswer/models/AnswersModel.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

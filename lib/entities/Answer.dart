@@ -1,4 +1,4 @@
-import 'package:howtosolvethequest/entities/Question.dart';
+import 'package:lastanswer/entities/Question.dart';
 
 class Answer {
   String title;
@@ -11,7 +11,7 @@ class Answer {
 
   @override
   bool operator ==(Object other) => other is Answer && other.id == id;
-  
+
   Map<String, dynamic> toJson() => {
         'title': title,
         'question': question.toJson(),

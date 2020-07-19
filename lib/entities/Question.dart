@@ -1,4 +1,4 @@
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
+import 'package:lastanswer/entities/LocaleTitle.dart';
 
 class Question {
   LocaleTitle title;

@@ -259,9 +259,20 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                           color: ThemeColors.lightAccent,
                         ),
                       ),
-                      suffixIcon: IconButton(
-                          icon: Icon(Icons.save),
-                          onPressed: () async => await _updateAnswer()),
+                      suffixIcon: Builder(
+                          builder: (buildCtx) => IconButton(
+                              icon: Icon(Icons.save),
+                              onPressed: () async {
+                                await _updateAnswer();
+                                if (!kIsWeb) {
+                                  final snackBar = SnackBar(
+                                      content: Text(
+                                          MainLocalizations.of(context)
+                                              .successfullySaved));
+
+                                  Scaffold.of(buildCtx).showSnackBar(snackBar);
+                                }
+                              })),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: ThemeColors.lightAccent)),

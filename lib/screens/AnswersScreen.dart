@@ -16,18 +16,26 @@ import 'package:provider/provider.dart';
 class AnswersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: _AnswersList(),
-            ),
+    return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            currentFocus.focusedChild.unfocus();
+          }
+        },
+        child: Container(
+          child: Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: _AnswersList(),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 
@@ -70,7 +78,6 @@ class _CopyIconState extends State<CopyIcon> with TickerProviderStateMixin {
     super.dispose();
   }
 
-//
   Widget copyIcon() {
     return Positioned(
       right: 0,
@@ -110,12 +117,23 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   final int index;
   _AnswerTextFieldState(this.index);
   final TextEditingController _controller = TextEditingController();
+  AnswersModel answersModel;
+  Answer originalAnswer;
+
+  _updateAnswer() async {
+    if (_controller.text.isEmpty) {
+      await answersModel.remove(originalAnswer);
+    } else {
+      await answersModel.update(originalAnswer, _controller.text);
+    }
+  }
 
   @override
-  void dispose() {
+  void dispose() async {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -123,54 +141,63 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
 
   @override
   Widget build(BuildContext context) {
-    AnswersModel answersModel = Provider.of<AnswersModel>(context);
+    answersModel = Provider.of<AnswersModel>(context);
+    originalAnswer = answersModel.answers[index];
+
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-    Answer originalAnswer = answersModel.answers[index];
+
     _removeAnswer() {
       return Positioned(
           top: 20,
           right: 0,
-          child: IconButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      Consumer<LocaleModel>(builder: (context, locale, child) {
-                        return AlertDialog(
-                          actions: [
-                            FlatButton(
-                              child: Text(MainLocalizations.of(context).cancel),
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                            FlatButton(
-                              child: Text(MainLocalizations.of(context).delete),
-                              onPressed: () async {
-                                if (!kIsWeb) {
-                                  final snackBar = SnackBar(
-                                      content: Text(
-                                          MainLocalizations.of(context)
-                                              .successfullyDeleted));
+          child: Builder(
+              builder: (buildCtx) => IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              Consumer<LocaleModel>(
+                                  builder: (context, locale, child) {
+                                return AlertDialog(
+                                  actions: [
+                                    FlatButton(
+                                      child: Text(
+                                          MainLocalizations.of(context).cancel),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                          MainLocalizations.of(context).delete),
+                                      onPressed: () async {
+                                        if (!kIsWeb) {
+                                          final snackBar = SnackBar(
+                                              content: Text(
+                                                  MainLocalizations.of(context)
+                                                      .successfullyDeleted));
 
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                }
-                                await answersModel.remove(originalAnswer);
-                                Navigator.of(context).pop();
-                              },
-                              color: Theme.of(context)
-                                  .buttonTheme
-                                  .colorScheme
-                                  .error,
-                            )
-                          ],
-                          title: Text(MainLocalizations.of(context)
-                              .areYouSureYouWantToDeleteAnswer),
-                          content: Text(MainLocalizations.of(context)
-                              .ifYouDeleteAnswerThereIsNoWayBack),
-                        );
-                      }));
-            },
-            icon: Icon(Icons.delete),
-          ));
+                                          Scaffold.of(buildCtx)
+                                              .showSnackBar(snackBar);
+                                        }
+                                        await answersModel
+                                            .remove(originalAnswer);
+                                        Navigator.of(context).pop();
+                                      },
+                                      color: Theme.of(context)
+                                          .buttonTheme
+                                          .colorScheme
+                                          .error,
+                                    )
+                                  ],
+                                  title: Text(MainLocalizations.of(context)
+                                      .areYouSureYouWantToDeleteAnswer),
+                                  content: Text(MainLocalizations.of(context)
+                                      .ifYouDeleteAnswerThereIsNoWayBack),
+                                );
+                              }));
+                    },
+                    icon: Icon(Icons.delete),
+                  )));
     }
 
     final answerText = originalAnswer.title;
@@ -179,15 +206,6 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
       _controller.text = answerText;
     });
 
-    _updateAnswer() async {
-      if (_controller.text.isEmpty) {
-        await answersModel.remove(originalAnswer);
-      } else {
-        await answersModel.update(originalAnswer, _controller.text);
-      }
-    }
-
-    print(originalAnswer.question.toJson());
     return Card(
         margin: EdgeInsets.symmetric(vertical: 4),
         child: Stack(children: <Widget>[
@@ -225,13 +243,14 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 Flexible(
                     //We only want to wrap the text message with flexible widget
                     child: Container(
+                        child: Focus(
                   child: TextFormField(
                     controller: _controller,
-                    autofocus: true,
                     minLines: 1,
                     maxLines: 7,
                     keyboardType: TextInputType.multiline,
                     onEditingComplete: () async => await _updateAnswer(),
+
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: ThemeColors.lightAccent),
                       fillColor: ThemeColors.lightAccent,
@@ -240,6 +259,9 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                           color: ThemeColors.lightAccent,
                         ),
                       ),
+                      suffixIcon: IconButton(
+                          icon: Icon(Icons.save),
+                          onPressed: () async => await _updateAnswer()),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: ThemeColors.lightAccent)),
@@ -247,7 +269,12 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                     cursorColor: Theme.of(context).accentColor,
                     // labelText: MainLocalizations.of(context).answer
                   ),
-                )),
+                  onFocusChange: (hasFocus) async {
+                    if (!hasFocus) {
+                      await _updateAnswer();
+                    }
+                  },
+                ))),
               ],
             ),
           ),

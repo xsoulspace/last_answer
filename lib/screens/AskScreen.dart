@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:howtosolvethequest/components/QuestionsComponent.dart';
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
 import 'package:howtosolvethequest/entities/Question.dart';
 import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
 import 'package:howtosolvethequest/main.dart';
@@ -75,12 +74,12 @@ class QuestionsAndInput extends StatefulWidget {
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
   String inputText;
-  Question question = Question(LocaleTitle('What?', 'Что?'), 0);
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     AnswersModel answers = Provider.of<AnswersModel>(context);
-    QuestionsModel questions = Provider.of<QuestionsModel>(context);
+    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    Question question = questionsModel.questions[0];
     return Column(
       children: <Widget>[
         SizedBox(height: 1),
@@ -90,17 +89,18 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             height: 40.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: questions.length(),
+              itemCount: questionsModel.length(),
               itemBuilder: (context, index) => Container(
                   width: 120.0,
                   child: RaisedButton(onPressed: () {
                     setState(() {
-                      question = questions.questions[index];
+                      question = questionsModel.questions[index];
                     });
                   }, child:
                       Consumer<LocaleModel>(builder: (context, locale, child) {
                     return Text(
-                      questions.questions[index].title.getProp(locale.current),
+                      questionsModel.questions[index].title
+                          .getProp(locale.current),
                     );
                   }))),
             )),
@@ -115,7 +115,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             }),
             IconButton(
               onPressed: () async {
-                if (inputText == null || inputText == '') return;
+                if (inputText == null || inputText.isEmpty) return;
                 await answers.add(inputText, question);
                 _controller.clear();
               },

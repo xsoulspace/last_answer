@@ -2,7 +2,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
+// ignore: unused_import
+// import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
 import 'package:howtosolvethequest/entities/Answer.dart';
 import 'package:howtosolvethequest/entities/NamedLocale.dart';
 import 'package:howtosolvethequest/models/PagesModel.dart';
@@ -156,8 +157,8 @@ class _SaveFileState extends State<SaveFile> {
       // sink.close();
 
       /** working code */
-      final h = HtmlSaveFileComponent(context);
-      await h.saveInWeb();
+      // final h = HtmlSaveFileComponent(context);
+      // await h.saveInWeb();
     }
 
     share(BuildContext context) {

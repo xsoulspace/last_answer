@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:howtosolvethequest/entities/NamedLocale.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:lastanswer/entities/NamedLocale.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:howtosolvethequest/utils/storage_util.dart';
+import 'package:lastanswer/utils/storage_util.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 

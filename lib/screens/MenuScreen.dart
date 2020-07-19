@@ -3,18 +3,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
-// import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
-import 'package:howtosolvethequest/entities/Answer.dart';
-import 'package:howtosolvethequest/entities/NamedLocale.dart';
-import 'package:howtosolvethequest/models/PagesModel.dart';
-import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
-// import 'package:howtosolvethequest/entities/Answer.dart';
+// import 'package:lastanswer/components/htmlSaveFileComponent.dart';
+import 'package:lastanswer/entities/Answer.dart';
+import 'package:lastanswer/entities/NamedLocale.dart';
+import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/screens/ScaffoldAppBar.dart';
+// import 'package:lastanswer/entities/Answer.dart';
 import 'package:share/share.dart';
 
-// import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/AnswersModel.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
+// import 'package:lastanswer/components/htmlSaveFileComponent.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/AnswersModel.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class MenuScreen extends StatelessWidget {

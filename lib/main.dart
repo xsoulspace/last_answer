@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/AnswersModel.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
-import 'package:howtosolvethequest/models/PagesModel.dart';
-import 'package:howtosolvethequest/models/QuestionsModel.dart';
-import 'package:howtosolvethequest/screens/MenuScreen.dart';
-import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/AnswersModel.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
+import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/models/QuestionsModel.dart';
+import 'package:lastanswer/screens/MenuScreen.dart';
+import 'package:lastanswer/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 

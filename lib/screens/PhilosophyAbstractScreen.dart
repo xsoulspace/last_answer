@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:lastanswer/entities/LocaleTitle.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class PhilosophyAbstract extends StatefulWidget {
@@ -24,12 +24,12 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                     Container(
                       child: Center(
                         child: Consumer<LocaleModel>(
-                                  builder: (context, locale, child) {
-                                return SelectableText(
-                                  MainLocalizations.of(context)
-                                      .philosophyAbstractTitle,
-                                );
-                              }),
+                            builder: (context, locale, child) {
+                          return SelectableText(
+                            MainLocalizations.of(context)
+                                .philosophyAbstractTitle,
+                          );
+                        }),
                       ),
                       margin: EdgeInsets.symmetric(vertical: 30),
                     ),
@@ -114,13 +114,14 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               }),
                             ),
                             Flexible(
-                                child: Consumer<LocaleModel>(
+                              child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
                                   MainLocalizations.of(context)
                                       .philosophyAbstractPDSAWhat,
                                 );
-                              }),),
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -142,13 +143,14 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               }),
                             ),
                             Flexible(
-                                child: Consumer<LocaleModel>(
+                              child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
                                   MainLocalizations.of(context)
                                       .philosophyAbstractPDSAWhy,
                                 );
-                              }),),
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -170,13 +172,14 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               }),
                             ),
                             Flexible(
-                                child: Consumer<LocaleModel>(
+                              child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
                                   MainLocalizations.of(context)
                                       .philosophyAbstractSixSigmaWhat,
                                 );
-                              }),),
+                              }),
+                            ),
                           ],
                         ),
                       ),
@@ -198,13 +201,14 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               }),
                             ),
                             Flexible(
-                                child: Consumer<LocaleModel>(
+                              child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
                                   MainLocalizations.of(context)
                                       .philosophyAbstractSixSigmaWhy,
                                 );
-                              }),),
+                              }),
+                            ),
                           ],
                         ),
                       ),

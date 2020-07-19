@@ -1,6 +1,6 @@
 {
-    "name": "howtosolvethequest",
-    "short_name": "howtosolvethequest",
+    "name": "LastAnswer",
+    "short_name": "LastAnswer",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
-import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
-import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:lastanswer/entities/LocaleTitle.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 // import 'package:url_launcher/url_launcher.dart';
 

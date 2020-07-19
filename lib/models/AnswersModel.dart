@@ -2,10 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:howtosolvethequest/entities/Answer.dart';
-import 'package:howtosolvethequest/entities/LocaleTitle.dart';
-import 'package:howtosolvethequest/entities/Question.dart';
-import 'package:howtosolvethequest/utils/storage_util.dart';
+import 'package:lastanswer/entities/Answer.dart';
+import 'package:lastanswer/entities/LocaleTitle.dart';
+import 'package:lastanswer/entities/Question.dart';
+import 'package:lastanswer/utils/storage_util.dart';
 import 'dart:convert';
 
 class AnswersModelConsts {

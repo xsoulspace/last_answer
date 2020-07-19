@@ -71,6 +71,37 @@ class MainLocalizations {
         name: 'newQuestCancel', desc: 'popup start cancel');
   }
 
+  String get cancel {
+    return Intl.message('cancel', name: 'cancel', desc: 'cancel');
+  }
+
+  String get delete {
+    return Intl.message('delete', name: 'delete', desc: 'delete');
+  }
+
+  String get successfullyDeleted {
+    return Intl.message('Successfully deleted!',
+        name: 'successfullyDeleted', desc: 'Successfully deleted');
+  }
+
+  String get theAnswerCannotBeEmpty {
+    return Intl.message('The answer cannot be empty',
+        name: 'theAnswerCannotBeEmpty',
+        desc: 'The answer cannot be empty during editing on Answers page');
+  }
+
+  String get areYouSureYouWantToDeleteAnswer {
+    return Intl.message('Are you want to delete answer?',
+        name: 'areYouSureYouWantToDeleteAnswer',
+        desc: 'Warning Title for answer delete');
+  }
+
+  String get ifYouDeleteAnswerThereIsNoWayBack {
+    return Intl.message('If you delete the answer it will be lost',
+        name: 'ifYouDeleteAnswerThereIsNoWayBack',
+        desc: 'Warning for answer delete');
+  }
+
   // PHILOSPHY ABSTRACT
 
   String get philosophyAndInspirationTitle =>
@@ -113,7 +144,7 @@ class MainLocalizations {
   String get aboutAbstractWhatFor => Intl.message('What for?',
       name: 'aboutAbstractWhatFor', desc: 'What For About Abstract');
   String get aboutAbstractWhatForDescription => Intl.message(
-      'I\'m disigning this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
+      'I\'m designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
       name: 'aboutAbstractWhatForDescription',
       desc: 'Description of About Abstract');
   String get aboutAbstractHowDescription => Intl.message(

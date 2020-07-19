@@ -29,6 +29,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("I\'m designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),
     "answer" : MessageLookupByLibrary.simpleMessage("Answer"),
     "answers" : MessageLookupByLibrary.simpleMessage("Answers"),
+    "areYouSureYouWantToDeleteAnswer" : MessageLookupByLibrary.simpleMessage("Are you want to delete answer?"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("cancel"),
+    "delete" : MessageLookupByLibrary.simpleMessage("delete"),
+    "ifYouDeleteAnswerThereIsNoWayBack" : MessageLookupByLibrary.simpleMessage("If you delete the answer it will be lost"),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Last Answer"),
     "newQuest" : MessageLookupByLibrary.simpleMessage("Start new Quest"),
     "newQuestCancel" : MessageLookupByLibrary.simpleMessage("cancel"),
@@ -43,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "philosophyAbstractTitle" : MessageLookupByLibrary.simpleMessage("Philosophy Abstract"),
     "philosophyAbstractWhatElse" : MessageLookupByLibrary.simpleMessage("What else?"),
     "philosophyAndInspirationTitle" : MessageLookupByLibrary.simpleMessage("Philosophy & Inspiration"),
-    "save" : MessageLookupByLibrary.simpleMessage("Save")
+    "save" : MessageLookupByLibrary.simpleMessage("Save"),
+    "successfullyDeleted" : MessageLookupByLibrary.simpleMessage("Successfully deleted!"),
+    "theAnswerCannotBeEmpty" : MessageLookupByLibrary.simpleMessage("The answer cannot be empty")
   };
 }

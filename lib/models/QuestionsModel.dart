@@ -10,9 +10,9 @@ class QuestionsModel extends ChangeNotifier {
     Question(LocaleTitle('Why?', 'Почему?'), 1),
     Question(LocaleTitle('How?', 'Как?'), 2),
     Question(LocaleTitle('Where?', 'Где?'), 3),
-    Question(LocaleTitle('What for?', 'Зачем?'), 5),
+    Question(LocaleTitle('What for?', 'Зачем?'), 4),
     Question(LocaleTitle('For whom/what?', 'Для кого/чего?'), 5),
-    Question(LocaleTitle('What?', 'Что?'), 4),
+    Question(LocaleTitle('What?', 'Что?'), 6),
   ];
   Question _chosenQuestion;
   QuestionsModel() {

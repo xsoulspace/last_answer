@@ -13,7 +13,7 @@ class AnswersModelConsts {
 }
 
 class AnswersModel extends ChangeNotifier {
-  final Map<String, Answer> _answers = {};
+  final Map<int, Answer> _answers = {};
   List<Answer> get answersList => _answers.values.toList();
   StorageUtil _storage;
   AnswersModel() {
@@ -53,29 +53,38 @@ class AnswersModel extends ChangeNotifier {
           (Answer answer) => answer.question.hashCode == question.id)).toList();
 
   Future<void> add(String answer, Question question) async {
+    int id = _answers.length;
     _answers.putIfAbsent(
-        answer,
+        id,
         () => Answer(
               answer,
               question,
-              _answers.length,
+              id,
             ));
     await _updateAnswersStorage();
     notifyListeners();
   }
 
   Future<void> update(Answer oldAnswer, String newAnswer) async {
-    _answers.update(oldAnswer.title, (answer) {
+    _answers.update(oldAnswer.id, (answer) {
       answer.title = newAnswer;
-      print({oldAnswer, newAnswer, answer});
       return answer;
     });
     await _updateAnswersStorage();
     notifyListeners();
   }
 
-  Future<void> remove(String answer) async {
-    _answers.remove(answer);
+  Future<void> updateQuestion(Answer oldAnswer, Question question) async {
+    _answers.update(oldAnswer.id, (answer) {
+      answer.question = question;
+      return answer;
+    });
+    await _updateAnswersStorage();
+    notifyListeners();
+  }
+
+  Future<void> remove(Answer oldAnswer) async {
+    _answers.remove(oldAnswer.id);
     await _updateAnswersStorage();
     notifyListeners();
   }
@@ -98,6 +107,6 @@ class AnswersModel extends ChangeNotifier {
 
   fromJson(List answers) => answers.forEach((answer) {
         Answer newAnswer = Answer.fromJson(answer);
-        _answers.putIfAbsent(newAnswer.title, () => newAnswer);
+        _answers.putIfAbsent(newAnswer.id, () => newAnswer);
       });
 }

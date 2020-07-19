@@ -1,10 +1,10 @@
 // import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:howtosolvethequest/components/CustomDialogComponent.dart';
+import 'package:howtosolvethequest/components/htmlSaveFileComponent.dart';
 import 'package:howtosolvethequest/entities/Answer.dart';
 import 'package:howtosolvethequest/entities/NamedLocale.dart';
-import 'package:howtosolvethequest/main.dart';
 import 'package:howtosolvethequest/models/PagesModel.dart';
 import 'package:howtosolvethequest/screens/ScaffoldAppBar.dart';
 // import 'package:howtosolvethequest/entities/Answer.dart';
@@ -23,7 +23,7 @@ class MenuScreen extends StatelessWidget {
     PagesModel pagesModel = Provider.of<PagesModel>(context);
 
     cancelButton() {
-      return RaisedButton(
+      return FlatButton(
         onPressed: () {
           Navigator.of(context).pop();
         },
@@ -32,9 +32,10 @@ class MenuScreen extends StatelessWidget {
     }
 
     startButton() {
-      return RaisedButton(
+      return FlatButton(
         onPressed: () async {
-          var model = Provider.of<AnswersModel>(context, listen: false);
+          AnswersModel model =
+              Provider.of<AnswersModel>(context, listen: false);
           await model.clearAll();
           pagesModel.pageController.animateToPage(
               AppPagesNumerated.AskScreen.index,
@@ -54,11 +55,11 @@ class MenuScreen extends StatelessWidget {
               context: context,
               builder: (BuildContext context) =>
                   Consumer<LocaleModel>(builder: (context, locale, child) {
-                    return CustomDialog(
-                        title: MainLocalizations.of(context).newQuest,
-                        description: MainLocalizations.of(context).newQuestDesc,
-                        leftButton: cancelButton(),
-                        rightButton: startButton());
+                    return AlertDialog(
+                      actions: [cancelButton(), startButton()],
+                      title: Text(MainLocalizations.of(context).newQuest),
+                      content: Text(MainLocalizations.of(context).newQuestDesc),
+                    );
                   }));
 
           // Navigator.pushNamed(context, '/');
@@ -100,29 +101,26 @@ class MenuScreen extends StatelessWidget {
             SaveFile(),
           ],
         ),
-        // Divider(
-        //   height: 40,
-        //   color: Theme.of(context).backgroundColor,
-        // ),
         Padding(
           padding: EdgeInsets.only(left: 25, top: 40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              DropdownButton<NamedLocale>(
-                value: localeModel.currentNamedLocale,
-                items: LocaleModelConsts.namedLocales
-                    .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
-                  print(namedLocale.toString());
-                  return DropdownMenuItem<NamedLocale>(
-                    value: namedLocale,
-                    child: Text(namedLocale.name),
-                  );
-                }).toList(),
-                onChanged: (NamedLocale namedLocale) async {
-                  await localeModel.switchLang(namedLocale.locale);
-                },
-              )
+              Consumer<LocaleModel>(builder: (context, locale, child) {
+                return DropdownButton<NamedLocale>(
+                  value: locale.currentNamedLocale,
+                  items: LocaleModelConsts.namedLocales
+                      .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
+                    return DropdownMenuItem<NamedLocale>(
+                      value: namedLocale,
+                      child: Text(namedLocale.name),
+                    );
+                  }).toList(),
+                  onChanged: (NamedLocale namedLocale) async {
+                    await localeModel.switchLang(namedLocale.locale);
+                  },
+                );
+              })
             ],
           ),
         ),
@@ -141,27 +139,27 @@ class _SaveFileState extends State<SaveFile> {
 
   @override
   Widget build(BuildContext context) {
-    // saveAsWeb() async {
-    //   // FIXME: code to think
-    //   // await SimplePermissions.requestPermission(
-    //   //     Permission.WriteExternalStorage);
-    //   // bool checkPermission = await SimplePermissions.checkPermission(
-    //   //     Permission.WriteExternalStorage);
-    //   // if (checkPermission) {
-    //   //store file in documents folder
+    saveAsWeb() async {
+      // FIXME: code to think
+      // await SimplePermissions.requestPermission(
+      //     Permission.WriteExternalStorage);
+      // bool checkPermission = await SimplePermissions.checkPermission(
+      //     Permission.WriteExternalStorage);
+      // if (checkPermission) {
+      //store file in documents folder
 
-    //   // String dir =
-    //   //     (await getExternalStorageDirectory()).absolute.path + "/documents";
-    //   // File f = new File("./filename.csv");
-    //   // var sink = f.openWrite();
-    //   // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
-    //   // sink.close();
+      // String dir =
+      //     (await getExternalStorageDirectory()).absolute.path + "/documents";
+      // File f = new File("./filename.csv");
+      // var sink = f.openWrite();
+      // sink.write('FILE ACCESSED ${new DateTime.now()}\n');
+      // sink.close();
 
-    //   /** working code */
-    //   // final h = HtmlSaveFileComponent(context);
-    //   // await h.saveInWeb();
+      /** working code */
+      final h = HtmlSaveFileComponent(context);
+      await h.saveInWeb();
+    }
 
-    // }
     share(BuildContext context) {
       final RenderBox box = context.findRenderObject();
       AnswersModel answers = Provider.of<AnswersModel>(context);
@@ -181,8 +179,8 @@ class _SaveFileState extends State<SaveFile> {
     return Row(
       children: <Widget>[
         IconButton(
-          onPressed: () {
-            share(context);
+          onPressed: () async {
+            kIsWeb ? await saveAsWeb() : share(context);
           },
           icon: Icon(Icons.share),
         ),

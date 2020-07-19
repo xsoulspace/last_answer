@@ -114,6 +114,42 @@
     "type": "text",
     "placeholders": {}
   },
+  "theAnswerCannotBeEmpty": "The answer cannot be empty",
+  "@theAnswerCannotBeEmpty": {
+    "description": "The answer cannot be empty during editing on Answers page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "cancel",
+  "@cancel": {
+    "description": "cancel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "delete",
+  "@delete": {
+    "description": "delete",
+    "type": "text",
+    "placeholders": {}
+  },
+  "successfullyDeleted": "Successfully deleted!",
+  "@successfullyDeleted": {
+    "description": "Successfully deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSureYouWantToDeleteAnswer": "Are you want to delete answer?",
+  "@areYouSureYouWantToDeleteAnswer": {
+    "description": "Warning Title for answer delete",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ifYouDeleteAnswerThereIsNoWayBack": "If you delete the answer it will be lost",
+  "@ifYouDeleteAnswerThereIsNoWayBack": {
+    "description": "Warning for answer delete",
+    "type": "text",
+    "placeholders": {}
+  },
   "aboutAbstractWhatForDescription": "I'm designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",

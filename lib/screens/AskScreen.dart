@@ -24,13 +24,10 @@ class _AskScreenState extends State<AskScreen>
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
-    print('new locale ${locale.toString()}');
     await localeModel.switchLang(locale);
     AnswersModel answersModel =
         Provider.of<AnswersModel>(context, listen: false);
-    print('we are here');
     await answersModel.ini();
-    print('aaand are here');
     _isInitialized = true;
   }
 

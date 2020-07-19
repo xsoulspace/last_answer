@@ -29,6 +29,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("Я занимаюсь разработкой этого приложения, чтоб облегчить решение сложных проблем и обмен идеями между людьми."),
     "answer" : MessageLookupByLibrary.simpleMessage("Ответ"),
     "answers" : MessageLookupByLibrary.simpleMessage("Ответы"),
+    "areYouSureYouWantToDeleteAnswer" : MessageLookupByLibrary.simpleMessage("Вы уверены, что хотите удалить ответ?"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("Отменить"),
+    "delete" : MessageLookupByLibrary.simpleMessage("Удалить"),
+    "ifYouDeleteAnswerThereIsNoWayBack" : MessageLookupByLibrary.simpleMessage("Если вы удалите ответ, то он будет безвозвратно потерян."),
     "lastAnswer" : MessageLookupByLibrary.simpleMessage("Последний ответ"),
     "newQuest" : MessageLookupByLibrary.simpleMessage("Начать новый Квест"),
     "newQuestCancel" : MessageLookupByLibrary.simpleMessage("отменить"),
@@ -43,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "philosophyAbstractTitle" : MessageLookupByLibrary.simpleMessage("Философия"),
     "philosophyAbstractWhatElse" : MessageLookupByLibrary.simpleMessage("Что ещё?"),
     "philosophyAndInspirationTitle" : MessageLookupByLibrary.simpleMessage("Философия & Вдохновление"),
-    "save" : MessageLookupByLibrary.simpleMessage("Сохранить")
+    "save" : MessageLookupByLibrary.simpleMessage("Сохранить"),
+    "successfullyDeleted" : MessageLookupByLibrary.simpleMessage("Успешно удалено!"),
+    "theAnswerCannotBeEmpty" : MessageLookupByLibrary.simpleMessage("Ответ не может быть пустым, если нужно - удалите кнопкой справа")
   };
 }

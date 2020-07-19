@@ -1,10 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:howtosolvethequest/entities/Answer.dart';
+import 'package:howtosolvethequest/entities/Question.dart';
+import 'package:howtosolvethequest/localizations/MainLocalizations.dart';
+import 'package:howtosolvethequest/main.dart';
 import 'package:howtosolvethequest/models/AnswersModel.dart';
 import 'package:howtosolvethequest/models/LocaleModel.dart';
+import 'package:howtosolvethequest/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
 
 class AnswersScreen extends StatelessWidget {
@@ -93,74 +99,171 @@ class _CopyIconState extends State<CopyIcon> with TickerProviderStateMixin {
   }
 }
 
-class _AnswersList extends StatelessWidget {
+class AnswerTextField extends StatefulWidget {
+  final int index;
+  AnswerTextField(this.index);
+  @override
+  _AnswerTextFieldState createState() => _AnswerTextFieldState(index);
+}
+
+class _AnswerTextFieldState extends State<AnswerTextField> {
+  final int index;
+  _AnswerTextFieldState(this.index);
   final TextEditingController _controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    AnswersModel answers = Provider.of<AnswersModel>(context);
-    String locale = Provider.of<LocaleModel>(context).current;
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    _controller.dispose();
+    super.dispose();
+  }
 
-    Widget textRow(dynamic index) {
-      final originalAnswer = answers.answers[index];
-      final questionTitle = originalAnswer.question.title.getProp(locale);
-      final answerText = originalAnswer.title;
+  // Find the Scaffold in the widget tree and use it to show a SnackBar.
+
+  @override
+  Widget build(BuildContext context) {
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
+    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    Answer originalAnswer = answersModel.answers[index];
+    _removeAnswer() {
+      return Positioned(
+          top: 20,
+          right: 0,
+          child: IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      Consumer<LocaleModel>(builder: (context, locale, child) {
+                        return AlertDialog(
+                          actions: [
+                            FlatButton(
+                              child: Text(MainLocalizations.of(context).cancel),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            FlatButton(
+                              child: Text(MainLocalizations.of(context).delete),
+                              onPressed: () async {
+                                if (!kIsWeb) {
+                                  final snackBar = SnackBar(
+                                      content: Text(
+                                          MainLocalizations.of(context)
+                                              .successfullyDeleted));
+
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                }
+                                await answersModel.remove(originalAnswer);
+                                Navigator.of(context).pop();
+                              },
+                              color: Theme.of(context)
+                                  .buttonTheme
+                                  .colorScheme
+                                  .error,
+                            )
+                          ],
+                          title: Text(MainLocalizations.of(context)
+                              .areYouSureYouWantToDeleteAnswer),
+                          content: Text(MainLocalizations.of(context)
+                              .ifYouDeleteAnswerThereIsNoWayBack),
+                        );
+                      }));
+            },
+            icon: Icon(Icons.delete),
+          ));
+    }
+
+    final answerText = originalAnswer.title;
+    // final copyText = '$questionTitle $answerText';
+    setState(() {
       _controller.text = answerText;
-      final copyText = '$questionTitle $answerText';
-      return Card(
-          margin: EdgeInsets.symmetric(vertical: 4),
-          child: Stack(children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 14, 35, 14),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      questionTitle,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5),
-                  ),
-                  Flexible(
-                      //We only want to wrap the text message with flexible widget
-                      child: Container(
-                          child: TextFormField(
+    });
+
+    _updateAnswer() async {
+      if (_controller.text.isEmpty) {
+        await answersModel.remove(originalAnswer);
+      } else {
+        await answersModel.update(originalAnswer, _controller.text);
+      }
+    }
+
+    print(originalAnswer.question.toJson());
+    return Card(
+        margin: EdgeInsets.symmetric(vertical: 4),
+        child: Stack(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(10, 14, 50, 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(
+                    width: 90,
+                    child: DropdownButtonHideUnderline(
+                        child: DropdownButton<Question>(
+                      itemHeight: null,
+                      value: (originalAnswer != null &&
+                              originalAnswer.question != null)
+                          ? originalAnswer.question
+                          : null,
+                      isExpanded: true,
+                      items: questionsModel.questions
+                          .map((question) => DropdownMenuItem<Question>(
+                                value: question,
+                                child: Consumer<LocaleModel>(
+                                    builder: (context, localeModel, child) =>
+                                        Text(question.title
+                                            .getProp(localeModel.current))),
+                              ))
+                          .toList(),
+                      onChanged: (Question question) async => await answersModel
+                          .updateQuestion(originalAnswer, question),
+                    ))),
+                Padding(
+                  padding: EdgeInsets.only(right: 5),
+                ),
+                Flexible(
+                    //We only want to wrap the text message with flexible widget
+                    child: Container(
+                  child: TextFormField(
                     controller: _controller,
                     autofocus: true,
                     minLines: 1,
                     maxLines: 7,
                     keyboardType: TextInputType.multiline,
-                    onChanged: (inputText) async {
-                      if (inputText == null || inputText == '') return;
-                      await answers.update(originalAnswer, inputText);
-                    },
+                    onEditingComplete: () async => await _updateAnswer(),
                     decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.lightGreen[50]),
-                      fillColor: Colors.lightGreen[50],
+                      labelStyle: TextStyle(color: ThemeColors.lightAccent),
+                      fillColor: ThemeColors.lightAccent,
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: Colors.lightGreen[50],
+                          color: ThemeColors.lightAccent,
                         ),
                       ),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.lightGreen[50])),
-                      // labelText: MainLocalizations.of(context).answer
+                          borderSide:
+                              BorderSide(color: ThemeColors.lightAccent)),
                     ),
                     cursorColor: Theme.of(context).accentColor,
-                  ))),
-                ],
-              ),
+                    // labelText: MainLocalizations.of(context).answer
+                  ),
+                )),
+              ],
             ),
-            CopyIcon(copyText)
-          ]));
-    }
+          ),
+          // CopyIcon(copyText),
+          _removeAnswer()
+        ]));
+  }
+}
+
+class _AnswersList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    AnswersModel answers = Provider.of<AnswersModel>(context);
 
     return ListView.builder(
         itemCount: answers.length(),
-        itemBuilder: (context, index) => textRow(index));
+        itemBuilder: (context, index) => AnswerTextField(index));
   }
 }

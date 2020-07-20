@@ -132,7 +132,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
-    _controller.dispose();
+    _controller?.dispose();
 
     super.dispose();
   }
@@ -221,8 +221,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 width: dropdownWidth,
                 child: DropdownButtonHideUnderline(
                     child: DropdownButton<Question>(
-                  style:
-                      TextStyle(fontSize: 14, color: ThemeColors.lightAccent),
+                  style: TextStyle(fontSize: 14, color: Colors.white),
                   itemHeight: null,
                   value: dropdownValue,
                   isExpanded: true,

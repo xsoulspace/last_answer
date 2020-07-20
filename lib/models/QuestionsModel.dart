@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:lastanswer/entities/LocaleTitle.dart';
 import 'package:lastanswer/entities/Question.dart';
 
-class QuestionsModel extends ChangeNotifier {
-  final List<Question> _questions = [
+class QuestionsModelConsts {
+  static final List<Question> questions = [
     Question(LocaleTitle('Why?', 'Почему?'), 1),
     Question(LocaleTitle('How?', 'Как?'), 2),
     Question(LocaleTitle('Where?', 'Где?'), 3),
@@ -14,6 +14,9 @@ class QuestionsModel extends ChangeNotifier {
     Question(LocaleTitle('For whom/what?', 'Для кого/чего?'), 5),
     Question(LocaleTitle('What?', 'Что?'), 6),
   ];
+}
+
+class QuestionsModel extends ChangeNotifier {
   Question _chosenQuestion;
   QuestionsModel() {
     this._chosenQuestion = this.getById(1);
@@ -22,21 +25,21 @@ class QuestionsModel extends ChangeNotifier {
   set chosenQuestion(Question question) => this._chosenQuestion = question;
 
   Question getById(int id) =>
-      _questions.firstWhere((item) => item.hashCode == id);
+      QuestionsModelConsts.questions.firstWhere((item) => item.hashCode == id);
   Question getPosition(int position) {
-    return _questions[position];
+    return QuestionsModelConsts.questions[position];
   }
 
-  int length() => _questions.length;
+  int length() => QuestionsModelConsts.questions.length;
 
   UnmodifiableListView<Question> get questions =>
-      UnmodifiableListView(_questions);
+      UnmodifiableListView(QuestionsModelConsts.questions);
 
   void add(Question question) {
-    _questions.add((question));
+    QuestionsModelConsts.questions.add((question));
   }
 
   void clearAll() {
-    _questions.clear();
+    QuestionsModelConsts.questions.clear();
   }
 }

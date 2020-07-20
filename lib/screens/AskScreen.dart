@@ -73,12 +73,13 @@ class QuestionsAndInput extends StatefulWidget {
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
   String inputText;
+  Question question = QuestionsModelConsts.questions[0];
+
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     AnswersModel answers = Provider.of<AnswersModel>(context);
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-    Question question = questionsModel.questions[0];
     return Column(
       children: <Widget>[
         SizedBox(height: 1),

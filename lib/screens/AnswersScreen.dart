@@ -145,6 +145,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     originalAnswer = answersModel.answers[index];
 
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    LocaleModel localeModel = Provider.of<LocaleModel>(context);
     _removeAnswer() {
       return Positioned(
           top: 1,
@@ -202,30 +203,35 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     String answerText = originalAnswer.title;
     // final copyText = '$questionTitle $answerText';
     _controller.text = answerText;
-
+    bool isDropdownValueNull =
+        originalAnswer == null || originalAnswer.question == null;
+    Question dropdownValue =
+        (!isDropdownValueNull) ? originalAnswer.question : null;
+    double dropdownLength =
+        dropdownValue.title.getProp(localeModel.current).length.toDouble();
+    double dropdownWidth =
+        !isDropdownValueNull && dropdownLength > 5 ? 110 : 70;
     return Card(
         margin: EdgeInsets.symmetric(vertical: 4),
         child: Stack(children: <Widget>[
           Positioned(
-            top: 0,
+            top: 4,
             left: 5,
             child: SizedBox(
-                width: 80,
+                width: dropdownWidth,
                 child: DropdownButtonHideUnderline(
                     child: DropdownButton<Question>(
+                  style: TextStyle(fontSize: 14),
                   itemHeight: null,
-                  value: (originalAnswer != null &&
-                          originalAnswer.question != null)
-                      ? originalAnswer.question
-                      : null,
+                  value: dropdownValue,
                   isExpanded: true,
                   items: questionsModel.questions
                       .map((question) => DropdownMenuItem<Question>(
                             value: question,
                             child: Consumer<LocaleModel>(
-                                builder: (context, localeModel, child) => Text(
+                                builder: (context, plocaleModel, child) => Text(
                                     question.title
-                                        .getProp(localeModel.current))),
+                                        .getProp(plocaleModel.current))),
                           ))
                       .toList(),
                   onChanged: (Question question) async => await answersModel
@@ -233,7 +239,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 ))),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(80, 0, 40, 5),
+            padding: EdgeInsets.fromLTRB(dropdownWidth, 0, 40, 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -253,10 +259,12 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                       maxLines: 7,
                       keyboardType: TextInputType.multiline,
                       onEditingComplete: () async => await _updateAnswer(),
+                      style: TextStyle(fontSize: 14),
                       decoration: InputDecoration(
                         // contentPadding: EdgeInsets.all(2),
                         labelStyle: TextStyle(color: ThemeColors.lightAccent),
                         fillColor: ThemeColors.lightAccent,
+
                         // border: InputBorder.none
                         // focusedBorder: OutlineInputBorder(
                         //   borderSide: BorderSide(

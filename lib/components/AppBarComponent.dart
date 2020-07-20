@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:lastanswer/screens/ScaffoldAppBar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,14 +25,20 @@ class _AppBarComponentState extends State<AppBarComponent>
     with TickerProviderStateMixin {
   AnimationController _animationTitleController;
   Animation<double> _animateTitle;
+  AnimationController _answersShareOpacityController;
+  Animation<double> _answersShareOpacity;
   @override
   initState() {
     super.initState();
     _animationTitleController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1400));
+    _answersShareOpacityController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1400));
 
     _animateTitle =
         Tween(begin: 0.0, end: 1.0).animate(_animationTitleController);
+    _answersShareOpacity =
+        Tween(begin: 0.0, end: 1.0).animate(_answersShareOpacityController);
   }
 
   @override
@@ -45,13 +52,16 @@ class _AppBarComponentState extends State<AppBarComponent>
         pagesModel.currentPage == AppPagesNumerated.Inspire.index;
   }
 
+  getIsAnswers(PagesModel pagesModel) {
+    return pagesModel.currentPage == AppPagesNumerated.AnswersScreen.index;
+  }
+
   int _previousPageIndex;
   Widget currentTitle() {
     String title(PagesModel pagesModel) {
       final isPhilosophyPage =
           pagesModel.currentPage == AppPagesNumerated.Inspire.index;
-      final isAnswersPage =
-          pagesModel.currentPage == AppPagesNumerated.AnswersScreen.index;
+      final isAnswersPage = getIsAnswers(pagesModel);
 
       final isToToogleAnimation = (isPhilosophyPage &&
               _previousPageIndex == AppPagesNumerated.AnswersScreen.index) ||
@@ -61,6 +71,15 @@ class _AppBarComponentState extends State<AppBarComponent>
       if (isToToogleAnimation) {
         _animationTitleController.reset();
         _animationTitleController.forward();
+      }
+
+      final isAskPageWasPrevious =
+          _previousPageIndex == AppPagesNumerated.AskScreen.index;
+      final isAskPage =
+          pagesModel.currentPage == AppPagesNumerated.AskScreen.index;
+      if ((isAnswersPage && isAskPageWasPrevious) || isAskPage) {
+        _answersShareOpacityController.reset();
+        _answersShareOpacityController.forward();
       }
 
       _previousPageIndex = pagesModel.currentPage;
@@ -111,6 +130,8 @@ class _AppBarComponentState extends State<AppBarComponent>
     _animationTitleController.forward();
     return Consumer<PagesModel>(builder: (context, pagesModel, child) {
       final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
+      final isAnswersPage = getIsAnswers(pagesModel);
+
       return FadeTransition(
           opacity: _animateTitle,
           child: AppBar(
@@ -125,15 +146,20 @@ class _AppBarComponentState extends State<AppBarComponent>
                 : Theme.of(context).primaryColor,
             title: currentTitle(),
             actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  pagesModel.pageController.animateToPage(
-                      AppPagesNumerated.AnswersScreen.index,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeOutCirc);
-                },
-                icon: Icon(Icons.import_contacts),
-              ),
+              FadeTransition(
+                opacity: _answersShareOpacity,
+                child: isAnswersPage
+                    ? SaveFile()
+                    : IconButton(
+                        onPressed: () {
+                          pagesModel.pageController.animateToPage(
+                              AppPagesNumerated.AnswersScreen.index,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeOutCirc);
+                        },
+                        icon: Icon(Icons.import_contacts),
+                      ),
+              )
             ],
           ));
     });

@@ -221,7 +221,8 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 width: dropdownWidth,
                 child: DropdownButtonHideUnderline(
                     child: DropdownButton<Question>(
-                  style: TextStyle(fontSize: 14),
+                  style:
+                      TextStyle(fontSize: 14, color: ThemeColors.lightAccent),
                   itemHeight: null,
                   value: dropdownValue,
                   isExpanded: true,

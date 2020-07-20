@@ -29,7 +29,7 @@ class AnswersScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(5),
                   child: _AnswersList(),
                 ),
               ),
@@ -116,7 +116,7 @@ class AnswerTextField extends StatefulWidget {
 class _AnswerTextFieldState extends State<AnswerTextField> {
   final int index;
   _AnswerTextFieldState(this.index);
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   AnswersModel answersModel;
   Answer originalAnswer;
 
@@ -129,7 +129,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     _controller.dispose();
@@ -145,10 +145,9 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     originalAnswer = answersModel.answers[index];
 
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-
     _removeAnswer() {
       return Positioned(
-          top: 20,
+          top: 1,
           right: 0,
           child: Builder(
               builder: (buildCtx) => IconButton(
@@ -200,97 +199,90 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                   )));
     }
 
-    final answerText = originalAnswer.title;
+    String answerText = originalAnswer.title;
     // final copyText = '$questionTitle $answerText';
-    setState(() {
-      _controller.text = answerText;
-    });
+    _controller.text = answerText;
 
     return Card(
         margin: EdgeInsets.symmetric(vertical: 4),
         child: Stack(children: <Widget>[
+          Positioned(
+            top: 0,
+            left: 5,
+            child: SizedBox(
+                width: 80,
+                child: DropdownButtonHideUnderline(
+                    child: DropdownButton<Question>(
+                  itemHeight: null,
+                  value: (originalAnswer != null &&
+                          originalAnswer.question != null)
+                      ? originalAnswer.question
+                      : null,
+                  isExpanded: true,
+                  items: questionsModel.questions
+                      .map((question) => DropdownMenuItem<Question>(
+                            value: question,
+                            child: Consumer<LocaleModel>(
+                                builder: (context, localeModel, child) => Text(
+                                    question.title
+                                        .getProp(localeModel.current))),
+                          ))
+                      .toList(),
+                  onChanged: (Question question) async => await answersModel
+                      .updateQuestion(originalAnswer, question),
+                ))),
+          ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 14, 50, 14),
+            padding: EdgeInsets.fromLTRB(80, 0, 40, 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                SizedBox(
-                    width: 90,
-                    child: DropdownButtonHideUnderline(
-                        child: DropdownButton<Question>(
-                      itemHeight: null,
-                      value: (originalAnswer != null &&
-                              originalAnswer.question != null)
-                          ? originalAnswer.question
-                          : null,
-                      isExpanded: true,
-                      items: questionsModel.questions
-                          .map((question) => DropdownMenuItem<Question>(
-                                value: question,
-                                child: Consumer<LocaleModel>(
-                                    builder: (context, localeModel, child) =>
-                                        Text(question.title
-                                            .getProp(localeModel.current))),
-                              ))
-                          .toList(),
-                      onChanged: (Question question) async => await answersModel
-                          .updateQuestion(originalAnswer, question),
-                    ))),
                 Padding(
                   padding: EdgeInsets.only(right: 5),
                 ),
                 Flexible(
-                    //We only want to wrap the text message with flexible widget
-                    child: Container(
-                        child: Focus(
-                  child: TextFormField(
-                    controller: _controller,
-                    minLines: 1,
-                    maxLines: 7,
-                    keyboardType: TextInputType.multiline,
-                    onEditingComplete: () async => await _updateAnswer(),
-
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: ThemeColors.lightAccent),
-                      fillColor: ThemeColors.lightAccent,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: ThemeColors.lightAccent,
-                        ),
+                  //We only want to wrap the text message with flexible widget
+                  child: Container(
+                      child: Focus(
+                    child: TextFormField(
+                      onChanged: (String text) async => await _updateAnswer(),
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: _controller,
+                      minLines: 1,
+                      maxLines: 7,
+                      keyboardType: TextInputType.multiline,
+                      onEditingComplete: () async => await _updateAnswer(),
+                      decoration: InputDecoration(
+                        // contentPadding: EdgeInsets.all(2),
+                        labelStyle: TextStyle(color: ThemeColors.lightAccent),
+                        fillColor: ThemeColors.lightAccent,
+                        // border: InputBorder.none
+                        // focusedBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: ThemeColors.lightAccent,
+                        //   ),
+                        // ),
+                        // border: OutlineInputBorder(
+                        //     borderSide:
+                        //         BorderSide(color: ThemeColors.lightAccent)),
                       ),
-                      suffixIcon: Builder(
-                          builder: (buildCtx) => IconButton(
-                              icon: Icon(Icons.save),
-                              onPressed: () async {
-                                await _updateAnswer();
-                                if (!kIsWeb) {
-                                  final snackBar = SnackBar(
-                                      content: Text(
-                                          MainLocalizations.of(context)
-                                              .successfullySaved));
-
-                                  Scaffold.of(buildCtx).showSnackBar(snackBar);
-                                }
-                              })),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: ThemeColors.lightAccent)),
+                      cursorColor: Theme.of(context).accentColor,
+                      // labelText: MainLocalizations.of(context).answer
                     ),
-                    cursorColor: Theme.of(context).accentColor,
-                    // labelText: MainLocalizations.of(context).answer
-                  ),
-                  onFocusChange: (hasFocus) async {
-                    if (!hasFocus) {
-                      await _updateAnswer();
-                    }
-                  },
-                ))),
+                    onFocusChange: (hasFocus) async {
+                      if (!hasFocus) {
+                        await _updateAnswer();
+                      }
+                    },
+                  )),
+                ),
               ],
             ),
           ),
-          // CopyIcon(copyText),
           _removeAnswer()
+
+          // CopyIcon(copyText),
         ]));
   }
 }
@@ -298,10 +290,9 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
 class _AnswersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AnswersModel answers = Provider.of<AnswersModel>(context);
-
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
     return ListView.builder(
-        itemCount: answers.length(),
+        itemCount: answersModel.length(),
         itemBuilder: (context, index) => AnswerTextField(index));
   }
 }

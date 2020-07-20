@@ -21,18 +21,7 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      child: Center(
-                        child: Consumer<LocaleModel>(
-                            builder: (context, locale, child) {
-                          return SelectableText(
-                            MainLocalizations.of(context)
-                                .philosophyAbstractTitle,
-                          );
-                        }),
-                      ),
-                      margin: EdgeInsets.symmetric(vertical: 30),
-                    ),
+                    
                     Card(
                       margin: EdgeInsets.symmetric(vertical: 4),
                       child: Padding(

@@ -42,13 +42,13 @@ class LocaleModel extends ChangeNotifier {
       Intl.defaultLocale = await findSystemLocale();
       return Locale(Intl.defaultLocale);
     }
-    print('ini locale $localeStr');
+    // print('ini locale $localeStr');
 
     String localeCanon = Intl.canonicalizedLocale(localeStr);
-    print('ini localeCanon $localeCanon');
+    // print('ini localeCanon $localeCanon');
 
     Locale locale = Locale(localeCanon, localeCanon.toUpperCase());
-    print(locale.toString());
+    // print(locale.toString());
     return locale;
   }
 

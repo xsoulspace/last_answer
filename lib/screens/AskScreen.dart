@@ -9,14 +9,8 @@ import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class AskScreen extends StatefulWidget {
-  @override
-  _AskScreenState createState() => _AskScreenState();
-}
-
-class _AskScreenState extends State<AskScreen>
-    with SingleTickerProviderStateMixin {
-  Future<void> loadLocaleAndAnswers() async {
+class AskScreen extends StatelessWidget {
+  Future<void> loadLocaleAndAnswers(context) async {
     AnswersModel answersModel =
         Provider.of<AnswersModel>(context, listen: false);
 
@@ -32,13 +26,6 @@ class _AskScreenState extends State<AskScreen>
   @override
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
-    Widget lastAnswer() {
-      return Text(
-        answersModel.lastAnswer.title ?? '',
-        // softWrap: false,
-      );
-    }
-
     return Container(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -49,21 +36,39 @@ class _AskScreenState extends State<AskScreen>
                 Center(
                     child: !answersModel.isInitialized
                         ? FutureBuilder(
-                            future: loadLocaleAndAnswers(),
+                            future: loadLocaleAndAnswers(context),
                             builder: (BuildContext context,
                                 AsyncSnapshot<void> snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.done:
-                                  return lastAnswer();
+                                  return LastAnswer();
                                 default:
                                   return CircularProgressIndicator();
                               }
                             })
-                        : lastAnswer()),
+                        : LastAnswer()),
                 QuestionsComponent(),
                 QuestionsAndInput()
               ],
             )));
+  }
+}
+
+class LastAnswer extends StatefulWidget {
+  @override
+  _LastAnswerState createState() => _LastAnswerState();
+}
+
+class _LastAnswerState extends State<LastAnswer>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AnswersModel>(
+      builder: (context, answersModel, child) => Text(
+        answersModel.lastAnswer.title ?? '',
+        // softWrap: false,
+      ),
+    );
   }
 }
 
@@ -79,6 +84,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
   @override
   Widget build(BuildContext context) {
     AnswersModel answers = Provider.of<AnswersModel>(context);
+
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
     return Column(
       children: <Widget>[

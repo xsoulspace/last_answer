@@ -26,7 +26,7 @@ class AnswersModel extends ChangeNotifier {
       _storage = await StorageUtil.getInstance();
     }
     String answers = (_storage.getString(AnswersModelConsts.answers) ?? '');
-    print('answers, $answers');
+    // print('answers, $answers');
     if (answers == null || answers == '') {
       return;
     }
@@ -92,10 +92,10 @@ class AnswersModel extends ChangeNotifier {
   }
 
   Future<void> clearAll() async {
-    print('cleaning');
+    // print('cleaning');
     _answers.clear();
     // clearing storage
-    print('cleaning storage');
+    // print('cleaning storage');
     await _storage.putString(AnswersModelConsts.answers, '');
     notifyListeners();
   }

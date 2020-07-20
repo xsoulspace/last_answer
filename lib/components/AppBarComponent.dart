@@ -25,25 +25,18 @@ class _AppBarComponentState extends State<AppBarComponent>
     with TickerProviderStateMixin {
   AnimationController _animationTitleController;
   Animation<double> _animateTitle;
-  AnimationController _answersShareOpacityController;
-  Animation<double> _answersShareOpacity;
   @override
   initState() {
     super.initState();
     _animationTitleController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1400));
-    _answersShareOpacityController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1400));
-
     _animateTitle =
         Tween(begin: 0.0, end: 1.0).animate(_animationTitleController);
-    _answersShareOpacity =
-        Tween(begin: 0.0, end: 1.0).animate(_answersShareOpacityController);
   }
 
   @override
   dispose() {
-    _animationTitleController.dispose();
+    _animationTitleController?.dispose();
     super.dispose();
   }
 
@@ -71,15 +64,6 @@ class _AppBarComponentState extends State<AppBarComponent>
       if (isToToogleAnimation) {
         _animationTitleController.reset();
         _animationTitleController.forward();
-      }
-
-      final isAskPageWasPrevious =
-          _previousPageIndex == AppPagesNumerated.AskScreen.index;
-      final isAskPage =
-          pagesModel.currentPage == AppPagesNumerated.AskScreen.index;
-      if ((isAnswersPage && isAskPageWasPrevious) || isAskPage) {
-        _answersShareOpacityController.reset();
-        _answersShareOpacityController.forward();
       }
 
       _previousPageIndex = pagesModel.currentPage;
@@ -146,8 +130,14 @@ class _AppBarComponentState extends State<AppBarComponent>
                 : Theme.of(context).primaryColor,
             title: currentTitle(),
             actions: <Widget>[
-              FadeTransition(
-                opacity: _answersShareOpacity,
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                transitionBuilder:
+                    (Widget child, Animation<double> animation) =>
+                        ScaleTransition(
+                  scale: animation,
+                  child: child,
+                ),
                 child: isAnswersPage
                     ? SaveFile()
                     : IconButton(

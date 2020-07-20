@@ -16,9 +16,9 @@ class MainLocalizations {
   static Future<MainLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
-    print('main localizaions $name, $locale');
+    // print('main localizaions $name, $locale');
     final String localeName = Intl.canonicalizedLocale(name);
-    print('main localizaions $localeName');
+    // print('main localizaions $localeName');
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;

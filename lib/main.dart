@@ -34,7 +34,6 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
 
   scaffoldApp(
       BuildContext context, MainLocalizationsDelegate _localeOverrideDelegate) {
-    print(_localeOverrideDelegate.overridenLocale);
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => LocaleModel()),
       ChangeNotifierProvider(create: (context) => AnswersModel()),
@@ -80,11 +79,8 @@ class AppScaffold extends StatelessWidget {
       localeListResolutionCallback: (locales, supportedLocales) {
         Locale locale = _overridenLocaleDelegate.overridenLocale;
         var isFoundLocale = _overridenLocaleDelegate.isSupported(locale);
-        print(supportedLocales.toString());
-        print(locales.toString());
 
         // var isFoundLocale =supportedLocales.contains(locale);
-        print(isFoundLocale);
         if (!isFoundLocale) {
           return LocaleModelConsts.localeEN;
         }

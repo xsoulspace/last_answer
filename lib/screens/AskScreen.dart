@@ -16,18 +16,17 @@ class AskScreen extends StatefulWidget {
 
 class _AskScreenState extends State<AskScreen>
     with SingleTickerProviderStateMixin {
-  bool _isInitialized = false;
-
   Future<void> loadLocaleAndAnswers() async {
-    if (_isInitialized) return;
+    AnswersModel answersModel =
+        Provider.of<AnswersModel>(context, listen: false);
+
+    if (answersModel.isInitialized) return;
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
     await localeModel.switchLang(locale);
-    AnswersModel answersModel =
-        Provider.of<AnswersModel>(context, listen: false);
     await answersModel.ini();
-    _isInitialized = true;
+    answersModel.isInitialized = true;
   }
 
   @override
@@ -48,7 +47,7 @@ class _AskScreenState extends State<AskScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Center(
-                    child: !_isInitialized
+                    child: !answersModel.isInitialized
                         ? FutureBuilder(
                             future: loadLocaleAndAnswers(),
                             builder: (BuildContext context,

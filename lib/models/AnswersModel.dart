@@ -14,6 +14,7 @@ class AnswersModelConsts {
 
 class AnswersModel extends ChangeNotifier {
   final Map<int, Answer> _answers = {};
+  bool isInitialized = false;
   List<Answer> get answersList => _answers.values.toList();
   StorageUtil _storage;
   AnswersModel() {
@@ -61,7 +62,7 @@ class AnswersModel extends ChangeNotifier {
               question,
               id,
             ));
-    await _updateAnswersStorage();
+    await updateAnswersStorage();
     notifyListeners();
   }
 
@@ -70,8 +71,9 @@ class AnswersModel extends ChangeNotifier {
       answer.title = newAnswer;
       return answer;
     });
-    await _updateAnswersStorage();
-    notifyListeners();
+    await updateAnswersStorage();
+
+    // notifyListeners();
   }
 
   Future<void> updateQuestion(Answer oldAnswer, Question question) async {
@@ -79,13 +81,13 @@ class AnswersModel extends ChangeNotifier {
       answer.question = question;
       return answer;
     });
-    await _updateAnswersStorage();
+    await updateAnswersStorage();
     notifyListeners();
   }
 
   Future<void> remove(Answer oldAnswer) async {
     _answers.remove(oldAnswer.id);
-    await _updateAnswersStorage();
+    await updateAnswersStorage();
     notifyListeners();
   }
 
@@ -98,7 +100,7 @@ class AnswersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _updateAnswersStorage() async {
+  Future<void> updateAnswersStorage() async {
     String json = jsonEncode(toJson());
     await _storage.putString(AnswersModelConsts.answers, json);
   }

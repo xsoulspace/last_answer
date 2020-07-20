@@ -42,7 +42,8 @@ class MenuScreen extends StatelessWidget {
               AppPagesNumerated.AskScreen.index,
               duration: Duration(milliseconds: 300),
               curve: Curves.easeOutCirc);
-          Navigator.pop(context);
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
         },
         child: Text(MainLocalizations.of(context).newQuestStart),
         color: Theme.of(context).buttonTheme.colorScheme.error,

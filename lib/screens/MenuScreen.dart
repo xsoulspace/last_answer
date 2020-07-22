@@ -8,6 +8,7 @@ import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/NamedLocale.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/screens/AppPages.dart';
+import 'package:lastanswer/screens/MenuDrawer.dart';
 // import 'package:lastanswer/entities/Answer.dart';
 import 'package:share/share.dart';
 
@@ -32,18 +33,20 @@ class MenuScreen extends StatelessWidget {
       );
     }
 
+    _dismissAndGoToAskScreen() {
+      MenuDrawer.of(context).toggleDrawer();
+      pagesModel.pageController.animateToPage(AppPagesNumerated.AskScreen.index,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
+    }
+
     startButton() {
       return FlatButton(
         onPressed: () async {
           AnswersModel model =
               Provider.of<AnswersModel>(context, listen: false);
           await model.clearAll();
-          pagesModel.pageController.animateToPage(
-              AppPagesNumerated.AskScreen.index,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeOutCirc);
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
+          Navigator.of(context).pop();
+          _dismissAndGoToAskScreen();
         },
         child: Text(MainLocalizations.of(context).newQuestStart),
         color: Theme.of(context).buttonTheme.colorScheme.error,
@@ -70,64 +73,66 @@ class MenuScreen extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(bottom: 30),
-          child: Center(
-            child: IconButton(
-              onPressed: () {
-                pagesModel.pageController.animateToPage(
-                    AppPagesNumerated.AskScreen.index,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOutCirc);
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.home),
-              tooltip: 'home',
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios),
-            ),
-            buttonStart(),
-            SaveFile(),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 25, top: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Consumer<LocaleModel>(builder: (context, locale, child) {
-                return DropdownButton<NamedLocale>(
-                  value: locale.currentNamedLocale,
-                  items: LocaleModelConsts.namedLocales
-                      .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
-                    return DropdownMenuItem<NamedLocale>(
-                      value: namedLocale,
-                      child: Text(namedLocale.name),
-                    );
-                  }).toList(),
-                  onChanged: (NamedLocale namedLocale) async {
-                    await localeModel.switchLang(namedLocale.locale);
-                  },
-                );
-              })
-            ],
-          ),
-        ),
-      ],
-    ));
+    return Material(
+        child: SafeArea(
+            child: Theme(
+                data: ThemeData(brightness: Brightness.dark),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 30),
+                      child: Center(
+                        child: IconButton(
+                          onPressed: () {
+                            _dismissAndGoToAskScreen();
+                          },
+                          icon: Icon(Icons.home),
+                          tooltip: 'home',
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {
+                            MenuDrawer.of(context).close();
+                          },
+                          icon: Icon(Icons.arrow_back_ios),
+                        ),
+                        buttonStart(),
+                        SaveFile(),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 25, top: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Consumer<LocaleModel>(
+                              builder: (context, locale, child) {
+                            return DropdownButton<NamedLocale>(
+                              value: locale.currentNamedLocale,
+                              items: LocaleModelConsts.namedLocales
+                                  .map<DropdownMenuItem<NamedLocale>>(
+                                      (namedLocale) {
+                                return DropdownMenuItem<NamedLocale>(
+                                  value: namedLocale,
+                                  child: Text(namedLocale.name),
+                                );
+                              }).toList(),
+                              onChanged: (NamedLocale namedLocale) async {
+                                await localeModel
+                                    .switchLang(namedLocale.locale);
+                              },
+                            );
+                          })
+                        ],
+                      ),
+                    ),
+                  ],
+                ))));
   }
 }
 

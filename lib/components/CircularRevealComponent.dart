@@ -17,6 +17,7 @@ class CircularRevealComponent extends StatefulWidget {
 class CircularRevealComponentState extends State<CircularRevealComponent>
     with SingleTickerProviderStateMixin {
   Animation _animation;
+  Animation _opacityAnimation;
   double _fraction = 0.0;
   @override
   void initState() {
@@ -27,6 +28,8 @@ class CircularRevealComponentState extends State<CircularRevealComponent>
           _fraction = _animation.value;
         });
       });
+    _opacityAnimation =
+        CurveTween(curve: Curves.ease).animate(widget.controller);
   }
 
   @override
@@ -43,30 +46,14 @@ class CircularRevealComponentState extends State<CircularRevealComponent>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          left: 25,
-          top: 25,
+    return Positioned(
+        left: 45,
+        top: 45,
+        child: FadeTransition(
+          opacity: _opacityAnimation,
           child: CustomPaint(
             painter: CircularRevealPainter(_fraction, context),
-            // child: Builder(
-            //   builder: (context) => IconButton(
-            //       onPressed: () {
-            //         MenuDrawer.of(context).close();
-            //       },
-            //       icon: Icon(Icons.playlist_add_check)),
-            // ),
           ),
-        )
-      ],
-    );
-
-    //         Material(
-    // color: Colors.blueAccent,
-    // child: SafeArea(
-    //     child: Theme(
-    //         data: ThemeData(brightness: Brightness.dark),
-    //         child: ));
+        ));
   }
 }

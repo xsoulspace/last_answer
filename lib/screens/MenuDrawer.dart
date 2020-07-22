@@ -14,7 +14,7 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
-  static const Duration toogleDuration = Duration(milliseconds: 300);
+  static const Duration toogleDuration = Duration(milliseconds: 350);
   AnimationController _controller;
   AnimationController _opacityController;
   Animation<double> _opacity;
@@ -60,9 +60,7 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
   void toggleDrawer() => _controller.isCompleted ? close() : open();
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    print(size);
-
+    final size = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: () async {
           if (_controller.isCompleted) {
@@ -75,6 +73,12 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
           animation: _controller,
           child: widget.child,
           builder: (context, child) {
+            final ySliding = ((size.height / 10) * _controller.value);
+            print({
+              'ySliding': ySliding,
+              'height': size.height,
+              'conv': _controller.value
+            });
             return Stack(
               children: [
                 child,
@@ -87,12 +91,17 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
                       )
                     : Container(),
                 _isMenuScreenActive
-                    ? Positioned.fill(
-                        // child: _controller.isCompleted
-                        //     ?
-                        //     : Container(),
-                        child: FadeTransition(
-                            opacity: _opacity, child: MenuScreen()))
+                    ? Transform(
+                        transform: Matrix4.identity()..translate(0, ySliding),
+                        alignment: Alignment.center,
+                        child: Stack(children: [
+                          Positioned.fill(
+                              // child: _controller.isCompleted
+                              //     ?
+                              //     : Container(),
+                              child: MenuScreen())
+                        ]),
+                      )
                     : Container()
               ],
             );

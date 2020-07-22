@@ -8,8 +8,6 @@ import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:lastanswer/screens/AppPages.dart';
 import 'package:provider/provider.dart';
 
-import 'CircularRevealComponent.dart';
-
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
   AppBarComponent({this.bottom})
       : preferredSize = Size.fromHeight(

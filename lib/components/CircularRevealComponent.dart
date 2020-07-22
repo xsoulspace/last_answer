@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/components/CircularRevealPainter.dart';
-import 'package:lastanswer/screens/MenuDrawer.dart';
 
 class CircularRevealComponent extends StatefulWidget {
   final AnimationController controller;
@@ -22,7 +21,7 @@ class CircularRevealComponentState extends State<CircularRevealComponent>
   @override
   void initState() {
     super.initState();
-    _animation = Tween(begin: 0.0, end: 1.0).animate(widget.controller)
+    _animation = CurveTween(curve: Curves.easeInOut).animate(widget.controller)
       ..addListener(() {
         setState(() {
           _fraction = _animation.value;
@@ -47,8 +46,8 @@ class CircularRevealComponentState extends State<CircularRevealComponent>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        left: 45,
-        top: 45,
+        left: 0,
+        top: 30,
         child: FadeTransition(
           opacity: _opacityAnimation,
           child: CustomPaint(

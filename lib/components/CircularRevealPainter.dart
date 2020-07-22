@@ -13,17 +13,12 @@ class CircularRevealPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
+    Paint paintDown = Paint()
       ..style = PaintingStyle.fill
       ..color = Theme.of(_context).scaffoldBackgroundColor;
-    final exponent = 2;
-    final double finalRadius = sqrt(pow(_screenSize.width / exponent, 2.3) +
-        pow(_screenSize.height / exponent, 2.3));
-    final double startRadius = 1.0;
-    double currentRadius =
-        startRadius + (finalRadius - startRadius) * _fraction;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), currentRadius, paint);
+    Rect rectDown = Rect.fromLTWH(
+        0, -45, _screenSize.width, (_screenSize.height + 45) * _fraction);
+    canvas.drawRect(rectDown, paintDown);
   }
 
   @override

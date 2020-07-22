@@ -38,7 +38,7 @@ class _AppBarComponentState extends State<AppBarComponent>
 
   @override
   dispose() {
-    _animationTitleController?.dispose();
+    _animationTitleController.dispose();
     super.dispose();
   }
 

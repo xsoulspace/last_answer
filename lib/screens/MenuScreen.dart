@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/NamedLocale.dart';
 import 'package:lastanswer/models/PagesModel.dart';
-import 'package:lastanswer/screens/ScaffoldAppBar.dart';
+import 'package:lastanswer/screens/AppPages.dart';
 // import 'package:lastanswer/entities/Answer.dart';
 import 'package:share/share.dart';
 

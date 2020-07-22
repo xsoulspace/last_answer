@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/components/CircularRevealComponent.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
@@ -14,7 +16,7 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
-  static const Duration toogleDuration = Duration(milliseconds: 350);
+  static const Duration toogleDuration = Duration(milliseconds: 300);
   AnimationController _controller;
   AnimationController _opacityController;
   Animation<double> _opacity;
@@ -24,8 +26,8 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
         vsync: this, duration: MenuDrawerState.toogleDuration);
 
     _opacityController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
-    _opacity = Tween(begin: 0.0, end: 1.0).animate(_opacityController);
+        AnimationController(vsync: this, duration: Duration(milliseconds: 280));
+    _opacity = CurveTween(curve: Curves.easeInOut).animate(_opacityController);
     super.initState();
   }
 
@@ -50,11 +52,12 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
       _isMenuScreenActive = true;
     });
     _controller.forward();
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _opacityController.forward();
-      }
-    });
+    Timer(Duration(milliseconds: 60), () => _opacityController.forward());
+
+    // _controller.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed) {
+    //   }
+    // });
   }
 
   void toggleDrawer() => _controller.isCompleted ? close() : open();
@@ -77,7 +80,8 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
             print({
               'ySliding': ySliding,
               'height': size.height,
-              'conv': _controller.value
+              'conv': _controller.value,
+              '_opacity': _opacity.value
             });
             return Stack(
               children: [
@@ -94,14 +98,16 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
                     ? Transform(
                         transform: Matrix4.identity()..translate(0, ySliding),
                         alignment: Alignment.center,
-                        child: Stack(children: [
-                          Positioned.fill(
-                              // child: _controller.isCompleted
-                              //     ?
-                              //     : Container(),
-                              child: MenuScreen())
-                        ]),
-                      )
+                        child: FadeTransition(
+                          opacity: _opacity,
+                          child: Stack(children: [
+                            Positioned.fill(
+                                // child: _controller.isCompleted
+                                //     ?
+                                //     : Container(),
+                                child: MenuScreen())
+                          ]),
+                        ))
                     : Container()
               ],
             );

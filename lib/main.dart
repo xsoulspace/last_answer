@@ -8,7 +8,7 @@ import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
-import 'package:lastanswer/screens/ScaffoldAppBar.dart';
+import 'package:lastanswer/screens/ScaffoldApp.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -116,7 +116,7 @@ class AppScaffold extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ScaffoldAppBar(),
+        '/': (context) => ScaffoldApp(),
         '/menu': (context) => MenuScreen(),
       },
     );

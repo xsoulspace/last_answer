@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/screens/ScaffoldAppBar.dart';
+import 'package:lastanswer/screens/AppPages.dart';
 
 class PagesModel extends ChangeNotifier {
   int _currentPage = AppPagesNumerated.AskScreen.index;

@@ -37,11 +37,14 @@ class MenuScreen extends StatelessWidget {
       );
     }
 
+    _gotoPage(int page) {
+      pagesModel.pageController.animateToPage(page,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
+    }
+
     _dismissAndGoToAskScreen() {
       _closeDrawer(context);
-
-      pagesModel.pageController.animateToPage(AppPagesNumerated.AskScreen.index,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
+      _gotoPage(AppPagesNumerated.AskScreen.index);
     }
 
     startButton() {
@@ -80,84 +83,104 @@ class MenuScreen extends StatelessWidget {
 
     final EdgeInsetsGeometry centerRowEdge =
         EdgeInsets.fromLTRB(28, 30, 28, 30);
-    return Material(
-        child: SafeArea(
-            child: Theme(
-                data: ThemeData(brightness: Brightness.dark),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                        onPressed: () {
-                          _closeDrawer(context);
-                        },
-                        child: Text(
-                            MainLocalizations.of(context).aboutAbstractTitle)),
-                    FlatButton(
-                        onPressed: () {
-                          _closeDrawer(context);
-                        },
-                        child: Text(MainLocalizations.of(context)
-                            .philosophyAbstractTitle)),
-                    // Padding(
-                    //   padding: EdgeInsets.only(left: 25, bottom: 30),
-                    //   child:
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Consumer<LocaleModel>(
-                            builder: (context, locale, child) {
-                          return DropdownButton<NamedLocale>(
-                            value: locale.currentNamedLocale,
-                            items: LocaleModelConsts.namedLocales
-                                .map<DropdownMenuItem<NamedLocale>>(
-                                    (namedLocale) {
-                              return DropdownMenuItem<NamedLocale>(
-                                value: namedLocale,
-                                child: Text(namedLocale.name),
-                              );
-                            }).toList(),
-                            onChanged: (NamedLocale namedLocale) async {
-                              await localeModel.switchLang(namedLocale.locale);
-                            },
-                          );
-                        })
-                      ],
-                    ),
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: centerRowEdge,
-                          child: IconButton(
-                            onPressed: () {
-                              _closeDrawer(context);
-                            },
-                            icon: Icon(Icons.arrow_back_ios),
-                          ),
-                        ),
-                        Padding(
-                          padding: centerRowEdge,
-                          child: buttonStart(),
-                        ),
-                        Padding(
-                          padding: centerRowEdge,
-                          child: SaveFile(),
-                        )
-                      ],
-                    ),
-                    Center(
-                      child: IconButton(
-                        onPressed: () {
-                          _dismissAndGoToAskScreen();
-                        },
-                        icon: Icon(Icons.home),
-                        tooltip: 'home',
+    return
+        // Material(
+        //     child: SafeArea(
+        //         child: Theme(
+        //             data: ThemeData(
+        //               brightness: Brightness.dark,
+        //               fontFamily: 'Georgia',
+        //             ),
+        //             child:
+        Card(
+      elevation: 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      margin: EdgeInsets.all(0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FlatButton(
+              onPressed: () {
+                _gotoPage(AppPagesNumerated.Philosophy.index);
+
+                _closeDrawer(context);
+              },
+              child: Text(MainLocalizations.of(context).aboutAbstractTitle)),
+          FlatButton(
+              onPressed: () {
+                _gotoPage(AppPagesNumerated.Inspire.index);
+
+                _closeDrawer(context);
+              },
+              child:
+                  Text(MainLocalizations.of(context).philosophyAbstractTitle)),
+          // Padding(
+          //   padding: EdgeInsets.only(left: 25, bottom: 30),
+          //   child:
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Consumer<LocaleModel>(builder: (context, locale, child) {
+                final textStyle =
+                    TextStyle(fontSize: 14.0, color: Colors.white);
+                return DropdownButton<NamedLocale>(
+                  value: locale.currentNamedLocale,
+                  style: textStyle,
+                  items: LocaleModelConsts.namedLocales
+                      .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
+                    return DropdownMenuItem<NamedLocale>(
+                      value: namedLocale,
+                      child: Text(
+                        namedLocale.name,
+                        style: textStyle,
                       ),
-                    ),
-                  ],
-                ))));
+                    );
+                  }).toList(),
+                  onChanged: (NamedLocale namedLocale) async {
+                    await localeModel.switchLang(namedLocale.locale);
+                  },
+                );
+              })
+            ],
+          ),
+          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: centerRowEdge,
+                child: IconButton(
+                  onPressed: () {
+                    _closeDrawer(context);
+                  },
+                  icon: Icon(Icons.arrow_back_ios),
+                ),
+              ),
+              Padding(
+                padding: centerRowEdge,
+                child: buttonStart(),
+              ),
+              Padding(
+                padding: centerRowEdge,
+                child: SaveFile(),
+              )
+            ],
+          ),
+          Center(
+            child: IconButton(
+              onPressed: () {
+                _dismissAndGoToAskScreen();
+              },
+              icon: Icon(Icons.home),
+              tooltip: 'home',
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // )));
   }
 }
 

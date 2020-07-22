@@ -262,7 +262,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                       style: TextStyle(fontSize: 14),
                       decoration: InputDecoration(
                         // contentPadding: EdgeInsets.all(2),
-                        labelStyle: TextStyle(color: ThemeColors.lightAccent),
+                        labelStyle: TextStyle(color: Colors.white),
                         fillColor: ThemeColors.lightAccent,
 
                         // border: InputBorder.none

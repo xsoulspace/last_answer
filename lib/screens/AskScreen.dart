@@ -141,7 +141,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               inputText = text;
             },
             decoration: InputDecoration(
-                labelStyle: TextStyle(color: ThemeColors.lightAccent),
+                labelStyle: TextStyle(color: Colors.white),
                 fillColor: ThemeColors.lightAccent,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(

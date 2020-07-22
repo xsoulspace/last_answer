@@ -132,6 +132,7 @@ class _AppBarComponentState extends State<AppBarComponent>
               ),
             ),
             title: currentTitle(),
+            elevation: isPhilosophyPage ? 0 : 4,
             centerTitle: true,
             actions: <Widget>[
               AnimatedSwitcher(

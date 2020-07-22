@@ -19,6 +19,10 @@ import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
 class MenuScreen extends StatelessWidget {
+  _closeDrawer(BuildContext context) {
+    MenuDrawer.of(context).close();
+  }
+
   @override
   Widget build(BuildContext context) {
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
@@ -34,7 +38,8 @@ class MenuScreen extends StatelessWidget {
     }
 
     _dismissAndGoToAskScreen() {
-      MenuDrawer.of(context).toggleDrawer();
+      _closeDrawer(context);
+
       pagesModel.pageController.animateToPage(AppPagesNumerated.AskScreen.index,
           duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
     }
@@ -73,6 +78,8 @@ class MenuScreen extends StatelessWidget {
       );
     }
 
+    final EdgeInsetsGeometry centerRowEdge =
+        EdgeInsets.fromLTRB(28, 30, 28, 30);
     return Material(
         child: SafeArea(
             child: Theme(
@@ -80,55 +87,73 @@ class MenuScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 30),
-                      child: Center(
-                        child: IconButton(
-                          onPressed: () {
-                            _dismissAndGoToAskScreen();
-                          },
-                          icon: Icon(Icons.home),
-                          tooltip: 'home',
-                        ),
-                      ),
-                    ),
+                    FlatButton(
+                        onPressed: () {
+                          _closeDrawer(context);
+                        },
+                        child: Text(
+                            MainLocalizations.of(context).aboutAbstractTitle)),
+                    FlatButton(
+                        onPressed: () {
+                          _closeDrawer(context);
+                        },
+                        child: Text(MainLocalizations.of(context)
+                            .philosophyAbstractTitle)),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 25, bottom: 30),
+                    //   child:
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            MenuDrawer.of(context).close();
-                          },
-                          icon: Icon(Icons.arrow_back_ios),
-                        ),
-                        buttonStart(),
-                        SaveFile(),
+                        Consumer<LocaleModel>(
+                            builder: (context, locale, child) {
+                          return DropdownButton<NamedLocale>(
+                            value: locale.currentNamedLocale,
+                            items: LocaleModelConsts.namedLocales
+                                .map<DropdownMenuItem<NamedLocale>>(
+                                    (namedLocale) {
+                              return DropdownMenuItem<NamedLocale>(
+                                value: namedLocale,
+                                child: Text(namedLocale.name),
+                              );
+                            }).toList(),
+                            onChanged: (NamedLocale namedLocale) async {
+                              await localeModel.switchLang(namedLocale.locale);
+                            },
+                          );
+                        })
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, top: 40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Consumer<LocaleModel>(
-                              builder: (context, locale, child) {
-                            return DropdownButton<NamedLocale>(
-                              value: locale.currentNamedLocale,
-                              items: LocaleModelConsts.namedLocales
-                                  .map<DropdownMenuItem<NamedLocale>>(
-                                      (namedLocale) {
-                                return DropdownMenuItem<NamedLocale>(
-                                  value: namedLocale,
-                                  child: Text(namedLocale.name),
-                                );
-                              }).toList(),
-                              onChanged: (NamedLocale namedLocale) async {
-                                await localeModel
-                                    .switchLang(namedLocale.locale);
-                              },
-                            );
-                          })
-                        ],
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: centerRowEdge,
+                          child: IconButton(
+                            onPressed: () {
+                              _closeDrawer(context);
+                            },
+                            icon: Icon(Icons.arrow_back_ios),
+                          ),
+                        ),
+                        Padding(
+                          padding: centerRowEdge,
+                          child: buttonStart(),
+                        ),
+                        Padding(
+                          padding: centerRowEdge,
+                          child: SaveFile(),
+                        )
+                      ],
+                    ),
+                    Center(
+                      child: IconButton(
+                        onPressed: () {
+                          _dismissAndGoToAskScreen();
+                        },
+                        icon: Icon(Icons.home),
+                        tooltip: 'home',
                       ),
                     ),
                   ],

@@ -175,7 +175,6 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     originalAnswer = answersModel.answers[index];
 
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-    LocaleModel localeModel = Provider.of<LocaleModel>(context);
     _removeAnswer() {
       return Positioned(
           top: 1,

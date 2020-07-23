@@ -32,13 +32,14 @@ class CircularRevealComponentState extends State<CircularRevealComponent>
   }
 
   @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   void reveal() {
-    print({widget.controller, 'reveal'});
+    // print({widget.controller, 'reveal'});
 
     widget.controller.forward();
   }

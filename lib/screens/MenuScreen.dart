@@ -27,7 +27,10 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
     PagesModel pagesModel = Provider.of<PagesModel>(context);
-
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.focusedChild.unfocus();
+    }
     cancelButton() {
       return FlatButton(
         onPressed: () {
@@ -83,16 +86,7 @@ class MenuScreen extends StatelessWidget {
 
     final EdgeInsetsGeometry centerRowEdge =
         EdgeInsets.fromLTRB(28, 30, 28, 30);
-    return
-        // Material(
-        //     child: SafeArea(
-        //         child: Theme(
-        //             data: ThemeData(
-        //               brightness: Brightness.dark,
-        //               fontFamily: 'Georgia',
-        //             ),
-        //             child:
-        Card(
+    return Card(
       elevation: 0,
       color: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -179,8 +173,6 @@ class MenuScreen extends StatelessWidget {
         ],
       ),
     );
-
-    // )));
   }
 }
 

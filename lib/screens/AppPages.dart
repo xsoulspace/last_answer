@@ -21,16 +21,24 @@ enum AppPagesNumerated {
 
 class _AppPagesState extends State<AppPages> {
   PageController _pageController;
+  _hideKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.focusedChild.unfocus();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    _pageController = PageController()..addListener(() => _hideKeyboard());
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController
+      ..removeListener(() => _hideKeyboard())
+      ..dispose();
     super.dispose();
   }
 

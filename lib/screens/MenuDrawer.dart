@@ -28,13 +28,14 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
     _opacityController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 280));
     _opacity = CurveTween(curve: Curves.easeInOut).animate(_opacityController);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _opacityController.dispose();
+    _controller?.dispose();
+    _opacityController?.dispose();
     super.dispose();
   }
 
@@ -64,6 +65,8 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final ySliding = ((size.height / 10) * _controller.value);
+
     return WillPopScope(
         onWillPop: () async {
           if (_controller.isCompleted) {
@@ -76,13 +79,12 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
           animation: _controller,
           child: widget.child,
           builder: (context, child) {
-            final ySliding = ((size.height / 10) * _controller.value);
-            print({
-              'ySliding': ySliding,
-              'height': size.height,
-              'conv': _controller.value,
-              '_opacity': _opacity.value
-            });
+            // print({
+            //   'ySliding': ySliding,
+            //   'height': size.height,
+            //   'conv': _controller.value,
+            //   '_opacity': _opacity.value
+            // });
             return Stack(
               children: [
                 child,
@@ -96,7 +98,7 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
                     : Container(),
                 _isMenuScreenActive
                     ? Transform(
-                        transform: Matrix4.identity()..translate(0, ySliding),
+                        transform: Matrix4.identity()..translate(0.0, ySliding),
                         alignment: Alignment.center,
                         child: FadeTransition(
                           opacity: _opacity,

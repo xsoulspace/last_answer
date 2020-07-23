@@ -21,7 +21,6 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: <Widget>[
-                    
                     Card(
                       margin: EdgeInsets.symmetric(vertical: 4),
                       child: Padding(

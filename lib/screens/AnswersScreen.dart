@@ -207,10 +207,19 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
         originalAnswer == null || originalAnswer.question == null;
     Question dropdownValue =
         (!isDropdownValueNull) ? originalAnswer.question : null;
-    double dropdownLength =
-        dropdownValue.title.getProp(localeModel.current).length.toDouble();
-    double dropdownWidth =
-        !isDropdownValueNull && dropdownLength > 5 ? 110 : 70;
+    int dropdownLengthInt =
+        dropdownValue.title.getProp(localeModel.current).length;
+    bool isDropdownLengthNull = dropdownLengthInt == null;
+
+    double dropdownWidth = (() {
+      if (isDropdownLengthNull || isDropdownValueNull) {
+        return 70.0;
+      }
+      if (dropdownLengthInt.toDouble() > 5) {
+        return 110.0;
+      }
+      return 70.0;
+    })();
     return Card(
         margin: EdgeInsets.symmetric(vertical: 4),
         child: Stack(children: <Widget>[

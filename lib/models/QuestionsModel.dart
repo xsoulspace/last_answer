@@ -11,7 +11,7 @@ class QuestionsModelConsts {
     Question(LocaleTitle('How?', 'Как?'), 2),
     Question(LocaleTitle('Where?', 'Где?'), 3),
     Question(LocaleTitle('What for?', 'Зачем?'), 4),
-    Question(LocaleTitle('For whom/what?', 'Для кого/чего?'), 5),
+    Question(LocaleTitle('For whom/ what?', 'Для кого/чего?'), 5),
     Question(LocaleTitle('What?', 'Что?'), 6),
   ];
 }

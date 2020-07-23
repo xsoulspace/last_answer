@@ -217,7 +217,7 @@ class _SaveFileState extends State<SaveFile> {
       final String answersAndQuestionsSentence = answersList.fold(
           '',
           (previousValue, element) =>
-              '$previousValue\n${element.question.title.getProp(lang)} ${element.title}; ');
+              '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
       Share.share(answersAndQuestionsSentence,
           subject: 'HTSTQ: ${answersList.first}',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);

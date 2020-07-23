@@ -78,7 +78,7 @@ class QuestionsAndInput extends StatefulWidget {
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
   String inputText;
-  Question question = QuestionsModelConsts.questions[0];
+  Question question = QuestionsModelConsts.questions[5];
 
   final TextEditingController _controller = TextEditingController();
   @override

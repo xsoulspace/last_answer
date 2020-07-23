@@ -137,8 +137,38 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     super.dispose();
   }
 
-  // Find the Scaffold in the widget tree and use it to show a SnackBar.
+  _showRemoveAnswer(BuildContext buildCtx) => showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          Consumer<LocaleModel>(builder: (context, locale, child) {
+            return AlertDialog(
+              actions: [
+                FlatButton(
+                  child: Text(MainLocalizations.of(context).cancel),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                FlatButton(
+                  child: Text(MainLocalizations.of(context).delete),
+                  onPressed: () async {
+                    if (!kIsWeb) {
+                      final snackBar = SnackBar(
+                          content: Text(MainLocalizations.of(context)
+                              .successfullyDeleted));
 
+                      Scaffold.of(buildCtx).showSnackBar(snackBar);
+                    }
+                    await answersModel.remove(originalAnswer);
+                    Navigator.of(context).pop();
+                  },
+                  color: Theme.of(context).buttonTheme.colorScheme.error,
+                )
+              ],
+              title: Text(MainLocalizations.of(context)
+                  .areYouSureYouWantToDeleteAnswer),
+              content: Text(MainLocalizations.of(context)
+                  .ifYouDeleteAnswerThereIsNoWayBack),
+            );
+          }));
   @override
   Widget build(BuildContext context) {
     answersModel = Provider.of<AnswersModel>(context);
@@ -152,50 +182,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
           right: 0,
           child: Builder(
               builder: (buildCtx) => IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              Consumer<LocaleModel>(
-                                  builder: (context, locale, child) {
-                                return AlertDialog(
-                                  actions: [
-                                    FlatButton(
-                                      child: Text(
-                                          MainLocalizations.of(context).cancel),
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                    ),
-                                    FlatButton(
-                                      child: Text(
-                                          MainLocalizations.of(context).delete),
-                                      onPressed: () async {
-                                        if (!kIsWeb) {
-                                          final snackBar = SnackBar(
-                                              content: Text(
-                                                  MainLocalizations.of(context)
-                                                      .successfullyDeleted));
-
-                                          Scaffold.of(buildCtx)
-                                              .showSnackBar(snackBar);
-                                        }
-                                        await answersModel
-                                            .remove(originalAnswer);
-                                        Navigator.of(context).pop();
-                                      },
-                                      color: Theme.of(context)
-                                          .buttonTheme
-                                          .colorScheme
-                                          .error,
-                                    )
-                                  ],
-                                  title: Text(MainLocalizations.of(context)
-                                      .areYouSureYouWantToDeleteAnswer),
-                                  content: Text(MainLocalizations.of(context)
-                                      .ifYouDeleteAnswerThereIsNoWayBack),
-                                );
-                              }));
-                    },
+                    onPressed: () => _showRemoveAnswer(buildCtx),
                     icon: Icon(Icons.delete),
                   )));
     }
@@ -207,21 +194,13 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
         originalAnswer == null || originalAnswer.question == null;
     Question dropdownValue =
         (!isDropdownValueNull) ? originalAnswer.question : null;
-    int dropdownLengthInt =
-        dropdownValue.title.getProp(localeModel.current).length;
-    bool isDropdownLengthNull = dropdownLengthInt == null;
 
     double dropdownWidth = (() {
-      if (isDropdownLengthNull || isDropdownValueNull) {
-        return 70.0;
-      }
-      if (dropdownLengthInt.toDouble() > 5) {
-        return 110.0;
-      }
-      return 70.0;
+      return 95.0;
     })();
     return Card(
         margin: EdgeInsets.symmetric(vertical: 4),
+        // color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(children: <Widget>[
           Positioned(
             top: 4,
@@ -264,28 +243,15 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                       onChanged: (String text) async => await _updateAnswer(),
                       textAlignVertical: TextAlignVertical.center,
                       controller: _controller,
-                      minLines: 1,
-                      maxLines: 7,
+                      maxLines: null,
                       keyboardType: TextInputType.multiline,
                       onEditingComplete: () async => await _updateAnswer(),
                       style: TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        // contentPadding: EdgeInsets.all(2),
                         labelStyle: TextStyle(color: Colors.white),
                         fillColor: ThemeColors.lightAccent,
-
-                        // border: InputBorder.none
-                        // focusedBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: ThemeColors.lightAccent,
-                        //   ),
-                        // ),
-                        // border: OutlineInputBorder(
-                        //     borderSide:
-                        //         BorderSide(color: ThemeColors.lightAccent)),
                       ),
                       cursorColor: Theme.of(context).accentColor,
-                      // labelText: MainLocalizations.of(context).answer
                     ),
                     onFocusChange: (hasFocus) async {
                       if (!hasFocus) {
@@ -309,6 +275,7 @@ class _AnswersList extends StatelessWidget {
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     return ListView.builder(
+        addSemanticIndexes: true,
         itemCount: answersModel.length(),
         itemBuilder: (context, index) => AnswerTextField(index));
   }

@@ -173,7 +173,8 @@ class MainLocalizationsDelegate
   const MainLocalizationsDelegate(this.overridenLocale);
 
   @override
-  bool isSupported(Locale locale) => Language.all.contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      locale != null ? Language.all.contains(locale.languageCode) : false;
 
   @override
   Future<MainLocalizations> load(Locale locale) =>

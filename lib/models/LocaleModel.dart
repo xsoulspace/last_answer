@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/entities/NamedLocale.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
@@ -36,7 +38,7 @@ class LocaleModel extends ChangeNotifier {
     String localeStr = store.getString(LocaleModelConsts.locale);
 
     if (localeStr == null || localeStr == '') {
-      if (kIsWeb) {
+      if (kIsWeb || Platform.isWindows) {
         return LocaleModelConsts.localeEN;
       }
       Intl.defaultLocale = await findSystemLocale();

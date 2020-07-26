@@ -58,7 +58,7 @@ class AnswerCard extends StatelessWidget {
   AnswerCard(this.index, this.answer);
 
   _showRemoveAnswer(BuildContext buildCtx) {
-    final answersModel = Provider.of<AnswersModel>(buildCtx);
+    final answersModel = Provider.of<AnswersModel>(buildCtx, listen: false);
     showDialog(
         context: buildCtx,
         builder: (BuildContext context) =>

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // import 'package:lastanswer/components/htmlSaveFileComponent.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/NamedLocale.dart';
+import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
@@ -14,7 +15,6 @@ import 'package:share/share.dart';
 
 // import 'package:lastanswer/components/htmlSaveFileComponent.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:provider/provider.dart';
 
@@ -53,9 +53,9 @@ class MenuScreen extends StatelessWidget {
     startButton() {
       return FlatButton(
         onPressed: () async {
-          AnswersModel model =
-              Provider.of<AnswersModel>(context, listen: false);
-          await model.clearAll();
+          AnswersModel answersModel = Provider.of<AnswersModel>(context);
+
+          await answersModel.clearAll();
           Navigator.of(context).pop();
           _dismissAndGoToAskScreen();
         },
@@ -207,11 +207,12 @@ class _SaveFileState extends State<SaveFile> {
       // await h.saveInWeb();
     }
 
-    share(BuildContext context) {
+    share(BuildContext context) async {
       final RenderBox box = context.findRenderObject();
-      AnswersModel answers = Provider.of<AnswersModel>(context);
+      AnswersModel answersModel = Provider.of<AnswersModel>(context);
 
-      List<Answer> answersList = answers.answersList;
+      List<Answer> answersList = answersModel.answersList;
+
       LocaleModel locale = Provider.of<LocaleModel>(context);
       final lang = locale.current;
       final String answersAndQuestionsSentence = answersList.fold(

@@ -22,6 +22,8 @@ class AnswersModel extends ChangeNotifier {
   }
 
   Future<void> ini() async {
+    print({'answers ini'});
+
     if (_storage == null) {
       _storage = await StorageUtil.getInstance();
     }
@@ -30,6 +32,8 @@ class AnswersModel extends ChangeNotifier {
     if (answers == null || answers == '') {
       return;
     }
+    print({'answers': answers});
+
     fromJson(jsonDecode(answers));
     notifyListeners();
   }
@@ -53,7 +57,7 @@ class AnswersModel extends ChangeNotifier {
       UnmodifiableListView(answersList.where(
           (Answer answer) => answer.question.hashCode == question.id)).toList();
 
-  Future<void> add(String answer, Question question) async {
+  Future<void> add({String answer, Question question}) async {
     int id = _answers.length;
     _answers.putIfAbsent(
         id,
@@ -66,9 +70,9 @@ class AnswersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> update(Answer oldAnswer, String newAnswer) async {
+  Future<void> update({Answer oldAnswer, String newAnswerTitle}) async {
     _answers.update(oldAnswer.id, (answer) {
-      answer.title = newAnswer;
+      answer.title = newAnswerTitle;
       return answer;
     });
     await updateAnswersStorage();

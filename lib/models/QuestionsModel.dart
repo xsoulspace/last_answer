@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/entities/LocaleTitle.dart';
 import 'package:lastanswer/entities/Question.dart';
+import 'package:provider/provider.dart';
+
+import 'LocaleModel.dart';
 
 class QuestionsModelConsts {
   static final List<Question> questions = [
@@ -30,10 +33,19 @@ class QuestionsModel extends ChangeNotifier {
     return QuestionsModelConsts.questions[position];
   }
 
-  int length() => QuestionsModelConsts.questions.length;
+  int get length => QuestionsModelConsts.questions.length;
 
   UnmodifiableListView<Question> get questions =>
       UnmodifiableListView(QuestionsModelConsts.questions);
+  List<DropdownMenuItem<Question>> get questionDropdownMenuItems =>
+      QuestionsModelConsts.questions
+          .map((protoQuestion) => DropdownMenuItem<Question>(
+                value: protoQuestion,
+                child: Consumer<LocaleModel>(
+                    builder: (context, plocaleModel, child) => Text(
+                        protoQuestion.title.getProp(plocaleModel.current))),
+              ))
+          .toList();
 
   void add(Question question) {
     QuestionsModelConsts.questions.add((question));

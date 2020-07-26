@@ -25,6 +25,7 @@ class LocaleModelConsts {
 }
 
 class LocaleModel extends ChangeNotifier {
+  bool isInitialized = false;
   Locale _locale = LocaleModelConsts.localeEN;
   StorageUtil _storage;
   _iniStorage() async {

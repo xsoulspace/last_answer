@@ -20,6 +20,9 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+# related issues
+# https://github.com/simolus3/moor/issues/691
+# https://github.com/simolus3/moor/issues/727
 dependency_overrides:
   moor:
     git:
@@ -47,6 +50,7 @@ dependencies:
   path_provider: ^1.6.11
   path: ^1.7.0
   sqlite3_flutter_libs: ^0.2.0
+  moor_flutter: ^3.1.0
 
 dev_dependencies:
   flutter_test:

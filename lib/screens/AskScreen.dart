@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lastanswer/components/QuestionsComponent.dart';
+import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/main.dart';
@@ -10,22 +13,25 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class AskScreen extends StatelessWidget {
-  Future<void> loadLocaleAndAnswers(context) async {
-    AnswersModel answersModel =
-        Provider.of<AnswersModel>(context, listen: false);
+  Future<void> loadLocaleAndAnswers(
+      {LocaleModel localeModel, AnswersModel answersModel}) async {
+    print({'initializing': localeModel.isInitialized});
 
-    if (answersModel.isInitialized) return;
-    LocaleModel localeModel = Provider.of<LocaleModel>(context);
+    if (localeModel.isInitialized) return;
+    await answersModel.ini();
+    print('initialized');
+
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
     await localeModel.switchLang(locale);
-    await answersModel.ini();
-    answersModel.isInitialized = true;
+    localeModel.isInitialized = true;
   }
 
   @override
   Widget build(BuildContext context) {
+    LocaleModel localeModel = Provider.of<LocaleModel>(context);
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
+
     return Container(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -34,9 +40,11 @@ class AskScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Center(
-                    child: !answersModel.isInitialized
+                    child: !localeModel.isInitialized
                         ? FutureBuilder(
-                            future: loadLocaleAndAnswers(context),
+                            future: loadLocaleAndAnswers(
+                                answersModel: answersModel,
+                                localeModel: localeModel),
                             builder: (BuildContext context,
                                 AsyncSnapshot<void> snapshot) {
                               switch (snapshot.connectionState) {
@@ -46,7 +54,9 @@ class AskScreen extends StatelessWidget {
                                   return CircularProgressIndicator();
                               }
                             })
-                        : LastAnswer()),
+                        : LastAnswer(
+                            answer: answersModel.lastAnswer,
+                          )),
                 QuestionsComponent(),
                 QuestionsAndInput()
               ],
@@ -55,6 +65,8 @@ class AskScreen extends StatelessWidget {
 }
 
 class LastAnswer extends StatefulWidget {
+  final Answer answer;
+  LastAnswer({this.answer});
   @override
   _LastAnswerState createState() => _LastAnswerState();
 }
@@ -63,11 +75,9 @@ class _LastAnswerState extends State<LastAnswer>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AnswersModel>(
-      builder: (context, answersModel, child) => Text(
-        answersModel.lastAnswer.title ?? '',
-        // softWrap: false,
-      ),
+    return Text(
+      widget.answer == null ? '' : widget.answer.title,
+      // softWrap: false,
     );
   }
 }
@@ -83,8 +93,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    AnswersModel answers = Provider.of<AnswersModel>(context);
-
+    AnswersModel answersModel = Provider.of<AnswersModel>(context);
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
     return Column(
       children: <Widget>[
@@ -95,7 +104,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             height: 40.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: questionsModel.length(),
+              itemCount: questionsModel.length,
               itemBuilder: (context, index) => Container(
                   width: 120.0,
                   child: RaisedButton(onPressed: () {
@@ -122,7 +131,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             IconButton(
               onPressed: () async {
                 if (inputText == null || inputText.isEmpty) return;
-                await answers.add(inputText, question);
+                await answersModel.add(answer: inputText, question: question);
                 _controller.clear();
               },
               icon: Icon(Icons.send),

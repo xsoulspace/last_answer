@@ -20,12 +20,14 @@ class HtmlSaveFileComponent {
       var decoder = Excel.createExcel();
       var sheet = 'Sheet1';
       int i = 1;
-      AnswersModel answers = Provider.of<AnswersModel>(context, listen: false);
+
       LocaleModel localeModel =
           Provider.of<LocaleModel>(context, listen: false);
 
-      List answ = answers.answersList;
-      for (Answer answer in answ) {
+      AnswersModel answersModel = Provider.of<AnswersModel>(context);
+      List<Answer> answersList = answersModel.answersList;
+
+      for (Answer answer in answersList) {
         String cellAddressA = 'A${i.toString()}';
         String cellAddressB = 'B${i.toString()}';
 

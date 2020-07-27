@@ -73,11 +73,20 @@ class AnswerCard extends StatelessWidget {
                     child: Text(MainLocalizations.of(context).delete),
                     onPressed: () async {
                       if (!kIsWeb) {
-                        final snackBar = SnackBar(
+                        try {
+                          final snackBar = SnackBar(
                             content: Text(MainLocalizations.of(context)
-                                .successfullyDeleted));
-
-                        Scaffold.of(buildCtx).showSnackBar(snackBar);
+                                .successfullyDeleted),
+                            duration: Duration(seconds: 3),
+                            action: SnackBarAction(
+                                label: 'ok',
+                                onPressed: () => Scaffold.of(buildCtx)
+                                    .removeCurrentSnackBar()),
+                          );
+                          Scaffold.of(buildCtx).showSnackBar(snackBar);
+                        } catch (e) {
+                          // its okay, if there is no snack bar
+                        }
                       }
                       await answersModel.remove(answer);
                       Navigator.of(context).pop();

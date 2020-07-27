@@ -16,13 +16,13 @@ class AskScreen extends StatelessWidget {
     print({'initializing': localeModel.isInitialized});
 
     if (localeModel.isInitialized) return;
-    await answersModel.ini();
     print('initialized');
 
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
     await localeModel.switchLang(locale);
     localeModel.isInitialized = true;
+    await answersModel.ini();
   }
 
   @override

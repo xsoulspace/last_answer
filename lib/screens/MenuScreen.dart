@@ -209,18 +209,19 @@ class _SaveFileState extends State<SaveFile> {
 
     share(BuildContext context) async {
       final RenderBox box = context.findRenderObject();
-      AnswersModel answersModel = Provider.of<AnswersModel>(context);
+      AnswersModel answersModel =
+          Provider.of<AnswersModel>(context, listen: false);
 
       List<Answer> answersList = answersModel.answersList;
 
-      LocaleModel locale = Provider.of<LocaleModel>(context);
+      LocaleModel locale = Provider.of<LocaleModel>(context, listen: false);
       final lang = locale.current;
       final String answersAndQuestionsSentence = answersList.fold(
           '',
           (previousValue, element) =>
               '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
       Share.share(answersAndQuestionsSentence,
-          subject: 'HTSTQ: ${answersList.first}',
+          subject: 'HTSTQ: ${answersList.first.title}',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }
 

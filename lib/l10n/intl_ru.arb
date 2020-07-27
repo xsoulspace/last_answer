@@ -156,7 +156,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractWhatForDescription": "Я занимаюсь разработкой этого приложения, чтоб облегчить решение сложных проблем и обмен идеями между людьми.",
+  "aboutAbstractWhatForDescription": "Я занимаюсь разработкой этого приложения, чтобы облегчить решение сложных проблем и обмен идеями между людьми.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",
     "type": "text",
@@ -174,7 +174,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Пожалуйста, оставьте отзыв в Google Play, App Store или отправьте на xsoulspace@gmail.com. Спасибо!",
+  "aboutAbstractIdeasImprovementsBugsDescription": "Пожалуйста, оставьте отзыв в Google Play или отправьте отзыв на xsoulspace@gmail.com. Спасибо!",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
     "type": "text",

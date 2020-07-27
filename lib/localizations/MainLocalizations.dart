@@ -161,7 +161,7 @@ class MainLocalizations {
           name: 'aboutAbstractIdeasImprovementsBugs',
           desc: 'Ideas Improvements Bugs');
   String get aboutAbstractIdeasImprovementsBugsDescription => Intl.message(
-      'Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!',
+      'Please leave a review in Google Play or send a message to xsoulspace@gmail.com. Thank you!',
       name: 'aboutAbstractIdeasImprovementsBugsDescription',
       desc: 'Ideas Improvements Bugs description');
 }

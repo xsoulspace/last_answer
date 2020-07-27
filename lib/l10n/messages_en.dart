@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "aboutAbstractHowDescription" : MessageLookupByLibrary.simpleMessage("You can use Philosophy Abstract to get ideas how this app can be used and in which techniques."),
     "aboutAbstractIdeasImprovementsBugs" : MessageLookupByLibrary.simpleMessage("Ideas Improvements Bugs?"),
-    "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!"),
+    "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Please leave a review in Google Play or send a message to xsoulspace@gmail.com. Thank you!"),
     "aboutAbstractTitle" : MessageLookupByLibrary.simpleMessage("About Abstract"),
     "aboutAbstractWhatFor" : MessageLookupByLibrary.simpleMessage("What for?"),
     "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("I\'m designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),

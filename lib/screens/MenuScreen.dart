@@ -221,7 +221,7 @@ class _SaveFileState extends State<SaveFile> {
           (previousValue, element) =>
               '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
       Share.share(answersAndQuestionsSentence,
-          subject: 'HTSTQ: ${answersList.first.title}',
+          subject: '${answersList.first.title}',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }
 

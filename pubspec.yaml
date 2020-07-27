@@ -20,16 +20,6 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
-# related issues
-# https://github.com/simolus3/moor/issues/691
-# https://github.com/simolus3/moor/issues/727
-dependency_overrides:
-  moor:
-    git:
-      url: https://github.com/simolus3/moor.git
-      ref: develop
-      path: moor
-
 dependencies:
   flutter:
     sdk: flutter
@@ -47,16 +37,16 @@ dependencies:
   intl: ^0.16.1
   google_fonts: ^1.1.0
   # url_launcher: ^5.4.10
-  path_provider: ^1.6.11
-  path: ^1.7.0
-  sqlite3_flutter_libs: ^0.2.0
-  moor_flutter: ^3.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  moor_generator: ^3.2.0
-  build_runner: ^1.10.0
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  image_path: "lib/assets/icon-512.png"
+  ios: true
+  android: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

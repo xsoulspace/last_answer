@@ -23,10 +23,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "aboutAbstractHowDescription" : MessageLookupByLibrary.simpleMessage("Можно использовать раздел философии, чтобы получить пример с какими техниками возможно использовать приложение."),
     "aboutAbstractIdeasImprovementsBugs" : MessageLookupByLibrary.simpleMessage("Идеи Улучшения Баги?"),
-    "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Пожалуйста, оставьте отзыв в Google Play, App Store или отправьте на xsoulspace@gmail.com. Спасибо!"),
+    "aboutAbstractIdeasImprovementsBugsDescription" : MessageLookupByLibrary.simpleMessage("Пожалуйста, оставьте отзыв в Google Play или отправьте отзыв на xsoulspace@gmail.com. Спасибо!"),
     "aboutAbstractTitle" : MessageLookupByLibrary.simpleMessage("О приложении"),
     "aboutAbstractWhatFor" : MessageLookupByLibrary.simpleMessage("Зачем?"),
-    "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("Я занимаюсь разработкой этого приложения, чтоб облегчить решение сложных проблем и обмен идеями между людьми."),
+    "aboutAbstractWhatForDescription" : MessageLookupByLibrary.simpleMessage("Я занимаюсь разработкой этого приложения, чтобы облегчить решение сложных проблем и обмен идеями между людьми."),
     "answer" : MessageLookupByLibrary.simpleMessage("Ответ"),
     "answers" : MessageLookupByLibrary.simpleMessage("Ответы"),
     "areYouSureYouWantToDeleteAnswer" : MessageLookupByLibrary.simpleMessage("Вы уверены, что хотите удалить ответ?"),

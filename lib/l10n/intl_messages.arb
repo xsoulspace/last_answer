@@ -174,7 +174,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a message in Google Play, App Store or to xsoulspace@gmail.com. Thank you!",
+  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in Google Play or send a message to xsoulspace@gmail.com. Thank you!",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
     "type": "text",

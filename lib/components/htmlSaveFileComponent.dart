@@ -24,7 +24,7 @@ class HtmlSaveFileComponent {
       LocaleModel localeModel =
           Provider.of<LocaleModel>(context, listen: false);
 
-      AnswersModel answersModel = Provider.of<AnswersModel>(context);
+      AnswersModel answersModel = Provider.of<AnswersModel>(context, listen: false);
       List<Answer> answersList = answersModel.answersList;
 
       for (Answer answer in answersList) {

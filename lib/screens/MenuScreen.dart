@@ -53,7 +53,8 @@ class MenuScreen extends StatelessWidget {
     startButton() {
       return FlatButton(
         onPressed: () async {
-          AnswersModel answersModel = Provider.of<AnswersModel>(context);
+          AnswersModel answersModel =
+              Provider.of<AnswersModel>(context, listen: false);
 
           await answersModel.clearAll();
           Navigator.of(context).pop();

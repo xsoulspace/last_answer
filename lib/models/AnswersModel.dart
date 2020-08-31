@@ -1,12 +1,12 @@
 import 'dart:collection';
+import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/LocaleTitle.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/utils/storage_util.dart';
-import 'dart:convert';
 
 class AnswersModelConsts {
   static String answers = 'answers';
@@ -20,7 +20,7 @@ class AnswersModel extends ChangeNotifier {
   AnswersModel() {
     StorageUtil.getInstance().then((inst) => _storage = inst);
   }
-
+  String currentWritingAnswer;
   Future<void> ini() async {
     print({'answers ini'});
 
@@ -32,7 +32,7 @@ class AnswersModel extends ChangeNotifier {
     if (answers == null || answers == '') {
       return;
     }
-    print({'answers': answers});
+    // print({'answers': answers});
 
     fromJson(jsonDecode(answers));
     notifyListeners();

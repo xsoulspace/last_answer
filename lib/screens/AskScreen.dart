@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lastanswer/components/QuestionsComponent.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
@@ -8,7 +9,6 @@ import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class AskScreen extends StatelessWidget {
   Future<void> loadLocaleAndAnswers(
@@ -93,6 +93,11 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    String currentText = answersModel.currentWritingAnswer;
+    if (currentText != null || currentText == '') {
+      _controller.text = currentText;
+      inputText = currentText;
+    }
     return Column(
       children: <Widget>[
         SizedBox(height: 1),
@@ -130,7 +135,8 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
               onPressed: () async {
                 if (inputText == null || inputText.isEmpty) return;
                 await answersModel.add(answer: inputText, question: question);
-                _controller.clear();
+                _controller.text = '';
+                answersModel.currentWritingAnswer = '';
               },
               icon: Icon(Icons.send),
             ),
@@ -146,6 +152,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             keyboardType: TextInputType.multiline,
             onChanged: (text) {
               inputText = text;
+              answersModel.currentWritingAnswer = text;
             },
             decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),

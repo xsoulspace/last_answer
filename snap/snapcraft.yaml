@@ -1,0 +1,41 @@
+name: last-answer
+version: 1.0.3
+summary: A tool to solve problems during project management
+description: |
+  Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
+
+  The principle of work is very simple.
+  1. You choose short question to answer.
+  2. Answer to it.
+  3. You will see your saved answer above questions pane.
+  4. You choose new question to ask for the answer above.
+
+  During process you can always see and edit all answers and questions on second page and share it by clicking share button.
+
+  5. After you complete all questions (so you just feeling that you cannot say more:)) you can share it (for example to Trello Board) and start again.
+
+  This app can be used with techniques such as 'Five whys', 'PDSA', 'Six Sigma' or just for brainstorming new ideas.
+
+  Please notice:
+  This app in testing phase, potentially it can contain some errors and bugs.
+  For ideas, improvements and bugs please write feedback or send a message to xsoulspace@gmail.com.
+
+  Hope this app will be useful for you!
+  Thank you.
+
+icon: snap/gui/icon-512.png
+
+confinement: strict
+base: core18
+grade: stable
+
+apps:
+  last-answer:
+    command: last_answer
+    extensions: [flutter-dev] # Where "master" defines which Flutter channel to use for the build
+    # using dev as it is the one channel that supports linux
+parts:
+  last-answer:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application

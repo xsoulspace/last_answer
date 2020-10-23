@@ -2,7 +2,9 @@
 [![GitHub](https://img.shields.io/github/license/xsoulspace/last-answer)](LICENSE)
 
 <div style='display:flex; flex-direction: row; justify-content: flex-start; align-items: flex-center;'>
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/last-answer)
+<a href="https://snapcraft.io/last-answer">
+  <img height='90px' alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
+</a>
 <a  href='https://play.google.com/store/apps/details?id=dev.xsoulspace.lastanswer&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height='90px' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 </div>
 ## Getting Started

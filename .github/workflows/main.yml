@@ -23,11 +23,11 @@ jobs:
           # type configurations: your user.email and user.name followed lines 
           # git config --global user.email your_email 
           # git config --global user.name your_name
-          git config --global user.email arenukvern@gmail.com
-          git config --global user.name Arenukvern
+          git config --global user.email ${{secrets.USER_EMAIL}}
+          git config --global user.name ${{secrets.USER_NAME}}
           git status
           # change this remote url for examle your remote url is then the following:
-          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/xsoulspace/xsoulspace.github.io.git
+          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/xsoulspace/last_answer.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"

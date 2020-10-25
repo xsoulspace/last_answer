@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(how_to_solve_quest LANGUAGES CXX)
+project(last_answer LANGUAGES CXX)
 
-set(BINARY_NAME "how_to_solve_quest")
+set(BINARY_NAME "last_answer")
 
 cmake_policy(SET CMP0063 NEW)
 

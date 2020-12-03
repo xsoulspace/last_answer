@@ -29,14 +29,22 @@ confinement: strict
 base: core18
 grade: stable
 
+slots:
+  dbus-last-answer:
+    interface: dbus
+    bus: session
+    name: dev.xsoulspace.last_answer # adjust accordingly
+
 apps:
   last-answer:
     command: last_answer
-    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
+    extensions: [flutter-dev] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     plugs:
       - home
       - network
+    slots:
+      - dbus-last-answer
 parts:
   last-answer:
     source: .

@@ -1,6 +1,6 @@
 # Last Answer
 
-[![GitHub](https://img.shields.io/github/license/xsoulspace/last-answer)](LICENSE)
+[![GitHub](https://img.shields.io/github/license/xsoulspace/last_answer)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 <p align="center">
@@ -29,7 +29,7 @@ This app can be used with techniques such as 'Five whys', 'PDSA', 'Six Sigma' or
 
 Please notice:
 This app in testing phase, potentially it can contain some errors and bugs.
-For ideas, improvements and bugs please write feedback or send a message to xsoulspace@gmail.com.
+For ideas, improvements and bugs please write feedback or send a message to idea@xsoulspace.dev
 
 Hope this app will be useful for you!
 Thank you.

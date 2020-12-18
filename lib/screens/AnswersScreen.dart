@@ -17,9 +17,9 @@ class AnswersScreen extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus &&
-              currentFocus.focusedChild != null) {
-            currentFocus.focusedChild.unfocus();
+          var focusedChild = currentFocus.focusedChild;
+          if (!currentFocus.hasPrimaryFocus && focusedChild != null) {
+            focusedChild.unfocus();
           }
         },
         child: Container(
@@ -67,7 +67,7 @@ class AnswerCard extends StatelessWidget {
                 actions: [
                   FlatButton(
                     child: Text(MainLocalizations.of(context).cancel),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => Navigator?.of(context).pop(),
                   ),
                   FlatButton(
                     child: Text(MainLocalizations.of(context).delete),
@@ -80,18 +80,18 @@ class AnswerCard extends StatelessWidget {
                             duration: Duration(seconds: 3),
                             action: SnackBarAction(
                                 label: 'ok',
-                                onPressed: () => Scaffold.of(buildCtx)
-                                    .removeCurrentSnackBar()),
+                                onPressed: () => ScaffoldMessenger.of(buildCtx)
+                                    .hideCurrentSnackBar()),
                           );
-                          Scaffold.of(buildCtx).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(buildCtx).showSnackBar(snackBar);
                         } catch (e) {
                           // its okay, if there is no snack bar
                         }
                       }
                       await answersModel.remove(answer);
-                      Navigator.of(context).pop();
+                      Navigator?.of(context).pop();
                     },
-                    color: Theme.of(context).buttonTheme.colorScheme.error,
+                    color: Theme.of(context).buttonTheme.colorScheme?.error,
                   )
                 ],
                 title: Text(MainLocalizations.of(context)
@@ -122,8 +122,7 @@ class AnswerCard extends StatelessWidget {
                   )));
     }
 
-    bool isDropdownValueNull = answer == null || answer.question == null;
-    Question dropdownValue = (!isDropdownValueNull) ? answer.question : null;
+    Question dropdownValue = answer.question;
 
     double dropdownWidth = (() {
       return 95.0;
@@ -144,8 +143,10 @@ class AnswerCard extends StatelessWidget {
                   value: dropdownValue,
                   isExpanded: true,
                   items: _questionsListView(context),
-                  onChanged: (Question question) async {
-                    await answersModel.updateQuestion(answer, question);
+                  onChanged: (Question? question) async {
+                    if (question != null) {
+                      await answersModel.updateQuestion(answer, question);
+                    }
                   },
                 ))),
           ),
@@ -169,7 +170,7 @@ class AnswerCard extends StatelessWidget {
 
 class AnswerTextField extends StatefulWidget {
   final Answer answer;
-  AnswerTextField({this.answer});
+  AnswerTextField({required this.answer});
   @override
   _AnswerTextFieldState createState() => _AnswerTextFieldState();
 }
@@ -190,7 +191,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
-    _controller?.dispose();
+    _controller.dispose();
 
     super.dispose();
   }

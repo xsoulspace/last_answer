@@ -6,42 +6,42 @@ import 'package:flutter/material.dart';
 // import 'package:lastanswer/components/htmlSaveFileComponent.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/NamedLocale.dart';
+// import 'package:lastanswer/components/htmlSaveFileComponent.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
+import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
+import 'package:provider/provider.dart';
 // import 'package:lastanswer/entities/Answer.dart';
 import 'package:share/share.dart';
 
-// import 'package:lastanswer/components/htmlSaveFileComponent.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:provider/provider.dart';
-
 class MenuScreen extends StatelessWidget {
   _closeDrawer(BuildContext context) {
-    MenuDrawer.of(context).close();
+    MenuDrawer.of(context)?.close();
   }
 
   @override
   Widget build(BuildContext context) {
-    LocaleModel localeModel = Provider.of<LocaleModel>(context);
-    PagesModel pagesModel = Provider.of<PagesModel>(context);
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      currentFocus.focusedChild.unfocus();
+    var localeModel = Provider.of<LocaleModel>(context);
+    var pagesModel = Provider.of<PagesModel>(context);
+    var currentFocus = FocusScope.of(context);
+    var focusedChild = currentFocus.focusedChild;
+    if (!currentFocus.hasPrimaryFocus && focusedChild != null) {
+      focusedChild.unfocus();
     }
     cancelButton() {
       return FlatButton(
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator?.of(context).pop();
         },
         child: Text(MainLocalizations.of(context).newQuestCancel),
       );
     }
 
     _gotoPage(int page) {
-      pagesModel.pageController.animateToPage(page,
+      pagesModel.pageController?.animateToPage(page,
           duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
     }
 
@@ -57,11 +57,11 @@ class MenuScreen extends StatelessWidget {
               Provider.of<AnswersModel>(context, listen: false);
 
           await answersModel.clearAll();
-          Navigator.of(context).pop();
+          Navigator?.of(context).pop();
           _dismissAndGoToAskScreen();
         },
         child: Text(MainLocalizations.of(context).newQuestStart),
-        color: Theme.of(context).buttonTheme.colorScheme.error,
+        color: Theme.of(context).buttonTheme.colorScheme?.error,
       );
     }
 
@@ -132,8 +132,8 @@ class MenuScreen extends StatelessWidget {
                       ),
                     );
                   }).toList(),
-                  onChanged: (NamedLocale namedLocale) async {
-                    await localeModel.switchLang(namedLocale.locale);
+                  onChanged: (NamedLocale? namedLocale) async {
+                    await localeModel.switchLang(namedLocale?.locale);
                   },
                 );
               })
@@ -209,7 +209,8 @@ class _SaveFileState extends State<SaveFile> {
     }
 
     share(BuildContext context) async {
-      final RenderBox box = context.findRenderObject();
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
+      if (box == null) return;
       AnswersModel answersModel =
           Provider.of<AnswersModel>(context, listen: false);
 

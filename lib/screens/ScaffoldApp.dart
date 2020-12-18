@@ -6,12 +6,15 @@ import 'package:lastanswer/screens/MenuDrawer.dart';
 class ScaffoldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget _appBar = AppBarComponent();
-    Widget _body = AppPages();
+    var _appBar = AppBarComponent(
+      appBarHeight: Size.fromHeight(0.0).height,
+    );
+    var _body = AppPages();
     return MenuDrawer(
+        key: Key('MenuDrawer'),
         child: Scaffold(
-      appBar: _appBar,
-      body: _body,
-    ));
+          appBar: _appBar,
+          body: _body,
+        ));
   }
 }

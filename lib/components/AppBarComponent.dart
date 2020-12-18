@@ -9,10 +9,8 @@ import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:provider/provider.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
-  final PreferredSizeWidget bottom;
-  AppBarComponent({required this.bottom})
-      : preferredSize =
-            Size.fromHeight(kToolbarHeight + (bottom.preferredSize.height));
+  AppBarComponent({required double appBarHeight})
+      : preferredSize = Size.fromHeight(kToolbarHeight + appBarHeight);
 
   @override
   _AppBarComponentState createState() => _AppBarComponentState();
@@ -126,7 +124,7 @@ class _AppBarComponentState extends State<AppBarComponent>
             leading: Builder(
               builder: (context) => IconButton(
                 onPressed: () {
-                  MenuDrawer.of(context).open();
+                  MenuDrawer.of(context)?.open();
                 },
                 icon: Icon(Icons.playlist_add_check),
               ),
@@ -147,7 +145,7 @@ class _AppBarComponentState extends State<AppBarComponent>
                     ? SaveFile()
                     : IconButton(
                         onPressed: () {
-                          pagesModel.pageController.animateToPage(
+                          pagesModel.pageController?.animateToPage(
                               AppPagesNumerated.AnswersScreen.index,
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeOutCirc);

@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 
 class AskScreen extends StatelessWidget {
   Future<void> loadLocaleAndAnswers(
-      {LocaleModel localeModel, AnswersModel answersModel}) async {
+      {required LocaleModel localeModel,
+      required AnswersModel answersModel}) async {
     print({'initializing': localeModel.isInitialized});
 
     if (localeModel.isInitialized) return;
@@ -47,7 +48,9 @@ class AskScreen extends StatelessWidget {
                                 AsyncSnapshot<void> snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.done:
-                                  return LastAnswer();
+                                  return LastAnswer(
+                                    answer: AnswersModelConsts.emptyAnswer,
+                                  );
                                 default:
                                   return CircularProgressIndicator();
                               }
@@ -64,7 +67,7 @@ class AskScreen extends StatelessWidget {
 
 class LastAnswer extends StatefulWidget {
   final Answer answer;
-  LastAnswer({this.answer});
+  LastAnswer({required this.answer});
   @override
   _LastAnswerState createState() => _LastAnswerState();
 }
@@ -74,7 +77,7 @@ class _LastAnswerState extends State<LastAnswer>
   @override
   Widget build(BuildContext context) {
     return Text(
-      widget.answer == null ? '' : widget.answer.title,
+      widget.answer.title,
       // softWrap: false,
     );
   }
@@ -85,7 +88,7 @@ class QuestionsAndInput extends StatefulWidget {
 }
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
-  String inputText;
+  String inputText = '';
   Question question = QuestionsModelConsts.questions[5];
 
   final TextEditingController _controller = TextEditingController();
@@ -94,7 +97,7 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
     String currentText = answersModel.currentWritingAnswer;
-    if (currentText != null || currentText == '') {
+    if (currentText.isEmpty) {
       _controller.text = currentText;
       inputText = currentText;
     }
@@ -116,10 +119,10 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                     });
                   }, child:
                       Consumer<LocaleModel>(builder: (context, locale, child) {
-                    return Text(
-                      questionsModel.questions[index].title
-                          .getProp(locale.current),
-                    );
+                    return Text(questionsModel.questions[index].title
+                            .getProp(locale.current) ??
+                        // FIXME: can be broken
+                        '');
                   }))),
             )),
         SizedBox(height: 10),
@@ -129,11 +132,13 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Consumer<LocaleModel>(builder: (context, locale, child) {
-              return Text(question.title.getProp(locale.current));
+              return Text(question.title.getProp(locale.current) ?? ''
+                  // FIXME: can be broken
+                  );
             }),
             IconButton(
               onPressed: () async {
-                if (inputText == null || inputText.isEmpty) return;
+                if (inputText.isEmpty) return;
                 await answersModel.add(answer: inputText, question: question);
                 _controller.text = '';
                 answersModel.currentWritingAnswer = '';
@@ -159,11 +164,12 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                 fillColor: ThemeColors.lightAccent,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: ThemeColors.lightAccent,
+                    color: ThemeColors.lightAccent ?? Colors.white,
                   ),
                 ),
                 border: OutlineInputBorder(
-                    borderSide: BorderSide(color: ThemeColors.lightAccent)),
+                    borderSide: BorderSide(
+                        color: ThemeColors.lightAccent ?? Colors.white)),
                 labelText: MainLocalizations.of(context).answer),
             cursorColor: Theme.of(context).accentColor,
           );

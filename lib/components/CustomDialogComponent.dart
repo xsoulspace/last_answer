@@ -14,10 +14,10 @@ class CustomDialog extends StatelessWidget {
   final Widget rightButton, leftButton;
 
   CustomDialog({
-    @required this.title,
-    @required this.description,
-    @required this.rightButton,
-    this.leftButton,
+    required this.title,
+    required this.description,
+    required this.rightButton,
+    required this.leftButton,
   });
 
   @override

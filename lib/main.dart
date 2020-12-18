@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
@@ -10,7 +11,6 @@ import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:lastanswer/screens/ScaffoldApp.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class ThemeColors {
   static final lightAccent = Colors.lightGreen[50];
@@ -54,7 +54,9 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
           if (snapshot.connectionState == ConnectionState.done) {
             // print('connection done ${snapshot.data.toString()}');
             MainLocalizationsDelegate _localeOverrideDelegate =
-                MainLocalizationsDelegate(snapshot.data);
+                MainLocalizationsDelegate(
+                    overridenLocale:
+                        snapshot.data ?? LocaleModelConsts.localeEN);
             return scaffoldApp(context, _localeOverrideDelegate);
           } else {
             return _circularSpinner();

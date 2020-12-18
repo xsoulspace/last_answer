@@ -6,9 +6,9 @@ import 'package:lastanswer/screens/MenuScreen.dart';
 
 class MenuDrawer extends StatefulWidget {
   final Widget child;
-  const MenuDrawer({Key key, @required this.child}) : super(key: key);
+  const MenuDrawer({required Key key, required this.child}) : super(key: key);
 
-  static MenuDrawerState of(BuildContext context) =>
+  static MenuDrawerState? of(BuildContext context) =>
       context.findAncestorStateOfType<MenuDrawerState>();
 
   @override
@@ -17,9 +17,10 @@ class MenuDrawer extends StatefulWidget {
 
 class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
   static const Duration toogleDuration = Duration(milliseconds: 300);
-  AnimationController _controller;
-  AnimationController _opacityController;
-  Animation<double> _opacity;
+  late AnimationController _controller;
+  late AnimationController _opacityController;
+  late Animation<double> _opacity;
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -34,8 +35,8 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller?.dispose();
-    _opacityController?.dispose();
+    _controller.dispose();
+    _opacityController.dispose();
     super.dispose();
   }
 
@@ -85,11 +86,16 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
             //   'conv': _controller.value,
             //   '_opacity': _opacity.value
             // });
+            if (child == null) {
+              print('MenuDrawer AnimatedBuilder child == null!');
+              return Container();
+            }
             return Stack(
               children: [
                 child,
                 CircularRevealComponent(
                   controller: _controller,
+                  key: Key('MenuDrawer-AnimatedBuilder-CircularReveal'),
                 ),
                 _isMenuScreenActive
                     ? ModalBarrier(

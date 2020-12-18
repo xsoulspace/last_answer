@@ -73,8 +73,9 @@ class _InspirationAbstractState extends State<InspirationAbstract> {
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
-                                  LocaleTitle('How?', 'Как?')
-                                      .getProp(locale.current),
+                                  LocaleTitle(en: 'How?', ru: 'Как?')
+                                          .getProp(locale.current) ??
+                                      'How?',
                                 );
                               }),
                             ),

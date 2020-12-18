@@ -35,8 +35,10 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
-                                  LocaleTitle('What?', 'Что?')
-                                      .getProp(locale.current),
+                                  LocaleTitle(en: 'What?', ru: 'Что?')
+                                          .getProp(locale.current) ??
+                                      '',
+                                  // FIXME: replace question to const
                                 );
                               }),
                             ),
@@ -67,8 +69,10 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
-                                  LocaleTitle('Why?', 'Почему?')
-                                      .getProp(locale.current),
+                                  LocaleTitle(en: 'Why?', ru: 'Почему?')
+                                          .getProp(locale.current) ??
+                                      '',
+                                  // FIXME: replace question to const
                                 );
                               }),
                             ),
@@ -125,8 +129,10 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
-                                  LocaleTitle('Why?', 'Почему?')
-                                      .getProp(locale.current),
+                                  LocaleTitle(en: 'Why?', ru: 'Почему?')
+                                          .getProp(locale.current) ??
+                                      '',
+                                  // FIXME: replace question to const
                                 );
                               }),
                             ),
@@ -183,8 +189,10 @@ class _PhilosophyAbstractState extends State<PhilosophyAbstract> {
                               child: Consumer<LocaleModel>(
                                   builder: (context, locale, child) {
                                 return SelectableText(
-                                  LocaleTitle('Why?', 'Почему?')
-                                      .getProp(locale.current),
+                                  LocaleTitle(en: 'Why?', ru: 'Почему?')
+                                          .getProp(locale.current) ??
+                                      '',
+                                  // FIXME: replace question to const
                                 );
                               }),
                             ),

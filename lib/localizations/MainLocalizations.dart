@@ -181,10 +181,10 @@ class MainLocalizationsDelegate
     extends LocalizationsDelegate<MainLocalizations> {
   final Locale overridenLocale;
 
-  const MainLocalizationsDelegate(this.overridenLocale);
+  const MainLocalizationsDelegate({required this.overridenLocale});
 
   @override
-  bool isSupported(Locale locale) =>
+  bool isSupported(Locale? locale) =>
       locale != null ? Language.all.contains(locale.languageCode) : false;
 
   @override

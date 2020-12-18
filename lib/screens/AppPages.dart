@@ -20,11 +20,12 @@ enum AppPagesNumerated {
 }
 
 class _AppPagesState extends State<AppPages> {
-  PageController _pageController;
+  late PageController _pageController;
   _hideKeyboard() {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      currentFocus.focusedChild.unfocus();
+    var currentFocus = FocusScope.of(context);
+    var focusedChild = currentFocus.focusedChild;
+    if (!currentFocus.hasPrimaryFocus && focusedChild != null) {
+      focusedChild.unfocus();
     }
   }
 

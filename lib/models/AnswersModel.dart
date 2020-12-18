@@ -4,32 +4,29 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/entities/Answer.dart';
-import 'package:lastanswer/entities/LocaleTitle.dart';
 import 'package:lastanswer/entities/Question.dart';
-import 'package:lastanswer/utils/storage_util.dart';
+import 'package:lastanswer/models/QuestionsModel.dart';
+import 'package:lastanswer/models/StorageMixin.dart';
 
 class AnswersModelConsts {
   static String answers = 'answers';
+  static Answer emptyAnswer =
+      Answer(id: 0, question: QuestionsModelConsts.questions.first, title: '');
 }
 
-class AnswersModel extends ChangeNotifier {
+class AnswersModel extends ChangeNotifier with StorageMixin {
   final Map<int, Answer> _answers = {};
   bool isInitialized = false;
   List<Answer> get answersList => _answers.values.toList();
-  StorageUtil _storage;
-  AnswersModel() {
-    StorageUtil.getInstance().then((inst) => _storage = inst);
-  }
-  String currentWritingAnswer;
+
+  String currentWritingAnswer = '';
+
   Future<void> ini() async {
     print({'answers ini'});
-
-    if (_storage == null) {
-      _storage = await StorageUtil.getInstance();
-    }
-    String answers = (_storage.getString(AnswersModelConsts.answers) ?? '');
+    String answers =
+        await (await storage).getString(AnswersModelConsts.answers);
     // print('answers, $answers');
-    if (answers == null || answers == '') {
+    if (answers == '') {
       return;
     }
     // print({'answers': answers});
@@ -40,37 +37,39 @@ class AnswersModel extends ChangeNotifier {
 
   Answer getById(int id) =>
       answersList.firstWhere((item) => item.hashCode == id);
-  Answer getPosition(int position) {
+  // FIXME: remove function if it is not needed
+  Answer? getPosition(int position) {
     return _answers[position];
   }
 
   Answer get lastAnswer {
     return answersList.length > 0
         ? answersList.last
-        : Answer('', Question(LocaleTitle('', ''), 0), 0);
+        : AnswersModelConsts.emptyAnswer;
   }
 
   int length() => _answers.length;
 
   UnmodifiableListView<Answer> get answers => UnmodifiableListView(answersList);
-  UnmodifiableListView<Answer> getAnswersByType(Question question) =>
+  List<Answer> getAnswersByType(Question question) =>
       UnmodifiableListView(answersList.where(
           (Answer answer) => answer.question.hashCode == question.id)).toList();
 
-  Future<void> add({String answer, Question question}) async {
+  Future<void> add({required String answer, required Question question}) async {
     int id = _answers.length;
     _answers.putIfAbsent(
         id,
         () => Answer(
-              answer,
-              question,
-              id,
+              title: answer,
+              question: question,
+              id: id,
             ));
     await updateAnswersStorage();
     notifyListeners();
   }
 
-  Future<void> update({Answer oldAnswer, String newAnswerTitle}) async {
+  Future<void> update(
+      {required Answer oldAnswer, required String newAnswerTitle}) async {
     _answers.update(oldAnswer.id, (answer) {
       answer.title = newAnswerTitle;
       return answer;
@@ -100,13 +99,13 @@ class AnswersModel extends ChangeNotifier {
     _answers.clear();
     // clearing storage
     // print('cleaning storage');
-    await _storage.putString(AnswersModelConsts.answers, '');
+    await (await storage).putString(AnswersModelConsts.answers, '');
     notifyListeners();
   }
 
   Future<void> updateAnswersStorage() async {
     String json = jsonEncode(toJson());
-    await _storage.putString(AnswersModelConsts.answers, json);
+    await (await storage).putString(AnswersModelConsts.answers, json);
   }
 
   toJson() => answersList.map((answer) => answer.toJson()).toList();

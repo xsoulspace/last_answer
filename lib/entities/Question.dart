@@ -3,7 +3,7 @@ import 'package:lastanswer/entities/LocaleTitle.dart';
 class Question {
   LocaleTitle title;
   int id;
-  Question(this.title, this.id);
+  Question({required this.title, required this.id});
 
   @override
   int get hashCode => id;

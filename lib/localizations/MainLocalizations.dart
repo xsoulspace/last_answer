@@ -14,8 +14,12 @@ class Language {
 
 class MainLocalizations {
   static Future<MainLocalizations> load(Locale locale) {
-    final String name =
-        locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    final String name = (() {
+      var countryCode = locale.countryCode;
+      if (countryCode == null) return locale.languageCode;
+      return countryCode.isEmpty ? locale.languageCode : locale.toString();
+    })();
+
     // print('main localizaions $name, $locale');
     final String localeName = Intl.canonicalizedLocale(name);
     // print('main localizaions $localeName');
@@ -28,7 +32,14 @@ class MainLocalizations {
   }
 
   static MainLocalizations of(BuildContext context) {
-    return Localizations.of<MainLocalizations>(context, MainLocalizations);
+    var mainLocalization =
+        Localizations.of<MainLocalizations>(context, MainLocalizations);
+    if (mainLocalization == null) {
+      throw Exception(
+          'no resources object of the given type exists within the given context for MainLocalizations');
+    }
+
+    return mainLocalization;
   }
 
   String get answers {

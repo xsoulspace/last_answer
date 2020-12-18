@@ -4,7 +4,7 @@ import 'package:lastanswer/components/CircularRevealPainter.dart';
 
 class CircularRevealComponent extends StatefulWidget {
   final AnimationController controller;
-  
+
   CircularRevealComponent({required Key key, required this.controller})
       : super(key: key);
 
@@ -17,8 +17,9 @@ class CircularRevealComponent extends StatefulWidget {
 
 class CircularRevealComponentState extends State<CircularRevealComponent>
     with SingleTickerProviderStateMixin {
-  Animation _animation;
-  Animation _opacityAnimation;
+  late Animation _animation;
+  late Animation<double> _opacityAnimation;
+
   double _fraction = 0.0;
   @override
   void initState() {

@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
+import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
-import 'package:lastanswer/screens/AppPages.dart';
 import 'package:provider/provider.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
-  AppBarComponent({this.bottom})
-      : preferredSize = Size.fromHeight(
-            kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
+  final PreferredSizeWidget bottom;
+  AppBarComponent({required this.bottom})
+      : preferredSize =
+            Size.fromHeight(kToolbarHeight + (bottom.preferredSize.height));
 
   @override
   _AppBarComponentState createState() => _AppBarComponentState();
-  final PreferredSizeWidget bottom;
 
   @override
   final Size preferredSize;
@@ -23,8 +23,9 @@ class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarComponentState extends State<AppBarComponent>
     with TickerProviderStateMixin {
-  AnimationController _animationTitleController;
-  Animation<double> _animateTitle;
+  late AnimationController _animationTitleController;
+  late Animation<double> _animateTitle;
+
   @override
   initState() {
     super.initState();
@@ -49,7 +50,8 @@ class _AppBarComponentState extends State<AppBarComponent>
     return pagesModel.currentPage == AppPagesNumerated.AnswersScreen.index;
   }
 
-  int _previousPageIndex;
+  int _previousPageIndex = AppPagesNumerated.AskScreen.index;
+
   Widget currentTitle() {
     String title(PagesModel pagesModel) {
       final isPhilosophyPage =

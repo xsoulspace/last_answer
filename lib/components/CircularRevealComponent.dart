@@ -4,9 +4,11 @@ import 'package:lastanswer/components/CircularRevealPainter.dart';
 
 class CircularRevealComponent extends StatefulWidget {
   final AnimationController controller;
-  CircularRevealComponent({Key key, @required this.controller})
+  
+  CircularRevealComponent({required Key key, required this.controller})
       : super(key: key);
-  static CircularRevealComponentState of(BuildContext context) =>
+
+  static CircularRevealComponentState? of(BuildContext context) =>
       context.findAncestorStateOfType<CircularRevealComponentState>();
 
   @override

@@ -9,7 +9,7 @@ import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:provider/provider.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
-  AppBarComponent({required appBarHeight})
+  AppBarComponent({required double appBarHeight})
       : preferredSize = Size.fromHeight(kToolbarHeight + appBarHeight);
 
   @override

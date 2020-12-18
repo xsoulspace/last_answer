@@ -7,7 +7,7 @@ class ScaffoldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _appBar = AppBarComponent(
-      appBarHeight: Size.fromHeight(100.0),
+      appBarHeight: Size.fromHeight(0.0).height,
     );
     var _body = AppPages();
     return MenuDrawer(

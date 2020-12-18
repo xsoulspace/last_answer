@@ -4,7 +4,7 @@ class Answer {
   String title;
   Question question;
   int id;
-  Answer(this.title, this.question, this.id);
+  Answer({required this.title, required this.question, required this.id});
 
   @override
   int get hashCode => id;

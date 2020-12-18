@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:lastanswer/entities/NamedLocale.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/utils/storage_util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
+import 'package:lastanswer/entities/NamedLocale.dart';
+import 'package:lastanswer/localizations/MainLocalizations.dart';
+import 'package:lastanswer/models/StorageMixin.dart';
+import 'package:lastanswer/utils/storage_util.dart';
 
 class LocaleModelConsts {
   static const locale = 'locale';
@@ -24,21 +25,15 @@ class LocaleModelConsts {
   ];
 }
 
-class LocaleModel extends ChangeNotifier {
+class LocaleModel extends ChangeNotifier with StorageMixin {
   bool isInitialized = false;
   Locale _locale = LocaleModelConsts.localeEN;
-  StorageUtil _storage;
-  _iniStorage() async {
-    if (_storage == null) {
-      _storage = await StorageUtil.getInstance();
-    }
-  }
 
   static Future<Locale> loadSavedLocale() async {
     StorageUtil store = await StorageUtil.getInstance();
-    String localeStr = store.getString(LocaleModelConsts.locale);
+    String localeStr = await store.getString(LocaleModelConsts.locale);
 
-    if (localeStr == null || localeStr == '') {
+    if (localeStr == '') {
       if (kIsWeb || Platform.isWindows) {
         return LocaleModelConsts.localeEN;
       }
@@ -59,11 +54,12 @@ class LocaleModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> switchLang(Locale locale) async {
-    await _iniStorage();
-    await _storage.putString(LocaleModelConsts.locale, locale.languageCode);
-    MainLocalizations.load(locale);
-    _locale = locale;
+  Future<void> switchLang(Locale? locale) async {
+    var fixedLocale = LocaleModelConsts.localeEN;
+    (await storage)
+        .putString(LocaleModelConsts.locale, fixedLocale.languageCode);
+    MainLocalizations.load(fixedLocale);
+    _locale = fixedLocale;
     notifyListeners();
   }
 

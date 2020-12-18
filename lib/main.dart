@@ -55,7 +55,8 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
             // print('connection done ${snapshot.data.toString()}');
             MainLocalizationsDelegate _localeOverrideDelegate =
                 MainLocalizationsDelegate(
-                    snapshot.data ?? LocaleModelConsts.localeEN);
+                    overridenLocale:
+                        snapshot.data ?? LocaleModelConsts.localeEN);
             return scaffoldApp(context, _localeOverrideDelegate);
           } else {
             return _circularSpinner();

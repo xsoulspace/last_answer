@@ -1,4 +1,4 @@
-name: Flutter Web
+name: Flutter Web Build
 on:
   push:
     branches:
@@ -13,10 +13,10 @@ jobs:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'dev'
+          channel: "dev"
       - run: flutter config --enable-web
       - run: flutter pub get
-      - run: flutter build web --release
+      - run: flutter build web --release --no-sound-null-safety
       - run: |
           cd build/web
           git init

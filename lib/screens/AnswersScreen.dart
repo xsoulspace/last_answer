@@ -27,8 +27,8 @@ class AnswersScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: _AnswersList(),
+                  padding: EdgeInsets.all(5),
+                  child: AnswersList(),
                 ),
               ),
             ],
@@ -37,16 +37,17 @@ class AnswersScreen extends StatelessWidget {
   }
 }
 
-class _AnswersList extends StatelessWidget {
+class AnswersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AnswersModel answersModel = Provider.of<AnswersModel>(context);
 
     return ListView.builder(
         addSemanticIndexes: true,
+        reverse: true,
         itemCount: answersModel.answers.length,
         itemBuilder: (context, index) {
-          final answer = answersModel.answers[index];
+          final answer = answersModel.answersReversed[index];
           return AnswerCard(index, answer);
         });
   }
@@ -77,7 +78,9 @@ class AnswerCard extends StatelessWidget {
                           final snackBar = SnackBar(
                             content: Text(MainLocalizations.of(context)
                                 .successfullyDeleted),
-                            duration: Duration(seconds: 3),
+                            duration: Duration(
+                              seconds: 4,
+                            ),
                             action: SnackBarAction(
                                 label: 'ok',
                                 onPressed: () => ScaffoldMessenger.of(buildCtx)
@@ -118,7 +121,10 @@ class AnswerCard extends StatelessWidget {
           child: Builder(
               builder: (buildCtx) => IconButton(
                     onPressed: () => _showRemoveAnswer(buildCtx),
-                    icon: Icon(Icons.delete),
+                    icon: Icon(
+                      Icons.close,
+                      size: 10,
+                    ),
                   )));
     }
 

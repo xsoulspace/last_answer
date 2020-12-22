@@ -12,7 +12,9 @@ import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/screens/AppPages.dart';
+import 'package:lastanswer/screens/InspirationAbstractScreen.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
+import 'package:lastanswer/screens/PhilosophyAbstractScreen.dart';
 import 'package:provider/provider.dart';
 // import 'package:lastanswer/entities/Answer.dart';
 import 'package:share/share.dart';
@@ -94,19 +96,35 @@ class MenuScreen extends StatelessWidget {
       margin: EdgeInsets.all(0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           FlatButton(
               onPressed: () {
-                _gotoPage(AppPagesNumerated.Philosophy.index);
-
-                _closeDrawer(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Scaffold(
+                      appBar: AppBar(
+                        title: Text(
+                            MainLocalizations.of(context).aboutAbstractTitle),
+                      ),
+                      body: InspirationAbstract());
+                }));
               },
               child: Text(MainLocalizations.of(context).aboutAbstractTitle)),
           FlatButton(
               onPressed: () {
-                _gotoPage(AppPagesNumerated.Inspire.index);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  //   return MainLocalizations.of(context).philosophyAbstractTitle;
+                  // case 2:
+                  //   return MainLocalizations.of(context).aboutAbstractTitle;
 
-                _closeDrawer(context);
+                  return Scaffold(
+                      appBar: AppBar(
+                        title: Text(MainLocalizations.of(context)
+                            .philosophyAbstractTitle),
+                      ),
+                      body: PhilosophyAbstract());
+                }));
               },
               child:
                   Text(MainLocalizations.of(context).philosophyAbstractTitle)),

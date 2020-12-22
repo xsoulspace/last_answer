@@ -8,60 +8,55 @@ import 'package:lastanswer/main.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
+import 'package:lastanswer/screens/AnswersScreen.dart';
 import 'package:provider/provider.dart';
 
 class AskScreen extends StatelessWidget {
   Future<void> loadLocaleAndAnswers(
       {required LocaleModel localeModel,
       required AnswersModel answersModel}) async {
-    print({'initializing': localeModel.isInitialized});
-
     if (localeModel.isInitialized) return;
-    print('initialized');
 
     List<String> listLocale = Intl.defaultLocale.split("_");
     Locale locale = Locale(listLocale[0], listLocale[1]);
     await localeModel.switchLang(locale);
-    localeModel.isInitialized = true;
     await answersModel.ini();
+
+    localeModel.isInitialized = true;
   }
 
   @override
   Widget build(BuildContext context) {
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
-
     return Container(
         padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Center(
-                    child: !localeModel.isInitialized
-                        ? FutureBuilder(
-                            future: loadLocaleAndAnswers(
-                                answersModel: answersModel,
-                                localeModel: localeModel),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<void> snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.done:
-                                  return LastAnswer(
-                                    answer: AnswersModelConsts.emptyAnswer,
-                                  );
-                                default:
-                                  return CircularProgressIndicator();
-                              }
-                            })
-                        : LastAnswer(
-                            answer: answersModel.lastAnswer,
-                          )),
-                QuestionsComponent(),
-                QuestionsAndInput()
-              ],
-            )));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: AnswersList(),
+              ),
+            ),
+            !localeModel.isInitialized
+                ? FutureBuilder(
+                    future: loadLocaleAndAnswers(
+                        answersModel: answersModel, localeModel: localeModel),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          return QuestionsComponent();
+                        default:
+                          return CircularProgressIndicator();
+                      }
+                    })
+                : QuestionsComponent(),
+            QuestionsAndInput()
+          ],
+        ));
   }
 }
 

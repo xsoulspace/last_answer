@@ -16,9 +16,15 @@ class AnswersModelConsts {
 
 class AnswersModel extends ChangeNotifier with StorageMixin {
   final Map<int, Answer> _answers = {};
-  bool isInitialized = false;
+  UnmodifiableListView<Answer> get answers => UnmodifiableListView(answersList);
+  List<Answer> get answersReversed => answersList.reversed.toList();
   List<Answer> get answersList => _answers.values.toList();
 
+  List<Answer> getAnswersByType(Question question) =>
+      UnmodifiableListView(answersList.where(
+          (Answer answer) => answer.question.hashCode == question.id)).toList();
+
+  bool isInitialized = false;
   String currentWritingAnswer = '';
 
   Future<void> ini() async {
@@ -49,11 +55,6 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
   }
 
   int length() => _answers.length;
-
-  UnmodifiableListView<Answer> get answers => UnmodifiableListView(answersList);
-  List<Answer> getAnswersByType(Question question) =>
-      UnmodifiableListView(answersList.where(
-          (Answer answer) => answer.question.hashCode == question.id)).toList();
 
   Future<void> add({required String answer, required Question question}) async {
     int id = _answers.length;

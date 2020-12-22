@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/models/PagesModel.dart';
-import 'package:lastanswer/screens/AnswersScreen.dart';
 import 'package:lastanswer/screens/AskScreen.dart';
 import 'package:lastanswer/screens/InspirationAbstractScreen.dart';
 import 'package:lastanswer/screens/PhilosophyAbstractScreen.dart';
@@ -53,7 +52,7 @@ class _AppPagesState extends State<AppPages> {
       onPageChanged: (pageNumber) => pagesModel.setPageInt(pageNumber),
       children: [
         AskScreen(),
-        AnswersScreen(),
+        // AnswersScreen(),
         PhilosophyAbstract(),
         InspirationAbstract(),
       ],

@@ -102,6 +102,12 @@ class AppScaffold extends StatelessWidget {
       theme: ThemeData(
         // Define the default brightness and colors.
         brightness: Brightness.dark,
+        snackBarTheme: SnackBarThemeData(
+            elevation: 8,
+            backgroundColor: Color(0xFF323232),
+            actionTextColor: Colors.white,
+            contentTextStyle: TextStyle(color: Colors.white),
+            disabledActionTextColor: Colors.white),
         primaryColor: Colors.lightGreen[800],
         accentColor: Colors.lightGreen[800],
 

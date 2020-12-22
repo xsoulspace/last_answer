@@ -5,7 +5,6 @@ import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
-import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:provider/provider.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
@@ -71,13 +70,13 @@ class _AppBarComponentState extends State<AppBarComponent>
       switch (pagesModel.currentPage) {
         case 0:
           return MainLocalizations.of(context).lastAnswer;
-        case 1:
-          FocusScope.of(context).requestFocus(new FocusNode());
-          return MainLocalizations.of(context).answers;
-        case 2:
-          return MainLocalizations.of(context).philosophyAbstractTitle;
-        case 3:
-          return MainLocalizations.of(context).aboutAbstractTitle;
+        // case 1:
+        //   FocusScope.of(context).requestFocus(new FocusNode());
+        //   return MainLocalizations.of(context).answers;
+        // case 1:
+        //   return MainLocalizations.of(context).philosophyAbstractTitle;
+        // case 2:
+        //   return MainLocalizations.of(context).aboutAbstractTitle;
         // return MainLocalizations.of(context).lastAnswer;
       }
       return '';
@@ -114,7 +113,6 @@ class _AppBarComponentState extends State<AppBarComponent>
     _animationTitleController.forward();
     return Consumer<PagesModel>(builder: (context, pagesModel, child) {
       final isPhilosophyPage = getIsPhilophyAndInspire(pagesModel);
-      final isAnswersPage = getIsAnswers(pagesModel);
       return FadeTransition(
           opacity: _animateTitle,
           child: AppBar(
@@ -132,28 +130,7 @@ class _AppBarComponentState extends State<AppBarComponent>
             title: currentTitle(),
             elevation: isPhilosophyPage ? 0 : 4,
             centerTitle: true,
-            actions: <Widget>[
-              AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                transitionBuilder:
-                    (Widget child, Animation<double> animation) =>
-                        ScaleTransition(
-                  scale: animation,
-                  child: child,
-                ),
-                child: isAnswersPage
-                    ? SaveFile()
-                    : IconButton(
-                        onPressed: () {
-                          pagesModel.pageController?.animateToPage(
-                              AppPagesNumerated.AnswersScreen.index,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeOutCirc);
-                        },
-                        icon: Icon(Icons.import_contacts),
-                      ),
-              )
-            ],
+            actions: [],
           ));
     });
   }

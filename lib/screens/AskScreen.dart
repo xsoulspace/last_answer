@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lastanswer/components/QuestionsComponent.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
@@ -40,20 +39,19 @@ class AskScreen extends StatelessWidget {
                 child: AnswersList(),
               ),
             ),
-            !localeModel.isInitialized
-                ? FutureBuilder(
-                    future: loadLocaleAndAnswers(
-                        answersModel: answersModel, localeModel: localeModel),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<void> snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.done:
-                          return QuestionsComponent();
-                        default:
-                          return CircularProgressIndicator();
-                      }
-                    })
-                : QuestionsComponent(),
+            if (!localeModel.isInitialized)
+              FutureBuilder(
+                  future: loadLocaleAndAnswers(
+                      answersModel: answersModel, localeModel: localeModel),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<void> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        return Container();
+                      default:
+                        return CircularProgressIndicator();
+                    }
+                  }),
             QuestionsAndInput()
           ],
         ));

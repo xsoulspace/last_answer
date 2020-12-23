@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:lastanswer/components/CircularRevealComponent.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
+import 'package:lastanswer/widgets/CircularProgress.dart';
 
 class MenuDrawer extends StatefulWidget {
   final Widget child;
@@ -93,7 +93,7 @@ class MenuDrawerState extends State<MenuDrawer> with TickerProviderStateMixin {
             return Stack(
               children: [
                 child,
-                CircularRevealComponent(
+                CircularProgress(
                   controller: _controller,
                   key: Key('MenuDrawer-AnimatedBuilder-CircularReveal'),
                 ),

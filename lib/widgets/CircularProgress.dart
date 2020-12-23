@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lastanswer/components/CircularRevealPainter.dart';
+import 'package:lastanswer/widgets/CircularRevealPainter.dart';
 
-class CircularRevealComponent extends StatefulWidget {
+class CircularProgress extends StatefulWidget {
   final AnimationController controller;
 
-  CircularRevealComponent({required Key key, required this.controller})
+  CircularProgress({required Key key, required this.controller})
       : super(key: key);
 
-  static CircularRevealComponentState? of(BuildContext context) =>
-      context.findAncestorStateOfType<CircularRevealComponentState>();
+  static _CircularProgressState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_CircularProgressState>();
 
   @override
-  CircularRevealComponentState createState() => CircularRevealComponentState();
+  _CircularProgressState createState() => _CircularProgressState();
 }
 
-class CircularRevealComponentState extends State<CircularRevealComponent>
+class _CircularProgressState extends State<CircularProgress>
     with SingleTickerProviderStateMixin {
   late Animation _animation;
   late Animation<double> _opacityAnimation;

@@ -2,11 +2,10 @@
 
 // import 'package:universal_html/html.dart';
 // import 'dart:html' as html;
-class HtmlSaveFileComponent {
-  final context;
 
-  HtmlSaveFileComponent(this.context);
+import 'package:flutter/widgets.dart';
 
+class HtmlSaveFileButton extends StatelessWidget {
   saveInWeb() async {
     try {
       // var decoder = Excel.createExcel();
@@ -47,5 +46,10 @@ class HtmlSaveFileComponent {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

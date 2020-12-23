@@ -7,18 +7,18 @@ import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
 import 'package:provider/provider.dart';
 
-class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
-  AppBarComponent({required double appBarHeight})
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
+  CustomAppBar({required double appBarHeight})
       : preferredSize = Size.fromHeight(kToolbarHeight + appBarHeight);
 
   @override
-  _AppBarComponentState createState() => _AppBarComponentState();
+  _CustomAppBarState createState() => _CustomAppBarState();
 
   @override
   final Size preferredSize;
 }
 
-class _AppBarComponentState extends State<AppBarComponent>
+class _CustomAppBarState extends State<CustomAppBar>
     with TickerProviderStateMixin {
   late AnimationController _animationTitleController;
   late Animation<double> _animateTitle;

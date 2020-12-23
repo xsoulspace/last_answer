@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/main.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
@@ -12,14 +11,15 @@ import 'package:provider/provider.dart';
 class AnswerCard extends StatelessWidget {
   final int index;
   final Answer answer;
-  AnswerCard(this.index, this.answer);
+  AnswerCard({required this.index, required this.answer});
 
-  _showRemoveAnswer(BuildContext buildCtx) {
-    final answersModel = Provider.of<AnswersModel>(buildCtx, listen: false);
+  _showRemoveAnswer({required BuildContext context}) {
     showDialog(
-        context: buildCtx,
+        context: context,
         builder: (BuildContext context) =>
             Consumer<LocaleModel>(builder: (context, locale, child) {
+              final answersModel =
+                  Provider.of<AnswersModel>(context, listen: false);
               return AlertDialog(
                 actions: [
                   FlatButton(
@@ -39,10 +39,10 @@ class AnswerCard extends StatelessWidget {
                             ),
                             action: SnackBarAction(
                                 label: 'ok',
-                                onPressed: () => ScaffoldMessenger.of(buildCtx)
+                                onPressed: () => ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar()),
                           );
-                          ScaffoldMessenger.of(buildCtx).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } catch (e) {
                           // its okay, if there is no snack bar
                         }
@@ -70,35 +70,20 @@ class AnswerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final answersModel = Provider.of<AnswersModel>(context, listen: false);
 
-    _removeAnswer() {
-      return Positioned(
-          top: 1,
-          right: 0,
-          child: Builder(
-              builder: (buildCtx) => IconButton(
-                    onPressed: () => _showRemoveAnswer(buildCtx),
-                    icon: Icon(
-                      Icons.close,
-                      size: 10,
-                    ),
-                  )));
-    }
-
     Question dropdownValue = answer.question;
 
     double dropdownWidth = 95.0;
 
-    return Card(
-        // color: Theme.of(context).scaffoldBackgroundColor,
-        child: Stack(children: <Widget>[
+    return Stack(children: <Widget>[
       Positioned(
         top: 4,
-        left: 5,
+        left: 0,
         child: SizedBox(
-            width: dropdownWidth,
+            width: dropdownWidth - 10,
             child: DropdownButtonHideUnderline(
                 child: DropdownButton<Question>(
-              style: TextStyle(fontSize: 14, color: Colors.white),
+              style:
+                  TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.6)),
               itemHeight: null,
               value: dropdownValue,
               isExpanded: true,
@@ -123,8 +108,19 @@ class AnswerCard extends StatelessWidget {
           ],
         ),
       ),
-      _removeAnswer()
-    ]));
+      Positioned(
+        top: 10,
+        right: 5,
+        child: IconButton(
+          iconSize: 10,
+          onPressed: () => _showRemoveAnswer(context: context),
+          icon: Icon(
+            Icons.close,
+            color: Colors.white.withOpacity(0.6),
+          ),
+        ),
+      )
+    ]);
   }
 }
 
@@ -142,7 +138,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     if (_controller.text.isEmpty) {
       await answersModel.remove(widget.answer);
     } else {
-      await answersModel.update(
+      await answersModel.updateAnswer(
           oldAnswer: widget.answer, newAnswerTitle: _controller.text);
     }
   }
@@ -164,20 +160,26 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
 
     return Flexible(
       //We only want to wrap the text message with flexible widget
-      child: Container(
-          child: Focus(
+      child: Focus(
         child: TextFormField(
           onChanged: (String text) async => await _updateAnswer(),
           textAlignVertical: TextAlignVertical.center,
           controller: _controller,
           maxLines: null,
+          textAlign: TextAlign.justify,
           keyboardType: TextInputType.multiline,
           onEditingComplete: () async => await _updateAnswer(),
-          style: TextStyle(fontSize: 14),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.white),
-            fillColor: ThemeColors.lightAccent,
+          style: TextStyle(
+            fontSize: 14,
           ),
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              fillColor: Colors.transparent,
+              focusColor: Colors.transparent),
           cursorColor: Theme.of(context).accentColor,
         ),
         onFocusChange: (hasFocus) async {
@@ -185,7 +187,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
             await _updateAnswer();
           }
         },
-      )),
+      ),
     );
   }
 }

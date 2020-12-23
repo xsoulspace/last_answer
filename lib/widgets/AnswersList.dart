@@ -9,13 +9,14 @@ class AnswersList extends StatelessWidget {
   Widget build(BuildContext context) {
     final AnswersModel answersModel = Provider.of<AnswersModel>(context);
 
-    return ListView.builder(
+    return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         addSemanticIndexes: true,
         reverse: true,
         itemCount: answersModel.answers.length,
         itemBuilder: (context, index) {
           final answer = answersModel.answersReversed[index];
-          return AnswerCard(index, answer);
+          return AnswerCard(index: index, answer: answer);
         });
   }
 }

@@ -50,12 +50,8 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     return locale;
   }
 
-  notifyAboutLang() {
-    notifyListeners();
-  }
-
   Future<void> switchLang(Locale? locale) async {
-    var fixedLocale = LocaleModelConsts.localeEN;
+    var fixedLocale = locale ?? LocaleModelConsts.localeEN;
     (await storage)
         .putString(LocaleModelConsts.locale, fixedLocale.languageCode);
     MainLocalizations.load(fixedLocale);

@@ -9,7 +9,9 @@ import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:lastanswer/models/StorageMixin.dart';
 
 class AnswersModelConsts {
-  static String answers = 'answers';
+  static final String answers = 'answers';
+  static final String currentWritingAnswer = 'currentWritingAnswer';
+
   static Answer emptyAnswer =
       Answer(id: 0, question: QuestionsModelConsts.questions.first, title: '');
 }
@@ -26,18 +28,24 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
 
   bool isInitialized = false;
   String currentWritingAnswer = '';
+  Future<void> updateCurrentWritingAnswer(String value) async {
+    currentWritingAnswer = value;
+    // notifyListeners();
+    await (await storage)
+        .putString(AnswersModelConsts.currentWritingAnswer, value);
+  }
 
   Future<void> ini() async {
     print({'answers ini'});
     String answers =
         await (await storage).getString(AnswersModelConsts.answers);
-    // print('answers, $answers');
-    if (answers == '') {
-      return;
-    }
-    // print({'answers': answers});
+    if (answers.isNotEmpty) fromJson(jsonDecode(answers));
 
-    fromJson(jsonDecode(answers));
+    String _currentWritingAnswer = await (await storage)
+        .getString(AnswersModelConsts.currentWritingAnswer);
+    if (_currentWritingAnswer.isNotEmpty)
+      currentWritingAnswer = _currentWritingAnswer;
+
     notifyListeners();
   }
 
@@ -65,19 +73,19 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
               question: question,
               id: id,
             ));
-    await updateAnswersStorage();
     notifyListeners();
+
+    await updateAnswersStorage();
   }
 
-  Future<void> update(
+  Future<void> updateAnswer(
       {required Answer oldAnswer, required String newAnswerTitle}) async {
     _answers.update(oldAnswer.id, (answer) {
       answer.title = newAnswerTitle;
       return answer;
     });
-    await updateAnswersStorage();
-
     // notifyListeners();
+    await updateAnswersStorage();
   }
 
   Future<void> updateQuestion(Answer oldAnswer, Question question) async {
@@ -85,23 +93,29 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
       answer.question = question;
       return answer;
     });
+    // notifyListeners();
+
     await updateAnswersStorage();
-    notifyListeners();
   }
 
   Future<void> remove(Answer oldAnswer) async {
     _answers.remove(oldAnswer.id);
-    await updateAnswersStorage();
     notifyListeners();
+
+    await updateAnswersStorage();
   }
 
   Future<void> clearAll() async {
     // print('cleaning');
     _answers.clear();
+    currentWritingAnswer = '';
     // clearing storage
     // print('cleaning storage');
-    await (await storage).putString(AnswersModelConsts.answers, '');
     notifyListeners();
+
+    await (await storage).putString(AnswersModelConsts.answers, '');
+    await (await storage)
+        .putString(AnswersModelConsts.currentWritingAnswer, '');
   }
 
   Future<void> updateAnswersStorage() async {

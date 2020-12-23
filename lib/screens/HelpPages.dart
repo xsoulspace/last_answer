@@ -1,24 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/models/PagesModel.dart';
-import 'package:lastanswer/screens/AskScreen.dart';
 import 'package:lastanswer/screens/InspirationAbstractScreen.dart';
 import 'package:lastanswer/screens/PhilosophyAbstractScreen.dart';
-import 'package:provider/provider.dart';
-
-class AppPages extends StatefulWidget {
-  @override
-  _AppPagesState createState() => _AppPagesState();
-}
 
 enum AppPagesNumerated {
-  AskScreen,
-  AnswersScreen,
   Inspire,
   Philosophy,
 }
 
-class _AppPagesState extends State<AppPages> {
+class HelpPages extends StatefulWidget {
+  @override
+  _HelpPagesState createState() => _HelpPagesState();
+}
+
+class _HelpPagesState extends State<HelpPages> {
   late PageController _pageController;
   _hideKeyboard() {
     var currentFocus = FocusScope.of(context);
@@ -44,15 +39,10 @@ class _AppPagesState extends State<AppPages> {
 
   @override
   Widget build(BuildContext context) {
-    PagesModel pagesModel = Provider.of<PagesModel>(context);
-    pagesModel.setPageController(_pageController);
-
     return PageView(
       controller: _pageController,
-      onPageChanged: (pageNumber) => pagesModel.setPageInt(pageNumber),
+      onPageChanged: (pageNumber) {},
       children: [
-        AskScreen(),
-        // AnswersScreen(),
         PhilosophyAbstract(),
         InspirationAbstract(),
       ],

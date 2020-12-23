@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
@@ -10,48 +8,6 @@ import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:provider/provider.dart';
-
-class AnswersScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          var focusedChild = currentFocus.focusedChild;
-          if (!currentFocus.hasPrimaryFocus && focusedChild != null) {
-            focusedChild.unfocus();
-          }
-        },
-        child: Container(
-          child: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: AnswersList(),
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
-}
-
-class AnswersList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final AnswersModel answersModel = Provider.of<AnswersModel>(context);
-
-    return ListView.builder(
-        addSemanticIndexes: true,
-        reverse: true,
-        itemCount: answersModel.answers.length,
-        itemBuilder: (context, index) {
-          final answer = answersModel.answersReversed[index];
-          return AnswerCard(index, answer);
-        });
-  }
-}
 
 class AnswerCard extends StatelessWidget {
   final int index;
@@ -130,47 +86,45 @@ class AnswerCard extends StatelessWidget {
 
     Question dropdownValue = answer.question;
 
-    double dropdownWidth = (() {
-      return 95.0;
-    })();
+    double dropdownWidth = 95.0;
+
     return Card(
-        margin: EdgeInsets.symmetric(vertical: 4),
         // color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(children: <Widget>[
-          Positioned(
-            top: 4,
-            left: 5,
-            child: SizedBox(
-                width: dropdownWidth,
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton<Question>(
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                  itemHeight: null,
-                  value: dropdownValue,
-                  isExpanded: true,
-                  items: _questionsListView(context),
-                  onChanged: (Question? question) async {
-                    if (question != null) {
-                      await answersModel.updateQuestion(answer, question);
-                    }
-                  },
-                ))),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(dropdownWidth, 0, 40, 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 5),
-                ),
-                AnswerTextField(answer: answer)
-              ],
+      Positioned(
+        top: 4,
+        left: 5,
+        child: SizedBox(
+            width: dropdownWidth,
+            child: DropdownButtonHideUnderline(
+                child: DropdownButton<Question>(
+              style: TextStyle(fontSize: 14, color: Colors.white),
+              itemHeight: null,
+              value: dropdownValue,
+              isExpanded: true,
+              items: _questionsListView(context),
+              onChanged: (Question? question) async {
+                if (question != null) {
+                  await answersModel.updateQuestion(answer, question);
+                }
+              },
+            ))),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(dropdownWidth, 0, 40, 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 5),
             ),
-          ),
-          _removeAnswer()
-        ]));
+            AnswerTextField(answer: answer)
+          ],
+        ),
+      ),
+      _removeAnswer()
+    ]));
   }
 }
 

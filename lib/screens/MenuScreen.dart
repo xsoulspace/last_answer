@@ -10,8 +10,6 @@ import 'package:lastanswer/entities/NamedLocale.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:lastanswer/models/PagesModel.dart';
-import 'package:lastanswer/screens/AppPages.dart';
 import 'package:lastanswer/screens/InspirationAbstractScreen.dart';
 import 'package:lastanswer/screens/MenuDrawer.dart';
 import 'package:lastanswer/screens/PhilosophyAbstractScreen.dart';
@@ -27,7 +25,6 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
-    var pagesModel = Provider.of<PagesModel>(context);
     var currentFocus = FocusScope.of(context);
     var focusedChild = currentFocus.focusedChild;
     if (!currentFocus.hasPrimaryFocus && focusedChild != null) {
@@ -42,14 +39,8 @@ class MenuScreen extends StatelessWidget {
       );
     }
 
-    _gotoPage(int page) {
-      pagesModel.pageController?.animateToPage(page,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOutCirc);
-    }
-
     _dismissAndGoToAskScreen() {
       _closeDrawer(context);
-      _gotoPage(AppPagesNumerated.AskScreen.index);
     }
 
     startButton() {

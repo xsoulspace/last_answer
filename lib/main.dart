@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:lastanswer/models/PagesModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
 import 'package:lastanswer/screens/MenuScreen.dart';
 import 'package:lastanswer/screens/ScaffoldApp.dart';
@@ -38,7 +37,6 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
       ChangeNotifierProvider(create: (context) => LocaleModel()),
       ChangeNotifierProvider(create: (context) => AnswersModel()),
       ChangeNotifierProvider(create: (context) => QuestionsModel()),
-      ChangeNotifierProvider(create: (context) => PagesModel()),
     ], child: AppScaffold(_localeOverrideDelegate));
   }
 

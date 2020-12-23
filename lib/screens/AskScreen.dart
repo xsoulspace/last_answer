@@ -7,7 +7,7 @@ import 'package:lastanswer/main.dart';
 import 'package:lastanswer/models/AnswersModel.dart';
 import 'package:lastanswer/models/LocaleModel.dart';
 import 'package:lastanswer/models/QuestionsModel.dart';
-import 'package:lastanswer/screens/AnswersScreen.dart';
+import 'package:lastanswer/widgets/AnswersList.dart';
 import 'package:provider/provider.dart';
 
 class AskScreen extends StatelessWidget {
@@ -34,10 +34,7 @@ class AskScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: AnswersList(),
-              ),
+              child: AnswersList(),
             ),
             if (!localeModel.isInitialized)
               FutureBuilder(

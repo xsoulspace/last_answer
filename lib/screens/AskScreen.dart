@@ -78,18 +78,19 @@ class QuestionsAndInput extends StatefulWidget {
 }
 
 class _QuestionsAndInput extends State<QuestionsAndInput> {
-  String inputText = '';
   Question question = QuestionsModelConsts.questions[5];
+  Future<void> clear({required AnswersModel answersModel}) async {
+    _controller.text = '';
+    answersModel.updateCurrentWritingAnswer('');
+  }
 
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-    String currentText = answersModel.currentWritingAnswer;
-    if (currentText.isEmpty) {
-      _controller.text = currentText;
-      inputText = currentText;
+    if (_controller.text.isEmpty) {
+      _controller.text = answersModel.currentWritingAnswer;
     }
     return Column(
       children: <Widget>[
@@ -128,42 +129,42 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
             }),
             IconButton(
               onPressed: () async {
-                if (inputText.isEmpty) return;
-                await answersModel.add(answer: inputText, question: question);
-                _controller.text = '';
-                answersModel.currentWritingAnswer = '';
+                answersModel.add(answer: _controller.text, question: question);
+                clear(answersModel: answersModel);
               },
               icon: Icon(Icons.send),
             ),
           ],
         ),
         SizedBox(height: 10),
-        Center(child: Consumer<LocaleModel>(builder: (context, locale, child) {
-          return TextFormField(
-            controller: _controller,
-            autofocus: true,
-            minLines: 1,
-            maxLines: 7,
-            keyboardType: TextInputType.multiline,
-            onChanged: (text) {
-              inputText = text;
-              answersModel.currentWritingAnswer = text;
-            },
-            decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.white),
-                fillColor: ThemeColors.lightAccent,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: ThemeColors.lightAccent ?? Colors.white,
-                  ),
-                ),
-                border: OutlineInputBorder(
+        Row(children: [
+          Expanded(
+            child: TextFormField(
+              controller: _controller,
+              autofocus: true,
+              minLines: 1,
+              maxLines: 7,
+              keyboardType: TextInputType.multiline,
+              onChanged: (text) async {
+                answersModel.updateCurrentWritingAnswer(text);
+              },
+              textAlign: TextAlign.justify,
+              decoration: InputDecoration(
+                  labelStyle: TextStyle(color: Colors.white),
+                  fillColor: ThemeColors.lightAccent,
+                  focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: ThemeColors.lightAccent ?? Colors.white)),
-                labelText: MainLocalizations.of(context).answer),
-            cursorColor: Theme.of(context).accentColor,
-          );
-        }))
+                      color: ThemeColors.lightAccent ?? Colors.white,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: ThemeColors.lightAccent ?? Colors.white)),
+                  labelText: MainLocalizations.of(context).answer),
+              cursorColor: Theme.of(context).accentColor,
+            ),
+          ),
+        ])
       ],
     );
   }

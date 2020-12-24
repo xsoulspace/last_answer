@@ -10,7 +10,9 @@ class AnswersList extends StatelessWidget {
     final AnswersModel answersModel = Provider.of<AnswersModel>(context);
 
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(),
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+              height: 2,
+            ),
         addSemanticIndexes: true,
         reverse: true,
         itemCount: answersModel.answers.length,

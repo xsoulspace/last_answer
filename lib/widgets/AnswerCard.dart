@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:lastanswer/entities/Answer.dart';
 import 'package:lastanswer/entities/Question.dart';
 import 'package:lastanswer/localizations/MainLocalizations.dart';
@@ -96,17 +97,8 @@ class AnswerCard extends StatelessWidget {
             ))),
       ),
       Padding(
-        padding: EdgeInsets.fromLTRB(dropdownWidth, 0, 40, 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-            ),
-            AnswerTextField(answer: answer)
-          ],
-        ),
+        padding: EdgeInsets.fromLTRB(dropdownWidth + 5, 3, 50, 5),
+        child: AnswerTextField(answer: answer),
       ),
       Positioned(
         top: 10,
@@ -156,38 +148,47 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   Widget build(BuildContext context) {
     String answerText = widget.answer.title;
     // final copyText = '$questionTitle $answerText';
-    _controller.text = answerText;
 
-    return Flexible(
-      //We only want to wrap the text message with flexible widget
-      child: Focus(
-        child: TextFormField(
-          onChanged: (String text) async => await _updateAnswer(),
-          textAlignVertical: TextAlignVertical.center,
-          controller: _controller,
-          maxLines: null,
-          textAlign: TextAlign.justify,
-          keyboardType: TextInputType.multiline,
-          onEditingComplete: () async => await _updateAnswer(),
-          style: TextStyle(
-            fontSize: 14,
+    // if (_controller.text.isEmpty) {
+    _controller.text = answerText;
+    // }
+    // Calculate whether the timestamp fits into the last line or if it has
+    // to be positioned after the last line.
+    return Row(children: [
+      Flexible(
+        //We only want to wrap the text message with flexible widget
+        child: Focus(
+          child: TextFormField(
+            expands: false,
+            onChanged: (String text) async {
+              await _updateAnswer();
+            },
+            textAlignVertical: TextAlignVertical.center,
+            controller: _controller,
+            maxLines: null,
+            textAlign: TextAlign.start,
+            keyboardType: TextInputType.multiline,
+            onEditingComplete: () async => await _updateAnswer(),
+            style: TextStyle(
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                fillColor: Colors.transparent,
+                focusColor: Colors.transparent),
+            cursorColor: Theme.of(context).accentColor,
           ),
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              fillColor: Colors.transparent,
-              focusColor: Colors.transparent),
-          cursorColor: Theme.of(context).accentColor,
+          onFocusChange: (hasFocus) async {
+            if (!hasFocus) {
+              await _updateAnswer();
+            }
+          },
         ),
-        onFocusChange: (hasFocus) async {
-          if (!hasFocus) {
-            await _updateAnswer();
-          }
-        },
       ),
-    );
+    ]);
   }
 }

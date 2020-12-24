@@ -116,39 +116,29 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                         '');
                   }))),
             )),
-        SizedBox(height: 10),
-        Divider(),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Consumer<LocaleModel>(builder: (context, locale, child) {
-              return Text(question.title.getProp(locale.current) ?? ''
-                  // FIXME: can be broken
-                  );
-            }),
-            IconButton(
-              onPressed: () async {
-                answersModel.add(answer: _controller.text, question: question);
-                clear(answersModel: answersModel);
-              },
-              icon: Icon(Icons.send),
-            ),
-          ],
+        SizedBox(
+          height: 20,
         ),
-        SizedBox(height: 10),
+        Center(
+          child: Consumer<LocaleModel>(builder: (context, locale, child) {
+            return Text(question.title.getProp(locale.current) ?? ''
+                // FIXME: can be broken
+                );
+          }),
+        ),
+        SizedBox(
+          height: 20,
+        ),
         Row(children: [
           Expanded(
             child: TextFormField(
               controller: _controller,
-              autofocus: true,
               minLines: 1,
               maxLines: 7,
               keyboardType: TextInputType.multiline,
               onChanged: (text) async {
                 answersModel.updateCurrentWritingAnswer(text);
               },
-              textAlign: TextAlign.justify,
               decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.white),
                   fillColor: ThemeColors.lightAccent,
@@ -162,6 +152,16 @@ class _QuestionsAndInput extends State<QuestionsAndInput> {
                           color: ThemeColors.lightAccent ?? Colors.white)),
                   labelText: MainLocalizations.of(context).answer),
               cursorColor: Theme.of(context).accentColor,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: IconButton(
+              onPressed: () async {
+                answersModel.add(answer: _controller.text, question: question);
+                clear(answersModel: answersModel);
+              },
+              icon: Icon(Icons.send),
             ),
           ),
         ])

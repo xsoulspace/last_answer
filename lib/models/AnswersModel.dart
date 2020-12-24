@@ -93,7 +93,7 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
       answer.question = question;
       return answer;
     });
-    // notifyListeners();
+    notifyListeners();
 
     await updateAnswersStorage();
   }

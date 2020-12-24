@@ -108,7 +108,6 @@ class AppScaffold extends StatelessWidget {
             disabledActionTextColor: Colors.white),
         primaryColor: Colors.lightGreen[800],
         accentColor: Colors.lightGreen[800],
-
         buttonColor: Colors.lightGreen[900],
         // Define the default font family.
         fontFamily: 'IBM Plex Sans',

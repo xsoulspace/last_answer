@@ -62,14 +62,11 @@ class AnswerCard extends StatelessWidget {
             }));
   }
 
-  List<DropdownMenuItem<Question>> _questionsListView(BuildContext context) {
-    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
-    return questionsModel.questionDropdownMenuItems;
-  }
-
   @override
   Widget build(BuildContext context) {
     final answersModel = Provider.of<AnswersModel>(context, listen: false);
+    QuestionsModel questionsModel =
+        Provider.of<QuestionsModel>(context, listen: false);
 
     Question dropdownValue = answer.question;
 
@@ -88,16 +85,16 @@ class AnswerCard extends StatelessWidget {
               itemHeight: null,
               value: dropdownValue,
               isExpanded: true,
-              items: _questionsListView(context),
+              items: questionsModel.questionDropdownMenuItems,
               onChanged: (Question? question) async {
                 if (question != null) {
-                  await answersModel.updateQuestion(answer, question);
+                  answersModel.updateQuestion(answer, question);
                 }
               },
             ))),
       ),
       Padding(
-        padding: EdgeInsets.fromLTRB(dropdownWidth + 5, 3, 50, 5),
+        padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),
         child: AnswerTextField(answer: answer),
       ),
       Positioned(
@@ -154,41 +151,52 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
     // }
     // Calculate whether the timestamp fits into the last line or if it has
     // to be positioned after the last line.
-    return Row(children: [
-      Flexible(
-        //We only want to wrap the text message with flexible widget
-        child: Focus(
-          child: TextFormField(
-            expands: false,
-            onChanged: (String text) async {
-              await _updateAnswer();
-            },
-            textAlignVertical: TextAlignVertical.center,
-            controller: _controller,
-            maxLines: null,
-            textAlign: TextAlign.start,
-            keyboardType: TextInputType.multiline,
-            onEditingComplete: () async => await _updateAnswer(),
-            style: TextStyle(
-              fontSize: 14,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6),
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(14)),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Flexible(
+          //We only want to wrap the text message with flexible widget
+          child: Focus(
+            child: TextFormField(
+              expands: false,
+              onChanged: (String text) async {
+                await _updateAnswer();
+              },
+              textAlignVertical: TextAlignVertical.center,
+              controller: _controller,
+              maxLines: null,
+              textAlign: TextAlign.start,
+              keyboardType: TextInputType.multiline,
+              onEditingComplete: () async => await _updateAnswer(),
+              style: TextStyle(
+                  fontSize: 15,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.color
+                      ?.withOpacity(0.9)),
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(5, 14, 5, 5),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  fillColor: Colors.transparent,
+                  focusColor: Colors.transparent),
+              cursorColor: Theme.of(context).accentColor,
             ),
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                fillColor: Colors.transparent,
-                focusColor: Colors.transparent),
-            cursorColor: Theme.of(context).accentColor,
+            onFocusChange: (hasFocus) async {
+              if (!hasFocus) {
+                await _updateAnswer();
+              }
+            },
           ),
-          onFocusChange: (hasFocus) async {
-            if (!hasFocus) {
-              await _updateAnswer();
-            }
-          },
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }

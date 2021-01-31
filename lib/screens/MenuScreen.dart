@@ -217,34 +217,38 @@ class _SaveFileState extends State<SaveFile> {
       // await h.saveInWeb();
     }
 
-    share(BuildContext context) async {
-      final RenderBox? box = context.findRenderObject() as RenderBox?;
-      if (box == null) return;
-      AnswersModel answersModel =
-          Provider.of<AnswersModel>(context, listen: false);
-
-      List<Answer> answersList = answersModel.answersList;
-
-      LocaleModel locale = Provider.of<LocaleModel>(context, listen: false);
-      final lang = locale.current;
-      final String answersAndQuestionsSentence = answersList.fold(
-          '',
-          (previousValue, element) =>
-              '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
-      Share.share(answersAndQuestionsSentence,
-          subject: '${answersList.first.title}',
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    }
-
     return Row(
       children: <Widget>[
         IconButton(
           onPressed: () async {
-            kIsWeb ? await saveAsWeb() : share(context);
+            kIsWeb ? await saveAsWeb() : share(context: context);
           },
           icon: Icon(Icons.share),
         ),
       ],
     );
   }
+}
+
+String getAnswersAsString(
+    {required LocaleModel localeModel, required List<Answer> answersList}) {
+  final lang = localeModel.current;
+  final String answersAndQuestionsSentence = answersList.fold(
+      '',
+      (previousValue, element) =>
+          '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
+  return answersAndQuestionsSentence;
+}
+
+Future<void> share({required BuildContext context}) async {
+  final RenderBox? box = context.findRenderObject() as RenderBox?;
+  if (box == null) return;
+  AnswersModel answersModel = Provider.of<AnswersModel>(context, listen: false);
+  LocaleModel localeModel = Provider.of<LocaleModel>(context, listen: false);
+  List<Answer> answersList = answersModel.answersList;
+  String answersAndQuestionsSentence =
+      getAnswersAsString(answersList: answersList, localeModel: localeModel);
+  Share.share(answersAndQuestionsSentence,
+      subject: '${answersList.first.title}',
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
 }

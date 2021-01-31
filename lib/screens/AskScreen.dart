@@ -29,7 +29,7 @@ class AskScreen extends StatelessWidget {
     LocaleModel localeModel = Provider.of<LocaleModel>(context);
     AnswersModel answersModel = Provider.of<AnswersModel>(context);
     return Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(left: 16.0, right: 16, bottom: 16.0, top: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

@@ -7,13 +7,25 @@ class ScaffoldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _appBar = CustomAppBar(
-      appBarHeight: Size.fromHeight(0.0).height,
+      appBarHeight: 65,
     );
     return MenuDrawer(
         key: Key('MenuDrawer'),
-        child: Scaffold(
-          appBar: _appBar,
-          body: AskScreen(),
+        child: Material(
+          child: Stack(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    minHeight: double.infinity, minWidth: double.infinity),
+                child: AskScreen(),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    minHeight: 65, maxHeight: 65, minWidth: double.infinity),
+                child: _appBar,
+              ),
+            ],
+          ),
         ));
   }
 }

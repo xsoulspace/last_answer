@@ -1,129 +1,135 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/AnswersModel.dart';
-import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:lastanswer/models/QuestionsModel.dart';
-import 'package:lastanswer/screens/MenuScreen.dart';
-import 'package:lastanswer/screens/ScaffoldApp.dart';
-import 'package:provider/provider.dart';
+import 'package:last_answer/screens/QuestionsAnswers.dart';
 
-class ThemeColors {
-  static final lightAccent = Colors.lightGreen[50];
+import 'abstract/Project.dart';
+
+void main() {
+  runApp(MyApp());
 }
 
-void main() async {
-  if (!kIsWeb && Platform.isMacOS) {
-    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-  }
-
-  runApp(HowToSolveTheQuest());
-}
-
-class HowToSolveTheQuest extends StatefulWidget {
-  @override
-  _HowToSolveTheQuestState createState() => _HowToSolveTheQuestState();
-}
-
-class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
-  _HowToSolveTheQuestState();
-
-  scaffoldApp(
-      BuildContext context, MainLocalizationsDelegate _localeOverrideDelegate) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => LocaleModel()),
-      ChangeNotifierProvider(create: (context) => AnswersModel()),
-      ChangeNotifierProvider(create: (context) => QuestionsModel()),
-    ], child: AppScaffold(_localeOverrideDelegate));
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
-
-    return FutureBuilder(
-        future: systemLocale, // stream data to listen for change
-        builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          // print('connection done ${snapshot.connectionState}');
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            // print('connection done ${snapshot.data.toString()}');
-            MainLocalizationsDelegate _localeOverrideDelegate =
-                MainLocalizationsDelegate(
-                    overridenLocale:
-                        snapshot.data ?? LocaleModelConsts.localeEN);
-            return scaffoldApp(context, _localeOverrideDelegate);
-          } else {
-            return _circularSpinner();
-          }
-        });
-  }
-
-  Widget _circularSpinner() {
-    return Center(
-      child: CircularProgressIndicator(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'IBM Plex Sans',
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class AppScaffold extends StatelessWidget {
-  final MainLocalizationsDelegate _overridenLocaleDelegate;
-  AppScaffold(this._overridenLocaleDelegate);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  void _addNewProject() {
+    setState(() {});
+  }
+
+  double _screenWidthAdjustment = 200;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _screenWidthAdjustment = MediaQuery.of(context).size.width;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localeListResolutionCallback: (locales, supportedLocales) {
-        Locale locale = _overridenLocaleDelegate.overridenLocale;
-        var isFoundLocale = _overridenLocaleDelegate.isSupported(locale);
-
-        // var isFoundLocale =supportedLocales.contains(locale);
-        if (!isFoundLocale) {
-          return LocaleModelConsts.localeEN;
-        }
-        return locale;
-      },
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        _overridenLocaleDelegate,
-      ],
-      supportedLocales: [
-        LocaleModelConsts.localeRU, // Russian
-        LocaleModelConsts.localeEN, // English
-      ],
-      theme: ThemeData(
-        // Define the default brightness and colors.
-        brightness: Brightness.dark,
-        snackBarTheme: SnackBarThemeData(
-            elevation: 8,
-            backgroundColor: Color(0xFF323232),
-            actionTextColor: Colors.white,
-            contentTextStyle: TextStyle(color: Colors.white),
-            disabledActionTextColor: Colors.white),
-        primaryColor: Colors.lightGreen[800],
-        accentColor: Colors.lightGreen[800],
-        buttonColor: Colors.lightGreen[900],
-        // Define the default font family.
-        fontFamily: 'IBM Plex Sans',
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        // textTheme: TextTheme(
-        //   headline5: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        //   headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        // ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => ScaffoldApp(),
-        '/menu': (context) => MenuScreen(),
-      },
+      // body: ListView.builder(itemBuilder: (BuildContext context, int index) {
+      //   return ListTile();
+      // }),
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 80,
+              child: GestureDetector(
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Stack(
+                    children: [
+                      Hero(
+                        tag: 'back',
+                        child: Container(color: Colors.white),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Hero(
+                                    tag: 'title',
+                                    child: Material(
+                                        color: Colors.transparent,
+                                        child: Text('hello'))),
+                                Hero(
+                                    tag: 'check',
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Checkbox(
+                                          value: true,
+                                          onChanged: (bool? value) {
+                                            print(value);
+                                          }),
+                                    ))
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(PageRouteBuilder(
+                      fullscreenDialog: true,
+                      transitionDuration: Duration(milliseconds: 150),
+                      transitionsBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return QuestionsAnswers(
+                            project: Project(id: 0, title: ''));
+                      }));
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewProject,
+        tooltip: 'Add new project',
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

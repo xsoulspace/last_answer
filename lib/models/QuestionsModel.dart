@@ -2,8 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/entities/LocaleTitle.dart';
-import 'package:lastanswer/entities/Question.dart';
+import 'package:last_answer/abstract/LocaleTitle.dart';
+import 'package:last_answer/abstract/Question.dart';
 import 'package:provider/provider.dart';
 
 import 'LocaleModel.dart';

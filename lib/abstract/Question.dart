@@ -1,8 +1,8 @@
-import 'package:lastanswer/entities/LocaleTitle.dart';
+import 'package:last_answer/abstract/LocaleTitle.dart';
 
 class Question {
   LocaleTitle title;
-  int id;
+  final int id;
   Question({required this.title, required this.id});
 
   @override

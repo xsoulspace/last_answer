@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
-import 'package:lastanswer/entities/NamedLocale.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/StorageMixin.dart';
-import 'package:lastanswer/utils/storage_util.dart';
+import 'package:last_answer/abstract/NamedLocale.dart';
+import 'package:last_answer/localizations/MainLocalizations.dart';
+import 'package:last_answer/models/StorageMixin.dart';
+import 'package:last_answer/utils/storage_util.dart';
 
 class LocaleModelConsts {
   static const locale = 'locale';
@@ -34,11 +32,12 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     String localeStr = await store.getString(LocaleModelConsts.locale);
 
     if (localeStr == '') {
-      if (kIsWeb || Platform.isWindows) {
+      if (kIsWeb) {
         return LocaleModelConsts.localeEN;
       }
       Intl.defaultLocale = await findSystemLocale();
-      return Locale(Intl.defaultLocale);
+      return Locale(
+          Intl.defaultLocale ?? LocaleModelConsts.localeEN.toLanguageTag());
     }
     // print('ini locale $localeStr');
 

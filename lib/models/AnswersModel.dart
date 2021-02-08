@@ -3,17 +3,21 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/entities/Answer.dart';
-import 'package:lastanswer/entities/Question.dart';
-import 'package:lastanswer/models/QuestionsModel.dart';
-import 'package:lastanswer/models/StorageMixin.dart';
+import 'package:last_answer/abstract/Answer.dart';
+import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/abstract/Question.dart';
+import 'package:last_answer/models/QuestionsModel.dart';
+import 'package:last_answer/models/StorageMixin.dart';
 
 class AnswersModelConsts {
   static final String answers = 'answers';
   static final String currentWritingAnswer = 'currentWritingAnswer';
 
-  static Answer emptyAnswer =
-      Answer(id: 0, question: QuestionsModelConsts.questions.first, title: '');
+  static Answer emptyAnswer = Answer(
+      id: 0,
+      question: QuestionsModelConsts.questions.first,
+      title: '',
+      project: Project(id: 0, title: ''));
 }
 
 class AnswersModel extends ChangeNotifier with StorageMixin {
@@ -64,15 +68,15 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
 
   int length() => _answers.length;
 
-  Future<void> add({required String answer, required Question question}) async {
+  Future<void> add(
+      {required String answer,
+      required Question question,
+      required Project project}) async {
     int id = _answers.length;
     _answers.putIfAbsent(
         id,
         () => Answer(
-              title: answer,
-              question: question,
-              id: id,
-            ));
+            title: answer, question: question, id: id, project: project));
     notifyListeners();
 
     await updateAnswersStorage();

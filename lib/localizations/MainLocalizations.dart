@@ -1,45 +1,36 @@
+// @dart=2.10
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:lastanswer/l10n/messages_all.dart';
+import 'package:last_answer/abstract/Language.dart';
+import 'package:last_answer/l10n/messages_all.dart';
 
-// https://medium.com/@puneetsethi25/flutter-internationalization-switching-locales-manually-f182ec9b8ff0
+/// https://medium.com/@puneetsethi25/flutter-internationalization-switching-locales-manually-f182ec9b8ff0
+/// command to generate json (arb) translation
 // flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/localizations/MainLocalizations.dart
-// flutter pub run intl_translation:generate_from_arb \ --output-dir=lib/l10n --no-use-deferred-loading \ lib/main.dart lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
-class Language {
-  static String ru = 'ru';
-  static String en = 'en';
-  static final List items = [ru, en];
-  static List get all => items;
-}
 
+/// command to generate dart translation
+// flutter pub run intl_translation:generate_from_arb \
+//  --output-dir=lib/l10n --no-use-deferred-loading \
+//  lib/l10n/intl_messages.arb lib/l10n/intl_en.arb lib/l10n/intl_ru.arb lib/localizations/MainLocalizations.dart
+
+/// Due intl_translation package errors this file
+/// doesn't support null safety symbols and so on!
+///
 class MainLocalizations {
   static Future<MainLocalizations> load(Locale locale) {
-    final String name = (() {
-      var countryCode = locale.countryCode;
-      if (countryCode == null) return locale.languageCode;
-      return countryCode.isEmpty ? locale.languageCode : locale.toString();
-    })();
-
-    // print('main localizaions $name, $locale');
+    var countryCode = locale.countryCode;
+    final String name = countryCode == null || countryCode.isEmpty
+        ? locale.languageCode
+        : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
-    // print('main localizaions $localeName');
-
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-
       return MainLocalizations();
     });
   }
 
   static MainLocalizations of(BuildContext context) {
-    var mainLocalization =
-        Localizations.of<MainLocalizations>(context, MainLocalizations);
-    if (mainLocalization == null) {
-      throw Exception(
-          'no resources object of the given type exists within the given context for MainLocalizations');
-    }
-
-    return mainLocalization;
+    return Localizations.of<MainLocalizations>(context, MainLocalizations);
   }
 
   String get answers {
@@ -67,7 +58,8 @@ class MainLocalizations {
 
   String get newQuestDesc {
     return Intl.message(
-        'This action will clear all previous answers. Be sure that you saved them, if its needed.',
+        'This action will clear all previous answers. '
+        'Be sure that you saved them, if its needed.',
         name: 'newQuestDesc',
         desc: 'popup start desc');
   }
@@ -133,7 +125,11 @@ class MainLocalizations {
           name: 'philosophyAbstractFiveWhyesWhat',
           desc: 'Method that you can use');
   String get philosophyAbstractFiveWhyesWhy => Intl.message(
-      'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as "cause and effect" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys',
+      'Because, you can use this technique if you have a problem'
+      'or idea, which needs to be explored more deeply. '
+      'Method of exploration also often named as "cause and effect" '
+      'exploration. See more about the technique at '
+      'wiki: https://en.wikipedia.org/wiki/Five_whys',
       name: 'philosophyAbstractFiveWhyesWhy',
       desc: 'Description of Five Whyes');
   String get philosophyAbstractPDSAWhy => Intl.message(
@@ -141,7 +137,11 @@ class MainLocalizations {
       name: 'philosophyAbstractPDSAWhy',
       desc: 'Method that you can use');
   String get philosophyAbstractPDSAWhat => Intl.message(
-      'Because it most universal technique. It does not solid questions, as in "Five Whys", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA',
+      'Because it most universal technique. It does not solid'
+      'questions, as in "Five Whys", but the method can help'
+      ' not just make idea exploration, but to understand whole '
+      'area problems. See more about the technique at '
+      'wiki:  https://en.wikipedia.org/wiki/PDCA',
       name: 'philosophyAbstractPDSAWhat',
       desc: 'Description of PDSA');
   String get philosophyAbstractSixSigmaWhy =>
@@ -149,7 +149,10 @@ class MainLocalizations {
           name: 'philosophyAbstractSixSigmaWhy',
           desc: 'Method that you can use');
   String get philosophyAbstractSixSigmaWhat => Intl.message(
-      'Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma',
+      'Because if your problem or idea has manufacture/transport '
+      'origin, this method will certanly helps to develop or '
+      'imporve business process or product. See more about the '
+      'technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma',
       name: 'philosophyAbstractSixSigmaWhat',
       desc: 'Description of Six Sigma');
 
@@ -160,11 +163,14 @@ class MainLocalizations {
   String get aboutAbstractWhatFor => Intl.message('What for?',
       name: 'aboutAbstractWhatFor', desc: 'What For About Abstract');
   String get aboutAbstractWhatForDescription => Intl.message(
-      'I\'m designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.',
+      'I\'m designing this app to solve problems complexity and '
+      'thoughts understanding during project management and just '
+      'to make easier each other ideas sharing & understanding.',
       name: 'aboutAbstractWhatForDescription',
       desc: 'Description of About Abstract');
   String get aboutAbstractHowDescription => Intl.message(
-      'You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.',
+      'You can use Philosophy Abstract to get ideas how this app '
+      'can be used and in which techniques.',
       name: 'aboutAbstractHowDescription',
       desc: 'Description of About Abstract How Description');
   String get aboutAbstractIdeasImprovementsBugs =>
@@ -172,7 +178,8 @@ class MainLocalizations {
           name: 'aboutAbstractIdeasImprovementsBugs',
           desc: 'Ideas Improvements Bugs');
   String get aboutAbstractIdeasImprovementsBugsDescription => Intl.message(
-      'Please leave a review in Google Play or send a message to xsoulspace@gmail.com. Thank you!',
+      'Please leave a review in Google Play or send a message '
+      'to xsoulspace@gmail.com. Thank you!',
       name: 'aboutAbstractIdeasImprovementsBugsDescription',
       desc: 'Ideas Improvements Bugs description');
 }
@@ -181,11 +188,12 @@ class MainLocalizationsDelegate
     extends LocalizationsDelegate<MainLocalizations> {
   final Locale overridenLocale;
 
-  const MainLocalizationsDelegate({required this.overridenLocale});
+  const MainLocalizationsDelegate(this.overridenLocale);
 
   @override
-  bool isSupported(Locale? locale) =>
-      locale != null ? Language.all.contains(locale.languageCode) : false;
+  bool isSupported(Locale locale) =>
+      // ignore: unnecessary_null_comparison
+      locale != null ? Languages.all.contains(locale.languageCode) : false;
 
   @override
   Future<MainLocalizations> load(Locale locale) =>

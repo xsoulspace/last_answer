@@ -69,49 +69,57 @@ class _MyHomePageState extends State<MyHomePage> {
           }));
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 30,
-        title: Stack(
-          children: [
-            Hero(
-                tag: 'appBarBackground',
-                child: Material(
-                  color: Colors.transparent,
-                  child: Container(color: Theme.of(context).canvasColor),
-                )),
-            Row(
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            color: Theme.of(context).primaryColor,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Hero(
-                  tag: 'appBarMenuButton',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                        icon: Icon(Icons.more_horiz), onPressed: _openSettings),
+                    tag: 'appBarBackground',
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(color: Theme.of(context).canvasColor),
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Hero(
+                      tag: 'appBarMenuButton',
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                            icon: Icon(Icons.more_horiz),
+                            onPressed: _openSettings),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                SafeArea(child: SizedBox(height: 80, child: ProjectCard())),
+                Positioned(
+                  bottom: 20,
+                  right: 29,
+                  child: FloatingActionButton(
+                    onPressed: _addNewProject,
+                    tooltip: 'Add new project',
+                    child: Icon(Icons.add),
                   ),
                 )
               ],
-            )
-          ],
-        ),
-        centerTitle: true,
-      ),
-      // body: ListView.builder(itemBuilder: (BuildContext context, int index) {
-      //   return ListTile();
-      // }),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 80, child: ProjectCard()),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewProject,
-        tooltip: 'Add new project',
-        child: Icon(Icons.add),
+            ),
+          ),
+        ],
       ),
     );
   }

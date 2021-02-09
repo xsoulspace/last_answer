@@ -1,126 +1,101 @@
-import 'package:flutter/material.dart';
-import 'package:last_answer/screens/Settings.dart';
-import 'package:last_answer/widgets/ProjectCard.dart';
+import 'dart:io';
 
-void main() {
-  runApp(MyApp());
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+// FIXME: when intl_translation will be realeased with null safety
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:last_answer/localizations/MainLocalizations.dart';
+import 'package:last_answer/models/Projects.dart';
+import 'package:last_answer/screens/HomeProjects.dart';
+import 'package:provider/provider.dart';
+
+import 'models/AnswersModel.dart';
+import 'models/LocaleModel.dart';
+import 'models/QuestionsModel.dart';
+
+void main() async {
+  if (!kIsWeb && Platform.isMacOS) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
+
+  runApp(HowToSolveTheQuest());
 }
 
-class MyApp extends StatelessWidget {
+class HowToSolveTheQuest extends StatefulWidget {
+  @override
+  _HowToSolveTheQuestState createState() => _HowToSolveTheQuestState();
+}
+
+class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
+  _HowToSolveTheQuestState();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'IBM Plex Sans',
-          brightness: Brightness.dark),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
+
+    return FutureBuilder(
+        future: systemLocale, // stream data to listen for change
+        builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+          // print('connection done ${snapshot.connectionState}');
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            // print('connection done ${snapshot.data.toString()}');
+            MainLocalizationsDelegate _localeOverrideDelegate =
+                MainLocalizationsDelegate(
+                    snapshot.data ?? LocaleModelConsts.localeEN);
+            return MultiProvider(providers: [
+              ChangeNotifierProvider(create: (context) => LocaleModel()),
+              ChangeNotifierProvider(create: (context) => AnswersModel()),
+              ChangeNotifierProvider(create: (context) => QuestionsModel()),
+              ChangeNotifierProvider(create: (context) => ProjectsModel()),
+            ], child: AppScaffold(_localeOverrideDelegate));
+          } else {
+            return _circularSpinner();
+          }
+        });
+  }
+
+  Widget _circularSpinner() {
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  void _addNewProject() {
-    setState(() {});
-  }
-
-  double _screenWidthAdjustment = 200;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _screenWidthAdjustment = MediaQuery.of(context).size.width;
-  }
+class AppScaffold extends StatelessWidget {
+  final MainLocalizationsDelegate _overridenLocaleDelegate;
+  AppScaffold(this._overridenLocaleDelegate);
 
   @override
   Widget build(BuildContext context) {
-    _openSettings() {
-      Navigator.of(context).push(PageRouteBuilder(
-          fullscreenDialog: true,
-          transitionDuration: Duration(milliseconds: 250),
-          reverseTransitionDuration: Duration(milliseconds: 250),
-          barrierDismissible: true,
-          transitionsBuilder: (BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return Settings();
-          }));
-    }
+    return MaterialApp(
+      localeListResolutionCallback: (locales, supportedLocales) {
+        Locale locale = _overridenLocaleDelegate.overridenLocale;
+        var isFoundLocale = _overridenLocaleDelegate.isSupported(locale);
 
-    return Material(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Hero(
-                    tag: 'appBarBackground',
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Container(color: Theme.of(context).canvasColor),
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Hero(
-                      tag: 'appBarMenuButton',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                            icon: Icon(Icons.more_horiz),
-                            onPressed: _openSettings),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                SafeArea(child: SizedBox(height: 80, child: ProjectCard())),
-                Positioned(
-                  bottom: 20,
-                  right: 29,
-                  child: FloatingActionButton(
-                    onPressed: _addNewProject,
-                    tooltip: 'Add new project',
-                    child: Icon(Icons.add),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
+        // var isFoundLocale =supportedLocales.contains(locale);
+        if (!isFoundLocale) {
+          return LocaleModelConsts.localeEN;
+        }
+        return locale;
+      },
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        _overridenLocaleDelegate,
+      ],
+      supportedLocales: [
+        LocaleModelConsts.localeRU, // Russian
+        LocaleModelConsts.localeEN, // English
+      ],
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          fontFamily: 'IBM Plex Sans',
+          brightness: Brightness.dark),
+      home: HomeProjects(),
     );
   }
 }

@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 // FIXME: when intl_translation will be realeased with null safety
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:last_answer/localizations/MainLocalizations.dart';
-import 'package:last_answer/models/Projects.dart';
-import 'package:last_answer/screens/HomeProjects.dart';
-import 'package:provider/provider.dart';
-
-import 'models/AnswersModel.dart';
-import 'models/LocaleModel.dart';
-import 'models/QuestionsModel.dart';
+import 'package:last_answer/localizations/main_localizations.dart';
+import 'package:last_answer/screens/home_projects.dart';
+import 'package:last_answer/shared_utils_models/locales_model.dart';
 
 void main() async {
   if (!kIsWeb && Platform.isMacOS) {
@@ -35,21 +30,10 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
     Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
 
     return FutureBuilder(
-        future: systemLocale, // stream data to listen for change
+        future: systemLocale,
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          // print('connection done ${snapshot.connectionState}');
-
           if (snapshot.connectionState == ConnectionState.done) {
-            // print('connection done ${snapshot.data.toString()}');
-            MainLocalizationsDelegate _localeOverrideDelegate =
-                MainLocalizationsDelegate(
-                    snapshot.data ?? LocaleModelConsts.localeEN);
-            return MultiProvider(providers: [
-              ChangeNotifierProvider(create: (context) => LocaleModel()),
-              ChangeNotifierProvider(create: (context) => AnswersModel()),
-              ChangeNotifierProvider(create: (context) => QuestionsModel()),
-              ChangeNotifierProvider(create: (context) => ProjectsModel()),
-            ], child: AppScaffold(_localeOverrideDelegate));
+            return Container();
           } else {
             return _circularSpinner();
           }

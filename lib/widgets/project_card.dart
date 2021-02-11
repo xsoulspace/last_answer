@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:last_answer/abstract/Project.dart';
-import 'package:last_answer/screens/QuestionsAnswers.dart';
+import 'package:last_answer/screens/questions_answers.dart';
 
 class ProjectCard extends StatelessWidget {
   @override

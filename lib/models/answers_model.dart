@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:last_answer/abstract/Answer.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/abstract/Question.dart';
-import 'package:last_answer/models/QuestionsModel.dart';
-import 'package:last_answer/models/StorageMixin.dart';
+import 'package:last_answer/models/questions_model.dart';
+import 'package:last_answer/shared_utils_models/storage_mixin.dart';
 
 class AnswersModelConsts {
-  static final String answers = 'answers';
+  static final String storagename = 'answers';
   static final String currentWritingAnswer = 'currentWritingAnswer';
 
   static Answer emptyAnswer = Answer(
@@ -41,12 +41,11 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
 
   Future<void> ini() async {
     print({'answers ini'});
-    String answers =
-        await (await storage).getString(AnswersModelConsts.answers);
+    String answers = (await storage).getString(AnswersModelConsts.storagename);
     if (answers.isNotEmpty) fromJson(jsonDecode(answers));
 
-    String _currentWritingAnswer = await (await storage)
-        .getString(AnswersModelConsts.currentWritingAnswer);
+    String _currentWritingAnswer =
+        (await storage).getString(AnswersModelConsts.currentWritingAnswer);
     if (_currentWritingAnswer.isNotEmpty)
       currentWritingAnswer = _currentWritingAnswer;
 
@@ -117,20 +116,13 @@ class AnswersModel extends ChangeNotifier with StorageMixin {
     // print('cleaning storage');
     notifyListeners();
 
-    await (await storage).putString(AnswersModelConsts.answers, '');
+    await (await storage).putString(AnswersModelConsts.storagename, '');
     await (await storage)
         .putString(AnswersModelConsts.currentWritingAnswer, '');
   }
 
   Future<void> updateAnswersStorage() async {
     String json = jsonEncode(toJson());
-    await (await storage).putString(AnswersModelConsts.answers, json);
+    await (await storage).putString(AnswersModelConsts.storagename, json);
   }
-
-  toJson() => answersList.map((answer) => answer.toJson()).toList();
-
-  fromJson(List answers) => answers.forEach((answer) {
-        Answer newAnswer = Answer.fromJson(answer);
-        _answers.putIfAbsent(newAnswer.id, () => newAnswer);
-      });
 }

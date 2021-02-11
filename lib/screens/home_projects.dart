@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:last_answer/screens/Settings.dart';
-import 'package:last_answer/widgets/ProjectCard.dart';
+import 'package:last_answer/screens/settings.dart';
+import 'package:last_answer/widgets/project_card.dart';
 
 class HomeProjects extends StatelessWidget {
   HomeProjects({Key? key}) : super(key: key);

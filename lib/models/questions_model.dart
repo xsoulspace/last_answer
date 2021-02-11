@@ -4,9 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:last_answer/abstract/LocaleTitle.dart';
 import 'package:last_answer/abstract/Question.dart';
+import 'package:last_answer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
-
-import 'LocaleModel.dart';
 
 class QuestionsModelConsts {
   static final List<Question> questions = [
@@ -42,7 +41,8 @@ class QuestionsModel extends ChangeNotifier {
                 value: protoQuestion,
                 child: Consumer<LocaleModel>(
                     builder: (context, plocaleModel, child) => Text(
-                        protoQuestion.title.getProp(plocaleModel.current) ??
+                        protoQuestion.title
+                                .getProp(plocaleModel.locale.languageCode) ??
                             '')),
               ))
           .toList();

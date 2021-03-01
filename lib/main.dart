@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:last_answer/abstract/Language.dart';
 // FIXME: when intl_translation will be realeased with null safety
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:last_answer/localizations/main_localizations.dart';
@@ -60,7 +61,7 @@ class AppScaffold extends StatelessWidget {
 
         // var isFoundLocale =supportedLocales.contains(locale);
         if (!isFoundLocale) {
-          return LocaleModelConsts.localeEN;
+          return Locales.en;
         }
         return locale;
       },
@@ -72,8 +73,8 @@ class AppScaffold extends StatelessWidget {
         _overridenLocaleDelegate,
       ],
       supportedLocales: [
-        LocaleModelConsts.localeRU, // Russian
-        LocaleModelConsts.localeEN, // English
+        Locales.ru,
+        Locales.en,
       ],
       theme: ThemeData(
           primarySwatch: Colors.blue,

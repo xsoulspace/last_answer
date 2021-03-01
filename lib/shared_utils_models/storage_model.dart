@@ -30,15 +30,15 @@ class StorageModel extends ChangeNotifier with StorageMixin {
     (await storage).putString(key, jsonEncode(value));
   }
 
-  Future<T> load<T>(String key) async {
-    var value = storage.getString(key);
+  Future<T?> load<T>(String key) async {
+    var value = (await storage).getString(key);
     if (value == '') return null;
     return jsonDecode(value);
   }
 
   Future<void> saveAnswersModel() async {
     await save(
-        key: AnswersModelConsts.storagename, value: _playersModel.toJson());
+        key: AnswersModelConsts.storagename, value: _answersModel.toJson());
   }
 
   Future<void> loadAnswersModel() async {
@@ -56,7 +56,7 @@ class StorageModel extends ChangeNotifier with StorageMixin {
     var modelStr = await load(LocalDictionaryModelConsts.storagename);
     if (modelStr == null) return;
     var model = LocalDictionaryModel.fromJson(modelStr);
-    _localDictionaryModel
+    _projectsModel
       ..reloadState(words: model.words)
       ..notifyListeners();
     notifyListeners();
@@ -64,7 +64,6 @@ class StorageModel extends ChangeNotifier with StorageMixin {
 
   Future<void> saveProjectsModel() async {
     await save(
-        key: ProjectsModelConsts.storagename,
-        value: _localDictionaryModel.toJson());
+        key: ProjectsModelConsts.storagename, value: _projectsModel.toJson());
   }
 }

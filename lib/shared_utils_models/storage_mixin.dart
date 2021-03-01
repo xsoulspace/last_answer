@@ -1,4 +1,4 @@
-import 'package:last_answer/sharedUtilsAndModels/storage_util.dart';
+import 'package:last_answer/shared_utils_models/storage_util.dart';
 
 mixin StorageMixin {
   StorageUtil? _storage;

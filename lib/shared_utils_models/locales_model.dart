@@ -7,8 +7,8 @@ import 'package:intl/intl_standalone.dart';
 import 'package:last_answer/abstract/Language.dart';
 import 'package:last_answer/abstract/NamedLocale.dart';
 import 'package:last_answer/localizations/main_localizations.dart';
-import 'package:last_answer/sharedUtilsAndModels/storage_util.dart';
 import 'package:last_answer/shared_utils_models/storage_mixin.dart';
+import 'package:last_answer/shared_utils_models/storage_util.dart';
 
 class LocaleModelConsts {
   static final String storagename = 'locale';

@@ -33,17 +33,24 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+# dependency_overrides:
+#   analyzer: 0.39.14
+#   intl: 0.17.0
+#   path: ^1.8.0
+#   clock: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.0
-  json_serializable: ^4.0.3
-  build_runner: ^1.12.2
+  # json_serializable: ^4.0.3
+  # build_runner: ^1.12.2
    # FIXME: due problem with intl_tranlsation
   # analyzer dependency overriden.
   # FIXME: to run flutter pub run build_runner build need to comment intl_translation and analyzer override
-  intl_translation: ^0.17.10+1
-
+  # intl_translation: ^0.17.10+1
+  intl: ^0.17.0
+  # intl_translation:
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
   image_path: "lib/assets/icon-512.png"
@@ -56,7 +63,7 @@ flutter_icons:
 
 # The following section is specific to Flutter.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

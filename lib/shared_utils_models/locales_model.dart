@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:last_answer/abstract/Language.dart';
 import 'package:last_answer/abstract/NamedLocale.dart';
-import 'package:last_answer/localizations/main_localizations.dart';
 import 'package:last_answer/shared_utils_models/storage_mixin.dart';
 import 'package:last_answer/shared_utils_models/storage_util.dart';
 
@@ -33,8 +33,8 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     notifyListeners();
   }
 
-  MainLocalizationsDelegate get localeOverrideDelegate =>
-      MainLocalizationsDelegate(locale);
+  LocalizationsDelegate<AppLocalizations> get localeOverrideDelegate =>
+      AppLocalizations.delegate;
   static Future<LocaleModel> create() async {
     var localeModel = LocaleModel();
     var localef = await LocaleModel.loadSavedLocale();
@@ -67,7 +67,7 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
 
   Future<void> switchLang(Locale? localef) async {
     if (localef == null) return;
-    await MainLocalizations.load(localef);
+    await AppLocalizations.delegate.load(localef);
     (await storage)
         .putString(LocaleModelConsts.storagename, localef.languageCode);
     locale = localef;

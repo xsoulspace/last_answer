@@ -45,48 +45,49 @@ class _SettingsState extends State<Settings> {
             child: Stack(
           children: [
             Hero(
-                tag: 'appBarBackground',
+              tag: 'appBarBackground',
+              child: Container(
+                height: size.height - AppBarHeight,
+                color: Theme.of(context).canvasColor,
                 child: Material(
-                  child: Container(
-                    height: size.height - AppBarHeight,
-                    color: Theme.of(context).canvasColor,
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1,
-                      padding: EdgeInsets.all(20.0),
-                      children: [
-                        Center(
-                          child: Column(children: [
-                            Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).accentColor,
-                                    width: 1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: IconButton(
-                                onPressed: () async {
-                                  await box.put(BoxDarkMode.isDark, !isDark);
-                                },
-                                icon: AnimatedSwitcher(
-                                  duration: Duration(milliseconds: 400),
-                                  child: isDark
-                                      ? Icon(Icons.wb_sunny_outlined)
-                                      : Icon(Icons.wb_sunny),
-                                ),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1,
+                    padding: EdgeInsets.all(20.0),
+                    children: [
+                      Center(
+                        child: Column(children: [
+                          Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context).accentColor,
+                                  width: 1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                await box.put(BoxDarkMode.isDark, !isDark);
+                              },
+                              icon: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 400),
+                                child: isDark
+                                    ? Icon(Icons.wb_sunny_outlined)
+                                    : Icon(Icons.wb_sunny),
                               ),
                             ),
-                            Text(
-                              'Dark mode',
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                        )
-                      ],
-                    ),
+                          ),
+                          Text(
+                            'Dark mode',
+                            textAlign: TextAlign.center,
+                          ),
+                        ]),
+                      )
+                    ],
                   ),
-                ))
+                ),
+              ),
+            )
           ],
         )),
       ],

@@ -37,9 +37,9 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
         future: _systemLocale,
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return AppScaffold(
-              overridenLocale: snapshot.data,
-              home: HomeProjects(),
+            return ProviderInit(
+              child: AppScaffold(
+                  overridenLocale: snapshot.data, home: HomeProjects()),
             );
           } else {
             return _circularSpinner();
@@ -54,6 +54,8 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   }
 }
 
+/// Class to init home screen, routes, locales
+/// and app mode
 class AppScaffold extends StatelessWidget {
   final Widget? _home;
   final Locale? _overridenLocale;
@@ -95,6 +97,7 @@ class AppScaffold extends StatelessWidget {
   }
 }
 
+/// Class to init providers
 class ProviderInit extends StatelessWidget {
   final Widget _child;
   ProviderInit({required Widget child}) : _child = child;
@@ -102,7 +105,7 @@ class ProviderInit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [],
+      providers: [ChangeNotifierProvider(create: (_) => LocaleModel())],
       child: _child,
     );
   }

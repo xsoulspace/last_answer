@@ -51,6 +51,7 @@ class HomeProjects extends StatelessWidget {
                     Hero(
                       tag: 'appBarMenuButton',
                       child: Material(
+                        shape: CircleBorder(),
                         color: Colors.transparent,
                         child: IconButton(
                             icon: Icon(Icons.more_horiz),

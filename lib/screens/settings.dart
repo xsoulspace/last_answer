@@ -86,32 +86,33 @@ class _SettingsState extends State<Settings> {
                                 'Dark mode',
                                 textAlign: TextAlign.center,
                               ),
-                              Consumer<LocaleModel>(
-                                  builder: (context, locale, child) {
-                                final textStyle = TextStyle(
-                                    fontSize: 14.0, color: Colors.white);
-                                return DropdownButton<NamedLocale>(
-                                  value: locale.currentNamedLocale,
-                                  style: textStyle,
-                                  items: LocaleModelConsts.namedLocales
-                                      .map<DropdownMenuItem<NamedLocale>>(
-                                          (namedLocale) {
-                                    return DropdownMenuItem<NamedLocale>(
-                                      value: namedLocale,
-                                      child: Text(
-                                        namedLocale.name,
-                                        style: textStyle,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (NamedLocale? namedLocale) async {
-                                    await localeModel
-                                        .switchLang(namedLocale?.locale);
-                                  },
-                                );
-                              })
                             ]),
-                          )
+                          ),
+                          Center(child: Consumer<LocaleModel>(
+                              builder: (context, locale, child) {
+                            final textStyle = TextStyle(
+                              fontSize: 14.0,
+                            );
+                            return DropdownButton<NamedLocale>(
+                              value: locale.currentNamedLocale,
+                              style: textStyle,
+                              items: LocaleModelConsts.namedLocales
+                                  .map<DropdownMenuItem<NamedLocale>>(
+                                      (namedLocale) {
+                                return DropdownMenuItem<NamedLocale>(
+                                  value: namedLocale,
+                                  child: Text(
+                                    namedLocale.name,
+                                    style: textStyle,
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (NamedLocale? namedLocale) async {
+                                await localeModel
+                                    .switchLang(namedLocale?.locale);
+                              },
+                            );
+                          }))
                         ],
                       ),
                     ),

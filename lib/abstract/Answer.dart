@@ -1,34 +1,27 @@
+import 'package:hive/hive.dart';
+import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Question.dart';
 
-import 'Project.dart';
-
+@HiveType(typeId: HiveBoxes.answerId)
 class Answer {
+  @HiveField(0)
   String title;
+
+  @HiveField(1)
   Question question;
-  final Project project;
+
+  @HiveField(3)
   final int id;
-  Answer(
-      {required this.title,
-      required this.question,
-      required this.id,
-      required this.project});
+
+  Answer({
+    required this.title,
+    required this.question,
+    required this.id,
+  });
 
   @override
   int get hashCode => id;
 
   @override
   bool operator ==(Object other) => other is Answer && other.id == id;
-
-  Map<String, dynamic> toJson() => {
-        'title': title,
-        'question': question.toJson(),
-        'project': project.toJson(),
-        'id': id,
-      };
-
-  Answer.fromJson(Map<String, dynamic> m)
-      : title = m['title'],
-        project = Project.fromJson(m['project']),
-        question = Question.fromJson(m['question']),
-        id = m['id'];
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
+import 'package:last_answer/abstract/NamedLocale.dart';
+import 'package:last_answer/shared_utils_models/locales_model.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -16,6 +19,7 @@ class _SettingsState extends State<Settings> {
     var box = Hive.box<bool>(HiveBoxes.darkMode);
     var isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
     var size = MediaQuery.of(context).size;
+    var localeModel = Provider.of<LocaleModel>(context);
     return Material(
         child: Column(
       children: [
@@ -81,6 +85,30 @@ class _SettingsState extends State<Settings> {
                             'Dark mode',
                             textAlign: TextAlign.center,
                           ),
+                          Consumer<LocaleModel>(
+                              builder: (context, locale, child) {
+                            final textStyle =
+                                TextStyle(fontSize: 14.0, color: Colors.white);
+                            return DropdownButton<NamedLocale>(
+                              value: locale.currentNamedLocale,
+                              style: textStyle,
+                              items: LocaleModelConsts.namedLocales
+                                  .map<DropdownMenuItem<NamedLocale>>(
+                                      (namedLocale) {
+                                return DropdownMenuItem<NamedLocale>(
+                                  value: namedLocale,
+                                  child: Text(
+                                    namedLocale.name,
+                                    style: textStyle,
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (NamedLocale? namedLocale) async {
+                                await localeModel
+                                    .switchLang(namedLocale?.locale);
+                              },
+                            );
+                          })
                         ]),
                       )
                     ],

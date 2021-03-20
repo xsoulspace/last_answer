@@ -20,6 +20,12 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         foregroundColor: Colors.transparent,
+        leading: IconButton(
+            color: Theme.of(context).textTheme.bodyText2?.color,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.close)),
         title: Hero(
             tag: 'title',
             child: Material(

@@ -57,11 +57,9 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
 /// Class to init home screen, routes, locales
 /// and app mode
 class AppScaffold extends StatelessWidget {
-  final Widget? _home;
-  final Locale? _overridenLocale;
-  AppScaffold({required Locale? overridenLocale, required Widget? home})
-      : _overridenLocale = overridenLocale,
-        _home = home;
+  final Widget home;
+  final Locale? overridenLocale;
+  AppScaffold({required this.overridenLocale, required this.home});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +71,7 @@ class AppScaffold extends StatelessWidget {
           var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
           return MaterialApp(
             localeListResolutionCallback: (locales, supportedLocales) {
-              var _locale = _overridenLocale;
+              var _locale = overridenLocale;
               if (_locale == null) return Locales.en;
               var isLocaleSupported =
                   AppLocalizations.delegate.isSupported(_locale);
@@ -91,7 +89,7 @@ class AppScaffold extends StatelessWidget {
               brightness: Brightness.dark,
               fontFamily: 'IBM Plex Sans',
             ),
-            home: _home,
+            home: home,
           );
         });
   }
@@ -99,14 +97,14 @@ class AppScaffold extends StatelessWidget {
 
 /// Class to init providers
 class ProviderInit extends StatelessWidget {
-  final Widget _child;
-  ProviderInit({required Widget child}) : _child = child;
+  final Widget child;
+  ProviderInit({required this.child});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => LocaleModel())],
-      child: _child,
+      child: child,
     );
   }
 }

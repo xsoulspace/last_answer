@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/widgets/answer_card.dart';
 import 'package:last_answer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
@@ -67,6 +68,19 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
               child: Container(
                 color: Theme.of(context).canvasColor,
               )),
+          ListView.separated(
+              separatorBuilder: (BuildContext context, int index) => SizedBox(
+                    height: 2,
+                  ),
+              addSemanticIndexes: true,
+              reverse: true,
+              itemCount: widget.project.answers?.length ?? 0,
+              itemBuilder: (context, index) {
+                var answer = widget.project.answers?.reversed.elementAt(index);
+                if (answer == null || answer.id == BoxAnswer.currentAnswer)
+                  return Container();
+                return AnswerCard(index: index, answer: answer);
+              }),
           // Expanded(
           //   child: ListView.separated(
           //       separatorBuilder: (BuildContext context, int index) => SizedBox(

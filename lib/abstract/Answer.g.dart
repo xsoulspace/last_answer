@@ -18,8 +18,8 @@ class AnswerAdapter extends TypeAdapter<Answer> {
     };
     return Answer(
       title: fields[0] as String,
-      question: fields[1] as Question,
-      id: fields[3] as int,
+      questionId: fields[1] as String,
+      id: fields[3] as String,
     );
   }
 
@@ -30,7 +30,7 @@ class AnswerAdapter extends TypeAdapter<Answer> {
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.question)
+      ..write(obj.questionId)
       ..writeByte(3)
       ..write(obj.id);
   }

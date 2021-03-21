@@ -20,8 +20,8 @@ class AnswerCard extends StatelessWidget {
     var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     QuestionsModel questionsModel =
         Provider.of<QuestionsModel>(context, listen: false);
-
-    Question dropdownValue = answer.question;
+    var question = questionsModel.getById(answer.questionId);
+    Question dropdownValue = question;
 
     double dropdownWidth = 95.0;
 
@@ -40,7 +40,7 @@ class AnswerCard extends StatelessWidget {
               items: questionsModel.questionDropdownMenuItems,
               onChanged: (Question? question) async {
                 if (question == null) return;
-                answer.question = question;
+                answer.questionId = question.id;
                 _answerBox.put(answer.id, answer);
               },
             ))),

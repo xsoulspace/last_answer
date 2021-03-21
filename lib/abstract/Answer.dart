@@ -10,14 +10,14 @@ class Answer extends HiveObject {
   String title;
 
   @HiveField(1)
-  Question question;
+  String questionId;
 
   @HiveField(3)
   final String id;
 
   Answer({
     required this.title,
-    required this.question,
+    required this.questionId,
     required this.id,
   });
 

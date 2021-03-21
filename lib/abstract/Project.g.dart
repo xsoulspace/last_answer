@@ -17,7 +17,7 @@ class ProjectAdapter extends TypeAdapter<Project> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Project(
-      id: fields[0] as int,
+      id: fields[0] as String,
       title: fields[2] as String,
       isCompleted: fields[1] as bool,
       answers: (fields[3] as HiveList?)?.castHiveList(),

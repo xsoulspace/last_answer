@@ -14,3 +14,7 @@ class BoxDarkMode {
 class BoxAnswer {
   static String currentAnswer = 'currentAnswer';
 }
+
+class BoxProject {
+  static String currentProject = 'currentProject';
+}

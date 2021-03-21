@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,6 +11,7 @@ import 'package:last_answer/models/questions_model.dart';
 import 'package:last_answer/screens/home_projects.dart';
 import 'package:last_answer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 void main() async {
   Hive.registerAdapter(AnswerAdapter());
@@ -20,6 +19,8 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openBox<bool>(HiveBoxes.darkMode);
+  await Hive.openBox<Project>(HiveBoxes.projects);
+  await Hive.openBox<Answer>(HiveBoxes.answers);
 
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;

@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
-import 'package:last_answer/widgets/answer_card.dart';
 import 'package:last_answer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
@@ -15,9 +14,9 @@ class QuestionsAnswers extends StatefulWidget {
 
 class _QuestionsAnswersState extends State<QuestionsAnswers> {
   TextEditingController _titleEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     _titleEditingController.text = widget.project.title;
     var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return Scaffold(
@@ -68,34 +67,23 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
               child: Container(
                 color: Theme.of(context).canvasColor,
               )),
-          ListView.separated(
-              separatorBuilder: (BuildContext context, int index) => SizedBox(
-                    height: 2,
-                  ),
-              addSemanticIndexes: true,
-              reverse: true,
-              itemCount: widget.project.answers?.length ?? 0,
-              itemBuilder: (context, index) {
-                var answer = widget.project.answers?.reversed.elementAt(index);
-                if (answer == null || answer.id == BoxAnswer.currentAnswer)
-                  return Container();
-                return AnswerCard(index: index, answer: answer);
-              }),
-          // Expanded(
-          //   child: ListView.separated(
-          //       separatorBuilder: (BuildContext context, int index) => SizedBox(
-          //             height: 2,
-          //           ),
-          //       addSemanticIndexes: true,
-          //       reverse: true,
-          //       itemCount: widget.project.answers?.length ?? 0,
-          //       itemBuilder: (context, index) {
-          //         var answer =
-          //             widget.project.answers?.reversed.elementAt(index);
-          //         if (answer == null) return Container();
-          //         return AnswerCard(index: index, answer: answer);
-          //       }),
-          // ),
+          SizedBox(
+            height: 300,
+            child: ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => SizedBox(
+                      height: 2,
+                    ),
+                addSemanticIndexes: true,
+                reverse: true,
+                itemCount: widget.project.answers?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  var answer = widget.project.answers?.elementAt(index);
+                  if (answer == null || answer.id == BoxAnswer.currentAnswer)
+                    return Container();
+                  return Text(answer.title);
+                  // return AnswerCard(index: index, answer: answer);
+                }),
+          ),
           Positioned(
               bottom: 0,
               left: 0,

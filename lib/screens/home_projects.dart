@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/screens/settings.dart';
@@ -31,7 +32,6 @@ class HomeProjects extends StatelessWidget {
           }));
     }
 
-    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return SafeArea(
       child: Material(
         child: Column(
@@ -72,26 +72,26 @@ class HomeProjects extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Stack(
-                children: [
-                  ListView.builder(
-                    itemBuilder: (BuildContext _, int index) {
-                      var _project =
-                          _projectBox.values.toList().reversed.elementAt(index);
-                      // return Container(
-                      //   child: Text(_project.title),
-                      // );
-                      if (_project.id == BoxProject.currentProject)
-                        return Container();
-                      return ProjectCard(
-                        project: _project,
-                      );
-                    },
-                    itemCount: _projectBox.values.length,
-                  )
-                ],
+                child: ValueListenableBuilder(
+              valueListenable:
+                  Hive.box<Project>(HiveBoxes.projects).listenable(),
+              builder:
+                  (BuildContext _, Box<Project> _projectBox, Widget? widget) =>
+                      ListView.builder(
+                reverse: true,
+                itemBuilder: (BuildContext _, int index) {
+                  var _project =
+                      _projectBox.values.toList().reversed.elementAt(index);
+
+                  if (_project.id == BoxProject.currentProject)
+                    return Container();
+                  return ProjectCard(
+                    project: _project,
+                  );
+                },
+                itemCount: _projectBox.values.length,
               ),
-            ),
+            )),
             NewProjectField()
           ],
         ),

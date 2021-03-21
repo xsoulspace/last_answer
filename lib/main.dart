@@ -5,13 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:last_answer/abstract/Answer.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Language.dart';
+import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/models/questions_model.dart';
 import 'package:last_answer/screens/home_projects.dart';
 import 'package:last_answer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  Hive.registerAdapter(AnswerAdapter());
+  Hive.registerAdapter(ProjectAdapter());
+
   await Hive.initFlutter();
   await Hive.openBox<bool>(HiveBoxes.darkMode);
 
@@ -103,7 +109,10 @@ class ProviderInit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => LocaleModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleModel()),
+        ChangeNotifierProvider(create: (_) => QuestionsModel())
+      ],
       child: child,
     );
   }

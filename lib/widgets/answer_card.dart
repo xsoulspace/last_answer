@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:lastanswer/entities/Answer.dart';
-import 'package:lastanswer/entities/Question.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/AnswersModel.dart';
-import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:lastanswer/models/QuestionsModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hive/hive.dart';
+import 'package:last_answer/abstract/Answer.dart';
+import 'package:last_answer/abstract/HiveBoxes.dart';
+import 'package:last_answer/abstract/Question.dart';
+import 'package:last_answer/models/questions_model.dart';
+import 'package:last_answer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 class AnswerCard extends StatelessWidget {
@@ -14,57 +15,9 @@ class AnswerCard extends StatelessWidget {
   final Answer answer;
   AnswerCard({required this.index, required this.answer});
 
-  _showRemoveAnswer({required BuildContext context}) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) =>
-            Consumer<LocaleModel>(builder: (context, locale, child) {
-              final answersModel =
-                  Provider.of<AnswersModel>(context, listen: false);
-              return AlertDialog(
-                actions: [
-                  FlatButton(
-                    child: Text(MainLocalizations.of(context).cancel),
-                    onPressed: () => Navigator?.of(context).pop(),
-                  ),
-                  FlatButton(
-                    child: Text(MainLocalizations.of(context).delete),
-                    onPressed: () async {
-                      if (!kIsWeb) {
-                        try {
-                          final snackBar = SnackBar(
-                            content: Text(MainLocalizations.of(context)
-                                .successfullyDeleted),
-                            duration: Duration(
-                              seconds: 4,
-                            ),
-                            action: SnackBarAction(
-                                label: 'ok',
-                                onPressed: () => ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar()),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } catch (e) {
-                          // its okay, if there is no snack bar
-                        }
-                      }
-                      await answersModel.remove(answer);
-                      Navigator?.of(context).pop();
-                    },
-                    color: Theme.of(context).buttonTheme.colorScheme?.error,
-                  )
-                ],
-                title: Text(MainLocalizations.of(context)
-                    .areYouSureYouWantToDeleteAnswer),
-                content: Text(MainLocalizations.of(context)
-                    .ifYouDeleteAnswerThereIsNoWayBack),
-              );
-            }));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final answersModel = Provider.of<AnswersModel>(context, listen: false);
+    var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     QuestionsModel questionsModel =
         Provider.of<QuestionsModel>(context, listen: false);
 
@@ -80,16 +33,15 @@ class AnswerCard extends StatelessWidget {
             width: dropdownWidth - 10,
             child: DropdownButtonHideUnderline(
                 child: DropdownButton<Question>(
-              style:
-                  TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.6)),
+              style: TextStyle(fontSize: 14),
               itemHeight: null,
               value: dropdownValue,
               isExpanded: true,
               items: questionsModel.questionDropdownMenuItems,
               onChanged: (Question? question) async {
-                if (question != null) {
-                  answersModel.updateQuestion(answer, question);
-                }
+                if (question == null) return;
+                answer.question = question;
+                _answerBox.put(answer.id, answer);
               },
             ))),
       ),
@@ -102,7 +54,7 @@ class AnswerCard extends StatelessWidget {
         right: 5,
         child: IconButton(
           iconSize: 10,
-          onPressed: () => _showRemoveAnswer(context: context),
+          onPressed: () => showRemoveAnswer(context: context, answer: answer),
           icon: Icon(
             Icons.close,
             color: Colors.white.withOpacity(0.6),
@@ -111,6 +63,60 @@ class AnswerCard extends StatelessWidget {
       )
     ]);
   }
+}
+
+void showRemoveAnswer({required BuildContext context, required Answer answer}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          Consumer<LocaleModel>(builder: (context, locale, child) {
+            var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
+            return AlertDialog(
+              actions: [
+                TextButton(
+                  child:
+                      Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                  onPressed: () => Navigator?.of(context).pop(),
+                ),
+                TextButton(
+                  child: Text(
+                      MaterialLocalizations.of(context).deleteButtonTooltip),
+                  onPressed: () async {
+                    if (!kIsWeb) {
+                      try {
+                        final snackBar = SnackBar(
+                          content: Text(AppLocalizations.of(context)
+                                  ?.successfullyDeleted ??
+                              ''),
+                          duration: Duration(
+                            seconds: 4,
+                          ),
+                          action: SnackBarAction(
+                              label: 'ok',
+                              onPressed: () => ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar()),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } catch (e) {
+                        // its okay, if there is no snack bar
+                      }
+                    }
+                    await _answerBox.delete(answer.id);
+                    Navigator?.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).buttonTheme.colorScheme?.error)),
+                )
+              ],
+              title: Text(AppLocalizations.of(context)
+                      ?.areYouSureYouWantToDeleteAnswer ??
+                  ''),
+              content: Text(AppLocalizations.of(context)
+                      ?.ifYouDeleteAnswerThereIsNoWayBack ??
+                  ''),
+            );
+          }));
 }
 
 class AnswerTextField extends StatefulWidget {
@@ -122,13 +128,13 @@ class AnswerTextField extends StatefulWidget {
 
 class _AnswerTextFieldState extends State<AnswerTextField> {
   TextEditingController _controller = TextEditingController();
-  _updateAnswer() async {
-    final answersModel = Provider.of<AnswersModel>(context, listen: false);
+  _updateAnswer({required Box<Answer> box}) async {
+    var _answer = widget.answer;
     if (_controller.text.isEmpty) {
-      await answersModel.remove(widget.answer);
+      await box.delete(_answer.id);
     } else {
-      await answersModel.updateAnswer(
-          oldAnswer: widget.answer, newAnswerTitle: _controller.text);
+      _answer.title = _controller.text;
+      await box.put(_answer.id, _answer);
     }
   }
 
@@ -143,14 +149,10 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
 
   @override
   Widget build(BuildContext context) {
+    var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     String answerText = widget.answer.title;
-    // final copyText = '$questionTitle $answerText';
-
-    // if (_controller.text.isEmpty) {
     _controller.text = answerText;
-    // }
-    // Calculate whether the timestamp fits into the last line or if it has
-    // to be positioned after the last line.
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
@@ -163,14 +165,15 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
             child: TextFormField(
               expands: false,
               onChanged: (String text) async {
-                await _updateAnswer();
+                await _updateAnswer(box: _answerBox);
               },
               textAlignVertical: TextAlignVertical.center,
               controller: _controller,
               maxLines: null,
               textAlign: TextAlign.start,
               keyboardType: TextInputType.multiline,
-              onEditingComplete: () async => await _updateAnswer(),
+              onEditingComplete: () async =>
+                  await _updateAnswer(box: _answerBox),
               style: TextStyle(
                   fontSize: 15,
                   color: Theme.of(context)
@@ -189,10 +192,9 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                   focusColor: Colors.transparent),
               cursorColor: Theme.of(context).accentColor,
             ),
-            onFocusChange: (hasFocus) async {
-              if (!hasFocus) {
-                await _updateAnswer();
-              }
+            onFocusChange: (bool hasFocus) async {
+              if (hasFocus) return;
+              await _updateAnswer(box: _answerBox);
             },
           ),
         ),

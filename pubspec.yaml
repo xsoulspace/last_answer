@@ -33,6 +33,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   hive: ^2.0.0
   hive_flutter: ^1.0.0
+  universal_io: ^2.0.1
+  share: ^2.0.1
+  # universal_html: ^2.0.4
 
 dependency_overrides:
   build: 2.0.0

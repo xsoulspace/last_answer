@@ -1,8 +1,11 @@
 import 'package:hive/hive.dart';
+import 'package:last_answer/abstract/Answer.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 
+part 'Project.g.dart';
+
 @HiveType(typeId: HiveBoxes.projectId)
-class Project {
+class Project extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -11,7 +14,7 @@ class Project {
   String title;
 
   @HiveField(3)
-  HiveList answers;
+  HiveList<Answer>? answers;
 
   @override
   int get hashCode => id;
@@ -23,5 +26,5 @@ class Project {
       {required this.id,
       required this.title,
       this.isCompleted = false,
-      required this.answers});
+      this.answers});
 }

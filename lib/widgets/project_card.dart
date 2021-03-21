@@ -4,11 +4,15 @@ import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/screens/questions_answers.dart';
+import 'package:last_answer/widgets/answer_card.dart';
+import 'package:last_answer/widgets/share_button.dart';
 
 class ProjectCard extends StatelessWidget {
+  final Project project;
+  ProjectCard({required this.project});
   @override
   Widget build(BuildContext context) {
-    var projectBox = Hive.box(HiveBoxes.projects);
+    var _projectBox = Hive.box(HiveBoxes.projects);
     return GestureDetector(
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -38,12 +42,30 @@ class ProjectCard extends StatelessWidget {
                             child: Checkbox(
                                 value: true,
                                 onChanged: (bool? value) {
-                                  print(value);
+                                  _projectBox.put(project.id, project);
                                 }),
                           ))
                     ],
                   )),
             ),
+            ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => SizedBox(
+                      height: 2,
+                    ),
+                addSemanticIndexes: true,
+                reverse: true,
+                itemCount: project.answers?.length ?? 0,
+                itemBuilder: (context, index) {
+                  var answer = project.answers?.reversed.elementAt(index);
+                  if (answer == null) return Container();
+                  return AnswerCard(index: index, answer: answer);
+                }),
+            Positioned(
+                bottom: 20,
+                right: 29,
+                child: ShareButton(
+                  project: project,
+                ))
           ],
         ),
       ),
@@ -62,11 +84,7 @@ class ProjectCard extends StatelessWidget {
             },
             pageBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return QuestionsAnswers(
-                  project: Project(
-                      id: 0,
-                      title: '',
-                      answers: HiveList(projectBox, objects: [])));
+              return QuestionsAnswers(project: project);
             }));
       },
     );

@@ -2,8 +2,10 @@ import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Question.dart';
 
+part 'Answer.g.dart';
+
 @HiveType(typeId: HiveBoxes.answerId)
-class Answer {
+class Answer extends HiveObject {
   @HiveField(0)
   String title;
 

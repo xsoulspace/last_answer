@@ -5,6 +5,7 @@ import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/screens/questions_answers.dart';
 import 'package:last_answer/widgets/answer_card.dart';
+import 'package:last_answer/widgets/new_answer_field.dart';
 import 'package:last_answer/widgets/share_button.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -65,7 +66,8 @@ class ProjectCard extends StatelessWidget {
                 right: 29,
                 child: ShareButton(
                   project: project,
-                ))
+                )),
+            Positioned(bottom: 0, child: NewAnswerField(project: project))
           ],
         ),
       ),

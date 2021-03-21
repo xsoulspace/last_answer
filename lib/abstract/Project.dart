@@ -7,7 +7,7 @@ part 'Project.g.dart';
 @HiveType(typeId: HiveBoxes.projectId)
 class Project extends HiveObject {
   @HiveField(0)
-  final int id;
+  final String id;
   @HiveField(1)
   bool isCompleted;
   @HiveField(2)
@@ -17,7 +17,7 @@ class Project extends HiveObject {
   HiveList<Answer>? answers;
 
   @override
-  int get hashCode => id;
+  int get hashCode => id.hashCode;
 
   @override
   bool operator ==(Object other) => other is Project && other.id == id;

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:last_answer/abstract/HiveBoxes.dart';
+import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/screens/settings.dart';
 import 'package:last_answer/widgets/project_card.dart';
 
@@ -28,6 +31,7 @@ class HomeProjects extends StatelessWidget {
           }));
     }
 
+    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return Material(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -66,16 +70,14 @@ class HomeProjects extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                SafeArea(child: SizedBox(height: 80, child: ProjectCard())),
-                Positioned(
-                  bottom: 20,
-                  right: 29,
-                  child: FloatingActionButton(
-                    onPressed: _addNewProject,
-                    tooltip: 'Add new project',
-                    child: Icon(Icons.add),
-                  ),
-                )
+                SafeArea(child:
+                    ListView.builder(itemBuilder: (BuildContext _, int index) {
+                  var _project =
+                      _projectBox.values.toList().reversed.elementAt(index);
+                  return ProjectCard(
+                    project: _project,
+                  );
+                })),
               ],
             ),
           ),

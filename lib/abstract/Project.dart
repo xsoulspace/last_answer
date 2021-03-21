@@ -16,6 +16,9 @@ class Project extends HiveObject {
   @HiveField(3)
   HiveList<Answer>? answers;
 
+  @HiveField(4)
+  final DateTime created;
+
   @override
   int get hashCode => id.hashCode;
 
@@ -26,5 +29,6 @@ class Project extends HiveObject {
       {required this.id,
       required this.title,
       this.isCompleted = false,
-      this.answers});
+      this.answers,
+      required this.created});
 }

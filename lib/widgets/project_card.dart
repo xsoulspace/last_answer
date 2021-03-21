@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hive/hive.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/screens/questions_answers.dart';
 
@@ -10,7 +8,6 @@ class ProjectCard extends StatelessWidget {
   ProjectCard({required this.project});
   @override
   Widget build(BuildContext context) {
-    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return GestureDetector(
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -44,7 +41,7 @@ class ProjectCard extends StatelessWidget {
                                   value: project.isCompleted,
                                   onChanged: (bool? value) async {
                                     project.isCompleted = value ?? false;
-                                    await _projectBox.put(project.id, project);
+                                    await project.save();
                                   }),
                             ))
                       ],

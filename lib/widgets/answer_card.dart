@@ -17,7 +17,6 @@ class AnswerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     QuestionsModel questionsModel =
         Provider.of<QuestionsModel>(context, listen: false);
     var question = questionsModel.getById(answer.questionId);
@@ -42,7 +41,7 @@ class AnswerCard extends StatelessWidget {
               onChanged: (Question? question) async {
                 if (question == null) return;
                 answer.questionId = question.id;
-                _answerBox.put(answer.id, answer);
+                answer.save();
               },
             ))),
       ),
@@ -71,7 +70,6 @@ void showRemoveAnswer({required BuildContext context, required Answer answer}) {
       context: context,
       builder: (BuildContext context) =>
           Consumer<LocaleModel>(builder: (context, locale, child) {
-            var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
             return AlertDialog(
               actions: [
                 TextButton(
@@ -102,7 +100,7 @@ void showRemoveAnswer({required BuildContext context, required Answer answer}) {
                         // its okay, if there is no snack bar
                       }
                     }
-                    await _answerBox.delete(answer.id);
+                    answer.delete();
                     Navigator?.of(context).pop();
                   },
                   style: ButtonStyle(

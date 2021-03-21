@@ -13,8 +13,12 @@ class _NewProjectFieldState extends State<NewProjectField> {
   final TextEditingController _titleController = TextEditingController();
   final uuid = Uuid();
   Future<void> updateCurrentProject({required Box<Project> box}) async {
-    await box.put(BoxProject.currentProject,
-        Project(id: BoxProject.currentProject, title: _titleController.text));
+    await box.put(
+        BoxProject.currentProject,
+        Project(
+            created: DateTime.now(),
+            id: BoxProject.currentProject,
+            title: _titleController.text));
   }
 
   @override
@@ -56,7 +60,11 @@ class _NewProjectFieldState extends State<NewProjectField> {
             if (_titleController.text.isEmpty) return;
             var newUuid = uuid.v1();
             await _projectBox.put(
-                newUuid, Project(id: newUuid, title: _titleController.text));
+                newUuid,
+                Project(
+                    created: DateTime.now(),
+                    id: newUuid,
+                    title: _titleController.text));
             _titleController.clear();
             await updateCurrentProject(box: _projectBox);
           },

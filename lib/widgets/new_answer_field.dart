@@ -49,7 +49,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
   Widget build(BuildContext context) {
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
     var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
-
+    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     // loading state if its exists
     if (_titleController.text.isEmpty) {
       var _answer = _answerBox.get(BoxAnswer.currentAnswer);
@@ -161,11 +161,12 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                         title: _titleController.text,
                         questionId: questionId,
                         id: uuid.v1());
-                    _answerBox.put(newAnswer.id, newAnswer);
+                    await _answerBox.put(newAnswer.id, newAnswer);
                     answers.add(newAnswer);
                     // FIXME: investiagte does project needs to be updtaed in box?
 
                     widget.project.answers = answers;
+                    await _projectBox.put(widget.project.id, widget.project);
                     await clear(box: _answerBox);
                   },
                   icon: Icon(Icons.send),

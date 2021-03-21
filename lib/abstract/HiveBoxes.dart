@@ -10,3 +10,7 @@ class HiveBoxes {
 class BoxDarkMode {
   static String isDark = 'isDark';
 }
+
+class BoxAnswer {
+  static String currentAnswer = 'currentAnswer';
+}

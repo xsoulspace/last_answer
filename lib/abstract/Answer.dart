@@ -13,7 +13,7 @@ class Answer extends HiveObject {
   Question question;
 
   @HiveField(3)
-  final int id;
+  final String id;
 
   Answer({
     required this.title,
@@ -22,7 +22,7 @@ class Answer extends HiveObject {
   });
 
   @override
-  int get hashCode => id;
+  int get hashCode => id.hashCode;
 
   @override
   bool operator ==(Object other) => other is Answer && other.id == id;

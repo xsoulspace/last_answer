@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
+import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
   final Project project;
@@ -10,11 +13,12 @@ class QuestionsAnswers extends StatefulWidget {
 }
 
 class _QuestionsAnswersState extends State<QuestionsAnswers> {
-  TextEditingController _titleEditingController =
-      TextEditingController(text: 'hello');
+  TextEditingController _titleEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _titleEditingController.text = widget.project.title;
+    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -27,20 +31,31 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
             },
             icon: Icon(Icons.close)),
         title: Hero(
-            tag: 'title',
+            tag: 'title${widget.project.id}',
             child: Material(
                 color: Colors.transparent,
                 child: TextField(
                   controller: _titleEditingController,
+                  onChanged: (String newText) async {
+                    var project = widget.project;
+                    project.title = newText;
+                    await _projectBox.put(project.id, project);
+                  },
                 ))),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 8.0),
             child: Hero(
-                tag: 'check',
+                tag: 'check${widget.project.id}',
                 child: Material(
                     color: Colors.transparent,
-                    child: Checkbox(value: true, onChanged: (bool? value) {}))),
+                    child: Checkbox(
+                        value: widget.project.isCompleted,
+                        onChanged: (bool? value) async {
+                          var project = widget.project;
+                          project.isCompleted = value ?? false;
+                          await _projectBox.put(project.id, project);
+                        }))),
           )
         ],
       ),
@@ -48,10 +63,30 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
           child: Stack(
         children: [
           Hero(
-              tag: 'back',
+              tag: 'back${widget.project.id}',
               child: Container(
                 color: Theme.of(context).canvasColor,
-              ))
+              )),
+          // Expanded(
+          //   child: ListView.separated(
+          //       separatorBuilder: (BuildContext context, int index) => SizedBox(
+          //             height: 2,
+          //           ),
+          //       addSemanticIndexes: true,
+          //       reverse: true,
+          //       itemCount: widget.project.answers?.length ?? 0,
+          //       itemBuilder: (context, index) {
+          //         var answer =
+          //             widget.project.answers?.reversed.elementAt(index);
+          //         if (answer == null) return Container();
+          //         return AnswerCard(index: index, answer: answer);
+          //       }),
+          // ),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: NewAnswerField(project: widget.project))
         ],
       )),
     );

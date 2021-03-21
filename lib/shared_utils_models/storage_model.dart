@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:last_answer/models/answers_model.dart';
-import 'package:last_answer/models/projects_model.dart';
 import 'package:last_answer/shared_utils_models/storage_mixin.dart';
 
 class StorageModel extends ChangeNotifier with StorageMixin {
@@ -10,9 +8,7 @@ class StorageModel extends ChangeNotifier with StorageMixin {
   StorageModel._create();
 
   /// Public factory
-  static Future<StorageModel> create(
-      {required ProjectsModel projectsModel,
-      required AnswersModel answersModel}) async {
+  static Future<StorageModel> create() async {
     // Call the private constructor
     var storageModel = StorageModel._create();
 

@@ -9,24 +9,28 @@ import 'package:provider/provider.dart';
 
 class QuestionsModelConsts {
   static final List<Question> questions = [
-    Question(title: LocaleTitle(en: 'Why?', ru: 'Почему?'), id: 1),
-    Question(title: LocaleTitle(en: 'How?', ru: 'Как?'), id: 2),
-    Question(title: LocaleTitle(en: 'Where?', ru: 'Где?'), id: 3),
-    Question(title: LocaleTitle(en: 'What for?', ru: 'Зачем?'), id: 4),
+    Question(title: LocaleTitle(en: 'Why?', ru: 'Почему?'), id: '1'),
+    Question(title: LocaleTitle(en: 'How?', ru: 'Как?'), id: '2'),
+    Question(title: LocaleTitle(en: 'Where?', ru: 'Где?'), id: '3'),
+    Question(title: LocaleTitle(en: 'What for?', ru: 'Зачем?'), id: '4'),
     Question(
-        title: LocaleTitle(en: 'For whom/ what?', ru: 'Для кого/чего?'), id: 5),
-    Question(title: LocaleTitle(en: 'What?', ru: 'Что?'), id: 6),
+        title: LocaleTitle(en: 'For whom/ what?', ru: 'Для кого/чего?'),
+        id: '5'),
+    Question(title: LocaleTitle(en: 'What?', ru: 'Что?'), id: '6'),
   ];
 }
 
 class QuestionsModel extends ChangeNotifier {
   late Question chosenQuestion;
   QuestionsModel() {
-    chosenQuestion = getById(1);
+    chosenQuestion = getById('1');
+  }
+  int getIndexById(String id) {
+    return questions.indexWhere((element) => element.id == id);
   }
 
-  Question getById(int id) =>
-      QuestionsModelConsts.questions.firstWhere((item) => item.hashCode == id);
+  Question getById(String id) => QuestionsModelConsts.questions
+      .firstWhere((item) => item.hashCode == id.hashCode);
   Question getPosition(int position) {
     return QuestionsModelConsts.questions[position];
   }

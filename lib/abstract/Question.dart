@@ -2,11 +2,11 @@ import 'package:last_answer/abstract/LocaleTitle.dart';
 
 class Question {
   LocaleTitle title;
-  final int id;
+  final String id;
   Question({required this.title, required this.id});
 
   @override
-  int get hashCode => id;
+  int get hashCode => id.hashCode;
 
   @override
   bool operator ==(Object other) => other is Question && other.id == id;

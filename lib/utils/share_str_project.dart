@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/models/questions_model.dart';
 import 'package:last_answer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -9,13 +10,17 @@ import 'package:universal_io/io.dart';
 
 String getAnswersAsString(
     {required BuildContext context, required Project project}) {
-  LocaleModel localeModel = Provider.of<LocaleModel>(context, listen: false);
+  var localeModel = Provider.of<LocaleModel>(context, listen: false);
+  var questionModel = Provider.of<QuestionsModel>(context, listen: false);
   var lang = localeModel.currentNamedLocale.name;
   var answersList = project.answers?.toList() ?? [];
-  String answersAndQuestionsSentence = answersList.fold(
-      '',
-      (previousValue, element) =>
-          '$previousValue\n${element.question.title.getProp(lang)} ${element.title} ');
+  String answersAndQuestionsSentence =
+      answersList.fold('', (previousValue, element) {
+    var question = questionModel.getById(element.questionId);
+    var str =
+        '$previousValue\n${question.title.getProp(lang)} ${element.title} ';
+    return str;
+  });
   return answersAndQuestionsSentence;
 }
 

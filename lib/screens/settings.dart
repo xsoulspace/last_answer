@@ -21,78 +21,84 @@ class _SettingsState extends State<Settings> {
     var size = MediaQuery.of(context).size;
     var localeModel = Provider.of<LocaleModel>(context);
     return Material(
-        shape: CircleBorder(),
+        // shape: CircleBorder(),
         child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: 'appBarMenuButton',
-                  child: Material(
-                    shape: CircleBorder(),
-                    color: Colors.transparent,
-                    child: SizedBox(
-                      height: AppBarHeight,
-                      width: 56,
-                      child: IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
+            Hero(
+              tag: 'appBarMenuButton',
+              child: Material(
+                shape: CircleBorder(),
+                color: Colors.transparent,
+                child: SizedBox(
+                  height: AppBarHeight,
+                  width: 56,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                )
-              ],
-            ),
-            SafeArea(
-                child: Stack(
-              children: [
-                Hero(
-                  tag: 'appBarBackground',
-                  child: Container(
-                    height: size.height - AppBarHeight,
-                    color: Theme.of(context).canvasColor,
-                    child: Material(
-                      child: GridView.count(
-                        crossAxisCount: 3,
-                        childAspectRatio: 1,
-                        padding: EdgeInsets.all(20.0),
-                        children: [
-                          Center(
-                            child: Column(children: [
-                              Container(
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Theme.of(context).accentColor,
-                                      width: 1),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    await box.put(BoxDarkMode.isDark, !isDark);
-                                  },
-                                  icon: AnimatedSwitcher(
-                                    duration: Duration(milliseconds: 400),
-                                    child: isDark
-                                        ? Icon(Icons.wb_sunny_outlined)
-                                        : Icon(Icons.wb_sunny),
-                                  ),
-                                ),
+                ),
+              ),
+            )
+          ],
+        ),
+        SafeArea(
+            child: Stack(
+          children: [
+            Hero(
+              tag: 'appBarBackground',
+              child: Container(
+                height: size.height - AppBarHeight,
+                color: Theme.of(context).canvasColor,
+                child: Material(
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1,
+                    padding: EdgeInsets.all(20.0),
+                    children: [
+                      Center(
+                        child: Column(children: [
+                          Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context).accentColor,
+                                  width: 1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                await box.put(BoxDarkMode.isDark, !isDark);
+                              },
+                              icon: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 400),
+                                child: isDark
+                                    ? Icon(Icons.wb_sunny_outlined)
+                                    : Icon(Icons.wb_sunny),
                               ),
-                              Text(
-                                'Dark mode',
-                                textAlign: TextAlign.center,
-                              ),
-                            ]),
+                            ),
                           ),
-                          Center(child: Consumer<LocaleModel>(
+                          Text(
+                            'Dark mode',
+                            textAlign: TextAlign.center,
+                          ),
+                        ]),
+                      ),
+                      Center(
+                          child: Column(
+                        children: [
+                          Consumer<LocaleModel>(
                               builder: (context, locale, child) {
                             final textStyle = TextStyle(
-                              fontSize: 14.0,
-                            );
+                                fontSize: 14.0,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.color);
                             return DropdownButton<NamedLocale>(
                               value: locale.currentNamedLocale,
                               style: textStyle,
@@ -112,15 +118,21 @@ class _SettingsState extends State<Settings> {
                                     .switchLang(namedLocale?.locale);
                               },
                             );
-                          }))
+                          }),
+                          Text(
+                            'Language',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
-                      ),
-                    ),
+                      ))
+                    ],
                   ),
-                )
-              ],
-            )),
+                ),
+              ),
+            )
           ],
-        ));
+        )),
+      ],
+    ));
   }
 }

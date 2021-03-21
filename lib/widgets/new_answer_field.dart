@@ -22,7 +22,13 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
   final uuid = Uuid();
 
   String questionId = QuestionsModelConsts.questions[5].id;
-  final ScrollController _questionsScrollController = ScrollController();
+  late ScrollController _questionsScrollController;
+  @override
+  initState() {
+    _questionsScrollController = ScrollController();
+    super.initState();
+  }
+
   Future<void> updateCurrentAnswer(
       {required Box<Answer> box, required String title}) async {
     await box.put(
@@ -51,7 +57,9 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
       if (_answer != null) {
         setState(() {
           var questionIndex = questionsModel.getIndexById(_answer.questionId);
-          _questionsScrollController.jumpTo(questionIndex.toDouble());
+          if (_questionsScrollController.hasClients) {
+            _questionsScrollController.jumpTo(questionIndex.toDouble());
+          }
           questionId = _answer.questionId;
         });
       }
@@ -62,7 +70,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 40,
+              height: 50,
               child: Row(children: [
                 Expanded(
                     child: ListView.separated(
@@ -84,22 +92,30 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                                 '');
                           });
                           if (question.id == questionId)
-                            return ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    questionId = question.id;
-                                  });
-                                },
-                                child: text);
-                          return SizedBox(
-                            height: 14,
-                            child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    questionId = question.id;
-                                  });
-                                },
-                                child: text),
+                            return TextButton(
+                              style: ButtonStyle(
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.symmetric(horizontal: 28)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Theme.of(context)
+                                          .accentColor
+                                          .withOpacity(0.05))),
+                              onPressed: () {},
+                              child: text,
+                            );
+                          return TextButton(
+                            onPressed: () {
+                              questionId = question.id;
+                              updateCurrentAnswer(
+                                box: _answerBox,
+                                title: _titleController.text,
+                              );
+                              setState(() {
+                                _questionsScrollController
+                                    .jumpTo(index.toDouble());
+                              });
+                            },
+                            child: text,
                           );
                         })),
                 ShareButton(

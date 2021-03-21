@@ -18,10 +18,11 @@ void main() async {
   Hive.registerAdapter(ProjectAdapter());
 
   await Hive.initFlutter();
+  // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
+  // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
   await Hive.openBox<bool>(HiveBoxes.darkMode);
   await Hive.openBox<Project>(HiveBoxes.projects);
   await Hive.openBox<Answer>(HiveBoxes.answers);
-
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }

@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/Question.dart';
 
 part 'Answer.g.dart';
 
@@ -14,12 +13,14 @@ class Answer extends HiveObject {
 
   @HiveField(3)
   final String id;
+  @HiveField(4)
+  final DateTime created;
 
-  Answer({
-    required this.title,
-    required this.questionId,
-    required this.id,
-  });
+  Answer(
+      {required this.title,
+      required this.questionId,
+      required this.id,
+      required this.created});
 
   @override
   int get hashCode => id.hashCode;

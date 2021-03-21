@@ -20,19 +20,22 @@ class AnswerAdapter extends TypeAdapter<Answer> {
       title: fields[0] as String,
       questionId: fields[1] as String,
       id: fields[3] as String,
+      created: fields[4] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Answer obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.questionId)
       ..writeByte(3)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(4)
+      ..write(obj.created);
   }
 
   @override

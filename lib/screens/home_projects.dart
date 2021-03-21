@@ -73,25 +73,28 @@ class HomeProjects extends StatelessWidget {
             ),
             Expanded(
                 child: ValueListenableBuilder(
-              valueListenable:
-                  Hive.box<Project>(HiveBoxes.projects).listenable(),
-              builder:
-                  (BuildContext _, Box<Project> _projectBox, Widget? widget) =>
-                      ListView.builder(
-                reverse: true,
-                itemBuilder: (BuildContext _, int index) {
-                  var _project =
-                      _projectBox.values.toList().reversed.elementAt(index);
+                    valueListenable:
+                        Hive.box<Project>(HiveBoxes.projects).listenable(),
+                    builder: (BuildContext _, Box<Project> _projectBox,
+                        Widget? widget) {
+                      var projects = _projectBox.values.toList();
+                      projects.sort((a, b) => a.created.compareTo(b.created));
+                      var reversed = projects.reversed;
 
-                  if (_project.id == BoxProject.currentProject)
-                    return Container();
-                  return ProjectCard(
-                    project: _project,
-                  );
-                },
-                itemCount: _projectBox.values.length,
-              ),
-            )),
+                      return ListView.builder(
+                        reverse: true,
+                        itemBuilder: (BuildContext _, int index) {
+                          var _project = reversed.elementAt(index);
+
+                          if (_project.id == BoxProject.currentProject)
+                            return Container();
+                          return ProjectCard(
+                            project: _project,
+                          );
+                        },
+                        itemCount: _projectBox.values.length,
+                      );
+                    })),
             NewProjectField()
           ],
         ),

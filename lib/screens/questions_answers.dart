@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/widgets/new_answer_field.dart';
@@ -18,7 +19,6 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     _titleEditingController.text = widget.project.title;
-    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -39,7 +39,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                   onChanged: (String newText) async {
                     var project = widget.project;
                     project.title = newText;
-                    await _projectBox.put(project.id, project);
+                    await project.save();
                   },
                 ))),
         actions: [
@@ -49,13 +49,19 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                 tag: 'check${widget.project.id}',
                 child: Material(
                     color: Colors.transparent,
-                    child: Checkbox(
-                        value: widget.project.isCompleted,
-                        onChanged: (bool? value) async {
-                          var project = widget.project;
-                          project.isCompleted = value ?? false;
-                          await _projectBox.put(project.id, project);
-                        }))),
+                    child: ValueListenableBuilder(
+                      builder: (BuildContext _, Box<Project> box, Widget? __) {
+                        return Checkbox(
+                            value: widget.project.isCompleted,
+                            onChanged: (bool? value) async {
+                              var project = widget.project;
+                              project.isCompleted = value ?? false;
+                              await project.save();
+                            });
+                      },
+                      valueListenable:
+                          Hive.box<Project>(HiveBoxes.projects).listenable(),
+                    ))),
           )
         ],
       ),
@@ -68,7 +74,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                 color: Theme.of(context).canvasColor,
               )),
           SizedBox(
-            height: 300,
+            height: size.height,
             child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => SizedBox(
                       height: 2,

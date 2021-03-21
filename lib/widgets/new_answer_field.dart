@@ -65,26 +65,43 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
               height: 40,
               child: Row(children: [
                 Expanded(
-                    child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: questionsModel.length,
-                  controller: _questionsScrollController,
-                  itemBuilder: (context, index) => Container(
-                      width: 120.0,
-                      child: ElevatedButton(onPressed: () {
-                        setState(() {
-                          questionId =
-                              questionsModel.questions.elementAt(index).id;
-                        });
-                      }, child: Consumer<LocaleModel>(
-                          builder: (context, locale, child) {
-                        return Text(questionsModel.questions
-                                .elementAt(index)
-                                .title
-                                .getProp(locale.currentNamedLocale.name) ??
-                            '');
-                      }))),
-                )),
+                    child: ListView.separated(
+                        separatorBuilder: (BuildContext _, int index) {
+                          return SizedBox(
+                            width: 10,
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: questionsModel.length,
+                        controller: _questionsScrollController,
+                        itemBuilder: (BuildContext _, int index) {
+                          var question =
+                              questionsModel.questions.elementAt(index);
+                          var text = Consumer<LocaleModel>(
+                              builder: (context, locale, child) {
+                            return Text(question.title.getProp(
+                                    locale.currentNamedLocale.localeCode) ??
+                                '');
+                          });
+                          if (question.id == questionId)
+                            return ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    questionId = question.id;
+                                  });
+                                },
+                                child: text);
+                          return SizedBox(
+                            height: 14,
+                            child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    questionId = question.id;
+                                  });
+                                },
+                                child: text),
+                          );
+                        })),
                 ShareButton(
                   project: widget.project,
                 ),

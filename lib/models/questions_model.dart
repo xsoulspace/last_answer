@@ -14,7 +14,7 @@ class QuestionsModelConsts {
     Question(title: LocaleTitle(en: 'Where?', ru: 'Где?'), id: '3'),
     Question(title: LocaleTitle(en: 'What for?', ru: 'Зачем?'), id: '4'),
     Question(
-        title: LocaleTitle(en: 'For whom/ what?', ru: 'Для кого/чего?'),
+        title: LocaleTitle(en: 'For whom | what?', ru: 'Для кого | чего?'),
         id: '5'),
     Question(title: LocaleTitle(en: 'What?', ru: 'Что?'), id: '6'),
   ];

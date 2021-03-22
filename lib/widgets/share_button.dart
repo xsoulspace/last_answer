@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/utils/is_desktop.dart';
 import 'package:last_answer/utils/share_str_project.dart';
-import 'package:universal_io/io.dart';
 
 class ShareButton extends StatefulWidget {
   final Project project;
@@ -12,10 +11,7 @@ class ShareButton extends StatefulWidget {
 }
 
 class _ShareButtonState extends State<ShareButton> {
-  final defaultIcon =
-      kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
-          ? Icon(Icons.copy)
-          : Icon(Icons.share);
+  final defaultIcon = isDesktop() ? Icon(Icons.copy) : Icon(Icons.share);
   final doneIcon = Icon(Icons.done);
   late Icon currentIcon;
   @override

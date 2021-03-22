@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Project.dart';
+import 'package:last_answer/widgets/answer_card.dart';
 import 'package:last_answer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
@@ -17,7 +18,6 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
   TextEditingController _titleEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     _titleEditingController.text = widget.project.title;
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +25,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
         shadowColor: Colors.transparent,
         foregroundColor: Colors.transparent,
         leading: IconButton(
-            color: Theme.of(context).textTheme.bodyText2?.color,
+            color: Theme.of(context).textTheme.headline6?.color,
             onPressed: () {
               Navigator.pop(context);
             },
@@ -65,38 +65,49 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
           )
         ],
       ),
-      body: SafeArea(
-          child: Stack(
-        children: [
-          Hero(
-              tag: 'back${widget.project.id}',
-              child: Container(
-                color: Theme.of(context).canvasColor,
-              )),
-          SizedBox(
-            height: size.height,
-            child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => SizedBox(
-                      height: 2,
-                    ),
-                addSemanticIndexes: true,
-                reverse: true,
-                itemCount: widget.project.answers?.length ?? 0,
-                itemBuilder: (BuildContext context, int index) {
-                  var answer = widget.project.answers?.elementAt(index);
-                  if (answer == null || answer.id == BoxAnswer.currentAnswer)
-                    return Container();
-                  return Text(answer.title);
-                  // return AnswerCard(index: index, answer: answer);
-                }),
-          ),
-          Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: NewAnswerField(project: widget.project))
-        ],
-      )),
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: SafeArea(
+            child: Stack(
+          children: [
+            Hero(
+                tag: 'back${widget.project.id}',
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                )),
+            Column(
+              children: [
+                Expanded(
+                    child: ValueListenableBuilder(
+                  valueListenable:
+                      Hive.box<Project>(HiveBoxes.projects).listenable(),
+                  builder: (BuildContext _, Box<Project> __, Widget? child) {
+                    var answers = widget.project.answers ?? [];
+                    answers.sort((a, b) => a.created.compareTo(b.created));
+                    var reversedAnswers = answers.reversed;
+                    return ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(
+                              height: 2,
+                            ),
+                        addSemanticIndexes: true,
+                        reverse: true,
+                        itemCount: reversedAnswers.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var answer = reversedAnswers.elementAt(index);
+                          if (answer == null ||
+                              answer.id == BoxAnswer.currentAnswer)
+                            return Container();
+                          return AnswerCard(index: index, answer: answer);
+                        });
+                  },
+                )),
+                NewAnswerField(project: widget.project)
+              ],
+            )
+          ],
+        )),
+      ),
     );
   }
 }

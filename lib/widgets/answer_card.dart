@@ -8,6 +8,7 @@ import 'package:last_answer/abstract/HiveBoxes.dart';
 import 'package:last_answer/abstract/Question.dart';
 import 'package:last_answer/models/questions_model.dart';
 import 'package:last_answer/shared_utils_models/locales_model.dart';
+import 'package:last_answer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
 
 class AnswerCard extends StatelessWidget {
@@ -24,44 +25,55 @@ class AnswerCard extends StatelessWidget {
 
     double dropdownWidth = 95.0;
 
-    return Stack(children: <Widget>[
-      Text('sdfs'),
-      Positioned(
-        top: 4,
-        left: 0,
-        child: SizedBox(
-            width: dropdownWidth - 10,
-            child: DropdownButtonHideUnderline(
-                child: DropdownButton<Question>(
-              style: TextStyle(fontSize: 14),
-              itemHeight: null,
-              value: dropdownValue,
-              isExpanded: true,
-              items: questionsModel.questionDropdownMenuItems,
-              onChanged: (Question? question) async {
-                if (question == null) return;
-                answer.questionId = question.id;
-                answer.save();
-              },
-            ))),
-      ),
-      Padding(
-        padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),
-        child: AnswerTextField(answer: answer),
-      ),
-      Positioned(
-        top: 10,
-        right: 5,
-        child: IconButton(
-          iconSize: 10,
-          onPressed: () => showRemoveAnswer(context: context, answer: answer),
-          icon: Icon(
-            Icons.close,
-            color: Colors.white.withOpacity(0.6),
-          ),
+    return Material(
+      child: Stack(children: <Widget>[
+        Positioned(
+          top: 4,
+          left: 0,
+          child: SizedBox(
+              width: dropdownWidth - 10,
+              child: DropdownButtonHideUnderline(
+                  child: DropdownButton<Question>(
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).textTheme.headline6?.color),
+                itemHeight: null,
+                value: dropdownValue,
+                isExpanded: true,
+                items: questionsModel.questionDropdownMenuItems,
+                onChanged: (Question? question) async {
+                  if (question == null) return;
+                  answer.questionId = question.id;
+                  answer.save();
+                },
+              ))),
         ),
-      )
-    ]);
+        Padding(
+          padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),
+          child: AnswerTextField(answer: answer),
+        ),
+        Visibility(
+          visible: isDesktop(),
+          child: Positioned(
+            top: 10,
+            right: 5,
+            child: IconButton(
+              iconSize: 10,
+              onPressed: () =>
+                  showRemoveAnswer(context: context, answer: answer),
+              icon: Icon(
+                Icons.close,
+                color: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.color
+                    ?.withOpacity(0.6),
+              ),
+            ),
+          ),
+        )
+      ]),
+    );
   }
 }
 
@@ -129,12 +141,8 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   TextEditingController _controller = TextEditingController();
   _updateAnswer({required Box<Answer> box}) async {
     var _answer = widget.answer;
-    if (_controller.text.isEmpty) {
-      await box.delete(_answer.id);
-    } else {
-      _answer.title = _controller.text;
-      await box.put(_answer.id, _answer);
-    }
+    _answer.title = _controller.text;
+    await _answer.save();
   }
 
   @override
@@ -177,11 +185,10 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                   fontSize: 15,
                   color: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .headline6
                       ?.color
                       ?.withOpacity(0.9)),
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(5, 14, 5, 5),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,

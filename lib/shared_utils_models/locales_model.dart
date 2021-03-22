@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,6 +7,7 @@ import 'package:last_answer/abstract/Language.dart';
 import 'package:last_answer/abstract/NamedLocale.dart';
 import 'package:last_answer/shared_utils_models/storage_mixin.dart';
 import 'package:last_answer/shared_utils_models/storage_util.dart';
+import 'package:last_answer/utils/is_desktop.dart';
 
 class LocaleModelConsts {
   static final String storagename = 'locale';
@@ -48,12 +47,7 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     if (localeStr.isEmpty) {
       // FIXME: strange things happend with locales on all OS!
       // seems like it has new formats nn__UTF08__NN
-      if (kIsWeb ||
-          Platform.isWindows ||
-          Platform.isLinux ||
-          Platform.isAndroid ||
-          Platform.isIOS ||
-          Platform.isMacOS) return Locales.en;
+      if (isDesktop()) return Locales.en;
 
       var systemLocale = await findSystemLocale();
       Intl.defaultLocale = systemLocale;

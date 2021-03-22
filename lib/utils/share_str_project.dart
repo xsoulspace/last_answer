@@ -1,12 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:last_answer/abstract/Project.dart';
 import 'package:last_answer/models/questions_model.dart';
 import 'package:last_answer/shared_utils_models/locales_model.dart';
+import 'package:last_answer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:universal_io/io.dart';
 
 String getAnswersAsString(
     {required BuildContext context, required Project project}) {
@@ -44,7 +43,7 @@ void copyProjectAnswersToClipboard(
 
 Future<void> copyOrShareProjectAnswers(
     {required BuildContext context, required Project project}) async {
-  if (kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+  if (isDesktop()) {
     copyProjectAnswersToClipboard(context: context, project: project);
   } else {
     await shareProjectAnswers(context: context, project: project);

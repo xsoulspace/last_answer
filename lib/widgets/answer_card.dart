@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/Answer.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Question.dart';
@@ -12,6 +11,8 @@ import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
 
+final double dropdownWidth = 95.0;
+
 class AnswerCard extends StatelessWidget {
   final int index;
   final Answer answer;
@@ -19,43 +20,16 @@ class AnswerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    QuestionsModel questionsModel =
-        Provider.of<QuestionsModel>(context, listen: false);
-    var question = questionsModel.getById(answer.questionId);
-    Question dropdownValue = question;
-
-    double dropdownWidth = 95.0;
-
     return Material(
       child: Stack(children: <Widget>[
         Positioned(
-          top: 4,
-          left: 0,
-          child: SizedBox(
-              width: dropdownWidth - 10,
-              child: DropdownButtonHideUnderline(
-                child: ValueListenableBuilder(
-                    valueListenable:
-                        Hive.box<Answer>(HiveBoxes.answers).listenable(),
-                    builder: (context, value, child) {
-                      return DropdownButton<Question>(
-                        style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                Theme.of(context).textTheme.headline6?.color),
-                        itemHeight: null,
-                        value: dropdownValue,
-                        isExpanded: true,
-                        items: questionsModel.questionDropdownMenuItems,
-                        onChanged: (Question? question) async {
-                          if (question == null) return;
-                          answer.questionId = question.id;
-                          answer.save();
-                        },
-                      );
-                    }),
-              )),
-        ),
+            top: 4,
+            left: 0,
+            child: SizedBox(
+                width: dropdownWidth - 10,
+                child: QuestionDropdown(
+                  answer: answer,
+                ))),
         Padding(
           padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),
           child: AnswerTextField(answer: answer),
@@ -82,6 +56,40 @@ class AnswerCard extends StatelessWidget {
         )
       ]),
     );
+  }
+}
+
+class QuestionDropdown extends StatefulWidget {
+  final Answer answer;
+  QuestionDropdown({required this.answer});
+  @override
+  _QuestionDropdownState createState() => _QuestionDropdownState();
+}
+
+class _QuestionDropdownState extends State<QuestionDropdown> {
+  late Question chosenQuestion;
+  @override
+  Widget build(BuildContext context) {
+    QuestionsModel questionsModel =
+        Provider.of<QuestionsModel>(context, listen: false);
+    var question = questionsModel.getById(widget.answer.questionId);
+    chosenQuestion = question;
+
+    return DropdownButtonHideUnderline(
+        child: DropdownButton<Question>(
+      style: TextStyle(
+          fontSize: 14, color: Theme.of(context).textTheme.headline6?.color),
+      itemHeight: null,
+      value: chosenQuestion,
+      isExpanded: true,
+      items: questionsModel.questionDropdownMenuItems,
+      onChanged: (Question? question) async {
+        if (question == null) return;
+        widget.answer.questionId = question.id;
+        widget.answer.save();
+        setState(() {});
+      },
+    ));
   }
 }
 

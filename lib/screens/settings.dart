@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/NamedLocale.dart';
-import 'package:last_answer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/NamedLocale.dart';
+import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/Project.dart';
-import 'package:last_answer/widgets/answer_card.dart';
-import 'package:last_answer/widgets/new_answer_field.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/widgets/answer_card.dart';
+import 'package:lastanswer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
   final Project project;

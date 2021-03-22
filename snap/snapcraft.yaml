@@ -33,11 +33,11 @@ slots:
   dbus-last-answer:
     interface: dbus
     bus: session
-    name: dev.xsoulspace.last_answer # adjust accordingly
+    name: dev.xsoulspace.lastanswer # adjust accordingly
 
 apps:
   last-answer:
-    command: last_answer
+    command: lastanswer
     extensions: [flutter-dev] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     plugs:

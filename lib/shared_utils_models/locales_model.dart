@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
-import 'package:last_answer/abstract/Language.dart';
-import 'package:last_answer/abstract/NamedLocale.dart';
-import 'package:last_answer/shared_utils_models/storage_mixin.dart';
-import 'package:last_answer/shared_utils_models/storage_util.dart';
-import 'package:last_answer/utils/is_desktop.dart';
+import 'package:lastanswer/abstract/Language.dart';
+import 'package:lastanswer/abstract/NamedLocale.dart';
+import 'package:lastanswer/shared_utils_models/storage_mixin.dart';
+import 'package:lastanswer/shared_utils_models/storage_util.dart';
+import 'package:lastanswer/utils/is_desktop.dart';
 
 class LocaleModelConsts {
   static final String storagename = 'locale';

@@ -1,4 +1,4 @@
-import 'package:last_answer/abstract/LocaleTitle.dart';
+import 'package:lastanswer/abstract/LocaleTitle.dart';
 
 class Question {
   LocaleTitle title;

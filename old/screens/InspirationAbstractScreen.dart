@@ -14,7 +14,7 @@
 
 // class _InspirationAbstractState extends State<InspirationAbstract> {
 // //   _launchURL() async {
-// //   const url = 'mailto:xsoulspace@gmail.com?subject=IIB_Last_Answer	';
+// //   const url = 'mailto:xsoulspace@gmail.com?subject=IIB_lastanswer	';
 // //   if (await canLaunch(url)) {
 // //     await launch(url);
 // //   } else {

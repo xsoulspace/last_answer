@@ -72,6 +72,9 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
         child: Column(
           children: <Widget>[
             SizedBox(
+              height: 2,
+            ),
+            SizedBox(
               height: 50,
               child: Row(children: [
                 Expanded(
@@ -120,13 +123,16 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                             child: text,
                           );
                         })),
+                SizedBox(
+                  width: 8,
+                ),
                 ShareButton(
                   project: widget.project,
                 ),
               ]),
             ),
             SizedBox(
-              height: 5,
+              height: 2,
             ),
             Row(children: [
               Expanded(

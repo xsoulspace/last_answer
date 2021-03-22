@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/Answer.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Question.dart';
 import 'package:lastanswer/models/questions_model.dart';
-import 'package:lastanswer/shared_utils_models/locales_model.dart';
-import 'package:lastanswer/utils/is_desktop.dart';
+import 'package:lastanswer/widgets/card_dissmisible.dart';
 import 'package:provider/provider.dart';
 
 final double dropdownWidth = 95.0;
@@ -16,45 +14,46 @@ final double dropdownWidth = 95.0;
 class AnswerCard extends StatelessWidget {
   final int index;
   final Answer answer;
-  AnswerCard({required this.index, required this.answer});
+  final void Function()? onDelete;
+  deleteAnswer() {
+    var deleteCallback = onDelete;
+    if (deleteCallback == null) return;
+    deleteCallback();
+  }
+
+  AnswerCard(
+      {required this.index, required this.answer, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Stack(children: <Widget>[
-        Positioned(
-            top: 4,
-            left: 0,
-            child: SizedBox(
-                width: dropdownWidth - 10,
-                child: QuestionDropdown(
-                  answer: answer,
-                ))),
-        Padding(
-          padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),
-          child: AnswerTextField(answer: answer),
-        ),
-        Visibility(
-          visible: isDesktop(),
-          child: Positioned(
-            top: 10,
-            right: 5,
-            child: IconButton(
-              iconSize: 10,
-              onPressed: () =>
-                  showRemoveAnswer(context: context, answer: answer),
-              icon: Icon(
-                Icons.close,
-                color: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    ?.color
-                    ?.withOpacity(0.6),
-              ),
+    return CardDissmisible(
+      key: Key(answer.id),
+      confirmDismiss: (direction) async {
+        if (direction.index != 2) return false;
+        return true;
+      },
+      onDismissed: (direction) async {
+        deleteAnswer();
+      },
+      child: Material(
+        child: Stack(children: <Widget>[
+          Positioned(
+              top: 4,
+              left: 0,
+              child: SizedBox(
+                  width: dropdownWidth - 10,
+                  child: QuestionDropdown(
+                    answer: answer,
+                  ))),
+          Padding(
+            padding: EdgeInsets.fromLTRB(dropdownWidth, 1, 5, 1),
+            child: AnswerTextField(
+              answer: answer,
+              onDelete: deleteAnswer,
             ),
           ),
-        )
-      ]),
+        ]),
+      ),
     );
   }
 }
@@ -93,62 +92,10 @@ class _QuestionDropdownState extends State<QuestionDropdown> {
   }
 }
 
-void showRemoveAnswer({required BuildContext context, required Answer answer}) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) =>
-          Consumer<LocaleModel>(builder: (context, locale, child) {
-            return AlertDialog(
-              actions: [
-                TextButton(
-                  child:
-                      Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                  onPressed: () => Navigator?.of(context).pop(),
-                ),
-                TextButton(
-                  child: Text(
-                      MaterialLocalizations.of(context).deleteButtonTooltip),
-                  onPressed: () async {
-                    if (!kIsWeb) {
-                      try {
-                        final snackBar = SnackBar(
-                          content: Text(AppLocalizations.of(context)
-                                  ?.successfullyDeleted ??
-                              ''),
-                          duration: Duration(
-                            seconds: 4,
-                          ),
-                          action: SnackBarAction(
-                              label: 'ok',
-                              onPressed: () => ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar()),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } catch (e) {
-                        // its okay, if there is no snack bar
-                      }
-                    }
-                    answer.delete();
-                    Navigator?.of(context).pop();
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).buttonTheme.colorScheme?.error)),
-                )
-              ],
-              title: Text(AppLocalizations.of(context)
-                      ?.areYouSureYouWantToDeleteAnswer ??
-                  ''),
-              content: Text(AppLocalizations.of(context)
-                      ?.ifYouDeleteAnswerThereIsNoWayBack ??
-                  ''),
-            );
-          }));
-}
-
 class AnswerTextField extends StatefulWidget {
   final Answer answer;
-  AnswerTextField({required this.answer});
+  final void Function()? onDelete;
+  AnswerTextField({required this.answer, this.onDelete});
   @override
   _AnswerTextFieldState createState() => _AnswerTextFieldState();
 }
@@ -205,6 +152,18 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                       ?.color
                       ?.withOpacity(0.9)),
               decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    iconSize: 10,
+                    onPressed: widget.onDelete,
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.color
+                          ?.withOpacity(0.6),
+                    ),
+                  ),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,

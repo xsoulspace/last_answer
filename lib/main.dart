@@ -94,12 +94,16 @@ class AppScaffold extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                 ),
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.green,
                 fontFamily: 'IBM Plex Sans',
                 brightness: Brightness.light),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
               fontFamily: 'IBM Plex Sans',
+              checkboxTheme: CheckboxThemeData(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+              ),
             ),
             home: home,
           );

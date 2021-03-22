@@ -11,7 +11,7 @@ String getAnswersAsString(
     {required BuildContext context, required Project project}) {
   var localeModel = Provider.of<LocaleModel>(context, listen: false);
   var questionModel = Provider.of<QuestionsModel>(context, listen: false);
-  var lang = localeModel.currentNamedLocale.name;
+  var lang = localeModel.currentNamedLocale.localeCode;
   var answersList = project.answers?.toList() ?? [];
   String answersAndQuestionsSentence =
       answersList.fold('', (previousValue, element) {

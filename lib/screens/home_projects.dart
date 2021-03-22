@@ -33,9 +33,8 @@ class HomeProjects extends StatelessWidget {
     }
 
     return SafeArea(
-      child: Material(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
+      child: Scaffold(
+        body: Column(
           children: [
             Container(
               color: Theme.of(context).primaryColor,

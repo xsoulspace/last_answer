@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/Answer.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Question.dart';
@@ -33,20 +34,27 @@ class AnswerCard extends StatelessWidget {
           child: SizedBox(
               width: dropdownWidth - 10,
               child: DropdownButtonHideUnderline(
-                  child: DropdownButton<Question>(
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).textTheme.headline6?.color),
-                itemHeight: null,
-                value: dropdownValue,
-                isExpanded: true,
-                items: questionsModel.questionDropdownMenuItems,
-                onChanged: (Question? question) async {
-                  if (question == null) return;
-                  answer.questionId = question.id;
-                  answer.save();
-                },
-              ))),
+                child: ValueListenableBuilder(
+                    valueListenable:
+                        Hive.box<Answer>(HiveBoxes.answers).listenable(),
+                    builder: (context, value, child) {
+                      return DropdownButton<Question>(
+                        style: TextStyle(
+                            fontSize: 14,
+                            color:
+                                Theme.of(context).textTheme.headline6?.color),
+                        itemHeight: null,
+                        value: dropdownValue,
+                        isExpanded: true,
+                        items: questionsModel.questionDropdownMenuItems,
+                        onChanged: (Question? question) async {
+                          if (question == null) return;
+                          answer.questionId = question.id;
+                          answer.save();
+                        },
+                      );
+                    }),
+              )),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(dropdownWidth, 3, 50, 5),

@@ -94,7 +94,13 @@ class HomeProjects extends StatelessWidget {
                         itemCount: _projectBox.values.length,
                       );
                     })),
-            NewProjectField()
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+              ),
+              child: NewProjectField(),
+            )
           ],
         ),
       ),

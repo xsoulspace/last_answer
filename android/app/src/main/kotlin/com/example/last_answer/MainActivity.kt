@@ -1,4 +1,4 @@
-package dev.xsoulspace.last_answer
+package dev.xsoulspace.lastanswer
 
 import io.flutter.embedding.android.FlutterActivity
 

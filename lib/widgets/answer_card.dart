@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:last_answer/abstract/Answer.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/Question.dart';
-import 'package:last_answer/models/questions_model.dart';
-import 'package:last_answer/shared_utils_models/locales_model.dart';
-import 'package:last_answer/utils/is_desktop.dart';
+import 'package:lastanswer/abstract/Answer.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Question.dart';
+import 'package:lastanswer/models/questions_model.dart';
+import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
 
 class AnswerCard extends StatelessWidget {

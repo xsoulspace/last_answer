@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:last_answer/abstract/Project.dart';
-import 'package:last_answer/utils/is_desktop.dart';
-import 'package:last_answer/utils/share_str_project.dart';
+import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/utils/is_desktop.dart';
+import 'package:lastanswer/utils/share_str_project.dart';
 
 class ShareButton extends StatefulWidget {
   final Project project;

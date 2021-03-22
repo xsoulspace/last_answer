@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:last_answer/abstract/LocaleTitle.dart';
-import 'package:last_answer/abstract/Question.dart';
-import 'package:last_answer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/abstract/LocaleTitle.dart';
+import 'package:lastanswer/abstract/Question.dart';
+import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 class QuestionsModelConsts {

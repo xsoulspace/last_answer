@@ -27,7 +27,7 @@ jobs:
           git config --global user.name ${{secrets.USER_NAME}}
           git status
           # change this remote url for examle your remote url is then the following:
-          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/xsoulspace/last_answer.git
+          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/xsoulspace/lastanswer.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"

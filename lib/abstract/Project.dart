@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:last_answer/abstract/Answer.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Answer.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
 
 part 'Project.g.dart';
 

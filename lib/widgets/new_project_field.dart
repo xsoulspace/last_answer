@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/Project.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Project.dart';
 import 'package:uuid/uuid.dart';
 
 class NewProjectField extends StatefulWidget {

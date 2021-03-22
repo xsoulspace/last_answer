@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:last_answer/abstract/HiveBoxes.dart';
-import 'package:last_answer/abstract/Project.dart';
-import 'package:last_answer/screens/settings.dart';
-import 'package:last_answer/widgets/new_project_field.dart';
-import 'package:last_answer/widgets/project_card.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/screens/settings.dart';
+import 'package:lastanswer/widgets/new_project_field.dart';
+import 'package:lastanswer/widgets/project_card.dart';
 
 class HomeProjects extends StatelessWidget {
   HomeProjects({Key? key}) : super(key: key);

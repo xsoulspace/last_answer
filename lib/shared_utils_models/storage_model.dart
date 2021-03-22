@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:last_answer/shared_utils_models/storage_mixin.dart';
+import 'package:lastanswer/shared_utils_models/storage_mixin.dart';
 
 class StorageModel extends ChangeNotifier with StorageMixin {
   // Private constructor

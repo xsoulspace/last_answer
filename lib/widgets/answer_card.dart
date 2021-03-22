@@ -180,7 +180,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
       padding: EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(14)),
+          borderRadius: BorderRadius.circular(4)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Flexible(
           //We only want to wrap the text message with flexible widget

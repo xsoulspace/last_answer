@@ -19,23 +19,23 @@ class ProjectCard extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Text("Are you sure you wish to delete the whole"
-                    " '${project.title}' with ${project.answers?.length ?? 0}"
-                    " answers?"),
+                title: Text("Are you sure?"),
+                content: Text(
+                    " '${project.title}' with ${project.answers?.length ?? 0} answers will be lost forever"),
                 actions: [
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: Text(
-                        "delete",
-                        style: TextStyle(color: Colors.red[900]),
-                      )),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(
-                      "cancel",
+                      "CANCEL",
                       style: TextStyle(color: Theme.of(context).accentColor),
                     ),
                   ),
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text(
+                        "DELETE",
+                        style: TextStyle(color: Colors.red[800]),
+                      )),
                 ],
               );
             },

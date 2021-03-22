@@ -83,7 +83,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                     return ListView.separated(
                         separatorBuilder: (BuildContext context, int index) =>
                             SizedBox(
-                              height: 2,
+                              height: 1,
                             ),
                         addSemanticIndexes: true,
                         reverse: true,
@@ -93,7 +93,14 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                           if (answer == null ||
                               answer.id == BoxAnswer.currentAnswer)
                             return Container();
-                          return AnswerCard(index: index, answer: answer);
+                          return AnswerCard(
+                            index: index,
+                            answer: answer,
+                            onDelete: () async {
+                              await answer.delete();
+                              setState(() {});
+                            },
+                          );
                         });
                   },
                 )),

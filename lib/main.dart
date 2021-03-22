@@ -90,6 +90,10 @@ class AppScaffold extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             themeMode: resolvedThemeMode,
             theme: ThemeData(
+                checkboxTheme: CheckboxThemeData(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
                 primarySwatch: Colors.blue,
                 fontFamily: 'IBM Plex Sans',
                 brightness: Brightness.light),

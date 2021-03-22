@@ -95,10 +95,7 @@ class HomeProjects extends StatelessWidget {
                       );
                     })),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 8,
-                right: 8,
-              ),
+              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: NewProjectField(),
             )
           ],

@@ -68,7 +68,10 @@ class _NewProjectFieldState extends State<NewProjectField> {
             _titleController.clear();
             await updateCurrentProject(box: _projectBox);
           },
-          icon: Icon(Icons.send),
+          icon: Icon(
+            Icons.arrow_circle_up,
+            color: Theme.of(context).accentColor,
+          ),
         ),
       ),
     ]);

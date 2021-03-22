@@ -172,7 +172,10 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                     widget.project.save();
                     await clear(box: _answerBox);
                   },
-                  icon: Icon(Icons.send),
+                  icon: Icon(
+                    Icons.arrow_circle_up,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
               ),
             ])

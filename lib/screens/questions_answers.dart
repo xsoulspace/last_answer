@@ -70,11 +70,6 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
         child: SafeArea(
             child: Stack(
           children: [
-            Hero(
-                tag: 'back${widget.project.id}',
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
             Column(
               children: [
                 Expanded(

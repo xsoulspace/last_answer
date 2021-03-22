@@ -8,17 +8,38 @@ class ProjectCard extends StatelessWidget {
   ProjectCard({required this.project});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(PageRouteBuilder(
+              fullscreenDialog: true,
+              reverseTransitionDuration: Duration(milliseconds: 250),
+              transitionDuration: Duration(milliseconds: 350),
+              transitionsBuilder: (BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child) {
+                var begin = Offset(0, 1.0);
+                var end = Offset.zero;
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: Curves.easeInOutSine));
+                var offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return QuestionsAnswers(project: project);
+              }));
+        },
         child: SizedBox(
           height: 48,
           child: Stack(
             children: [
-              Hero(
-                tag: 'back${project.id}',
-                child: Container(color: Theme.of(context).canvasColor),
-              ),
               Positioned(
                 top: 0,
                 left: 0,
@@ -28,11 +49,13 @@ class ProjectCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Hero(
-                            tag: 'title${project.id}',
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(project.title))),
+                        Flexible(
+                          child: Hero(
+                              tag: 'title${project.id}',
+                              child: Material(
+                                  color: Colors.transparent,
+                                  child: Text(project.title))),
+                        ),
                         Hero(
                             tag: 'check${project.id}',
                             child: Material(
@@ -51,24 +74,6 @@ class ProjectCard extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
-        Navigator.of(context).push(PageRouteBuilder(
-            fullscreenDialog: true,
-            transitionDuration: Duration(milliseconds: 150),
-            transitionsBuilder: (BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            pageBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation) {
-              return QuestionsAnswers(project: project);
-            }));
-      },
     );
   }
 }

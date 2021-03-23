@@ -172,10 +172,8 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                         created: DateTime.now());
                     await _answerBox.put(newAnswer.id, newAnswer);
                     answers.add(newAnswer);
-                    // FIXME: investiagte does project needs to be updtaed in box?
-
                     widget.project.answers = answers;
-                    widget.project.save();
+                    await widget.project.save();
                     await clear(box: _answerBox);
                   },
                   icon: Icon(

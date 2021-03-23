@@ -97,8 +97,39 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                             index: index,
                             answer: answer,
                             onDelete: () async {
-                              await answer.delete();
-                              setState(() {});
+                              var isToDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Are you sure?"),
+                                      content: Text(
+                                          " '${answer.title}' will be lost forever"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: Text(
+                                            "CANCEL",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .accentColor),
+                                          ),
+                                        ),
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            child: Text(
+                                              "DELETE",
+                                              style: TextStyle(
+                                                  color: Colors.red[800]),
+                                            )),
+                                      ],
+                                    );
+                                  });
+                              if (isToDelete) {
+                                await answer.delete();
+                                setState(() {});
+                              }
                             },
                           );
                         });

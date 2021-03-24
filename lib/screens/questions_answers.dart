@@ -84,6 +84,10 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                         separatorBuilder: (BuildContext context, int index) =>
                             SizedBox(
                               height: 1,
+                              child: Divider(
+                                height: 0.5,
+                                thickness: 0.15,
+                              ),
                             ),
                         addSemanticIndexes: true,
                         reverse: true,
@@ -96,8 +100,12 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                           return AnswerCard(
                             index: index,
                             answer: answer,
-                            onDelete: () async {
-                              var isToDelete = await showDialog(
+                            onDismissed: () async {
+                              await answer.delete();
+                              setState(() {});
+                            },
+                            confirmDelete: () async {
+                              return await showDialog<bool>(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
@@ -126,15 +134,14 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                       ],
                                     );
                                   });
-                              if (isToDelete) {
-                                await answer.delete();
-                                setState(() {});
-                              }
                             },
                           );
                         });
                   },
                 )),
+                SizedBox(
+                  height: 2,
+                ),
                 NewAnswerField(project: widget.project)
               ],
             )

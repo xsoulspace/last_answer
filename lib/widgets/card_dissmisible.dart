@@ -18,12 +18,12 @@ class CardDissmisible extends StatelessWidget {
       confirmDismiss: confirmDismiss,
       onDismissed: onDismissed,
       direction: DismissDirection.horizontal,
-      background: Container(),
-      secondaryBackground: Container(
+      background: Container(
           padding: EdgeInsets.only(right: 12),
-          alignment: Alignment.centerRight,
+          alignment: Alignment.centerLeft,
           color: Colors.red[900],
           child: Icon(Icons.delete, color: Colors.white)),
+      secondaryBackground: Container(),
     );
   }
 }

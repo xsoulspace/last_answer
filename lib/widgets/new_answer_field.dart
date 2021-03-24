@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/Answer.dart';
@@ -20,6 +21,12 @@ class NewAnswerField extends StatefulWidget {
 
 class _NewAnswerFieldState extends State<NewAnswerField> {
   final TextEditingController _titleController = TextEditingController();
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
+
   final uuid = Uuid();
   String questionId = QuestionsModelConsts.questions[5].id;
 
@@ -31,7 +38,8 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
             created: DateTime.now(),
             title: title,
             questionId: questionId,
-            id: BoxAnswer.currentAnswer));
+            id: BoxAnswer.currentAnswer,
+            positionIndex: 0));
   }
 
   Future<void> clear({required Box<Answer> box}) async {
@@ -42,9 +50,33 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
     );
   }
 
+  var focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
+    var maxIndexedAnswer = _answerBox.values.length <= 0
+        ? 0
+        : _answerBox.values.reduce((value, el) {
+            if (value.positionIndex > el.positionIndex) return el;
+            return value;
+          }).positionIndex;
+    Future<void> createAnswer() async {
+      var newAnswer = Answer(
+          title: _titleController.text,
+          questionId: questionId,
+          id: uuid.v1(),
+          created: DateTime.now(),
+          positionIndex: maxIndexedAnswer++);
+      clear(box: _answerBox);
+
+      var answers = widget.project.answers ?? HiveList(_answerBox, objects: []);
+      await _answerBox.put(newAnswer.id, newAnswer);
+      answers.add(newAnswer);
+      widget.project.answers = answers;
+      await widget.project.save();
+    }
+
     QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
 
     // loading state if its exists
@@ -101,46 +133,44 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
             ),
             Row(children: [
               Expanded(
-                child: TextFormField(
-                  controller: _titleController,
-                  minLines: 1,
-                  maxLines: 7,
-                  keyboardType: TextInputType.multiline,
-                  onChanged: (text) async {
-                    await updateCurrentAnswer(box: _answerBox, title: text);
+                child: RawKeyboardListener(
+                  focusNode: focusNode,
+                  onKey: (RawKeyEvent event) {
+                    if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
+                        !event.isShiftPressed) {
+                      createAnswer();
+                    }
                   },
-                  decoration: InputDecoration(
-                      // labelStyle: TextStyle(color: Colors.white),
-                      // fillColor: ThemeColors.lightAccent,
-                      // focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(
-                      //     color: ThemeColors.lightAccent ?? Colors.white,
-                      //   ),
-                      // ),
-                      // border: OutlineInputBorder(
-                      //     borderSide: BorderSide(
-                      //         color: ThemeColors.lightAccent ?? Colors.white)),
-                      labelText: AppLocalizations.of(context)?.answer),
-                  cursorColor: Theme.of(context).accentColor,
+                  child: TextFormField(
+                    onFieldSubmitted: (String newText) async =>
+                        await createAnswer(),
+                    controller: _titleController,
+                    minLines: 1,
+                    maxLines: 7,
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (text) async {
+                      await updateCurrentAnswer(box: _answerBox, title: text);
+                    },
+                    decoration: InputDecoration(
+                        // labelStyle: TextStyle(color: Colors.white),
+                        // fillColor: ThemeColors.lightAccent,
+                        // focusedBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: ThemeColors.lightAccent ?? Colors.white,
+                        //   ),
+                        // ),
+                        // border: OutlineInputBorder(
+                        //     borderSide: BorderSide(
+                        //         color: ThemeColors.lightAccent ?? Colors.white)),
+                        labelText: AppLocalizations.of(context)?.answer),
+                    cursorColor: Theme.of(context).accentColor,
+                  ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: IconButton(
-                  onPressed: () async {
-                    var answers = widget.project.answers ??
-                        HiveList(_answerBox, objects: []);
-                    var newAnswer = Answer(
-                        title: _titleController.text,
-                        questionId: questionId,
-                        id: uuid.v1(),
-                        created: DateTime.now());
-                    await _answerBox.put(newAnswer.id, newAnswer);
-                    answers.add(newAnswer);
-                    widget.project.answers = answers;
-                    await widget.project.save();
-                    await clear(box: _answerBox);
-                  },
+                  onPressed: createAnswer,
                   icon: Icon(
                     Icons.arrow_circle_up,
                     color: Theme.of(context).accentColor,
@@ -169,14 +199,23 @@ class QuestionsSlider extends StatefulWidget {
 
 class _QuestionsSliderState extends State<QuestionsSlider> {
   late final PageController _pageController;
+  void updateSelected() {
+    widget.onSelected(_pageController.page?.toInt());
+  }
+
   @override
   void initState() {
     _pageController = PageController(
         viewportFraction: 0.25, initialPage: widget.questionIndex);
-    _pageController.addListener(() {
-      widget.onSelected(_pageController.page?.toInt());
-    });
+    _pageController.addListener(updateSelected);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(updateSelected);
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override

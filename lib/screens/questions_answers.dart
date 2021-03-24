@@ -94,10 +94,12 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                         itemCount: reversedAnswers.length,
                         itemBuilder: (BuildContext context, int index) {
                           var answer = reversedAnswers.elementAt(index);
-                          if (answer == null ||
-                              answer.id == BoxAnswer.currentAnswer)
-                            return Container();
+                          if (answer.id == BoxAnswer.currentAnswer)
+                            return Container(
+                              key: Key(index.toString()),
+                            );
                           return AnswerCard(
+                            key: Key(answer.id),
                             index: index,
                             answer: answer,
                             onDismissed: () async {

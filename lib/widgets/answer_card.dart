@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 final double dropdownWidth = 95.0;
 
 class AnswerCard extends StatelessWidget {
+  final Key key;
   final int index;
   final Answer answer;
   final Future<bool?> Function() confirmDelete;
@@ -21,12 +22,13 @@ class AnswerCard extends StatelessWidget {
       {required this.index,
       required this.answer,
       required this.confirmDelete,
-      required this.onDismissed});
+      required this.onDismissed,
+      required this.key});
 
   @override
   Widget build(BuildContext context) {
     return CardDissmisible(
-      key: Key(answer.id),
+      key: key,
       confirmDismiss: (direction) async {
         if (direction.index != 3) return false;
         return await confirmDelete();

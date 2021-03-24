@@ -15,12 +15,15 @@ class Answer extends HiveObject {
   final String id;
   @HiveField(4)
   final DateTime created;
+  @HiveField(5)
+  int positionIndex;
 
   Answer(
       {required this.title,
       required this.questionId,
       required this.id,
-      required this.created});
+      required this.created,
+      required this.positionIndex});
 
   @override
   int get hashCode => id.hashCode;

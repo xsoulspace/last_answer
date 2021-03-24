@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/Answer.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/abstract/Question.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/widgets/share_button.dart';
@@ -20,14 +21,7 @@ class NewAnswerField extends StatefulWidget {
 class _NewAnswerFieldState extends State<NewAnswerField> {
   final TextEditingController _titleController = TextEditingController();
   final uuid = Uuid();
-
   String questionId = QuestionsModelConsts.questions[5].id;
-  late ScrollController _questionsScrollController;
-  @override
-  initState() {
-    _questionsScrollController = ScrollController();
-    super.initState();
-  }
 
   Future<void> updateCurrentAnswer(
       {required Box<Answer> box, required String title}) async {
@@ -50,22 +44,22 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
 
   @override
   Widget build(BuildContext context) {
-    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
     var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
+    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+
     // loading state if its exists
     if (_titleController.text.isEmpty) {
       var _answer = _answerBox.get(BoxAnswer.currentAnswer);
       _titleController.text = _answer?.title ?? '';
       if (_answer != null) {
         setState(() {
-          var questionIndex = questionsModel.getIndexById(_answer.questionId);
-          if (_questionsScrollController.hasClients) {
-            _questionsScrollController.jumpTo(questionIndex.toDouble());
-          }
           questionId = _answer.questionId;
         });
       }
     }
+    var question = questionsModel.getById(questionId);
+    var questoinIndex = questionsModel.getIndexById(questionId);
+
     return Material(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -75,54 +69,25 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
               height: 2,
             ),
             SizedBox(
-              height: 50,
+              height: 60,
               child: Row(children: [
                 Expanded(
-                    child: ListView.separated(
-                        separatorBuilder: (BuildContext _, int index) {
-                          return SizedBox(
-                            width: 10,
+                  child: QuestionsSlider(
+                      question: question,
+                      questionIndex: questoinIndex,
+                      onSelected: (int? index) async {
+                        if (index == null) return;
+                        var newQuestion =
+                            questionsModel.questions.elementAt(index.toInt());
+                        setState(() {
+                          questionId = newQuestion.id;
+                          updateCurrentAnswer(
+                            box: _answerBox,
+                            title: _titleController.text,
                           );
-                        },
-                        scrollDirection: Axis.horizontal,
-                        itemCount: questionsModel.length,
-                        controller: _questionsScrollController,
-                        itemBuilder: (BuildContext _, int index) {
-                          var question =
-                              questionsModel.questions.elementAt(index);
-                          var text = Consumer<LocaleModel>(
-                              builder: (context, locale, child) {
-                            return Text(question.title.getProp(
-                                    locale.currentNamedLocale.localeCode) ??
-                                '');
-                          });
-                          if (question.id == questionId)
-                            return TextButton(
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(horizontal: 28)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Theme.of(context)
-                                          .accentColor
-                                          .withOpacity(0.05))),
-                              onPressed: () {},
-                              child: text,
-                            );
-                          return TextButton(
-                            onPressed: () {
-                              questionId = question.id;
-                              updateCurrentAnswer(
-                                box: _answerBox,
-                                title: _titleController.text,
-                              );
-                              setState(() {
-                                _questionsScrollController
-                                    .jumpTo(index.toDouble());
-                              });
-                            },
-                            child: text,
-                          );
-                        })),
+                        });
+                      }),
+                ),
                 SizedBox(
                   width: 8,
                 ),
@@ -186,6 +151,83 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class QuestionsSlider extends StatefulWidget {
+  final void Function(int? index) onSelected;
+  final Question question;
+  final int questionIndex;
+  QuestionsSlider(
+      {required this.onSelected,
+      required this.question,
+      required this.questionIndex});
+  @override
+  _QuestionsSliderState createState() => _QuestionsSliderState();
+}
+
+class _QuestionsSliderState extends State<QuestionsSlider> {
+  late final PageController _pageController;
+  @override
+  void initState() {
+    _pageController = PageController(
+        viewportFraction: 0.25, initialPage: widget.questionIndex);
+    _pageController.addListener(() {
+      widget.onSelected(_pageController.page?.toInt());
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+
+    return Center(
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.horizontal,
+        itemCount: questionsModel.length,
+        clipBehavior: Clip.antiAlias,
+        itemBuilder: (context, index) => AnimatedBuilder(
+            animation: _pageController,
+            builder: (BuildContext _, Widget? __) => _builder(
+                  index: index,
+                  questionsModel: questionsModel,
+                )),
+      ),
+    );
+  }
+
+  Widget _builder(
+      {required int index, required QuestionsModel questionsModel}) {
+    var question = questionsModel.questions.elementAt(index);
+    var text = Consumer<LocaleModel>(builder: (context, locale, child) {
+      return Text(
+        question.title.getProp(locale.currentNamedLocale.localeCode) ?? '',
+        textAlign: TextAlign.center,
+      );
+    });
+    if (question.id == widget.question.id)
+      return Transform(
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001)
+          ..scale(1.2, 1.2)
+          ..translate(0, -10),
+        child: TextButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  Theme.of(context).accentColor.withOpacity(0.05))),
+          onPressed: () {},
+          child: text,
+        ),
+      );
+    return TextButton(
+      onPressed: () {
+        _pageController.jumpToPage(index);
+        widget.onSelected(index);
+      },
+      child: text,
     );
   }
 }

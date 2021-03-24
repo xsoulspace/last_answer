@@ -155,13 +155,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractWhatForDescription": "I'm designing this app to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
+  "aboutAbstractWhatForDescription": "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractHowDescription": "You can use Philosophy Abstract to get ideas how this app can be used and in which techniques.",
+  "aboutAbstractHowDescription": "You can use Philosophy to get inspiration of how this app can be used and which techniques can be applied.",
   "@aboutAbstractHowDescription": {
     "description": "Description of About Abstract How Description",
     "type": "text",
@@ -173,7 +173,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in Google Play or send a message to xsoulspace@gmail.com. Thank you!",
+  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in Google Play or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
     "type": "text",

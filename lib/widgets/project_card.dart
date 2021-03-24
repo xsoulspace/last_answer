@@ -15,6 +15,7 @@ class ProjectCard extends StatelessWidget {
       child: CardDissmisible(
         key: Key(project.id),
         confirmDismiss: (direction) async {
+          if (direction.index != 3) return false;
           return await showDialog(
             context: context,
             builder: (BuildContext context) {

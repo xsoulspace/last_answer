@@ -14,26 +14,25 @@ final double dropdownWidth = 95.0;
 class AnswerCard extends StatelessWidget {
   final int index;
   final Answer answer;
-  final void Function()? onDelete;
-  deleteAnswer() {
-    var deleteCallback = onDelete;
-    if (deleteCallback == null) return;
-    deleteCallback();
-  }
+  final Future<bool?> Function() confirmDelete;
+  final void Function() onDismissed;
 
   AnswerCard(
-      {required this.index, required this.answer, required this.onDelete});
+      {required this.index,
+      required this.answer,
+      required this.confirmDelete,
+      required this.onDismissed});
 
   @override
   Widget build(BuildContext context) {
     return CardDissmisible(
       key: Key(answer.id),
       confirmDismiss: (direction) async {
-        if (direction.index != 2) return false;
-        return true;
+        if (direction.index != 3) return false;
+        return await confirmDelete();
       },
       onDismissed: (direction) async {
-        deleteAnswer();
+        onDismissed();
       },
       child: Material(
         child: Stack(children: <Widget>[
@@ -46,10 +45,13 @@ class AnswerCard extends StatelessWidget {
                     answer: answer,
                   ))),
           Padding(
-            padding: EdgeInsets.fromLTRB(dropdownWidth, 1, 5, 1),
+            padding: EdgeInsets.fromLTRB(dropdownWidth, 1, 0, 1),
             child: AnswerTextField(
               answer: answer,
-              onDelete: deleteAnswer,
+              onDelete: () async {
+                var toDelete = await confirmDelete();
+                if (toDelete == true) onDismissed();
+              },
             ),
           ),
         ]),

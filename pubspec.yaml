@@ -1,9 +1,9 @@
 name: lastanswer
-description: Answers & Questions
+description: Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -15,56 +15,79 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+4
+version: 1.0.3+5
 
 environment:
-  sdk: ">=2.8.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  provider: ^4.0.0
   flutter_localizations:
     sdk: flutter
-  # excel: ^1.0.2
-  universal_html: ^1.2.2
-  intl_translation: ^0.17.1
-  share: ^0.6.4+3
-  shared_preferences: ">=0.5.7+3 <2.0.0"
-  intl: ^0.16.1
-  google_fonts: ^1.1.0
-  # url_launcher: ^5.4.10
+  provider: ^5.0.0
+  shared_preferences: "^2.0.5"
+  json_annotation: ^4.0.0
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  # To build use flutter packages pub run build_runner build
+  hive: ^2.0.0
+  hive_flutter: ^1.0.0
+  universal_io: ^2.0.1
+  share: ^2.0.1
+  uuid: 3.0.1
+  # universal_html: ^2.0.4
+
+dependency_overrides:
+  build: 2.0.0
+#   analyzer: 0.39.14
+#   intl: 0.17.0
+#   path: ^1.8.0
+#   clock: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.8.1"
-
+  flutter_launcher_icons: ^0.9.0
+  # json_serializable: ^4.0.3
+   # FIXME: due problem with intl_tranlsation
+  # analyzer dependency overriden.
+  # FIXME: to run flutter pub run build_runner build need to comment intl_translation and analyzer override
+  # intl_translation: ^0.17.10+1
+  hive_generator: ^1.0.0
+  build_runner: ^1.12.2
+  intl: ^0.17.0
+  # intl_translation:
+# flutter pub run flutter_launcher_icons:main
 flutter_icons:
   image_path: "lib/assets/icon-512.png"
   ios: true
   android: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
+
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
+
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

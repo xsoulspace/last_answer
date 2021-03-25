@@ -1,0 +1,176 @@
+{
+  "answers": "Ответы",
+  "@answers": {
+    "description": "пункт меню, ссылающийся на ответы",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Сохранить",
+  "@save": {
+    "description": "пункт меню сохранить",
+    "type": "text",
+    "placeholders": {}
+  },
+  "theAnswerCannotBeEmpty": "Ответ не может быть пустым, если нужно - удалите кнопкой справа",
+  "@theAnswerCannotBeEmpty": {
+    "description": "Ответ не может стать пустым во время редактирования на странице ответов",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Отменить",
+  "@cancel": {
+    "description": "Отменить",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Удалить",
+  "@delete": {
+    "description": "Удалить",
+    "type": "text",
+    "placeholders": {}
+  },
+  "successfullySaved": "Успешно сохранено!",
+  "@successfullySaved": {
+    "description": "Successfully saved",
+    "type": "text",
+    "placeholders": {}
+  },
+  "successfullyDeleted": "Успешно удалено!",
+  "@successfullyDeleted": {
+    "description": "Successfully deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSureYouWantToDeleteAnswer": "Вы уверены, что хотите удалить ответ?",
+  "@areYouSureYouWantToDeleteAnswer": {
+    "description": "Warning Title for answer delete",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ifYouDeleteAnswerThereIsNoWayBack": "Если вы удалите ответ, то он будет безвозвратно потерян.",
+  "@ifYouDeleteAnswerThereIsNoWayBack": {
+    "description": "Warning for answer delete",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastAnswer": "Последний ответ",
+  "@lastAnswer": {
+    "description": "пункт меню последний ответ",
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer": "Ответ",
+  "@answer": {
+    "description": "ввод ответа",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuest": "Начать новый Квест",
+  "@newQuest": {
+    "description": "popup новый квест",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestDesc": "При продолжении - все старые ответы будут удалены. Не забудьте сохранить ответы, если нужны.",
+  "@newQuestDesc": {
+    "description": "popup новый desc",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestStart": "начать",
+  "@newQuestStart": {
+    "description": "popup новый начать",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestCancel": "отменить",
+  "@newQuestCancel": {
+    "description": "popup новый отменить",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyInspirationTitle": "Вдохновление",
+  "@philosophyInspirationTitle": {
+    "description": "Inspiration",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractWhatElse": "Что ещё?",
+  "@philosophyAbstractWhatElse": {
+    "description": "What else",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractFiveWhyesWhat": "Можно использовать: \"Пять почему\"",
+  "@philosophyAbstractFiveWhyesWhat": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractFiveWhyesWhy": "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",
+  "@philosophyAbstractFiveWhyesWhy": {
+    "description": "Description of Five Whyes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractPDSAWhy": "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",
+  "@philosophyAbstractPDSAWhy": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractPDSAWhat": "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",
+  "@philosophyAbstractPDSAWhat": {
+    "description": "Description of PDSA",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractSixSigmaWhy": "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",
+  "@philosophyAbstractSixSigmaWhy": {
+    "description": "Method that you can use",
+    "type": "text",
+    "placeholders": {}
+  },
+  "philosophyAbstractSixSigmaWhat": "Ещё можно использовать: \"Шесть сигм\" ",
+  "@philosophyAbstractSixSigmaWhat": {
+    "description": "Description of Six Sigma",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractTitle": "О приложении",
+  "@aboutAbstractTitle": {
+    "description": "About Abstract title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractWhatFor": "Зачем?",
+  "@aboutAbstractWhatFor": {
+    "description": "What For About Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractWhatForDescription": "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми.",
+  "@aboutAbstractWhatForDescription": {
+    "description": "Description of About Abstract",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractHowDescription": "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",
+  "@aboutAbstractHowDescription": {
+    "description": "Description of About Abstract How Description",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
+  "@aboutAbstractIdeasImprovementsBugs": {
+    "description": "Ideas Improvements Bugs",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAbstractIdeasImprovementsBugsDescription": "Пожалуйста, оставьте отзыв в Google Play или отправьте ваше мнение на idea@xsoulspace.dev. Спасибо что используете приложение и хорошего дня, полного идей и впечатлений!",
+  "@aboutAbstractIdeasImprovementsBugsDescription": {
+    "description": "Ideas Improvements Bugs description",
+    "type": "text",
+    "placeholders": {}
+  }
+}

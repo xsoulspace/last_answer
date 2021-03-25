@@ -61,7 +61,12 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
             if (value.positionIndex > el.positionIndex) return el;
             return value;
           }).positionIndex;
+
     Future<void> createAnswer() async {
+      if (_titleController.text
+          .replaceAll(RegExp(r' '), "")
+          .replaceAll("\n", "")
+          .isEmpty) return;
       var newAnswer = Answer(
           title: _titleController.text,
           questionId: questionId,

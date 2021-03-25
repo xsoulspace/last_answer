@@ -22,6 +22,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
           children: [
@@ -54,8 +55,9 @@ class _SettingsState extends State<Settings> {
                     tag: 'appBarBackground',
                     child: Container(
                       height: size.height - AppBarHeight,
-                      color: Theme.of(context).canvasColor,
+                      color: Colors.transparent,
                       child: Material(
+                        color: Colors.transparent,
                         child: GridView.count(
                           crossAxisCount: isDesktop() ? 3 : 2,
                           childAspectRatio: 1,

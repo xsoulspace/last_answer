@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,6 +16,8 @@ class HomeProjects extends StatelessWidget {
     _openSettings() {
       Navigator.of(context).push(PageRouteBuilder(
           fullscreenDialog: true,
+          barrierColor: Colors.transparent,
+          opaque: false,
           transitionDuration: Duration(milliseconds: 250),
           reverseTransitionDuration: Duration(milliseconds: 250),
           barrierDismissible: true,
@@ -28,7 +32,20 @@ class HomeProjects extends StatelessWidget {
           },
           pageBuilder: (BuildContext context, Animation<double> animation,
               Animation<double> secondaryAnimation) {
-            return Settings();
+            return Stack(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 8,
+                    sigmaY: 8,
+                  ),
+                  child: Container(
+                      // color: Colors.white.withOpacity(0.08),
+                      ),
+                ),
+                Settings()
+              ],
+            );
           }));
     }
 
@@ -36,8 +53,9 @@ class HomeProjects extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            Container(
-              color: Theme.of(context).primaryColor,
+            Material(
+              elevation: 1,
+              // color: Theme.of(context).primaryColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -60,7 +78,6 @@ class HomeProjects extends StatelessWidget {
                           child: IconButton(
                               icon: Icon(
                                 Icons.more_horiz,
-                                color: Colors.white,
                               ),
                               onPressed: _openSettings),
                         ),

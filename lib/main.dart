@@ -10,8 +10,13 @@ import 'package:lastanswer/abstract/Project.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/screens/home_projects.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/utils/color_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
+
+class Palette {
+  static const Color primary = Color(0xFF4CAF50);
+}
 
 void main() async {
   Hive.registerAdapter(AnswerAdapter());
@@ -68,7 +73,7 @@ class AppScaffold extends StatelessWidget {
   final Widget home;
   final Locale? overridenLocale;
   AppScaffold({required this.overridenLocale, required this.home});
-
+  final primarySwatch = generateMaterialColor(Palette.primary);
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -90,15 +95,25 @@ class AppScaffold extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             themeMode: resolvedThemeMode,
             theme: ThemeData(
+                splashColor: primarySwatch.withOpacity(0.3),
+                highlightColor: primarySwatch.shade300.withOpacity(0.08),
+                hoverColor: primarySwatch.shade200.withOpacity(0.08),
+                focusColor: primarySwatch.shade200.withOpacity(0.08),
                 checkboxTheme: CheckboxThemeData(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                 ),
-                primarySwatch: Colors.green,
+                primarySwatch: primarySwatch,
                 fontFamily: 'IBM Plex Sans',
                 brightness: Brightness.light),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
+              primarySwatch: primarySwatch,
+              accentColor: primarySwatch,
+              toggleableActiveColor: primarySwatch,
+              textSelectionTheme: TextSelectionThemeData(
+                selectionColor: primarySwatch,
+              ),
               fontFamily: 'IBM Plex Sans',
               checkboxTheme: CheckboxThemeData(
                 shape: RoundedRectangleBorder(

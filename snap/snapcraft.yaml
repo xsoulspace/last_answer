@@ -1,5 +1,5 @@
 name: last-answer
-version: 1.0.3-2
+version: 1.0.3+5
 summary: A tool to solve problems during project management
 description: |
   Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
@@ -33,11 +33,11 @@ slots:
   dbus-last-answer:
     interface: dbus
     bus: session
-    name: dev.xsoulspace.last_answer # adjust accordingly
+    name: dev.xsoulspace.lastanswer # adjust accordingly
 
 apps:
   last-answer:
-    command: last_answer
+    command: lastanswer
     extensions: [flutter-dev] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     plugs:

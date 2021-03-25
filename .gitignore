@@ -9,16 +9,13 @@
 .buildlog/
 .history
 .svn/
+/android/key.properties
 android/key.properties
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
-
-# due constant changes in build runners
-linux/
-windows/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -36,7 +33,6 @@ windows/
 .pub/
 /build/
 
-
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -46,5 +42,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release

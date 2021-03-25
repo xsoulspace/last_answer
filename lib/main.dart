@@ -1,22 +1,33 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:lastanswer/localizations/MainLocalizations.dart';
-import 'package:lastanswer/models/AnswersModel.dart';
-import 'package:lastanswer/models/LocaleModel.dart';
-import 'package:lastanswer/models/PagesModel.dart';
-import 'package:lastanswer/models/QuestionsModel.dart';
-import 'package:lastanswer/screens/MenuScreen.dart';
-import 'package:lastanswer/screens/ScaffoldApp.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastanswer/abstract/Answer.dart';
+import 'package:lastanswer/abstract/HiveBoxes.dart';
+import 'package:lastanswer/abstract/Language.dart';
+import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/models/questions_model.dart';
+import 'package:lastanswer/screens/home_projects.dart';
+import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/utils/color_generator.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
-class ThemeColors {
-  static final lightAccent = Colors.lightGreen[50];
+class Palette {
+  static const Color primary = Color(0xFF4CAF50);
 }
 
 void main() async {
+  Hive.registerAdapter(AnswerAdapter());
+  Hive.registerAdapter(ProjectAdapter());
+
+  await Hive.initFlutter();
+  // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
+  // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+  await Hive.openBox<bool>(HiveBoxes.darkMode);
+  await Hive.openBox<Project>(HiveBoxes.projects);
+  await Hive.openBox<Answer>(HiveBoxes.answers);
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
@@ -31,33 +42,18 @@ class HowToSolveTheQuest extends StatefulWidget {
 
 class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   _HowToSolveTheQuestState();
-
-  scaffoldApp(
-      BuildContext context, MainLocalizationsDelegate _localeOverrideDelegate) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => LocaleModel()),
-      ChangeNotifierProvider(create: (context) => AnswersModel()),
-      ChangeNotifierProvider(create: (context) => QuestionsModel()),
-      ChangeNotifierProvider(create: (context) => PagesModel()),
-    ], child: AppScaffold(_localeOverrideDelegate));
-  }
+  Future<Locale> _systemLocale = LocaleModel.loadSavedLocale();
 
   @override
   Widget build(BuildContext context) {
-    Future<Locale> systemLocale = LocaleModel.loadSavedLocale();
-
     return FutureBuilder(
-        future: systemLocale, // stream data to listen for change
+        future: _systemLocale,
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          // print('connection done ${snapshot.connectionState}');
-
           if (snapshot.connectionState == ConnectionState.done) {
-            // print('connection done ${snapshot.data.toString()}');
-            MainLocalizationsDelegate _localeOverrideDelegate =
-                MainLocalizationsDelegate(
-                    overridenLocale:
-                        snapshot.data ?? LocaleModelConsts.localeEN);
-            return scaffoldApp(context, _localeOverrideDelegate);
+            return ProviderInit(
+              child: AppScaffold(
+                  overridenLocale: snapshot.data, home: HomeProjects()),
+            );
           } else {
             return _circularSpinner();
           }
@@ -71,56 +67,78 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   }
 }
 
+/// Class to init home screen, routes, locales
+/// and app mode
 class AppScaffold extends StatelessWidget {
-  final MainLocalizationsDelegate _overridenLocaleDelegate;
-  AppScaffold(this._overridenLocaleDelegate);
+  final Widget home;
+  final Locale? overridenLocale;
+  AppScaffold({required this.overridenLocale, required this.home});
+  final primarySwatch = generateMaterialColor(Palette.primary);
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
+        builder: (context, Box<bool> box, widget) {
+          var isDark =
+              box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
+          var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+          return MaterialApp(
+            localeListResolutionCallback: (locales, supportedLocales) {
+              var _locale = overridenLocale;
+              if (_locale == null) return Locales.en;
+              var isLocaleSupported =
+                  AppLocalizations.delegate.isSupported(_locale);
+              if (!isLocaleSupported) return Locales.en;
+              return _locale;
+            },
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            themeMode: resolvedThemeMode,
+            theme: ThemeData(
+                splashColor: primarySwatch.withOpacity(0.3),
+                highlightColor: primarySwatch.shade300.withOpacity(0.08),
+                hoverColor: primarySwatch.shade200.withOpacity(0.08),
+                focusColor: primarySwatch.shade200.withOpacity(0.08),
+                checkboxTheme: CheckboxThemeData(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+                primarySwatch: primarySwatch,
+                fontFamily: 'IBM Plex Sans',
+                brightness: Brightness.light),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: primarySwatch,
+              accentColor: primarySwatch,
+              toggleableActiveColor: primarySwatch,
+              textSelectionTheme: TextSelectionThemeData(
+                selectionColor: primarySwatch,
+              ),
+              fontFamily: 'IBM Plex Sans',
+              checkboxTheme: CheckboxThemeData(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+              ),
+            ),
+            home: home,
+          );
+        });
+  }
+}
+
+/// Class to init providers
+class ProviderInit extends StatelessWidget {
+  final Widget child;
+  ProviderInit({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localeListResolutionCallback: (locales, supportedLocales) {
-        Locale locale = _overridenLocaleDelegate.overridenLocale;
-        var isFoundLocale = _overridenLocaleDelegate.isSupported(locale);
-
-        // var isFoundLocale =supportedLocales.contains(locale);
-        if (!isFoundLocale) {
-          return LocaleModelConsts.localeEN;
-        }
-        return locale;
-      },
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        _overridenLocaleDelegate,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleModel()),
+        ChangeNotifierProvider(create: (_) => QuestionsModel())
       ],
-      supportedLocales: [
-        LocaleModelConsts.localeRU, // Russian
-        LocaleModelConsts.localeEN, // English
-      ],
-      theme: ThemeData(
-        // Define the default brightness and colors.
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightGreen[800],
-        accentColor: Colors.lightGreen[800],
-
-        buttonColor: Colors.lightGreen[900],
-        // Define the default font family.
-        fontFamily: 'IBM Plex Sans',
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        // textTheme: TextTheme(
-        //   headline5: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        //   headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        // ),
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => ScaffoldApp(),
-        '/menu': (context) => MenuScreen(),
-      },
+      child: child,
     );
   }
 }

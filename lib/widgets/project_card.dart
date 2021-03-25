@@ -10,6 +10,7 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0.2,
       margin: EdgeInsets.symmetric(vertical: 1, horizontal: 6),
       clipBehavior: Clip.antiAlias,
       child: CardDissmisible(

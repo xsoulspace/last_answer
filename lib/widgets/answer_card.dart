@@ -6,10 +6,9 @@ import 'package:lastanswer/abstract/Answer.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Question.dart';
 import 'package:lastanswer/models/questions_model.dart';
+import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:lastanswer/widgets/card_dissmisible.dart';
 import 'package:provider/provider.dart';
-
-final double dropdownWidth = 95.0;
 
 class AnswerCard extends StatelessWidget {
   final Key key;
@@ -17,6 +16,7 @@ class AnswerCard extends StatelessWidget {
   final Answer answer;
   final Future<bool?> Function() confirmDelete;
   final void Function() onDismissed;
+  final double dropdownWidth = isDesktop() ? 120 : 95.0;
 
   AnswerCard(
       {required this.index,

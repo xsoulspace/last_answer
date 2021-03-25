@@ -241,25 +241,21 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
   Widget _builder(
       {required int index, required QuestionsModel questionsModel}) {
     var question = questionsModel.questions.elementAt(index);
+    var isSelected = question.id == widget.question.id;
     var text = Consumer<LocaleModel>(builder: (context, locale, child) {
       return Text(
         question.title.getProp(locale.currentNamedLocale.localeCode) ?? '',
         textAlign: TextAlign.center,
+        style: TextStyle(fontSize: isSelected ? 18.5 : 14),
       );
     });
     if (question.id == widget.question.id)
-      return Transform(
-        transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.001)
-          ..scale(1.2, 1.2)
-          ..translate(0, -10),
-        child: TextButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).accentColor.withOpacity(0.05))),
-          onPressed: () {},
-          child: text,
-        ),
+      return TextButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                Theme.of(context).accentColor.withOpacity(0.05))),
+        onPressed: () {},
+        child: text,
       );
     return TextButton(
       onPressed: () {

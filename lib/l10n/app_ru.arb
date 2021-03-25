@@ -89,21 +89,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "philosophyAndInspirationTitle": "Философия & Вдохновление",
-  "@philosophyAndInspirationTitle": {
-    "description": "Philosopy & Inspiration",
-    "type": "text",
-    "placeholders": {}
-  },
-  "philosophyAbstractTitle": "Философия",
-  "@philosophyAbstractTitle": {
-    "description": "Philosophy Abstract",
+  "philosophyInspirationTitle": "Вдохновление",
+  "@philosophyInspirationTitle": {
+    "description": "Inspiration",
     "type": "text",
     "placeholders": {}
   },
   "philosophyAbstractWhatElse": "Что ещё?",
   "@philosophyAbstractWhatElse": {
-    "description": "Philosophy Abstract",
+    "description": "What else",
     "type": "text",
     "placeholders": {}
   },
@@ -161,7 +155,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractHowDescription": "Можно использовать раздел Философия, чтобы получить пример с какими техниками возможно использовать приложение.",
+  "aboutAbstractHowDescription": "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",
   "@aboutAbstractHowDescription": {
     "description": "Description of About Abstract How Description",
     "type": "text",

@@ -47,21 +47,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "philosophyAndInspirationTitle": "Philosophy & Inspiration",
-  "@philosophyAndInspirationTitle": {
-    "description": "Philosopy & Inspiration",
-    "type": "text",
-    "placeholders": {}
-  },
-  "philosophyAbstractTitle": "Philosophy Abstract",
-  "@philosophyAbstractTitle": {
-    "description": "Philosophy Abstract",
+  "philosophyInspirationTitle": "Inspiration",
+  "@philosophyInspirationTitle": {
+    "description": "Inspiration",
     "type": "text",
     "placeholders": {}
   },
   "philosophyAbstractWhatElse": "What else?",
   "@philosophyAbstractWhatElse": {
-    "description": "Philosophy Abstract",
+    "description": "What else",
     "type": "text",
     "placeholders": {}
   },
@@ -161,7 +155,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractHowDescription": "You can use Philosophy to get inspiration of how this app can be used and which techniques can be applied.",
+  "aboutAbstractHowDescription": "You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.",
   "@aboutAbstractHowDescription": {
     "description": "Description of About Abstract How Description",
     "type": "text",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -61,8 +62,10 @@ class _SettingsState extends State<Settings> {
                           padding: EdgeInsets.all(20.0),
                           children: [
                             DarkModeSwitcher(),
-                            LocaleSwitcher(),
-                            About()
+                            // FIXME: restore locale switcher
+                            // LocaleSwitcher(),
+                            About(),
+                            Philosophy()
                           ],
                         ),
                       ),
@@ -134,39 +137,42 @@ class LocaleSwitcher extends StatelessWidget {
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
-        iconButton: Consumer<LocaleModel>(builder: (context, locale, child) {
-          final textStyle = TextStyle(
-              fontSize: 14.0,
-              color: Theme.of(context).textTheme.bodyText1?.color);
-          return DropdownButton<NamedLocale>(
-            value: locale.currentNamedLocale,
-            style: textStyle,
-            icon: Container(),
-            isExpanded: true,
-            selectedItemBuilder: (context) {
-              return LocaleModelConsts.namedLocales
-                  .map((namedLocale) => Container(
-                        alignment: Alignment.center,
-                        child: Icon(Icons.translate),
-                      ))
-                  .toList();
-            },
-            underline: Container(),
-            items: LocaleModelConsts.namedLocales
-                .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
-              return DropdownMenuItem<NamedLocale>(
-                value: namedLocale,
-                child: Text(
-                  namedLocale.name,
-                  style: textStyle,
-                ),
-              );
-            }).toList(),
-            onChanged: (NamedLocale? namedLocale) async {
-              await localeModel.switchLang(namedLocale?.locale);
-            },
-          );
-        }),
+        iconButton: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Consumer<LocaleModel>(builder: (context, locale, child) {
+            final textStyle = TextStyle(
+                fontSize: 14.0,
+                color: Theme.of(context).textTheme.bodyText1?.color);
+            return DropdownButton<NamedLocale>(
+              value: locale.currentNamedLocale,
+              style: textStyle,
+              icon: Container(),
+              isExpanded: true,
+              selectedItemBuilder: (context) {
+                return LocaleModelConsts.namedLocales
+                    .map((namedLocale) => Container(
+                          alignment: Alignment.center,
+                          child: Icon(Icons.translate),
+                        ))
+                    .toList();
+              },
+              underline: Container(),
+              items: LocaleModelConsts.namedLocales
+                  .map<DropdownMenuItem<NamedLocale>>((namedLocale) {
+                return DropdownMenuItem<NamedLocale>(
+                  value: namedLocale,
+                  child: Text(
+                    namedLocale.name,
+                    style: textStyle,
+                  ),
+                );
+              }).toList(),
+              onChanged: (NamedLocale? namedLocale) async {
+                await localeModel.switchLang(namedLocale?.locale);
+              },
+            );
+          }),
+        ),
         text: Text(
           'Language',
           textAlign: TextAlign.center,
@@ -175,8 +181,39 @@ class LocaleSwitcher extends StatelessWidget {
 }
 
 class About extends StatelessWidget {
+  Widget itemCard(
+      {required String? questionString, required String? answerString}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Padding(
+        padding: EdgeInsets.all(14),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 100,
+              child: Consumer<LocaleModel>(builder: (context, locale, child) {
+                return Text(questionString ?? '');
+              }),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 5),
+            ),
+            Flexible(
+              child: Consumer<LocaleModel>(builder: (context, locale, child) {
+                return SelectableText(
+                  answerString ?? '',
+                );
+              }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
         iconButton: IconButton(
             onPressed: () {
@@ -188,109 +225,22 @@ class About extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         child: Column(
                           children: <Widget>[
-                            Card(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              child: Padding(
-                                padding: EdgeInsets.all(14),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Consumer<LocaleModel>(
-                                          builder: (context, locale, child) {
-                                        return Text(
-                                          AppLocalizations.of(context)
-                                                  ?.aboutAbstractWhatFor ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                    ),
-                                    Flexible(
-                                      child: Consumer<LocaleModel>(
-                                          builder: (context, locale, child) {
-                                        return SelectableText(
-                                          AppLocalizations.of(context)
-                                                  ?.aboutAbstractWhatForDescription ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              child: Padding(
-                                padding: EdgeInsets.all(14),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Consumer<LocaleModel>(builder:
-                                          (context, localeModel, child) {
-                                        return SelectableText(
-                                          LocaleTitle(en: 'How?', ru: 'Как?')
-                                                  .getProp(localeModel
-                                                      .locale.languageCode) ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                    ),
-                                    Flexible(
-                                      child: Consumer<LocaleModel>(
-                                          builder: (context, locale, child) {
-                                        return SelectableText(
-                                          AppLocalizations.of(context)
-                                                  ?.aboutAbstractHowDescription ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              child: Padding(
-                                padding: EdgeInsets.all(14),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Consumer<LocaleModel>(
-                                          builder: (context, locale, child) {
-                                        return Text(
-                                          AppLocalizations.of(context)
-                                                  ?.aboutAbstractIdeasImprovementsBugs ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                    ),
-                                    Flexible(
-                                      child: Consumer<LocaleModel>(
-                                          builder: (context, locale, child) {
-                                        return SelectableText(
-                                          AppLocalizations.of(context)
-                                                  ?.aboutAbstractIdeasImprovementsBugsDescription ??
-                                              '',
-                                        );
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            itemCard(
+                                questionString: AppLocalizations.of(context)
+                                    ?.aboutAbstractWhatFor,
+                                answerString: AppLocalizations.of(context)
+                                    ?.aboutAbstractWhatForDescription),
+                            itemCard(
+                                questionString: LocaleTitle(
+                                        en: 'How?', ru: 'Как?')
+                                    .getProp(localeModel.locale.languageCode),
+                                answerString: AppLocalizations.of(context)
+                                    ?.aboutAbstractHowDescription),
+                            itemCard(
+                                questionString: AppLocalizations.of(context)
+                                    ?.aboutAbstractIdeasImprovementsBugs,
+                                answerString: AppLocalizations.of(context)
+                                    ?.aboutAbstractIdeasImprovementsBugsDescription),
                           ],
                         ))
                   ]);
@@ -298,6 +248,104 @@ class About extends StatelessWidget {
             icon: Icon(Icons.info)),
         text: Text(
           'About',
+          textAlign: TextAlign.center,
+        ));
+  }
+}
+
+class Philosophy extends StatelessWidget {
+  Widget itemCard(
+      {required String? questionString, required String? answerString}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Padding(
+        padding: EdgeInsets.all(14),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 5),
+            ),
+            SizedBox(
+              width: 80,
+              child:
+                  Consumer<LocaleModel>(builder: (context, localeModel, child) {
+                return SelectableText(
+                  questionString ?? '',
+                );
+              }),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 5),
+            ),
+            Flexible(
+              child: Consumer<LocaleModel>(builder: (context, locale, child) {
+                return SelectableText(
+                  answerString ?? '',
+                );
+              }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  final whyQuestion = LocaleTitle(en: 'Why?', ru: 'Почему?');
+  final whatQuestion = LocaleTitle(en: 'What?', ru: 'Что?');
+  @override
+  Widget build(BuildContext context) {
+    var localeModel = Provider.of<LocaleModel>(context);
+    return MenuTile(
+        iconButton: IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: Text(AppLocalizations.of(context)
+                                ?.philosophyInspirationTitle ??
+                            ''),
+                        content: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: <Widget>[
+                                itemCard(
+                                    questionString: whatQuestion.getProp(
+                                        localeModel.locale.languageCode),
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractFiveWhyesWhat),
+                                itemCard(
+                                    questionString: whyQuestion.getProp(
+                                        localeModel.locale.languageCode),
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractFiveWhyesWhy),
+                                itemCard(
+                                    questionString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractWhatElse,
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractPDSAWhat),
+                                itemCard(
+                                    questionString: whyQuestion.getProp(
+                                        localeModel.locale.languageCode),
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractPDSAWhy),
+                                itemCard(
+                                    questionString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractWhatElse,
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractSixSigmaWhat),
+                                itemCard(
+                                    questionString: whyQuestion.getProp(
+                                        localeModel.locale.languageCode),
+                                    answerString: AppLocalizations.of(context)
+                                        ?.philosophyAbstractSixSigmaWhy),
+                              ],
+                            )));
+                  });
+            },
+            icon: Icon(Icons.menu_book_rounded)),
+        text: Text(
+          AppLocalizations.of(context)?.philosophyInspirationTitle ?? '',
           textAlign: TextAlign.center,
         ));
   }

@@ -23,7 +23,10 @@ class _NewProjectFieldState extends State<NewProjectField> {
   }
 
   Future<void> createProject({required Box<Project> projectBox}) async {
-    if (_titleController.text.isEmpty) return;
+    if (_titleController.text
+        .replaceAll(RegExp(r' '), "")
+        .replaceAll("\n", "")
+        .isEmpty) return;
     var newUuid = uuid.v1();
     var newProject = Project(
         created: DateTime.now(), id: newUuid, title: _titleController.text);
@@ -58,18 +61,18 @@ class _NewProjectFieldState extends State<NewProjectField> {
             onChanged: (text) async {
               await updateCurrentProject(box: _projectBox);
             },
-            // decoration: InputDecoration(
-            //     // labelStyle: TextStyle(color: Colors.white),
-            //     // fillColor: ThemeColors.lightAccent,
-            //     // focusedBorder: OutlineInputBorder(
-            //     //   borderSide: BorderSide(
-            //     //     color: ThemeColors.lightAccent ?? Colors.white,
-            //     //   ),
-            //     // ),
-            //     // border: OutlineInputBorder(
-            //     //     borderSide: BorderSide(
-            //     //         color: ThemeColors.lightAccent ?? Colors.white)),
-            //     labelText: AppLocalizations.of(context)?.answer),
+            decoration: InputDecoration(
+                // labelStyle: TextStyle(color: Colors.white),
+                // fillColor: ThemeColors.lightAccent,
+                // focusedBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(
+                //     color: ThemeColors.lightAccent ?? Colors.white,
+                //   ),
+                // ),
+                // border: OutlineInputBorder(
+                //     borderSide: BorderSide(
+                //         color: ThemeColors.lightAccent ?? Colors.white)),
+                labelText: 'Project name'),
             cursorColor: Theme.of(context).accentColor,
           ),
         ),

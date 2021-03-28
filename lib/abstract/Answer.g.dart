@@ -21,7 +21,7 @@ class AnswerAdapter extends TypeAdapter<Answer> {
       questionId: fields[1] as String,
       id: fields[3] as String,
       created: fields[4] as DateTime,
-      positionIndex: fields[5] as int,
+      positionIndex: fields[5] as int?,
     );
   }
 

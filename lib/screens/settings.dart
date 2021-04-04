@@ -4,8 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
-import 'package:lastanswer/abstract/LocaleTitle.dart';
 import 'package:lastanswer/abstract/NamedLocale.dart';
+import 'package:lastanswer/main.dart';
+import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
@@ -64,8 +65,7 @@ class _SettingsState extends State<Settings> {
                           padding: EdgeInsets.all(20.0),
                           children: [
                             DarkModeSwitcher(),
-                            // FIXME: restore locale switcher
-                            // LocaleSwitcher(),
+                            LocaleSwitcher(),
                             About(),
                             Philosophy()
                           ],
@@ -128,7 +128,7 @@ class DarkModeSwitcher extends StatelessWidget {
           ),
         ),
         text: Text(
-          'Dark mode',
+          AppLocalizations.of(context)?.darkMode ?? '',
           textAlign: TextAlign.center,
         ));
   }
@@ -170,45 +170,83 @@ class LocaleSwitcher extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (NamedLocale? namedLocale) async {
-                await localeModel.switchLang(namedLocale?.locale);
+                var isToChange = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text(
+                            "${namedLocale?.name} ${AppLocalizations.of(context)?.languageWillBeChanged}"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            },
+                            child: Text(
+                                AppLocalizations.of(context)?.cancel ?? ''),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                              },
+                              child:
+                                  Text(AppLocalizations.of(context)?.yes ?? ''))
+                        ],
+                      );
+                    });
+                if (isToChange) {
+                  await localeModel.switchLang(namedLocale?.locale);
+                  RestartWidget.restartApp(context);
+                }
               },
             );
           }),
         ),
         text: Text(
-          'Language',
+          '${AppLocalizations.of(context)?.language} - '
+          '${LocaleModelConsts.namedLocalesMap[localeModel.locale.languageCode]?.name}',
           textAlign: TextAlign.center,
         ));
   }
 }
 
+const Widget _ItemDivider = Divider(
+  height: 1,
+);
+
+Widget Function({
+  String? questionString,
+}) _questionBox = ({
+  questionCallback,
+  questionString,
+}) =>
+    SizedBox(
+      width: 100,
+      child: Consumer<LocaleModel>(builder: (context, locale, child) {
+        return Text(
+          questionString ?? '',
+        );
+      }),
+    );
+
 class About extends StatelessWidget {
-  Widget itemCard(
-      {required String? questionString, required String? answerString}) {
-    return Card(
+  Widget itemCard({String? questionString, required String? answerString}) {
+    return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
-      child: Padding(
-        padding: EdgeInsets.all(14),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 100,
-              child: Consumer<LocaleModel>(builder: (context, locale, child) {
-                return Text(questionString ?? '');
-              }),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-            ),
-            Flexible(
-              child: Consumer<LocaleModel>(builder: (context, locale, child) {
-                return SelectableText(
-                  answerString ?? '',
-                );
-              }),
-            ),
-          ],
-        ),
+      padding: EdgeInsets.all(14),
+      child: Row(
+        children: [
+          _questionBox(questionString: questionString),
+          Padding(
+            padding: EdgeInsets.only(right: 5),
+          ),
+          Flexible(
+            child: Consumer<LocaleModel>(builder: (context, locale, child) {
+              return SelectableText(
+                answerString ?? '',
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
@@ -221,7 +259,8 @@ class About extends StatelessWidget {
             onPressed: () {
               showAboutDialog(
                   context: context,
-                  applicationName: 'Last Answer',
+                  applicationName:
+                      AppLocalizations.of(context)?.lastAnswer ?? '',
                   children: [
                     SingleChildScrollView(
                         scrollDirection: Axis.vertical,
@@ -229,15 +268,17 @@ class About extends StatelessWidget {
                           children: <Widget>[
                             itemCard(
                                 questionString: AppLocalizations.of(context)
-                                    ?.aboutAbstractWhatFor,
+                                        ?.aboutAbstractWhatFor ??
+                                    '',
                                 answerString: AppLocalizations.of(context)
                                     ?.aboutAbstractWhatForDescription),
+                            _ItemDivider,
                             itemCard(
-                                questionString: LocaleTitle(
-                                        en: 'How?', ru: 'Как?')
+                                questionString: QuestionsModelConsts.titleHow
                                     .getProp(localeModel.locale.languageCode),
                                 answerString: AppLocalizations.of(context)
                                     ?.aboutAbstractHowDescription),
+                            _ItemDivider,
                             itemCard(
                                 questionString: AppLocalizations.of(context)
                                     ?.aboutAbstractIdeasImprovementsBugs,
@@ -249,51 +290,38 @@ class About extends StatelessWidget {
             },
             icon: Icon(Icons.info)),
         text: Text(
-          'About',
+          AppLocalizations.of(context)?.about ?? '',
           textAlign: TextAlign.center,
         ));
   }
 }
 
 class Philosophy extends StatelessWidget {
-  Widget itemCard(
-      {required String? questionString, required String? answerString}) {
-    return Card(
+  Widget itemCard({String? questionString, required String? answerString}) {
+    return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
-      child: Padding(
-        padding: EdgeInsets.all(14),
-        child: Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 5),
-            ),
-            SizedBox(
-              width: 80,
-              child:
-                  Consumer<LocaleModel>(builder: (context, localeModel, child) {
-                return SelectableText(
-                  questionString ?? '',
-                );
-              }),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-            ),
-            Flexible(
-              child: Consumer<LocaleModel>(builder: (context, locale, child) {
-                return SelectableText(
-                  answerString ?? '',
-                );
-              }),
-            ),
-          ],
-        ),
+      padding: EdgeInsets.all(14),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 5),
+          ),
+          _questionBox(questionString: questionString),
+          Padding(
+            padding: EdgeInsets.only(right: 5),
+          ),
+          Flexible(
+            child: Consumer<LocaleModel>(builder: (context, locale, child) {
+              return SelectableText(
+                answerString ?? '',
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
 
-  final whyQuestion = LocaleTitle(en: 'Why?', ru: 'Почему?');
-  final whatQuestion = LocaleTitle(en: 'What?', ru: 'Что?');
   @override
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
@@ -307,38 +335,56 @@ class Philosophy extends StatelessWidget {
                         title: Text(AppLocalizations.of(context)
                                 ?.philosophyInspirationTitle ??
                             ''),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)?.close ?? '',
+                              ))
+                        ],
                         content: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Column(
                               children: <Widget>[
                                 itemCard(
-                                    questionString: whatQuestion.getProp(
-                                        localeModel.locale.languageCode),
+                                    questionString:
+                                        QuestionsModelConsts.titleWhat.getProp(
+                                            localeModel.locale.languageCode),
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractFiveWhyesWhat),
+                                _ItemDivider,
                                 itemCard(
-                                    questionString: whyQuestion.getProp(
-                                        localeModel.locale.languageCode),
+                                    questionString:
+                                        QuestionsModelConsts.titleWhy.getProp(
+                                            localeModel.locale.languageCode),
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractFiveWhyesWhy),
+                                _ItemDivider,
                                 itemCard(
                                     questionString: AppLocalizations.of(context)
                                         ?.philosophyAbstractWhatElse,
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractPDSAWhat),
+                                _ItemDivider,
                                 itemCard(
-                                    questionString: whyQuestion.getProp(
-                                        localeModel.locale.languageCode),
+                                    questionString:
+                                        QuestionsModelConsts.titleWhy.getProp(
+                                            localeModel.locale.languageCode),
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractPDSAWhy),
+                                _ItemDivider,
                                 itemCard(
                                     questionString: AppLocalizations.of(context)
                                         ?.philosophyAbstractWhatElse,
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractSixSigmaWhat),
+                                _ItemDivider,
                                 itemCard(
-                                    questionString: whyQuestion.getProp(
-                                        localeModel.locale.languageCode),
+                                    questionString:
+                                        QuestionsModelConsts.titleWhy.getProp(
+                                            localeModel.locale.languageCode),
                                     answerString: AppLocalizations.of(context)
                                         ?.philosophyAbstractSixSigmaWhy),
                               ],

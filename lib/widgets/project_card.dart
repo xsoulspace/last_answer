@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lastanswer/abstract/Project.dart';
 import 'package:lastanswer/screens/questions_answers.dart';
 import 'package:lastanswer/widgets/card_dissmisible.dart';
@@ -21,21 +22,21 @@ class ProjectCard extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Are you sure?"),
+                title: Text(AppLocalizations.of(context)?.areYouSure ?? ''),
                 content: Text(
-                    " '${project.title}' with ${project.answers?.length ?? 0} answers will be lost forever"),
+                    " '${project.title}' ${AppLocalizations.of(context)?.titleWith} ${project.answers?.length ?? 0} ${AppLocalizations.of(context)?.projectWillBeLost}"),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(
-                      "CANCEL",
+                      AppLocalizations.of(context)?.cancel ?? '',
                       style: TextStyle(color: Theme.of(context).accentColor),
                     ),
                   ),
                   TextButton(
                       onPressed: () => Navigator.of(context).pop(true),
                       child: Text(
-                        "DELETE",
+                        AppLocalizations.of(context)?.delete ?? '',
                         style: TextStyle(color: Colors.red[800]),
                       )),
                 ],

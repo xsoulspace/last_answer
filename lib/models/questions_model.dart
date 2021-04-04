@@ -8,15 +8,20 @@ import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 class QuestionsModelConsts {
+  static final titleWhy = LocaleTitle(en: 'Why?', ru: 'Почему?');
+  static final titleHow = LocaleTitle(en: 'How?', ru: 'Как?');
+  static final titleWhere = LocaleTitle(en: 'Where?', ru: 'Где?');
+  static final titleWhatFor = LocaleTitle(en: 'What for?', ru: 'Зачем?');
+  static final titleForWhom =
+      LocaleTitle(en: 'For whom | what?', ru: 'Для кого | чего?');
+  static final titleWhat = LocaleTitle(en: 'What?', ru: 'Что?');
   static final List<Question> questions = [
-    Question(title: LocaleTitle(en: 'Why?', ru: 'Почему?'), id: '1'),
-    Question(title: LocaleTitle(en: 'How?', ru: 'Как?'), id: '2'),
-    Question(title: LocaleTitle(en: 'Where?', ru: 'Где?'), id: '3'),
-    Question(title: LocaleTitle(en: 'What for?', ru: 'Зачем?'), id: '4'),
-    Question(
-        title: LocaleTitle(en: 'For whom | what?', ru: 'Для кого | чего?'),
-        id: '5'),
-    Question(title: LocaleTitle(en: 'What?', ru: 'Что?'), id: '6'),
+    Question(title: titleWhy, id: '1'),
+    Question(title: titleHow, id: '2'),
+    Question(title: titleWhere, id: '3'),
+    Question(title: titleWhatFor, id: '4'),
+    Question(title: titleForWhom, id: '5'),
+    Question(title: titleWhat, id: '6'),
   ];
 }
 

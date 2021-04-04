@@ -11,20 +11,20 @@ import 'package:lastanswer/utils/is_desktop.dart';
 
 class LocaleModelConsts {
   static final String storagename = 'locale';
-  static final List<NamedLocale> namedLocales = [
-    NamedLocale(
+  static final Map<String, NamedLocale> namedLocalesMap = {
+    Locales.en.languageCode: NamedLocale(
       name: 'English',
       locale: Locales.en,
     ),
-    NamedLocale(
+    Locales.ru.languageCode: NamedLocale(
       name: 'Русский',
       locale: Locales.ru,
     ),
-  ];
+  };
+  static final List<NamedLocale> namedLocales = namedLocalesMap.values.toList();
 }
 
 class LocaleModel extends ChangeNotifier with StorageMixin {
-  bool isInitialized = false;
   Locale _locale = Locales.en;
   Locale get locale => _locale;
   set locale(Locale localef) {
@@ -32,12 +32,12 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     notifyListeners();
   }
 
-  LocalizationsDelegate<AppLocalizations> get localeOverrideDelegate =>
-      AppLocalizations.delegate;
-  static Future<LocaleModel> create() async {
+  LocaleModel();
+  factory LocaleModel.fromLocale({
+    required Locale locale,
+  }) {
     var localeModel = LocaleModel();
-    var localef = await LocaleModel.loadSavedLocale();
-    localeModel._locale = localef;
+    localeModel._locale = locale;
     return localeModel;
   }
 

@@ -1,5 +1,5 @@
 name: last-answer
-version: 1.0.3+6
+version: 1.0.3+7
 summary: A tool to solve problems during project management
 description: |
   Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
@@ -23,7 +23,7 @@ description: |
   Hope this app will be useful for you!
   Thank you.
 
-icon: snap/gui/icon-512.png
+icon: snap/gui/last-answer.png
 
 confinement: strict
 base: core18

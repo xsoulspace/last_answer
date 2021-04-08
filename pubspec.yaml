@@ -36,7 +36,7 @@ dependencies:
   hive_flutter: ^1.0.0
   universal_io: ^2.0.1
   share: ^2.0.1
-  uuid: 3.0.1
+  uuid: ^3.0.1
   # universal_html: ^2.0.4
 
 dependency_overrides:
@@ -58,6 +58,8 @@ dev_dependencies:
   hive_generator: ^1.0.0
   build_runner: ^1.12.2
   intl: ^0.17.0
+  msix: ^1.0.3
+
   # intl_translation:
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
@@ -107,3 +109,18 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+msix_config:
+  display_name: lastanswer
+  publisher_display_name: AntonMalofeev
+  identity_name: MyCompany.MySuite.MyApp
+  msix_version: 1.0.3.5
+  publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1, O=Anton Malofeev, L=Moscow, S=Moscow, C=RU
+  logo_path: C:\web\lastanswer\lib\assets\icon-512.png
+  start_menu_icon_path: C:\web\lastanswer\lib\assets\icon-512.png
+  tile_icon_path: C:\web\lastanswer\lib\assets\icon-512.png
+  vs_generated_images_folder_path: C:\web\lastanswer\lib\assets\icons
+  icons_background_color: transparent
+  architecture: x64
+  capabilities: 'internetClient'
+

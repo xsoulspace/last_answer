@@ -1,13 +1,25 @@
 {
-  "answers": "Answers",
-  "@answers": {
-    "description": "menu title points to answers",
+  "language": "Language",
+  "@language": {
+    "description": "menu title language",
     "type": "text",
     "placeholders": {}
   },
-  "save": "Save",
-  "@save": {
-    "description": "menu title save",
+  "darkMode": "Dark mode",
+  "@darkMode": {
+    "description": "menu title Dark mode",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageWillBeChanged": "will be set as a new language. The app will be reloaded, continue?",
+  "@languageWillBeChanged": {
+    "description": "languageWillBeChanged",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "YES",
+  "@yes": {
+    "description": "yes",
     "type": "text",
     "placeholders": {}
   },
@@ -17,33 +29,27 @@
     "type": "text",
     "placeholders": {}
   },
+  "idea": "Idea",
+  "@idea": {
+    "description": "idea name",
+    "type": "text",
+    "placeholders": {}
+  },
   "answer": "Answer",
   "@answer": {
     "description": "answer input",
     "type": "text",
     "placeholders": {}
   },
-  "newQuest": "Start new Quest",
-  "@newQuest": {
-    "description": "popup start",
-    "type": "text",
-    "placeholders": {}
-  },
-  "newQuestDesc": "This action will clear all previous answers. Be sure that you saved them, if its needed.",
-  "@newQuestDesc": {
-    "description": "popup start desc",
-    "type": "text",
-    "placeholders": {}
-  },
-  "newQuestStart": "start",
-  "@newQuestStart": {
-    "description": "popup start start",
-    "type": "text",
-    "placeholders": {}
-  },
-  "newQuestCancel": "cancel",
-  "@newQuestCancel": {
+  "cancel": "CANCEL",
+  "@cancel": {
     "description": "popup start cancel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "CLOSE",
+  "@close": {
+    "description": "Close",
     "type": "text",
     "placeholders": {}
   },
@@ -95,9 +101,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractTitle": "About Abstract",
-  "@aboutAbstractTitle": {
-    "description": "About Abstract title",
+  "about": "About",
+  "@about": {
+    "description": "About title",
     "type": "text",
     "placeholders": {}
   },
@@ -107,45 +113,37 @@
     "type": "text",
     "placeholders": {}
   },
-  "theAnswerCannotBeEmpty": "The answer cannot be empty",
-  "@theAnswerCannotBeEmpty": {
-    "description": "The answer cannot be empty during editing on Answers page",
-    "type": "text",
-    "placeholders": {}
-  },
-  "cancel": "cancel",
-  "@cancel": {
-    "description": "cancel",
-    "type": "text",
-    "placeholders": {}
-  },
-  "delete": "delete",
+  "delete": "DELETE",
   "@delete": {
     "description": "delete",
     "type": "text",
     "placeholders": {}
   },
-  "successfullyDeleted": "Successfully deleted!",
-  "@successfullyDeleted": {
-    "description": "Successfully deleted",
+  "areYouSure": "Are you sure?",
+  "@areYouSure": {
+    "description": "Are you sure",
     "type": "text",
     "placeholders": {}
   },
-  "successfullySaved": "Successfully saved!",
-  "@successfullySaved": {
-    "description": "Successfully saved",
+  "titleWith": "с",
+  "@titleWith": {
+    "description": "with",
     "type": "text",
     "placeholders": {}
   },
-  "areYouSureYouWantToDeleteAnswer": "Are you want to delete answer?",
-  "@areYouSureYouWantToDeleteAnswer": {
-    "description": "Warning Title for answer delete",
+  "projectWillBeLost": "answers will be lost forever",
+  "@projectWillBeLost": {
+    "description": "Project removal warning",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {},
+    "args": [
+      "answersLength",
+      "projectTitle"
+    ]
   },
-  "ifYouDeleteAnswerThereIsNoWayBack": "If you delete the answer it will be lost",
-  "@ifYouDeleteAnswerThereIsNoWayBack": {
-    "description": "Warning for answer delete",
+  "answerWillBeLost": "will be lost forever",
+  "@answerWillBeLost": {
+    "description": "Answer removal warning",
     "type": "text",
     "placeholders": {}
   },
@@ -167,7 +165,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in Google Play or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)",
+  "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
     "type": "text",

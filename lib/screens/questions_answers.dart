@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
@@ -111,15 +112,19 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("Are you sure?"),
+                                      title: Text(AppLocalizations.of(context)
+                                              ?.areYouSure ??
+                                          ''),
                                       content: Text(
-                                          " '${answer.title}' will be lost forever"),
+                                          " '${answer.title}' ${AppLocalizations.of(context)?.answerWillBeLost}"),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.of(context).pop(false),
                                           child: Text(
-                                            "CANCEL",
+                                            AppLocalizations.of(context)
+                                                    ?.cancel ??
+                                                '',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .accentColor),
@@ -129,7 +134,9 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                             onPressed: () =>
                                                 Navigator.of(context).pop(true),
                                             child: Text(
-                                              "DELETE",
+                                              AppLocalizations.of(context)
+                                                      ?.delete ??
+                                                  '',
                                               style: TextStyle(
                                                   color: Colors.red[800]),
                                             )),

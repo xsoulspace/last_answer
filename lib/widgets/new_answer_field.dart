@@ -58,9 +58,13 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
     var maxIndexedAnswer = _answerBox.values.length <= 0
         ? 0
         : _answerBox.values.reduce((value, el) {
-            if (value.positionIndex > el.positionIndex) return el;
-            return value;
-          }).positionIndex;
+              var valueIndex = value.positionIndex;
+              var elIndex = el.positionIndex;
+              if (valueIndex == null || elIndex == null) return value;
+              if (valueIndex > elIndex) return el;
+              return value;
+            }).positionIndex ??
+            0;
 
     Future<void> createAnswer() async {
       if (_titleController.text

@@ -16,7 +16,7 @@ class Answer extends HiveObject {
   @HiveField(4)
   final DateTime created;
   @HiveField(5)
-  int positionIndex;
+  int? positionIndex;
 
   Answer(
       {required this.title,

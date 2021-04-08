@@ -1,14 +1,16 @@
 name: last-answer
-version: 1.0.3+7
-summary: A tool to solve problems during project management
+version: 1.0.3+8
+summary: A tool to express ideas during brainstorming
 description: |
   Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
 
   The principle of work is very simple.
-  1. You choose short question to answer.
+  Create an "idea" and open it.
+
+  1. Choose short question to answer.
   2. Answer to it.
-  3. You will see your saved answer above questions pane.
-  4. You choose new question to ask for the answer above.
+  3. You will see your saved answer above questions tabs.
+  4. Choose new question to ask for the answer above.
 
   During process you can always see and edit all answers and questions on second page and share it by clicking share button.
 
@@ -18,7 +20,7 @@ description: |
 
   Please notice:
   This app in testing phase, potentially it can contain some errors and bugs.
-  For ideas, improvements and bugs please write feedback or send a message to xsoulspace@gmail.com.
+  For ideas, improvements and bugs please write feedback or send a message to idea@xsoulspace.dev.
 
   Hope this app will be useful for you!
   Thank you.

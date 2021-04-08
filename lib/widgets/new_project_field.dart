@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/HiveBoxes.dart';
 import 'package:lastanswer/abstract/Project.dart';
@@ -72,7 +73,7 @@ class _NewProjectFieldState extends State<NewProjectField> {
                 // border: OutlineInputBorder(
                 //     borderSide: BorderSide(
                 //         color: ThemeColors.lightAccent ?? Colors.white)),
-                labelText: 'Project name'),
+                labelText: AppLocalizations.of(context)?.idea),
             cursorColor: Theme.of(context).accentColor,
           ),
         ),

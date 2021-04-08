@@ -22,17 +22,11 @@ void main() async {
   Hive.registerAdapter(AnswerAdapter());
   Hive.registerAdapter(ProjectAdapter());
 
-  await Hive.initFlutter();
-  // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
-  // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
-  await Hive.openBox<bool>(HiveBoxes.darkMode);
-  await Hive.openBox<Project>(HiveBoxes.projects);
-  await Hive.openBox<Answer>(HiveBoxes.answers);
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 
-  runApp(HowToSolveTheQuest());
+  runApp(RestartWidget(child: HowToSolveTheQuest()));
 }
 
 class HowToSolveTheQuest extends StatefulWidget {
@@ -42,27 +36,46 @@ class HowToSolveTheQuest extends StatefulWidget {
 
 class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   _HowToSolveTheQuestState();
-  Future<Locale> _systemLocale = LocaleModel.loadSavedLocale();
-
+  // Future<Locale> _systemLocale =
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _systemLocale,
-        builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return ProviderInit(
-              child: AppScaffold(
-                  overridenLocale: snapshot.data, home: HomeProjects()),
-            );
-          } else {
-            return _circularSpinner();
-          }
-        });
+    return FutureBuilder(future: (() async {
+      await Hive.initFlutter();
+      // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
+      // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+      await Hive.openBox<bool>(HiveBoxes.darkMode);
+      await Hive.openBox<Project>(HiveBoxes.projects);
+      await Hive.openBox<Answer>(HiveBoxes.answers);
+      return LocaleModel.loadSavedLocale();
+    })(), builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        var locale = (() {
+          var _locale = snapshot.data;
+          if (_locale == null) return Locales.en;
+          var isLocaleSupported =
+              AppLocalizations.delegate.isSupported(_locale);
+          if (!isLocaleSupported) return Locales.en;
+
+          return _locale;
+        })();
+        return ProviderInit(
+          locale: locale,
+          child: AppScaffold(
+              localeListResolutionCallback: (locales, supportedLocales) =>
+                  locale,
+              home: HomeProjects()),
+        );
+      } else {
+        return _circularSpinner();
+      }
+    });
   }
 
   Widget _circularSpinner() {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Palette.primary),
+      ),
     );
   }
 }
@@ -71,8 +84,9 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
 /// and app mode
 class AppScaffold extends StatelessWidget {
   final Widget home;
-  final Locale? overridenLocale;
-  AppScaffold({required this.overridenLocale, required this.home});
+  final Locale? Function(List<Locale>?, Iterable<Locale>)?
+      localeListResolutionCallback;
+  AppScaffold({required this.home, this.localeListResolutionCallback});
   final primarySwatch = generateMaterialColor(Palette.primary);
   @override
   Widget build(BuildContext context) {
@@ -83,14 +97,7 @@ class AppScaffold extends StatelessWidget {
               box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
           var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
           return MaterialApp(
-            localeListResolutionCallback: (locales, supportedLocales) {
-              var _locale = overridenLocale;
-              if (_locale == null) return Locales.en;
-              var isLocaleSupported =
-                  AppLocalizations.delegate.isSupported(_locale);
-              if (!isLocaleSupported) return Locales.en;
-              return _locale;
-            },
+            localeListResolutionCallback: localeListResolutionCallback,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             themeMode: resolvedThemeMode,
@@ -129,16 +136,53 @@ class AppScaffold extends StatelessWidget {
 /// Class to init providers
 class ProviderInit extends StatelessWidget {
   final Widget child;
-  ProviderInit({required this.child});
+  final Locale locale;
+  ProviderInit({
+    required this.child,
+    required this.locale,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LocaleModel()),
+        ChangeNotifierProvider(
+            create: (_) => LocaleModel.fromLocale(
+                  locale: locale,
+                )),
         ChangeNotifierProvider(create: (_) => QuestionsModel())
       ],
       child: child,
+    );
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  final Widget child;
+  RestartWidget({required this.child});
+
+  static void restartApp(BuildContext context) {
+    context.findRootAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
     );
   }
 }

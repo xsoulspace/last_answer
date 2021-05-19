@@ -1,9 +1,9 @@
 name: lastanswer
-description: Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
+description: Fast ideas brainstroming tool
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+8
+version: 1.0.3+9
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -39,8 +39,8 @@ dependencies:
   uuid: ^3.0.1
   # universal_html: ^2.0.4
 
-dependency_overrides:
-  build: 2.0.0
+# dependency_overrides:
+# build: 2.0.0
 #   analyzer: 0.39.14
 #   intl: 0.17.0
 #   path: ^1.8.0
@@ -50,23 +50,23 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.0
-  # json_serializable: ^4.0.3
-   # FIXME: due problem with intl_tranlsation
+  json_serializable: ^4.1.2
+  # FIXME: due problem with intl_tranlsation
   # analyzer dependency overriden.
   # FIXME: to run flutter pub run build_runner build need to comment intl_translation and analyzer override
   # intl_translation: ^0.17.10+1
   hive_generator: ^1.0.0
-  build_runner: ^1.12.2
+  build_runner: ^2.0.3
   intl: ^0.17.0
-  msix: ^1.0.3
+  msix: ^2.1.1
 
   # intl_translation:
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
-  image_path: "lib/assets/icon-512.png"
+  image_path: "assets/icon-512-green.png"
   ios: true
   android: true
-
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -122,5 +122,4 @@ msix_config:
   vs_generated_images_folder_path: C:\web\lastanswer\lib\assets\icons
   icons_background_color: transparent
   architecture: x64
-  capabilities: 'internetClient'
-
+  capabilities: "internetClient"

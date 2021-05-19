@@ -1,10 +1,10 @@
 {
   "name": "Last Answer",
-  "description": "A tool to express ideas during brainstorming",
-  "version": "0.0.0.1",
+  "description": "Fast ideas brainstroming tool",
+  "version": "1.0.3.9",
   "manifest_version": 3,
   "icons": {
-    "128": "icon_128.png"
+    "128": "icons/icon-128.png"
   },
   "app": {
     "urls": ["https://xsoulspace.dev/last_answer/"],

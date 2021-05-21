@@ -14,7 +14,8 @@ class HomeProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _openSettings() {
-      Navigator.of(context).push(PageRouteBuilder(
+      Navigator.of(context).push(
+        PageRouteBuilder(
           fullscreenDialog: true,
           barrierColor: Colors.transparent,
           opaque: false,
@@ -46,7 +47,9 @@ class HomeProjects extends StatelessWidget {
                 Settings()
               ],
             );
-          }));
+          },
+        ),
+      );
     }
 
     return SafeArea(
@@ -88,29 +91,31 @@ class HomeProjects extends StatelessWidget {
               ),
             ),
             Expanded(
-                child: ValueListenableBuilder(
-                    valueListenable:
-                        Hive.box<Project>(HiveBoxes.projects).listenable(),
-                    builder: (BuildContext _, Box<Project> _projectBox,
-                        Widget? widget) {
-                      var projects = _projectBox.values.toList();
-                      projects.sort((a, b) => a.created.compareTo(b.created));
-                      var reversed = projects.reversed;
+              child: ValueListenableBuilder(
+                valueListenable:
+                    Hive.box<Project>(HiveBoxes.projects).listenable(),
+                builder:
+                    (BuildContext _, Box<Project> _projectBox, Widget? widget) {
+                  var projects = _projectBox.values.toList();
+                  projects.sort((a, b) => a.created.compareTo(b.created));
+                  var reversed = projects.reversed;
 
-                      return ListView.builder(
-                        reverse: true,
-                        itemBuilder: (BuildContext _, int index) {
-                          var _project = reversed.elementAt(index);
+                  return ListView.builder(
+                    reverse: true,
+                    itemBuilder: (BuildContext _, int index) {
+                      var _project = reversed.elementAt(index);
 
-                          if (_project.id == BoxProject.currentProject)
-                            return Container();
-                          return ProjectCard(
-                            project: _project,
-                          );
-                        },
-                        itemCount: _projectBox.values.length,
+                      if (_project.id == BoxProject.currentProject)
+                        return Container();
+                      return ProjectCard(
+                        project: _project,
                       );
-                    })),
+                    },
+                    itemCount: _projectBox.values.length,
+                  );
+                },
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: NewProjectField(),

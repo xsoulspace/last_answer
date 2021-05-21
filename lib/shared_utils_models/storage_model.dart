@@ -16,9 +16,14 @@ class StorageModel extends ChangeNotifier with StorageMixin {
     return storageModel;
   }
 
-  Future<void> save<T>({required String key, required Object value}) async {
-    (await storage).putString(key, jsonEncode(value));
-  }
+  Future<void> save<T>({
+    required String key,
+    required Object value,
+  }) async =>
+      (await storage).putString(
+        key,
+        jsonEncode(value),
+      );
 
   Future<T?> load<T>(String key) async {
     final value = (await storage).getString(key);

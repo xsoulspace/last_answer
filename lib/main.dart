@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lastanswer/abstract/Answer.dart';
-import 'package:lastanswer/abstract/HiveBoxes.dart';
-import 'package:lastanswer/abstract/Language.dart';
-import 'package:lastanswer/abstract/Project.dart';
+import 'package:lastanswer/abstract/answer.dart';
+import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/language.dart';
+import 'package:lastanswer/abstract/project.dart';
+import 'package:lastanswer/library/theme.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/screens/home_projects.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
-import 'package:lastanswer/utils/color_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
@@ -39,36 +39,39 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   // Future<Locale> _systemLocale =
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: (() async {
-      await Hive.initFlutter();
-      // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
-      // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
-      await Hive.openBox<bool>(HiveBoxes.darkMode);
-      await Hive.openBox<Project>(HiveBoxes.projects);
-      await Hive.openBox<Answer>(HiveBoxes.answers);
-      return LocaleModel.loadSavedLocale();
-    })(), builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
-        var locale = (() {
-          var _locale = snapshot.data;
-          if (_locale == null) return Locales.en;
-          var isLocaleSupported =
-              AppLocalizations.delegate.isSupported(_locale);
-          if (!isLocaleSupported) return Locales.en;
+    return FutureBuilder(
+      future: (() async {
+        await Hive.initFlutter();
+        // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
+        // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+        await Hive.openBox<bool>(HiveBoxes.darkMode);
+        await Hive.openBox<Project>(HiveBoxes.projects);
+        await Hive.openBox<Answer>(HiveBoxes.answers);
+        return LocaleModel.loadSavedLocale();
+      })(),
+      builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          var locale = (() {
+            var _locale = snapshot.data;
+            if (_locale == null) return Locales.en;
+            var isLocaleSupported =
+                AppLocalizations.delegate.isSupported(_locale);
+            if (!isLocaleSupported) return Locales.en;
 
-          return _locale;
-        })();
-        return ProviderInit(
-          locale: locale,
-          child: AppScaffold(
-              localeListResolutionCallback: (locales, supportedLocales) =>
-                  locale,
-              home: HomeProjects()),
-        );
-      } else {
-        return _circularSpinner();
-      }
-    });
+            return _locale;
+          })();
+          return ProviderInit(
+            locale: locale,
+            child: AppScaffold(
+                localeListResolutionCallback: (locales, supportedLocales) =>
+                    locale,
+                home: HomeProjects()),
+          );
+        } else {
+          return _circularSpinner();
+        }
+      },
+    );
   }
 
   Widget _circularSpinner() {
@@ -87,49 +90,24 @@ class AppScaffold extends StatelessWidget {
   final Locale? Function(List<Locale>?, Iterable<Locale>)?
       localeListResolutionCallback;
   AppScaffold({required this.home, this.localeListResolutionCallback});
-  final primarySwatch = generateMaterialColor(Palette.primary);
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
-        builder: (context, Box<bool> box, widget) {
-          var isDark =
-              box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
-          var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-          return MaterialApp(
-            localeListResolutionCallback: localeListResolutionCallback,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            themeMode: resolvedThemeMode,
-            theme: ThemeData(
-                splashColor: primarySwatch.withOpacity(0.3),
-                highlightColor: primarySwatch.shade300.withOpacity(0.08),
-                hoverColor: primarySwatch.shade200.withOpacity(0.08),
-                focusColor: primarySwatch.shade200.withOpacity(0.08),
-                checkboxTheme: CheckboxThemeData(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                ),
-                primarySwatch: primarySwatch,
-                fontFamily: 'IBM Plex Sans',
-                brightness: Brightness.light),
-            darkTheme: ThemeData(
-              brightness: Brightness.dark,
-              primarySwatch: primarySwatch,
-              accentColor: primarySwatch,
-              toggleableActiveColor: primarySwatch,
-              textSelectionTheme: TextSelectionThemeData(
-                selectionColor: primarySwatch,
-              ),
-              fontFamily: 'IBM Plex Sans',
-              checkboxTheme: CheckboxThemeData(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-            ),
-            home: home,
-          );
-        });
+      valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
+      builder: (context, Box<bool> box, widget) {
+        var isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
+        var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+        return MaterialApp(
+          localeListResolutionCallback: localeListResolutionCallback,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          themeMode: resolvedThemeMode,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          home: home,
+        );
+      },
+    );
   }
 }
 

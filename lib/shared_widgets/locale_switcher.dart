@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lastanswer/abstract/NamedLocale.dart';
+import 'package:lastanswer/abstract/named_locale.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 

@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/HiveBoxes.dart';
-import 'package:lastanswer/abstract/NamedLocale.dart';
+import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/named_locale.dart';
 import 'package:lastanswer/main.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
@@ -117,20 +117,20 @@ class DarkModeSwitcher extends StatelessWidget {
     var box = Hive.box<bool>(HiveBoxes.darkMode);
     var isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
     return MenuTile(
-        iconButton: IconButton(
-          onPressed: () async {
-            await box.put(BoxDarkMode.isDark, !isDark);
-          },
-          icon: AnimatedSwitcher(
-            duration: Duration(milliseconds: 400),
-            child:
-                isDark ? Icon(Icons.wb_sunny_outlined) : Icon(Icons.wb_sunny),
-          ),
+      iconButton: IconButton(
+        onPressed: () async {
+          await box.put(BoxDarkMode.isDark, !isDark);
+        },
+        icon: AnimatedSwitcher(
+          duration: Duration(milliseconds: 400),
+          child: isDark ? Icon(Icons.wb_sunny_outlined) : Icon(Icons.wb_sunny),
         ),
-        text: Text(
-          AppLocalizations.of(context)?.darkMode ?? '',
-          textAlign: TextAlign.center,
-        ));
+      ),
+      text: Text(
+        AppLocalizations.of(context)?.darkMode ?? '',
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }
 
@@ -139,9 +139,10 @@ class LocaleSwitcher extends StatelessWidget {
   Widget build(BuildContext context) {
     var localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
-        iconButton: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: Consumer<LocaleModel>(builder: (context, locale, child) {
+      iconButton: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Consumer<LocaleModel>(
+          builder: (context, locale, child) {
             final textStyle = TextStyle(
                 fontSize: 14.0,
                 color: Theme.of(context).textTheme.bodyText1?.color);
@@ -170,42 +171,45 @@ class LocaleSwitcher extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (NamedLocale? namedLocale) async {
-                var isToChange = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text(
-                            "${namedLocale?.name} ${AppLocalizations.of(context)?.languageWillBeChanged}"),
-                        actions: [
-                          TextButton(
+                final isToChange = await showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: Text(
+                          "${namedLocale?.name} ${AppLocalizations.of(context)?.languageWillBeChanged}"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          },
+                          child:
+                              Text(AppLocalizations.of(context)?.cancel ?? ''),
+                        ),
+                        TextButton(
                             onPressed: () {
-                              Navigator.pop(context, false);
+                              Navigator.pop(context, true);
                             },
-                            child: Text(
-                                AppLocalizations.of(context)?.cancel ?? ''),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context, true);
-                              },
-                              child:
-                                  Text(AppLocalizations.of(context)?.yes ?? ''))
-                        ],
-                      );
-                    });
-                if (isToChange) {
+                            child:
+                                Text(AppLocalizations.of(context)?.yes ?? ''))
+                      ],
+                    );
+                  },
+                );
+                if (isToChange == true) {
                   await localeModel.switchLang(namedLocale?.locale);
                   RestartWidget.restartApp(context);
                 }
               },
             );
-          }),
+          },
         ),
-        text: Text(
-          '${AppLocalizations.of(context)?.language} - '
-          '${LocaleModelConsts.namedLocalesMap[localeModel.locale.languageCode]?.name}',
-          textAlign: TextAlign.center,
-        ));
+      ),
+      text: Text(
+        '${AppLocalizations.of(context)?.language} - '
+        '${LocaleModelConsts.namedLocalesMap[localeModel.locale.languageCode]?.name}',
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }
 
@@ -221,11 +225,13 @@ Widget Function({
 }) =>
     SizedBox(
       width: 100,
-      child: Consumer<LocaleModel>(builder: (context, locale, child) {
-        return Text(
-          questionString ?? '',
-        );
-      }),
+      child: Consumer<LocaleModel>(
+        builder: (context, locale, child) {
+          return Text(
+            questionString ?? '',
+          );
+        },
+      ),
     );
 
 class About extends StatelessWidget {

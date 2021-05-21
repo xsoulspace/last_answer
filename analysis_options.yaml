@@ -1,0 +1,15 @@
+# https://pub.dev/packages/lint
+include: package:lint/analysis_options.yaml
+
+# ------ Disable individual rules ----- #
+#                 ---                   #
+# Turn off what you don't like.         #
+# ------------------------------------- #
+
+# For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
+# Uncomment to specify additional rules.
+linter:
+  rules:
+    # - camel_case_types
+
+analyzer:

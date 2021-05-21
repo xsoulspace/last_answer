@@ -9,18 +9,20 @@ import 'package:lastanswer/screens/settings.dart';
 import 'package:lastanswer/widgets/new_project_field.dart';
 import 'package:lastanswer/widgets/project_card.dart';
 
+const _duration = Duration(milliseconds: 250);
+
 class HomeProjects extends StatelessWidget {
-  HomeProjects({Key? key}) : super(key: key);
+  const HomeProjects({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    _openSettings() {
+    void _openSettings() {
       Navigator.of(context).push(
         PageRouteBuilder(
           fullscreenDialog: true,
           barrierColor: Colors.transparent,
           opaque: false,
-          transitionDuration: Duration(milliseconds: 250),
-          reverseTransitionDuration: Duration(milliseconds: 250),
+          transitionDuration: _duration,
+          reverseTransitionDuration: _duration,
           barrierDismissible: true,
           transitionsBuilder: (BuildContext context,
               Animation<double> animation,
@@ -61,7 +63,6 @@ class HomeProjects extends StatelessWidget {
               // color: Theme.of(context).primaryColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
                 children: [
                   Hero(
                       tag: 'appBarBackground',
@@ -71,15 +72,14 @@ class HomeProjects extends StatelessWidget {
                       )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Hero(
                         tag: 'appBarMenuButton',
                         child: Material(
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                           color: Colors.transparent,
                           child: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.more_horiz,
                               ),
                               onPressed: _openSettings),
@@ -96,17 +96,18 @@ class HomeProjects extends StatelessWidget {
                     Hive.box<Project>(HiveBoxes.projects).listenable(),
                 builder:
                     (BuildContext _, Box<Project> _projectBox, Widget? widget) {
-                  var projects = _projectBox.values.toList();
+                  final projects = _projectBox.values.toList();
                   projects.sort((a, b) => a.created.compareTo(b.created));
-                  var reversed = projects.reversed;
+                  final reversed = projects.reversed;
 
                   return ListView.builder(
                     reverse: true,
                     itemBuilder: (BuildContext _, int index) {
-                      var _project = reversed.elementAt(index);
+                      final _project = reversed.elementAt(index);
 
-                      if (_project.id == BoxProject.currentProject)
+                      if (_project.id == BoxProject.currentProject) {
                         return Container();
+                      }
                       return ProjectCard(
                         project: _project,
                       );
@@ -117,7 +118,7 @@ class HomeProjects extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: NewProjectField(),
             )
           ],

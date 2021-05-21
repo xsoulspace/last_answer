@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/main.dart';
 import 'package:lastanswer/utils/color_generator.dart';
+
+import 'palette.dart';
 
 final primarySwatch = generateMaterialColor(Palette.primary);
 

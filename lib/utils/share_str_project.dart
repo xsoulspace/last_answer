@@ -9,14 +9,14 @@ import 'package:share/share.dart';
 
 String getAnswersAsString(
     {required BuildContext context, required Project project}) {
-  var localeModel = Provider.of<LocaleModel>(context, listen: false);
-  var questionModel = Provider.of<QuestionsModel>(context, listen: false);
-  var lang = localeModel.currentNamedLocale.localeCode;
-  var answersList = project.answers?.toList() ?? [];
-  String answersAndQuestionsSentence =
+  final localeModel = Provider.of<LocaleModel>(context, listen: false);
+  final questionModel = Provider.of<QuestionsModel>(context, listen: false);
+  final lang = localeModel.currentNamedLocale.localeCode;
+  final answersList = project.answers?.toList() ?? [];
+  final answersAndQuestionsSentence =
       answersList.fold('', (previousValue, element) {
-    var question = questionModel.getById(element.questionId);
-    var str =
+    final question = questionModel.getById(element.questionId);
+    final str =
         '$previousValue\n${question.title.getProp(lang)} ${element.title} ';
     return str;
   });
@@ -27,7 +27,7 @@ Future<void> shareProjectAnswers(
     {required BuildContext context, required Project project}) async {
   final RenderBox? box = context.findRenderObject() as RenderBox?;
   if (box == null) return;
-  String answersAndQuestionsSentence =
+  final answersAndQuestionsSentence =
       getAnswersAsString(project: project, context: context);
   Share.share(answersAndQuestionsSentence,
       subject: project.title,
@@ -36,14 +36,14 @@ Future<void> shareProjectAnswers(
 
 void copyProjectAnswersToClipboard(
     {required BuildContext context, required Project project}) {
-  var str = getAnswersAsString(context: context, project: project);
-  var data = ClipboardData(text: str);
+  final str = getAnswersAsString(context: context, project: project);
+  final data = ClipboardData(text: str);
   Clipboard.setData(data);
 }
 
 Future<void> copyOrShareProjectAnswers(
     {required BuildContext context, required Project project}) async {
-  if (isDesktop()) {
+  if (isDesktop) {
     copyProjectAnswersToClipboard(context: context, project: project);
   } else {
     await shareProjectAnswers(context: context, project: project);

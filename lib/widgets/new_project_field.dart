@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/hive_boxes.dart';
 import 'package:lastanswer/abstract/project.dart';
-import 'package:uuid/uuid.dart';
+import 'package:lastanswer/utils/uuid.dart';
 
 class NewProjectField extends StatefulWidget {
   @override
@@ -13,7 +13,6 @@ class NewProjectField extends StatefulWidget {
 
 class _NewProjectFieldState extends State<NewProjectField> {
   final TextEditingController _titleController = TextEditingController();
-  final uuid = Uuid();
   Future<void> updateCurrentProject({required Box<Project> box}) async {
     await box.put(
       BoxProject.currentProject,
@@ -27,23 +26,23 @@ class _NewProjectFieldState extends State<NewProjectField> {
 
   Future<void> createProject({required Box<Project> projectBox}) async {
     if (_titleController.text
-        .replaceAll(RegExp(r' '), "")
+        .replaceAll(RegExp(' '), "")
         .replaceAll("\n", "")
         .isEmpty) return;
-    var newUuid = uuid.v1();
-    var newProject = Project(
+    final newUuid = uuid.v1();
+    final newProject = Project(
         created: DateTime.now(), id: newUuid, title: _titleController.text);
     _titleController.clear();
     await projectBox.put(newUuid, newProject);
     await updateCurrentProject(box: projectBox);
   }
 
-  var focusNode = FocusNode();
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    var _projectBox = Hive.box<Project>(HiveBoxes.projects);
+    final _projectBox = Hive.box<Project>(HiveBoxes.projects);
     if (_titleController.text.isEmpty) {
-      var project = _projectBox.get(BoxProject.currentProject);
+      final project = _projectBox.get(BoxProject.currentProject);
       if (project != null) _titleController.text = project.title;
     }
     return Row(
@@ -82,9 +81,9 @@ class _NewProjectFieldState extends State<NewProjectField> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(left: 10),
           child: IconButton(
-            onPressed: () async => await createProject(projectBox: _projectBox),
+            onPressed: () async => createProject(projectBox: _projectBox),
             icon: Icon(
               Icons.arrow_circle_up,
               color: Theme.of(context).colorScheme.secondary,

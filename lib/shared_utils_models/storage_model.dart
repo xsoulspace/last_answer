@@ -10,7 +10,7 @@ class StorageModel extends ChangeNotifier with StorageMixin {
   /// Public factory
   static Future<StorageModel> create() async {
     // Call the private constructor
-    var storageModel = StorageModel._create();
+    final storageModel = StorageModel._create();
 
     // Return the fully initialized object
     return storageModel;
@@ -21,7 +21,7 @@ class StorageModel extends ChangeNotifier with StorageMixin {
   }
 
   Future<T?> load<T>(String key) async {
-    var value = (await storage).getString(key);
+    final value = (await storage).getString(key);
     if (value == '') return null;
     return jsonDecode(value);
   }

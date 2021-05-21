@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 
 class CardDissmisible extends StatelessWidget {
-  final Key key;
   final void Function(DismissDirection)? onDismissed;
   final Future<bool?> Function(DismissDirection)? confirmDismiss;
   final Widget child;
-  CardDissmisible(
-      {required this.child,
-      required this.key,
-      this.confirmDismiss,
-      this.onDismissed});
+  const CardDissmisible({
+    required this.child,
+    required this.dismissableKey,
+    this.confirmDismiss,
+    this.onDismissed,
+  });
+  final Key dismissableKey;
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: key,
-      child: child,
+      key: dismissableKey,
       confirmDismiss: confirmDismiss,
       onDismissed: onDismissed,
-      direction: DismissDirection.horizontal,
       background: Container(
-          padding: EdgeInsets.only(right: 12),
-          alignment: Alignment.centerLeft,
-          color: Colors.red[900],
-          child: Icon(Icons.delete, color: Colors.white)),
+        padding: const EdgeInsets.only(right: 12),
+        alignment: Alignment.centerLeft,
+        color: Colors.red[900],
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+      ),
       secondaryBackground: Container(),
+      child: child,
     );
   }
 }

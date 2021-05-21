@@ -5,10 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/hive_boxes.dart';
 import 'package:lastanswer/abstract/named_locale.dart';
-import 'package:lastanswer/main.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
+import 'package:lastanswer/widgets/restarter.dart';
 import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
@@ -212,7 +212,7 @@ class LocaleSwitcher extends StatelessWidget {
                 );
                 if (isToChange == true) {
                   await localeModel.switchLang(namedLocale?.locale);
-                  RestartWidget.restartApp(context);
+                  Restarter.restartApp(context);
                 }
               },
             );

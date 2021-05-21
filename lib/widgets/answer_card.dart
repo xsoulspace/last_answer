@@ -175,7 +175,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                   disabledBorder: InputBorder.none,
                   fillColor: Colors.transparent,
                   focusColor: Colors.transparent),
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).colorScheme.secondary,
             ),
             onFocusChange: (bool hasFocus) async {
               if (hasFocus) return;

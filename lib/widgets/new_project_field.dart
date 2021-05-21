@@ -46,50 +46,52 @@ class _NewProjectFieldState extends State<NewProjectField> {
       var project = _projectBox.get(BoxProject.currentProject);
       if (project != null) _titleController.text = project.title;
     }
-    return Row(children: [
-      Expanded(
-        child: RawKeyboardListener(
-          focusNode: focusNode,
-          onKey: (RawKeyEvent event) {
-            if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-                !event.isShiftPressed) {
-              createProject(projectBox: _projectBox);
-            }
-          },
-          child: TextFormField(
-            controller: _titleController,
-            minLines: 1,
-            maxLines: 3,
-            keyboardType: TextInputType.multiline,
-            onChanged: (text) async {
-              await updateCurrentProject(box: _projectBox);
+    return Row(
+      children: [
+        Expanded(
+          child: RawKeyboardListener(
+            focusNode: focusNode,
+            onKey: (RawKeyEvent event) {
+              if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
+                  !event.isShiftPressed) {
+                createProject(projectBox: _projectBox);
+              }
             },
-            decoration: InputDecoration(
-                // labelStyle: TextStyle(color: Colors.white),
-                // fillColor: ThemeColors.lightAccent,
-                // focusedBorder: OutlineInputBorder(
-                //   borderSide: BorderSide(
-                //     color: ThemeColors.lightAccent ?? Colors.white,
-                //   ),
-                // ),
-                // border: OutlineInputBorder(
-                //     borderSide: BorderSide(
-                //         color: ThemeColors.lightAccent ?? Colors.white)),
-                labelText: AppLocalizations.of(context)?.idea),
-            cursorColor: Theme.of(context).accentColor,
+            child: TextFormField(
+              controller: _titleController,
+              minLines: 1,
+              maxLines: 2,
+              keyboardType: TextInputType.multiline,
+              onChanged: (text) async {
+                await updateCurrentProject(box: _projectBox);
+              },
+              decoration: InputDecoration(
+                  // labelStyle: TextStyle(color: Colors.white),
+                  // fillColor: ThemeColors.lightAccent,
+                  // focusedBorder: OutlineInputBorder(
+                  //   borderSide: BorderSide(
+                  //     color: ThemeColors.lightAccent ?? Colors.white,
+                  //   ),
+                  // ),
+                  // border: OutlineInputBorder(
+                  //     borderSide: BorderSide(
+                  //         color: ThemeColors.lightAccent ?? Colors.white)),
+                  labelText: AppLocalizations.of(context)?.idea),
+              cursorColor: Theme.of(context).colorScheme.secondary,
+            ),
           ),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: 10),
-        child: IconButton(
-          onPressed: () async => await createProject(projectBox: _projectBox),
-          icon: Icon(
-            Icons.arrow_circle_up,
-            color: Theme.of(context).accentColor,
+        Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: IconButton(
+            onPressed: () async => await createProject(projectBox: _projectBox),
+            icon: Icon(
+              Icons.arrow_circle_up,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

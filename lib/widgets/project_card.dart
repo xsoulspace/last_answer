@@ -30,7 +30,9 @@ class ProjectCard extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(
                       AppLocalizations.of(context)?.cancel ?? '',
-                      style: TextStyle(color: Theme.of(context).accentColor),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                   ),
                   TextButton(

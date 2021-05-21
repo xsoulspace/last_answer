@@ -55,20 +55,25 @@ class _SettingsState extends State<Settings> {
                   Hero(
                     tag: 'appBarBackground',
                     child: Container(
-                      height: size.height - AppBarHeight,
                       color: Colors.transparent,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: GridView.count(
-                          crossAxisCount: isDesktop() ? 3 : 2,
-                          childAspectRatio: 1,
-                          padding: EdgeInsets.all(20.0),
-                          children: [
-                            DarkModeSwitcher(),
-                            LocaleSwitcher(),
-                            About(),
-                            Philosophy()
-                          ],
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 600,
+                          maxWidth: 400,
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: GridView.count(
+                            crossAxisCount: isDesktop() ? 3 : 2,
+                            childAspectRatio: 1,
+                            padding: EdgeInsets.all(20.0),
+                            children: [
+                              DarkModeSwitcher(),
+                              LocaleSwitcher(),
+                              About(),
+                              Philosophy()
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -86,24 +91,29 @@ class _SettingsState extends State<Settings> {
 Decoration getGridItemIconContainerDecoration(
         {required BuildContext context}) =>
     BoxDecoration(
-      border: Border.all(color: Theme.of(context).accentColor, width: 1),
+      border:
+          Border.all(color: Theme.of(context).colorScheme.secondary, width: 1),
       shape: BoxShape.circle,
     );
 
 class MenuTile extends StatelessWidget {
   final Widget iconButton;
   final Widget text;
-  MenuTile({required this.iconButton, required this.text});
+  MenuTile({
+    required this.iconButton,
+    required this.text,
+  });
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: [
           Container(
-              height: 60,
-              width: 60,
-              decoration: getGridItemIconContainerDecoration(context: context),
-              child: iconButton),
+            height: 60,
+            width: 60,
+            decoration: getGridItemIconContainerDecoration(context: context),
+            child: iconButton,
+          ),
           SizedBox(
             height: 4,
           ),

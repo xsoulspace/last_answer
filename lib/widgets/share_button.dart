@@ -36,15 +36,16 @@ class _ShareButtonState extends State<ShareButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: AnimatedSwitcher(
-          duration: Duration(milliseconds: 700),
-          child: currentIcon,
-        ),
-        onPressed: () async {
-          await copyOrShareProjectAnswers(
-              context: context, project: widget.project);
+      icon: AnimatedSwitcher(
+        duration: Duration(milliseconds: 700),
+        child: currentIcon,
+      ),
+      onPressed: () async {
+        await copyOrShareProjectAnswers(
+            context: context, project: widget.project);
 
-          await setDone();
-        });
+        await setDone();
+      },
+    );
   }
 }

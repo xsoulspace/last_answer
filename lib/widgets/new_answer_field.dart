@@ -140,53 +140,55 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
             SizedBox(
               height: 2,
             ),
-            Row(children: [
-              Expanded(
-                child: RawKeyboardListener(
-                  focusNode: focusNode,
-                  onKey: (RawKeyEvent event) {
-                    if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-                        !event.isShiftPressed) {
-                      createAnswer();
-                    }
-                  },
-                  child: TextFormField(
-                    onFieldSubmitted: (String newText) async =>
-                        await createAnswer(),
-                    controller: _titleController,
-                    minLines: 1,
-                    maxLines: 7,
-                    keyboardType: TextInputType.multiline,
-                    onChanged: (text) async {
-                      await updateCurrentAnswer(box: _answerBox, title: text);
+            Row(
+              children: [
+                Expanded(
+                  child: RawKeyboardListener(
+                    focusNode: focusNode,
+                    onKey: (RawKeyEvent event) {
+                      if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
+                          !event.isShiftPressed) {
+                        createAnswer();
+                      }
                     },
-                    decoration: InputDecoration(
-                        // labelStyle: TextStyle(color: Colors.white),
-                        // fillColor: ThemeColors.lightAccent,
-                        // focusedBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: ThemeColors.lightAccent ?? Colors.white,
-                        //   ),
-                        // ),
-                        // border: OutlineInputBorder(
-                        //     borderSide: BorderSide(
-                        //         color: ThemeColors.lightAccent ?? Colors.white)),
-                        labelText: AppLocalizations.of(context)?.answer),
-                    cursorColor: Theme.of(context).accentColor,
+                    child: TextFormField(
+                      onFieldSubmitted: (String newText) async =>
+                          await createAnswer(),
+                      controller: _titleController,
+                      minLines: 1,
+                      maxLines: 7,
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (text) async {
+                        await updateCurrentAnswer(box: _answerBox, title: text);
+                      },
+                      decoration: InputDecoration(
+                          // labelStyle: TextStyle(color: Colors.white),
+                          // fillColor: ThemeColors.lightAccent,
+                          // focusedBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(
+                          //     color: ThemeColors.lightAccent ?? Colors.white,
+                          //   ),
+                          // ),
+                          // border: OutlineInputBorder(
+                          //     borderSide: BorderSide(
+                          //         color: ThemeColors.lightAccent ?? Colors.white)),
+                          labelText: AppLocalizations.of(context)?.answer),
+                      cursorColor: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: IconButton(
-                  onPressed: createAnswer,
-                  icon: Icon(
-                    Icons.arrow_circle_up,
-                    color: Theme.of(context).accentColor,
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: IconButton(
+                    onPressed: createAnswer,
+                    icon: Icon(
+                      Icons.arrow_circle_up,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
-              ),
-            ])
+              ],
+            )
           ],
         ),
       ),
@@ -247,8 +249,10 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
     );
   }
 
-  Widget _builder(
-      {required int index, required QuestionsModel questionsModel}) {
+  Widget _builder({
+    required int index,
+    required QuestionsModel questionsModel,
+  }) {
     var question = questionsModel.questions.elementAt(index);
     var isSelected = question.id == widget.question.id;
     var text = Consumer<LocaleModel>(builder: (context, locale, child) {
@@ -261,8 +265,10 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
     if (question.id == widget.question.id)
       return TextButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                Theme.of(context).accentColor.withOpacity(0.05))),
+          backgroundColor: MaterialStateProperty.all(
+            Theme.of(context).colorScheme.secondary.withOpacity(0.05),
+          ),
+        ),
         onPressed: () {},
         child: text,
       );

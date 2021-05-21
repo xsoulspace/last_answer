@@ -21,6 +21,12 @@ final darkTheme = ThemeData(
   brightness: Brightness.dark,
   primarySwatch: primarySwatch,
   toggleableActiveColor: primarySwatch,
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: primarySwatch,
+    primaryColorDark: primarySwatch,
+    accentColor: primarySwatch,
+    brightness: Brightness.dark,
+  ),
   textSelectionTheme: TextSelectionThemeData(
     selectionColor: primarySwatch,
   ),

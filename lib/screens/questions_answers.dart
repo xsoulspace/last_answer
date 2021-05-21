@@ -134,7 +134,8 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                                 '',
                                             style: TextStyle(
                                                 color: Theme.of(context)
-                                                    .accentColor),
+                                                    .colorScheme
+                                                    .secondary),
                                           ),
                                         ),
                                         TextButton(

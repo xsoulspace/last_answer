@@ -2,8 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/abstract/LocaleTitle.dart';
-import 'package:lastanswer/abstract/Question.dart';
+import 'package:lastanswer/abstract/locale_tile.dart';
+import 'package:lastanswer/abstract/question.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
@@ -46,14 +46,18 @@ class QuestionsModel extends ChangeNotifier {
       UnmodifiableListView(QuestionsModelConsts.questions);
   List<DropdownMenuItem<Question>> get questionDropdownMenuItems =>
       QuestionsModelConsts.questions
-          .map((protoQuestion) => DropdownMenuItem<Question>(
-                value: protoQuestion,
-                child: Consumer<LocaleModel>(
-                    builder: (context, plocaleModel, child) => Text(
-                        protoQuestion.title
-                                .getProp(plocaleModel.locale.languageCode) ??
-                            '')),
-              ))
+          .map(
+            (protoQuestion) => DropdownMenuItem<Question>(
+              value: protoQuestion,
+              child: Consumer<LocaleModel>(
+                builder: (context, plocaleModel, child) => Text(
+                  protoQuestion.title.getProp(
+                    plocaleModel.locale.languageCode,
+                  ),
+                ),
+              ),
+            ),
+          )
           .toList();
 
   void add(Question question) {

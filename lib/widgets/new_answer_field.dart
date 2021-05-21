@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/Answer.dart';
-import 'package:lastanswer/abstract/HiveBoxes.dart';
-import 'package:lastanswer/abstract/Project.dart';
-import 'package:lastanswer/abstract/Question.dart';
+import 'package:lastanswer/abstract/answer.dart';
+import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/project.dart';
+import 'package:lastanswer/abstract/question.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/widgets/share_button.dart';
@@ -253,7 +253,7 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
     var isSelected = question.id == widget.question.id;
     var text = Consumer<LocaleModel>(builder: (context, locale, child) {
       return Text(
-        question.title.getProp(locale.currentNamedLocale.localeCode) ?? '',
+        question.title.getProp(locale.currentNamedLocale.localeCode),
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: isSelected ? 18.5 : 14),
       );

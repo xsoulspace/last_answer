@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Answer.dart';
+part of 'answer.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

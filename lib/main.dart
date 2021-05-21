@@ -11,6 +11,7 @@ import 'package:lastanswer/library/theme.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/screens/home_projects.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/widgets/restarter.dart';
 import 'package:lastanswer/widgets/spinner.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
@@ -23,7 +24,11 @@ Future<void> main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 
-  runApp(RestartWidget(child: HowToSolveTheQuest()));
+  runApp(
+    Restarter(
+      child: HowToSolveTheQuest(),
+    ),
+  );
 }
 
 class HowToSolveTheQuest extends StatefulWidget {
@@ -119,44 +124,15 @@ class ProviderInit extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => LocaleModel.fromLocale(
-                  locale: locale,
-                )),
-        ChangeNotifierProvider(create: (_) => QuestionsModel())
+          create: (_) => LocaleModel.fromLocale(
+            locale: locale,
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => QuestionsModel(),
+        )
       ],
       child: child,
-    );
-  }
-}
-
-class RestartWidget extends StatefulWidget {
-  final Widget child;
-  const RestartWidget({
-    required this.child,
-  });
-
-  static void restartApp(BuildContext context) {
-    context.findRootAncestorStateOfType<_RestartWidgetState>()?.restartApp();
-  }
-
-  @override
-  _RestartWidgetState createState() => _RestartWidgetState();
-}
-
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
-
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: key,
-      child: widget.child,
     );
   }
 }

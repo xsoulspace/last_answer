@@ -9,10 +9,6 @@ import 'package:lastanswer/shared_utils_models/storage_mixin.dart';
 import 'package:lastanswer/shared_utils_models/storage_util.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 
-class LocaleModelConsts {
-  static const String storagename = 'locale';
-}
-
 final Map<String, NamedLocale> namedLocalesMap = {
   Locales.en.languageCode: const NamedLocale(
     name: 'English',
@@ -25,6 +21,10 @@ final Map<String, NamedLocale> namedLocalesMap = {
 };
 final namedLocales = namedLocalesMap.values.toList();
 
+class LocaleModelConsts {
+  static const String storagename = 'locale';
+}
+
 class LocaleModel extends ChangeNotifier with StorageMixin {
   Locale _locale = Locales.en;
   Locale get locale => _locale;
@@ -33,11 +33,11 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     notifyListeners();
   }
 
-  LocaleModel();
+  LocaleModel._();
   factory LocaleModel.fromLocale({
     required Locale locale,
   }) {
-    final localeModel = LocaleModel();
+    final localeModel = LocaleModel._();
     localeModel._locale = locale;
     return localeModel;
   }

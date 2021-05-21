@@ -8,14 +8,14 @@ import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:provider/provider.dart';
 
 class QuestionsModelConsts {
-  static final titleWhy = LocaleTitle(en: 'Why?', ru: 'Почему?');
-  static final titleHow = LocaleTitle(en: 'How?', ru: 'Как?');
-  static final titleWhere = LocaleTitle(en: 'Where?', ru: 'Где?');
-  static final titleWhatFor = LocaleTitle(en: 'What for?', ru: 'Зачем?');
-  static final titleForWhom =
+  static const titleWhy = LocaleTitle(en: 'Why?', ru: 'Почему?');
+  static const titleHow = LocaleTitle(en: 'How?', ru: 'Как?');
+  static const titleWhere = LocaleTitle(en: 'Where?', ru: 'Где?');
+  static const titleWhatFor = LocaleTitle(en: 'What for?', ru: 'Зачем?');
+  static const titleForWhom =
       LocaleTitle(en: 'For whom | what?', ru: 'Для кого | чего?');
-  static final titleWhat = LocaleTitle(en: 'What?', ru: 'Что?');
-  static final List<Question> questions = [
+  static const titleWhat = LocaleTitle(en: 'What?', ru: 'Что?');
+  static const List<Question> questions = [
     Question(title: titleWhy, id: '1'),
     Question(title: titleHow, id: '2'),
     Question(title: titleWhere, id: '3'),
@@ -61,7 +61,7 @@ class QuestionsModel extends ChangeNotifier {
           .toList();
 
   void add(Question question) {
-    QuestionsModelConsts.questions.add((question));
+    QuestionsModelConsts.questions.add(question);
   }
 
   void clearAll() {

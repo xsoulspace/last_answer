@@ -12,7 +12,7 @@ class LocaleSwitcher extends StatelessWidget {
         return DropdownButton<NamedLocale>(
           isExpanded: true,
           value: localeModel.currentNamedLocale,
-          items: LocaleModelConsts.namedLocales.map(
+          items: namedLocales.map(
             (namedLocale) {
               return DropdownMenuItem<NamedLocale>(
                 key: Key(namedLocale.name),

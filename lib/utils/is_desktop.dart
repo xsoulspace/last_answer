@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart';
 
-bool isDesktop() =>
+final isDesktop =
     kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS;

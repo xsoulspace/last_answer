@@ -6,11 +6,10 @@ class Locales {
 }
 
 class Languages {
-  static const String ru = 'ru';
-  static const String en = 'en';
-  static const List items = [
+  static const ru = 'ru';
+  static const en = 'en';
+  static const items = [
     ru,
     en,
   ];
-  static List get all => items;
 }

@@ -10,13 +10,15 @@ import 'package:lastanswer/widgets/new_answer_field.dart';
 
 class QuestionsAnswers extends StatefulWidget {
   final Project project;
-  QuestionsAnswers({required this.project});
+  const QuestionsAnswers({
+    required this.project,
+  });
   @override
   _QuestionsAnswersState createState() => _QuestionsAnswersState();
 }
 
 class _QuestionsAnswersState extends State<QuestionsAnswers> {
-  TextEditingController _titleEditingController = TextEditingController();
+  final _titleEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     _titleEditingController.text = widget.project.title;
@@ -30,7 +32,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
         ),
         title: Hero(
           tag: 'title${widget.project.id}',
@@ -39,7 +41,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
             child: TextField(
               controller: _titleEditingController,
               onChanged: (String newText) async {
-                var project = widget.project;
+                final project = widget.project;
                 project.title = newText;
                 await project.save();
               },
@@ -48,7 +50,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: Hero(
               tag: 'check${widget.project.id}',
               child: Material(
@@ -58,7 +60,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                     return Checkbox(
                       value: widget.project.isCompleted,
                       onChanged: (bool? value) async {
-                        var project = widget.project;
+                        final project = widget.project;
                         project.isCompleted = value ?? false;
                         await project.save();
                       },
@@ -73,7 +75,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: SafeArea(
           child: Stack(
             children: [
@@ -85,27 +87,25 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                           Hive.box<Project>(HiveBoxes.projects).listenable(),
                       builder:
                           (BuildContext _, Box<Project> __, Widget? child) {
-                        var answers = widget.project.answers ?? [];
+                        final answers = widget.project.answers ?? [];
                         answers.sort((a, b) => a.created.compareTo(b.created));
-                        var reversedAnswers = answers.reversed;
+                        final reversedAnswers = answers.reversed;
+                        const divider = Divider(
+                          height: 1.5,
+                          thickness: 0.15,
+                        );
                         return ListView.separated(
                           separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(
-                            height: 1,
-                            child: Divider(
-                              height: 0.5,
-                              thickness: 0.15,
-                            ),
-                          ),
-                          addSemanticIndexes: true,
+                              divider,
                           reverse: true,
                           itemCount: reversedAnswers.length,
                           itemBuilder: (BuildContext context, int index) {
-                            var answer = reversedAnswers.elementAt(index);
-                            if (answer.id == BoxAnswer.currentAnswer)
+                            final answer = reversedAnswers.elementAt(index);
+                            if (answer.id == BoxAnswer.currentAnswer) {
                               return Container(
                                 key: Key(index.toString()),
                               );
+                            }
                             return AnswerCard(
                               key: Key(answer.id),
                               index: index,
@@ -115,7 +115,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                 setState(() {});
                               },
                               confirmDelete: () async {
-                                return await showDialog<bool>(
+                                return showDialog<bool>(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
@@ -127,7 +127,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(false),
+                                              Navigator.pop(context, false),
                                           child: Text(
                                             AppLocalizations.of(context)
                                                     ?.cancel ??
@@ -140,7 +140,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                                         ),
                                         TextButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(true),
+                                              Navigator.pop(context, true),
                                           child: Text(
                                             AppLocalizations.of(context)
                                                     ?.delete ??
@@ -160,9 +160,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
+                  const SizedBox(height: 2),
                   NewAnswerField(project: widget.project)
                 ],
               )

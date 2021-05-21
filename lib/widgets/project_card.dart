@@ -7,18 +7,20 @@ import 'package:lastanswer/widgets/card_dissmisible.dart';
 
 class ProjectCard extends StatelessWidget {
   final Project project;
-  ProjectCard({required this.project});
+  const ProjectCard({
+    required this.project,
+  });
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 0.2,
-      margin: EdgeInsets.symmetric(vertical: 1, horizontal: 6),
+      margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 6),
       clipBehavior: Clip.antiAlias,
       child: CardDissmisible(
-        key: Key(project.id),
+        dismissableKey: Key(project.id),
         confirmDismiss: (direction) async {
           if (direction.index != 3) return false;
-          return await showDialog(
+          return showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -54,17 +56,17 @@ class ProjectCard extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(PageRouteBuilder(
                 fullscreenDialog: true,
-                reverseTransitionDuration: Duration(milliseconds: 250),
-                transitionDuration: Duration(milliseconds: 350),
+                reverseTransitionDuration: const Duration(milliseconds: 250),
+                transitionDuration: const Duration(milliseconds: 350),
                 transitionsBuilder: (BuildContext context,
                     Animation<double> animation,
                     Animation<double> secondaryAnimation,
                     Widget child) {
-                  var begin = Offset(0, 1.0);
-                  var end = Offset.zero;
-                  var tween = Tween(begin: begin, end: end)
+                  const begin = Offset(0, 1.0);
+                  const end = Offset.zero;
+                  final tween = Tween(begin: begin, end: end)
                       .chain(CurveTween(curve: Curves.easeInOutSine));
-                  var offsetAnimation = animation.drive(tween);
+                  final offsetAnimation = animation.drive(tween);
 
                   return SlideTransition(
                     position: offsetAnimation,
@@ -85,7 +87,7 @@ class ProjectCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 5, 5, 5),
+                      padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

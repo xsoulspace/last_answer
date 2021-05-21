@@ -10,19 +10,20 @@ import 'package:lastanswer/shared_utils_models/storage_util.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 
 class LocaleModelConsts {
-  static final String storagename = 'locale';
-  static final Map<String, NamedLocale> namedLocalesMap = {
-    Locales.en.languageCode: NamedLocale(
-      name: 'English',
-      locale: Locales.en,
-    ),
-    Locales.ru.languageCode: NamedLocale(
-      name: 'Русский',
-      locale: Locales.ru,
-    ),
-  };
-  static final List<NamedLocale> namedLocales = namedLocalesMap.values.toList();
+  static const String storagename = 'locale';
 }
+
+final Map<String, NamedLocale> namedLocalesMap = {
+  Locales.en.languageCode: const NamedLocale(
+    name: 'English',
+    locale: Locales.en,
+  ),
+  Locales.ru.languageCode: const NamedLocale(
+    name: 'Русский',
+    locale: Locales.ru,
+  ),
+};
+final namedLocales = namedLocalesMap.values.toList();
 
 class LocaleModel extends ChangeNotifier with StorageMixin {
   Locale _locale = Locales.en;
@@ -36,26 +37,26 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
   factory LocaleModel.fromLocale({
     required Locale locale,
   }) {
-    var localeModel = LocaleModel();
+    final localeModel = LocaleModel();
     localeModel._locale = locale;
     return localeModel;
   }
 
   static Future<Locale> loadSavedLocale() async {
-    StorageUtil storage = await StorageUtil.getInstance();
-    String localeStr = storage.getString(LocaleModelConsts.storagename);
+    final storage = await StorageUtil.getInstance();
+    final localeStr = storage.getString(LocaleModelConsts.storagename);
     if (localeStr.isEmpty) {
       // FIXME: strange things happend with locales on all OS!
       // seems like it has new formats nn__UTF08__NN
-      if (isDesktop()) return Locales.en;
+      if (isDesktop) return Locales.en;
 
-      var systemLocale = await findSystemLocale();
+      final systemLocale = await findSystemLocale();
       Intl.defaultLocale = systemLocale;
       return Locale(Intl.defaultLocale ?? Languages.en);
     }
 
-    String localeCanon = Intl.canonicalizedLocale(localeStr);
-    Locale localef = Locale(localeCanon, localeCanon.toUpperCase());
+    final localeCanon = Intl.canonicalizedLocale(localeStr);
+    final localef = Locale(localeCanon, localeCanon.toUpperCase());
     return localef;
   }
 
@@ -67,9 +68,8 @@ class LocaleModel extends ChangeNotifier with StorageMixin {
     locale = localef;
   }
 
-  NamedLocale get currentNamedLocale =>
-      LocaleModelConsts.namedLocales.firstWhere((namedLocale) {
-        var isEqual = _locale.languageCode == namedLocale.locale.languageCode;
+  NamedLocale get currentNamedLocale => namedLocales.firstWhere((namedLocale) {
+        final isEqual = _locale.languageCode == namedLocale.locale.languageCode;
         return isEqual;
       });
 }

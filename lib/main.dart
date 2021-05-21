@@ -11,14 +11,11 @@ import 'package:lastanswer/library/theme.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/screens/home_projects.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/widgets/spinner.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
-class Palette {
-  static const Color primary = Color(0xFF4CAF50);
-}
-
-void main() async {
+Future<void> main() async {
   Hive.registerAdapter(AnswerAdapter());
   Hive.registerAdapter(ProjectAdapter());
 
@@ -51,10 +48,10 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
       })(),
       builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          var locale = (() {
-            var _locale = snapshot.data;
+          final locale = (() {
+            final _locale = snapshot.data;
             if (_locale == null) return Locales.en;
-            var isLocaleSupported =
+            final isLocaleSupported =
                 AppLocalizations.delegate.isSupported(_locale);
             if (!isLocaleSupported) return Locales.en;
 
@@ -63,22 +60,15 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
           return ProviderInit(
             locale: locale,
             child: AppScaffold(
-                localeListResolutionCallback: (locales, supportedLocales) =>
-                    locale,
-                home: HomeProjects()),
+              localeListResolutionCallback: (locales, supportedLocales) =>
+                  locale,
+              home: const HomeProjects(),
+            ),
           );
         } else {
-          return _circularSpinner();
+          return spinner;
         }
       },
-    );
-  }
-
-  Widget _circularSpinner() {
-    return Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Palette.primary),
-      ),
     );
   }
 }
@@ -89,14 +79,18 @@ class AppScaffold extends StatelessWidget {
   final Widget home;
   final Locale? Function(List<Locale>?, Iterable<Locale>)?
       localeListResolutionCallback;
-  AppScaffold({required this.home, this.localeListResolutionCallback});
+  const AppScaffold({
+    required this.home,
+    this.localeListResolutionCallback,
+  });
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
       builder: (context, Box<bool> box, widget) {
-        var isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
-        var resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+        final isDark =
+            box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
+        final resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
         return MaterialApp(
           localeListResolutionCallback: localeListResolutionCallback,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -115,7 +109,7 @@ class AppScaffold extends StatelessWidget {
 class ProviderInit extends StatelessWidget {
   final Widget child;
   final Locale locale;
-  ProviderInit({
+  const ProviderInit({
     required this.child,
     required this.locale,
   });
@@ -137,7 +131,9 @@ class ProviderInit extends StatelessWidget {
 
 class RestartWidget extends StatefulWidget {
   final Widget child;
-  RestartWidget({required this.child});
+  const RestartWidget({
+    required this.child,
+  });
 
   static void restartApp(BuildContext context) {
     context.findRootAncestorStateOfType<_RestartWidgetState>()?.restartApp();

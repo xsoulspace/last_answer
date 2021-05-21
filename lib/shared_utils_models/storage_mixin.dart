@@ -5,7 +5,7 @@ mixin StorageMixin {
   Future<StorageUtil> get storage async {
     return _storage ??
         await (() async {
-          var tempStorage = await StorageUtil.getInstance();
+          final tempStorage = await StorageUtil.getInstance();
           _storage = tempStorage;
           return tempStorage;
         })();

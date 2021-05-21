@@ -5,17 +5,20 @@ import 'package:lastanswer/utils/share_str_project.dart';
 
 class ShareButton extends StatefulWidget {
   final Project project;
-  ShareButton({required this.project});
+  const ShareButton({
+    required this.project,
+  });
   @override
   _ShareButtonState createState() => _ShareButtonState();
 }
 
 class _ShareButtonState extends State<ShareButton> {
-  final defaultIcon = isDesktop() ? Icon(Icons.copy) : Icon(Icons.share);
-  final doneIcon = Icon(Icons.done);
+  final defaultIcon =
+      isDesktop ? const Icon(Icons.copy) : const Icon(Icons.share);
+  final doneIcon = const Icon(Icons.done);
   late Icon currentIcon;
   @override
-  initState() {
+  void initState() {
     super.initState();
     setState(() {
       currentIcon = defaultIcon;
@@ -26,7 +29,7 @@ class _ShareButtonState extends State<ShareButton> {
     setState(() {
       currentIcon = doneIcon;
     });
-    await Future.delayed(Duration(milliseconds: 1450), () {
+    await Future.delayed(const Duration(milliseconds: 1450), () {
       setState(() {
         currentIcon = defaultIcon;
       });
@@ -37,7 +40,7 @@ class _ShareButtonState extends State<ShareButton> {
   Widget build(BuildContext context) {
     return IconButton(
       icon: AnimatedSwitcher(
-        duration: Duration(milliseconds: 700),
+        duration: const Duration(milliseconds: 700),
         child: currentIcon,
       ),
       onPressed: () async {

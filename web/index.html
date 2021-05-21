@@ -33,14 +33,14 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
     <script>
-      var serviceWorkerVersion = null;
-      var scriptLoaded = false;
+      final serviceWorkerVersion = null;
+      final scriptLoaded = false;
       function loadMainDartJs() {
         if (scriptLoaded) {
           return;
         }
         scriptLoaded = true;
-        var scriptTag = document.createElement("script");
+        final scriptTag = document.createElement("script");
         scriptTag.src = "main.dart.js";
         scriptTag.type = "application/javascript";
         document.body.append(scriptTag);
@@ -52,7 +52,7 @@
           // Wait for registration to finish before dropping the <script> tag.
           // Otherwise, the browser will load the script multiple times,
           // potentially different versions.
-          var serviceWorkerUrl =
+          final serviceWorkerUrl =
             "flutter_service_worker.js?v=" + serviceWorkerVersion;
           navigator.serviceWorker.register(serviceWorkerUrl).then((reg) => {
             function waitForActivation(serviceWorker) {

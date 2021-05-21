@@ -16,7 +16,7 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
-const double AppBarHeight = 48;
+const double appBarHeight = 48;
 
 class _SettingsState extends State<Settings> {
   @override
@@ -32,13 +32,13 @@ class _SettingsState extends State<Settings> {
                 Hero(
                   tag: 'appBarMenuButton',
                   child: Material(
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     color: Colors.transparent,
                     child: SizedBox(
-                      height: AppBarHeight,
+                      height: appBarHeight,
                       width: 56,
                       child: IconButton(
-                        icon: Icon(Icons.close),
+                        icon: const Icon(Icons.close),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -56,16 +56,15 @@ class _SettingsState extends State<Settings> {
                     child: Container(
                       color: Colors.transparent,
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxHeight: 600,
                           maxWidth: 400,
                         ),
                         child: Material(
                           color: Colors.transparent,
                           child: GridView.count(
-                            crossAxisCount: isDesktop() ? 3 : 2,
-                            childAspectRatio: 1,
-                            padding: EdgeInsets.all(20.0),
+                            crossAxisCount: isDesktop ? 3 : 2,
+                            padding: const EdgeInsets.all(20.0),
                             children: [
                               DarkModeSwitcher(),
                               LocaleSwitcher(),
@@ -90,15 +89,16 @@ class _SettingsState extends State<Settings> {
 Decoration getGridItemIconContainerDecoration(
         {required BuildContext context}) =>
     BoxDecoration(
-      border:
-          Border.all(color: Theme.of(context).colorScheme.secondary, width: 1),
+      border: Border.all(
+        color: Theme.of(context).colorScheme.secondary,
+      ),
       shape: BoxShape.circle,
     );
 
 class MenuTile extends StatelessWidget {
   final Widget iconButton;
   final Widget text;
-  MenuTile({
+  const MenuTile({
     required this.iconButton,
     required this.text,
   });
@@ -113,9 +113,7 @@ class MenuTile extends StatelessWidget {
             decoration: getGridItemIconContainerDecoration(context: context),
             child: iconButton,
           ),
-          SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 4),
           text
         ],
       ),
@@ -126,16 +124,18 @@ class MenuTile extends StatelessWidget {
 class DarkModeSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box<bool>(HiveBoxes.darkMode);
-    var isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
+    final box = Hive.box<bool>(HiveBoxes.darkMode);
+    final isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
     return MenuTile(
       iconButton: IconButton(
         onPressed: () async {
           await box.put(BoxDarkMode.isDark, !isDark);
         },
         icon: AnimatedSwitcher(
-          duration: Duration(milliseconds: 400),
-          child: isDark ? Icon(Icons.wb_sunny_outlined) : Icon(Icons.wb_sunny),
+          duration: const Duration(milliseconds: 400),
+          child: isDark
+              ? const Icon(Icons.wb_sunny_outlined)
+              : const Icon(Icons.wb_sunny),
         ),
       ),
       text: Text(
@@ -149,7 +149,7 @@ class DarkModeSwitcher extends StatelessWidget {
 class LocaleSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var localeModel = Provider.of<LocaleModel>(context);
+    final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -164,16 +164,17 @@ class LocaleSwitcher extends StatelessWidget {
               icon: Container(),
               isExpanded: true,
               selectedItemBuilder: (context) {
-                return LocaleModelConsts.namedLocales
-                    .map((namedLocale) => Container(
-                          alignment: Alignment.center,
-                          child: Icon(Icons.translate),
-                        ))
+                return namedLocales
+                    .map(
+                      (namedLocale) => Container(
+                        alignment: Alignment.center,
+                        child: const Icon(Icons.translate),
+                      ),
+                    )
                     .toList();
               },
               underline: Container(),
-              items: LocaleModelConsts.namedLocales
-                  .map<DropdownMenuItem<NamedLocale>>(
+              items: namedLocales.map<DropdownMenuItem<NamedLocale>>(
                 (namedLocale) {
                   return DropdownMenuItem<NamedLocale>(
                     value: namedLocale,
@@ -220,22 +221,19 @@ class LocaleSwitcher extends StatelessWidget {
       ),
       text: Text(
         '${AppLocalizations.of(context)?.language} - '
-        '${LocaleModelConsts.namedLocalesMap[localeModel.locale.languageCode]?.name}',
+        '${namedLocalesMap[localeModel.locale.languageCode]?.name}',
         textAlign: TextAlign.center,
       ),
     );
   }
 }
 
-const Widget _ItemDivider = Divider(
+const Widget _itemDivider = Divider(
   height: 1,
 );
 
-Widget Function({
-  String? questionString,
-}) _questionBox = ({
-  questionCallback,
-  questionString,
+Widget _questionBox({
+  required String? questionString,
 }) =>
     SizedBox(
       width: 100,
@@ -249,14 +247,17 @@ Widget Function({
     );
 
 class About extends StatelessWidget {
-  Widget itemCard({String? questionString, required String? answerString}) {
+  Widget itemCard({
+    String? questionString,
+    required String? answerString,
+  }) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
-      padding: EdgeInsets.all(14),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(14),
       child: Row(
         children: [
           _questionBox(questionString: questionString),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(right: 5),
           ),
           Flexible(
@@ -275,43 +276,43 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localeModel = Provider.of<LocaleModel>(context);
+    final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: IconButton(
-          onPressed: () {
-            showAboutDialog(
-              context: context,
-              applicationName: AppLocalizations.of(context)?.lastAnswer ?? '',
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: <Widget>[
-                      itemCard(
-                          questionString: AppLocalizations.of(context)
-                                  ?.aboutAbstractWhatFor ??
-                              '',
-                          answerString: AppLocalizations.of(context)
-                              ?.aboutAbstractWhatForDescription),
-                      _ItemDivider,
-                      itemCard(
-                          questionString: QuestionsModelConsts.titleHow
-                              .getProp(localeModel.locale.languageCode),
-                          answerString: AppLocalizations.of(context)
-                              ?.aboutAbstractHowDescription),
-                      _ItemDivider,
-                      itemCard(
-                          questionString: AppLocalizations.of(context)
-                              ?.aboutAbstractIdeasImprovementsBugs,
-                          answerString: AppLocalizations.of(context)
-                              ?.aboutAbstractIdeasImprovementsBugsDescription),
-                    ],
-                  ),
-                )
-              ],
-            );
-          },
-          icon: Icon(Icons.info)),
+        onPressed: () {
+          showAboutDialog(
+            context: context,
+            applicationName: AppLocalizations.of(context)?.lastAnswer ?? '',
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    itemCard(
+                        questionString: AppLocalizations.of(context)
+                                ?.aboutAbstractWhatFor ??
+                            '',
+                        answerString: AppLocalizations.of(context)
+                            ?.aboutAbstractWhatForDescription),
+                    _itemDivider,
+                    itemCard(
+                        questionString: QuestionsModelConsts.titleHow
+                            .getProp(localeModel.locale.languageCode),
+                        answerString: AppLocalizations.of(context)
+                            ?.aboutAbstractHowDescription),
+                    _itemDivider,
+                    itemCard(
+                        questionString: AppLocalizations.of(context)
+                            ?.aboutAbstractIdeasImprovementsBugs,
+                        answerString: AppLocalizations.of(context)
+                            ?.aboutAbstractIdeasImprovementsBugsDescription),
+                  ],
+                ),
+              )
+            ],
+          );
+        },
+        icon: const Icon(Icons.info),
+      ),
       text: Text(
         AppLocalizations.of(context)?.about ?? '',
         textAlign: TextAlign.center,
@@ -321,18 +322,18 @@ class About extends StatelessWidget {
 }
 
 class Philosophy extends StatelessWidget {
-  Widget itemCard({String? questionString, required String? answerString}) {
+  Widget itemCard({
+    String? questionString,
+    required String? answerString,
+  }) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
-      padding: EdgeInsets.all(14),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(14),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 5),
-          ),
-          _questionBox(questionString: questionString),
-          Padding(
-            padding: EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: _questionBox(questionString: questionString),
           ),
           Flexible(
             child: Consumer<LocaleModel>(
@@ -350,7 +351,7 @@ class Philosophy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localeModel = Provider.of<LocaleModel>(context);
+    final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: IconButton(
         onPressed: () {
@@ -371,7 +372,6 @@ class Philosophy extends StatelessWidget {
                       ))
                 ],
                 content: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
                   child: Column(
                     children: <Widget>[
                       itemCard(
@@ -379,31 +379,31 @@ class Philosophy extends StatelessWidget {
                               .getProp(localeModel.locale.languageCode),
                           answerString: AppLocalizations.of(context)
                               ?.philosophyAbstractFiveWhyesWhat),
-                      _ItemDivider,
+                      _itemDivider,
                       itemCard(
                           questionString: QuestionsModelConsts.titleWhy
                               .getProp(localeModel.locale.languageCode),
                           answerString: AppLocalizations.of(context)
                               ?.philosophyAbstractFiveWhyesWhy),
-                      _ItemDivider,
+                      _itemDivider,
                       itemCard(
                           questionString: AppLocalizations.of(context)
                               ?.philosophyAbstractWhatElse,
                           answerString: AppLocalizations.of(context)
                               ?.philosophyAbstractPDSAWhat),
-                      _ItemDivider,
+                      _itemDivider,
                       itemCard(
                           questionString: QuestionsModelConsts.titleWhy
                               .getProp(localeModel.locale.languageCode),
                           answerString: AppLocalizations.of(context)
                               ?.philosophyAbstractPDSAWhy),
-                      _ItemDivider,
+                      _itemDivider,
                       itemCard(
                           questionString: AppLocalizations.of(context)
                               ?.philosophyAbstractWhatElse,
                           answerString: AppLocalizations.of(context)
                               ?.philosophyAbstractSixSigmaWhat),
-                      _ItemDivider,
+                      _itemDivider,
                       itemCard(
                         questionString: QuestionsModelConsts.titleWhy
                             .getProp(localeModel.locale.languageCode),
@@ -417,7 +417,7 @@ class Philosophy extends StatelessWidget {
             },
           );
         },
-        icon: Icon(Icons.menu_book_rounded),
+        icon: const Icon(Icons.menu_book_rounded),
       ),
       text: Text(
         AppLocalizations.of(context)?.philosophyInspirationTitle ?? '',

@@ -8,13 +8,15 @@ import 'package:lastanswer/abstract/project.dart';
 import 'package:lastanswer/abstract/question.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
+import 'package:lastanswer/utils/uuid.dart';
 import 'package:lastanswer/widgets/share_button.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class NewAnswerField extends StatefulWidget {
   final Project project;
-  NewAnswerField({required this.project});
+  const NewAnswerField({
+    required this.project,
+  });
   @override
   _NewAnswerFieldState createState() => _NewAnswerFieldState();
 }
@@ -27,7 +29,6 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
     super.dispose();
   }
 
-  final uuid = Uuid();
   String questionId = QuestionsModelConsts.questions[5].id;
 
   Future<void> updateCurrentAnswer(
@@ -50,16 +51,16 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
     );
   }
 
-  var focusNode = FocusNode();
+  final focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    var _answerBox = Hive.box<Answer>(HiveBoxes.answers);
-    var maxIndexedAnswer = _answerBox.values.length <= 0
+    final _answerBox = Hive.box<Answer>(HiveBoxes.answers);
+    int maxIndexedAnswer = _answerBox.values.isEmpty
         ? 0
         : _answerBox.values.reduce((value, el) {
-              var valueIndex = value.positionIndex;
-              var elIndex = el.positionIndex;
+              final valueIndex = value.positionIndex;
+              final elIndex = el.positionIndex;
               if (valueIndex == null || elIndex == null) return value;
               if (valueIndex > elIndex) return el;
               return value;
@@ -68,29 +69,31 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
 
     Future<void> createAnswer() async {
       if (_titleController.text
-          .replaceAll(RegExp(r' '), "")
+          .replaceAll(RegExp(' '), "")
           .replaceAll("\n", "")
           .isEmpty) return;
-      var newAnswer = Answer(
-          title: _titleController.text,
-          questionId: questionId,
-          id: uuid.v1(),
-          created: DateTime.now(),
-          positionIndex: maxIndexedAnswer++);
+      final newAnswer = Answer(
+        title: _titleController.text,
+        questionId: questionId,
+        id: uuid.v1(),
+        created: DateTime.now(),
+        positionIndex: maxIndexedAnswer++,
+      );
       clear(box: _answerBox);
 
-      var answers = widget.project.answers ?? HiveList(_answerBox, objects: []);
+      final answers =
+          widget.project.answers ?? HiveList(_answerBox, objects: []);
       await _answerBox.put(newAnswer.id, newAnswer);
       answers.add(newAnswer);
       widget.project.answers = answers;
       await widget.project.save();
     }
 
-    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    final questionsModel = Provider.of<QuestionsModel>(context);
 
     // loading state if its exists
     if (_titleController.text.isEmpty) {
-      var _answer = _answerBox.get(BoxAnswer.currentAnswer);
+      final _answer = _answerBox.get(BoxAnswer.currentAnswer);
       _titleController.text = _answer?.title ?? '';
       if (_answer != null) {
         setState(() {
@@ -98,17 +101,15 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
         });
       }
     }
-    var question = questionsModel.getById(questionId);
-    var questoinIndex = questionsModel.getIndexById(questionId);
+    final question = questionsModel.getById(questionId);
+    final questoinIndex = questionsModel.getIndexById(questionId);
 
     return Material(
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: 2,
-            ),
+            const SizedBox(height: 2),
             SizedBox(
               height: 60,
               child: Row(children: [
@@ -118,7 +119,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                       questionIndex: questoinIndex,
                       onSelected: (int? index) async {
                         if (index == null) return;
-                        var newQuestion =
+                        final newQuestion =
                             questionsModel.questions.elementAt(index.toInt());
                         setState(() {
                           questionId = newQuestion.id;
@@ -129,17 +130,13 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                         });
                       }),
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 ShareButton(
                   project: widget.project,
                 ),
               ]),
             ),
-            SizedBox(
-              height: 2,
-            ),
+            const SizedBox(height: 2),
             Row(
               children: [
                 Expanded(
@@ -153,7 +150,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                     },
                     child: TextFormField(
                       onFieldSubmitted: (String newText) async =>
-                          await createAnswer(),
+                          createAnswer(),
                       controller: _titleController,
                       minLines: 1,
                       maxLines: 7,
@@ -178,7 +175,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   child: IconButton(
                     onPressed: createAnswer,
                     icon: Icon(
@@ -200,10 +197,11 @@ class QuestionsSlider extends StatefulWidget {
   final void Function(int? index) onSelected;
   final Question question;
   final int questionIndex;
-  QuestionsSlider(
-      {required this.onSelected,
-      required this.question,
-      required this.questionIndex});
+  const QuestionsSlider({
+    required this.onSelected,
+    required this.question,
+    required this.questionIndex,
+  });
   @override
   _QuestionsSliderState createState() => _QuestionsSliderState();
 }
@@ -231,12 +229,11 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
 
   @override
   Widget build(BuildContext context) {
-    QuestionsModel questionsModel = Provider.of<QuestionsModel>(context);
+    final questionsModel = Provider.of<QuestionsModel>(context);
 
     return Center(
       child: PageView.builder(
         controller: _pageController,
-        scrollDirection: Axis.horizontal,
         itemCount: questionsModel.length,
         clipBehavior: Clip.antiAlias,
         itemBuilder: (context, index) => AnimatedBuilder(
@@ -253,16 +250,16 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
     required int index,
     required QuestionsModel questionsModel,
   }) {
-    var question = questionsModel.questions.elementAt(index);
-    var isSelected = question.id == widget.question.id;
-    var text = Consumer<LocaleModel>(builder: (context, locale, child) {
+    final question = questionsModel.questions.elementAt(index);
+    final isSelected = question.id == widget.question.id;
+    final text = Consumer<LocaleModel>(builder: (context, locale, child) {
       return Text(
         question.title.getProp(locale.currentNamedLocale.localeCode),
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: isSelected ? 18.5 : 14),
       );
     });
-    if (question.id == widget.question.id)
+    if (question.id == widget.question.id) {
       return TextButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
@@ -272,6 +269,7 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
         onPressed: () {},
         child: text,
       );
+    }
     return TextButton(
       onPressed: () {
         _pageController.jumpToPage(index);

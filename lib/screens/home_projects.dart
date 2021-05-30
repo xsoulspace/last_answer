@@ -65,11 +65,12 @@ class HomeProjects extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Hero(
-                      tag: 'appBarBackground',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Container(color: Theme.of(context).canvasColor),
-                      )),
+                    tag: 'appBarBackground',
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(color: Theme.of(context).canvasColor),
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

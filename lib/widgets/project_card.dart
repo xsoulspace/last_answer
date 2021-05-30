@@ -87,30 +87,33 @@ class ProjectCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Hero(
-                                tag: 'title${project.id}',
-                                child: Material(
-                                    color: Colors.transparent,
-                                    child: Text(project.title))),
-                          ),
-                          Hero(
-                              tag: 'check${project.id}',
+                    padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Hero(
+                              tag: 'title${project.id}',
                               child: Material(
-                                color: Colors.transparent,
-                                child: Checkbox(
-                                    value: project.isCompleted,
-                                    onChanged: (bool? value) async {
-                                      project.isCompleted = value ?? false;
-                                      await project.save();
-                                    }),
-                              ))
-                        ],
-                      )),
+                                  color: Colors.transparent,
+                                  child: Text(project.title))),
+                        ),
+                        Hero(
+                          tag: 'check${project.id}',
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Checkbox(
+                              value: project.isCompleted,
+                              onChanged: (bool? value) async {
+                                project.isCompleted = value ?? false;
+                                await project.save();
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

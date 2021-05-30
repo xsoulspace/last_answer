@@ -161,12 +161,13 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 keyboardType: TextInputType.multiline,
                 onEditingComplete: () async => _updateAnswer(box: _answerBox),
                 style: TextStyle(
-                    fontSize: 15,
-                    color: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.color
-                        ?.withOpacity(0.9)),
+                  fontSize: 15,
+                  color: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      ?.color
+                      ?.withOpacity(0.9),
+                ),
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
                       iconSize: 10,

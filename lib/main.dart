@@ -19,7 +19,6 @@ import 'package:universal_io/io.dart';
 Future<void> main() async {
   Hive.registerAdapter(AnswerAdapter());
   Hive.registerAdapter(ProjectAdapter());
-
   if (!kIsWeb && Platform.isMacOS) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }

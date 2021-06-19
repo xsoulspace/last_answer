@@ -1,6 +1,5 @@
 # https://pub.dev/packages/lint
 include: package:lint/analysis_options.yaml
-
 # ------ Disable individual rules ----- #
 #                 ---                   #
 # Turn off what you don't like.         #
@@ -12,4 +11,4 @@ include: package:lint/analysis_options.yaml
 #   rules:
 # - camel_case_types
 
-analyzer:
+# analyzer:

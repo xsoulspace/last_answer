@@ -23,8 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+  # https://pub.dev/packages/easy_localization
+  # flutter pub run easy_localization:generate
+  easy_localization: ^3.0.0
   shared_preferences: "^2.0.5"
   json_annotation: ^4.0.0
   # The following adds the Cupertino Icons font to your application.
@@ -52,13 +53,12 @@ dev_dependencies:
   # intl_translation: ^0.17.10+1
   hive_generator: ^1.0.0
   build_runner: ^2.0.3
-  intl: ^0.17.0
   msix: ^2.1.1
   lint: ^1.5.3
   # intl_translation:
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
-  image_path: "assets/icon-512-green.png"
+  image_path: "assets/promo/icon-512-green.png"
   ios: true
   android: true
   remove_alpha_ios: true
@@ -104,17 +104,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-msix_config:
-  display_name: lastanswer
-  publisher_display_name: AntonMalofeev
-  identity_name: MyCompany.MySuite.MyApp
-  msix_version: 1.0.3.5
-  publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1, O=Anton Malofeev, L=Moscow, S=Moscow, C=RU
-  logo_path: C:\web\lastanswer\assets\icon-512.png
-  start_menu_icon_path: C:\web\lastanswer\assets\icon-512.png
-  tile_icon_path: C:\web\lastanswer\assets\icon-512.png
-  vs_generated_images_folder_path: C:\web\lastanswer\assets\icons
-  icons_background_color: transparent
-  architecture: x64
-  capabilities: "internetClient"

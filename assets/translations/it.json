@@ -136,10 +136,7 @@
     "description": "Project removal warning",
     "type": "text",
     "placeholders": {},
-    "args": [
-      "answersLength",
-      "projectTitle"
-    ]
+    "args": ["answersLength", "projectTitle"]
   },
   "answerWillBeLost": "sarà perso per sempre",
   "@answerWillBeLost": {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lastanswer/abstract/project.dart';
-import 'package:lastanswer/models/questions_model.dart';
-import 'package:lastanswer/shared_utils_models/locales_model.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

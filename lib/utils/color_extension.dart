@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
+part of 'utils.dart';
 
 extension ColorExt on Color {
   MaterialColor generateMaterialColor() => MaterialColor(value, {

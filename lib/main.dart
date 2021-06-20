@@ -1,6 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/app/app.dart';
 
 Future<void> main() async {
-  runApp(const AppScaffold());
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: Locales.all,
+      path: 'assets/translations',
+      fallbackLocale: Locales.en,
+      child: const AppScaffold(),
+    ),
+  );
 }

@@ -69,7 +69,10 @@ flutter_icons:
 # The following section is specific to Flutter.
 flutter:
   assets:
+    - assets/
+    - assets/promo/
     - assets/translations/
+
   generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

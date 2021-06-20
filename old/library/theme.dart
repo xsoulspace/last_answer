@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/utils/color_generator.dart';
+import 'package:lastanswer/utils/color_extension.dart';
 
 import 'palette.dart';
 

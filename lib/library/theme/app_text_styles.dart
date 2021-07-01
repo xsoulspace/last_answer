@@ -82,3 +82,34 @@ class AppTextStylesDark {
   static final caption1 = AppTextStylesLight.largeTitle.copyWith();
   static final caption2 = AppTextStylesLight.largeTitle.copyWith();
 }
+
+final lightTextTheme = TextTheme(
+  bodyText1: AppTextStylesLight.body,
+  bodyText2: AppTextStylesLight.body,
+  button: AppTextStylesLight.body,
+  caption: AppTextStylesLight.caption1,
+  headline1: AppTextStylesLight.largeTitle,
+  headline2: AppTextStylesLight.title1,
+  headline3: AppTextStylesLight.title2,
+  headline4: AppTextStylesLight.title3,
+  headline5: AppTextStylesLight.headline,
+  headline6: AppTextStylesLight.callout,
+  overline: AppTextStylesLight.footnote,
+  subtitle1: AppTextStylesLight.subheadline,
+  subtitle2: AppTextStylesLight.caption2,
+);
+final darkTextTheme = TextTheme(
+  bodyText1: AppTextStylesDark.body,
+  bodyText2: AppTextStylesDark.body,
+  button: AppTextStylesDark.body,
+  caption: AppTextStylesDark.caption1,
+  headline1: AppTextStylesDark.largeTitle,
+  headline2: AppTextStylesDark.title1,
+  headline3: AppTextStylesDark.title2,
+  headline4: AppTextStylesDark.title3,
+  headline5: AppTextStylesDark.headline,
+  headline6: AppTextStylesDark.callout,
+  overline: AppTextStylesDark.footnote,
+  subtitle1: AppTextStylesDark.subheadline,
+  subtitle2: AppTextStylesDark.caption2,
+);

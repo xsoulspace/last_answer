@@ -1,6 +1,10 @@
 part of 'theme.dart';
 
 class AppColors {
+  // This class is not meant to be instantiated or extended; this constructor
+  // prevents instantiation and extension.
+  AppColors._();
+
   /// #F8F9F7
   static const white = Color(0xFFF8F9F7);
 

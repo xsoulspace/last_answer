@@ -16,6 +16,8 @@ class AppScaffold extends StatelessWidget {
       routes: allRoutes,
       theme: lightThemeData,
       darkTheme: darkThemeData,
+      // FIXME: make it dynamic
+      themeMode: ThemeMode.light,
     );
   }
 }

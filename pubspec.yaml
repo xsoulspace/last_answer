@@ -54,8 +54,7 @@ dev_dependencies:
   # intl_translation: ^0.17.10+1
   hive_generator: ^1.0.0
   build_runner: ^2.0.3
-  msix: ^2.1.1
-  lint: ^1.5.3
+  flutter_lints: ^1.0.4
   # intl_translation:
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:

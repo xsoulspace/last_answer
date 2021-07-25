@@ -3,7 +3,7 @@ part of abstract;
 @Deprecated('use IdeaProjectQuestion')
 @JsonSerializable()
 class Question extends Equatable {
-  final LocaleTitle title;
+  final LocalizedText title;
   final String id;
   const Question({required this.title, required this.id});
 

@@ -6,17 +6,23 @@ part of abstract;
 @immutable
 @JsonSerializable()
 class IdeaProjectQuestion extends Equatable {
+  /// Do not use default constructor to create new [IdeaProjectQuestion]
+  /// Do use [IdeaProjectQuestion.fromTitle]
+  const IdeaProjectQuestion({
+    required final this.id,
+    required final this.title,
+  });
   const IdeaProjectQuestion._({
     required final this.id,
     required final this.title,
   });
 
   /// Use this function to create new [IdeaProjectQuestion]
-  factory IdeaProjectQuestion.fromTitle(final LocaleTitle title) =>
+  factory IdeaProjectQuestion.fromTitle(final LocalizedText title) =>
       IdeaProjectQuestion._(id: createId(), title: title);
 
   final String id;
-  final LocaleTitle title;
+  final LocalizedText title;
 
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionFromJson(json);

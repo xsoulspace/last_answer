@@ -1,23 +1,27 @@
 {
-  "name": "LastAnswer",
-  "short_name": "LastAnswer",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#0175C2",
-  "theme_color": "#0175C2",
-  "description": "Answers & Questions About The Quest",
-  "orientation": "portrait-primary",
-  "prefer_related_applications": false,
-  "icons": [
-    {
-      "src": "icons/Icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+  "manifest_version": 3,
+  "name": "Last Answer",
+  "short_name": "Last Answer",
+  "description": "Fast ideas brainstroming tool",
+  "version": "1.0.3.9",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "24": "icons/icon-24.png",
+      "32": "icons/icon-32.png",
+      "128": "icons/icon-128.png"
     },
-    {
-      "src": "icons/Icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "default_title": "Last Answer"
+  },
+  "icons": {
+    "192": "icons/icon-192.png",
+    "512": "icons/icon-512.png"
+  },
+  "background": {
+    "service_worker": "flutter_service_worker.js"
+  },
+  "default_popup": "index.html",
+  "author": "Anton Malofeev",
+  "homepage_url": "https://xsoulspace.dev/",
+  "permissions": ["storage"]
 }

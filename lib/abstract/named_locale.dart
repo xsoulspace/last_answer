@@ -1,4 +1,4 @@
-import 'dart:ui';
+part of abstract;
 
 class NamedLocale {
   final String name;

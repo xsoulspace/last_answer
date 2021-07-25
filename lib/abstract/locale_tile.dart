@@ -1,6 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'locale_tile.g.dart';
+part of abstract;
 
 @JsonSerializable()
 class LocaleTitle {
@@ -10,9 +8,10 @@ class LocaleTitle {
     required this.en,
     required this.ru,
   });
-  String getProp(String key) => <String, String>{'ru': ru, 'en': en}[key] ?? '';
+  String getProp(final String key) =>
+      <String, String>{'ru': ru, 'en': en}[key] ?? '';
 
-  factory LocaleTitle.fromJson(Map<String, dynamic> json) =>
+  factory LocaleTitle.fromJson(final Map<String, dynamic> json) =>
       _$LocaleTitleFromJson(json);
   Map<String, dynamic> toJson() => _$LocaleTitleToJson(this);
 }

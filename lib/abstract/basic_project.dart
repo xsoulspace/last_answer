@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
+part of abstract;
 
 /// Use this for constructor default value in other projects
 const defaultProjectIsCompleted = false;

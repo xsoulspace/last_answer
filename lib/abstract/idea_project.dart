@@ -1,11 +1,6 @@
-import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/answer.dart';
-import 'package:lastanswer/abstract/basic_project.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+part of abstract;
 
-part 'idea_project.g.dart';
-
-@HiveType(typeId: HiveBoxes.projectId)
+@HiveType(typeId: HiveBoxesIds.ideaProject)
 class IdeaProject extends BasicProject {
   IdeaProject({
     required final String id,

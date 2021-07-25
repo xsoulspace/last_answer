@@ -1,3 +1,4 @@
+part of widgets;
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:lastanswer/utils/is_desktop.dart';

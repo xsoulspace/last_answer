@@ -2,17 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/abstract/project.dart';
 
 class AppStoreInitializer extends StatelessWidget {
   const AppStoreInitializer({
-    Key? key,
+    final Key? key,
     required this.child,
   }) : super(key: key);
   final Widget child;
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return FutureBuilder<bool>(
       future: (() async {
         await Hive.initFlutter();
@@ -23,7 +23,7 @@ class AppStoreInitializer extends StatelessWidget {
         await Hive.openBox<Answer>(HiveBoxes.answers);
         return true;
       })(),
-      builder: (context, snapshot) {
+      builder: (final context, final snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           // TODO: replace to Circular loader
           return Container();

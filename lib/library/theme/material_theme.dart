@@ -1,4 +1,4 @@
-part of 'theme.dart';
+part of theme;
 
 final lightThemeData = ThemeData.from(
   colorScheme: lightColorScheme,

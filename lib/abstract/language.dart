@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+part of abstract;
 
 class Locales {
   Locales._();

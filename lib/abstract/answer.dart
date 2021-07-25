@@ -1,17 +1,15 @@
-import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+part of abstract;
 
-part 'answer.g.dart';
-
-@HiveType(typeId: HiveBoxes.answerId)
+@Deprecated('use IdeaProjectAnswer')
+@HiveType(typeId: HiveBoxesIds.answers)
 class Answer extends HiveObject with EquatableMixin {
+  @Deprecated('use IdeaProjectAnswer')
   Answer({
-    required this.title,
-    required this.questionId,
-    required this.id,
-    required this.created,
-    required this.positionIndex,
+    required final this.title,
+    required final this.questionId,
+    required final this.id,
+    required final this.created,
+    required final this.positionIndex,
   });
   @HiveField(0)
   String title;

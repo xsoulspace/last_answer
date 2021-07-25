@@ -5,11 +5,6 @@ part of abstract;
 /// Important! Do not change order of items and incase of increase
 /// just add new item at bottom. In case of replace old value must be marked
 /// as [deprecated] and should have name of new value name;
-/// all keys(ids) for [HiveBox.typeIds]
-///
-/// Important! Do not change order of items and incase of increase
-/// just add new item at bottom. In case of replace old value must be marked
-/// as [deprecated] and should have name of new value name;
 class HiveBoxesIds {
   HiveBoxesIds._();
 

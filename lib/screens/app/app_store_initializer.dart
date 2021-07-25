@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/project.dart';
 
 class AppStoreInitializer extends StatelessWidget {
   const AppStoreInitializer({

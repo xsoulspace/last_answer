@@ -1,4 +1,4 @@
-import 'package:lastanswer/utils/utils.dart';
+part of abstract;
 
 /// Use this enum to control app theme
 enum Themes {
@@ -11,7 +11,7 @@ enum Themes {
   fromString,
 }
 
-/// Use ThemesExt to extend [Themes]
+/// Use this extension to extend [Themes]
 extension ThemesExt on Themes {
   /// {@macro enum_from_string}
   Themes operator [](final String value) => getEnumValueFromEnumValues(

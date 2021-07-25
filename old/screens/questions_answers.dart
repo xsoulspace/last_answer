@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/basic_project.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/widgets/answer_card.dart';
 import 'package:lastanswer/widgets/new_answer_field.dart';
 
@@ -15,12 +15,17 @@ class QuestionsAnswers extends StatefulWidget {
   });
   @override
   _QuestionsAnswersState createState() => _QuestionsAnswersState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Project>('project', project));
+  }
 }
 
 class _QuestionsAnswersState extends State<QuestionsAnswers> {
   final _titleEditingController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     _titleEditingController.text = widget.project.title;
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +45,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
             color: Colors.transparent,
             child: TextField(
               controller: _titleEditingController,
-              onChanged: (String newText) async {
+              onChanged: (final newText) async {
                 final project = widget.project;
                 project.title = newText;
                 await project.save();
@@ -56,10 +61,10 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
               child: Material(
                 color: Colors.transparent,
                 child: ValueListenableBuilder(
-                  builder: (BuildContext _, Box<Project> box, Widget? __) {
+                  builder: (_, box, __) {
                     return Checkbox(
                       value: widget.project.isCompleted,
-                      onChanged: (bool? value) async {
+                      onChanged: (value) async {
                         final project = widget.project;
                         project.isCompleted = value ?? false;
                         await project.save();
@@ -85,21 +90,20 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                     child: ValueListenableBuilder(
                       valueListenable:
                           Hive.box<Project>(HiveBoxes.projects).listenable(),
-                      builder:
-                          (BuildContext _, Box<Project> __, Widget? child) {
+                      builder: (_, final __, final child) {
                         final answers = widget.project.answers ?? [];
-                        answers.sort((a, b) => a.created.compareTo(b.created));
+                        answers.sort((final a, final b) =>
+                            a.created.compareTo(b.created));
                         final reversedAnswers = answers.reversed;
                         const divider = Divider(
                           height: 1.5,
                           thickness: 0.15,
                         );
                         return ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) =>
-                              divider,
+                          separatorBuilder: (context, final index) => divider,
                           reverse: true,
                           itemCount: reversedAnswers.length,
-                          itemBuilder: (BuildContext context, int index) {
+                          itemBuilder: (context, index) {
                             final answer = reversedAnswers.elementAt(index);
                             if (answer.id == BoxAnswer.currentAnswer) {
                               return Container(
@@ -117,7 +121,7 @@ class _QuestionsAnswersState extends State<QuestionsAnswers> {
                               confirmDelete: () async {
                                 return showDialog<bool>(
                                   context: context,
-                                  builder: (BuildContext context) {
+                                  builder: (final context) {
                                     return AlertDialog(
                                       title: Text(AppLocalizations.of(context)
                                               ?.areYouSure ??

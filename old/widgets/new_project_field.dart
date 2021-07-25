@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/basic_project.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/utils/uuid.dart';
 
 class NewProjectField extends StatefulWidget {

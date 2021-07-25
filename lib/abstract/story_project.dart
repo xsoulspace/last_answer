@@ -1,11 +1,7 @@
-import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/basic_project.dart';
+part of abstract;
 
-import 'hive_boxes.dart';
-
-part 'store_project.g.dart';
-
-@HiveType(typeId: HiveBoxes.projectId)
+/// TODO: implement StoryProject
+@HiveType(typeId: HiveBoxesIds.storyProject)
 class StoryProject extends BasicProject {
   StoryProject({
     required final String id,

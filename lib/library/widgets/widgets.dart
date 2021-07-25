@@ -1,0 +1,23 @@
+library widgets;
+
+part 'answer_field.dart';
+part 'answer_tile.dart';
+part 'choosable_bubble.dart';
+part 'circular_loader.dart';
+part 'editable_bubble.dart';
+part 'icon_add_button.dart';
+part 'icon_apply_button.dart';
+part 'icon_close_button.dart';
+part 'icon_expand_button.dart';
+part 'icon_hide_button.dart';
+part 'icon_idea_button.dart';
+part 'icon_info_button.dart';
+part 'icon_note_button.dart';
+part 'icon_select_button.dart';
+part 'icon_settings_button.dart';
+part 'icon_share/icon_share_button.dart';
+part 'icon_share/sharer.dart';
+part 'icon_story_button.dart';
+part 'icon_submit_button.dart';
+part 'note_tile.dart';
+part 'question_bubble.dart';

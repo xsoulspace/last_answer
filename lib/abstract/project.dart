@@ -1,20 +1,15 @@
-import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/answer.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+part of abstract;
 
-part 'project.g.dart';
-
-const _depreceatedMessage =
+const _deprecatedMessage =
     'This class should be used only for migration purpose, '
     'from old structure to new one. For all new projects use [BasicProject] '
     'classes such as [NoteProject], [StoryProject], [IdeaProject]';
 
 /// This class was supposed to keep answers for all questions
-@HiveType(typeId: HiveBoxes.projectId)
-@Deprecated(_depreceatedMessage)
+@Deprecated(_deprecatedMessage)
+@HiveType(typeId: HiveBoxesIds.projects)
 class Project extends HiveObject with EquatableMixin {
-  @Deprecated(_depreceatedMessage)
+  @Deprecated(_deprecatedMessage)
   Project({
     required final this.id,
     required final this.title,

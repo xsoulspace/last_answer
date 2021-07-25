@@ -1,6 +1,7 @@
 part of 'theme.dart';
 
 class AppTextStylesLight {
+  AppTextStylesLight._();
   static final largeTitle = GoogleFonts.ibmPlexSans(
     fontSize: 26,
     height: 32,
@@ -70,6 +71,7 @@ class AppTextStylesLight {
 }
 
 class AppTextStylesDark {
+  AppTextStylesDark._();
   static final largeTitle = AppTextStylesLight.largeTitle.copyWith();
   static final title1 = AppTextStylesLight.largeTitle.copyWith();
   static final title2 = AppTextStylesLight.largeTitle.copyWith();

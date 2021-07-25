@@ -6,6 +6,13 @@ part 'answer.g.dart';
 
 @HiveType(typeId: HiveBoxes.answerId)
 class Answer extends HiveObject with EquatableMixin {
+  Answer({
+    required this.title,
+    required this.questionId,
+    required this.id,
+    required this.created,
+    required this.positionIndex,
+  });
   @HiveField(0)
   String title;
 
@@ -19,13 +26,6 @@ class Answer extends HiveObject with EquatableMixin {
   @HiveField(5)
   int? positionIndex;
 
-  Answer({
-    required this.title,
-    required this.questionId,
-    required this.id,
-    required this.created,
-    required this.positionIndex,
-  });
   @override
   List<Object?> get props => [id];
 

@@ -8,7 +8,7 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   runApp(
     EasyLocalization(
-      supportedLocales: Locales.all,
+      supportedLocales: Locales.values,
       path: 'assets/translations',
       fallbackLocale: Locales.en,
       child: const AppScaffold(),

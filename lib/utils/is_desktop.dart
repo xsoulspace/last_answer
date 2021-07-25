@@ -1,4 +1,5 @@
 part of 'utils.dart';
 
-const isDesktop =
+/// Returns what version of layout needs to use
+final isDesktop =
     kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS;

@@ -14,10 +14,10 @@ extension ColorExt on Color {
         900: tintColor(this, -0.4),
       });
 
-  int tintValue(int value, double factor) =>
+  int tintValue(final int value, final double factor) =>
       max(0, min((value + ((255 - value) * factor)).round(), 255));
 
-  Color tintColor(Color color, double factor) => Color.fromRGBO(
+  Color tintColor(final Color color, final double factor) => Color.fromRGBO(
       tintValue(color.red, factor),
       tintValue(color.green, factor),
       tintValue(color.blue, factor),

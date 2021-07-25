@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastanswer/abstract/basic_project.dart';
 import 'package:lastanswer/abstract/hive_boxes.dart';
-import 'package:lastanswer/abstract/project.dart';
 import 'package:lastanswer/widgets/answer_card.dart';
 import 'package:lastanswer/widgets/new_answer_field.dart';
 

@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.3+9
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: ">=2.14.0-301.2.beta <3.0.0"
 
 dependencies:
   flutter:
@@ -26,36 +26,35 @@ dependencies:
   # https://pub.dev/packages/easy_localization
   # flutter pub run easy_localization:generate
   easy_localization: ^3.0.0
-  shared_preferences: "^2.0.5"
-  json_annotation: ^4.0.0
+  shared_preferences: "^2.0.6"
+  json_annotation: ^4.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  # To build use flutter packages pub run build_runner build
-  hive: ^2.0.0
-  hive_flutter: ^1.0.0
-  universal_io: ^2.0.1
-  share: ^2.0.1
-  uuid: ^3.0.1
-  flutter_hooks: ^0.17.0
-  flutter_riverpod: ^0.14.0+3
-  riverpod: ^0.14.0+3
-  equatable: ^2.0.2
+  cupertino_icons: ^1.0.3
+  # To build use flutter pub run build_runner build
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  universal_io: ^2.0.4
+  share: ^2.0.4
+  uuid: ^3.0.4
+  flutter_hooks: ^0.18.0
+  flutter_riverpod: ^1.0.0-dev.6
+  riverpod: ^1.0.0-dev.6
+  equatable: ^2.0.3
   google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_test:
     sdk: flutter
-  json_serializable: ^4.1.2
-  # FIXME: due problem with intl_tranlsation
-  # analyzer dependency overriden.
-  # FIXME: to run flutter pub run build_runner build need to comment intl_translation and analyzer override
-  # intl_translation: ^0.17.10+1
-  hive_generator: ^1.0.0
-  build_runner: ^2.0.3
+  json_serializable: ^5.0.0
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
   flutter_lints: ^1.0.4
-  # intl_translation:
+
+dependency_overrides:
+  analyzer: ^2.0.0
+
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
   image_path: "assets/promo/icon-512-green.png"

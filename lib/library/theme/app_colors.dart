@@ -1,8 +1,12 @@
 part of 'theme.dart';
 
+/// This class is responsible for all colours in the application
+/// If there is a need to add new one—open an issue to add to figma.
+///
+/// See [style guide](https://www.figma.com/file/ggehTTqGDzpUDnU3C1uzOA/?node-id=15%3A3)
 class AppColors {
-  // This class is not meant to be instantiated or extended; this constructor
-  // prevents instantiation and extension.
+  /// This class is not meant to be instantiated or extended; this constructor
+  /// prevents instantiation and extension.
   AppColors._();
 
   /// #F8F9F7

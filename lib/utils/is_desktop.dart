@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:universal_io/io.dart';
+part of 'utils.dart';
 
-bool isDesktop() =>
+const isDesktop =
     kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS;

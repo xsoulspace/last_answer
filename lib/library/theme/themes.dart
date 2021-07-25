@@ -1,4 +1,4 @@
-part of abstract;
+part of theme;
 
 /// Use this enum to control app theme
 enum Themes {

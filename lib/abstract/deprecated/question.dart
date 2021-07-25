@@ -1,6 +1,7 @@
 part of abstract;
 
 @Deprecated('use IdeaProjectQuestion')
+@JsonSerializable()
 class Question extends Equatable {
   final LocaleTitle title;
   final String id;

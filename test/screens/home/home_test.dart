@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/home/home.dart';
 
-void testWidget({required final String keyValue}) {
-  final Finder widgetFinder = find.byKey(Key(keyValue));
-  expect(widgetFinder, findsOneWidget);
-}
+import '../../util_functions.dart';
 
 void main() {
   group('[home screen]', () {

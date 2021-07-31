@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/home/home.dart';
 
-import '../../util_functions.dart';
+import '../util_functions.dart';
 
 void main() {
-  group('[idea project screen]', () {
+  group('[idea project create screen]', () {
     testWidgets(
       'has center icon',
       (final tester) async {
         const screenWidget = MaterialApp(
-          home: IdeaProjectScreen(),
+          home: IdeaProjectCreateScreen(),
         );
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
 
-        testWidget(keyValue: IdeaProjectKeys.ideaCenterPicture);
+        testWidget(keyValue: IdeaProjectCreateKeys.ideaCenterPicture);
       },
     );
     testWidgets(
@@ -24,7 +24,7 @@ void main() {
       (final tester) async {
         // TODO(arenukvern): switch locale to english
         const screenWidget = MaterialApp(
-          home: IdeaProjectScreen(),
+          home: IdeaProjectCreateScreen(),
         );
 
         await tester.pumpWidget(screenWidget);
@@ -34,15 +34,16 @@ void main() {
     );
     testWidgets('has idea name field', (final tester) async {
       const screenWidget = MaterialApp(
-        home: IdeaProjectScreen(),
+        home: IdeaProjectCreateScreen(),
       );
 
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: HomeKeys.ideaNameField);
+      testWidget(keyValue: IdeaProjectCreateKeys.ideaNameField);
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.byIcon(Icons.send), findsOneWidget);
     });
+    // TODO(arenukvern): test start new idea
   });
 }

@@ -18,3 +18,8 @@ class IdeaProject extends BasicProject {
   @HiveField(projectLatestFieldHiveId + 1, defaultValue: [])
   HiveList<IdeaProjectAnswer> answers;
 }
+
+/// A mock for [IdeaProject].
+/// To create use `final mockIdeaProject = MockIdeaProject();`
+// ignore: avoid_implementing_value_types
+class MockIdeaProject extends Mock implements IdeaProject {}

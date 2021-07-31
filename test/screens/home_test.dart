@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/home/home.dart';
 
-import '../../util_functions.dart';
+import '../util_functions.dart';
 
 void main() {
   group('[home screen]', () {
     testWidgets(
-      'has elements of vertical menu',
+      'has vertical menu and its elements',
       (final tester) async {
         const screenWidget = MaterialApp(
           home: HomeScreen(),
@@ -22,7 +22,7 @@ void main() {
       },
     );
     testWidgets(
-      'has elements of top app bar',
+      'has top app bar and its elements',
       (final tester) async {
         const screenWidget = MaterialApp(
           home: HomeScreen(),

@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:lastanswer/screens/home/home.dart';
+import 'package:lastanswer/screens/home/home_screen.dart';
 
 class AppRoutesName {
   static const home = '/';
 }
 
-const homeScreen = Home();
+const homeScreen = HomeScreen();
 final Map<String, WidgetBuilder> allRoutes = {
-  AppRoutesName.home: (_) => homeScreen
+  AppRoutesName.home: (final _) => homeScreen
 };

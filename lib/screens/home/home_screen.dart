@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+part of home;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

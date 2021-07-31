@@ -16,6 +16,8 @@ class IdeaProjectQuestion extends Equatable {
     required final this.id,
     required final this.title,
   });
+  factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
+      _$IdeaProjectQuestionFromJson(json);
 
   /// Use this function to create new [IdeaProjectQuestion]
   factory IdeaProjectQuestion.fromTitle(final LocalizedText title) =>
@@ -24,8 +26,6 @@ class IdeaProjectQuestion extends Equatable {
   final String id;
   final LocalizedText title;
 
-  factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
-      _$IdeaProjectQuestionFromJson(json);
   Map<String, dynamic> toJson() => _$IdeaProjectQuestionToJson(this);
 
   @override

@@ -16,5 +16,5 @@ class IdeaProject extends BasicProject {
         );
 
   @HiveField(projectLatestFieldHiveId + 1, defaultValue: [])
-  HiveList<Answer> answers;
+  HiveList<IdeaProjectAnswer> answers;
 }

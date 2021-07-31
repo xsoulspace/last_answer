@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/screens/home/home_screen.dart';
+import 'package:lastanswer/screens/home/home.dart';
 
 void testWidget({required final String keyValue}) {
   final Finder widgetFinder = find.byKey(Key(keyValue));
@@ -34,9 +34,24 @@ void main() {
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
 
+        expect(find.byType(AppBar), findsOneWidget);
+        expect(find.text('Good evening'), findsOneWidget);
         testWidget(keyValue: HomeKeys.iconButtonInfo);
         testWidget(keyValue: HomeKeys.iconButtonSettings);
-        expect(find.text('Good evening'), findsOneWidget);
+      },
+    );
+    testWidgets(
+      'has projects list',
+      (final tester) async {
+        const screenWidget = MaterialApp(
+          home: HomeScreen(),
+        );
+
+        await tester.pumpWidget(screenWidget);
+        await tester.pumpAndSettle();
+
+        testWidget(keyValue: HomeKeys.projectsList);
+        expect(find.byType(ListView), findsOneWidget);
       },
     );
   });

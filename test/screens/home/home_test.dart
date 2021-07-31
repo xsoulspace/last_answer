@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/home/home_screen.dart';
 
+void testWidget({required final String keyValue}) {
+  final Finder widgetFinder = find.byKey(Key(keyValue));
+  expect(widgetFinder, findsOneWidget);
+}
+
 void main() {
-  group('[home screen] widgets context', () {
+  group('[home screen]', () {
     testWidgets(
-      'elements of vertical menu',
+      'has elements of vertical menu',
       (final tester) async {
         const screenWidget = MaterialApp(
           home: HomeScreen(),
@@ -14,9 +19,24 @@ void main() {
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
 
-        expect(find.byIcon(Icons.wb_incandescent_outlined), findsOneWidget);
-        expect(find.text('Weather today'), findsOneWidget);
-        expect(find.byKey(const Key('icon_weather')), findsOneWidget);
+        testWidget(keyValue: HomeKeys.iconButtonIdea);
+        testWidget(keyValue: HomeKeys.iconButtonNote);
+        testWidget(keyValue: HomeKeys.iconButtonStory);
+      },
+    );
+    testWidgets(
+      'has elements of top app bar',
+      (final tester) async {
+        const screenWidget = MaterialApp(
+          home: HomeScreen(),
+        );
+
+        await tester.pumpWidget(screenWidget);
+        await tester.pumpAndSettle();
+
+        testWidget(keyValue: HomeKeys.iconButtonInfo);
+        testWidget(keyValue: HomeKeys.iconButtonSettings);
+        expect(find.text('Good evening'), findsOneWidget);
       },
     );
   });

@@ -42,6 +42,8 @@ dependencies:
   riverpod: ^1.0.0-dev.6
   equatable: ^2.0.3
   google_fonts: ^2.1.0
+  flutter_svg: ^0.22.0
+  flare_flutter: ^3.0.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
@@ -51,6 +53,8 @@ dev_dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.0.6
   flutter_lints: ^1.0.4
+  flutter_gen: ^3.1.1
+  flutter_gen_runner:
 
 dependency_overrides:
   analyzer: ^2.0.0
@@ -62,21 +66,42 @@ flutter_icons:
   android: true
   remove_alpha_ios: true
 
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+flutter_gen:
+  output: lib/gen/ # Optional (default: lib/gen/)
+  line_length: 80 # Optional (default: 80)
+
+  # Optional
+  integrations:
+    flutter_svg: true
+    flare_flutter: true
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-  assets:
-    - assets/
-    - assets/promo/
-    - assets/translations/
-    - google_fonts/
   generate: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # fonts:
+  #   - family: Raleway
+  #     fonts:
+  #       - asset: assets/fonts/Raleway-Regular.ttf
+  #       - asset: assets/fonts/Raleway-Italic.ttf
+  #         style: italic
+
+  assets:
+    - assets/
+    - assets/icons/
+    # - assets/promo/
+    - assets/translations/
+    - google_fonts/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

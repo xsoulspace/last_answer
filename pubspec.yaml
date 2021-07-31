@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.3+9
 
 environment:
-  sdk: ">=2.14.0-301.2.beta <3.0.0"
+  sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -54,7 +54,7 @@ dev_dependencies:
 
 dependency_overrides:
   analyzer: ^2.0.0
-
+  meta: ^1.7.0
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
   image_path: "assets/promo/icon-512-green.png"

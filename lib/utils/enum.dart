@@ -1,5 +1,9 @@
 part of 'utils.dart';
 
+/// A fake temporary Enum class
+// TODO(arenukvern): remove Enum when dart 2.14 will be released
+class Enum {}
+
 /// This extension for common enum functions
 extension EnumExt on Enum {
   /// Returns a short description of an enum value.
@@ -41,7 +45,9 @@ extension EnumExt on Enum {
 /// ```
 /// Make sure that you override operator [] for [Themes]
 /// {@endtemplate}
-E getEnumValueFromEnumValues<E extends Enum>({
+E getEnumValueFromEnumValues<E>({
+// TODO(arenukvern): uncomment when dart 2.14 will be released
+// E getEnumValueFromEnumValues<E extends Enum>({
   required final List<E> values,
   required final String value,
 }) {

@@ -17,3 +17,8 @@ class NoteProject extends BasicProject {
   @HiveField(projectLatestFieldHiveId + 1)
   String note;
 }
+
+/// A mock for [NoteProject].
+/// To create use `final mockNoteProject = MockNoteProject();`
+// ignore: avoid_implementing_value_types
+class MockNoteProject extends Mock implements NoteProject {}

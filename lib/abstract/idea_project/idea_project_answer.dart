@@ -31,3 +31,8 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
   @override
   bool? get stringify => true;
 }
+
+/// A mock for [IdeaProjectAnswer].
+/// To create use `final mockIdeaProjectAnswer = MockIdeaProjectAnswer();`
+// ignore: avoid_implementing_value_types
+class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}

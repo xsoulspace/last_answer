@@ -4,8 +4,10 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/home/home.dart';
 
 import '../util_functions.dart';
+import 'abstract_setups.dart';
 
 void main() {
+  setupAbstractions([setupNoteProjectMockTypes]);
   group('[note project screen]', () {
     final mockNoteProject = MockNoteProject();
     testWidgets(

@@ -1,9 +1,8 @@
 # Last Answer
 
-[![GitHub](https://img.shields.io/github/license/xsoulspace/last_answer)](LICENSE)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
-[![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 [![Discord](https://img.shields.io/discord/696688204476055592)](https://discord.gg/y54DpJwmAn)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![GitHub](https://img.shields.io/github/license/xsoulspace/last_answer)](LICENSE)
 [![Starware](https://img.shields.io/badge/⭐-Starware-f5a91a?labelColor=black)](https://github.com/zepfietje/starware)
 
 <p align="center">
@@ -31,11 +30,16 @@ That's it!:)
 Also you can became a super ninja in idea writing or project management, if you use this app with techniques such as 'Five whys', 'PDSA', 'Six Sigma'.
 
 Have an ideas, improvements or bugs? Want to join development?
-[![Join Discord](https://img.shields.io/discord/696688204476055592)](https://discord.gg/y54DpJwmAn)
+[Join Discord](https://discord.gg/y54DpJwmAn)
 Or send a message to idea@xsoulspace.dev.
 
 Hope this app will be useful for you!
 Thank you and have a nice day.
+
+## Contribution
+
+`Contributions are welcome` 🎉🎉
+Please read before started [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
 
 ## Starware
 

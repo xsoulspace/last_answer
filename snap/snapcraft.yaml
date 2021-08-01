@@ -2,7 +2,7 @@ name: last-answer
 version: 1.0.3+9
 summary: Fast ideas brainstroming tool
 description: |
-  You have a cool idea. 
+  You have a cool idea.
   You need to write it down fast.
 
   Then this app is for you.
@@ -15,13 +15,18 @@ description: |
 
   Also you can became a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
-  Have an ideas, improvements or bugs? Want to join development?
-  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
-
-  Hope this app will be useful for you!
+  Hope this app will be useful for you :)
   Thank you and have a nice day.
 
-  You can support development of this app by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) :)
+  ## Have an ideas, improvements or bugs? Want to join development?
+
+  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+
+  ## Support Development
+
+  You can support this app development by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+
+  Thank you for your support!
 
 icon: snap/gui/last-answer.png
 

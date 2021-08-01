@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/home/home.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../util_functions.dart';
+import 'abstract_setups.dart';
 
 void main() {
+  setupAbstractions([setupIdeaProjectMockTypes]);
   group('[idea project screen]', () {
     final mockIdeaProject = MockIdeaProject();
     testWidgets(

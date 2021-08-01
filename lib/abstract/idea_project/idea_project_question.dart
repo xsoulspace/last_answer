@@ -34,3 +34,8 @@ class IdeaProjectQuestion extends Equatable {
   @override
   bool get stringify => true;
 }
+
+/// A mock for [IdeaProjectQuestion].
+/// To create use `final mockIdeaProjectQuestion = MockIdeaProjectQuestion();`
+// ignore: avoid_implementing_value_types
+class MockIdeaProjectQuestion extends Mock implements IdeaProjectQuestion {}

@@ -6,12 +6,6 @@
   <a title="Contributor Covenant" href="https://github.com/xsoulspace/last_answer/blob/master/CODE_OF_CONDUCT.md" ><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" /></a>
   <a title="Contributors" href="https://github.com/xsoulspace/last_answer/graphs/contributors" ><img src="https://img.shields.io/github/contributors/xsoulspace/last_answer.svg" /></a>
 </p>
-<!-- [![Star on GitHub][github-star-badge]][github-star-link]
-[![PRs Welcome][prs-badge]][prs-link] -->
-<!-- [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-[prs-link]: https://github.com/xsoulspace/last_answer/issues -->
-<!-- [github-star-badge]: https://img.shields.io/github/stars/xsoulspace/last_answer.svg
-[github-star-link]: https://github.com/xsoulspace/last_answer/stargazers -->
 
 <p align="center">
   <a href="https://snapcraft.io/last-answer">
@@ -37,15 +31,20 @@ That's it!:)
 
 Also you can became a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
-Have an ideas, improvements or bugs? Want to join development?
-[Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
-
-Hope this app will be useful for you!
+Hope this app will be useful for you :)
 Thank you and have a nice day.
 
-You can support development of this app by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) :)
+## Have an ideas, improvements or bugs? Want to join development?
+
+[Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+
+## Support Development
+
+You can support this app development by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+
+Thank you for your support!
 
 ## Contribution
 
 `Contributions are welcome` 🎉🎉
-Please read [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) before get started.
+Please read [Code of Conduct](CODE_OF_CONDUCT.md) before get started.

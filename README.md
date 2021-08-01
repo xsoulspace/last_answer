@@ -4,6 +4,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 [![Discord](https://img.shields.io/discord/696688204476055592)](https://discord.gg/y54DpJwmAn)
+[![Starware](https://img.shields.io/badge/⭐-Starware-f5a91a?labelColor=black)](https://github.com/zepfietje/starware)
 
 <p align="center">
   <a href="https://snapcraft.io/last-answer">
@@ -16,24 +17,29 @@
 
 ## Getting Started
 
-Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
+You have a cool idea.
+You need to write it down fast.
 
-The principle of work very simple.
+Then this app is for you.
 
-1. You choose short question to answer.
-2. Answer to it.
-3. You will see your saved answer above questions pane.
-4. You choose new question to ask for the answer above.
+Follow questions, write as many answers as you can.
 
-During process you can always see and edit all answers and questions on second page and share it by clicking share button.
+As a result you will get quick description of idea.
 
-5. After you complete all questions (so you just feeling that you cannot say more:)) you can share it (for example to Trello Board) and start again.
+That's it!:)
 
-This app can be used with techniques such as 'Five whys', 'PDSA', 'Six Sigma' or just for brainstorming new ideas.
+Also you can became a super ninja in idea writing or project management, if you use this app with techniques such as 'Five whys', 'PDSA', 'Six Sigma'.
 
-Please notice:
-This app in testing phase, potentially it can contain some errors and bugs.
-For ideas, improvements and bugs please write feedback or send a message to idea@xsoulspace.dev
+Have an ideas, improvements or bugs? Want to join development?
+[![Join Discord](https://img.shields.io/discord/696688204476055592)](https://discord.gg/y54DpJwmAn)
+Or send a message to idea@xsoulspace.dev.
 
 Hope this app will be useful for you!
-Thank you.
+Thank you and have a nice day.
+
+## Starware
+
+Last Answer is Starware.
+
+This means you're free to use the project, as long as you star its GitHub repository.  
+Your appreciation makes us grow and glow up. ⭐

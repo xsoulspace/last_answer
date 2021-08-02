@@ -27,18 +27,18 @@ Then this app is for you.
 
 Follow questions, write as many answers as you can.
 
-As a result you will get quick description of idea.
+As a result, you will get a quick description of the idea.
 
 That's it!:)
 
-Also you can became a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+Also, you can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
 Hope this app will be useful for you :)
 Thank you and have a nice day.
 
 ---
 
-## Have an ideas, improvements or bugs? Want to join development?
+## Have an idea, improvements, or bugs? Want to join development?
 
 [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
 

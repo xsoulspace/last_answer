@@ -1,7 +1,7 @@
 part of home;
 
-class HomeKeys {
-  HomeKeys._();
+class HomeScreenKeys {
+  HomeScreenKeys._();
   static const iconButtonIdea = 'iconButtonIdea';
   static const iconButtonNote = 'iconButtonNote';
   static const iconButtonStory = 'iconButtonStory';

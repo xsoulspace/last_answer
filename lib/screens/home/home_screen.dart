@@ -2,33 +2,34 @@ part of home;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
-    final this.onPressed,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback? onPressed;
   @override
-  Widget build(final BuildContext context) => Column(
-        children: [
-          const Text('Hello World!'),
-          ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(primary: Colors.blue),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.wb_sunny,
-                  key: Key('icon_weather'),
-                ),
-                Text('Weather today')
-              ],
-            ),
+  Widget build(final BuildContext context) {
+    // TODO(arenukvern): make the welcome dependant from platform day time
+    const welcome = 'Good evening';
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(welcome),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // TODO(arenukvern): add push for info widget
+              throw UnimplementedError();
+            },
+            icon: const Icon(Icons.info),
+            key: const Key(HomeScreenKeys.iconButtonInfo),
+          ),
+          IconButton(
+            onPressed: () {
+              // TODO(arenukvern): add push for settings widget
+              throw UnimplementedError();
+            },
+            icon: const Icon(Icons.settings),
+            key: const Key(HomeScreenKeys.iconButtonSettings),
           ),
         ],
-      );
-  @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-        .add(ObjectFlagProperty<VoidCallback>.has('onPressed', onPressed));
+      ),
+    );
   }
 }

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/screens/home/home.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:lastanswer/screens/idea_project/idea_project.dart';
 
 import '../util_functions.dart';
 import 'abstract_setups.dart';
 
 void main() {
   setupAbstractions([setupIdeaProjectMockTypes]);
+  final mockIdeaProject = MockIdeaProject();
+  Widget getScreenWidget() => MaterialApp(
+        home: IdeaProjectScreen(
+          project: mockIdeaProject,
+        ),
+      );
   group('[idea project screen]', () {
-    final mockIdeaProject = MockIdeaProject();
     testWidgets(
       'has top app bar and its elements',
       (final tester) async {
-        final screenWidget = MaterialApp(
-          home: IdeaProjectScreen(
-            project: mockIdeaProject,
-          ),
-        );
+        final screenWidget = getScreenWidget();
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
@@ -32,45 +32,41 @@ void main() {
     testWidgets(
       'has list of answers',
       (final tester) async {
-        const screenWidget = MaterialApp(
-          home: IdeaProjectScreen(),
-        );
+        final screenWidget = getScreenWidget();
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
-        testWidget(keyValue: IdeaProjectKeys.answersList);
+        testWidget(keyValue: IdeaProjectScreenKeys.answersList);
         expect(find.byType(ListView), findsOneWidget);
       },
     );
     testWidgets('has question bubbles', (final tester) async {
-      const screenWidget = MaterialApp(
-        home: IdeaProjectScreen(),
-      );
+      final screenWidget = getScreenWidget();
 
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: IdeaProjectKeys.questionBubbles);
+      testWidget(keyValue: IdeaProjectScreenKeys.questionBubbles);
     });
     testWidgets('has share button', (final tester) async {
-      const screenWidget = MaterialApp(
-        home: IdeaProjectScreen(),
+      final screenWidget = MaterialApp(
+        home: IdeaProjectScreen(
+          project: mockIdeaProject,
+        ),
       );
 
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: IdeaProjectKeys.iconButtonShare);
+      testWidget(keyValue: IdeaProjectScreenKeys.iconButtonShare);
     });
     testWidgets('has answer field', (final tester) async {
-      const screenWidget = MaterialApp(
-        home: IdeaProjectScreen(),
-      );
+      final screenWidget = getScreenWidget();
 
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: IdeaProjectKeys.answerField);
+      testWidget(keyValue: IdeaProjectScreenKeys.answerField);
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.byIcon(Icons.send), findsOneWidget);
     });

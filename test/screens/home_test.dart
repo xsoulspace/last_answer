@@ -5,13 +5,14 @@ import 'package:lastanswer/screens/home/home.dart';
 import '../util_functions.dart';
 
 void main() {
+  Widget getScreenWidget() => const MaterialApp(
+        home: HomeScreen(),
+      );
   group('[home screen]', () {
     testWidgets(
       'has vertical menu and its elements',
       (final tester) async {
-        const screenWidget = MaterialApp(
-          home: HomeScreen(),
-        );
+        final screenWidget = getScreenWidget();
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
@@ -24,9 +25,7 @@ void main() {
     testWidgets(
       'has top app bar and its elements',
       (final tester) async {
-        const screenWidget = MaterialApp(
-          home: HomeScreen(),
-        );
+        final screenWidget = getScreenWidget();
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
@@ -40,9 +39,7 @@ void main() {
     testWidgets(
       'has projects list',
       (final tester) async {
-        const screenWidget = MaterialApp(
-          home: HomeScreen(),
-        );
+        final screenWidget = getScreenWidget();
 
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();

@@ -16,6 +16,8 @@
   </a>
 </p>
 
+---
+
 ## Getting Started
 
 You have a cool idea.
@@ -34,15 +36,21 @@ Also you can became a super ninja if you use techniques as 'Five whys', 'PDSA', 
 Hope this app will be useful for you :)
 Thank you and have a nice day.
 
+---
+
 ## Have an ideas, improvements or bugs? Want to join development?
 
 [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+
+---
 
 ## Support Development
 
 You can support this app development by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
 
 Thank you for your support!
+
+---
 
 ## Contribution
 

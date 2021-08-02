@@ -26,5 +26,9 @@
   "widgets": {
     "prefix": "wdgs",
     "body": "import 'package:lastanswer/library/widgets/widgets.dart';"
+  },
+  "assets": {
+    "prefix": "ass",
+    "body": "import 'package:lastanswer/gen/assets.gen.dart';"
   }
 }

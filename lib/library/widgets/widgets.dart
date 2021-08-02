@@ -1,5 +1,13 @@
 library widgets;
 
+import 'dart:math' as math;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+
 part 'answer_field.dart';
 part 'answer_tile.dart';
 part 'choosable_bubble.dart';
@@ -21,3 +29,4 @@ part 'icon_story_button.dart';
 part 'icon_submit_button.dart';
 part 'note_tile.dart';
 part 'question_bubble.dart';
+part 'svg_icon_button.dart';

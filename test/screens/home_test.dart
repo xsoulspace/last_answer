@@ -34,7 +34,8 @@ void main() {
 
         testWidget(keyValue: HomeScreenKeys.iconButtonIdea);
         testWidget(keyValue: HomeScreenKeys.iconButtonNote);
-        testWidget(keyValue: HomeScreenKeys.iconButtonStory);
+        // TODO(arenukvern): for v4 implementation
+        // testWidget(keyValue: HomeScreenKeys.iconButtonStory);
       },
     );
 

@@ -6,6 +6,7 @@ void main() {
     test('has no empty routes', () {
       for (final routeName in AppRoutesName.values) {
         expect(routeName, isNotEmpty);
+        expect(routeName, isNotNull);
       }
     });
   });

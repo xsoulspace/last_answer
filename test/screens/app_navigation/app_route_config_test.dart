@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/app_navigator/app_navigator.dart';
 
 void main() {
-  group('[app route config]', () {
+  group('[AppRouteConfig]', () {
     test('all routes validatating and equal to [AppRoutesName.values]', () {
       final createIdea = AppRouteConfig.createIdea();
       expect(createIdea.isCreateIdea, isTrue);

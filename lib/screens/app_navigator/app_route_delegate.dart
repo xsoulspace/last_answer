@@ -30,6 +30,28 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
   }
 
   @override
+  Future<void> setNewRoutePath(AppRouteConfig configuration) async {
+    // if (path.isUnknown) {
+    //   _selectedBook = null;
+    //   showUnknown404 = true;
+    //   return;
+    // }
+
+    // if (path.isDetailsPage) {
+    //   if (path.id < 0 || path.id > books.length - 1) {
+    //     showUnknown404 = true;
+    //     return;
+    //   }
+
+    //   _selectedBook = books[path.id];
+    // } else {
+    //   _selectedBook = null;
+    // }
+
+    // showUnknown404 = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
@@ -66,30 +88,4 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
   //   );
   // }
 
-  @override
-  Future<void> setNewRoutePath(AppRouteConfig configuration) async {
-    // if (path.isUnknown) {
-    //   _selectedBook = null;
-    //   showUnknown404 = true;
-    //   return;
-    // }
-
-    // if (path.isDetailsPage) {
-    //   if (path.id < 0 || path.id > books.length - 1) {
-    //     showUnknown404 = true;
-    //     return;
-    //   }
-
-    //   _selectedBook = books[path.id];
-    // } else {
-    //   _selectedBook = null;
-    // }
-
-    // showUnknown404 = false;
-  }
-
-  // void _handleBookTapped(Book book) {
-  //   _selectedBook = book;
-  //   notifyListeners();
-  // }
 }

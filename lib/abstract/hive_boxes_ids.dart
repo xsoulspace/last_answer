@@ -60,11 +60,11 @@ class HiveBoxesIds {
   static const noteProject = 7;
 
   /// index 7
-  static const noteProjectKey = 'noteProjectKey';
+  static const noteProjectKey = 'noteProject';
 
   /// index 8
   static const storyProject = 8;
 
   /// index 8
-  static const storyProjectKey = 9;
+  static const storyProjectKey = 'storyProject';
 }

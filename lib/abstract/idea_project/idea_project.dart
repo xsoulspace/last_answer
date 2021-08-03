@@ -15,8 +15,8 @@ class IdeaProject extends BasicProject {
           isCompleted: isCompleted,
         );
 
-  @HiveField(projectLatestFieldHiveId + 1, defaultValue: [])
-  HiveList<IdeaProjectAnswer> answers;
+  @HiveField(projectLatestFieldHiveId + 1)
+  HiveList<IdeaProjectAnswer>? answers;
 }
 
 /// A mock for [IdeaProject].

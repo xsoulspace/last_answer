@@ -1,7 +1,7 @@
 part of app_navigator;
 
 @immutable
-class AppRouteConfig {
+class AppRouteConfig extends Equatable {
   const AppRouteConfig._({
     this.id = '',
     this.isCreateIdea = false,
@@ -28,8 +28,19 @@ class AppRouteConfig {
   final bool isUnknown;
   final bool isCreateIdea;
 
-  bool get isHome => id.isEmpty;
+  bool get isHome => id.isEmpty && !isSettings && !isUnknown && !isCreateIdea;
   bool get isIdea => id.isNotEmpty && type == ProjectTypes.idea;
   bool get isNote => id.isNotEmpty && type == ProjectTypes.note;
   bool get isStory => id.isNotEmpty && type == ProjectTypes.story;
+
+  @override
+  List<Object?> get props => [
+        id,
+        type,
+        isSettings,
+        isUnknown,
+        isCreateIdea,
+      ];
+  @override
+  bool? get stringify => true;
 }

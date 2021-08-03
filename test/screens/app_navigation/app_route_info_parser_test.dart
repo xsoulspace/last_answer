@@ -12,7 +12,7 @@ void main() {
     AppRoutesName.home: AppRouteConfig.home(),
     '/${AppRoutesName.unknown404}': AppRouteConfig.unknown(),
   };
-  group('[app route info parser]', () {
+  group('[AppRouteInformationParser]', () {
     test('parseRouteInformation can parse all routes', () async {
       final parser = AppRouteInformationParser();
       for (final routeEntry in routes.entries) {

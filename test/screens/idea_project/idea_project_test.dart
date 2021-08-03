@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/idea_project/idea_project.dart';
 
-import '../util_functions.dart';
-import 'abstract_setups.dart';
+import '../../util_functions.dart';
+import '../abstract_setups.dart';
 
 void main() {
   setupAbstractions([setupIdeaProjectMockTypes]);

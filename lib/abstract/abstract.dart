@@ -21,4 +21,5 @@ part 'localization/language.dart';
 part 'localization/localized_text.dart';
 part 'localization/named_locale.dart';
 part 'note_project/note_project.dart';
+part 'project_types.dart';
 part 'story_project/story_project.dart';

@@ -62,6 +62,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppRouteConfig> {
     } else if (configuration.isIdea) {
       return RouteInformation(
           location: '/${AppRoutesName.idea}/${configuration.id}');
+    } else if (configuration.isCreateIdea) {
+      return const RouteInformation(location: '/${AppRoutesName.createIdea}');
     } else if (configuration.isNote) {
       return RouteInformation(
           location: '/${AppRoutesName.note}/${configuration.id}');

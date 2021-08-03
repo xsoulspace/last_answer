@@ -35,7 +35,7 @@ void main() {
         settings,
         home,
       ];
-      expect(allRoutesInstances.length, AppRoutesName.values.length);
+      expect(allRoutesInstances.length, equals(AppRoutesName.values.length));
     });
   });
 }

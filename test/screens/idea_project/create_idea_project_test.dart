@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/idea_project/idea_project.dart';
 
-import '../util_functions.dart';
+import '../../util_functions.dart';
 
 void main() {
   // TODO(arenukvern): switch locale to english

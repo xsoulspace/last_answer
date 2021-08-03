@@ -112,7 +112,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       id: fields[0] as String,
       title: fields[2] as String,
       created: fields[3] as DateTime,
-      answers: fields[4] == null ? [] : (fields[4] as HiveList)?.castHiveList(),
+      answers: (fields[4] as HiveList?)?.castHiveList(),
       isCompleted: fields[1] as bool,
     );
   }
@@ -155,9 +155,9 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
-      text: fields[0] as String,
-      question: fields[1] as IdeaProjectQuestion,
-      index: fields[5] as int,
+      text: fields[4] as String,
+      question: fields[5] as IdeaProjectQuestion,
+      index: fields[8] as int,
     );
   }
 
@@ -165,15 +165,15 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
       ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.text)
-      ..writeByte(1)
-      ..write(obj.question)
-      ..writeByte(3)
-      ..write(obj.id)
       ..writeByte(4)
-      ..write(obj.created)
+      ..write(obj.text)
       ..writeByte(5)
+      ..write(obj.question)
+      ..writeByte(6)
+      ..write(obj.id)
+      ..writeByte(7)
+      ..write(obj.created)
+      ..writeByte(8)
       ..write(obj.index);
   }
 

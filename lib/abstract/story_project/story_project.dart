@@ -19,4 +19,4 @@ class StoryProject extends BasicProject {
 /// A mock for [StoryProject].
 /// To create use `final mockNoteProject = MockStoryProject();`
 // ignore: avoid_implementing_value_types
-class MockNStoryProject extends Mock implements StoryProject {}
+class MockStoryProject extends Mock implements StoryProject {}

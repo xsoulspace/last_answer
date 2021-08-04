@@ -7,11 +7,11 @@ import '../abstract_setups.dart';
 
 void main() {
   setupAbstractions([setupNoteProjectMockTypes]);
-  final mockStoreProject = MockStoreProject();
+  final mockStoryProject = MockStoryProject();
 
   Widget getScreenWidget() => MaterialApp(
-        home: NoteProjectScreen(
-          project: mockStoreProject,
+        home: StoryProjectScreen(
+          project: mockStoryProject,
         ),
       );
   group('[StoryProjectScreen]', () {

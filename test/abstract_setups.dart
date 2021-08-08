@@ -20,3 +20,7 @@ void setupIdeaProjectMockTypes() {
 void setupNoteProjectMockTypes() {
   registerFallbackValue(MockNoteProject());
 }
+
+void setupStoryProjectMockTypes() {
+  registerFallbackValue(MockStoryProject());
+}

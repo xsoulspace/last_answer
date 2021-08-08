@@ -8,66 +8,20 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
   AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-
-  BasicProject? _selectedProject;
-  bool showUnknown404 = false;
-  bool showCreateIdea = false;
-  bool showSettings = false;
-  void _resetState() {
-    showUnknown404 = false;
-    showCreateIdea = false;
-    showSettings = false;
-    _selectedProject = null;
-  }
+  AppRouteConfig _config = AppRouteConfig.home();
 
   @override
-  AppRouteConfig get currentConfiguration {
-    final project = _selectedProject;
-    if (showUnknown404) {
-      return AppRouteConfig.unknown();
-    } else if (showSettings) {
-      return AppRouteConfig.settings();
-    } else if (showCreateIdea) {
-      return AppRouteConfig.createIdea();
-    } else if (project is IdeaProject) {
-      return AppRouteConfig.idea(id: project.id);
-    } else if (project is NoteProject) {
-      return AppRouteConfig.note(id: project.id);
-    } else if (project is StoryProject) {
-      return AppRouteConfig.story(id: project.id);
-    } else {
-      return AppRouteConfig.home();
-    }
-  }
+  AppRouteConfig get currentConfiguration => _config;
 
   @override
   Future<void> setNewRoutePath(AppRouteConfig configuration) async {
-    _resetState();
-
-    if (configuration.isHome) {
-      return;
-    } else if (configuration.isCreateIdea) {
-      showCreateIdea = true;
-    } else if (configuration.isIdea) {
-      final box = Hive.box(HiveBoxesIds.ideaProjectKey);
-      _selectedProject = box.get(configuration.id);
-    } else if (configuration.isNote) {
-      final box = Hive.box(HiveBoxesIds.noteProjectKey);
-      _selectedProject = box.get(configuration.id);
-    } else if (configuration.isSettings) {
-      showSettings = true;
-    } else if (configuration.isStory) {
-      final box = Hive.box(HiveBoxesIds.storyProjectKey);
-      _selectedProject = box.get(configuration.id);
-    } else if (configuration.isUnknown) {
-      showUnknown404 = true;
-    }
+    _config = configuration;
     notifyListeners();
   }
 
   @override
   Widget build(BuildContext context) {
-    final resolvedProject = _selectedProject;
+    final resolvedProjectId = _selectedProject;
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -115,21 +69,9 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
     );
   }
 
-  void onProjectTap(BasicProject project) {
-    _resetState();
-    _selectedProject = project;
-    notifyListeners();
-  }
+  void onProjectTap(BasicProject project) {}
 
-  void onSettingsTap() {
-    _resetState();
-    showSettings = true;
-    notifyListeners();
-  }
+  void onSettingsTap() {}
 
-  void onCreateIdeaTap() {
-    _resetState();
-    showCreateIdea = true;
-    notifyListeners();
-  }
+  void onCreateIdeaTap() {}
 }

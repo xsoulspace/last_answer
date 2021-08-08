@@ -5,16 +5,18 @@ class AppRouteConfig extends Equatable {
   const AppRouteConfig._({
     this.projectId = '',
     this.projectType,
-    this.isCreateIdea = false,
-    this.isSettings = false,
-    this.isUnknown = false,
+    this.isCreateIdeaPage = false,
+    this.isSettingsPage = false,
+    this.isUnknownPage = false,
   });
 
   factory AppRouteConfig.home() => const AppRouteConfig._();
-  factory AppRouteConfig.settings() => const AppRouteConfig._(isSettings: true);
-  factory AppRouteConfig.unknown() => const AppRouteConfig._(isUnknown: true);
+  factory AppRouteConfig.settings() =>
+      const AppRouteConfig._(isSettingsPage: true);
+  factory AppRouteConfig.unknown() =>
+      const AppRouteConfig._(isUnknownPage: true);
   factory AppRouteConfig.createIdea() =>
-      const AppRouteConfig._(isCreateIdea: true);
+      const AppRouteConfig._(isCreateIdeaPage: true);
   factory AppRouteConfig.idea({required String id}) =>
       AppRouteConfig._(projectId: id, projectType: ProjectTypes.idea);
   factory AppRouteConfig.note({required String id}) =>
@@ -24,23 +26,34 @@ class AppRouteConfig extends Equatable {
 
   final String projectId;
   final ProjectTypes? projectType;
-  final bool isSettings;
-  final bool isUnknown;
-  final bool isCreateIdea;
 
-  bool get isHome =>
-      projectId.isEmpty && !isSettings && !isUnknown && !isCreateIdea;
-  bool get isIdea => projectId.isNotEmpty && projectType == ProjectTypes.idea;
-  bool get isNote => projectId.isNotEmpty && projectType == ProjectTypes.note;
-  bool get isStory => projectId.isNotEmpty && projectType == ProjectTypes.story;
+  // ******************* PAGES ********************
+
+  final bool isSettingsPage;
+  final bool isUnknownPage;
+  final bool isCreateIdeaPage;
+
+  bool get isHomePage =>
+      !isSettingsPage &&
+      !isUnknownPage &&
+      !isCreateIdeaPage &&
+      !isIdeaPage &&
+      !isNotePage &&
+      !isStoryPage;
+  bool get isIdeaPage =>
+      projectId.isNotEmpty && projectType == ProjectTypes.idea;
+  bool get isNotePage =>
+      projectId.isNotEmpty && projectType == ProjectTypes.note;
+  bool get isStoryPage =>
+      projectId.isNotEmpty && projectType == ProjectTypes.story;
 
   @override
   List<Object?> get props => [
         projectId,
         projectType,
-        isSettings,
-        isUnknown,
-        isCreateIdea,
+        isSettingsPage,
+        isUnknownPage,
+        isCreateIdeaPage,
       ];
   @override
   bool? get stringify => true;

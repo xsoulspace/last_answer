@@ -6,8 +6,14 @@ const _rightColumnX = 42.0;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
+    required final this.onProjectTap,
+    required final this.onSettingsTap,
+    required final this.onCreateIdeaTap,
     final Key? key,
   }) : super(key: key);
+  final ValueChanged<BasicProject> onProjectTap;
+  final VoidCallback onSettingsTap;
+  final VoidCallback onCreateIdeaTap;
   @override
   Widget build(final BuildContext context) {
     // TODO(arenukvern): make the welcome dependant from platform day time
@@ -69,6 +75,18 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ObjectFlagProperty<VoidCallback>.has(
+          'onCreateIdeaTap', onCreateIdeaTap))
+      ..add(
+          ObjectFlagProperty<VoidCallback>.has('onSettingsTap', onSettingsTap))
+      ..add(ObjectFlagProperty<ValueChanged<BasicProject>>.has(
+          'onProjectTap', onProjectTap));
   }
 }
 

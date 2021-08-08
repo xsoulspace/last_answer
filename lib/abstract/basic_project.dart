@@ -7,6 +7,8 @@ const defaultProjectIsCompleted = false;
 /// `@HiveField(projectLatestFieldHiveId+1)`
 const projectLatestFieldHiveId = 3;
 
+typedef ProjectId = String;
+
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
 class BasicProject extends HiveObject with EquatableMixin {
@@ -17,7 +19,7 @@ class BasicProject extends HiveObject with EquatableMixin {
     final this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(0)
-  final String id;
+  final ProjectId id;
 
   @HiveField(1)
   bool isCompleted;

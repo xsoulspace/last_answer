@@ -107,7 +107,7 @@ class HomeProjects extends StatelessWidget {
                         return Container();
                       }
                       return ProjectCard(
-                        project: _project,
+                        projectId: _project,
                       );
                     },
                     itemCount: _projectBox.values.length,

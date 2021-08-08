@@ -11,7 +11,7 @@ void main() {
   final mockIdeaProject = MockIdeaProject();
   Widget getScreenWidget() => MaterialApp(
         home: IdeaProjectScreen(
-          project: mockIdeaProject,
+          projectId: mockIdeaProject.id,
         ),
       );
   group('[idea project screen]', () {
@@ -49,11 +49,7 @@ void main() {
       testWidget(keyValue: IdeaProjectScreenKeys.questionBubbles);
     });
     testWidgets('has share button', (final tester) async {
-      final screenWidget = MaterialApp(
-        home: IdeaProjectScreen(
-          project: mockIdeaProject,
-        ),
-      );
+      final screenWidget = getScreenWidget();
 
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();

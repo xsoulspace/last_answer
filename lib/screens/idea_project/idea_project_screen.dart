@@ -2,10 +2,10 @@ part of idea_project;
 
 class IdeaProjectScreen extends StatelessWidget {
   const IdeaProjectScreen({
-    required final this.project,
+    required final this.projectId,
     final Key? key,
   }) : super(key: key);
-  final IdeaProject project;
+  final ProjectId projectId;
   @override
   Widget build(BuildContext context) {
     return Container();
@@ -14,6 +14,6 @@ class IdeaProjectScreen extends StatelessWidget {
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<IdeaProject>('project', project));
+    properties.add(DiagnosticsProperty<ProjectId>('projectId', projectId));
   }
 }

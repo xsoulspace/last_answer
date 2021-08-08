@@ -11,7 +11,7 @@ void main() {
 
   Widget getScreenWidget() => MaterialApp(
         home: StoryProjectScreen(
-          project: mockStoryProject,
+          projectId: mockStoryProject.id,
         ),
       );
   group('[StoryProjectScreen]', () {

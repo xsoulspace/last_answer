@@ -21,7 +21,6 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
 
   @override
   Widget build(BuildContext context) {
-    final resolvedProjectId = _selectedProject;
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -41,17 +40,17 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
         else if (resolvedProject is IdeaProject)
           MaterialPage(
             key: const ValueKey(AppRoutesName.idea),
-            child: IdeaProjectScreen(project: resolvedProject),
+            child: IdeaProjectScreen(projectId: _config.projectId),
           )
         else if (resolvedProject is NoteProject)
           MaterialPage(
             key: const ValueKey(AppRoutesName.note),
-            child: NoteProjectScreen(project: resolvedProject),
+            child: NoteProjectScreen(projectId: _config.projectId),
           )
         else if (resolvedProject is StoryProject)
           MaterialPage(
             key: const ValueKey(AppRoutesName.story),
-            child: StoryProjectScreen(project: resolvedProject),
+            child: StoryProjectScreen(projectId: _config.projectId),
           )
       ],
       onPopPage: (route, result) {

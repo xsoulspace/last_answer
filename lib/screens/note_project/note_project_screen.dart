@@ -2,10 +2,10 @@ part of note_project;
 
 class NoteProjectScreen extends StatelessWidget {
   const NoteProjectScreen({
-    required final this.project,
+    required final this.projectId,
     final Key? key,
   }) : super(key: key);
-  final NoteProject project;
+  final ProjectId projectId;
   @override
   Widget build(BuildContext context) {
     return Container();
@@ -14,6 +14,6 @@ class NoteProjectScreen extends StatelessWidget {
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<NoteProject>('project', project));
+    properties.add(DiagnosticsProperty<ProjectId>('projectId', projectId));
   }
 }

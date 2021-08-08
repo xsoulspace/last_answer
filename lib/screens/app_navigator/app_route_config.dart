@@ -4,10 +4,10 @@ part of app_navigator;
 class AppRouteConfig extends Equatable {
   const AppRouteConfig._({
     this.projectId = '',
+    this.projectType,
     this.isCreateIdea = false,
     this.isSettings = false,
     this.isUnknown = false,
-    this.type,
   });
 
   factory AppRouteConfig.home() => const AppRouteConfig._();
@@ -16,28 +16,28 @@ class AppRouteConfig extends Equatable {
   factory AppRouteConfig.createIdea() =>
       const AppRouteConfig._(isCreateIdea: true);
   factory AppRouteConfig.idea({required String id}) =>
-      AppRouteConfig._(projectId: id, type: ProjectTypes.idea);
+      AppRouteConfig._(projectId: id, projectType: ProjectTypes.idea);
   factory AppRouteConfig.note({required String id}) =>
-      AppRouteConfig._(projectId: id, type: ProjectTypes.note);
+      AppRouteConfig._(projectId: id, projectType: ProjectTypes.note);
   factory AppRouteConfig.story({required String id}) =>
-      AppRouteConfig._(projectId: id, type: ProjectTypes.story);
+      AppRouteConfig._(projectId: id, projectType: ProjectTypes.story);
 
   final String projectId;
-  final ProjectTypes? type;
+  final ProjectTypes? projectType;
   final bool isSettings;
   final bool isUnknown;
   final bool isCreateIdea;
 
   bool get isHome =>
       projectId.isEmpty && !isSettings && !isUnknown && !isCreateIdea;
-  bool get isIdea => projectId.isNotEmpty && type == ProjectTypes.idea;
-  bool get isNote => projectId.isNotEmpty && type == ProjectTypes.note;
-  bool get isStory => projectId.isNotEmpty && type == ProjectTypes.story;
+  bool get isIdea => projectId.isNotEmpty && projectType == ProjectTypes.idea;
+  bool get isNote => projectId.isNotEmpty && projectType == ProjectTypes.note;
+  bool get isStory => projectId.isNotEmpty && projectType == ProjectTypes.story;
 
   @override
   List<Object?> get props => [
         projectId,
-        type,
+        projectType,
         isSettings,
         isUnknown,
         isCreateIdea,

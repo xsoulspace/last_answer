@@ -5,25 +5,25 @@ void main() {
   group('[AppRouteConfig]', () {
     test('all routes validatating and equal to [AppRoutesName.values]', () {
       final createIdea = AppRouteConfig.createIdea();
-      expect(createIdea.isCreateIdea, isTrue);
+      expect(createIdea.isCreateIdeaPage, isTrue);
 
       final idea = AppRouteConfig.idea(id: '1');
-      expect(idea.isIdea, isTrue);
+      expect(idea.isIdeaPage, isTrue);
 
       final note = AppRouteConfig.note(id: '1');
-      expect(note.isNote, isTrue);
+      expect(note.isNotePage, isTrue);
 
       final story = AppRouteConfig.story(id: '1');
-      expect(story.isStory, isTrue);
+      expect(story.isStoryPage, isTrue);
 
       final unknown = AppRouteConfig.unknown();
-      expect(unknown.isUnknown, isTrue);
+      expect(unknown.isUnknownPage, isTrue);
 
       final settings = AppRouteConfig.settings();
-      expect(settings.isSettings, isTrue);
+      expect(settings.isSettingsPage, isTrue);
 
       final home = AppRouteConfig.home();
-      expect(home.isHome, isTrue);
+      expect(home.isHomePage, isTrue);
 
       /// Validate routes consistency
       final allRoutesInstances = [

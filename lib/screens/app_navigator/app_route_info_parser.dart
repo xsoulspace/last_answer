@@ -55,22 +55,22 @@ class AppRouteInformationParser extends RouteInformationParser<AppRouteConfig> {
 
   @override
   RouteInformation? restoreRouteInformation(AppRouteConfig configuration) {
-    if (configuration.isUnknown) {
+    if (configuration.isUnknownPage) {
       return const RouteInformation(location: '/${AppRoutesName.unknown404}');
-    } else if (configuration.isHome) {
+    } else if (configuration.isHomePage) {
       return const RouteInformation(location: AppRoutesName.home);
-    } else if (configuration.isIdea) {
+    } else if (configuration.isIdeaPage) {
       return RouteInformation(
           location: '/${AppRoutesName.idea}/${configuration.projectId}');
-    } else if (configuration.isCreateIdea) {
+    } else if (configuration.isCreateIdeaPage) {
       return const RouteInformation(location: '/${AppRoutesName.createIdea}');
-    } else if (configuration.isNote) {
+    } else if (configuration.isNotePage) {
       return RouteInformation(
           location: '/${AppRoutesName.note}/${configuration.projectId}');
-    } else if (configuration.isStory) {
+    } else if (configuration.isStoryPage) {
       return RouteInformation(
           location: '/${AppRoutesName.story}/${configuration.projectId}');
-    } else if (configuration.isSettings) {
+    } else if (configuration.isSettingsPage) {
       return const RouteInformation(location: '/${AppRoutesName.settings}');
     }
     return null;

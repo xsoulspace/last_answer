@@ -21,6 +21,7 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
 
   @override
   Widget build(BuildContext context) {
+    final d = '';
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -32,39 +33,28 @@ class AppRouterDelegate extends RouterDelegate<AppRouteConfig>
             onCreateIdeaTap: onCreateIdeaTap,
           ),
         ),
-        if (showUnknown404)
-          MaterialPage(
-            key: const ValueKey(AppRoutesName.unknown404),
+        if (_config.isUnknownPage)
+          const MaterialPage(
+            key: ValueKey(AppRoutesName.unknown404),
             child: UnknownScreen(),
-          )
-        else if (resolvedProject is IdeaProject)
+          ),
+        if (_config.isIdeaPage)
           MaterialPage(
             key: const ValueKey(AppRoutesName.idea),
             child: IdeaProjectScreen(projectId: _config.projectId),
-          )
-        else if (resolvedProject is NoteProject)
+          ),
+        if (_config.isNotePage)
           MaterialPage(
             key: const ValueKey(AppRoutesName.note),
             child: NoteProjectScreen(projectId: _config.projectId),
-          )
-        else if (resolvedProject is StoryProject)
+          ),
+        if (_config.isStoryPage)
           MaterialPage(
             key: const ValueKey(AppRoutesName.story),
             child: StoryProjectScreen(projectId: _config.projectId),
           )
       ],
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-
-        // Update the list of pages by setting _selectedBook to null
-        // _selected = null;
-        // showUnknown404 = false;
-        // notifyListeners();
-
-        return true;
-      },
+      onPopPage: (route, result) => route.didPop(result),
     );
   }
 

@@ -6,8 +6,12 @@ import '../util_functions.dart';
 
 void main() {
   // TODO(arenukvern): siwtch to english
-  Widget getScreenWidget() => const MaterialApp(
-        home: HomeScreen(),
+  Widget getScreenWidget() => MaterialApp(
+        home: HomeScreen(
+          onCreateIdeaTap: () {},
+          onProjectTap: (project) {},
+          onSettingsTap: () {},
+        ),
       );
   group('[home screen]', () {
     testWidgets(

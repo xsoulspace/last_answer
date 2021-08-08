@@ -15,7 +15,7 @@ void main() {
         ),
       );
   group('[StoryProjectScreen]', () {
-    testWidgets('', (tester) async {
+    testWidgets('has widgets', (tester) async {
       final screenWidget = getScreenWidget();
 
       await tester.pumpWidget(screenWidget);

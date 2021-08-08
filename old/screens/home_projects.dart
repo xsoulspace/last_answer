@@ -103,7 +103,7 @@ class HomeProjects extends StatelessWidget {
                     itemBuilder: (final _, final index) {
                       final _project = reversed.elementAt(index);
 
-                      if (_project.id == BoxProject.currentProject) {
+                      if (_project.projectId == BoxProject.currentProject) {
                         return Container();
                       }
                       return ProjectCard(

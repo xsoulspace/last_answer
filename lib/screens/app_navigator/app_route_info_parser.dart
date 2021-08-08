@@ -61,15 +61,15 @@ class AppRouteInformationParser extends RouteInformationParser<AppRouteConfig> {
       return const RouteInformation(location: AppRoutesName.home);
     } else if (configuration.isIdea) {
       return RouteInformation(
-          location: '/${AppRoutesName.idea}/${configuration.id}');
+          location: '/${AppRoutesName.idea}/${configuration.projectId}');
     } else if (configuration.isCreateIdea) {
       return const RouteInformation(location: '/${AppRoutesName.createIdea}');
     } else if (configuration.isNote) {
       return RouteInformation(
-          location: '/${AppRoutesName.note}/${configuration.id}');
+          location: '/${AppRoutesName.note}/${configuration.projectId}');
     } else if (configuration.isStory) {
       return RouteInformation(
-          location: '/${AppRoutesName.story}/${configuration.id}');
+          location: '/${AppRoutesName.story}/${configuration.projectId}');
     } else if (configuration.isSettings) {
       return const RouteInformation(location: '/${AppRoutesName.settings}');
     }

@@ -12,7 +12,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     # - "**.g.dart"
-    # - "**.gen.dart"
+    - "**.gen.dart"
     - old/
 
 linter:
@@ -82,7 +82,7 @@ linter:
     noop_primitive_operations: true
     null_check_on_nullable_type_parameter: true
     one_member_abstracts: true
-    package_api_docs: true
+    package_api_docs: false
     only_throw_errors: true
     parameter_assignments: true
     prefer_asserts_in_initializer_lists: true
@@ -97,7 +97,7 @@ linter:
     prefer_interpolation_to_compose_strings: true
     prefer_mixin: true
     prefer_null_aware_method_calls: true
-    public_member_api_docs: true
+    public_member_api_docs: false
     require_trailing_commas: true
     sort_child_properties_last: true
     sort_constructors_first: true

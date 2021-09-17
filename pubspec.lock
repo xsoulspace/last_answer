@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "4.0.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -560,6 +560,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  path_to_regexp:
+    dependency: "direct main"
+    description:
+      name: path_to_regexp
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   pedantic:
     dependency: transitive
     description:
@@ -616,6 +623,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  quiver:
+    dependency: "direct main"
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   riverpod:
     dependency: "direct main"
     description:

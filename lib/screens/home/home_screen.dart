@@ -65,8 +65,9 @@ class HomeScreen extends StatelessWidget {
             ),
             child: ListView.separated(
               // TODO(arenukvern): add project tile
-              itemBuilder: (_, __) => Container(),
-              separatorBuilder: (_, __) => const SizedBox(height: 3),
+              itemBuilder: (final _, final __) => Container(),
+              separatorBuilder: (final _, final __) =>
+                  const SizedBox(height: 3),
               // TODO(arenukvern): get projects count
               itemCount: 1,
               key: const Key(HomeScreenKeys.projectsList),
@@ -78,27 +79,36 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(ObjectFlagProperty<VoidCallback>.has(
-          'onCreateIdeaTap', onCreateIdeaTap))
       ..add(
-          ObjectFlagProperty<VoidCallback>.has('onSettingsTap', onSettingsTap))
-      ..add(ObjectFlagProperty<ValueChanged<BasicProject>>.has(
-          'onProjectTap', onProjectTap));
+        ObjectFlagProperty<VoidCallback>.has(
+          'onCreateIdeaTap',
+          onCreateIdeaTap,
+        ),
+      )
+      ..add(
+        ObjectFlagProperty<VoidCallback>.has('onSettingsTap', onSettingsTap),
+      )
+      ..add(
+        ObjectFlagProperty<ValueChanged<BasicProject>>.has(
+          'onProjectTap',
+          onProjectTap,
+        ),
+      );
   }
 }
 
 class VerticalProjectBar extends StatelessWidget {
   const VerticalProjectBar({
-    Key? key,
+    final Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(final BuildContext context) => Container(
         // TODO(arenukvern): add gradient
-        decoration: BoxDecoration(),
+        decoration: const BoxDecoration(),
         child: Column(
           children: [
             SvgIconButton(

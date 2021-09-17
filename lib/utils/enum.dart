@@ -1,9 +1,5 @@
 part of 'utils.dart';
 
-/// A fake temporary Enum class
-// TODO(arenukvern): remove Enum when dart 2.14 will be released
-class Enum {}
-
 /// This extension for common enum functions
 extension EnumExt on Enum {
   /// Returns a short description of an enum value.

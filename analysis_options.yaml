@@ -36,7 +36,7 @@ linter:
     no_adjacent_strings_in_list: true
     literal_only_boolean_expressions: true
     invariant_booleans: true
-    diagnostic_describe_all_properties: true
+    diagnostic_describe_all_properties: false
     comment_references: false
     close_sinks: true
     cancel_subscriptions: true
@@ -89,7 +89,7 @@ linter:
     prefer_asserts_with_message: true
     prefer_constructors_over_static_methods: true
     prefer_single_quotes: true
-    prefer_expression_function_bodies: true
+    prefer_expression_function_bodies: false
     prefer_final_in_for_each: true
     prefer_final_locals: true
     prefer_final_parameters: true

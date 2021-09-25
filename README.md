@@ -46,7 +46,7 @@ Thank you and have a nice day.
 
 ## Support Development
 
-You can support this app development by [buying a cup of cofee](https://www.buymeacoffee.com/arenukvern) or [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
 
 Thank you for your support!
 

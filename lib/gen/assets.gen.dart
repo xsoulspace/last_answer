@@ -37,19 +37,10 @@ class $AssetsIconsGen {
   SvgGenImage get idea => const SvgGenImage('assets/icons/idea.svg');
 }
 
-class $AssetsTranslationsGen {
-  const $AssetsTranslationsGen();
-
-  String get enEN => 'assets/translations/en-EN.json';
-  String get itIT => 'assets/translations/it-IT.json';
-  String get ruRU => 'assets/translations/ru-RU.json';
-}
-
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
-  static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
 

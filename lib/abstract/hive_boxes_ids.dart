@@ -9,11 +9,11 @@ class HiveBoxesIds {
   HiveBoxesIds._();
 
   /// index 0
-  @Deprecated('use [theme]')
+  @Deprecated('use [theme] in settings')
   static const darkMode = 0;
 
   /// index 0
-  @Deprecated('use [theme]')
+  @Deprecated('use [theme] in settings')
   static const darkModeKey = 'darkMode';
 
   /// index 1
@@ -33,38 +33,32 @@ class HiveBoxesIds {
   static const answersKey = 'answers';
 
   /// index 3
-  static const theme = 3;
+  static const ideaProject = 3;
 
   /// index 3
-  static const themeKey = 'theme';
-
-  /// index 4
-  static const ideaProject = 4;
-
-  /// index 4
   static const ideaProjectKey = 'ideaProject';
 
-  /// index 5
-  static const ideaProjectAnswer = 5;
+  /// index 4
+  static const ideaProjectAnswer = 4;
 
-  /// index 5
+  /// index 4
   static const ideaProjectAnswerKey = 'ideaProjectAnswer';
 
-  /// index 6
-  static const ideaProjectsQuestion = 6;
+  /// index 5
+  static const ideaProjectsQuestion = 5;
 
-  /// index 6
+  /// index 5
   static const ideaProjectsQuestionKey = 'ideaProjectsQuestion';
 
-  /// index 7
-  static const noteProject = 7;
+  /// index 6
+  static const noteProject = 6;
 
-  /// index 7
+  /// index 6
   static const noteProjectKey = 'noteProject';
 
-  /// index 8
-  static const storyProject = 8;
+  /// index 7
+  static const storyProject = 7;
 
-  /// index 8
+  /// index 7
   static const storyProjectKey = 'storyProject';
 }

@@ -23,9 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # https://pub.dev/packages/easy_localization
-  # flutter pub run easy_localization:generate
-  easy_localization: ^3.0.0
+
+  flutter_localizations:
+    sdk: flutter
+
   shared_preferences: ^2.0.7
   json_annotation: ^4.1.0
   # The following adds the Cupertino Icons font to your application.
@@ -47,6 +48,7 @@ dependencies:
   collection: ^1.15.0
   quiver: ^3.0.0
   path_to_regexp: ^0.4.0
+  package_info_plus: ^1.0.6
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
@@ -70,9 +72,8 @@ flutter_icons:
 # For information see the following page:
 # https://pub.dev/packages/flutter_gen
 flutter_gen:
-  output: lib/gen/ # Optional (default: lib/gen/)
-  line_length: 80 # Optional (default: 80)
-
+  # output: lib/gen/ # Optional (default: lib/gen/)
+  # line_length: 80 # Optional (default: 80)
   # Optional
   integrations:
     flutter_svg: true
@@ -80,7 +81,6 @@ flutter_gen:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   generate: true
@@ -96,25 +96,19 @@ flutter:
   #       - asset: assets/fonts/Raleway-Regular.ttf
   #       - asset: assets/fonts/Raleway-Italic.ttf
   #         style: italic
-
   assets:
     - assets/
     - assets/icons/
     # - assets/promo/
-    - assets/translations/
     - google_fonts/
-
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -134,3 +128,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

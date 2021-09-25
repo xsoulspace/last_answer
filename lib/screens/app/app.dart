@@ -59,7 +59,6 @@ class _AppScaffoldState extends State<AppScaffold> {
     super.initState();
   }
 
-  final _routeInformationParser = TemplateRouteParser(allowedPaths: []);
   @override
   Widget build(final BuildContext context) {
     final isInitialized = useIsBool();

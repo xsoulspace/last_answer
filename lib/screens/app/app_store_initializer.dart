@@ -18,11 +18,10 @@ class AppStoreInitializer extends StatelessWidget {
   Widget build(final BuildContext context) {
     if (initialized) return child;
     return FutureBuilder<bool>(
-      future: (() async {
-        onInitialized(true);
+      future: () async {
         if (initialized) return true;
+        onInitialized(true);
         await SettingsStateScope.of(context).load();
-        await Hive.initFlutter();
         // TODO(arenukvern): remove old stores after migration
         // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
         // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
@@ -39,7 +38,7 @@ class AppStoreInitializer extends StatelessWidget {
         await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
         await Hive.openBox<StoryProject>(HiveBoxesIds.storyProjectKey);
         return true;
-      })(),
+      }(),
       builder: (final context, final snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           // TODO(arenukvern): replace with loader

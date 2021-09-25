@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/screens/settings/settings.dart';
 
 class AppStoreInitializer extends StatelessWidget {
   const AppStoreInitializer({
@@ -18,6 +19,9 @@ class AppStoreInitializer extends StatelessWidget {
     if (initialized) return child;
     return FutureBuilder<bool>(
       future: (() async {
+        onInitialized(true);
+        if (initialized) return true;
+        await SettingsStateScope.of(context).load();
         await Hive.initFlutter();
         // TODO(arenukvern): remove old stores after migration
         // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
@@ -34,7 +38,6 @@ class AppStoreInitializer extends StatelessWidget {
         );
         await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
         await Hive.openBox<StoryProject>(HiveBoxesIds.storyProjectKey);
-        onInitialized(true);
         return true;
       })(),
       builder: (final context, final snapshot) {

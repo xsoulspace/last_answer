@@ -99,8 +99,8 @@ flutter:
   assets:
     - assets/
     - assets/icons/
-    # - assets/promo/
     - google_fonts/
+    # - assets/promo/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

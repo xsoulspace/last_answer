@@ -7,10 +7,10 @@ part of 'settings.dart';
 /// uses the SettingsService to store and retrieve user settings.
 // ignore: prefer_mixin
 class SettingsController with ChangeNotifier {
-  SettingsController(this._settingsService);
+  SettingsController({required final this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
-  final SettingsService _settingsService;
+  final SettingsService settingsService;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
@@ -23,7 +23,7 @@ class SettingsController with ChangeNotifier {
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   Future<void> load() async {
-    _themeMode = await _settingsService.themeMode();
+    _themeMode = await settingsService.themeMode();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -44,12 +44,13 @@ class SettingsController with ChangeNotifier {
 
     // Persist the changes to a local database or the internet using the
     // SettingService.
-    await _settingsService.updateThemeMode(newThemeMode);
+    await settingsService.updateThemeMode(newThemeMode);
   }
 
-  void notifyOnWorkspaceChange() {
-    notifyListeners();
-  }
+  /// required to load states only once
+  bool appInitialStateLoaded = false;
+
+  void notifyOnWorkspaceChange() => notifyListeners();
 }
 
 /// Provides the current [SettingsController] to descendent widgets in the tree.

@@ -7,27 +7,27 @@ import 'package:lastanswer/screens/settings/settings.dart';
 class AppStoreInitializer extends StatelessWidget {
   const AppStoreInitializer({
     required final this.child,
-    required final this.initialized,
-    required final this.onInitialized,
     final Key? key,
   }) : super(key: key);
   final Widget child;
-  final bool initialized;
-  final ValueChanged<bool> onInitialized;
   @override
   Widget build(final BuildContext context) {
-    if (initialized) return child;
+    final settings = SettingsStateScope.of(context);
+    if (settings.appInitialStateLoaded) return child;
     return FutureBuilder<bool>(
       future: () async {
-        if (initialized) return true;
-        onInitialized(true);
+        if (settings.appInitialStateLoaded) return true;
+        settings.appInitialStateLoaded = true;
         await SettingsStateScope.of(context).load();
+        // TODO(arenukvern): make migration logic
         // TODO(arenukvern): remove old stores after migration
-        // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
-        // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
         await Hive.openBox<bool>(HiveBoxesIds.darkModeKey);
         await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
         await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
+        // await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
+        // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
+        // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+
         await Hive.openBox<IdeaProjectAnswer>(
           HiveBoxesIds.ideaProjectAnswerKey,
         );

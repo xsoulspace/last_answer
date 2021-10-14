@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 part of widgets;
 
 // Copyright 2014 The Flutter Authors. All rights reserved.
@@ -127,32 +129,30 @@ class SvgIconButton extends StatelessWidget {
   /// The [icon] argument must be specified, and is typically either an [Icon]
   /// or an [ImageIcon].
   const SvgIconButton({
-    required this.onPressed,
-    required this.svg,
-    Key? key,
-    this.iconSize = 24.0,
-    this.visualDensity,
-    this.padding = const EdgeInsets.all(8.0),
-    this.alignment = Alignment.center,
-    this.splashRadius,
-    this.color,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
-    this.splashColor,
-    this.disabledColor,
-    this.mouseCursor = SystemMouseCursors.click,
-    this.focusNode,
-    this.autofocus = false,
-    this.tooltip,
-    this.enableFeedback = true,
-    this.constraints,
-  })  : assert(iconSize != null),
-        assert(padding != null),
-        assert(alignment != null),
-        assert(splashRadius == null || splashRadius > 0),
-        assert(autofocus != null),
-        assert(svg != null),
+    required final this.onPressed,
+    required final this.svg,
+    final Key? key,
+    final this.iconSize = 24.0,
+    final this.visualDensity,
+    final this.padding = const EdgeInsets.all(8.0),
+    final this.alignment = Alignment.center,
+    final this.splashRadius,
+    final this.color,
+    final this.focusColor,
+    final this.hoverColor,
+    final this.highlightColor,
+    final this.splashColor,
+    final this.disabledColor,
+    final this.mouseCursor = SystemMouseCursors.click,
+    final this.focusNode,
+    final this.autofocus = false,
+    final this.tooltip,
+    final this.enableFeedback = true,
+    final this.constraints,
+  })  : assert(
+          splashRadius == null || splashRadius > 0,
+          'splashRadius has to be filled',
+        ),
         super(key: key);
 
   /// The size of the icon inside the button.
@@ -210,7 +210,7 @@ class SvgIconButton extends StatelessWidget {
   /// This property must not be null.
   ///
   /// See [Icon], [ImageIcon].
-  final SvgPicture svg;
+  final SvgGenImage svg;
 
   /// The color for the button's icon when it has the input focus.
   ///
@@ -313,14 +313,15 @@ class SvgIconButton extends StatelessWidget {
   final BoxConstraints? constraints;
 
   @override
-  Widget build(BuildContext context) {
-    assert(debugCheckHasMaterial(context));
+  Widget build(final BuildContext context) {
+    assert(debugCheckHasMaterial(context), 'debugCheckHasMaterial context');
     final ThemeData theme = Theme.of(context);
     Color? currentColor;
-    if (onPressed != null)
-      currentColor = color;
-    else
+    if (onPressed != null) {
+      currentColor = color ?? Theme.of(context).iconTheme.color;
+    } else {
       currentColor = disabledColor ?? theme.disabledColor;
+    }
 
     final VisualDensity effectiveVisualDensity =
         visualDensity ?? theme.visualDensity;
@@ -337,13 +338,11 @@ class SvgIconButton extends StatelessWidget {
       constraints: adjustedConstraints,
       child: Padding(
         padding: padding,
-        child: SizedBox(
+        child: svg.svg(
+          alignment: alignment,
           height: iconSize,
           width: iconSize,
-          child: Align(
-            alignment: alignment,
-            child: svg,
-          ),
+          color: currentColor,
         ),
       ),
     );
@@ -373,7 +372,8 @@ class SvgIconButton extends StatelessWidget {
             math.max(
               Material.defaultSplashRadius,
               (iconSize + math.min(padding.horizontal, padding.vertical)) * 0.7,
-              // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
+              // x 0.5 for diameter -> radius and + 40% overflow derived
+              //from other Material apps.
             ),
         child: result,
       ),
@@ -381,23 +381,39 @@ class SvgIconButton extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Widget>('svg', svg, showName: false))
+      ..add(DiagnosticsProperty<SvgGenImage>('svg', svg, showName: false))
       ..add(
-          StringProperty('tooltip', tooltip, defaultValue: null, quoted: false))
-      ..add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed,
-          ifNull: 'disabled'))
+        StringProperty('tooltip', tooltip, defaultValue: null, quoted: false),
+      )
+      ..add(
+        ObjectFlagProperty<VoidCallback>(
+          'onPressed',
+          onPressed,
+          ifNull: 'disabled',
+        ),
+      )
       ..add(ColorProperty('color', color, defaultValue: null))
       ..add(ColorProperty('disabledColor', disabledColor, defaultValue: null))
       ..add(ColorProperty('hoverColor', hoverColor, defaultValue: null))
       ..add(ColorProperty('highlightColor', highlightColor, defaultValue: null))
       ..add(ColorProperty('splashColor', splashColor, defaultValue: null))
-      ..add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
-          defaultValue: null))
-      ..add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
-          defaultValue: null))
+      ..add(
+        DiagnosticsProperty<EdgeInsetsGeometry>(
+          'padding',
+          padding,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<FocusNode>(
+          'focusNode',
+          focusNode,
+          defaultValue: null,
+        ),
+      )
       ..add(DiagnosticsProperty<BoxConstraints?>('constraints', constraints))
       ..add(DiagnosticsProperty<bool>('enableFeedback', enableFeedback))
       ..add(DoubleProperty('splashRadius', splashRadius))
@@ -407,6 +423,7 @@ class SvgIconButton extends StatelessWidget {
       ..add(DoubleProperty('iconSize', iconSize))
       ..add(DiagnosticsProperty<MouseCursor>('mouseCursor', mouseCursor))
       ..add(
-          DiagnosticsProperty<VisualDensity?>('visualDensity', visualDensity));
+        DiagnosticsProperty<VisualDensity?>('visualDensity', visualDensity),
+      );
   }
 }

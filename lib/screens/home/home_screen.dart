@@ -2,7 +2,6 @@ part of home;
 
 const _leftPadding = 2.0;
 const _leftColumnWidth = 42.0;
-const _rightColumnX = 42.0;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -17,11 +16,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     // TODO(arenukvern): make the welcome dependant from platform day time
-    const welcome = 'Good evening';
-    final widgetSize = MediaQuery.of(context).size;
+    const _welcome = 'Good evening';
+    final _widgetSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(welcome),
+        title: const Text(_welcome),
         elevation: 0,
         backgroundColor: Colors.transparent,
         actions: [
@@ -31,7 +30,6 @@ class HomeScreen extends StatelessWidget {
               throw UnimplementedError();
             },
             icon: const Icon(Icons.info),
-            key: const Key(HomeScreenKeys.iconButtonInfo),
           ),
           IconButton(
             onPressed: () {
@@ -39,30 +37,18 @@ class HomeScreen extends StatelessWidget {
               throw UnimplementedError();
             },
             icon: const Icon(Icons.settings),
-            key: const Key(HomeScreenKeys.iconButtonSettings),
           ),
         ],
       ),
-      body: Stack(
+      body: Row(
         children: [
-          Positioned.fromRect(
-            rect: Rect.fromPoints(
-              const Offset(_leftPadding, 0),
-              Offset(
-                _leftColumnWidth + _leftPadding,
-                widgetSize.height,
-              ),
-            ),
-            child: const VerticalProjectBar(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: const [
+              VerticalProjectBar(),
+            ],
           ),
-          Positioned.fromRect(
-            rect: Rect.fromPoints(
-              const Offset(_rightColumnX, 0),
-              Offset(
-                widgetSize.width,
-                widgetSize.height,
-              ),
-            ),
+          Expanded(
             child: ListView.separated(
               // TODO(arenukvern): add project tile
               itemBuilder: (final _, final __) => Container(),
@@ -70,33 +56,11 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 3),
               // TODO(arenukvern): get projects count
               itemCount: 1,
-              key: const Key(HomeScreenKeys.projectsList),
             ),
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(
-        ObjectFlagProperty<VoidCallback>.has(
-          'onCreateIdeaTap',
-          onCreateIdeaTap,
-        ),
-      )
-      ..add(
-        ObjectFlagProperty<VoidCallback>.has('onSettingsTap', onSettingsTap),
-      )
-      ..add(
-        ObjectFlagProperty<ValueChanged<BasicProject>>.has(
-          'onProjectTap',
-          onProjectTap,
-        ),
-      );
   }
 }
 
@@ -106,28 +70,31 @@ class VerticalProjectBar extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(final BuildContext context) => Container(
-        // TODO(arenukvern): add gradient
-        decoration: const BoxDecoration(),
-        child: Column(
-          children: [
-            SvgIconButton(
-              onPressed: () {
-                // TODO(arenukvern): add push for settings widget
-                throw UnimplementedError();
-              },
-              svg: Assets.icons.idea.svg(),
-              key: const Key(HomeScreenKeys.iconButtonIdea),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO(arenukvern): add push for settings widget
-                throw UnimplementedError();
-              },
-              icon: const Icon(Icons.book),
-              key: const Key(HomeScreenKeys.iconButtonNote),
-            ),
-          ],
-        ),
-      );
+  Widget build(final BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      // TODO(arenukvern): add gradient
+      decoration: const BoxDecoration(),
+      child: Wrap(
+        direction: Axis.vertical,
+        runSpacing: 10,
+        children: [
+          SvgIconButton(
+            onPressed: () {
+              // TODO(arenukvern): add push for settings widget
+              throw UnimplementedError();
+            },
+            svg: Assets.icons.idea,
+          ),
+          IconButton(
+            onPressed: () {
+              // TODO(arenukvern): add push for settings widget
+              throw UnimplementedError();
+            },
+            icon: const Icon(Icons.book),
+          ),
+        ],
+      ),
+    );
+  }
 }

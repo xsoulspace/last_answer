@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/screens/app/app_store_initializer.dart';
 import 'package:lastanswer/screens/app_navigator/app_navigator.dart';
@@ -15,13 +14,16 @@ class AppProvider extends StatelessWidget {
   const AppProvider({final Key? key}) : super(key: key);
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
-  static final _settings = SettingsController(SettingsService());
+  static final _settings =
+      SettingsController(settingsService: SettingsService());
 
   @override
-  Widget build(final BuildContext context) => SettingsStateScope(
-        notifier: _settings,
-        child: const AppScaffold(),
-      );
+  Widget build(final BuildContext context) {
+    return SettingsStateScope(
+      notifier: _settings,
+      child: const AppScaffold(),
+    );
+  }
 }
 
 class AppScaffold extends StatefulHookWidget {
@@ -61,11 +63,8 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   @override
   Widget build(final BuildContext context) {
-    final isInitialized = useIsBool();
     final settings = SettingsStateScope.of(context);
     return AppStoreInitializer(
-      initialized: isInitialized.value,
-      onInitialized: (final v) => isInitialized.value = v,
       child: RouteStateScope(
         notifier: routeState,
         child: AnimatedBuilder(

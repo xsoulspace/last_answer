@@ -24,11 +24,11 @@
     "body": "import 'package:lastanswer/library/theme/theme.dart';"
   },
   "widgets": {
-    "prefix": "wdgs",
+    "prefix": "widgets",
     "body": "import 'package:lastanswer/library/widgets/widgets.dart';"
   },
   "assets": {
-    "prefix": "ass",
+    "prefix": "assets",
     "body": "import 'package:lastanswer/gen/assets.gen.dart';"
   }
 }

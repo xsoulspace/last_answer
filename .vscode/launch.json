@@ -38,7 +38,7 @@
       "name": "Flutter for android",
       "type": "dart",
       "request": "launch",
-      "args": ["-d", "gphone"]
+      "args": ["-d", "emulator"]
     }
   ]
 }

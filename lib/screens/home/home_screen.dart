@@ -1,6 +1,5 @@
 part of home;
 
-const _leftPadding = 2.0;
 const _leftColumnWidth = 42.0;
 
 class HomeScreen extends StatelessWidget {
@@ -40,24 +39,33 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Row(
+      body: Column(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: const [
-              VerticalProjectBar(),
-            ],
-          ),
           Expanded(
-            child: ListView.separated(
-              // TODO(arenukvern): add project tile
-              itemBuilder: (final _, final __) => Container(),
-              separatorBuilder: (final _, final __) =>
-                  const SizedBox(height: 3),
-              // TODO(arenukvern): get projects count
-              itemCount: 1,
+            child: Row(
+              children: [
+                const SizedBox(height: 2),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    VerticalProjectBar(),
+                    SizedBox(height: 14),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    // TODO(arenukvern): add project tile
+                    itemBuilder: (final _, final __) => Container(),
+                    separatorBuilder: (final _, final __) =>
+                        const SizedBox(height: 3),
+                    // TODO(arenukvern): get projects count
+                    itemCount: 1,
+                  ),
+                ),
+              ],
             ),
           ),
+          const SafeAreaBottom(),
         ],
       ),
     );
@@ -71,29 +79,42 @@ class VerticalProjectBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      // TODO(arenukvern): add gradient
-      decoration: const BoxDecoration(),
-      child: Wrap(
-        direction: Axis.vertical,
-        runSpacing: 10,
-        children: [
-          SvgIconButton(
-            onPressed: () {
-              // TODO(arenukvern): add push for settings widget
-              throw UnimplementedError();
-            },
-            svg: Assets.icons.idea,
-          ),
-          IconButton(
-            onPressed: () {
-              // TODO(arenukvern): add push for settings widget
-              throw UnimplementedError();
-            },
-            icon: const Icon(Icons.book),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 14,
+        right: 14,
+        bottom: 8,
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        // TODO(arenukvern): add gradient
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: Theme.of(context).splashColor,
+        ),
+        child: Wrap(
+          direction: Axis.vertical,
+          spacing: 16,
+          children: [
+            IconIdeaButton(
+              onTap: () {
+                // TODO(arenukvern): add push for settings widget
+                throw UnimplementedError();
+              },
+            ),
+            Text(
+              S.current.idea,
+              style: Theme.of(context).textTheme.caption,
+            ),
+            IconButton(
+              onPressed: () {
+                // TODO(arenukvern): add push for settings widget
+                throw UnimplementedError();
+              },
+              icon: const Icon(Icons.book),
+            ),
+          ],
+        ),
       ),
     );
   }

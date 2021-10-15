@@ -11,6 +11,9 @@ final lightThemeData = _lightBase.copyWith(
     elevation: 0,
     foregroundColor: AppColors.black,
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    isDense: true,
+  ),
 );
 
 final _darkBase = ThemeData.from(
@@ -23,5 +26,8 @@ final darkThemeData = _darkBase.copyWith(
     backgroundColor: Colors.transparent,
     elevation: 0,
     foregroundColor: AppColors.white,
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    isDense: true,
   ),
 );

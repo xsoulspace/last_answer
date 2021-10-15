@@ -19,6 +19,16 @@
     "description": "yes",
     "type": "text"
   },
+  "createIdeaHelperText": "Создать туториал",
+  "@createIdeaHelperText": {
+    "description": "createIdeaHelperText",
+    "type": "text"
+  },
+  "whatsYourIdea": "В чём идея?",
+  "@whatsYourIdea": {
+    "description": "What's your idea? label",
+    "type": "text"
+  },
   "noProjectsYet": "Тут пока пусто",
   "@noProjectsYet": {
     "description": "text if no projects created",

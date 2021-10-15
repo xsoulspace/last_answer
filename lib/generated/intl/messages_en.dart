@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
         "cancel": MessageLookupByLibrary.simpleMessage("CANCEL"),
         "close": MessageLookupByLibrary.simpleMessage("CLOSE"),
+        "createIdeaHelperText":
+            MessageLookupByLibrary.simpleMessage("Create tutorial"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dark mode"),
         "delete": MessageLookupByLibrary.simpleMessage("DELETE"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
@@ -68,6 +70,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "projectWillBeLost": MessageLookupByLibrary.simpleMessage(
             "answers will be lost forever"),
         "titleWith": MessageLookupByLibrary.simpleMessage("с"),
+        "whatsYourIdea":
+            MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
         "yes": MessageLookupByLibrary.simpleMessage("YES")
       };
 }

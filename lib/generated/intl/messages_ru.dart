@@ -38,6 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
         "cancel": MessageLookupByLibrary.simpleMessage("ОТМЕНИТЬ"),
         "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
+        "createIdeaHelperText":
+            MessageLookupByLibrary.simpleMessage("Создать туториал"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Ночной режим"),
         "delete": MessageLookupByLibrary.simpleMessage("УДАЛИТЬ"),
         "idea": MessageLookupByLibrary.simpleMessage("Идея"),
@@ -66,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "projectWillBeLost": MessageLookupByLibrary.simpleMessage(
             "ответами будет потерян безвозвратно"),
         "titleWith": MessageLookupByLibrary.simpleMessage("с"),
+        "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")
       };
 }

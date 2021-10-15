@@ -57,8 +57,15 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.separated(
+                    padding: const EdgeInsets.all(5),
+                    reverse: true,
                     restorationId: 'projects',
-                    itemBuilder: (final _, final __) => Container(),
+                    itemBuilder: (final _, final __) {
+                      final key = '';
+                      return ProjectTile(
+                        key: ValueKey(key),
+                      );
+                    },
                     separatorBuilder: (final _, final __) =>
                         const SizedBox(height: 3),
                     // TODO(arenukvern): get projects count

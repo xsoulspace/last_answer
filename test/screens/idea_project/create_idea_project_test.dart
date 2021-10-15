@@ -4,8 +4,11 @@ import 'package:lastanswer/screens/idea_project/idea_project.dart';
 
 void main() {
   // TODO(arenukvern): switch locale to english
-  Widget getScreenWidget() => const MaterialApp(
-        home: CreateIdeaProjectScreen(),
+  Widget getScreenWidget() => MaterialApp(
+        home: CreateIdeaProjectScreen(
+          onBack: () {},
+          onCreate: (final _) {},
+        ),
       );
 
   group('[create idea project screen]', () {

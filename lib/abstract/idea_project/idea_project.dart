@@ -13,6 +13,7 @@ class IdeaProject extends BasicProject {
           id: id,
           title: title,
           isCompleted: isCompleted,
+          updated: created,
         );
 
   @HiveField(projectLatestFieldHiveId + 1)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
@@ -19,9 +20,11 @@ class AppProvider extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return SettingsStateScope(
-      notifier: _settings,
-      child: const AppScaffold(),
+    return ProviderScope(
+      child: SettingsStateScope(
+        notifier: _settings,
+        child: const AppScaffold(),
+      ),
     );
   }
 }

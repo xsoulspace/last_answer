@@ -74,6 +74,8 @@ class _AppScaffoldState extends State<AppScaffold> {
           animation: settings,
           builder: (final context, final child) {
             return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+
               /// Providing a restorationScopeId allows the Navigator built by
               /// the MaterialApp to restore the navigation stack when a user
               /// leaves and returns to the app after it has been killed while

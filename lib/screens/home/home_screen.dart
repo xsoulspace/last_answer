@@ -24,8 +24,6 @@ class HomeScreen extends StatelessWidget {
           _welcome,
           style: Theme.of(context).textTheme.headline1,
         ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             onPressed: onInfoTap,

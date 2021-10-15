@@ -58,12 +58,10 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             key: _homeKey,
             child: HomeScreen(
               onInfoTap: () {},
-              onCreateIdeaTap: () {},
+              onCreateIdeaTap: () => routeState.go(AppRoutesName.createIdea),
               onCreateNoteTap: () {},
               onProjectTap: (final _) {},
-              onSettingsTap: () {
-                routeState.go(AppRoutesName.settings);
-              },
+              onSettingsTap: () => routeState.go(AppRoutesName.settings),
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.settings)

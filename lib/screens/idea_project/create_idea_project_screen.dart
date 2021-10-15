@@ -17,30 +17,45 @@ class CreateIdeaProjectScreen extends HookWidget {
           onPressed: onBack,
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const IconIdeaButton(size: 76),
-            const SizedBox(height: 44),
-            Text(
-              S.current.whatsYourIdea,
-              style: Theme.of(context).textTheme.headline1,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 87),
-            TextField(
-              controller: textController,
-              decoration: InputDecoration(
-                helperText: S.current.createIdeaHelperText,
-                border: const UnderlineInputBorder(),
-                suffixIcon: IconButton(
-                  onPressed: () => onCreate(textController.text),
-                  icon: const Icon(Icons.send),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 8),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const IconIdeaButton(size: 76),
+              const SizedBox(height: 44),
+              Text(
+                S.current.whatsYourIdea,
+                style: Theme.of(context).textTheme.headline1,
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              const SizedBox(height: 87),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: textController,
+                      maxLength: 90,
+                      style: Theme.of(context).textTheme.headline1,
+                      decoration: const InputDecoration()
+                          .applyDefaults(Theme.of(context).inputDecorationTheme)
+                          .copyWith(
+                            hintText: S.current.createIdeaHelperText,
+                            border: const UnderlineInputBorder(),
+                          ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  IconButton(
+                    onPressed: () => onCreate(textController.text),
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

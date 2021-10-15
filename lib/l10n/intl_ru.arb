@@ -2,80 +2,72 @@
   "language": "Язык",
   "@language": {
     "description": "пункт меню язык",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "darkMode": "Ночной режим",
   "@darkMode": {
     "description": "menu title Dark mode",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "languageWillBeChanged": "будет установлен как основной язык. Приложение будет перезагружено, продолжить?",
   "@languageWillBeChanged": {
     "description": "languageWillBeChanged",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "yes": "ДА",
   "@yes": {
     "description": "yes",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "idea": "Идея",
   "@idea": {
     "description": "idea name",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
+  },
+  "note": "Заметка",
+  "@note": {
+    "description": "Note name",
+    "type": "text"
   },
   "cancel": "ОТМЕНИТЬ",
   "@cancel": {
     "description": "Отменить",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "close": "ЗАКРЫТЬ",
   "@close": {
     "description": "Закрыть",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "delete": "УДАЛИТЬ",
   "@delete": {
     "description": "Удалить",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "successfullySaved": "Успешно сохранено!",
   "@successfullySaved": {
     "description": "Successfully saved",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "successfullyDeleted": "Успешно удалено!",
   "@successfullyDeleted": {
     "description": "Successfully deleted",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "areYouSure": "Вы уверены?",
   "@areYouSure": {
     "description": "Вы уверены",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "titleWith": "с",
   "@titleWith": {
     "description": "with",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "projectWillBeLost": "ответами будет потерян безвозвратно",
   "@projectWillBeLost": {
     "description": "Project removal warning",
     "type": "text",
-    "placeholders": {},
     "args": [
       "answersLength",
       "projectTitle"
@@ -85,7 +77,6 @@
   "@answerWillBeLost": {
     "description": "Answer removal warning",
     "type": "text",
-    "placeholders": {},
     "args": [
       "answerTitle"
     ]
@@ -93,103 +84,86 @@
   "lastAnswer": "Последний ответ",
   "@lastAnswer": {
     "description": "пункт меню последний ответ",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "answer": "Ответ",
   "@answer": {
     "description": "ввод ответа",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "newQuestStart": "начать",
   "@newQuestStart": {
     "description": "popup новый начать",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyInspirationTitle": "Вдохновление",
   "@philosophyInspirationTitle": {
     "description": "Inspiration",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractWhatElse": "Что ещё?",
   "@philosophyAbstractWhatElse": {
     "description": "What else",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractFiveWhyesWhat": "Можно использовать: \"Пять почему\"",
   "@philosophyAbstractFiveWhyesWhat": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractFiveWhyesWhy": "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",
   "@philosophyAbstractFiveWhyesWhy": {
     "description": "Description of Five Whyes",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractPDSAWhy": "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",
   "@philosophyAbstractPDSAWhy": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractPDSAWhat": "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",
   "@philosophyAbstractPDSAWhat": {
     "description": "Description of PDSA",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractSixSigmaWhy": "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",
   "@philosophyAbstractSixSigmaWhy": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractSixSigmaWhat": "Ещё можно использовать: \"Шесть сигм\" ",
   "@philosophyAbstractSixSigmaWhat": {
     "description": "Description of Six Sigma",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "about": "О приложении",
   "@about": {
     "description": "About Abstract title",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractWhatFor": "Зачем?",
   "@aboutAbstractWhatFor": {
     "description": "What For About Abstract",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractWhatForDescription": "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractHowDescription": "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",
   "@aboutAbstractHowDescription": {
     "description": "Description of About Abstract How Description",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
   "@aboutAbstractIdeasImprovementsBugs": {
     "description": "Ideas Improvements Bugs",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractIdeasImprovementsBugsDescription": "Отправляйте ваше мнение на idea@xsoulspace.dev или напишите отзыв. Спасибо что используете приложение и хорошего дня, полного идей и впечатлений!",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   }
 }

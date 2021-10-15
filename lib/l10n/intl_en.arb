@@ -2,140 +2,122 @@
   "language": "Language",
   "@language": {
     "description": "menu title language",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "darkMode": "Dark mode",
   "@darkMode": {
     "description": "menu title Dark mode",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "languageWillBeChanged": "will be set as a new language. The app will be reloaded, continue?",
   "@languageWillBeChanged": {
     "description": "languageWillBeChanged",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "yes": "YES",
   "@yes": {
     "description": "yes",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "lastAnswer": "Last Answer",
   "@lastAnswer": {
     "description": "menu title Last answer",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "idea": "Idea",
   "@idea": {
     "description": "idea name",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
+  },
+  "note": "Note",
+  "@note": {
+    "description": "Note name",
+    "type": "text"
   },
   "answer": "Answer",
   "@answer": {
     "description": "answer input",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "cancel": "CANCEL",
   "@cancel": {
     "description": "popup start cancel",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "close": "CLOSE",
   "@close": {
     "description": "Close",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyInspirationTitle": "Inspiration",
   "@philosophyInspirationTitle": {
     "description": "Inspiration",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractWhatElse": "What else?",
   "@philosophyAbstractWhatElse": {
     "description": "What else",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractFiveWhyesWhat": "You can use: \"Five whys\"",
   "@philosophyAbstractFiveWhyesWhat": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractFiveWhyesWhy": "Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys",
   "@philosophyAbstractFiveWhyesWhy": {
     "description": "Description of Five Whyes",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractPDSAWhy": "Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA",
   "@philosophyAbstractPDSAWhy": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractPDSAWhat": "You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" ",
   "@philosophyAbstractPDSAWhat": {
     "description": "Description of PDSA",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractSixSigmaWhy": "Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma",
   "@philosophyAbstractSixSigmaWhy": {
     "description": "Method that you can use",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "philosophyAbstractSixSigmaWhat": "You can use: \"Six Sigma\"",
   "@philosophyAbstractSixSigmaWhat": {
     "description": "Description of Six Sigma",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "about": "About",
   "@about": {
     "description": "About title",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractWhatFor": "What for?",
   "@aboutAbstractWhatFor": {
     "description": "What For About Abstract",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "delete": "DELETE",
   "@delete": {
     "description": "delete",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "areYouSure": "Are you sure?",
   "@areYouSure": {
     "description": "Are you sure",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "titleWith": "с",
   "@titleWith": {
     "description": "with",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "projectWillBeLost": "answers will be lost forever",
   "@projectWillBeLost": {
     "description": "Project removal warning",
     "type": "text",
-    "placeholders": {},
     "args": [
       "answersLength",
       "projectTitle"
@@ -144,31 +126,26 @@
   "answerWillBeLost": "will be lost forever",
   "@answerWillBeLost": {
     "description": "Answer removal warning",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractWhatForDescription": "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
   "@aboutAbstractWhatForDescription": {
     "description": "Description of About Abstract",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractHowDescription": "You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.",
   "@aboutAbstractHowDescription": {
     "description": "Description of About Abstract How Description",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractIdeasImprovementsBugs": "Ideas Improvements Bugs?",
   "@aboutAbstractIdeasImprovementsBugs": {
     "description": "Ideas Improvements Bugs",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   },
   "aboutAbstractIdeasImprovementsBugsDescription": "Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
     "description": "Ideas Improvements Bugs description",
-    "type": "text",
-    "placeholders": {}
+    "type": "text"
   }
 }

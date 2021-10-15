@@ -110,6 +110,16 @@ class S {
     );
   }
 
+  /// `Note`
+  String get note {
+    return Intl.message(
+      'Note',
+      name: 'note',
+      desc: 'Note name',
+      args: [],
+    );
+  }
+
   /// `Answer`
   String get answer {
     return Intl.message(

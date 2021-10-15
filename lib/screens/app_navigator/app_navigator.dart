@@ -50,6 +50,7 @@ class _AppNavigatorState extends State<AppNavigator> {
           MaterialPage<void>(
             key: _homeKey,
             child: HomeScreen(
+              onInfoTap: () {},
               onCreateIdeaTap: () {},
               onProjectTap: (final _) {},
               onSettingsTap: () {},

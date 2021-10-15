@@ -45,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
             "будет установлен как основной язык. Приложение будет перезагружено, продолжить?"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
+        "note": MessageLookupByLibrary.simpleMessage("Заметка"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Можно использовать: \"Пять почему\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(

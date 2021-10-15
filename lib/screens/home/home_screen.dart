@@ -1,40 +1,36 @@
 part of home;
 
-const _leftColumnWidth = 42.0;
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     required final this.onProjectTap,
     required final this.onSettingsTap,
+    required final this.onInfoTap,
     required final this.onCreateIdeaTap,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<BasicProject> onProjectTap;
   final VoidCallback onSettingsTap;
+  final VoidCallback onInfoTap;
   final VoidCallback onCreateIdeaTap;
   @override
   Widget build(final BuildContext context) {
     // TODO(arenukvern): make the welcome dependant from platform day time
     const _welcome = 'Good evening';
-    final _widgetSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(_welcome),
+        title: Text(
+          _welcome,
+          style: Theme.of(context).textTheme.headline1,
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO(arenukvern): add push for info widget
-              throw UnimplementedError();
-            },
+            onPressed: onInfoTap,
             icon: const Icon(Icons.info),
           ),
           IconButton(
-            onPressed: () {
-              // TODO(arenukvern): add push for settings widget
-              throw UnimplementedError();
-            },
+            onPressed: onSettingsTap,
             icon: const Icon(Icons.settings),
           ),
         ],
@@ -45,16 +41,19 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               children: [
                 const SizedBox(height: 2),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    VerticalProjectBar(),
-                    SizedBox(height: 14),
-                  ],
+                ColoredBox(
+                  color: Theme.of(context).primaryColor.withOpacity(.03),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      VerticalProjectBar(),
+                      SizedBox(height: 14),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: ListView.separated(
-                    // TODO(arenukvern): add project tile
+                    restorationId: 'projects',
                     itemBuilder: (final _, final __) => Container(),
                     separatorBuilder: (final _, final __) =>
                         const SizedBox(height: 3),
@@ -76,17 +75,21 @@ class VerticalProjectBar extends StatelessWidget {
   const VerticalProjectBar({
     final Key? key,
   }) : super(key: key);
-
+  void onIdea() {}
+  void onNote() {}
   @override
   Widget build(final BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 14,
-        right: 14,
+        left: 6,
+        right: 6,
         bottom: 8,
       ),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: 6,
+        ),
         // TODO(arenukvern): add gradient
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
@@ -96,22 +99,59 @@ class VerticalProjectBar extends StatelessWidget {
           direction: Axis.vertical,
           spacing: 16,
           children: [
-            IconIdeaButton(
-              onTap: () {
-                // TODO(arenukvern): add push for settings widget
-                throw UnimplementedError();
-              },
+            BarItem(
+              onTap: onIdea,
+              label: S.current.idea,
+              child: IconIdeaButton(
+                onTap: onIdea,
+              ),
             ),
-            Text(
-              S.current.idea,
-              style: Theme.of(context).textTheme.caption,
+            BarItem(
+              onTap: onNote,
+              label: S.current.note,
+              child: IconButton(
+                onPressed: onNote,
+                icon: const Icon(Icons.book),
+              ),
             ),
-            IconButton(
-              onPressed: () {
-                // TODO(arenukvern): add push for settings widget
-                throw UnimplementedError();
-              },
-              icon: const Icon(Icons.book),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BarItem extends StatelessWidget {
+  const BarItem({
+    required final this.onTap,
+    required final this.child,
+    required final this.label,
+    final Key? key,
+  }) : super(key: key);
+  final VoidCallback onTap;
+  final Widget child;
+  final String label;
+  @override
+  Widget build(final BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        height: 56,
+        child: Stack(
+          children: [
+            SizedBox(
+              height: 50,
+              child: child,
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
           ],
         ),

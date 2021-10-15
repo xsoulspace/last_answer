@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
             "will be set as a new language. The app will be reloaded, continue?"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
+        "note": MessageLookupByLibrary.simpleMessage("Note"),
         "philosophyAbstractFiveWhyesWhat":
             MessageLookupByLibrary.simpleMessage("You can use: \"Five whys\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(

@@ -24,6 +24,16 @@
     "description": "text if no projects created",
     "type": "text"
   },
+  "createIdeaHelperText": "Create tutorial",
+  "@createIdeaHelperText": {
+    "description": "createIdeaHelperText",
+    "type": "text"
+  },
+  "whatsYourIdea": "What's your idea?",
+  "@whatsYourIdea": {
+    "description": "What's your idea? label",
+    "type": "text"
+  },
   "lastAnswer": "Last Answer",
   "@lastAnswer": {
     "description": "menu title Last answer",

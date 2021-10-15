@@ -100,6 +100,26 @@ class S {
     );
   }
 
+  /// `Create tutorial`
+  String get createIdeaHelperText {
+    return Intl.message(
+      'Create tutorial',
+      name: 'createIdeaHelperText',
+      desc: 'createIdeaHelperText',
+      args: [],
+    );
+  }
+
+  /// `What's your idea?`
+  String get whatsYourIdea {
+    return Intl.message(
+      'What\'s your idea?',
+      name: 'whatsYourIdea',
+      desc: 'What\'s your idea? label',
+      args: [],
+    );
+  }
+
   /// `Last Answer`
   String get lastAnswer {
     return Intl.message(

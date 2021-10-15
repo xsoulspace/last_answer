@@ -1,7 +1,11 @@
 library app_navigator;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/home/home.dart';
+import 'package:lastanswer/screens/idea_project/idea_project.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
@@ -9,7 +13,7 @@ part 'app_routes.dart';
 
 /// Builds the top-level navigator for the app. The pages to display are based
 /// on the `routeState` that was parsed by the TemplateRouteParser.
-class AppNavigator extends StatefulWidget {
+class AppNavigator extends ConsumerStatefulWidget {
   const AppNavigator({
     required final this.navigatorKey,
     required final this.routeState,
@@ -21,11 +25,11 @@ class AppNavigator extends StatefulWidget {
   _AppNavigatorState createState() => _AppNavigatorState();
 }
 
-class _AppNavigatorState extends State<AppNavigator> {
+class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
   final _settingsKey = const ValueKey<String>('settings');
   RouteState get routeState => widget.routeState;
-
+  void geHome() => routeState.go(AppRoutesName.home);
   @override
   Widget build(final BuildContext context) {
     return Navigator(
@@ -67,7 +71,22 @@ class _AppNavigatorState extends State<AppNavigator> {
           MaterialPage<void>(
             key: _settingsKey,
             child: SettingsScreen(
-              onBack: () => routeState.go(AppRoutesName.home),
+              onBack: geHome,
+            ),
+          )
+        else if (routeState.route.pathTemplate == AppRoutesName.createIdea)
+          // Display the sign in screen.
+          MaterialPage<void>(
+            key: _settingsKey,
+            child: CreateIdeaProjectScreen(
+              onBack: geHome,
+              onCreate: (final ideaTitle) async {
+                final idea = await IdeaProject.create(title: ideaTitle);
+                final ideas = ref.read(ideaProjectsProvider).state;
+                ideas[idea.id] = idea;
+                ref.read(ideaProjectsProvider).state = ideas;
+                // TODO(arenukvern): add go to idea screen
+              },
             ),
           )
         else

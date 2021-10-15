@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: widget.onInfoTap,
-            icon: const Icon(Icons.info),
+            icon: const Icon(Icons.info_outline),
           ),
           IconButton(
             onPressed: widget.onSettingsTap,

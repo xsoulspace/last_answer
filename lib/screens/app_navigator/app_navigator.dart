@@ -52,6 +52,7 @@ class _AppNavigatorState extends State<AppNavigator> {
             child: HomeScreen(
               onInfoTap: () {},
               onCreateIdeaTap: () {},
+              onCreateNoteTap: () {},
               onProjectTap: (final _) {},
               onSettingsTap: () {},
             ),

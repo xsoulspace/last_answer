@@ -6,12 +6,14 @@ class HomeScreen extends StatelessWidget {
     required final this.onSettingsTap,
     required final this.onInfoTap,
     required final this.onCreateIdeaTap,
+    required final this.onCreateNoteTap,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<BasicProject> onProjectTap;
   final VoidCallback onSettingsTap;
   final VoidCallback onInfoTap;
   final VoidCallback onCreateIdeaTap;
+  final VoidCallback onCreateNoteTap;
   @override
   Widget build(final BuildContext context) {
     // TODO(arenukvern): make the welcome dependant from platform day time
@@ -35,22 +37,26 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
+      body: Row(
         children: [
-          Expanded(
-            child: Row(
+          const SizedBox(height: 2),
+          ColoredBox(
+            color: Theme.of(context).primaryColor.withOpacity(.03),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(height: 2),
-                ColoredBox(
-                  color: Theme.of(context).primaryColor.withOpacity(.03),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
-                      VerticalProjectBar(),
-                      SizedBox(height: 14),
-                    ],
-                  ),
+                VerticalProjectBar(
+                  onIdeaTap: onCreateIdeaTap,
+                  onNoteTap: onCreateNoteTap,
                 ),
+                const SizedBox(height: 14),
+                const SafeAreaBottom(),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
                 Expanded(
                   child: ListView.separated(
                     restorationId: 'projects',
@@ -61,10 +67,10 @@ class HomeScreen extends StatelessWidget {
                     itemCount: 1,
                   ),
                 ),
+                const SafeAreaBottom(),
               ],
             ),
           ),
-          const SafeAreaBottom(),
         ],
       ),
     );
@@ -73,10 +79,12 @@ class HomeScreen extends StatelessWidget {
 
 class VerticalProjectBar extends StatelessWidget {
   const VerticalProjectBar({
+    required final this.onIdeaTap,
+    required final this.onNoteTap,
     final Key? key,
   }) : super(key: key);
-  void onIdea() {}
-  void onNote() {}
+  final VoidCallback onIdeaTap;
+  final VoidCallback onNoteTap;
   @override
   Widget build(final BuildContext context) {
     return Padding(
@@ -100,17 +108,17 @@ class VerticalProjectBar extends StatelessWidget {
           spacing: 16,
           children: [
             BarItem(
-              onTap: onIdea,
+              onTap: onIdeaTap,
               label: S.current.idea,
               child: IconIdeaButton(
-                onTap: onIdea,
+                onTap: onIdeaTap,
               ),
             ),
             BarItem(
-              onTap: onNote,
+              onTap: onNoteTap,
               label: S.current.note,
               child: IconButton(
-                onPressed: onNote,
+                onPressed: onNoteTap,
                 icon: const Icon(Icons.book),
               ),
             ),

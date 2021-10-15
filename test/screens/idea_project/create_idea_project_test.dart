@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/screens/idea_project/idea_project.dart';
 
-import '../../util_functions.dart';
-
 void main() {
   // TODO(arenukvern): switch locale to english
   Widget getScreenWidget() => const MaterialApp(
@@ -19,7 +17,7 @@ void main() {
         await tester.pumpWidget(screenWidget);
         await tester.pumpAndSettle();
 
-        testWidget(keyValue: CreateIdeaProjectScreenKeys.ideaCenterPicture);
+        // testWidget(keyValue: CreateIdeaProjectScreenKeys.ideaCenterPicture);
       },
     );
     testWidgets(
@@ -37,7 +35,7 @@ void main() {
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: CreateIdeaProjectScreenKeys.ideaNameField);
+      // testWidget(keyValue: CreateIdeaProjectScreenKeys.ideaNameField);
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.byIcon(Icons.send), findsOneWidget);
     });

@@ -7,7 +7,7 @@ class NoteProjectScreen extends StatelessWidget {
   }) : super(key: key);
   final ProjectId projectId;
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Container();
   }
 

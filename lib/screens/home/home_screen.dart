@@ -1,6 +1,6 @@
 part of home;
-
-class HomeScreen extends StatelessWidget {
+typedef ProjectSelectionChanged = void Function({required bool? selected, required final BasicProject project,});
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     required final this.onProjectTap,
     required final this.onSettingsTap,
@@ -14,6 +14,25 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onInfoTap;
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final selectedProjects = <ProjectId, BasicProject>{};
+  void changeProjectSelection({required final bool? selected, required final BasicProject project,}){
+    if(selected == true){
+      selectedProjects.remove(project.id);
+    } else {
+    selectedProjects[project.id] = project;
+
+    }
+  }
+  bool checkSelection(final BasicProject project)=>selectedProjects.containsKey(project.id);
+
+  
+
   @override
   Widget build(final BuildContext context) {
     // TODO(arenukvern): make the welcome dependant from platform day time
@@ -26,11 +45,11 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: onInfoTap,
+            onPressed: widget.onInfoTap,
             icon: const Icon(Icons.info),
           ),
           IconButton(
-            onPressed: onSettingsTap,
+            onPressed: widget.onSettingsTap,
             icon: const Icon(Icons.settings),
           ),
         ],
@@ -44,8 +63,8 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 VerticalProjectBar(
-                  onIdeaTap: onCreateIdeaTap,
-                  onNoteTap: onCreateNoteTap,
+                  onIdeaTap: widget.onCreateIdeaTap,
+                  onNoteTap: widget.onCreateNoteTap,
                 ),
                 const SizedBox(height: 14),
                 const SafeAreaBottom(),
@@ -64,6 +83,10 @@ class HomeScreen extends StatelessWidget {
                       final key = '';
                       return ProjectTile(
                         key: ValueKey(key),
+                        project: ,
+                        onSelected: changeProjectSelection,
+                        onTap: widget.onProjectTap ,
+                        checkSelection: checkSelection,
                       );
                     },
                     separatorBuilder: (final _, final __) =>

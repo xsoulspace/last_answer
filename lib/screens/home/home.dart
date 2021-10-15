@@ -7,4 +7,3 @@ import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 
 part 'home_screen.dart';
-part 'home_screen_keys.dart';

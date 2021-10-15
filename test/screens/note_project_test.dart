@@ -4,7 +4,6 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/note_project/note_project.dart';
 
 import '../abstract_setups.dart';
-import '../util_functions.dart';
 
 void main() {
   setupAbstractions([setupNoteProjectMockTypes]);
@@ -36,7 +35,7 @@ void main() {
       await tester.pumpWidget(screenWidget);
       await tester.pumpAndSettle();
 
-      testWidget(keyValue: NoteProjectScreenKeys.noteTextField);
+      // testWidget(keyValue: NoteProjectScreenKeys.noteTextField);
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.byIcon(Icons.done), findsOneWidget);
     });

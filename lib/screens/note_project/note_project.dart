@@ -5,4 +5,3 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 
 part 'note_project_screen.dart';
-part 'note_project_screen_keys.dart';

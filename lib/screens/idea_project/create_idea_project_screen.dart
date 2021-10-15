@@ -1,10 +1,10 @@
 part of idea_project;
 
 class CreateIdeaProjectScreen extends StatelessWidget {
-  const CreateIdeaProjectScreen({Key? key}) : super(key: key);
+  const CreateIdeaProjectScreen({final Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Container();
   }
 }

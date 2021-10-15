@@ -9,6 +9,7 @@ final lightThemeData = _lightBase.copyWith(
   appBarTheme: _lightBase.appBarTheme.copyWith(
     backgroundColor: Colors.transparent,
     elevation: 0,
+    foregroundColor: AppColors.black,
   ),
 );
 
@@ -21,5 +22,6 @@ final darkThemeData = _darkBase.copyWith(
   appBarTheme: _darkBase.appBarTheme.copyWith(
     backgroundColor: Colors.transparent,
     elevation: 0,
+    foregroundColor: AppColors.white,
   ),
 );

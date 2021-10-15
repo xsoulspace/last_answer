@@ -75,34 +75,34 @@ class AppTextStylesDark {
   static final largeTitle = AppTextStylesLight.largeTitle.copyWith(
     color: AppColors.white,
   );
-  static final title1 = AppTextStylesLight.largeTitle.copyWith(
+  static final title1 = AppTextStylesLight.title1.copyWith(
     color: AppColors.white,
   );
-  static final title2 = AppTextStylesLight.largeTitle.copyWith(
+  static final title2 = AppTextStylesLight.title2.copyWith(
     color: AppColors.white,
   );
-  static final title3 = AppTextStylesLight.largeTitle.copyWith(
+  static final title3 = AppTextStylesLight.title3.copyWith(
     color: AppColors.white,
   );
-  static final headline = AppTextStylesLight.largeTitle.copyWith(
+  static final headline = AppTextStylesLight.headline.copyWith(
     color: AppColors.white,
   );
-  static final subheadline = AppTextStylesLight.largeTitle.copyWith(
+  static final subheadline = AppTextStylesLight.subheadline.copyWith(
     color: AppColors.white,
   );
-  static final body = AppTextStylesLight.largeTitle.copyWith(
+  static final body = AppTextStylesLight.body.copyWith(
     color: AppColors.white,
   );
-  static final callout = AppTextStylesLight.largeTitle.copyWith(
+  static final callout = AppTextStylesLight.callout.copyWith(
     color: AppColors.white,
   );
-  static final footnote = AppTextStylesLight.largeTitle.copyWith(
+  static final footnote = AppTextStylesLight.footnote.copyWith(
     color: AppColors.white,
   );
-  static final caption1 = AppTextStylesLight.largeTitle.copyWith(
+  static final caption1 = AppTextStylesLight.caption1.copyWith(
     color: AppColors.white,
   );
-  static final caption2 = AppTextStylesLight.largeTitle.copyWith(
+  static final caption2 = AppTextStylesLight.caption2.copyWith(
     color: AppColors.white,
   );
 }

@@ -8,6 +8,10 @@ class SettingsScreen extends StatelessWidget {
   final VoidCallback onBack;
   @override
   Widget build(final BuildContext context) {
+    Widget getItemText(final String text) => Text(
+          text,
+          style: Theme.of(context).textTheme.bodyText2,
+        );
     final settings = SettingsStateScope.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -22,6 +26,8 @@ class SettingsScreen extends StatelessWidget {
           final version = 'App version: ${info?.version}, '
               'build: ${info?.buildNumber}';
           return ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(18),
             children: [
               ...[
                 SelectableText(version),
@@ -37,18 +43,18 @@ class SettingsScreen extends StatelessWidget {
                   // theme.
                   onChanged: settings.updateThemeMode,
                   isExpanded: true,
-                  items: const [
+                  items: [
                     DropdownMenuItem(
                       value: ThemeMode.system,
-                      child: Text('System Theme'),
+                      child: getItemText('System Theme'),
                     ),
                     DropdownMenuItem(
                       value: ThemeMode.light,
-                      child: Text('Light Theme'),
+                      child: getItemText('Light Theme'),
                     ),
                     DropdownMenuItem(
                       value: ThemeMode.dark,
-                      child: Text('Dark Theme'),
+                      child: getItemText('Dark Theme'),
                     )
                   ],
                 ),

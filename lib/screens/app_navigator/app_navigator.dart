@@ -2,6 +2,7 @@ library app_navigator;
 
 import 'package:flutter/material.dart';
 import 'package:lastanswer/screens/home/home.dart';
+import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 part 'app_routes.dart';
@@ -22,7 +23,9 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
+  final _settingsKey = const ValueKey<String>('settings');
   RouteState get routeState => widget.routeState;
+
   @override
   Widget build(final BuildContext context) {
     return Navigator(
@@ -54,7 +57,17 @@ class _AppNavigatorState extends State<AppNavigator> {
               onCreateIdeaTap: () {},
               onCreateNoteTap: () {},
               onProjectTap: (final _) {},
-              onSettingsTap: () {},
+              onSettingsTap: () {
+                routeState.go(AppRoutesName.settings);
+              },
+            ),
+          )
+        else if (routeState.route.pathTemplate == AppRoutesName.settings)
+          // Display the sign in screen.
+          MaterialPage<void>(
+            key: _settingsKey,
+            child: SettingsScreen(
+              onBack: () => routeState.go(AppRoutesName.home),
             ),
           )
         else

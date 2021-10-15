@@ -28,6 +28,7 @@ part 'icon_share/sharer.dart';
 part 'icon_story_button.dart';
 part 'icon_submit_button.dart';
 part 'note_tile.dart';
+part 'project_tile.dart';
 part 'question_bubble.dart';
 part 'safe_areas.dart';
 part 'svg_icon_button.dart';

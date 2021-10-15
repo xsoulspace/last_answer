@@ -9,11 +9,11 @@ class NoteProject extends BasicProject {
     final bool isCompleted = defaultProjectIsCompleted,
     final this.note = '',
   }) : super(
-          created: created,
-          id: id,
-          title: title,
-          isCompleted: isCompleted,
-        );
+            created: created,
+            id: id,
+            title: title,
+            isCompleted: isCompleted,
+            updated: created);
   @HiveField(projectLatestFieldHiveId + 1)
   String note;
 }

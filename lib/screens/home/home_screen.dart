@@ -1,5 +1,10 @@
 part of home;
-typedef ProjectSelectionChanged = void Function({required bool? selected, required final BasicProject project,});
+
+typedef ProjectSelectionChanged = void Function({
+  required bool? selected,
+  required BasicProject project,
+});
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     required final this.onProjectTap,
@@ -21,17 +26,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final selectedProjects = <ProjectId, BasicProject>{};
-  void changeProjectSelection({required final bool? selected, required final BasicProject project,}){
-    if(selected == true){
+  void changeProjectSelection({
+    required final bool? selected,
+    required final BasicProject project,
+  }) {
+    if (selected == true) {
       selectedProjects.remove(project.id);
     } else {
-    selectedProjects[project.id] = project;
-
+      selectedProjects[project.id] = project;
     }
   }
-  bool checkSelection(final BasicProject project)=>selectedProjects.containsKey(project.id);
 
-  
+  bool checkSelection(final BasicProject project) =>
+      selectedProjects.containsKey(project.id);
 
   @override
   Widget build(final BuildContext context) {
@@ -75,24 +82,41 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(5),
-                    reverse: true,
-                    restorationId: 'projects',
-                    itemBuilder: (final _, final __) {
-                      final key = '';
-                      return ProjectTile(
-                        key: ValueKey(key),
-                        project: ,
-                        onSelected: changeProjectSelection,
-                        onTap: widget.onProjectTap ,
-                        checkSelection: checkSelection,
+                  child: Consumer(
+                    builder: (final _, final ref, final __) {
+                      final projects = ref.watch(allProjectsProviders);
+
+                      if (projects.isEmpty) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              S.current.noProjectsYet,
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        padding: const EdgeInsets.all(5),
+                        reverse: true,
+                        restorationId: 'projects',
+                        itemBuilder: (final _, final i) {
+                          final project = projects[i];
+                          return ProjectTile(
+                            key: ValueKey(project.id),
+                            project: project,
+                            onSelected: changeProjectSelection,
+                            onTap: widget.onProjectTap,
+                            checkSelection: checkSelection,
+                          );
+                        },
+                        separatorBuilder: (final _, final __) =>
+                            const SizedBox(height: 3),
+                        itemCount: projects.length,
                       );
                     },
-                    separatorBuilder: (final _, final __) =>
-                        const SizedBox(height: 3),
-                    // TODO(arenukvern): get projects count
-                    itemCount: 1,
                   ),
                 ),
                 const SafeAreaBottom(),

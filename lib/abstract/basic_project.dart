@@ -5,7 +5,7 @@ const defaultProjectIsCompleted = false;
 
 /// Use this field to count fields in other projects like
 /// `@HiveField(projectLatestFieldHiveId+1)`
-const projectLatestFieldHiveId = 3;
+const projectLatestFieldHiveId = 4;
 
 typedef ProjectId = String;
 
@@ -16,6 +16,7 @@ class BasicProject extends HiveObject with EquatableMixin {
     required final this.id,
     required final this.title,
     required final this.created,
+    required final this.updated,
     final this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(0)
@@ -27,8 +28,11 @@ class BasicProject extends HiveObject with EquatableMixin {
   @HiveField(2)
   String title;
 
-  @HiveField(projectLatestFieldHiveId)
+  @HiveField(3)
   final DateTime created;
+
+  @HiveField(projectLatestFieldHiveId)
+  final DateTime updated;
 
   @override
   List<Object?> get props => [id];

@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `No projects yet.`
+  String get noProjectsYet {
+    return Intl.message(
+      'No projects yet.',
+      name: 'noProjectsYet',
+      desc: 'text if no projects created',
+      args: [],
+    );
+  }
+
   /// `Last Answer`
   String get lastAnswer {
     return Intl.message(

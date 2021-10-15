@@ -13,6 +13,7 @@ class StoryProject extends BasicProject {
           id: id,
           title: title,
           isCompleted: isCompleted,
+          updated: created,
         );
 }
 

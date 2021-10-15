@@ -10,7 +10,7 @@ void main() {
   final mockIdeaProject = MockIdeaProject();
   Widget getScreenWidget() => MaterialApp(
         home: IdeaProjectScreen(
-          projectId: mockIdeaProject.id,
+          project: mockIdeaProject,
         ),
       );
   group('[idea project screen]', () {

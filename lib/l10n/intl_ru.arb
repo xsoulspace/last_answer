@@ -19,6 +19,11 @@
     "description": "yes",
     "type": "text"
   },
+  "noProjectsYet": "Тут пока пусто",
+  "@noProjectsYet": {
+    "description": "text if no projects created",
+    "type": "text"
+  },
   "idea": "Идея",
   "@idea": {
     "description": "idea name",

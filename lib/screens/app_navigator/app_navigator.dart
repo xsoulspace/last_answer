@@ -87,6 +87,15 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               },
             ),
           )
+        else if (routeState.route.pathTemplate.contains(AppRoutesName.idea))
+          // Display the sign in screen.
+          MaterialPage<void>(
+            key: _settingsKey,
+            child: IdeaProjectScreen(
+              onBack: geHome,
+              projectId: routeState.route.parameters['id']!,
+            ),
+          )
         else
           MaterialPage<void>(child: Container())
       ],

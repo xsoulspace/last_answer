@@ -41,6 +41,7 @@ dependencies:
   uuid: ^3.0.4
   flutter_hooks: ^0.18.0
   flutter_riverpod: ^1.0.0-dev.7
+  hooks_riverpod: ^1.0.0-dev.7
   riverpod: ^1.0.0-dev.7
   equatable: ^2.0.3
   google_fonts: ^2.1.0

@@ -4,6 +4,9 @@ final ideaProjectsProvider = StateProvider<Map<ProjectId, IdeaProject>>(
   (final _) => <ProjectId, IdeaProject>{},
 );
 
+final ideaProjectQuestionsProvider =
+    StateProvider<List<IdeaProjectQuestion>>((final _) => []);
+
 final noteProjectsProvider = StateProvider<Map<ProjectId, NoteProject>>(
   (final _) => <ProjectId, NoteProject>{},
 );

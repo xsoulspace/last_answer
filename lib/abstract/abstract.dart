@@ -23,3 +23,4 @@ part 'localization/named_locale.dart';
 part 'note_project/note_project.dart';
 part 'project_types.dart';
 part 'story_project/story_project.dart';
+part 'typedefs.dart';

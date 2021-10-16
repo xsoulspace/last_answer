@@ -27,12 +27,12 @@ class AnswerCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return CardDissmisible(
-      dismissableKey: Key(answer.id),
+      dismissibleKey: Key(answer.id),
       confirmDismiss: (final direction) async {
         if (direction.index != 3) return false;
         return confirmDelete();
       },
-      onDismissed: (final direction) async {
+      onReadyToDelete: (final direction) async {
         onDismissed();
       },
       child: Material(
@@ -65,32 +65,32 @@ class AnswerCard extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('dropdownWidth', dropdownWidth));
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Answer>('answer', answer));
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
         ObjectFlagProperty<void Function()>.has('onDismissed', onDismissed));
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(IntProperty('index', index));
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<Future<bool?> Function()>.has(
         'confirmDelete', confirmDelete));
@@ -105,7 +105,7 @@ class QuestionDropdown extends StatefulWidget {
   @override
   _QuestionDropdownState createState() => _QuestionDropdownState();
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Answer>('answer', answer));
   }
@@ -138,7 +138,7 @@ class _QuestionDropdownState extends State<QuestionDropdown> {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
         .add(DiagnosticsProperty<Question>('chosenQuestion', chosenQuestion));
@@ -155,13 +155,13 @@ class AnswerTextField extends StatefulWidget {
   @override
   _AnswerTextFieldState createState() => _AnswerTextFieldState();
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Answer>('answer', answer));
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
         .add(ObjectFlagProperty<void Function()>.has('onDelete', onDelete));
@@ -208,7 +208,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
                 await _updateAnswer(box: _answerBox);
               },
               child: TextFormField(
-                onChanged: (text) async {
+                onChanged: (final text) async {
                   await _updateAnswer(box: _answerBox);
                 },
                 textAlignVertical: TextAlignVertical.center,

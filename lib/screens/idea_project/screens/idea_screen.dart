@@ -14,7 +14,6 @@ class IdeaProjectScreen extends HookConsumerWidget {
     final project = ref.read(ideaProjectsProvider).state[projectId]!;
     final titleController = useTextEditingController(text: project.title);
     final answers = useState<List<IdeaProjectAnswer>>(project.answers ?? []);
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -60,8 +59,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 },
               ),
             ),
-          // TODO(arenukvern): add questions chips
-          // TODO(arenukvern): add answer text field
+          const _AnswerCreator(),
           const SafeAreaBottom(),
         ],
       ),

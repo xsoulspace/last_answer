@@ -35,18 +35,20 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
     return Navigator(
       key: widget.navigatorKey,
       onPopPage: (final route, final dynamic result) {
-        // ! here will go selected pages logic..
-        // When a page that is stacked on top of the scaffold is popped, display
-        // the /books or /authors tab in BookstoreScaffold.
-        // if (route.settings is Page &&
-        //     (route.settings as Page).key == bookDetailsKey) {
-        //   routeState.go('/books/popular');
-        // }
-
-        // if (route.settings is Page &&
-        //     (route.settings as Page).key == authorDetailsKey) {
-        //   routeState.go('/authors');
-        // }
+        /// ! here will go selected pages logic..
+        ///
+        /// This is an example of selected pages logic:
+        ///
+        /// When a page that is stacked on top of the scaffold is popped,
+        /// display the /books or /authors tab in BookstoreScaffold.
+        /// if (route.settings is Page &&
+        ///     (route.settings as Page).key == bookDetailsKey) {
+        ///   routeState.go('/books/popular');
+        /// }
+        /// if (route.settings is Page &&
+        ///     (route.settings as Page).key == authorDetailsKey) {
+        ///   routeState.go('/authors');
+        /// }
 
         final popped = route.didPop(result);
         return popped;
@@ -83,11 +85,11 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
                 final ideas = ref.read(ideaProjectsProvider).state;
                 ideas[idea.id] = idea;
                 ref.read(ideaProjectsProvider).state = ideas;
-                // TODO(arenukvern): add go to idea screen
+                await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
               },
             ),
           )
-        else if (routeState.route.pathTemplate.contains(AppRoutesName.idea))
+        else if (routeState.route.pathTemplate == AppRoutesName.idea)
           // Display the sign in screen.
           MaterialPage<void>(
             key: _settingsKey,

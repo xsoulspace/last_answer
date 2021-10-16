@@ -1,17 +1,23 @@
 part of idea_project;
 
 class _AnswerCreator extends HookWidget {
-  const _AnswerCreator({final Key? key}) : super(key: key);
-
+  const _AnswerCreator({
+    required final this.onCreated,
+    final Key? key,
+  }) : super(key: key);
+  final ValueChanged<IdeaProjectAnswer> onCreated;
   @override
   Widget build(final BuildContext context) {
     final selectedQuestion = useState<IdeaProjectQuestion?>(null);
     final answerController = useTextEditingController();
-    void onCreate() {
+    Future<void> onCreate() async {
       final text = answerController.text;
-      if (selectedQuestion.value == null || text.isEmpty) {
-        IdeaProjectAnswer.create(text: text, question: selectedQuestion.value);
-      }
+      final question = selectedQuestion.value;
+      if (question == null || text.isEmpty) return;
+      final answer =
+          await IdeaProjectAnswer.create(text: text, question: question);
+      answerController.clear();
+      onCreated(answer);
     }
 
     return Column(

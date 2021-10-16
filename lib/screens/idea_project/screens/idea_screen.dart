@@ -59,7 +59,13 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 },
               ),
             ),
-          const _AnswerCreator(),
+          _AnswerCreator(
+            onCreated: (final answer) async {
+              answers.value.add(answer);
+              project.answers?.add(answer);
+              await project.save();
+            },
+          ),
           const SafeAreaBottom(),
         ],
       ),

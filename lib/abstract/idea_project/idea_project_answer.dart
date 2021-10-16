@@ -6,9 +6,19 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
   IdeaProjectAnswer({
     required final this.text,
     required final this.question,
-    required final this.index,
-  })  : id = createId(),
-        created = DateTime.now();
+    required final this.id,
+    required final this.created,
+  });
+  static Future<IdeaProjectAnswer> create({
+    required final String text,
+    required final IdeaProjectQuestion question,
+  }) async =>
+      IdeaProjectAnswer(
+        text: text,
+        question: question,
+        id: createId(),
+        created: DateTime.now(),
+      );
 
   @HiveField(projectLatestFieldHiveId + 1)
   String text;
@@ -21,9 +31,6 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
 
   @HiveField(projectLatestFieldHiveId + 4)
   final DateTime created;
-
-  @HiveField(projectLatestFieldHiveId + 5)
-  int index;
 
   @override
   List get props => [id];

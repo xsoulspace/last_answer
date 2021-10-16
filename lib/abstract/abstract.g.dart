@@ -158,10 +158,10 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
-      text: fields[5] as String,
-      question: fields[6] as IdeaProjectQuestion,
-      id: fields[7] as String,
-      created: fields[8] as DateTime,
+      text: fields[1] as String,
+      question: fields[2] as IdeaProjectQuestion,
+      id: fields[3] as String,
+      created: fields[4] as DateTime,
     );
   }
 
@@ -169,13 +169,13 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
       ..writeByte(4)
-      ..writeByte(5)
+      ..writeByte(1)
       ..write(obj.text)
-      ..writeByte(6)
+      ..writeByte(2)
       ..write(obj.question)
-      ..writeByte(7)
+      ..writeByte(3)
       ..write(obj.id)
-      ..writeByte(8)
+      ..writeByte(4)
       ..write(obj.created);
   }
 
@@ -186,6 +186,43 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectAnswerAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
+  @override
+  final int typeId = 5;
+
+  @override
+  IdeaProjectQuestion read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return IdeaProjectQuestion(
+      id: fields[5] as String,
+      title: fields[2] as LocalizedText,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, IdeaProjectQuestion obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(5)
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.title);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IdeaProjectQuestionAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

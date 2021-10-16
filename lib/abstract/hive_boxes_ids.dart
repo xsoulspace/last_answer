@@ -45,10 +45,10 @@ class HiveBoxesIds {
   static const ideaProjectAnswerKey = 'ideaProjectAnswer';
 
   /// index 5
-  static const ideaProjectsQuestion = 5;
+  static const ideaProjectQuestion = 5;
 
   /// index 5
-  static const ideaProjectsQuestionKey = 'ideaProjectsQuestion';
+  static const ideaProjectQuestionKey = 'ideaProjectQuestion';
 
   /// index 6
   static const noteProject = 6;

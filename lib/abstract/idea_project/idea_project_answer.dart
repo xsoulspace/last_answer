@@ -20,16 +20,16 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
         created: DateTime.now(),
       );
 
-  @HiveField(projectLatestFieldHiveId + 1)
+  @HiveField(1)
   String text;
 
-  @HiveField(projectLatestFieldHiveId + 2)
+  @HiveField(2)
   IdeaProjectQuestion question;
 
-  @HiveField(projectLatestFieldHiveId + 3)
+  @HiveField(3)
   final String id;
 
-  @HiveField(projectLatestFieldHiveId + 4)
+  @HiveField(4)
   final DateTime created;
 
   @override

@@ -34,7 +34,7 @@ class AppStoreInitializer extends ConsumerWidget {
           HiveBoxesIds.ideaProjectAnswerKey,
         );
         final questions = await Hive.openBox<IdeaProjectQuestion>(
-          HiveBoxesIds.ideaProjectsQuestionKey,
+          HiveBoxesIds.ideaProjectQuestionKey,
         );
 
         ref.read(ideaProjectQuestionsProvider).state = ref

@@ -1,7 +1,7 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
-class IdeaProject extends BasicProject {
+class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProject({
     required final String id,
     required final String title,
@@ -26,8 +26,9 @@ class IdeaProject extends BasicProject {
       id: createId(),
       title: title,
     );
-    final ideaBox = Hive.box(HiveBoxesIds.ideaProjectKey);
-    final ideaAnswersBox = Hive.box(HiveBoxesIds.ideaProjectAnswerKey);
+    final ideaBox = Hive.box<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+    final ideaAnswersBox =
+        Hive.box<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
     await ideaBox.put(idea.id, idea);
     idea.answers = HiveList(ideaAnswersBox);
     return idea;
@@ -35,6 +36,12 @@ class IdeaProject extends BasicProject {
 
   @HiveField(projectLatestFieldHiveId + 1)
   HiveList<IdeaProjectAnswer>? answers;
+
+  @override
+  List get props => [id];
+
+  @override
+  bool? get stringify => true;
 }
 
 /// A mock for [IdeaProject].

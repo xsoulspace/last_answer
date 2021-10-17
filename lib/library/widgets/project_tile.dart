@@ -15,6 +15,9 @@ class ProjectTile extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(9),
+      ),
       onTap: () => onTap(project),
       tileColor: Theme.of(context).splashColor,
       title: Text(project.title),

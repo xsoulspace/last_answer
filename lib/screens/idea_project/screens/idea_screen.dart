@@ -3,18 +3,19 @@ part of idea_project;
 class IdeaProjectScreen extends HookConsumerWidget {
   const IdeaProjectScreen({
     required final this.onBack,
-    required final this.projectId,
+    required final this.ideaId,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onBack;
-  final ProjectId projectId;
+  final ProjectId ideaId;
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final project = ref.read(ideaProjectsProvider)[projectId]!;
+    final project = ref.read(ideaProjectsProvider)[ideaId]!;
     final titleController = useTextEditingController(text: project.title);
     final answers = useState<List<IdeaProjectAnswer>>(project.answers ?? []);
     return Scaffold(
+      restorationId: 'ideas/$ideaId',
       appBar: AppBar(
         leading: BackButton(
           onPressed: onBack,
@@ -53,6 +54,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
           children: [
             Expanded(
               child: ListView.separated(
+                restorationId: 'ideas/$ideaId/answers',
                 separatorBuilder: (final _, final __) =>
                     const SizedBox(height: 26),
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -79,6 +81,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
             ),
             const SizedBox(height: 10),
             _AnswerCreator(
+              defaultQuestion:
+                  answers.value.isNotEmpty ? answers.value[0].question : null,
               onCreated: (final answer) async {
                 project.answers?.add(answer);
                 answers.value = project.answers ?? [];

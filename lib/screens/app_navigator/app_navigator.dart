@@ -103,7 +103,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             key: _settingsKey,
             child: IdeaProjectScreen(
               onBack: geHome,
-              projectId: routeState.route.parameters['id']!,
+              ideaId: routeState.route.parameters['id']!,
             ),
           )
         else

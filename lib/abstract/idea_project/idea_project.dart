@@ -7,8 +7,10 @@ class IdeaProject extends BasicProject with EquatableMixin {
     required final String title,
     required final DateTime created,
     required final DateTime updated,
-    final this.answers,
     final bool isCompleted = defaultProjectIsCompleted,
+    final this.newAnswerText = '',
+    final this.newQuestion,
+    final this.answers,
   }) : super(
           created: created,
           id: id,
@@ -36,6 +38,14 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @HiveField(projectLatestFieldHiveId + 1)
   HiveList<IdeaProjectAnswer>? answers;
+
+  /// keeps latest written text from [AnswerCreator]
+  @HiveField(projectLatestFieldHiveId + 2)
+  String newAnswerText;
+
+  /// keeps latest selected [IdeaProjectQuestion] from [AnswerCreator]
+  @HiveField(projectLatestFieldHiveId + 3)
+  IdeaProjectQuestion? newQuestion;
 
   @override
   List get props => [id];

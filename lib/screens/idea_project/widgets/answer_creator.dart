@@ -3,12 +3,14 @@ part of idea_project;
 class _AnswerCreator extends HookWidget {
   const _AnswerCreator({
     required final this.onCreated,
+    required final this.defaultQuestion,
     final Key? key,
   }) : super(key: key);
+  final IdeaProjectQuestion? defaultQuestion;
   final ValueChanged<IdeaProjectAnswer> onCreated;
   @override
   Widget build(final BuildContext context) {
-    final selectedQuestion = useState<IdeaProjectQuestion?>(null);
+    final selectedQuestion = useState<IdeaProjectQuestion?>(defaultQuestion);
     final answerController = useTextEditingController();
     Future<void> onCreate() async {
       final text = answerController.text;
@@ -17,7 +19,8 @@ class _AnswerCreator extends HookWidget {
       final answer =
           await IdeaProjectAnswer.create(text: text, question: question);
       final box = await Hive.openBox<IdeaProjectAnswer>(
-          HiveBoxesIds.ideaProjectAnswerKey,);
+        HiveBoxesIds.ideaProjectAnswerKey,
+      );
       await box.put(answer.id, answer);
       answerController.clear();
       onCreated(answer);

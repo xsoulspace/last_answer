@@ -10,3 +10,4 @@ import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
 
 part 'home_screen.dart';
+part 'vertical_projects_bar.dart';

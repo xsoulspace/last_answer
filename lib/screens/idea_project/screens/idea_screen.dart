@@ -66,6 +66,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                       confirmDelete: () => true,
                       onReadyToDelete: () {
                         answers.value.remove(_answer);
+                        answers.value = answers.value;
                         project
                           ..answers?.remove(_answer)
                           ..save();
@@ -80,6 +81,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
             _AnswerCreator(
               onCreated: (final answer) async {
                 answers.value.add(answer);
+                answers.value = answers.value;
                 project.answers?.add(answer);
                 await project.save();
               },

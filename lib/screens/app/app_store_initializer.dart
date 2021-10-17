@@ -40,23 +40,26 @@ class AppStoreInitializer extends ConsumerWidget {
           );
         }
 
-        ref.read(ideaProjectQuestionsProvider).state = ref
-            .read(ideaProjectQuestionsProvider)
-            .state
-          ..addAll(questions.values);
+        ref.read(ideaProjectQuestionsProvider.notifier).putAll(
+              Map.fromEntries(
+                questions.values.map((final e) => MapEntry(e.id, e)),
+              ),
+            );
 
-        ref.read(ideaProjectsProvider).state = ref
-            .read(ideaProjectsProvider)
-            .state
-          ..addEntries(ideas.values.map((final e) => MapEntry(e.id, e)));
+        ref.read(ideaProjectsProvider.notifier).putAll(
+              Map.fromEntries(
+                ideas.values.map((final e) => MapEntry(e.id, e)),
+              ),
+            );
 
         final notes =
             await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
 
-        ref.read(noteProjectsProvider).state = ref
-            .read(noteProjectsProvider)
-            .state
-          ..addEntries(notes.values.map((final e) => MapEntry(e.id, e)));
+        ref.read(noteProjectsProvider.notifier).putAll(
+              Map.fromEntries(
+                notes.values.map((final e) => MapEntry(e.id, e)),
+              ),
+            );
 
         await Hive.openBox<StoryProject>(HiveBoxesIds.storyProjectKey);
 

@@ -18,10 +18,9 @@ class IdeaProjectQuestion extends HiveObject with EquatableMixin {
   /// Use this function to create new [IdeaProjectQuestion]
   factory IdeaProjectQuestion.fromTitle(final LocalizedText title) =>
       IdeaProjectQuestion(id: createId(), title: title);
-  @HiveField(projectLatestFieldHiveId + 1)
-  @HiveField(1)
+  @HiveField(0)
   final String id;
-  @HiveField(2)
+  @HiveField(1)
   final LocalizedText title;
 
   Map<String, dynamic> toJson() => _$IdeaProjectQuestionToJson(this);

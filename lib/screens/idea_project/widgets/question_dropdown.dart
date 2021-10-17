@@ -9,7 +9,7 @@ class _QuestionDropdown extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final chosenQuestion = useState(answer.question);
-    final questions = ref.watch(ideaProjectQuestionsProvider).state;
+    final questions = ref.watch(ideaProjectQuestionsProvider).values;
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(
         value: question,

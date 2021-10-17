@@ -22,23 +22,26 @@ class IdeaProjectScreen extends HookConsumerWidget {
         toolbarHeight: 70,
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
-          child: TextField(
-            controller: titleController,
-            onChanged: (final text) {
-              project
-                ..title = text
-                ..save();
-            },
-            decoration: const InputDecoration()
-                .applyDefaults(Theme.of(context).inputDecorationTheme)
-                .copyWith(
-                  filled: true,
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(9),
+          child: HeroProjectTitle(
+            project: project,
+            child: TextField(
+              controller: titleController,
+              onChanged: (final text) {
+                project
+                  ..title = text
+                  ..save();
+              },
+              decoration: const InputDecoration()
+                  .applyDefaults(Theme.of(context).inputDecorationTheme)
+                  .copyWith(
+                    filled: true,
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(9),
+                    ),
                   ),
-                ),
+            ),
           ),
         ),
       ),

@@ -14,23 +14,28 @@ class _QuestionsChips extends ConsumerWidget {
     final questions = ref.watch(ideaProjectQuestionsProvider).values;
     return Wrap(
       spacing: 5,
-      runSpacing: 4,
       crossAxisAlignment: WrapCrossAlignment.center,
       alignment: WrapAlignment.center,
       children: questions
           .map(
-            (final question) => ChoiceChip(
-              labelStyle: Theme.of(context).textTheme.bodyText2,
-              label: Text(
-                question.title.getByLanguage(Intl.getCurrentLocale()),
+            (final question) => SizedBox(
+              height: 38,
+              child: ChoiceChip(
+                labelStyle: Theme.of(context).textTheme.bodyText2,
+                label: Text(
+                  question.title.getByLanguage(Intl.getCurrentLocale()),
+                ),
+                shape:
+                    RoundedRectangleBorder(borderRadius: defaultBorderRadius),
+                backgroundColor:
+                    Theme.of(context).primaryColor.withOpacity(.03),
+                selectedColor: AppColors.primary2.withOpacity(
+                  settings.themeMode == ThemeMode.light ? 0.05 : 0.2,
+                ),
+                selected: value == question,
+                onSelected: (final _) => onChange(question),
+                key: ValueKey(question.id),
               ),
-              backgroundColor: Theme.of(context).primaryColor.withOpacity(.03),
-              selectedColor: AppColors.primary2.withOpacity(
-                settings.themeMode == ThemeMode.light ? 0.05 : 0.2,
-              ),
-              selected: value == question,
-              onSelected: (final _) => onChange(question),
-              key: ValueKey(question.id),
             ),
           )
           .toList(),

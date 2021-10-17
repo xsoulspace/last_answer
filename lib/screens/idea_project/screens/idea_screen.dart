@@ -11,9 +11,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final project = ref.read(ideaProjectsProvider)[ideaId]!;
-    final titleController = useTextEditingController(text: project.title);
-    final answers = useState<List<IdeaProjectAnswer>>(project.answers ?? []);
+    final idea = ref.read(ideaProjectsProvider)[ideaId]!;
+    final titleController = useTextEditingController(text: idea.title);
+    final answers = useState<List<IdeaProjectAnswer>>(idea.answers ?? []);
     return Scaffold(
       restorationId: 'ideas/$ideaId',
       appBar: AppBar(
@@ -24,11 +24,11 @@ class IdeaProjectScreen extends HookConsumerWidget {
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
           child: HeroProjectTitle(
-            project: project,
+            project: idea,
             child: TextField(
               controller: titleController,
               onChanged: (final text) {
-                project
+                idea
                   ..title = text
                   ..save();
               },
@@ -70,7 +70,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     onReadyToDelete: () {
                       answers.value.remove(_answer);
                       answers.value = answers.value;
-                      project
+                      idea
                         ..answers?.remove(_answer)
                         ..save();
                     },
@@ -79,14 +79,16 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
             _AnswerCreator(
+              onShareTap: () {},
+              idea: idea,
               defaultQuestion:
                   answers.value.isNotEmpty ? answers.value[0].question : null,
               onCreated: (final answer) async {
-                project.answers?.add(answer);
-                answers.value = project.answers ?? [];
-                await project.save();
+                idea.answers?.add(answer);
+                answers.value = idea.answers ?? [];
+                await idea.save();
               },
             ),
             const SafeAreaBottom(),

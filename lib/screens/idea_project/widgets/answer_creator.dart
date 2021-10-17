@@ -4,14 +4,30 @@ class _AnswerCreator extends HookWidget {
   const _AnswerCreator({
     required final this.onCreated,
     required final this.defaultQuestion,
+    required final this.idea,
+    required final this.onShareTap,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectQuestion? defaultQuestion;
+  final IdeaProject idea;
   final ValueChanged<IdeaProjectAnswer> onCreated;
+  final VoidCallback onShareTap;
   @override
   Widget build(final BuildContext context) {
-    final selectedQuestion = useState<IdeaProjectQuestion?>(defaultQuestion);
-    final answerController = useTextEditingController();
+    final selectedQuestion =
+        useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
+    selectedQuestion.addListener(() async {
+      idea.newQuestion = selectedQuestion.value;
+      unawaited(idea.save());
+    });
+    final answerController = useTextEditingController(text: idea.newAnswerText);
+    final answer = useState(answerController.text);
+    answerController.addListener(() async {
+      idea.newAnswerText = answerController.text;
+      answer.value = answerController.text;
+      unawaited(idea.save());
+    });
+
     Future<void> onCreate() async {
       final text = answerController.text;
       final question = selectedQuestion.value;
@@ -37,15 +53,18 @@ class _AnswerCreator extends HookWidget {
                 value: selectedQuestion.value,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 14),
-              child: IconShareButton(),
+            Padding(
+              padding: const EdgeInsets.only(left: 14),
+              child: IconShareButton(
+                onTap: onShareTap,
+              ),
             ),
           ],
         ),
+        const SizedBox(height: 8),
         Row(
           children: [
-            Expanded(
+            Flexible(
               child: _AnswerField(
                 controller: answerController,
                 onCreate: onCreate,
@@ -54,11 +73,9 @@ class _AnswerCreator extends HookWidget {
             RotatedBox(
               quarterTurns: 3,
               child: IconButton(
-                onPressed: onCreate,
-                icon: const Icon(
-                  Icons.send,
-                  color: AppColors.primary2,
-                ),
+                onPressed: answer.value.isNotEmpty ? onCreate : null,
+                color: AppColors.primary2,
+                icon: const Icon(Icons.send),
               ),
             ),
           ],
@@ -91,6 +108,10 @@ class _AnswerFieldState extends State<_AnswerField> {
 
   @override
   Widget build(final BuildContext context) {
+    final border = OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: defaultBorderRadius,
+    );
     return RawKeyboardListener(
       focusNode: _keyboardFocusNode,
       onKey: (final event) {
@@ -111,14 +132,12 @@ class _AnswerFieldState extends State<_AnswerField> {
         decoration: const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme)
             .copyWith(
+              filled: true,
               // labelStyle: TextStyle(color: Colors.white),
               // fillColor: ThemeColors.lightAccent,
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primary2,
-                ),
-              ),
-              labelText: S.current.answer,
+              focusedBorder: border,
+              border: border,
+              hintText: S.current.answer,
             ),
         cursorColor: Theme.of(context).colorScheme.secondary,
       ),

@@ -1,14 +1,15 @@
 part of widgets;
 
 class IconShareButton extends StatelessWidget {
-  const IconShareButton({final Key? key}) : super(key: key);
-
+  const IconShareButton({
+    required final this.onTap,
+    final Key? key,
+  }) : super(key: key);
+  final VoidCallback? onTap;
   @override
   Widget build(final BuildContext context) {
     return IconButton(
-      onPressed: () {
-        //
-      },
+      onPressed: onTap,
       icon: const Icon(Icons.share),
     );
   }

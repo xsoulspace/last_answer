@@ -21,7 +21,7 @@ class ProjectTile extends StatelessWidget {
           borderRadius: defaultBorderRadius,
         ),
         onTap: () => onTap(project),
-        tileColor: Theme.of(context).splashColor,
+        tileColor: Theme.of(context).primaryColor.withOpacity(.03),
         title: Text(project.title),
         trailing: Checkbox(
           value: checkSelection(project),

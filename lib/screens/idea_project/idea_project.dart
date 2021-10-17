@@ -16,6 +16,7 @@ import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
+import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 part 'screens/create_idea_screen.dart';

@@ -51,11 +51,10 @@ class IdeaProjectScreen extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // if (answers.value.isNotEmpty)
             Expanded(
               child: ListView.separated(
                 separatorBuilder: (final _, final __) =>
-                    const SizedBox(height: 23),
+                    const SizedBox(height: 26),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 itemCount: answers.value.length,
                 reverse: true,
@@ -78,8 +77,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 },
               ),
             ),
-            // else
-            //   const Spacer(),
+            const SizedBox(height: 10),
             _AnswerCreator(
               onCreated: (final answer) async {
                 project.answers?.add(answer);

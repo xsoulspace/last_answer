@@ -85,7 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Consumer(
                     builder: (final _, final ref, final __) {
                       final projects = ref.watch(allProjectsProviders);
-                      // final projects = projectsController.all;
                       if (projects.isEmpty) {
                         return Align(
                           alignment: Alignment.centerLeft,
@@ -110,6 +109,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             onSelected: changeProjectSelection,
                             onTap: widget.onProjectTap,
                             checkSelection: checkSelection,
+                            onRemove: (final _) async {
+                              if (project is IdeaProject) {
+                                await Future.forEach<IdeaProjectAnswer>(
+                                  project.answers ?? [],
+                                  (final answer) => answer.delete(),
+                                );
+                                ref
+                                    .read(ideaProjectsProvider.notifier)
+                                    .remove(key: project.id);
+                              } else if (project is NoteProject) {
+                                ref
+                                    .read(noteProjectsProvider.notifier)
+                                    .remove(key: project.id);
+                              } else if (project is StoryProject) {
+                                // TODO(arenukvern): implement note project removal
+                              }
+                              await project.delete();
+                            },
+                            onRemoveConfirm: (final _) async => true,
                           );
                         },
                         separatorBuilder: (final _, final __) =>

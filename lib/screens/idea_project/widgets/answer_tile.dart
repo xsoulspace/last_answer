@@ -18,10 +18,11 @@ class _AnswerTile extends StatelessWidget {
     return DismissibleTile(
       dismissibleKey: Key(answer.id),
       confirmDismiss: (final direction) async {
-        if (direction.index != 3) return false;
+        if (direction != DismissDirection.startToEnd) return false;
         return confirmDelete();
       },
       onDismissed: (final direction) async {
+        if (direction != DismissDirection.startToEnd) return;
         onReadyToDelete();
       },
       child: Stack(

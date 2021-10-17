@@ -15,6 +15,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
+
+    final questions = ref.read(ideaProjectQuestionsProvider);
     return Scaffold(
       restorationId: 'ideas/$ideaId',
       appBar: AppBar(
@@ -85,8 +87,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
             _AnswerCreator(
               onShareTap: () {},
               idea: idea,
-              defaultQuestion:
-                  answers.value.isNotEmpty ? answers.value[0].question : null,
+              defaultQuestion: answers.value.isNotEmpty
+                  ? answers.value[0].question
+                  : questions.values.first,
               onCreated: (final answer) async {
                 idea.answers?.add(answer);
                 await idea.save();

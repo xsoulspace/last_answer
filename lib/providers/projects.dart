@@ -48,21 +48,3 @@ final allProjectsProviders = Provider<List<BasicProject>>(
     return _all;
   },
 );
-
-class AllProjectsController {
-  AllProjectsController({required final this.ref});
-  ProviderRef<AllProjectsController> ref;
-  List<BasicProject> get all {
-    final _all = <BasicProject>[];
-    void _addProject(final BasicProject project) {
-      _all.add(project);
-    }
-
-    final ideas = ref.read(ideaProjectsProvider);
-    final notes = ref.read(noteProjectsProvider);
-    notes.values.forEach(_addProject);
-    ideas.values.forEach(_addProject);
-    _all.sort((final p1, final p2) => p1.updated.compareTo(p2.updated));
-    return _all;
-  }
-}

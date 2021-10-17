@@ -310,13 +310,13 @@ class S {
     );
   }
 
-  /// `answers will be lost forever`
-  String get projectWillBeLost {
+  /// `{projectTitle} will be lost forever`
+  String projectWillBeLost(Object projectTitle) {
     return Intl.message(
-      'answers will be lost forever',
+      '$projectTitle will be lost forever',
       name: 'projectWillBeLost',
       desc: 'Project removal warning',
-      args: [],
+      args: [projectTitle],
     );
   }
 

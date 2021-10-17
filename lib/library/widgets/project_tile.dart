@@ -14,18 +14,21 @@ class ProjectTile extends StatelessWidget {
   final ValueChanged<BasicProject> onTap;
   @override
   Widget build(final BuildContext context) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(9),
-      ),
-      onTap: () => onTap(project),
-      tileColor: Theme.of(context).splashColor,
-      title: Text(project.title),
-      trailing: Checkbox(
-        value: checkSelection(project),
-        onChanged: (final selected) =>
-            onSelected(selected: selected, project: project),
-        shape: const CircleBorder(),
+    return HeroProjectTitle(
+      project: project,
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(9),
+        ),
+        onTap: () => onTap(project),
+        tileColor: Theme.of(context).splashColor,
+        title: Text(project.title),
+        trailing: Checkbox(
+          value: checkSelection(project),
+          onChanged: (final selected) =>
+              onSelected(selected: selected, project: project),
+          shape: const CircleBorder(),
+        ),
       ),
     );
   }

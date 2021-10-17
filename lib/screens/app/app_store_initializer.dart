@@ -32,13 +32,13 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        if (questions.isEmpty) {
-          await questions.putAll(
-            Map.fromEntries(
-              _initialQuestions.map((final e) => MapEntry(e.id, e)),
-            ),
-          );
-        }
+        // if (questions.isEmpty) {
+        await questions.putAll(
+          Map.fromEntries(
+            _initialQuestions.map((final e) => MapEntry(e.id, e)),
+          ),
+        );
+        // }
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(
               Map.fromEntries(

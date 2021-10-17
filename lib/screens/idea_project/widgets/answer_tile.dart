@@ -25,16 +25,19 @@ class _AnswerTile extends StatelessWidget {
         onReadyToDelete();
       },
       child: Stack(
-        children: <Widget>[
+        children: [
           Positioned(
             top: 0,
             left: 0,
             child: Row(
               children: [
-                _QuestionBubble(
-                  answer: answer,
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 150),
+                  child: _QuestionBubble(
+                    answer: answer,
+                  ),
                 ),
-                const Spacer(),
+                if (deleteIconVisible) const Spacer(),
                 Visibility(
                   visible: deleteIconVisible,
                   child: IconButton(
@@ -48,15 +51,40 @@ class _AnswerTile extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            top: 15,
-            left: 17,
-            child: AnswerFieldBubble(
-              answer: answer,
+          Padding(
+            padding: const EdgeInsets.only(top: 44.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const SizedBox(width: 30),
+                Flexible(
+                  child: AnswerFieldBubble(
+                    answer: answer,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
+      // Stack(
+      //   children: <Widget>[
+
+      //     Positioned(
+      //       top: 15,
+      //       left: 17,
+      //       child: Row(
+      //         children: [
+      //           Flexible(
+      //             child: AnswerFieldBubble(
+      //               answer: answer,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

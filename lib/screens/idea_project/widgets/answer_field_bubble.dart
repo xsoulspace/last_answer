@@ -18,7 +18,7 @@ class AnswerFieldBubble extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(9),
+        borderRadius: defaultBorderRadius,
       ),
       child: Focus(
         onFocusChange: (final hasFocus) async {

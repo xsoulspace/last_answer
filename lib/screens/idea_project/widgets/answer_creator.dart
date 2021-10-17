@@ -16,6 +16,9 @@ class _AnswerCreator extends HookWidget {
       if (question == null || text.isEmpty) return;
       final answer =
           await IdeaProjectAnswer.create(text: text, question: question);
+      final box = await Hive.openBox<IdeaProjectAnswer>(
+          HiveBoxesIds.ideaProjectAnswerKey,);
+      await box.put(answer.id, answer);
       answerController.clear();
       onCreated(answer);
     }

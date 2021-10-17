@@ -10,3 +10,4 @@ part 'app_text_styles.dart';
 part 'color_scheme.dart';
 part 'material_theme.dart';
 part 'themes.dart';
+part 'widget_params.dart';

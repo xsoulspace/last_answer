@@ -18,7 +18,7 @@ class ProjectTile extends StatelessWidget {
       project: project,
       child: ListTile(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(9),
+          borderRadius: defaultBorderRadius,
         ),
         onTap: () => onTap(project),
         tileColor: Theme.of(context).splashColor,

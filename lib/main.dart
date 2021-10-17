@@ -8,6 +8,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive
     ..registerAdapter(IdeaProjectAdapter())
+    ..registerAdapter(LocalizedTextAdapter())
     ..registerAdapter(IdeaProjectAnswerAdapter())
     ..registerAdapter(IdeaProjectQuestionAdapter())
     ..registerAdapter(NoteProjectAdapter())

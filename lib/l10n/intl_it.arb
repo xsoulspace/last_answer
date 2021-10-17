@@ -129,12 +129,11 @@
     "description": "with",
     "type": "text"
   },
-  "projectWillBeLost": "le risposte andranno perse per sempre",
+  "projectWillBeLost": "{projectTitle} sarà perso per sempre",
   "@projectWillBeLost": {
     "description": "Project removal warning",
     "type": "text",
     "args": [
-      "answersLength",
       "projectTitle"
     ]
   },

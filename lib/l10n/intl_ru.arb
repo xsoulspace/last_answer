@@ -79,7 +79,7 @@
     "description": "with",
     "type": "text"
   },
-  "projectWillBeLost": "ответами будет потерян безвозвратно",
+  "projectWillBeLost": "{projectTitle} будет потерян безвозвратно",
   "@projectWillBeLost": {
     "description": "Project removal warning",
     "type": "text",

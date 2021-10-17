@@ -19,6 +19,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(projectTitle) => "${projectTitle} will be lost forever";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("About"),
@@ -67,8 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("What else?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Inspiration"),
-        "projectWillBeLost": MessageLookupByLibrary.simpleMessage(
-            "answers will be lost forever"),
+        "projectWillBeLost": m0,
         "titleWith": MessageLookupByLibrary.simpleMessage("с"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),

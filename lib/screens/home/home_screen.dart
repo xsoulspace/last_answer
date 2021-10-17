@@ -127,7 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               await project.delete();
                             },
-                            onRemoveConfirm: (final _) async => true,
+                            onRemoveConfirm: (final _) async {
+                              return showRemoveProjectDialog(
+                                context: context,
+                                project: project,
+                              );
+                            },
                           );
                         },
                         separatorBuilder: (final _, final __) =>

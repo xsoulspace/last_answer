@@ -8,7 +8,7 @@ class _AnswerCreator extends HookWidget {
     required final this.onShareTap,
     final Key? key,
   }) : super(key: key);
-  final IdeaProjectQuestion? defaultQuestion;
+  final IdeaProjectQuestion defaultQuestion;
   final IdeaProject idea;
   final ValueChanged<IdeaProjectAnswer> onCreated;
   final VoidCallback onShareTap;

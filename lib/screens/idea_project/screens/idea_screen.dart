@@ -39,7 +39,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     isDense: true,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(9),
+                      borderRadius: defaultBorderRadius,
                     ),
                   ),
             ),
@@ -51,38 +51,39 @@ class IdeaProjectScreen extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (answers.value.isNotEmpty)
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  itemCount: answers.value.length,
-                  shrinkWrap: true,
-                  reverse: true,
-                  itemBuilder: (final context, final index) {
-                    final _answer = answers.value[index];
-                    return _AnswerTile(
-                      key: ValueKey(_answer.id),
-                      answer: _answer,
-                      confirmDelete: () => true,
-                      onReadyToDelete: () {
-                        answers.value.remove(_answer);
-                        answers.value = answers.value;
-                        project
-                          ..answers?.remove(_answer)
-                          ..save();
-                      },
-                      deleteIconVisible: isDesktop,
-                    );
-                  },
-                ),
-              )
-            else
-              const Spacer(),
+            // if (answers.value.isNotEmpty)
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (final _, final __) =>
+                    const SizedBox(height: 23),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                itemCount: answers.value.length,
+                reverse: true,
+                shrinkWrap: true,
+                itemBuilder: (final context, final index) {
+                  final _answer = answers.value[index];
+                  return _AnswerTile(
+                    key: ValueKey(_answer.id),
+                    answer: _answer,
+                    confirmDelete: () => true,
+                    onReadyToDelete: () {
+                      answers.value.remove(_answer);
+                      answers.value = answers.value;
+                      project
+                        ..answers?.remove(_answer)
+                        ..save();
+                    },
+                    deleteIconVisible: isDesktop,
+                  );
+                },
+              ),
+            ),
+            // else
+            //   const Spacer(),
             _AnswerCreator(
               onCreated: (final answer) async {
-                answers.value.add(answer);
-                answers.value = answers.value;
                 project.answers?.add(answer);
+                answers.value = project.answers ?? [];
                 await project.save();
               },
             ),

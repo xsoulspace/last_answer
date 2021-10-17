@@ -158,10 +158,10 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
-      text: fields[1] as String,
-      question: fields[2] as IdeaProjectQuestion,
-      id: fields[3] as String,
-      created: fields[4] as DateTime,
+      text: fields[0] as String,
+      question: fields[1] as IdeaProjectQuestion,
+      id: fields[2] as String,
+      created: fields[3] as DateTime,
     );
   }
 
@@ -169,13 +169,13 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
       ..writeByte(4)
-      ..writeByte(1)
+      ..writeByte(0)
       ..write(obj.text)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.question)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.id)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.created);
   }
 
@@ -201,8 +201,8 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectQuestion(
-      id: fields[5] as String,
-      title: fields[2] as LocalizedText,
+      id: fields[0] as String,
+      title: fields[1] as LocalizedText,
     );
   }
 
@@ -210,9 +210,9 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   void write(BinaryWriter writer, IdeaProjectQuestion obj) {
     writer
       ..writeByte(2)
-      ..writeByte(5)
+      ..writeByte(0)
       ..write(obj.id)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.title);
   }
 
@@ -223,6 +223,43 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectQuestionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
+  @override
+  final int typeId = 8;
+
+  @override
+  LocalizedText read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return LocalizedText(
+      en: fields[1] as String,
+      ru: fields[0] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LocalizedText obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.ru)
+      ..writeByte(1)
+      ..write(obj.en);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocalizedTextAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

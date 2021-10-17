@@ -13,8 +13,12 @@ class _QuestionDropdown extends HookConsumerWidget {
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(
         value: question,
-        child: Text(
-          question.title.getByLanguage(Intl.getCurrentLocale()),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            question.title.getByLanguage(Intl.getCurrentLocale()),
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
         ),
       ),
     );
@@ -22,6 +26,7 @@ class _QuestionDropdown extends HookConsumerWidget {
       child: DropdownButton<IdeaProjectQuestion>(
         isExpanded: true,
         itemHeight: null,
+        borderRadius: defaultBorderRadius,
         value: chosenQuestion.value,
         items: questionsItems.toList(),
         onChanged: (final question) async {

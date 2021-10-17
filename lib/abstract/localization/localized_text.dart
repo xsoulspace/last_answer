@@ -19,6 +19,7 @@ class LocalizedText {
   final String en;
 
   /// If any new [Languages] added, add this to [values]
-  Map<LanguageName, String?> get values => {Languages.ru: ru, Languages.en: en};
-  String getByLanguage(final LanguageName language) => values[language] ?? '';
+  Map<LanguageName, String?> get values =>
+      {Locales.ru.toString(): ru, Locales.en.toString(): en};
+  String getByLanguage(final LanguageName language) => values[language] ?? en;
 }

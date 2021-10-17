@@ -18,11 +18,15 @@ final _initialQuestions = <IdeaProjectQuestion>[
     id: '4',
   ),
   IdeaProjectQuestion(
-    title: const LocalizedText(en: 'For whom | what?', ru: 'Для кого | чего?'),
+    title: const LocalizedText(en: 'For what?', ru: 'Для чего?'),
     id: '5',
   ),
   IdeaProjectQuestion(
     title: const LocalizedText(en: 'What?', ru: 'Что?'),
     id: '6',
+  ),
+  IdeaProjectQuestion(
+    title: const LocalizedText(en: 'For whom?', ru: 'Для кого?'),
+    id: '7',
   ),
 ];

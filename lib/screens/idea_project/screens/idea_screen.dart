@@ -31,6 +31,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                   ..title = text
                   ..save();
               },
+              style: Theme.of(context).textTheme.bodyText2,
               decoration: const InputDecoration()
                   .applyDefaults(Theme.of(context).inputDecorationTheme)
                   .copyWith(
@@ -45,41 +46,47 @@ class IdeaProjectScreen extends HookConsumerWidget {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          if (answers.value.isNotEmpty)
-            Expanded(
-              child: ListView.builder(
-                itemCount: answers.value.length,
-                shrinkWrap: true,
-                reverse: true,
-                itemBuilder: (final context, final index) {
-                  final _answer = answers.value[index];
-                  return _AnswerTile(
-                    key: ValueKey(_answer.id),
-                    answer: _answer,
-                    confirmDelete: () => true,
-                    onReadyToDelete: () {
-                      answers.value.remove(_answer);
-                      project
-                        ..answers?.remove(_answer)
-                        ..save();
-                    },
-                    deleteIconVisible: isDesktop,
-                  );
-                },
-              ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (answers.value.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  itemCount: answers.value.length,
+                  shrinkWrap: true,
+                  reverse: true,
+                  itemBuilder: (final context, final index) {
+                    final _answer = answers.value[index];
+                    return _AnswerTile(
+                      key: ValueKey(_answer.id),
+                      answer: _answer,
+                      confirmDelete: () => true,
+                      onReadyToDelete: () {
+                        answers.value.remove(_answer);
+                        project
+                          ..answers?.remove(_answer)
+                          ..save();
+                      },
+                      deleteIconVisible: isDesktop,
+                    );
+                  },
+                ),
+              )
+            else
+              const Spacer(),
+            _AnswerCreator(
+              onCreated: (final answer) async {
+                answers.value.add(answer);
+                project.answers?.add(answer);
+                await project.save();
+              },
             ),
-          // _AnswerCreator(
-          //   onCreated: (final answer) async {
-          //     answers.value.add(answer);
-          //     project.answers?.add(answer);
-          //     await project.save();
-          //   },
-          // ),
-          const SafeAreaBottom(),
-        ],
+            const SafeAreaBottom(),
+          ],
+        ),
       ),
     );
   }

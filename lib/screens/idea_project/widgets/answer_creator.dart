@@ -32,20 +32,25 @@ class _AnswerCreator extends HookWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14),
+              padding: EdgeInsets.only(left: 14),
               child: IconShareButton(),
             ),
           ],
         ),
         Row(
           children: [
-            _AnswerField(
-              controller: answerController,
-              onCreate: onCreate,
+            Expanded(
+              child: _AnswerField(
+                controller: answerController,
+                onCreate: onCreate,
+              ),
             ),
             IconButton(
               onPressed: onCreate,
-              icon: const Icon(Icons.publish),
+              icon: const Icon(
+                Icons.publish,
+                color: AppColors.primary2,
+              ),
             ),
           ],
         )
@@ -67,17 +72,18 @@ class _AnswerField extends StatefulHookWidget {
 }
 
 class _AnswerFieldState extends State<_AnswerField> {
-  final focusNode = FocusNode();
+  final _keyboardFocusNode = FocusNode();
+  final _textFieldFocusNode = FocusNode();
   @override
   void initState() {
-    focusNode.requestFocus();
+    _textFieldFocusNode.requestFocus();
     super.initState();
   }
 
   @override
   Widget build(final BuildContext context) {
     return RawKeyboardListener(
-      focusNode: focusNode,
+      focusNode: _keyboardFocusNode,
       onKey: (final event) {
         if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
             !event.isShiftPressed) {
@@ -85,25 +91,26 @@ class _AnswerFieldState extends State<_AnswerField> {
         }
       },
       child: TextFormField(
+        focusNode: _textFieldFocusNode,
         onFieldSubmitted: (final _) => widget.onCreate(),
         controller: widget.controller,
         minLines: 1,
         maxLines: 7,
         keyboardType: TextInputType.multiline,
         onChanged: (final text) async {},
-        decoration: InputDecoration(
-          // labelStyle: TextStyle(color: Colors.white),
-          // fillColor: ThemeColors.lightAccent,
-          // focusedBorder: OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: ThemeColors.lightAccent ?? Colors.white,
-          //   ),
-          // ),
-          // border: OutlineInputBorder(
-          //     borderSide: BorderSide(
-          //         color: ThemeColors.lightAccent ?? Colors.white)),
-          labelText: S.current.answer,
-        ),
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: const InputDecoration()
+            .applyDefaults(Theme.of(context).inputDecorationTheme)
+            .copyWith(
+              // labelStyle: TextStyle(color: Colors.white),
+              // fillColor: ThemeColors.lightAccent,
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primary2,
+                ),
+              ),
+              labelText: S.current.answer,
+            ),
         cursorColor: Theme.of(context).colorScheme.secondary,
       ),
     );

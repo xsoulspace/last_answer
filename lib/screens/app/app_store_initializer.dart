@@ -1,10 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/providers/providers.dart';
-import 'package:lastanswer/screens/settings/settings.dart';
+part of app_provider;
 
 class AppStoreInitializer extends ConsumerWidget {
   const AppStoreInitializer({
@@ -29,6 +23,8 @@ class AppStoreInitializer extends ConsumerWidget {
         // await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
         // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
         // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+        final ideas =
+            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
 
         await Hive.openBox<IdeaProjectAnswer>(
           HiveBoxesIds.ideaProjectAnswerKey,
@@ -36,14 +32,19 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
+        if (questions.isEmpty) {
+          await questions.putAll(
+            Map.fromEntries(
+              _initialQuestions.map((final e) => MapEntry(e.id, e)),
+            ),
+          );
+        }
 
         ref.read(ideaProjectQuestionsProvider).state = ref
             .read(ideaProjectQuestionsProvider)
             .state
           ..addAll(questions.values);
 
-        final ideas =
-            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
         ref.read(ideaProjectsProvider).state = ref
             .read(ideaProjectsProvider)
             .state

@@ -1,15 +1,21 @@
+library app_provider;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
-import 'package:lastanswer/screens/app/app_store_initializer.dart';
+import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/app_navigator/app_navigator.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
+
+part 'app_store_initializer.dart';
+part 'idea_questions_initializer.dart';
 
 class AppProvider extends StatelessWidget {
   const AppProvider({final Key? key}) : super(key: key);

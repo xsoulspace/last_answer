@@ -27,7 +27,7 @@ part 'icon_note_button.dart';
 part 'icon_select_button.dart';
 part 'icon_settings_button.dart';
 part 'icon_share/icon_share_button.dart';
-part 'icon_share/sharer.dart';
+part 'icon_share/project_sharer.dart';
 part 'icon_story_button.dart';
 part 'icon_submit_button.dart';
 part 'note_tile.dart';

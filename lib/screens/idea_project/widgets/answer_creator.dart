@@ -45,11 +45,14 @@ class _AnswerCreator extends HookWidget {
                 onCreate: onCreate,
               ),
             ),
-            IconButton(
-              onPressed: onCreate,
-              icon: const Icon(
-                Icons.publish,
-                color: AppColors.primary2,
+            RotatedBox(
+              quarterTurns: 3,
+              child: IconButton(
+                onPressed: onCreate,
+                icon: const Icon(
+                  Icons.send,
+                  color: AppColors.primary2,
+                ),
               ),
             ),
           ],
@@ -86,7 +89,7 @@ class _AnswerFieldState extends State<_AnswerField> {
       focusNode: _keyboardFocusNode,
       onKey: (final event) {
         if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-            !event.isShiftPressed) {
+            (event.isShiftPressed || event.isControlPressed)) {
           widget.onCreate();
         }
       },
@@ -98,7 +101,7 @@ class _AnswerFieldState extends State<_AnswerField> {
         maxLines: 7,
         keyboardType: TextInputType.multiline,
         onChanged: (final text) async {},
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.headline3,
         decoration: const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme)
             .copyWith(

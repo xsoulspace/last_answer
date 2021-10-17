@@ -153,7 +153,7 @@ class VerticalProjectBar extends StatelessWidget {
         // TODO(arenukvern): add gradient
         decoration: BoxDecoration(
           borderRadius: defaultBorderRadius,
-          color: Theme.of(context).splashColor,
+          color: Theme.of(context).splashColor.withOpacity(0.05),
         ),
         child: Wrap(
           direction: Axis.vertical,

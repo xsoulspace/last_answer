@@ -16,6 +16,7 @@ final lightThemeData = _lightBase.copyWith(
       statusBarIconBrightness: Brightness.dark,
     ),
   ),
+  // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),
@@ -32,11 +33,12 @@ final darkThemeData = _darkBase.copyWith(
     elevation: 0,
     foregroundColor: AppColors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
       statusBarColor: _lightBase.canvasColor,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
     ),
   ),
+  splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),

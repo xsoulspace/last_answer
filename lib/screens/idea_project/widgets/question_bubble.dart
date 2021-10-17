@@ -10,7 +10,7 @@ class _QuestionBubble extends StatelessWidget {
   Widget build(final BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Theme.of(context).splashColor,
+        color: Theme.of(context).primaryColor.withOpacity(.03),
         borderRadius: defaultBorderRadius,
       ),
       child: _QuestionDropdown(answer: answer),

@@ -19,9 +19,12 @@ class DismissibleTile extends StatelessWidget {
       confirmDismiss: confirmDismiss,
       onDismissed: onDismissed,
       background: Container(
+        decoration: BoxDecoration(
+          borderRadius: defaultBorderRadius,
+          color: AppColors.accent2,
+        ),
         padding: const EdgeInsets.only(right: 12),
         alignment: Alignment.centerLeft,
-        color: AppColors.accent2,
         child: const Icon(
           Icons.delete,
           color: AppColors.white,

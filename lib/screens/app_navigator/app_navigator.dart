@@ -30,6 +30,8 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _settingsKey = const ValueKey<String>('settings');
   RouteState get routeState => widget.routeState;
   void geHome() => routeState.go(AppRoutesName.home);
+  void openIdeaScreen({required final IdeaProject idea}) =>
+      routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   @override
   Widget build(final BuildContext context) {
     return Navigator(
@@ -62,7 +64,13 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               onInfoTap: () {},
               onCreateIdeaTap: () => routeState.go(AppRoutesName.createIdea),
               onCreateNoteTap: () {},
-              onProjectTap: (final _) {},
+              onProjectTap: (final project) {
+                if (project is IdeaProject) {
+                  openIdeaScreen(idea: project);
+                } else {
+                  throw UnimplementedError();
+                }
+              },
               onSettingsTap: () => routeState.go(AppRoutesName.settings),
             ),
           )

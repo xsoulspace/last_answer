@@ -45,29 +45,29 @@ class IdeaProjectScreen extends HookConsumerWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // if (answers.value.isNotEmpty)
-          //   Expanded(
-          //     child: ListView.builder(
-          //       itemCount: answers.value.length,
-          //       shrinkWrap: true,
-          //       reverse: true,
-          //       itemBuilder: (final context, final index) {
-          //         final _answer = answers.value[index];
-          //         return _AnswerTile(
-          //           key: ValueKey(_answer.id),
-          //           answer: _answer,
-          //           confirmDelete: () => true,
-          //           onReadyToDelete: () {
-          //             answers.value.remove(_answer);
-          //             project
-          //               ..answers?.remove(_answer)
-          //               ..save();
-          //           },
-          //           deleteIconVisible: isDesktop,
-          //         );
-          //       },
-          //     ),
-          //   ),
+          if (answers.value.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: answers.value.length,
+                shrinkWrap: true,
+                reverse: true,
+                itemBuilder: (final context, final index) {
+                  final _answer = answers.value[index];
+                  return _AnswerTile(
+                    key: ValueKey(_answer.id),
+                    answer: _answer,
+                    confirmDelete: () => true,
+                    onReadyToDelete: () {
+                      answers.value.remove(_answer);
+                      project
+                        ..answers?.remove(_answer)
+                        ..save();
+                    },
+                    deleteIconVisible: isDesktop,
+                  );
+                },
+              ),
+            ),
           // _AnswerCreator(
           //   onCreated: (final answer) async {
           //     answers.value.add(answer);

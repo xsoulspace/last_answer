@@ -11,7 +11,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final project = ref.read(ideaProjectsProvider).state[projectId]!;
+    final project = ref.read(ideaProjectsProvider)[projectId]!;
     final titleController = useTextEditingController(text: project.title);
     final answers = useState<List<IdeaProjectAnswer>>(project.answers ?? []);
     return Scaffold(

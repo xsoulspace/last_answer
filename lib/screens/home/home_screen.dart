@@ -84,9 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Consumer(
                     builder: (final _, final ref, final __) {
-                      final projectsController =
-                          ref.watch(allProjectsProviders);
-                      final projects = projectsController.all;
+                      final projects = ref.watch(allProjectsProviders);
+                      // final projects = projectsController.all;
                       if (projects.isEmpty) {
                         return Align(
                           alignment: Alignment.centerLeft,

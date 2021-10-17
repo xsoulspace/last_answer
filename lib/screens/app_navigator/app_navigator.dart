@@ -90,9 +90,9 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               onBack: geHome,
               onCreate: (final ideaTitle) async {
                 final idea = await IdeaProject.create(title: ideaTitle);
-                final ideas = ref.read(ideaProjectsProvider).state;
-                ideas[idea.id] = idea;
-                ref.read(ideaProjectsProvider).state = ideas;
+                ref
+                    .read(ideaProjectsProvider.notifier)
+                    .put(key: idea.id, value: idea);
                 await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
               },
             ),

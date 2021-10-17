@@ -10,7 +10,7 @@ class _QuestionsChips extends ConsumerWidget {
   final ValueChanged<IdeaProjectQuestion> onChange;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final questions = ref.watch(ideaProjectQuestionsProvider).state;
+    final questions = ref.watch(ideaProjectQuestionsProvider).values;
     return Wrap(
       spacing: 5,
       runSpacing: 4,

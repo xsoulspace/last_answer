@@ -10,8 +10,13 @@ final lightThemeData = _lightBase.copyWith(
     backgroundColor: Colors.transparent,
     elevation: 0,
     foregroundColor: AppColors.black,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: _lightBase.canvasColor,
+      statusBarIconBrightness: Brightness.dark,
+    ),
   ),
-  inputDecorationTheme: InputDecorationTheme(
+  inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),
 );
@@ -26,8 +31,13 @@ final darkThemeData = _darkBase.copyWith(
     backgroundColor: Colors.transparent,
     elevation: 0,
     foregroundColor: AppColors.white,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: _lightBase.canvasColor,
+      statusBarIconBrightness: Brightness.dark,
+    ),
   ),
-  inputDecorationTheme: InputDecorationTheme(
+  inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),
 );

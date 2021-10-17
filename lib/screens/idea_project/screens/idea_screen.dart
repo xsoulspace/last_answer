@@ -13,7 +13,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final idea = ref.read(ideaProjectsProvider)[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
-    final answers = useState<List<IdeaProjectAnswer>>(idea.answers ?? []);
+    final answers =
+        useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
     return Scaffold(
       restorationId: 'ideas/$ideaId',
       appBar: AppBar(
@@ -62,17 +63,18 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (final context, final index) {
+                  if (index > answers.value.length - 1 || index < 0) {
+                    return Container();
+                  }
                   final _answer = answers.value[index];
                   return _AnswerTile(
                     key: ValueKey(_answer.id),
                     answer: _answer,
                     confirmDelete: () => true,
-                    onReadyToDelete: () {
-                      answers.value.remove(_answer);
-                      answers.value = answers.value;
-                      idea
-                        ..answers?.remove(_answer)
-                        ..save();
+                    onReadyToDelete: () async {
+                      idea.answers?.remove(_answer);
+                      await idea.save();
+                      answers.value = [...idea.answers?.reversed ?? []];
                     },
                     deleteIconVisible: isDesktop,
                   );
@@ -87,8 +89,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
                   answers.value.isNotEmpty ? answers.value[0].question : null,
               onCreated: (final answer) async {
                 idea.answers?.add(answer);
-                answers.value = idea.answers ?? [];
                 await idea.save();
+                answers.value = [...idea.answers?.reversed ?? []];
               },
             ),
             const SafeAreaBottom(),

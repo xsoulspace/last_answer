@@ -19,53 +19,62 @@ class IdeaProjectScreen extends HookConsumerWidget {
         leading: BackButton(
           onPressed: onBack,
         ),
-        title: TextField(
-          controller: titleController,
-          onChanged: (final text) {
-            project
-              ..title = text
-              ..save();
-          },
-          decoration: const InputDecoration()
-              .applyDefaults(Theme.of(context).inputDecorationTheme)
-              .copyWith(
-                filled: true,
-              ),
+        toolbarHeight: 70,
+        title: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 252),
+          child: TextField(
+            controller: titleController,
+            onChanged: (final text) {
+              project
+                ..title = text
+                ..save();
+            },
+            decoration: const InputDecoration()
+                .applyDefaults(Theme.of(context).inputDecorationTheme)
+                .copyWith(
+                  filled: true,
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                ),
+          ),
         ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (answers.value.isNotEmpty)
-            Expanded(
-              child: ListView.builder(
-                itemCount: answers.value.length,
-                shrinkWrap: true,
-                reverse: true,
-                itemBuilder: (final context, final index) {
-                  final _answer = answers.value[index];
-                  return _AnswerTile(
-                    key: ValueKey(_answer.id),
-                    answer: _answer,
-                    confirmDelete: () => true,
-                    onReadyToDelete: () {
-                      answers.value.remove(_answer);
-                      project
-                        ..answers?.remove(_answer)
-                        ..save();
-                    },
-                    deleteIconVisible: isDesktop,
-                  );
-                },
-              ),
-            ),
-          _AnswerCreator(
-            onCreated: (final answer) async {
-              answers.value.add(answer);
-              project.answers?.add(answer);
-              await project.save();
-            },
-          ),
+          // if (answers.value.isNotEmpty)
+          //   Expanded(
+          //     child: ListView.builder(
+          //       itemCount: answers.value.length,
+          //       shrinkWrap: true,
+          //       reverse: true,
+          //       itemBuilder: (final context, final index) {
+          //         final _answer = answers.value[index];
+          //         return _AnswerTile(
+          //           key: ValueKey(_answer.id),
+          //           answer: _answer,
+          //           confirmDelete: () => true,
+          //           onReadyToDelete: () {
+          //             answers.value.remove(_answer);
+          //             project
+          //               ..answers?.remove(_answer)
+          //               ..save();
+          //           },
+          //           deleteIconVisible: isDesktop,
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // _AnswerCreator(
+          //   onCreated: (final answer) async {
+          //     answers.value.add(answer);
+          //     project.answers?.add(answer);
+          //     await project.save();
+          //   },
+          // ),
           const SafeAreaBottom(),
         ],
       ),

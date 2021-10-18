@@ -74,6 +74,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
                 child: _AnswerField(
                   filled: false,
                   endlessLines: true,
+                  focusOnInit: textController.text.isEmpty,
                   onSubmit: () => back(idea: idea, context: context),
                   controller: textController,
                 ),

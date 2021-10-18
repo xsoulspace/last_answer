@@ -53,8 +53,11 @@ class _AnswerCreator extends HookWidget {
         icon: const Icon(Icons.send),
       ),
     );
-    final shareButton = IconShareButton(
-      onTap: onShareTap,
+    final shareButton = Hero(
+      tag: const Key('shareButton'),
+      child: IconShareButton(
+        onTap: onShareTap,
+      ),
     );
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -93,10 +96,7 @@ class _AnswerCreator extends HookWidget {
                 },
               ),
             ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              child: questionsOpened.value ? sendButton : shareButton,
-            ),
+            if (questionsOpened.value) sendButton else shareButton,
           ],
         )
       ],

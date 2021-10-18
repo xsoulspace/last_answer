@@ -36,27 +36,32 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _ideasIdeaAnswerKey = const ValueKey<String>('ideas/idea/answer');
   RouteState get routeState => widget.routeState;
   void goHome() => routeState.go(AppRoutesName.home);
-  void openIdeaScreen({required final IdeaProject idea}) =>
-      routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
+  void goSettings() => routeState.go(AppRoutesName.settings);
+  void goIdeaScreen({required final String ideaId}) =>
+      routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
   @override
   Widget build(final BuildContext context) {
     return Navigator(
       key: widget.navigatorKey,
       onPopPage: (final route, final dynamic result) {
-        /// ! here will go selected pages logic..
-        ///
-        /// This is an example of selected pages logic:
-        ///
-        /// When a page that is stacked on top of the scaffold is popped,
-        /// display the /books or /authors tab in BookstoreScaffold.
-        /// if (route.settings is Page &&
-        ///     (route.settings as Page).key == bookDetailsKey) {
-        ///   routeState.go('/books/popular');
-        /// }
-        /// if (route.settings is Page &&
-        ///     (route.settings as Page).key == authorDetailsKey) {
-        ///   routeState.go('/authors');
-        /// }
+        /// ! here will go selected pages logic.
+        final maybePage = route.settings;
+        if (maybePage is Page) {
+          if (maybePage.key == _createIdeaKey) {
+            goHome();
+          } else if (maybePage.key == _ideasIdeaKey) {
+            goHome();
+          } else if (maybePage.key == _ideasIdeaAnswerKey) {
+            final arr = maybePage.name?.split('/') ?? [];
+            if (arr.length == 4) {
+              goIdeaScreen(ideaId: arr[4]);
+            } else {
+              goHome();
+            }
+          } else if (maybePage.key == _settingsKey) {
+            goHome();
+          }
+        }
 
         final popped = route.didPop(result);
         return popped;
@@ -72,12 +77,12 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               onCreateNoteTap: () {},
               onProjectTap: (final project) {
                 if (project is IdeaProject) {
-                  openIdeaScreen(idea: project);
+                  goIdeaScreen(ideaId: project.id);
                 } else {
                   throw UnimplementedError();
                 }
               },
-              onSettingsTap: () => routeState.go(AppRoutesName.settings),
+              onSettingsTap: goSettings,
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.settings)
@@ -110,6 +115,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           MaterialPage<void>(
             key: _ideasIdeaKey,
             restorationId: routeState.route.path,
+            name: routeState.route.path,
             child: IdeaProjectScreen(
               onBack: goHome,
               onAnswerExpand: (final answer, final idea) async {
@@ -128,14 +134,15 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               fullscreenDialog: true,
               key: _ideasIdeaAnswerKey,
               restorationId: routeState.route.path,
+              name: routeState.route.path,
               child: IdeaAnswerScreen(
                 onUnknown: (final answerId, final idea) {
                   // TODO(arenukvern): add notification - answer with id not found
                   /// or maybe better to suggest create IdeaAnswer too
                   /// with that message
-                  openIdeaScreen(idea: idea);
+                  goIdeaScreen(ideaId: idea.id);
                 },
-                onBack: (final idea) => openIdeaScreen(idea: idea),
+                onBack: (final idea) => goIdeaScreen(ideaId: idea.id),
                 answerId: routeState.route.parameters['answerId']!,
                 ideaId: routeState.route.parameters['ideaId']!,
               ),

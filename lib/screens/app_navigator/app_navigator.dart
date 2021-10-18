@@ -92,6 +92,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           // Display the sign in screen.
           MaterialPage<void>(
             key: _createIdeaKey,
+            fullscreenDialog: true,
             child: CreateIdeaProjectScreen(
               onBack: goHome,
               onCreate: (final ideaTitle) async {

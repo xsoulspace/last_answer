@@ -6,16 +6,18 @@ class _AnswerCreator extends HookWidget {
     required final this.defaultQuestion,
     required final this.idea,
     required final this.onShareTap,
+    required final this.onFocus,
+    required final this.questionsOpened,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectQuestion defaultQuestion;
   final IdeaProject idea;
   final ValueChanged<IdeaProjectAnswer> onCreated;
   final VoidCallback onShareTap;
+  final VoidCallback onFocus;
+  final ValueNotifier<bool> questionsOpened;
   @override
   Widget build(final BuildContext context) {
-    final questionsOpened = useIsBool();
-
     final selectedQuestion =
         useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
     selectedQuestion.addListener(() async {
@@ -88,12 +90,7 @@ class _AnswerCreator extends HookWidget {
                 focusOnInit: idea.answers?.isEmpty == true,
                 controller: answerController,
                 onSubmit: onCreate,
-                onFocus: () {
-                  questionsOpened.value = true;
-                },
-                onUnfocus: () {
-                  questionsOpened.value = false;
-                },
+                onFocus: onFocus,
               ),
             ),
             if (questionsOpened.value) sendButton else shareButton,

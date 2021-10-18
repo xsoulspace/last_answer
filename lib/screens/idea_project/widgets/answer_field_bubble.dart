@@ -13,39 +13,37 @@ class AnswerFieldBubble extends HookWidget {
     void _updateAnswer() => answer
       ..text = controller.text
       ..save();
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: defaultBorderRadius,
-      ),
-      child: Focus(
-        onFocusChange: (final hasFocus) async {
-          if (hasFocus) return;
-          _updateAnswer();
-        },
-        child: TextField(
-          onChanged: (final _) => _updateAnswer(),
-          controller: controller,
-          maxLines: null,
-          keyboardAppearance: Theme.of(context).brightness,
-          textAlignVertical: TextAlignVertical.bottom,
-          keyboardType: TextInputType.multiline,
-          onEditingComplete: _updateAnswer,
-          style: Theme.of(context).textTheme.bodyText2,
-          decoration: const InputDecoration()
-              .applyDefaults(Theme.of(context).inputDecorationTheme)
-              .copyWith(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                fillColor: Colors.transparent,
-                focusColor: Colors.transparent,
+    return FocusBubbleContainer(
+      onUnfocus: _updateAnswer,
+      child: TextField(
+        onChanged: (final _) => _updateAnswer(),
+        controller: controller,
+        maxLines: null,
+        keyboardAppearance: Theme.of(context).brightness,
+        textAlignVertical: TextAlignVertical.bottom,
+        keyboardType: TextInputType.multiline,
+        onEditingComplete: _updateAnswer,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: const InputDecoration()
+            .applyDefaults(Theme.of(context).inputDecorationTheme)
+            .copyWith(
+              focusedBorder: OutlineInputBorder(
+                borderRadius: defaultBorderRadius,
+                borderSide: const BorderSide(width: 0.1),
               ),
-          cursorColor: Theme.of(context).colorScheme.secondary,
-        ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: defaultBorderRadius,
+                borderSide: const BorderSide(width: 0.05),
+              ),
+              // focusedBorder: InputBorder.none,
+              // enabledBorder: InputBorder.none,
+              // errorBorder: InputBorder.none,
+              // disabledBorder: InputBorder.none,
+              fillColor: Colors.transparent,
+
+              // focusColor: Colors.transparent,
+            ),
+        cursorColor: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

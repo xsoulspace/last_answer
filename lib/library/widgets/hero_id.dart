@@ -26,7 +26,10 @@ class HeroId extends StatelessWidget {
       tag: '${type.toString()}$id',
       placeholderBuilder: placeholderBuilder,
       flightShuttleBuilder: flightShuttleBuilder,
-      child: Material(child: child),
+      child: Material(
+        color: Colors.transparent,
+        child: child,
+      ),
     );
   }
 }

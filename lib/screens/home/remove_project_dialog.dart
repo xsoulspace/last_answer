@@ -4,7 +4,7 @@ Future<bool> showRemoveProjectDialog({
   required final BasicProject project,
   required final BuildContext context,
 }) async {
-  if (Platform.isIOS) {
+  if (Platform.isIOS || Platform.isMacOS) {
     return await showCupertinoDialog(
       context: context,
       builder: (final context) {

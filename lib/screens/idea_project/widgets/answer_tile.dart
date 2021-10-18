@@ -35,23 +35,50 @@ class _AnswerTile extends StatelessWidget {
             child: SizedBox(
               width: 150,
               child: HeroId(
-                flightShuttleBuilder:
-                    (final _, final __, final ___, final ____, final _____) {
-                  return Material(
-                    child: _QuestionBubbleBox(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 15.5),
-                        child: Text(
-                          answer.question.title
-                              .getByLanguage(Intl.getCurrentLocale()),
+                flightShuttleBuilder: (
+                  final _,
+                  final animation,
+                  final direction,
+                  final ____,
+                  final _____,
+                ) {
+                  switch (direction) {
+                    case HeroFlightDirection.pop:
+                      return Material(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8, top: 11.5),
+                          child: Text(
+                            answer.question.title
+                                .getByLanguage(Intl.getCurrentLocale()),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      );
+                    case HeroFlightDirection.push:
+                      return Material(
+                        child: Padding(
+                          padding: EdgeInsets.zero,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                answer.question.title
+                                    .getByLanguage(Intl.getCurrentLocale()),
+                                textAlign: TextAlign.center,
+                              ),
+
+                              /// Size of icon for dropdown
+                              const SizedBox(width: 24),
+                            ],
+                          ),
+                        ),
+                      );
+                  }
                 },
                 id: '${answer.id}-question${answer.question.id}',
                 type: HeroIdTypes.projectIdeaQuestionTitle,
-                child: _QuestionBubble(
+                child: _QuestionDropdown(
                   answer: answer,
                 ),
               ),

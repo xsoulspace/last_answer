@@ -20,7 +20,6 @@ import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
-import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 part 'screens/create_idea_screen.dart';
@@ -31,6 +30,5 @@ part 'widgets/answer_field.dart';
 part 'widgets/answer_field_bubble.dart';
 part 'widgets/answer_tile.dart';
 part 'widgets/idea_screen_title.dart';
-part 'widgets/question_bubble.dart';
 part 'widgets/question_dropdown.dart';
 part 'widgets/questions_chips.dart';

@@ -3,9 +3,11 @@ part of idea_project;
 class _QuestionDropdown extends HookConsumerWidget {
   const _QuestionDropdown({
     required final this.answer,
+    final this.alignment = Alignment.centerLeft,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectAnswer answer;
+  final Alignment alignment;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final chosenQuestion = useState(answer.question);
@@ -14,6 +16,7 @@ class _QuestionDropdown extends HookConsumerWidget {
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(
         value: question,
+        alignment: alignment,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(

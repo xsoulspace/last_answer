@@ -26,6 +26,14 @@ class IdeaAnswerScreen extends HookConsumerWidget {
     return null;
   }
 
+  void back({
+    required final BuildContext context,
+    required final IdeaProject idea,
+  }) {
+    closeKeyboard(context: context);
+    onBack(idea);
+  }
+
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final idea = ref.read(ideaProjectsProvider)[ideaId]!;
@@ -43,7 +51,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         leading: BackButton(
-          onPressed: () => onBack(idea),
+          onPressed: () => back(idea: idea, context: context),
         ),
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
@@ -66,7 +74,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
                 child: _AnswerField(
                   filled: false,
                   endlessLines: true,
-                  onSubmit: () => onBack(idea),
+                  onSubmit: () => back(idea: idea, context: context),
                   controller: textController,
                 ),
               ),

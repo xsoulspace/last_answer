@@ -10,6 +10,7 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/gen/assets.gen.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/screens/home/home.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 part 'choosable_bubble.dart';
 part 'circular_loader.dart';
@@ -33,4 +34,5 @@ part 'icon_submit_button.dart';
 part 'note_tile.dart';
 part 'project_tile.dart';
 part 'safe_areas.dart';
+part 'scroll_keyboard_closer.dart';
 part 'svg_icon_button.dart';

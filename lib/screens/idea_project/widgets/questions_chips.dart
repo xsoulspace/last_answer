@@ -21,10 +21,10 @@ class _QuestionsChips extends ConsumerWidget {
             (final question) => SizedBox(
               height: 38,
               child: ChoiceChip(
-                labelStyle: Theme.of(context).textTheme.bodyText2,
                 label: Text(
                   question.title.getByLanguage(Intl.getCurrentLocale()),
                 ),
+                labelStyle: Theme.of(context).textTheme.bodyText2,
                 shape:
                     RoundedRectangleBorder(borderRadius: defaultBorderRadius),
                 backgroundColor:

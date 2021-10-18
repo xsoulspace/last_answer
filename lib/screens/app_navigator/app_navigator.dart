@@ -108,6 +108,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           ...[
           MaterialPage<void>(
             key: _ideasIdeaKey,
+            restorationId: routeState.route.path,
             child: IdeaProjectScreen(
               onBack: goHome,
               onAnswerExpand: (final answer, final idea) async {
@@ -123,7 +124,9 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           ),
           if (routeState.route.pathTemplate == AppRoutesName.ideaAnswer)
             MaterialPage<void>(
+              fullscreenDialog: true,
               key: _ideasIdeaAnswerKey,
+              restorationId: routeState.route.path,
               child: IdeaAnswerScreen(
                 onUnknown: (final answerId, final idea) {
                   // TODO(arenukvern): add notification - answer with id not found

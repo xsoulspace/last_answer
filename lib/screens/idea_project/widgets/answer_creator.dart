@@ -66,6 +66,7 @@ class _AnswerCreator extends HookWidget {
           children: [
             Flexible(
               child: _AnswerField(
+                focusOnOpen: idea.answers?.isEmpty == true,
                 controller: answerController,
                 onSubmit: onCreate,
               ),

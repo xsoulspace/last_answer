@@ -7,6 +7,7 @@ class _AnswerField extends StatefulHookWidget {
     final this.filled = true,
     final this.maxLines = 7,
     final this.endlessLines = false,
+    final this.focusOnOpen = true,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -15,6 +16,7 @@ class _AnswerField extends StatefulHookWidget {
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
+  final bool? focusOnOpen;
   final bool filled;
 
   @override
@@ -26,9 +28,11 @@ class _AnswerFieldState extends State<_AnswerField> {
   final _textFieldFocusNode = FocusNode();
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
-      FocusScope.of(context).requestFocus(_textFieldFocusNode);
-    });
+    if (widget.focusOnOpen != false) {
+      WidgetsBinding.instance?.addPostFrameCallback((final _) {
+        FocusScope.of(context).requestFocus(_textFieldFocusNode);
+      });
+    }
     super.initState();
   }
 
@@ -61,7 +65,7 @@ class _AnswerFieldState extends State<_AnswerField> {
         style: Theme.of(context).textTheme.headline4,
         decoration: const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(
+            .copyWith(contentPadding: EdgeInsets.all(6),
               filled: widget.filled,
               // labelStyle: TextStyle(color: Colors.white),
               // fillColor: ThemeColors.lightAccent,

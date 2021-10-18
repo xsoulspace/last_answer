@@ -19,10 +19,10 @@ class IdeaProjectScreen extends HookConsumerWidget {
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
-
+    final scrollController = useScrollController();
     final questions = ref.read(ideaProjectQuestionsProvider);
     return Scaffold(
-      restorationId: 'ideas/$ideaId',
+      restorationId: 'ideas/scaffold/$ideaId',
       appBar: AppBar(
         leading: BackButton(
           onPressed: onBack,
@@ -63,7 +63,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
           children: [
             Expanded(
               child: ListView.separated(
-                restorationId: 'ideas/$ideaId/answers',
+                key: PageStorageKey('ideas/listeview/$ideaId/answers'),
+                controller: scrollController,
+                restorationId: 'ideas/listeview/$ideaId/answers',
                 separatorBuilder: (final _, final __) =>
                     const SizedBox(height: 26),
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -79,7 +81,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     key: ValueKey(_answer.id),
                     answer: _answer,
                     confirmDelete: () => true,
-                    onExpand: (final _) => onAnswerExpand(_answer, idea),
+                    onExpand: (final _) {
+                      onAnswerExpand(_answer, idea);
+                    },
                     onReadyToDelete: () async {
                       idea.answers?.remove(_answer);
                       await idea.save();

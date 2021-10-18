@@ -16,6 +16,7 @@ final lightThemeData = _lightBase.copyWith(
       statusBarIconBrightness: Brightness.dark,
     ),
   ),
+
   // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
@@ -38,6 +39,7 @@ final darkThemeData = _darkBase.copyWith(
       statusBarIconBrightness: Brightness.light,
     ),
   ),
+  cardColor: AppColors.grey1.withOpacity(0.5),
   splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,

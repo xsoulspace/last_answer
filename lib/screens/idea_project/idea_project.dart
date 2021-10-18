@@ -2,6 +2,7 @@ library idea_project;
 
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,10 @@ import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 part 'screens/create_idea_screen.dart';
+part 'screens/idea_answer_screen.dart';
 part 'screens/idea_screen.dart';
 part 'widgets/answer_creator.dart';
+part 'widgets/answer_field.dart';
 part 'widgets/answer_field_bubble.dart';
 part 'widgets/answer_tile.dart';
 part 'widgets/question_bubble.dart';

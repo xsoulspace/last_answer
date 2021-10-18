@@ -6,12 +6,14 @@ class _AnswerTile extends StatelessWidget {
     required final this.confirmDelete,
     required final this.onReadyToDelete,
     required final this.deleteIconVisible,
+    required final this.onExpand,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectAnswer answer;
   final BoolCallback confirmDelete;
   final VoidCallback onReadyToDelete;
   final bool deleteIconVisible;
+  final ValueChanged<IdeaProjectAnswer> onExpand;
 
   @override
   Widget build(final BuildContext context) {
@@ -30,15 +32,36 @@ class _AnswerTile extends StatelessWidget {
           Positioned(
             top: 0,
             left: 0,
+            child: SizedBox(
+              width: 150,
+              child: HeroId(
+                flightShuttleBuilder:
+                    (final _, final __, final ___, final ____, final _____) {
+                  return Material(
+                    child: _QuestionBubbleBox(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 15.5),
+                        child: Text(
+                          answer.question.title
+                              .getByLanguage(Intl.getCurrentLocale()),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                id: '${answer.id}-question${answer.question.id}',
+                type: HeroIdTypes.projectIdeaQuestionTitle,
+                child: _QuestionBubble(
+                  answer: answer,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
             child: Row(
               children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 150),
-                  child: _QuestionBubble(
-                    answer: answer,
-                  ),
-                ),
-                if (deleteIconVisible) const Spacer(),
                 Visibility(
                   visible: deleteIconVisible,
                   child: IconButton(
@@ -48,7 +71,11 @@ class _AnswerTile extends StatelessWidget {
                     },
                     icon: const Icon(Icons.close),
                   ),
-                )
+                ),
+                IconButton(
+                  onPressed: () => onExpand(answer),
+                  icon: const Icon(Icons.expand),
+                ),
               ],
             ),
           ),
@@ -59,8 +86,15 @@ class _AnswerTile extends StatelessWidget {
               children: [
                 const SizedBox(width: 30),
                 Flexible(
-                  child: AnswerFieldBubble(
-                    answer: answer,
+                  child: HeroId(
+                    id: answer.id,
+                    placeholderBuilder: (final _, final __, final child) {
+                      return Opacity(opacity: 0.4, child: child);
+                    },
+                    type: HeroIdTypes.projectIdeaAnswerText,
+                    child: AnswerFieldBubble(
+                      answer: answer,
+                    ),
                   ),
                 ),
               ],
@@ -68,24 +102,6 @@ class _AnswerTile extends StatelessWidget {
           ),
         ],
       ),
-      // Stack(
-      //   children: <Widget>[
-
-      //     Positioned(
-      //       top: 15,
-      //       left: 17,
-      //       child: Row(
-      //         children: [
-      //           Flexible(
-      //             child: AnswerFieldBubble(
-      //               answer: answer,
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

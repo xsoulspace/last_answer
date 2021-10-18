@@ -31,8 +31,9 @@ class ProjectTile extends StatelessWidget {
         if (direction != DismissDirection.startToEnd) return;
         onRemove(project);
       },
-      child: HeroProjectTitle(
-        project: project,
+      child: HeroId(
+        id: project.id,
+        type: HeroIdTypes.projectTitle,
         child: ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: defaultBorderRadius,

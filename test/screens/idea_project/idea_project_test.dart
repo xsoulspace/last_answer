@@ -12,6 +12,7 @@ void main() {
         home: IdeaProjectScreen(
           ideaId: mockIdeaProject.id,
           onBack: () {},
+          onAnswerExpand: (final _, final __) {},
         ),
       );
   group('[idea project screen]', () {

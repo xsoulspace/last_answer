@@ -1,5 +1,7 @@
 part of abstract;
 
+typedef IdeaProjectAnswerId = String;
+
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject with EquatableMixin {
@@ -27,7 +29,7 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
   IdeaProjectQuestion question;
 
   @HiveField(2)
-  final String id;
+  final IdeaProjectAnswerId id;
 
   @HiveField(3)
   final DateTime created;

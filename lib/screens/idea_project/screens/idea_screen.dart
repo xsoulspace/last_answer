@@ -1,12 +1,16 @@
 part of idea_project;
 
+typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
+
 class IdeaProjectScreen extends HookConsumerWidget {
   const IdeaProjectScreen({
     required final this.onBack,
     required final this.ideaId,
+    required final this.onAnswerExpand,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onBack;
+  final TwoValuesChanged<IdeaProjectAnswer, IdeaProject> onAnswerExpand;
   final ProjectId ideaId;
 
   @override
@@ -26,8 +30,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
         toolbarHeight: 70,
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
-          child: HeroProjectTitle(
-            project: idea,
+          child: HeroId(
+            id: idea.id,
+            type: HeroIdTypes.projectTitle,
             child: TextField(
               controller: titleController,
               onChanged: (final text) {
@@ -35,6 +40,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                   ..title = text
                   ..save();
               },
+              keyboardAppearance: Theme.of(context).brightness,
               style: Theme.of(context).textTheme.bodyText2,
               decoration: const InputDecoration()
                   .applyDefaults(Theme.of(context).inputDecorationTheme)
@@ -73,6 +79,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     key: ValueKey(_answer.id),
                     answer: _answer,
                     confirmDelete: () => true,
+                    onExpand: (final _) => onAnswerExpand(_answer, idea),
                     onReadyToDelete: () async {
                       idea.answers?.remove(_answer);
                       await idea.save();

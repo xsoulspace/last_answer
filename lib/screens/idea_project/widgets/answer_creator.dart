@@ -22,7 +22,7 @@ class _AnswerCreator extends HookWidget {
     });
     final answerController = useTextEditingController(text: idea.newAnswerText);
     final answer = useState(answerController.text);
-    answerController.addListener(() async {
+    answerController.addListener(() {
       idea.newAnswerText = answerController.text;
       answer.value = answerController.text;
       unawaited(idea.save());
@@ -30,6 +30,7 @@ class _AnswerCreator extends HookWidget {
 
     Future<void> onCreate() async {
       final text = answerController.text;
+      answerController.clear();
       final question = selectedQuestion.value;
       if (question == null || text.isEmpty) return;
       final answer =
@@ -38,7 +39,6 @@ class _AnswerCreator extends HookWidget {
         HiveBoxesIds.ideaProjectAnswerKey,
       );
       await box.put(answer.id, answer);
-      answerController.clear();
       onCreated(answer);
     }
 
@@ -67,7 +67,7 @@ class _AnswerCreator extends HookWidget {
             Flexible(
               child: _AnswerField(
                 controller: answerController,
-                onCreate: onCreate,
+                onSubmit: onCreate,
               ),
             ),
             RotatedBox(
@@ -81,66 +81,6 @@ class _AnswerCreator extends HookWidget {
           ],
         )
       ],
-    );
-  }
-}
-
-class _AnswerField extends StatefulHookWidget {
-  const _AnswerField({
-    required final this.controller,
-    required final this.onCreate,
-    final Key? key,
-  }) : super(key: key);
-  final TextEditingController controller;
-  final VoidCallback onCreate;
-  @override
-  State<_AnswerField> createState() => _AnswerFieldState();
-}
-
-class _AnswerFieldState extends State<_AnswerField> {
-  final _keyboardFocusNode = FocusNode();
-  final _textFieldFocusNode = FocusNode();
-  @override
-  void initState() {
-    _textFieldFocusNode.requestFocus();
-    super.initState();
-  }
-
-  @override
-  Widget build(final BuildContext context) {
-    final border = OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: defaultBorderRadius,
-    );
-    return RawKeyboardListener(
-      focusNode: _keyboardFocusNode,
-      onKey: (final event) {
-        if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-            (event.isShiftPressed || event.isControlPressed)) {
-          widget.onCreate();
-        }
-      },
-      child: TextFormField(
-        focusNode: _textFieldFocusNode,
-        onFieldSubmitted: (final _) => widget.onCreate(),
-        controller: widget.controller,
-        minLines: 1,
-        maxLines: 7,
-        keyboardType: TextInputType.multiline,
-        onChanged: (final text) async {},
-        style: Theme.of(context).textTheme.headline3,
-        decoration: const InputDecoration()
-            .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(
-              filled: true,
-              // labelStyle: TextStyle(color: Colors.white),
-              // fillColor: ThemeColors.lightAccent,
-              focusedBorder: border,
-              border: border,
-              hintText: S.current.answer,
-            ),
-        cursorColor: Theme.of(context).colorScheme.secondary,
-      ),
     );
   }
 }

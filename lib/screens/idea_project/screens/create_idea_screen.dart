@@ -15,16 +15,19 @@ class CreateIdeaProjectScreen extends StatefulHookWidget {
 }
 
 class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
-  final focusNode = FocusNode();
+  final _textFieldFocusNode = FocusNode();
+  final _keyboardFocusNode = FocusNode();
   @override
   void initState() {
-    focusNode.requestFocus();
+    WidgetsBinding.instance?.addPostFrameCallback((final _) {
+      FocusScope.of(context).requestFocus(_textFieldFocusNode);
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    focusNode.dispose();
+    _textFieldFocusNode.dispose();
     super.dispose();
   }
 
@@ -56,17 +59,27 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: TextField(
-                      focusNode: focusNode,
-                      controller: textController,
-                      maxLength: 90,
-                      style: Theme.of(context).textTheme.headline1,
-                      decoration: const InputDecoration()
-                          .applyDefaults(Theme.of(context).inputDecorationTheme)
-                          .copyWith(
-                            hintText: S.current.createIdeaHelperText,
-                            border: const UnderlineInputBorder(),
-                          ),
+                    child: RawKeyboardListener(
+                      focusNode: _keyboardFocusNode,
+                      onKey: (final event) {
+                        if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+                          widget.onCreate(textController.text);
+                        }
+                      },
+                      child: TextField(
+                        focusNode: _textFieldFocusNode,
+                        controller: textController,
+                        maxLength: 90,
+                        style: Theme.of(context).textTheme.headline1,
+                        decoration: const InputDecoration()
+                            .applyDefaults(
+                              Theme.of(context).inputDecorationTheme,
+                            )
+                            .copyWith(
+                              hintText: S.current.createIdeaHelperText,
+                              border: const UnderlineInputBorder(),
+                            ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 6),

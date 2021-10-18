@@ -18,6 +18,7 @@ class SettingsScreen extends StatelessWidget {
         leading: BackButton(
           onPressed: onBack,
         ),
+        title: const Text('Settings'),
       ),
       body: FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),

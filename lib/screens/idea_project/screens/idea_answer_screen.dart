@@ -58,7 +58,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
           child: HeroId(
             id: '$answerId-question${maybeAnswer.question.id}',
             type: HeroIdTypes.projectIdeaQuestionTitle,
-            child: _QuestionBubble(answer: answer.value),
+            child: _QuestionDropdown(answer: answer.value,alignment: Alignment.center,),
           ),
         ),
       ),
@@ -72,6 +72,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
                 id: answerId,
                 type: HeroIdTypes.projectIdeaAnswerText,
                 child: _AnswerField(
+                  fillColor: Colors.transparent,
                   filled: false,
                   endlessLines: true,
                   focusOnInit: textController.text.isEmpty,

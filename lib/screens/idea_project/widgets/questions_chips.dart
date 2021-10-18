@@ -10,7 +10,7 @@ class _QuestionsChips extends ConsumerWidget {
   final ValueChanged<IdeaProjectQuestion> onChange;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final settings = SettingsStateScope.of(context);
+    final brightness = Theme.of(context).brightness;
     final questions = ref.watch(ideaProjectQuestionsProvider).values;
     return Wrap(
       spacing: 5,
@@ -30,7 +30,7 @@ class _QuestionsChips extends ConsumerWidget {
                 backgroundColor:
                     Theme.of(context).primaryColor.withOpacity(.03),
                 selectedColor: AppColors.primary2.withOpacity(
-                  settings.themeMode == ThemeMode.light ? 0.05 : 0.2,
+                  brightness == Brightness.light ? 0.05 : 0.2,
                 ),
                 selected: value == question,
                 onSelected: (final _) => onChange(question),

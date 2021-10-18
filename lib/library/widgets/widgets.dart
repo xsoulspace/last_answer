@@ -15,7 +15,7 @@ part 'choosable_bubble.dart';
 part 'circular_loader.dart';
 part 'dismissible_tile.dart';
 part 'editable_bubble.dart';
-part 'hero_project_title.dart';
+part 'hero_id.dart';
 part 'icon_add_button.dart';
 part 'icon_apply_button.dart';
 part 'icon_close_button.dart';

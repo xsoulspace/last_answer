@@ -15,7 +15,7 @@ class AnswerFieldBubble extends HookWidget {
       ..save();
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: defaultBorderRadius,
@@ -27,11 +27,14 @@ class AnswerFieldBubble extends HookWidget {
         },
         child: TextField(
           onChanged: (final _) => _updateAnswer(),
-          textAlignVertical: TextAlignVertical.center,
           controller: controller,
-          maxLines: null,
+          minLines: 1,
+          maxLines: 7,
+          keyboardAppearance: Theme.of(context).brightness,
+          textAlignVertical: TextAlignVertical.bottom,
           keyboardType: TextInputType.multiline,
           onEditingComplete: _updateAnswer,
+          style: Theme.of(context).textTheme.bodyText2,
           decoration: const InputDecoration()
               .applyDefaults(Theme.of(context).inputDecorationTheme)
               .copyWith(

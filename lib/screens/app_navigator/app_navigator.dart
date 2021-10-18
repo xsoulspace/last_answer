@@ -28,8 +28,14 @@ class AppNavigator extends ConsumerStatefulWidget {
 class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
   final _settingsKey = const ValueKey<String>('settings');
+  final _notesKey = const ValueKey<String>('notes');
+  final _notesNoteKey = const ValueKey<String>('notes/note');
+  final _createIdeaKey = const ValueKey<String>('createIdea');
+  final _ideasKey = const ValueKey<String>('ideas');
+  final _ideasIdeaKey = const ValueKey<String>('ideas/idea');
+  final _ideasIdeaAnswerKey = const ValueKey<String>('ideas/idea/answer');
   RouteState get routeState => widget.routeState;
-  void geHome() => routeState.go(AppRoutesName.home);
+  void goHome() => routeState.go(AppRoutesName.home);
   void openIdeaScreen({required final IdeaProject idea}) =>
       routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   @override
@@ -79,15 +85,15 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           MaterialPage<void>(
             key: _settingsKey,
             child: SettingsScreen(
-              onBack: geHome,
+              onBack: goHome,
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.createIdea)
           // Display the sign in screen.
           MaterialPage<void>(
-            key: _settingsKey,
+            key: _createIdeaKey,
             child: CreateIdeaProjectScreen(
-              onBack: geHome,
+              onBack: goHome,
               onCreate: (final ideaTitle) async {
                 final idea = await IdeaProject.create(title: ideaTitle);
                 ref
@@ -97,16 +103,40 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               },
             ),
           )
-        else if (routeState.route.pathTemplate == AppRoutesName.idea)
+        else if (routeState.route.pathTemplate.contains(AppRoutesName.idea))
           // Display the sign in screen.
+          ...[
           MaterialPage<void>(
-            key: _settingsKey,
+            key: _ideasIdeaKey,
             child: IdeaProjectScreen(
-              onBack: geHome,
-              ideaId: routeState.route.parameters['id']!,
+              onBack: goHome,
+              onAnswerExpand: (final answer, final idea) async {
+                await routeState.go(
+                  AppRoutesName.getIdeaAnswerPath(
+                    ideaId: idea.id,
+                    answerId: answer.id,
+                  ),
+                );
+              },
+              ideaId: routeState.route.parameters['ideaId']!,
             ),
-          )
-        else
+          ),
+          if (routeState.route.pathTemplate == AppRoutesName.ideaAnswer)
+            MaterialPage<void>(
+              key: _ideasIdeaAnswerKey,
+              child: IdeaAnswerScreen(
+                onUnknown: (final answerId, final idea) {
+                  // TODO(arenukvern): add notification - answer with id not found
+                  /// or maybe better to suggest create IdeaAnswer too
+                  /// with that message
+                  openIdeaScreen(idea: idea);
+                },
+                onBack: (final idea) => openIdeaScreen(idea: idea),
+                answerId: routeState.route.parameters['answerId']!,
+                ideaId: routeState.route.parameters['ideaId']!,
+              ),
+            )
+        ] else
           MaterialPage<void>(child: Container())
       ],
     );

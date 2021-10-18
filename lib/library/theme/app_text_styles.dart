@@ -10,31 +10,31 @@ class AppTextStylesLight {
   );
   static final headline2 = GoogleFonts.ibmPlexSans(
     fontSize: 22,
-    height: 26 / 22,
+    height: 28 / 22,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   );
   static final headline3 = GoogleFonts.ibmPlexSans(
     fontSize: 20,
-    height: 22 / 20,
+    height: 26 / 20,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   );
   static final headline4 = GoogleFonts.ibmPlexSans(
     fontSize: 19,
-    height: 21 / 19,
+    height: 25 / 19,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   );
   static final headline5 = GoogleFonts.ibmPlexSans(
     fontSize: 18,
-    height: 20 / 18,
+    height: 24 / 18,
     color: AppColors.black,
     fontWeight: FontWeight.w700,
   );
   static final headline6 = GoogleFonts.ibmPlexSans(
     fontSize: 17,
-    height: 19 / 17,
+    height: 23 / 17,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   );
@@ -56,7 +56,7 @@ class AppTextStylesLight {
   );
   static final bodyText2 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
-    height: 16 / 16,
+    height: 24 / 16,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   );

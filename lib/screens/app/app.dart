@@ -86,7 +86,7 @@ class _AppScaffoldState extends State<AppScaffold> {
               /// the MaterialApp to restore the navigation stack when a user
               /// leaves and returns to the app after it has been killed while
               /// running in the background.
-              restorationScopeId: 'app',
+              // restorationScopeId: 'app',
 
               // Provide the generated AppLocalizations to the MaterialApp. This
               // allows descendant Widgets to display the correct translations

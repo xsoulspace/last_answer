@@ -35,7 +35,7 @@ final darkThemeData = _darkBase.copyWith(
     foregroundColor: AppColors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
-      statusBarColor: _lightBase.canvasColor,
+      statusBarColor: _darkBase.canvasColor,
       statusBarIconBrightness: Brightness.light,
     ),
   ),

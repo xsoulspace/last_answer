@@ -40,7 +40,8 @@ class AnswerFieldBubble extends HookWidget {
               // errorBorder: InputBorder.none,
               // disabledBorder: InputBorder.none,
               fillColor: Colors.transparent,
-
+              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16)
+                  .copyWith(top: 4),
               // focusColor: Colors.transparent,
             ),
         cursorColor: Theme.of(context).colorScheme.secondary,

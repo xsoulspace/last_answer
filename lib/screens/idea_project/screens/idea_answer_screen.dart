@@ -58,12 +58,15 @@ class IdeaAnswerScreen extends HookConsumerWidget {
           child: HeroId(
             id: '$answerId-question${maybeAnswer.question.id}',
             type: HeroIdTypes.projectIdeaQuestionTitle,
-            child: _QuestionDropdown(answer: answer.value,alignment: Alignment.center,),
+            child: _QuestionDropdown(
+              answer: answer.value,
+              alignment: Alignment.center,
+            ),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

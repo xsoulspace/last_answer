@@ -14,12 +14,15 @@ class _AnswerCreator extends HookWidget {
   final VoidCallback onShareTap;
   @override
   Widget build(final BuildContext context) {
+    final questionsOpened = useIsBool();
+
     final selectedQuestion =
         useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
     selectedQuestion.addListener(() async {
       idea.newQuestion = selectedQuestion.value;
       unawaited(idea.save());
     });
+
     final answerController = useTextEditingController(text: idea.newAnswerText);
     final answer = useState(answerController.text);
     answerController.addListener(() {
@@ -42,42 +45,57 @@ class _AnswerCreator extends HookWidget {
       onCreated(answer);
     }
 
+    final sendButton = RotatedBox(
+      quarterTurns: 3,
+      child: IconButton(
+        onPressed: answer.value.isNotEmpty ? onCreate : null,
+        color: AppColors.primary2,
+        icon: const Icon(Icons.send),
+      ),
+    );
+    final shareButton = IconShareButton(
+      onTap: onShareTap,
+    );
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _QuestionsChips(
-                onChange: (final question) => selectedQuestion.value = question,
-                value: selectedQuestion.value,
+        Visibility(
+          visible: questionsOpened.value,
+          child: Row(
+            children: [
+              Expanded(
+                child: _QuestionsChips(
+                  onChange: (final question) =>
+                      selectedQuestion.value = question,
+                  value: selectedQuestion.value,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 14),
-              child: IconShareButton(
-                onTap: onShareTap,
+              Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: shareButton,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         Row(
           children: [
             Flexible(
               child: _AnswerField(
-                focusOnOpen: idea.answers?.isEmpty == true,
+                focusOnInit: idea.answers?.isEmpty == true,
                 controller: answerController,
                 onSubmit: onCreate,
+                onFocus: () {
+                  questionsOpened.value = true;
+                },
+                onUnfocus: () {
+                  questionsOpened.value = false;
+                },
               ),
             ),
-            RotatedBox(
-              quarterTurns: 3,
-              child: IconButton(
-                onPressed: answer.value.isNotEmpty ? onCreate : null,
-                color: AppColors.primary2,
-                icon: const Icon(Icons.send),
-              ),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 400),
+              child: questionsOpened.value ? sendButton : shareButton,
             ),
           ],
         )

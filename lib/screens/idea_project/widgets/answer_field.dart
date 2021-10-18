@@ -4,10 +4,12 @@ class _AnswerField extends StatefulHookWidget {
   const _AnswerField({
     required final this.controller,
     required final this.onSubmit,
+    final this.onUnfocus,
+    final this.onFocus,
     final this.filled = true,
     final this.maxLines = 7,
     final this.endlessLines = false,
-    final this.focusOnOpen = true,
+    final this.focusOnInit = true,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -16,8 +18,10 @@ class _AnswerField extends StatefulHookWidget {
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
-  final bool? focusOnOpen;
+  final bool? focusOnInit;
   final bool filled;
+  final VoidCallback? onUnfocus;
+  final VoidCallback? onFocus;
 
   @override
   State<_AnswerField> createState() => _AnswerFieldState();
@@ -28,12 +32,30 @@ class _AnswerFieldState extends State<_AnswerField> {
   final _textFieldFocusNode = FocusNode();
   @override
   void initState() {
-    if (widget.focusOnOpen != false) {
+    if (widget.focusOnInit != false) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         FocusScope.of(context).requestFocus(_textFieldFocusNode);
       });
     }
+    _textFieldFocusNode.addListener(onTextFocusChange);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _keyboardFocusNode.dispose();
+    _textFieldFocusNode
+      ..removeListener(onTextFocusChange)
+      ..dispose();
+    super.dispose();
+  }
+
+  void onTextFocusChange() {
+    if (_textFieldFocusNode.hasFocus) {
+      widget.onFocus?.call();
+    } else {
+      widget.onUnfocus?.call();
+    }
   }
 
   static final _border = OutlineInputBorder(
@@ -65,7 +87,8 @@ class _AnswerFieldState extends State<_AnswerField> {
         style: Theme.of(context).textTheme.headline4,
         decoration: const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(contentPadding: EdgeInsets.all(6),
+            .copyWith(
+              contentPadding: const EdgeInsets.all(6),
               filled: widget.filled,
               // labelStyle: TextStyle(color: Colors.white),
               // fillColor: ThemeColors.lightAccent,

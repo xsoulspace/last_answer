@@ -27,33 +27,15 @@ class IdeaProjectScreen extends HookConsumerWidget {
         leading: BackButton(
           onPressed: onBack,
         ),
-        toolbarHeight: 70,
-        title: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 252),
-          child: HeroId(
-            id: idea.id,
-            type: HeroIdTypes.projectTitle,
-            child: TextField(
-              controller: titleController,
-              onChanged: (final text) {
-                idea
-                  ..title = text
-                  ..save();
-              },
-              keyboardAppearance: Theme.of(context).brightness,
-              style: Theme.of(context).textTheme.bodyText2,
-              decoration: const InputDecoration()
-                  .applyDefaults(Theme.of(context).inputDecorationTheme)
-                  .copyWith(
-                    filled: true,
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: defaultBorderRadius,
-                    ),
-                  ),
-            ),
-          ),
+        toolbarHeight: 55,
+        title: _IdeaScreenTitle(
+          controller: titleController,
+          idea: idea,
+          onChanged: (final text) {
+            idea
+              ..title = text
+              ..save();
+          },
         ),
       ),
       body: Padding(

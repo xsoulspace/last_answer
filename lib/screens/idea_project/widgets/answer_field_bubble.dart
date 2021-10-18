@@ -27,8 +27,6 @@ class AnswerFieldBubble extends HookWidget {
         child: TextField(
           onChanged: (final _) => _updateAnswer(),
           controller: controller,
-          // minLines: 1,
-          // maxLines: 7,
           maxLines: null,
           keyboardAppearance: Theme.of(context).brightness,
           textAlignVertical: TextAlignVertical.bottom,

@@ -82,6 +82,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     answer: _answer,
                     confirmDelete: () => true,
                     onExpand: (final _) {
+                      closeKeyboard(context: context);
                       onAnswerExpand(_answer, idea);
                     },
                     onReadyToDelete: () async {

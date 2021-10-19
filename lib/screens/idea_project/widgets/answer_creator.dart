@@ -65,8 +65,7 @@ class _AnswerCreator extends HookWidget {
         onTap: onShareTap,
       ),
     );
-    return ColoredBox(
-      // duration: const Duration(milliseconds: 350),
+    return Material(
       color: questionsOpened.value
           ? getBackground(context)
           : Theme.of(context).canvasColor,
@@ -103,7 +102,7 @@ class _AnswerCreator extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               children: [
-                Flexible(
+                Expanded(
                   child: _AnswerField(
                     focusOnInit: idea.answers?.isEmpty == true,
                     controller: answerController,
@@ -111,7 +110,7 @@ class _AnswerCreator extends HookWidget {
                     onFocus: onFocus,
                   ),
                 ),
-                if (questionsOpened.value) sendButton else shareButton,
+                if (questionsOpened.value) sendButton else shareButton
               ],
             ),
           ),

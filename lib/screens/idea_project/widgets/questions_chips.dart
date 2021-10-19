@@ -13,7 +13,7 @@ class _QuestionsChips extends ConsumerWidget {
     final brightness = Theme.of(context).brightness;
     final questions = ref.watch(ideaProjectQuestionsProvider).values;
     return Wrap(
-      spacing: 5,
+      spacing: 1,
       crossAxisAlignment: WrapCrossAlignment.center,
       alignment: WrapAlignment.center,
       children: questions
@@ -27,10 +27,9 @@ class _QuestionsChips extends ConsumerWidget {
                 labelStyle: Theme.of(context).textTheme.bodyText2,
                 shape:
                     RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-                backgroundColor:
-                    Theme.of(context).primaryColor.withOpacity(.03),
+                backgroundColor: _AnswerCreator.getBackground(context),
                 selectedColor: AppColors.primary2.withOpacity(
-                  brightness == Brightness.light ? 0.05 : 0.2,
+                  brightness == Brightness.light ? 0.2 : 0.2,
                 ),
                 selected: value == question,
                 onSelected: (final _) => onChange(question),

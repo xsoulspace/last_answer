@@ -115,7 +115,7 @@ class _AnswerCreator extends HookWidget {
               ],
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
         ],
       ),
     );

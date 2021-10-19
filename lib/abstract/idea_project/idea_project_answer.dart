@@ -4,7 +4,9 @@ typedef IdeaProjectAnswerId = String;
 
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
-class IdeaProjectAnswer extends HiveObject with EquatableMixin {
+class IdeaProjectAnswer extends HiveObject
+    with EquatableMixin
+    implements Sharable {
   IdeaProjectAnswer({
     required final this.text,
     required final this.question,
@@ -33,6 +35,9 @@ class IdeaProjectAnswer extends HiveObject with EquatableMixin {
 
   @HiveField(3)
   final DateTime created;
+
+  @override
+  String toShareString() => '${question.toShareString()} $text';
 
   @override
   List get props => [id];

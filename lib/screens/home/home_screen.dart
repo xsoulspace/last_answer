@@ -100,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ListView.separated(
                         padding: const EdgeInsets.all(5),
                         reverse: true,
+                        shrinkWrap: true,
                         restorationId: 'projects',
                         itemBuilder: (final _, final i) {
                           final project = projects[i];
@@ -142,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
+                const SizedBox(height: 5),
                 const SafeAreaBottom(),
               ],
             ),

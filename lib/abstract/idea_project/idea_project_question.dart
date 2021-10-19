@@ -5,7 +5,9 @@ part of abstract;
 /// will not broke immutabilty
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
-class IdeaProjectQuestion extends HiveObject with EquatableMixin {
+class IdeaProjectQuestion extends HiveObject
+    with EquatableMixin
+    implements Sharable {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
@@ -30,6 +32,9 @@ class IdeaProjectQuestion extends HiveObject with EquatableMixin {
 
   @override
   bool get stringify => true;
+
+  @override
+  String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
 }
 
 /// A mock for [IdeaProjectQuestion].

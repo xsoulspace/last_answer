@@ -3,6 +3,7 @@ library abstract;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:mocktail/mocktail.dart';

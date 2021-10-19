@@ -48,6 +48,16 @@ class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProjectQuestion? newQuestion;
 
   @override
+  String toShareString() {
+    final buffer = StringBuffer();
+    final List<IdeaProjectAnswer> resolvedAnswers = answers ?? [];
+    for (final answer in resolvedAnswers) {
+      buffer.writeln(answer.toShareString());
+    }
+    return buffer.toString();
+  }
+
+  @override
   List get props => [id];
 
   @override

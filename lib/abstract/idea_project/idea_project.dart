@@ -49,7 +49,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @override
   String toShareString() {
-    final buffer = StringBuffer();
+    final buffer = StringBuffer('$title \n');
     final List<IdeaProjectAnswer> resolvedAnswers = answers ?? [];
     for (final answer in resolvedAnswers) {
       buffer.writeln(answer.toShareString());

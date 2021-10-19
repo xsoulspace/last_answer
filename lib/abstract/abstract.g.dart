@@ -11,7 +11,7 @@ class AnswerAdapter extends TypeAdapter<Answer> {
   final int typeId = 2;
 
   @override
-  Answer read(BinaryReader reader) {
+  Answer read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -26,7 +26,7 @@ class AnswerAdapter extends TypeAdapter<Answer> {
   }
 
   @override
-  void write(BinaryWriter writer, Answer obj) {
+  void write(final BinaryWriter writer, final Answer obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -45,7 +45,7 @@ class AnswerAdapter extends TypeAdapter<Answer> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is AnswerAdapter &&
           runtimeType == other.runtimeType &&
@@ -57,7 +57,7 @@ class ProjectAdapter extends TypeAdapter<Project> {
   final int typeId = 1;
 
   @override
-  Project read(BinaryReader reader) {
+  Project read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -72,7 +72,7 @@ class ProjectAdapter extends TypeAdapter<Project> {
   }
 
   @override
-  void write(BinaryWriter writer, Project obj) {
+  void write(final BinaryWriter writer, final Project obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -91,7 +91,7 @@ class ProjectAdapter extends TypeAdapter<Project> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is ProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -103,7 +103,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   final int typeId = 3;
 
   @override
-  IdeaProject read(BinaryReader reader) {
+  IdeaProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -119,7 +119,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProject obj) {
+  void write(final BinaryWriter writer, final IdeaProject obj) {
     writer
       ..writeByte(6)
       ..writeByte(5)
@@ -140,7 +140,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -152,7 +152,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   final int typeId = 4;
 
   @override
-  IdeaProjectAnswer read(BinaryReader reader) {
+  IdeaProjectAnswer read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -166,7 +166,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProjectAnswer obj) {
+  void write(final BinaryWriter writer, final IdeaProjectAnswer obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -183,7 +183,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectAnswerAdapter &&
           runtimeType == other.runtimeType &&
@@ -195,7 +195,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   final int typeId = 5;
 
   @override
-  IdeaProjectQuestion read(BinaryReader reader) {
+  IdeaProjectQuestion read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -207,7 +207,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProjectQuestion obj) {
+  void write(final BinaryWriter writer, final IdeaProjectQuestion obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -220,7 +220,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectQuestionAdapter &&
           runtimeType == other.runtimeType &&
@@ -232,7 +232,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   final int typeId = 8;
 
   @override
-  LocalizedText read(BinaryReader reader) {
+  LocalizedText read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -244,7 +244,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   }
 
   @override
-  void write(BinaryWriter writer, LocalizedText obj) {
+  void write(final BinaryWriter writer, final LocalizedText obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -257,7 +257,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is LocalizedTextAdapter &&
           runtimeType == other.runtimeType &&
@@ -269,7 +269,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   final int typeId = 6;
 
   @override
-  NoteProject read(BinaryReader reader) {
+  NoteProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -285,7 +285,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   }
 
   @override
-  void write(BinaryWriter writer, NoteProject obj) {
+  void write(final BinaryWriter writer, final NoteProject obj) {
     writer
       ..writeByte(6)
       ..writeByte(5)
@@ -306,7 +306,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is NoteProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -318,7 +318,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   final int typeId = 7;
 
   @override
-  StoryProject read(BinaryReader reader) {
+  StoryProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -332,7 +332,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   }
 
   @override
-  void write(BinaryWriter writer, StoryProject obj) {
+  void write(final BinaryWriter writer, final StoryProject obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -351,7 +351,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is StoryProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -362,36 +362,38 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
+Question _$QuestionFromJson(final Map<String, dynamic> json) => Question(
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
       id: json['id'] as String,
     );
 
-Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
+Map<String, dynamic> _$QuestionToJson(final Question instance) =>
+    <String, dynamic>{
       'title': instance.title,
       'id': instance.id,
     };
 
-IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
+IdeaProjectQuestion _$IdeaProjectQuestionFromJson(
+        final Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
-        IdeaProjectQuestion instance) =>
+        final IdeaProjectQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
     };
 
-LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
+LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
     );
 
-Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
+Map<String, dynamic> _$LocalizedTextToJson(final LocalizedText instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,

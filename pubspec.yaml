@@ -37,7 +37,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   universal_io: ^2.0.4
-  share: ^2.0.4
+  share_plus: ^3.0.4
   uuid: ^3.0.4
   flutter_hooks: ^0.18.0
   flutter_riverpod: ^1.0.0-dev.7

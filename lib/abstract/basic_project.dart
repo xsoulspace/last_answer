@@ -11,7 +11,7 @@ typedef ProjectId = String;
 
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-class BasicProject extends HiveObject with EquatableMixin {
+class BasicProject extends HiveObject with EquatableMixin implements Sharable {
   BasicProject({
     required final this.id,
     required final this.title,
@@ -33,6 +33,10 @@ class BasicProject extends HiveObject with EquatableMixin {
 
   @HiveField(projectLatestFieldHiveId)
   final DateTime updated;
+
+  /// Always override it in extended projects
+  @override
+  String toShareString() => '';
 
   @override
   List<Object?> get props => [id];

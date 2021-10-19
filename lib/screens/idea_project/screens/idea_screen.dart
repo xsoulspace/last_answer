@@ -95,7 +95,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
             ),
           ),
           _AnswerCreator(
-            onShareTap: () {},
+            onShareTap: () async {
+              await ProjectSharer.of(context).share(project: idea);
+            },
             questionsOpened: questionsOpened,
             onFocus: openQuestions,
             idea: idea,

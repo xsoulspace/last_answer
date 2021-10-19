@@ -5,12 +5,13 @@ class _IdeaScreenTitle extends HookWidget {
     required final this.controller,
     required final this.onChanged,
     required final this.idea,
+    required final this.onFocus,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final IdeaProject idea;
-
+  final VoidCallback onFocus;
   @override
   Widget build(final BuildContext context) {
     return HeroId(
@@ -18,6 +19,8 @@ class _IdeaScreenTitle extends HookWidget {
       type: HeroIdTypes.projectTitle,
       child: FocusBubbleContainer(
         constraints: const BoxConstraints(maxWidth: 250),
+        onFocus: onFocus,
+        fillDefaultWithCanvas: true,
         child: TextField(
           controller: controller,
           onChanged: onChanged,

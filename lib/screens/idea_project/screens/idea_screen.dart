@@ -22,6 +22,15 @@ class IdeaProjectScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     final questions = ref.read(ideaProjectQuestionsProvider);
     final questionsOpened = useIsBool();
+
+    void closeQuestions() {
+      if (questionsOpened.value) questionsOpened.value = false;
+    }
+
+    void openQuestions() {
+      if (!questionsOpened.value) questionsOpened.value = true;
+    }
+
     return Scaffold(
       restorationId: 'ideas/scaffold/$ideaId',
       appBar: AppBar(
@@ -30,6 +39,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
         ),
         toolbarHeight: 55,
         title: _IdeaScreenTitle(
+          onFocus: closeQuestions,
           controller: titleController,
           idea: idea,
           onChanged: (final text) {
@@ -39,72 +49,67 @@ class IdeaProjectScreen extends HookConsumerWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  closeKeyboard(context: context);
-                  questionsOpened.value = false;
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                closeKeyboard(context: context);
+                closeQuestions();
+              },
+              behavior: HitTestBehavior.translucent,
+              child: ListView.separated(
+                key: PageStorageKey('ideas/listeview/$ideaId/answers'),
+                controller: scrollController,
+                restorationId: 'ideas/listeview/$ideaId/answers',
+                separatorBuilder: (final _, final __) =>
+                    const SizedBox(height: 26),
+                padding: const EdgeInsets.all(10),
+                itemCount: answers.value.length,
+                reverse: true,
+                shrinkWrap: true,
+                itemBuilder: (final context, final index) {
+                  if (index > answers.value.length - 1 || index < 0) {
+                    return Container();
+                  }
+                  final _answer = answers.value[index];
+                  return _AnswerTile(
+                    onFocus: closeQuestions,
+                    key: ValueKey(_answer.id),
+                    answer: _answer,
+                    confirmDelete: () => true,
+                    onExpand: (final _) {
+                      closeKeyboard(context: context);
+                      onAnswerExpand(_answer, idea);
+                    },
+                    onReadyToDelete: () async {
+                      idea.answers?.remove(_answer);
+                      await idea.save();
+                      answers.value = [...idea.answers?.reversed ?? []];
+                    },
+                    deleteIconVisible: isDesktop,
+                  );
                 },
-                behavior: HitTestBehavior.translucent,
-                child: ListView.separated(
-                  key: PageStorageKey('ideas/listeview/$ideaId/answers'),
-                  controller: scrollController,
-                  restorationId: 'ideas/listeview/$ideaId/answers',
-                  separatorBuilder: (final _, final __) =>
-                      const SizedBox(height: 26),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  itemCount: answers.value.length,
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (final context, final index) {
-                    if (index > answers.value.length - 1 || index < 0) {
-                      return Container();
-                    }
-                    final _answer = answers.value[index];
-                    return _AnswerTile(
-                      key: ValueKey(_answer.id),
-                      answer: _answer,
-                      confirmDelete: () => true,
-                      onExpand: (final _) {
-                        closeKeyboard(context: context);
-                        onAnswerExpand(_answer, idea);
-                      },
-                      onReadyToDelete: () async {
-                        idea.answers?.remove(_answer);
-                        await idea.save();
-                        answers.value = [...idea.answers?.reversed ?? []];
-                      },
-                      deleteIconVisible: isDesktop,
-                    );
-                  },
-                ),
               ),
             ),
-            const SizedBox(height: 6),
-            _AnswerCreator(
-              onShareTap: () {},
-              questionsOpened: questionsOpened,
-              onFocus: () {
-                questionsOpened.value = true;
-              },
-              idea: idea,
-              defaultQuestion: answers.value.isNotEmpty
-                  ? answers.value[0].question
-                  : questions.values.first,
-              onCreated: (final answer) async {
-                idea.answers?.add(answer);
-                await idea.save();
-                answers.value = [...idea.answers?.reversed ?? []];
-              },
-            ),
-            const SafeAreaBottom(),
-          ],
-        ),
+          ),
+          _AnswerCreator(
+            onShareTap: () {},
+            questionsOpened: questionsOpened,
+            onFocus: openQuestions,
+            idea: idea,
+            defaultQuestion: answers.value.isNotEmpty
+                ? answers.value[0].question
+                : questions.values.first,
+            onCreated: (final answer) async {
+              idea.answers?.add(answer);
+              await idea.save();
+              answers.value = [...idea.answers?.reversed ?? []];
+            },
+          ),
+          const SafeAreaBottom(),
+        ],
       ),
     );
   }

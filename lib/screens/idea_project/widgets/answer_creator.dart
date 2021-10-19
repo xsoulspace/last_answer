@@ -16,6 +16,10 @@ class _AnswerCreator extends HookWidget {
   final VoidCallback onShareTap;
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
+  static Color getBackground(final BuildContext context) =>
+      Theme.of(context).brightness == Brightness.light
+          ? AppColors.grey4.withOpacity(0.15)
+          : AppColors.grey1.withOpacity(0.15);
   @override
   Widget build(final BuildContext context) {
     final selectedQuestion =
@@ -61,42 +65,59 @@ class _AnswerCreator extends HookWidget {
         onTap: onShareTap,
       ),
     );
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Visibility(
-          visible: questionsOpened.value,
-          child: Row(
-            children: [
-              Expanded(
-                child: _QuestionsChips(
-                  onChange: (final question) =>
-                      selectedQuestion.value = question,
-                  value: selectedQuestion.value,
-                ),
+    return ColoredBox(
+      // duration: const Duration(milliseconds: 350),
+      color: questionsOpened.value
+          ? getBackground(context)
+          : Theme.of(context).canvasColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Visibility(
+            visible: questionsOpened.value,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 4,
+                bottom: 2,
+                right: 10,
+                left: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 14),
-                child: shareButton,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Flexible(
-              child: _AnswerField(
-                focusOnInit: idea.answers?.isEmpty == true,
-                controller: answerController,
-                onSubmit: onCreate,
-                onFocus: onFocus,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _QuestionsChips(
+                      onChange: (final question) =>
+                          selectedQuestion.value = question,
+                      value: selectedQuestion.value,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 14),
+                    child: shareButton,
+                  ),
+                ],
               ),
             ),
-            if (questionsOpened.value) sendButton else shareButton,
-          ],
-        )
-      ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              children: [
+                Flexible(
+                  child: _AnswerField(
+                    focusOnInit: idea.answers?.isEmpty == true,
+                    controller: answerController,
+                    onSubmit: onCreate,
+                    onFocus: onFocus,
+                  ),
+                ),
+                if (questionsOpened.value) sendButton else shareButton,
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
+        ],
+      ),
     );
   }
 }

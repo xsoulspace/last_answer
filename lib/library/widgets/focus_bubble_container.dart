@@ -25,6 +25,7 @@ class FocusBubbleContainer extends HookWidget {
     final this.onUnfocus,
     final this.onFocus,
     final this.fillColor,
+    final this.fillDefaultWithCanvas = false,
     final Key? key,
   }) : super(key: key);
   final Widget child;
@@ -33,18 +34,23 @@ class FocusBubbleContainer extends HookWidget {
   final VoidCallback? onUnfocus;
   final VoidCallback? onFocus;
   final Color? fillColor;
-
+  final bool fillDefaultWithCanvas;
   @override
   Widget build(final BuildContext context) {
     final consts = FocusBubbleContainerConsts.of(context);
-    final fillColorNotifier = useState(consts.defaultFillColor);
+    final theme = Theme.of(context);
+    final fillColorNotifier = useState(
+      fillDefaultWithCanvas ? theme.canvasColor : consts.defaultFillColor,
+    );
     return Focus(
       onFocusChange: (final hasFocus) {
         if (hasFocus) {
           fillColorNotifier.value = consts.defaultFillFocusColor;
           onFocus?.call();
         } else {
-          fillColorNotifier.value = consts.defaultFillColor;
+          fillColorNotifier.value = fillDefaultWithCanvas
+              ? theme.canvasColor
+              : consts.defaultFillColor;
           onUnfocus?.call();
         }
       },

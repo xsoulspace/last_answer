@@ -1,7 +1,14 @@
 name: last-answer
-version: 2.0.0+1
+version: 3.2.0+1
 summary: Fast ideas brainstroming tool
 description: |
+  You have a cool idea.
+  You need to write it down fast.
+
+  Then this app is for you.
+
+  Follow questions, write as many answers as you can.
+
   As a result, you will get a quick description of the idea.
 
   That's it!:)
@@ -10,6 +17,9 @@ description: |
 
   Hope this app will be useful for you :)
   Thank you and have a nice day.
+
+  Please notice: v3 at edge channel is quite new and has not all old features implemented, so please be carefull to migrate to it.
+  For implemented features see [v3 roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
 
   ---
 

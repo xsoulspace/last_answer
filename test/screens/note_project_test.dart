@@ -11,7 +11,8 @@ void main() {
 
   Widget getScreenWidget() => MaterialApp(
         home: NoteProjectScreen(
-          project: mockNoteProject,
+          noteId: mockNoteProject.id,
+          onBack: () {},
         ),
       );
   group('[note project screen]', () {

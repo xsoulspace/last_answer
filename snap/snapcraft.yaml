@@ -1,29 +1,39 @@
 name: last-answer
-version: 1.0.3+9
+version: 3.2.0+1
 summary: Fast ideas brainstroming tool
 description: |
-  Last Answer is a tool to solve problems complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.
+  You have a cool idea.
+  You need to write it down fast.
 
-  The principle of work is very simple.
-  Create an "idea" and open it.
+  Then this app is for you.
 
-  1. Choose short question to answer.
-  2. Answer to it.
-  3. You will see your saved answer above questions tabs.
-  4. Choose new question to ask for the answer above.
+  Follow questions, write as many answers as you can.
 
-  During process you can always see and edit all answers and questions on second page and share it by clicking share button.
+  As a result, you will get a quick description of the idea.
 
-  5. After you complete all questions (so you just feeling that you cannot say more:)) you can share it (for example to Trello Board) and start again.
+  That's it!:)
 
-  This app can be used with techniques such as 'Five whys', 'PDSA', 'Six Sigma' or just for brainstorming new ideas.
+  Also, you can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
-  Please notice:
-  This app in testing phase, potentially it can contain some errors and bugs.
-  For ideas, improvements and bugs please write feedback or send a message to idea@xsoulspace.dev.
+  Hope this app will be useful for you :)
+  Thank you and have a nice day.
 
-  Hope this app will be useful for you!
-  Thank you.
+  Please notice: v3 at edge channel is quite new and has not all old features implemented, so please be carefull to migrate to it.
+  For implemented features see [v3 roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
+
+  ---
+
+  ## Have an idea, improvements, or bugs? Want to join development?
+
+  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+
+  ---
+
+  ## Support Development
+
+  You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+
+  Thank you for your support!
 
 icon: snap/gui/last-answer.png
 

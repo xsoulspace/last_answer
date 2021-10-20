@@ -38,7 +38,19 @@
       "name": "Flutter for android",
       "type": "dart",
       "request": "launch",
-      "args": ["-d", "gphone"]
+      "args": ["-d", "emulator"]
+    },
+    {
+      "name": "universal debug",
+      "type": "dart",
+      "request": "launch",
+      "args": ["--debug"]
+    },
+    {
+      "name": "universal profile",
+      "type": "dart",
+      "request": "launch",
+      "args": ["--profile"]
     }
   ]
 }

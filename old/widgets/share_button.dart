@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/abstract/project.dart';
+import 'package:lastanswer/abstract/basic_project.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:lastanswer/utils/share_str_project.dart';
 

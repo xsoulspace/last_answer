@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/abstract/named_locale.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
@@ -20,7 +20,7 @@ const double appBarHeight = 48;
 
 class _SettingsState extends State<Settings> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -87,7 +87,7 @@ class _SettingsState extends State<Settings> {
 }
 
 Decoration getGridItemIconContainerDecoration(
-        {required BuildContext context}) =>
+        {required final BuildContext context}) =>
     BoxDecoration(
       border: Border.all(
         color: Theme.of(context).colorScheme.secondary,
@@ -103,7 +103,7 @@ class MenuTile extends StatelessWidget {
     required this.text,
   });
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Center(
       child: Column(
         children: [
@@ -123,7 +123,7 @@ class MenuTile extends StatelessWidget {
 
 class DarkModeSwitcher extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final box = Hive.box<bool>(HiveBoxes.darkMode);
     final isDark = box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
     return MenuTile(
@@ -148,13 +148,13 @@ class DarkModeSwitcher extends StatelessWidget {
 
 class LocaleSwitcher extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Consumer<LocaleModel>(
-          builder: (context, locale, child) {
+          builder: (final context, final locale, final child) {
             final textStyle = TextStyle(
                 fontSize: 14.0,
                 color: Theme.of(context).textTheme.bodyText1?.color);
@@ -163,10 +163,10 @@ class LocaleSwitcher extends StatelessWidget {
               style: textStyle,
               icon: Container(),
               isExpanded: true,
-              selectedItemBuilder: (context) {
+              selectedItemBuilder: (final context) {
                 return namedLocales
                     .map(
-                      (namedLocale) => Container(
+                      (final namedLocale) => Container(
                         alignment: Alignment.center,
                         child: const Icon(Icons.translate),
                       ),
@@ -175,7 +175,7 @@ class LocaleSwitcher extends StatelessWidget {
               },
               underline: Container(),
               items: namedLocales.map<DropdownMenuItem<NamedLocale>>(
-                (namedLocale) {
+                (final namedLocale) {
                   return DropdownMenuItem<NamedLocale>(
                     value: namedLocale,
                     child: Text(
@@ -185,13 +185,13 @@ class LocaleSwitcher extends StatelessWidget {
                   );
                 },
               ).toList(),
-              onChanged: (NamedLocale? namedLocale) async {
+              onChanged: (namedLocale) async {
                 final isToChange = await showDialog<bool>(
                   context: context,
-                  builder: (context) {
+                  builder: (final context) {
                     return AlertDialog(
                       content: Text(
-                          "${namedLocale?.name} ${AppLocalizations.of(context)?.languageWillBeChanged}"),
+                          '${namedLocale?.name} ${AppLocalizations.of(context)?.languageWillBeChanged}'),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -233,12 +233,12 @@ const Widget _itemDivider = Divider(
 );
 
 Widget _questionBox({
-  required String? questionString,
+  required final String? questionString,
 }) =>
     SizedBox(
       width: 100,
       child: Consumer<LocaleModel>(
-        builder: (context, locale, child) {
+        builder: (final context, final locale, final child) {
           return Text(
             questionString ?? '',
           );
@@ -248,8 +248,8 @@ Widget _questionBox({
 
 class About extends StatelessWidget {
   Widget itemCard({
-    String? questionString,
-    required String? answerString,
+    final String? questionString,
+    required final String? answerString,
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -262,7 +262,7 @@ class About extends StatelessWidget {
           ),
           Flexible(
             child: Consumer<LocaleModel>(
-              builder: (context, locale, child) {
+              builder: (final context, final locale, final child) {
                 return SelectableText(
                   answerString ?? '',
                 );
@@ -275,7 +275,7 @@ class About extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: IconButton(
@@ -323,8 +323,8 @@ class About extends StatelessWidget {
 
 class Philosophy extends StatelessWidget {
   Widget itemCard({
-    String? questionString,
-    required String? answerString,
+    final String? questionString,
+    required final String? answerString,
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -337,7 +337,7 @@ class Philosophy extends StatelessWidget {
           ),
           Flexible(
             child: Consumer<LocaleModel>(
-              builder: (context, locale, child) {
+              builder: (final context, final locale, final child) {
                 return SelectableText(
                   answerString ?? '',
                 );
@@ -350,14 +350,14 @@ class Philosophy extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final localeModel = Provider.of<LocaleModel>(context);
     return MenuTile(
       iconButton: IconButton(
         onPressed: () {
           showDialog(
             context: context,
-            builder: (BuildContext context) {
+            builder: (context) {
               return AlertDialog(
                 title: Text(
                     AppLocalizations.of(context)?.philosophyInspirationTitle ??

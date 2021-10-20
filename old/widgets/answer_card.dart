@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/answer.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/abstract/question.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
@@ -21,18 +21,18 @@ class AnswerCard extends StatelessWidget {
     required this.answer,
     required this.confirmDelete,
     required this.onDismissed,
-    Key? key,
+    final Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return CardDissmisible(
-      dismissableKey: Key(answer.id),
-      confirmDismiss: (direction) async {
+      dismissibleKey: Key(answer.id),
+      confirmDismiss: (final direction) async {
         if (direction.index != 3) return false;
         return confirmDelete();
       },
-      onDismissed: (direction) async {
+      onReadyToDelete: (final direction) async {
         onDismissed();
       },
       child: Material(
@@ -63,6 +63,38 @@ class AnswerCard extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DoubleProperty('dropdownWidth', dropdownWidth));
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Answer>('answer', answer));
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        ObjectFlagProperty<void Function()>.has('onDismissed', onDismissed));
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('index', index));
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<Future<bool?> Function()>.has(
+        'confirmDelete', confirmDelete));
+  }
 }
 
 class QuestionDropdown extends StatefulWidget {
@@ -72,12 +104,17 @@ class QuestionDropdown extends StatefulWidget {
   });
   @override
   _QuestionDropdownState createState() => _QuestionDropdownState();
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Answer>('answer', answer));
+  }
 }
 
 class _QuestionDropdownState extends State<QuestionDropdown> {
   late Question chosenQuestion;
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final questionsModel = Provider.of<QuestionsModel>(context, listen: false);
     final question = questionsModel.getById(widget.answer.questionId);
     chosenQuestion = question;
@@ -90,14 +127,21 @@ class _QuestionDropdownState extends State<QuestionDropdown> {
         value: chosenQuestion,
         isExpanded: true,
         items: questionsModel.questionDropdownMenuItems,
-        onChanged: (Question? question) async {
+        onChanged: (final question) async {
           if (question == null) return;
           widget.answer.questionId = question.id;
-          widget.answer.save();
+          await widget.answer.save();
           setState(() {});
         },
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<Question>('chosenQuestion', chosenQuestion));
   }
 }
 
@@ -110,12 +154,24 @@ class AnswerTextField extends StatefulWidget {
   });
   @override
   _AnswerTextFieldState createState() => _AnswerTextFieldState();
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Answer>('answer', answer));
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(ObjectFlagProperty<void Function()>.has('onDelete', onDelete));
+  }
 }
 
 class _AnswerTextFieldState extends State<AnswerTextField> {
   final _controller = TextEditingController();
   Future<void> _updateAnswer({
-    required Box<Answer> box,
+    required final Box<Answer> box,
   }) async {
     final _answer = widget.answer;
     _answer.title = _controller.text;
@@ -132,7 +188,7 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     final answerText = widget.answer.title;
     _controller.text = answerText;
@@ -147,12 +203,12 @@ class _AnswerTextFieldState extends State<AnswerTextField> {
           Flexible(
             //We only want to wrap the text message with flexible widget
             child: Focus(
-              onFocusChange: (bool hasFocus) async {
+              onFocusChange: (final hasFocus) async {
                 if (hasFocus) return;
                 await _updateAnswer(box: _answerBox);
               },
               child: TextFormField(
-                onChanged: (String text) async {
+                onChanged: (final text) async {
                   await _updateAnswer(box: _answerBox);
                 },
                 textAlignVertical: TextAlignVertical.center,

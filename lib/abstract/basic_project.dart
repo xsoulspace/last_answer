@@ -29,10 +29,10 @@ class BasicProject extends HiveObject with EquatableMixin implements Sharable {
   String title;
 
   @HiveField(3)
-  final DateTime created;
+  DateTime created;
 
   @HiveField(projectLatestFieldHiveId)
-  final DateTime updated;
+  DateTime updated;
 
   /// Always override it in extended projects
   @override

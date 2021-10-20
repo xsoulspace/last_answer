@@ -40,7 +40,10 @@ Thank you and have a nice day.
 
 ## Have an idea, improvements, or bugs? Want to join development?
 
+`Contributions are welcome` 🎉🎉
 [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+
+Please read [Code of Conduct](CODE_OF_CONDUCT.md) before get started.
 
 ---
 
@@ -53,6 +56,3 @@ Thank you for your support!
 ---
 
 ## Contribution
-
-`Contributions are welcome` 🎉🎉
-Please read [Code of Conduct](CODE_OF_CONDUCT.md) before get started.

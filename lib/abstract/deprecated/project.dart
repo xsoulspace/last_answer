@@ -30,6 +30,20 @@ class Project extends HiveObject with EquatableMixin {
   @HiveField(4)
   final DateTime created;
 
+  Future<void> saveAsIdeaProject(final WidgetRef ref) async {
+    final idea = await IdeaProject.create(title: title);
+    final migratedAnswers = <IdeaProjectAnswer>[];
+    for (final Answer answer in answers ?? []) {
+      final ideaAnswer = await answer.toIdeaAnswer(ref);
+      migratedAnswers.add(ideaAnswer);
+    }
+    idea
+      ..answers?.addAll(migratedAnswers)
+      ..created = created;
+    await idea.save();
+    ref.read(ideaProjectsProvider.notifier).put(key: key, value: idea);
+  }
+
   @override
   List<Object?> get props => [id];
 

@@ -24,6 +24,15 @@ class Answer extends HiveObject with EquatableMixin {
   @HiveField(5)
   int? positionIndex;
 
+  Future<IdeaProjectAnswer> toIdeaAnswer(final WidgetRef ref) async {
+    final questions = ref.read(ideaProjectQuestionsProvider);
+    final answer = await IdeaProjectAnswer.create(
+      text: title,
+      question: questions[questionId] ?? questions.values.first,
+    );
+    return answer;
+  }
+
   @override
   List<Object?> get props => [id];
 

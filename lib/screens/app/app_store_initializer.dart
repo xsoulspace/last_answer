@@ -15,14 +15,7 @@ class AppStoreInitializer extends ConsumerWidget {
         if (settings.appInitialStateLoaded) return true;
         settings.appInitialStateLoaded = true;
         await SettingsStateScope.of(context).load();
-        // TODO(arenukvern): make migration logic
-        // TODO(arenukvern): remove old stores after migration
-        await Hive.openBox<bool>(HiveBoxesIds.darkModeKey);
-        await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-        await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
-        // await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
-        // await Hive.deleteBoxFromDisk(HiveBoxes.projects);
-        // await Hive.deleteBoxFromDisk(HiveBoxes.answers);
+
         final ideas =
             await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
 
@@ -32,13 +25,13 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        // if (questions.isEmpty) {
-        await questions.putAll(
-          Map.fromEntries(
-            _initialQuestions.map((final e) => MapEntry(e.id, e)),
-          ),
-        );
-        // }
+        if (questions.isEmpty) {
+          await questions.putAll(
+            Map.fromEntries(
+              _initialQuestions.map((final e) => MapEntry(e.id, e)),
+            ),
+          );
+        }
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(
               Map.fromEntries(
@@ -62,6 +55,27 @@ class AppStoreInitializer extends ConsumerWidget {
             );
 
         await Hive.openBox<StoryProject>(HiveBoxesIds.storyProjectKey);
+
+        /// ***************** MIGRATION START *******************
+
+        // TODO(arenukvern): remove old stores after all devices migration
+
+        if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
+          await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
+        }
+        if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
+            await Hive.boxExists(HiveBoxesIds.answersKey)) {
+          await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
+          final projects =
+              await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
+          for (final project in projects.values) {
+            await project.saveAsIdeaProject(ref);
+          }
+          await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
+          await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
+        }
+
+        /// ***************** MIGRATION END *******************
 
         return true;
       }(),

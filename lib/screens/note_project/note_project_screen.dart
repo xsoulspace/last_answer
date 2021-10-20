@@ -30,9 +30,9 @@ class NoteProjectScreen extends HookConsumerWidget {
     noteController.addListener(() {
       if (note.value.note == noteController.text) return;
       if (!originalTitleManuallyChanged.value &&
-              originalTitle.value.isEmpty &&
-              titleController.text.length < 20 ||
-          noteController.text.length < 20) {
+          originalTitle.value.isEmpty &&
+          (titleController.text.length < 20 ||
+              noteController.text.length < 20)) {
         titleController.text = noteController.text;
         note.value.title = noteController.text;
       }
@@ -66,16 +66,32 @@ class NoteProjectScreen extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
-              child: ProjectTextField(
-                hintText: 'Write a note',
-                fillColor: Colors.transparent,
-                filled: false,
-                endlessLines: true,
-                focusOnInit: noteController.text.isEmpty,
-                onSubmit: () => back(context),
-                controller: noteController,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: ProjectTextField(
+                      hintText: 'Write a note',
+                      fillColor: Colors.transparent,
+                      filled: false,
+                      endlessLines: true,
+                      onSubmit: () => back(context),
+                      controller: noteController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 66,
+                    width: 48,
+                    child: IconShareButton(
+                      onTap: () {
+                        ProjectSharer.of(context).share(project: note.value);
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
+            const SizedBox(height: 14),
             const SafeAreaBottom(),
           ],
         ),

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Last Answer",
+  "short_name": "Last Answer",
+  "description": "Fast ideas brainstroming tool",
+  "version": "1.0.3.9",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "24": "icons/icon-24.png",
+      "32": "icons/icon-32.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "Last Answer"
+  },
+  "icons": {
+    "192": "icons/icon-192.png",
+    "512": "icons/icon-512.png"
+  },
+  "background": {
+    "service_worker": "flutter_service_worker.js"
+  },
+  "default_popup": "index.html",
+  "author": "Anton Malofeev",
+  "homepage_url": "https://xsoulspace.dev/",
+  "permissions": ["storage"]
+}

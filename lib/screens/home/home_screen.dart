@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO(arenukvern): make the welcome dependant from platform day time
     const _welcome = 'Good evening';
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
           _welcome,

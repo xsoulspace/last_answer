@@ -39,6 +39,9 @@ final darkThemeData = _darkBase.copyWith(
       statusBarIconBrightness: Brightness.light,
     ),
   ),
+  // TODO(arenukvern): for transparent background
+  // scaffoldBackgroundColor:
+  //     Platform.isMacOS ? Colors.transparent : _darkBase.scaffoldBackgroundColor,
   cardColor: AppColors.grey1.withOpacity(0.5),
   splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(

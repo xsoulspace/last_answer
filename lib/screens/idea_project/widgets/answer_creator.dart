@@ -103,7 +103,8 @@ class _AnswerCreator extends HookWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: _AnswerField(
+                  child: ProjectTextField(
+                    hintText: S.current.answer,
                     focusOnInit: idea.answers?.isEmpty == true,
                     controller: answerController,
                     onSubmit: onCreate,

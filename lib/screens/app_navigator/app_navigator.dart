@@ -6,6 +6,7 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/screens/idea_project/idea_project.dart';
+import 'package:lastanswer/screens/note_project/note_project.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
@@ -39,6 +40,19 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
   void goSettings() => routeState.go(AppRoutesName.settings);
   void goIdeaScreen({required final String ideaId}) =>
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
+
+  Future<void> goNoteScreen({final String? noteId}) async {
+    String resolvedNoteId = noteId ?? '';
+    if (resolvedNoteId.isEmpty) {
+      final newNote = await NoteProject.create(title: '');
+      ref
+          .read(noteProjectsProvider.notifier)
+          .put(key: newNote.id, value: newNote);
+      resolvedNoteId = newNote.id;
+    }
+    return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
+  }
+
   @override
   Widget build(final BuildContext context) {
     return Navigator(
@@ -68,16 +82,17 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
       },
       pages: [
         if (routeState.route.pathTemplate == AppRoutesName.home)
-          // Display the sign in screen.
           MaterialPage<void>(
             key: _homeKey,
             child: HomeScreen(
               onInfoTap: () {},
               onCreateIdeaTap: () => routeState.go(AppRoutesName.createIdea),
-              onCreateNoteTap: () {},
+              onCreateNoteTap: goNoteScreen,
               onProjectTap: (final project) {
                 if (project is IdeaProject) {
                   goIdeaScreen(ideaId: project.id);
+                } else if (project is NoteProject) {
+                  goNoteScreen(noteId: project.id);
                 } else {
                   throw UnimplementedError();
                 }
@@ -86,7 +101,6 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.settings)
-          // Display the sign in screen.
           MaterialPage<void>(
             key: _settingsKey,
             child: SettingsScreen(
@@ -94,7 +108,6 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.createIdea)
-          // Display the sign in screen.
           MaterialPage<void>(
             key: _createIdeaKey,
             fullscreenDialog: true,
@@ -109,9 +122,18 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               },
             ),
           )
-        else if (routeState.route.pathTemplate.contains(AppRoutesName.idea))
-          // Display the sign in screen.
-          ...[
+        else if (routeState.route.pathTemplate == AppRoutesName.note)
+          MaterialPage<void>(
+            key: _ideasIdeaKey,
+            restorationId: routeState.route.path,
+            name: routeState.route.path,
+            child: NoteProjectScreen(
+              onBack: goHome,
+              noteId: routeState.route.parameters['noteId']!,
+            ),
+          )
+        else if (routeState.route.pathTemplate
+            .contains(AppRoutesName.idea)) ...[
           MaterialPage<void>(
             key: _ideasIdeaKey,
             restorationId: routeState.route.path,

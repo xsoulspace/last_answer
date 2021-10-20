@@ -37,7 +37,7 @@ class IdeaProjectAnswer extends HiveObject
   final DateTime created;
 
   @override
-  String toShareString() => '${question.toShareString()} $text';
+  String toShareString() => '${question.toShareString()} \n $text';
 
   @override
   List get props => [id];

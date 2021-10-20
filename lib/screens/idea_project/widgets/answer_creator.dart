@@ -76,7 +76,7 @@ class _AnswerCreator extends HookWidget {
             visible: questionsOpened.value,
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 4,
+                top: 14,
                 bottom: 2,
                 right: 10,
                 left: 10,

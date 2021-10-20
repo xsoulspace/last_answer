@@ -12,7 +12,7 @@ class _QuestionDropdown extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final chosenQuestion = useState(answer.question);
     final questions = ref.watch(ideaProjectQuestionsProvider).values;
-    final textStyle = Theme.of(context).textTheme.bodyText2!;
+    final textStyle = Theme.of(context).textTheme.bodyText1!;
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(
         value: question,
@@ -32,6 +32,7 @@ class _QuestionDropdown extends HookConsumerWidget {
       child: DropdownButton<IdeaProjectQuestion>(
         isExpanded: true,
         itemHeight: null,
+        icon: const SizedBox(),
         borderRadius: defaultBorderRadius,
         value: chosenQuestion.value,
         items: questionsItems.toList(),

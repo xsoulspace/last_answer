@@ -37,7 +37,7 @@ class _AnswerTile extends StatelessWidget {
               width: 150,
               child: HeroId(
                 flightShuttleBuilder: (
-                  final _,
+                  final context,
                   final animation,
                   final direction,
                   final ____,
@@ -52,6 +52,7 @@ class _AnswerTile extends StatelessWidget {
                             answer.question.title
                                 .getByLanguage(Intl.getCurrentLocale()),
                             textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                       );
@@ -67,6 +68,7 @@ class _AnswerTile extends StatelessWidget {
                                 answer.question.title
                                     .getByLanguage(Intl.getCurrentLocale()),
                                 textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyText1,
                               ),
 
                               /// Size of icon for dropdown
@@ -102,17 +104,19 @@ class _AnswerTile extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () => onExpand(answer),
+                  iconSize: 18,
                   icon: const Icon(Icons.expand),
+                  color: AppColors.primary2.withOpacity(0.6),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 44.0),
+            padding: const EdgeInsets.only(top: 54.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(width: 30),
+                const SizedBox(width: 24),
                 Flexible(
                   child: HeroId(
                     id: answer.id,

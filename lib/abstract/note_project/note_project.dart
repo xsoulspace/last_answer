@@ -32,6 +32,9 @@ class NoteProject extends BasicProject {
     return note;
   }
 
+  @override
+  String toShareString() => '$title \n $note';
+
   @HiveField(projectLatestFieldHiveId + 1)
   String note;
 }

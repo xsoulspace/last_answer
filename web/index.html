@@ -10,8 +10,11 @@
 
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
   -->
-    <!-- <base href="/"> -->
+    <!-- <base href="$FLUTTER_BASE_HREF" /> -->
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
@@ -20,27 +23,25 @@
     <!-- iOS meta tags & icons -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="lastanswer" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-title" content="last_answer" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
-    <title>lastanswer</title>
-    <link rel="manifest" href="manifest-sw.json" />
+    <title>Last Answer</title>
     <link rel="manifest" href="manifest.json" />
   </head>
   <body>
-    <!-- 
-      This script installs service_worker.js to provide PWA functionality to
+    <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
     <script>
-      final serviceWorkerVersion = null;
-      final scriptLoaded = false;
+      var serviceWorkerVersion = null;
+      var scriptLoaded = false;
       function loadMainDartJs() {
         if (scriptLoaded) {
           return;
         }
         scriptLoaded = true;
-        final scriptTag = document.createElement("script");
+        var scriptTag = document.createElement("script");
         scriptTag.src = "main.dart.js";
         scriptTag.type = "application/javascript";
         document.body.append(scriptTag);
@@ -52,7 +53,7 @@
           // Wait for registration to finish before dropping the <script> tag.
           // Otherwise, the browser will load the script multiple times,
           // potentially different versions.
-          final serviceWorkerUrl =
+          var serviceWorkerUrl =
             "flutter_service_worker.js?v=" + serviceWorkerVersion;
           navigator.serviceWorker.register(serviceWorkerUrl).then((reg) => {
             function waitForActivation(serviceWorker) {
@@ -66,7 +67,7 @@
             if (!reg.active && (reg.installing || reg.waiting)) {
               // No active web worker and we have installed or are installing
               // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing ?? reg.waiting);
+              waitForActivation(reg.installing || reg.waiting);
             } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
               // When the app updates the serviceWorkerVersion changes, so we
               // need to ask the service worker to update.

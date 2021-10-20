@@ -4,9 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/answer.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
+import 'package:lastanswer/abstract/basic_project.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/abstract/language.dart';
-import 'package:lastanswer/abstract/project.dart';
 import 'package:lastanswer/library/theme.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/screens/home_projects.dart';
@@ -39,7 +39,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
   _HowToSolveTheQuestState();
   // Future<Locale> _systemLocale =
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return FutureBuilder(
       future: (() async {
         await Hive.initFlutter();
@@ -50,7 +50,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
         await Hive.openBox<Answer>(HiveBoxes.answers);
         return LocaleModel.loadSavedLocale();
       })(),
-      builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final locale = (() {
             final _locale = snapshot.data;
@@ -64,8 +64,8 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
           return ProviderInit(
             locale: locale,
             child: AppScaffold(
-              localeListResolutionCallback: (locales, supportedLocales) =>
-                  locale,
+              localeListResolutionCallback:
+                  (final locales, final supportedLocales) => locale,
               home: const HomeProjects(),
             ),
           );
@@ -88,10 +88,10 @@ class AppScaffold extends StatelessWidget {
     this.localeListResolutionCallback,
   });
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
-      builder: (context, Box<bool> box, widget) {
+      builder: (final context, box, final widget) {
         final isDark =
             box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
         final resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
@@ -107,6 +107,14 @@ class AppScaffold extends StatelessWidget {
       },
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<
+            Locale? Function(List<Locale>? p1, Iterable<Locale> p2)>.has(
+        'localeListResolutionCallback', localeListResolutionCallback));
+  }
 }
 
 /// Class to init providers
@@ -119,19 +127,25 @@ class ProviderInit extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => LocaleModel.fromLocale(
+          create: (final _) => LocaleModel.fromLocale(
             locale: locale,
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => QuestionsModel(),
+          create: (final _) => QuestionsModel(),
         )
       ],
       child: child,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Locale>('locale', locale));
   }
 }

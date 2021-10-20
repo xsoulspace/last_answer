@@ -1,17 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/screens/app/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  runApp(
-    EasyLocalization(
-      supportedLocales: Locales.all,
-      path: 'assets/translations',
-      fallbackLocale: Locales.en,
-      child: const AppScaffold(),
-    ),
-  );
+  await Hive.initFlutter();
+  Hive
+    ..registerAdapter(IdeaProjectAdapter())
+    ..registerAdapter(LocalizedTextAdapter())
+    ..registerAdapter(IdeaProjectAnswerAdapter())
+    ..registerAdapter(IdeaProjectQuestionAdapter())
+    ..registerAdapter(NoteProjectAdapter())
+    ..registerAdapter(StoryProjectAdapter());
+  runApp(const AppProvider());
 }

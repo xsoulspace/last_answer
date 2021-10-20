@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/answer.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
-import 'package:lastanswer/abstract/project.dart';
+import 'package:lastanswer/abstract/basic_project.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/abstract/question.dart';
 import 'package:lastanswer/models/questions_model.dart';
 import 'package:lastanswer/shared_utils_models/locales_model.dart';
@@ -19,6 +19,11 @@ class NewAnswerField extends StatefulWidget {
   });
   @override
   _NewAnswerFieldState createState() => _NewAnswerFieldState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Project>('project', project));
+  }
 }
 
 class _NewAnswerFieldState extends State<NewAnswerField> {
@@ -32,7 +37,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
   String questionId = QuestionsModelConsts.questions[5].id;
 
   Future<void> updateCurrentAnswer(
-      {required Box<Answer> box, required String title}) async {
+      {required final Box<Answer> box, required final String title}) async {
     await box.put(
         BoxAnswer.currentAnswer,
         Answer(
@@ -43,9 +48,9 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
             positionIndex: 0));
   }
 
-  Future<void> clear({required Box<Answer> box}) async {
+  Future<void> clear({required final Box<Answer> box}) async {
     _titleController.text = '';
-    updateCurrentAnswer(
+    await updateCurrentAnswer(
       box: box,
       title: '',
     );
@@ -54,11 +59,11 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
   final focusNode = FocusNode();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final _answerBox = Hive.box<Answer>(HiveBoxes.answers);
     int maxIndexedAnswer = _answerBox.values.isEmpty
         ? 0
-        : _answerBox.values.reduce((value, el) {
+        : _answerBox.values.reduce((final value, final el) {
               final valueIndex = value.positionIndex;
               final elIndex = el.positionIndex;
               if (valueIndex == null || elIndex == null) return value;
@@ -69,8 +74,8 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
 
     Future<void> createAnswer() async {
       if (_titleController.text
-          .replaceAll(RegExp(' '), "")
-          .replaceAll("\n", "")
+          .replaceAll(RegExp(' '), '')
+          .replaceAll('\n', '')
           .isEmpty) return;
       final newAnswer = Answer(
         title: _titleController.text,
@@ -79,7 +84,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
         created: DateTime.now(),
         positionIndex: maxIndexedAnswer++,
       );
-      clear(box: _answerBox);
+      await clear(box: _answerBox);
 
       final answers =
           widget.project.answers ?? HiveList(_answerBox, objects: []);
@@ -117,7 +122,7 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                   child: QuestionsSlider(
                       question: question,
                       questionIndex: questoinIndex,
-                      onSelected: (int? index) async {
+                      onSelected: (final index) async {
                         if (index == null) return;
                         final newQuestion =
                             questionsModel.questions.elementAt(index.toInt());
@@ -142,20 +147,19 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
                 Expanded(
                   child: RawKeyboardListener(
                     focusNode: focusNode,
-                    onKey: (RawKeyEvent event) {
+                    onKey: (final event) {
                       if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
                           !event.isShiftPressed) {
                         createAnswer();
                       }
                     },
                     child: TextFormField(
-                      onFieldSubmitted: (String newText) async =>
-                          createAnswer(),
+                      onFieldSubmitted: (newText) async => createAnswer(),
                       controller: _titleController,
                       minLines: 1,
                       maxLines: 7,
                       keyboardType: TextInputType.multiline,
-                      onChanged: (text) async {
+                      onChanged: (final text) async {
                         await updateCurrentAnswer(box: _answerBox, title: text);
                       },
                       decoration: InputDecoration(
@@ -191,6 +195,18 @@ class _NewAnswerFieldState extends State<NewAnswerField> {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('questionId', questionId));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode));
+  }
 }
 
 class QuestionsSlider extends StatefulWidget {
@@ -204,6 +220,24 @@ class QuestionsSlider extends StatefulWidget {
   });
   @override
   _QuestionsSliderState createState() => _QuestionsSliderState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('questionIndex', questionIndex));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Question>('question', question));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function(int? index)>.has(
+        'onSelected', onSelected));
+  }
 }
 
 class _QuestionsSliderState extends State<QuestionsSlider> {
@@ -228,7 +262,7 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final questionsModel = Provider.of<QuestionsModel>(context);
 
     return Center(
@@ -236,9 +270,9 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
         controller: _pageController,
         itemCount: questionsModel.length,
         clipBehavior: Clip.antiAlias,
-        itemBuilder: (context, index) => AnimatedBuilder(
+        itemBuilder: (final context, final index) => AnimatedBuilder(
             animation: _pageController,
-            builder: (BuildContext _, Widget? __) => _builder(
+            builder: (final _, __) => _builder(
                   index: index,
                   questionsModel: questionsModel,
                 )),
@@ -247,12 +281,13 @@ class _QuestionsSliderState extends State<QuestionsSlider> {
   }
 
   Widget _builder({
-    required int index,
-    required QuestionsModel questionsModel,
+    required final int index,
+    required final QuestionsModel questionsModel,
   }) {
     final question = questionsModel.questions.elementAt(index);
     final isSelected = question.id == widget.question.id;
-    final text = Consumer<LocaleModel>(builder: (context, locale, child) {
+    final text = Consumer<LocaleModel>(
+        builder: (final context, final locale, final child) {
       return Text(
         question.title.getProp(locale.currentNamedLocale.localeCode),
         textAlign: TextAlign.center,

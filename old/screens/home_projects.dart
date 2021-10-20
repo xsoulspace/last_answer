@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lastanswer/abstract/hive_boxes.dart';
-import 'package:lastanswer/abstract/project.dart';
+import 'package:lastanswer/abstract/basic_project.dart';
+import 'package:lastanswer/abstract/current_state_keys.dart';
 import 'package:lastanswer/screens/settings.dart';
 import 'package:lastanswer/widgets/new_project_field.dart';
 import 'package:lastanswer/widgets/project_card.dart';
@@ -12,9 +12,9 @@ import 'package:lastanswer/widgets/project_card.dart';
 const _duration = Duration(milliseconds: 250);
 
 class HomeProjects extends StatelessWidget {
-  const HomeProjects({Key? key}) : super(key: key);
+  const HomeProjects({final Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     void _openSettings() {
       Navigator.of(context).push(
         PageRouteBuilder(
@@ -24,17 +24,14 @@ class HomeProjects extends StatelessWidget {
           transitionDuration: _duration,
           reverseTransitionDuration: _duration,
           barrierDismissible: true,
-          transitionsBuilder: (BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child) {
+          transitionsBuilder:
+              (context, animation, final secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
               child: child,
             );
           },
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
+          pageBuilder: (context, final animation, final secondaryAnimation) {
             return Stack(
               children: [
                 BackdropFilter(
@@ -95,22 +92,22 @@ class HomeProjects extends StatelessWidget {
               child: ValueListenableBuilder(
                 valueListenable:
                     Hive.box<Project>(HiveBoxes.projects).listenable(),
-                builder:
-                    (BuildContext _, Box<Project> _projectBox, Widget? widget) {
+                builder: (final _, final _projectBox, widget) {
                   final projects = _projectBox.values.toList();
-                  projects.sort((a, b) => a.created.compareTo(b.created));
+                  projects.sort(
+                      (final a, final b) => a.created.compareTo(b.created));
                   final reversed = projects.reversed;
 
                   return ListView.builder(
                     reverse: true,
-                    itemBuilder: (BuildContext _, int index) {
+                    itemBuilder: (final _, final index) {
                       final _project = reversed.elementAt(index);
 
-                      if (_project.id == BoxProject.currentProject) {
+                      if (_project.projectId == BoxProject.currentProject) {
                         return Container();
                       }
                       return ProjectCard(
-                        project: _project,
+                        projectId: _project,
                       );
                     },
                     itemCount: _projectBox.values.length,

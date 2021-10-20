@@ -38,10 +38,10 @@ class IdeaProjectScreen extends HookConsumerWidget {
           onPressed: onBack,
         ),
         toolbarHeight: 55,
-        title: _IdeaScreenTitle(
+        title: ProjectTitleField(
           onFocus: closeQuestions,
           controller: titleController,
-          idea: idea,
+          heroId: idea.id,
           onChanged: (final text) {
             idea
               ..title = text

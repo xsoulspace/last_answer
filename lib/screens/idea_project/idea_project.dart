@@ -29,6 +29,5 @@ part 'widgets/answer_creator.dart';
 part 'widgets/answer_field.dart';
 part 'widgets/answer_field_bubble.dart';
 part 'widgets/answer_tile.dart';
-part 'widgets/idea_screen_title.dart';
 part 'widgets/question_dropdown.dart';
 part 'widgets/questions_chips.dart';

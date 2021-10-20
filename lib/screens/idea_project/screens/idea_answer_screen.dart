@@ -74,7 +74,8 @@ class IdeaAnswerScreen extends HookConsumerWidget {
               child: HeroId(
                 id: answerId,
                 type: HeroIdTypes.projectIdeaAnswerText,
-                child: _AnswerField(
+                child: ProjectTextField(
+                  hintText: S.current.answer,
                   fillColor: Colors.transparent,
                   filled: false,
                   endlessLines: true,

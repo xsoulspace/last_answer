@@ -1,21 +1,21 @@
-part of idea_project;
+part of widgets;
 
-class _IdeaScreenTitle extends HookWidget {
-  const _IdeaScreenTitle({
+class ProjectTitleField extends HookWidget {
+  const ProjectTitleField({
     required final this.controller,
     required final this.onChanged,
-    required final this.idea,
-    required final this.onFocus,
+    required final this.heroId,
+    final this.onFocus,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-  final IdeaProject idea;
-  final VoidCallback onFocus;
+  final String heroId;
+  final VoidCallback? onFocus;
   @override
   Widget build(final BuildContext context) {
     return HeroId(
-      id: idea.id,
+      id: heroId,
       type: HeroIdTypes.projectTitle,
       child: FocusBubbleContainer(
         constraints: const BoxConstraints(maxWidth: 250),

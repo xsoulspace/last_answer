@@ -1,5 +1,7 @@
 part of abstract;
 
+typedef NoteProjectId = String;
+
 @HiveType(typeId: HiveBoxesIds.noteProject)
 class NoteProject extends BasicProject {
   NoteProject({
@@ -26,7 +28,7 @@ class NoteProject extends BasicProject {
       id: createId(),
       title: title,
     );
-    await Hive.box(HiveBoxesIds.noteProjectKey).put(note.id, note);
+    await Hive.box<NoteProject>(HiveBoxesIds.noteProjectKey).put(note.id, note);
     return note;
   }
 

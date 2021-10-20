@@ -43,7 +43,7 @@ class AnswerFieldBubble extends HookWidget {
             focusColor: Colors.red,
             fillColor: Colors.green,
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 16)
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
                     .copyWith(top: 4),
           ),
         ),

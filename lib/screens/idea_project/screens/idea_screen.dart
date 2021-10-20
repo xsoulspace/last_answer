@@ -65,7 +65,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 restorationId: 'ideas/listeview/$ideaId/answers',
                 separatorBuilder: (final _, final __) =>
                     const SizedBox(height: 26),
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10).copyWith(bottom: 24, top: 0),
                 itemCount: answers.value.length,
                 reverse: true,
                 shrinkWrap: true,

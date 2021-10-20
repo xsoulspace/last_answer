@@ -41,12 +41,13 @@ class ProjectTile extends StatelessWidget {
           onTap: () => onTap(project),
           tileColor: Theme.of(context).cardColor,
           title: Text(project.title),
-          trailing: Checkbox(
-            value: checkSelection(project),
-            onChanged: (final selected) =>
-                onSelected(selected: selected, project: project),
-            shape: const CircleBorder(),
-          ),
+          // TODO(arenukvern): add checkbox to mark project as completed
+          // trailing: Checkbox(
+          //   value: checkSelection(project),
+          //   onChanged: (final selected) =>
+          //       onSelected(selected: selected, project: project),
+          //   shape: const CircleBorder(),
+          // ),
         ),
       ),
     );

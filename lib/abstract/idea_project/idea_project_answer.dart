@@ -16,13 +16,19 @@ class IdeaProjectAnswer extends HiveObject
   static Future<IdeaProjectAnswer> create({
     required final String text,
     required final IdeaProjectQuestion question,
-  }) async =>
-      IdeaProjectAnswer(
-        text: text,
-        question: question,
-        id: createId(),
-        created: DateTime.now(),
-      );
+  }) async {
+    final answer = IdeaProjectAnswer(
+      text: text,
+      question: question,
+      id: createId(),
+      created: DateTime.now(),
+    );
+    final box = await Hive.openBox<IdeaProjectAnswer>(
+      HiveBoxesIds.ideaProjectAnswerKey,
+    );
+    await box.put(answer.id, answer);
+    return answer;
+  }
 
   @HiveField(0)
   String text;

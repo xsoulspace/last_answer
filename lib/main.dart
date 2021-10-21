@@ -7,6 +7,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive
+    ..registerAdapter(ProjectAdapter())
+    ..registerAdapter(AnswerAdapter())
+    ..registerAdapter(IdeaProjectAdapter())
     ..registerAdapter(IdeaProjectAdapter())
     ..registerAdapter(LocalizedTextAdapter())
     ..registerAdapter(IdeaProjectAnswerAdapter())

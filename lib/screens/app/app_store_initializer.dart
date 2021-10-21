@@ -60,19 +60,32 @@ class AppStoreInitializer extends ConsumerWidget {
 
         // TODO(arenukvern): remove old stores after all devices migration
 
+        print({'iDarkExists': await Hive.boxExists(HiveBoxesIds.darkModeKey)});
         if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
           await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
         }
+        print({
+          'projectsKey': await Hive.boxExists(HiveBoxesIds.projectsKey),
+          'answersKey': await Hive.boxExists(HiveBoxesIds.answersKey)
+        });
         if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
             await Hive.boxExists(HiveBoxesIds.answersKey)) {
           await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
           final projects =
               await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-          for (final project in projects.values) {
-            await project.saveAsIdeaProject(ref);
+
+          print({
+            'projects': projects.values,
+          });
+          try {
+            for (final project in projects.values) {
+              await project.saveAsIdeaProject(ref);
+            }
+            await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
+            await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
+          } catch (e) {
+            print('error: $e');
           }
-          await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
-          await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
         }
 
         /// ***************** MIGRATION END *******************

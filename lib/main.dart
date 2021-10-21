@@ -7,14 +7,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive
-    ..registerAdapter(ProjectAdapter())
-    ..registerAdapter(AnswerAdapter())
-    ..registerAdapter(IdeaProjectAdapter())
     ..registerAdapter(IdeaProjectAdapter())
     ..registerAdapter(LocalizedTextAdapter())
     ..registerAdapter(IdeaProjectAnswerAdapter())
     ..registerAdapter(IdeaProjectQuestionAdapter())
     ..registerAdapter(NoteProjectAdapter())
-    ..registerAdapter(StoryProjectAdapter());
+    ..registerAdapter(StoryProjectAdapter())
+    ..registerAdapter(ProjectAdapter())
+    ..registerAdapter(AnswerAdapter());
   runApp(const AppProvider());
 }

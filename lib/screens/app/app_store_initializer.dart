@@ -27,24 +27,17 @@ class AppStoreInitializer extends ConsumerWidget {
             .platformBrightness;
     return FutureBuilder<bool>(
       future: () async {
-        print('start');
         if (settings.appInitialStateLoaded) {
           return !settings.appInitialStateIsLoading;
         }
-        print('settings to true');
         settings
           ..appInitialStateLoaded = true
           ..appInitialStateIsLoading = true;
         await SettingsStateScope.of(context).load();
-        print('settings loaded');
         await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
-
-        print('ideaProjectAnswerKey loaded');
 
         final ideas =
             await openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
-
-        print('ideas loaded');
 
         final questions = await openAnyway<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
@@ -62,65 +55,53 @@ class AppStoreInitializer extends ConsumerWidget {
                 questions.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-        print('questions loaded');
 
         ref.read(ideaProjectsProvider.notifier).putAll(
               Map.fromEntries(
                 ideas.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-        print('ideaProjectsProvider loaded');
 
         final notes = await openAnyway<NoteProject>(
           HiveBoxesIds.noteProjectKey,
         );
-        print('notes loaded');
 
         ref.read(noteProjectsProvider.notifier).putAll(
               Map.fromEntries(
                 notes.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-        print('noteProjectsProvider loaded');
         await openAnyway<StoryProject>(
           HiveBoxesIds.storyProjectKey,
         );
-        print('StoryProject loaded');
 
         /// ***************** MIGRATION START *******************
         try {
           // TODO(arenukvern): remove old stores after all devices migration
-          print('migration started');
-          print('darkModeKey started');
           if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
             await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
           }
-          print('darkModeKey ended');
-          print('answers migration started');
           if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
               await Hive.boxExists(HiveBoxesIds.answersKey)) {
             await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
             final projects =
                 await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-            print('projects started');
 
             for (final project in projects.values) {
-              print('project $project');
               await project.saveAsIdeaProject(ref);
             }
             await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
             await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
           }
-          print('projects completed and removed');
         } catch (e) {
+          await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
+          await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
           print('migration error: $e');
         }
 
         /// ***************** MIGRATION END *******************
         settings.appInitialStateIsLoading = false;
-        print('loaded. preparing to reload');
         WidgetsBinding.instance?.addPostFrameCallback((final _) {
-          print('notifying to reload');
           settings.notify();
         });
         return true;

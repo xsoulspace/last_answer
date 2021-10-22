@@ -43,6 +43,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   /// keeps latest written text from [AnswerCreator]
   @HiveField(projectLatestFieldHiveId + 2)
+  @JsonKey(defaultValue: '')
   String newAnswerText;
 
   /// keeps latest selected [IdeaProjectQuestion] from [AnswerCreator]

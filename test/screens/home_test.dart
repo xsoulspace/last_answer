@@ -5,7 +5,7 @@ import 'package:lastanswer/screens/home/home.dart';
 void main() {
   // TODO(arenukvern): siwtch to english
   Widget getScreenWidget() => MaterialApp(
-        home: HomeScreen(
+        home: SmallHomeScreen(
           onCreateNoteTap: () {},
           onInfoTap: () {},
           onCreateIdeaTap: () {},

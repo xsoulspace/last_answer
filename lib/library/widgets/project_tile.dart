@@ -47,7 +47,6 @@ class ProjectTile extends StatelessWidget {
               ? SizedBox(
                   width: 14,
                   child: Align(
-                    alignment: Alignment.center,
                     child: const IconIdea(size: 14),
                   ),
                 )

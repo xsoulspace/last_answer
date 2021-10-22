@@ -31,8 +31,10 @@ class AppNavigator extends ConsumerStatefulWidget {
 class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
   final _settingsKey = const ValueKey<String>('settings');
+
   final _notesKey = const ValueKey<String>('notes');
   final _notesNoteKey = const ValueKey<String>('notes/note');
+
   final _createIdeaKey = const ValueKey<String>('createIdea');
   final _ideasKey = const ValueKey<String>('ideas');
   final _ideasIdeaKey = const ValueKey<String>('ideas/idea');
@@ -40,6 +42,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
 
   late final AppNavigatorController _navigatorController;
   RouteState get routeState => widget.routeState;
+
   @override
   void initState() {
     _navigatorController =
@@ -78,8 +81,24 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
         MaterialPage<void>(
           key: _homeKey,
           child: willPopScope(
-            child: HomeScreen(
-              onInfoTap: () {},
+            child: LargeHomeScreen(
+              onInfoTap: _navigatorController.goInfo,
+              onCreateIdeaTap: _navigatorController.goCreateIdea,
+              onCreateNoteTap: _navigatorController.goNoteScreen,
+              onProjectTap: _navigatorController.onProjectTap,
+              onSettingsTap: _navigatorController.goSettings,
+            ),
+          ),
+        )
+    ];
+
+    final smallScreenPages = [
+      if (routeState.route.pathTemplate == AppRoutesName.home)
+        MaterialPage<void>(
+          key: _homeKey,
+          child: willPopScope(
+            child: SmallHomeScreen(
+              onInfoTap: _navigatorController.goInfo,
               onCreateIdeaTap: _navigatorController.goCreateIdea,
               onCreateNoteTap: _navigatorController.goNoteScreen,
               onProjectTap: _navigatorController.onProjectTap,
@@ -127,14 +146,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           child: willPopScope(
             child: IdeaProjectScreen(
               onBack: _navigatorController.goHome,
-              onAnswerExpand: (final answer, final idea) async {
-                await routeState.go(
-                  AppRoutesName.getIdeaAnswerPath(
-                    ideaId: idea.id,
-                    answerId: answer.id,
-                  ),
-                );
-              },
+              onAnswerExpand: _navigatorController.onIdeaAnswerExpand,
               ideaId: ideaId!,
             ),
           ),
@@ -147,12 +159,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             name: routeState.route.path,
             child: willPopScope(
               child: IdeaAnswerScreen(
-                onUnknown: (final answerId, final idea) {
-                  // TODO(arenukvern): add notification - answer with id not found
-                  /// or maybe better to suggest create IdeaAnswer too
-                  /// with that message
-                  _navigatorController.goIdeaScreen(ideaId: idea.id);
-                },
+                onUnknown: _navigatorController.onUnknownIdeaAnswer,
                 onBack: (final idea) =>
                     _navigatorController.goIdeaScreen(ideaId: idea.id),
                 answerId: answerId!,
@@ -166,6 +173,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
     return ResponsiveNavigator(
       navigatorKey: widget.navigatorKey,
       largeScreen: largeScreenPages,
+      smallScreen: smallScreenPages,
       onPopPage: (final route, final dynamic result) {
         /// ! here will go selected pages logic.
         final maybePage = route.settings;

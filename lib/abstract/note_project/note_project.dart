@@ -6,7 +6,6 @@ typedef NoteProjectId = String;
 class NoteProject extends BasicProject {
   NoteProject({
     required final String id,
-    required final String title,
     required final DateTime created,
     required final DateTime updated,
     final this.note = '',
@@ -14,9 +13,9 @@ class NoteProject extends BasicProject {
   }) : super(
           created: created,
           id: id,
-          title: title,
           isCompleted: isCompleted,
           updated: updated,
+          title: '',
         );
   static Future<NoteProject> create({
     required final String title,
@@ -26,14 +25,25 @@ class NoteProject extends BasicProject {
       updated: created,
       created: created,
       id: createId(),
-      title: title,
     );
-    await Hive.box<NoteProject>(HiveBoxesIds.noteProjectKey).put(note.id, note);
+    final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
+    await box.put(note.id, note);
     return note;
   }
 
   @override
-  String toShareString() => '$title \n $note';
+  @JsonKey(ignore: true)
+  String get title {
+    if (note.length <= 90) return note;
+    return note.substring(0, 90);
+  }
+
+  /// title setter not needed to be implemented.
+  @override
+  set title(final String _) => throw UnimplementedError();
+
+  @override
+  String toShareString() => note;
 
   @HiveField(projectLatestFieldHiveId + 1)
   String note;

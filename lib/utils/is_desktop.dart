@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:universal_io/io.dart';
+part of 'utils.dart';
 
-bool isDesktop() =>
+/// Returns what version of layout needs to use
+/// TODO(arenukvern): fix case when web running on touch device
+final isDesktop =
     kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS;

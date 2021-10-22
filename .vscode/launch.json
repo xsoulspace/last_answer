@@ -9,6 +9,48 @@
       "type": "dart",
       "request": "launch",
       "args": ["-d", "chrome"]
+    },
+    {
+      "name": "Flutter for ios",
+      "type": "dart",
+      "request": "launch",
+      "args": ["-d", "iphone"]
+    },
+    {
+      "name": "Flutter for macos",
+      "type": "dart",
+      "request": "launch",
+      "args": ["-d", "macos"]
+    },
+    {
+      "name": "Flutter for linux",
+      "type": "dart",
+      "request": "launch",
+      "args": ["-d", "linux"]
+    },
+    {
+      "name": "Flutter for windows",
+      "type": "dart",
+      "request": "launch",
+      "args": ["-d", "windows"]
+    },
+    {
+      "name": "Flutter for android",
+      "type": "dart",
+      "request": "launch",
+      "args": ["-d", "emulator"]
+    },
+    {
+      "name": "universal debug",
+      "type": "dart",
+      "request": "launch",
+      "args": ["--debug"]
+    },
+    {
+      "name": "universal profile",
+      "type": "dart",
+      "request": "launch",
+      "args": ["--profile"]
     }
   ]
 }

@@ -1,5 +1,15 @@
 part of app_provider;
 
+Future<Box<T>> openAnyway<T>(final String boxName) async {
+  try {
+    await Hive.openBox<T>(boxName);
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    await Hive.deleteBoxFromDisk(boxName);
+  }
+  return Hive.openBox<T>(boxName);
+}
+
 class AppStoreInitializer extends ConsumerWidget {
   const AppStoreInitializer({
     required final this.child,
@@ -17,67 +27,68 @@ class AppStoreInitializer extends ConsumerWidget {
             .platformBrightness;
     return FutureBuilder<bool>(
       future: () async {
-        try {
-          print('start');
-          if (settings.appInitialStateLoaded) {
-            return !settings.appInitialStateIsLoading;
-          }
-          print('settings to true');
-          settings
-            ..appInitialStateLoaded = true
-            ..appInitialStateIsLoading = true;
-          await SettingsStateScope.of(context).load();
-          print('settings loaded');
-          await Hive.openBox<IdeaProjectAnswer>(
-            HiveBoxesIds.ideaProjectAnswerKey,
-          );
-          print('ideaProjectAnswerKey loaded');
+        print('start');
+        if (settings.appInitialStateLoaded) {
+          return !settings.appInitialStateIsLoading;
+        }
+        print('settings to true');
+        settings
+          ..appInitialStateLoaded = true
+          ..appInitialStateIsLoading = true;
+        await SettingsStateScope.of(context).load();
+        print('settings loaded');
+        await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
 
-          final ideas =
-              await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
-          print('ideas loaded');
+        print('ideaProjectAnswerKey loaded');
 
-          final questions = await Hive.openBox<IdeaProjectQuestion>(
-            HiveBoxesIds.ideaProjectQuestionKey,
+        final ideas =
+            await openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+
+        print('ideas loaded');
+
+        final questions = await openAnyway<IdeaProjectQuestion>(
+          HiveBoxesIds.ideaProjectQuestionKey,
+        );
+        if (questions.isEmpty) {
+          await questions.putAll(
+            Map.fromEntries(
+              _initialQuestions.map((final e) => MapEntry(e.id, e)),
+            ),
           );
-          if (questions.isEmpty) {
-            await questions.putAll(
+        }
+
+        ref.read(ideaProjectQuestionsProvider.notifier).putAll(
               Map.fromEntries(
-                _initialQuestions.map((final e) => MapEntry(e.id, e)),
+                questions.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-          }
+        print('questions loaded');
 
-          ref.read(ideaProjectQuestionsProvider.notifier).putAll(
-                Map.fromEntries(
-                  questions.values.map((final e) => MapEntry(e.id, e)),
-                ),
-              );
-          print('questions loaded');
+        ref.read(ideaProjectsProvider.notifier).putAll(
+              Map.fromEntries(
+                ideas.values.map((final e) => MapEntry(e.id, e)),
+              ),
+            );
+        print('ideaProjectsProvider loaded');
 
-          ref.read(ideaProjectsProvider.notifier).putAll(
-                Map.fromEntries(
-                  ideas.values.map((final e) => MapEntry(e.id, e)),
-                ),
-              );
-          print('ideaProjectsProvider loaded');
+        final notes = await openAnyway<NoteProject>(
+          HiveBoxesIds.noteProjectKey,
+        );
+        print('notes loaded');
 
-          final notes =
-              await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
-          print('notes loaded');
+        ref.read(noteProjectsProvider.notifier).putAll(
+              Map.fromEntries(
+                notes.values.map((final e) => MapEntry(e.id, e)),
+              ),
+            );
+        print('noteProjectsProvider loaded');
+        await openAnyway<StoryProject>(
+          HiveBoxesIds.storyProjectKey,
+        );
+        print('StoryProject loaded');
 
-          ref.read(noteProjectsProvider.notifier).putAll(
-                Map.fromEntries(
-                  notes.values.map((final e) => MapEntry(e.id, e)),
-                ),
-              );
-          print('noteProjectsProvider loaded');
-
-          await Hive.openBox<StoryProject>(HiveBoxesIds.storyProjectKey);
-          print('StoryProject loaded');
-
-          /// ***************** MIGRATION START *******************
-
+        /// ***************** MIGRATION START *******************
+        try {
           // TODO(arenukvern): remove old stores after all devices migration
           print('migration started');
           print('darkModeKey started');
@@ -102,7 +113,7 @@ class AppStoreInitializer extends ConsumerWidget {
           }
           print('projects completed and removed');
         } catch (e) {
-          print('error: $e');
+          print('migration error: $e');
         }
 
         /// ***************** MIGRATION END *******************

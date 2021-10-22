@@ -17,27 +17,28 @@ class NoteProjectScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final maybeNote = ref.read(noteProjectsProvider)[noteId];
-    final originalTitle = useState(maybeNote?.title ?? '');
-    final originalTitleManuallyChanged = useIsBool();
     if (maybeNote == null) {
       back(context);
       return Container();
     }
     final note = useState<NoteProject>(maybeNote);
-    final titleController = useTextEditingController(text: maybeNote.title);
     final noteController = useTextEditingController(text: maybeNote.note);
 
+    // ignore: close_sinks
+    final updatesStream = useStreamController<bool>();
     noteController.addListener(() {
       if (note.value.note == noteController.text) return;
-      if (!originalTitleManuallyChanged.value &&
-          originalTitle.value.isEmpty &&
-          (titleController.text.length < 20 ||
-              noteController.text.length < 20)) {
-        titleController.text = noteController.text;
-        note.value.title = noteController.text;
-      }
       note.value.note = noteController.text;
-      note.value.save();
+      updatesStream.add(true);
+    });
+    updatesStream.stream
+        .throttleTime(
+      const Duration(milliseconds: 700),
+      leading: true,
+      trailing: true,
+    )
+        .forEach((final _) async {
+      return note.value.save();
     });
 
     return Scaffold(
@@ -47,18 +48,9 @@ class NoteProjectScreen extends HookConsumerWidget {
         leading: BackButton(
           onPressed: () => back(context),
         ),
-        title: ProjectTitleField(
-          controller: titleController,
-          heroId: maybeNote.id,
-          onChanged: (final text) {
-            if (!originalTitleManuallyChanged.value) {
-              originalTitleManuallyChanged.value = true;
-            }
-            maybeNote
-              ..title = text
-              ..save();
-          },
-        ),
+        actions: const [
+          SizedBox(width: 10),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -80,7 +72,7 @@ class NoteProjectScreen extends HookConsumerWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 66,
+                    height: 34,
                     width: 48,
                     child: IconShareButton(
                       onTap: () {

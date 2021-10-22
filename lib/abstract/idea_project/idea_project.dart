@@ -28,11 +28,13 @@ class IdeaProject extends BasicProject with EquatableMixin {
       id: createId(),
       title: title,
     );
-    final ideaBox = Hive.box<IdeaProject>(HiveBoxesIds.ideaProjectKey);
-    final ideaAnswersBox =
-        Hive.box<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
+    final ideaBox =
+        await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+    final ideaAnswersBox = await Hive.openBox<IdeaProjectAnswer>(
+      HiveBoxesIds.ideaProjectAnswerKey,
+    );
     await ideaBox.put(idea.id, idea);
-    idea.answers = HiveList(ideaAnswersBox);
+    idea.answers = HiveList<IdeaProjectAnswer>(ideaAnswersBox);
     return idea;
   }
 

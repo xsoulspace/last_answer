@@ -1,5 +1,5 @@
 name: last-answer
-version: 3.2.1+1
+version: 3.3.6+1
 summary: Fast ideas brainstroming tool
 description: |
   You have a cool idea.
@@ -18,8 +18,12 @@ description: |
   Hope this app will be useful for you :)
   Thank you and have a nice day.
 
-  Please notice: v3 at edge channel is quite new and has not all old features implemented, so please be carefull to migrate to it.
-  For implemented features see [v3 roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
+  Please notice: 
+  Next version (^v3) available at edge channel. 
+  BEFORE switching channel, please make sure you save all important notes, because the whole app was rewritten from the ground and data lose is possible.
+
+  Also v3 has not all old features implemented, so please be carefull to migrate to it.
+  For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
 
   ---
 

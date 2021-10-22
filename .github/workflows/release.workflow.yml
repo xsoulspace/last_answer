@@ -2,6 +2,9 @@ name: Web Build
 on:
   release:
     types: [created]
+  push:
+    branches:
+      - master-web
 jobs:
   build:
     name: Build Web

@@ -15,6 +15,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    // ignore: close_sinks
+    final ideaUpdatesStream = useStreamController<bool>();
+
     final idea = ref.read(ideaProjectsProvider)[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
@@ -22,6 +25,16 @@ class IdeaProjectScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     final questions = ref.read(ideaProjectQuestionsProvider);
     final questionsOpened = useIsBool();
+
+    ideaUpdatesStream.stream
+        .throttleTime(
+      const Duration(milliseconds: 700),
+      leading: true,
+      trailing: true,
+    )
+        .forEach((final _) async {
+      return idea.save();
+    });
 
     void closeQuestions() {
       if (questionsOpened.value) questionsOpened.value = false;
@@ -43,9 +56,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
           controller: titleController,
           heroId: idea.id,
           onChanged: (final text) {
-            idea
-              ..title = text
-              ..save();
+            if (text == idea.title) return;
+            idea.title = text;
+            ideaUpdatesStream.add(true);
           },
         ),
       ),
@@ -85,8 +98,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     },
                     onReadyToDelete: () async {
                       idea.answers?.remove(_answer);
-                      await idea.save();
                       answers.value = [...idea.answers?.reversed ?? []];
+                      ideaUpdatesStream.add(true);
                     },
                     deleteIconVisible: isDesktop,
                   );
@@ -106,8 +119,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
                 : questions.values.first,
             onCreated: (final answer) async {
               idea.answers?.add(answer);
-              await idea.save();
               answers.value = [...idea.answers?.reversed ?? []];
+              ideaUpdatesStream.add(true);
             },
           ),
           const SafeAreaBottom(),

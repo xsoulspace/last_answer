@@ -59,7 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: widget.onSettingsTap,
             icon: const Icon(Icons.settings),
           ),
-        ],
+        ]
+            .map(
+              (final child) => Padding(
+                padding: const EdgeInsets.only(right: 18),
+                child: child,
+              ),
+            )
+            .toList(),
       ),
       body: Row(
         children: [
@@ -84,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Consumer(
                     builder: (final _, final ref, final __) {
-                      final projects = ref.watch(allProjectsProviders);
+                      final projects =
+                          ref.watch(allProjectsProviders).reversed.toList();
                       if (projects.isEmpty) {
                         return Align(
                           alignment: Alignment.centerLeft,

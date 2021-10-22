@@ -39,11 +39,19 @@ class ProjectTile extends StatelessWidget {
             borderRadius: defaultBorderRadius,
           ),
           contentPadding: project is IdeaProject
-              ? const EdgeInsets.symmetric(horizontal: 16).copyWith(left: 14)
+              ? const EdgeInsets.symmetric(horizontal: 16).copyWith(left: 15)
               : null,
-          minLeadingWidth: project is IdeaProject ? 2 : null,
+          minLeadingWidth: project is IdeaProject ? 0 : null,
           minVerticalPadding: project is NoteProject ? 12 : null,
-          leading: project is IdeaProject ? const IconIdea(size: 14) : null,
+          leading: project is IdeaProject
+              ? SizedBox(
+                  width: 14,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: const IconIdea(size: 14),
+                  ),
+                )
+              : null,
           onTap: () => onTap(project),
           tileColor: Theme.of(context).cardColor,
           title: Text(project.title),

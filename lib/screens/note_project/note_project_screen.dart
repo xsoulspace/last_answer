@@ -41,6 +41,7 @@ class NoteProjectScreen extends HookConsumerWidget {
       restorationId: 'notes/$noteId',
       appBar: AppBar(
         toolbarHeight: 80,
+        centerTitle: true,
         leading: BackButton(
           onPressed: () => back(context),
         ),

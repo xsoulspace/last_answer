@@ -47,6 +47,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
     return Scaffold(
       restorationId: 'ideas/scaffold/$ideaId',
       appBar: AppBar(
+        centerTitle: true,
         leading: BackButton(
           onPressed: onBack,
         ),

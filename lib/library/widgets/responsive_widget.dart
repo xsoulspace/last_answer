@@ -90,8 +90,8 @@ class ScreenLayout {
   final BuildContext? context;
   final BoxConstraints? constraints;
 
-  static const maxSmallWidth = 800;
-  static const maxMediumWidth = 1200;
+  static const maxSmallWidth = 700;
+  static const maxMediumWidth = 1000;
 
   Size get size {
     if (constraints != null) {

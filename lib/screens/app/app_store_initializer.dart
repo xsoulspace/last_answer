@@ -96,7 +96,7 @@ class AppStoreInitializer extends ConsumerWidget {
         } catch (e) {
           await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
           await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
-          print('migration error: $e');
+          log('migration error: $e');
         }
 
         /// ***************** MIGRATION END *******************

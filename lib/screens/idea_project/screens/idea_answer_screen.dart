@@ -50,6 +50,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
       restorationId: 'ideas/$ideaId/$answerId',
       appBar: AppBar(
         toolbarHeight: 80,
+        centerTitle: true,
         leading: BackButton(
           onPressed: () => back(idea: maybeIdea, context: context),
         ),

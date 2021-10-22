@@ -16,11 +16,7 @@ class NoteProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final maybeNote = ref.read(noteProjectsProvider)[noteId];
-    if (maybeNote == null) {
-      back(context);
-      return Container();
-    }
+    final maybeNote = ref.watch(noteProjectsProvider)[noteId]!;
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
 

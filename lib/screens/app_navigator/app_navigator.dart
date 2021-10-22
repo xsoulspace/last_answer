@@ -55,7 +55,28 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
 
   @override
   Widget build(final BuildContext context) {
+    Future<bool> _handleWillPop() async {
+      switch (routeState.route.pathTemplate) {
+        case AppRoutesName.ideaAnswer:
+          goIdeaScreen(ideaId: routeState.route.parameters['ideaId']!);
+          break;
+        case AppRoutesName.idea:
+        case AppRoutesName.note:
+        case AppRoutesName.createIdea:
+        case AppRoutesName.settings:
+          goHome();
+          break;
+        case AppRoutesName.home:
+      }
+      return false;
+    }
+
+    Widget willPopScope({required final Widget child}) {
+      return WillPopScope(onWillPop: _handleWillPop, child: child);
+    }
+
     return Navigator(
+      onGenerateRoute: (final _) => null,
       key: widget.navigatorKey,
       onPopPage: (final route, final dynamic result) {
         /// ! here will go selected pages logic.
@@ -84,42 +105,49 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
         if (routeState.route.pathTemplate == AppRoutesName.home)
           MaterialPage<void>(
             key: _homeKey,
-            child: HomeScreen(
-              onInfoTap: () {},
-              onCreateIdeaTap: () => routeState.go(AppRoutesName.createIdea),
-              onCreateNoteTap: goNoteScreen,
-              onProjectTap: (final project) {
-                if (project is IdeaProject) {
-                  goIdeaScreen(ideaId: project.id);
-                } else if (project is NoteProject) {
-                  goNoteScreen(noteId: project.id);
-                } else {
-                  throw UnimplementedError();
-                }
-              },
-              onSettingsTap: goSettings,
+            child: willPopScope(
+              child: HomeScreen(
+                onInfoTap: () {},
+                onCreateIdeaTap: () => routeState.go(AppRoutesName.createIdea),
+                onCreateNoteTap: goNoteScreen,
+                onProjectTap: (final project) {
+                  if (project is IdeaProject) {
+                    goIdeaScreen(ideaId: project.id);
+                  } else if (project is NoteProject) {
+                    goNoteScreen(noteId: project.id);
+                  } else {
+                    throw UnimplementedError();
+                  }
+                },
+                onSettingsTap: goSettings,
+              ),
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.settings)
           MaterialPage<void>(
             key: _settingsKey,
-            child: SettingsScreen(
-              onBack: goHome,
+            child: willPopScope(
+              child: SettingsScreen(
+                onBack: goHome,
+              ),
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.createIdea)
           MaterialPage<void>(
             key: _createIdeaKey,
             fullscreenDialog: true,
-            child: CreateIdeaProjectScreen(
-              onBack: goHome,
-              onCreate: (final ideaTitle) async {
-                final idea = await IdeaProject.create(title: ideaTitle);
-                ref
-                    .read(ideaProjectsProvider.notifier)
-                    .put(key: idea.id, value: idea);
-                await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
-              },
+            child: willPopScope(
+              child: CreateIdeaProjectScreen(
+                onBack: goHome,
+                onCreate: (final ideaTitle) async {
+                  final idea = await IdeaProject.create(title: ideaTitle);
+                  ref
+                      .read(ideaProjectsProvider.notifier)
+                      .put(key: idea.id, value: idea);
+                  await routeState
+                      .go(AppRoutesName.getIdeaPath(ideaId: idea.id));
+                },
+              ),
             ),
           )
         else if (routeState.route.pathTemplate == AppRoutesName.note)
@@ -127,9 +155,11 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             key: _ideasIdeaKey,
             restorationId: routeState.route.path,
             name: routeState.route.path,
-            child: NoteProjectScreen(
-              onBack: goHome,
-              noteId: routeState.route.parameters['noteId']!,
+            child: willPopScope(
+              child: NoteProjectScreen(
+                onBack: goHome,
+                noteId: routeState.route.parameters['noteId']!,
+              ),
             ),
           )
         else if (routeState.route.pathTemplate
@@ -138,17 +168,19 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             key: _ideasIdeaKey,
             restorationId: routeState.route.path,
             name: routeState.route.path,
-            child: IdeaProjectScreen(
-              onBack: goHome,
-              onAnswerExpand: (final answer, final idea) async {
-                await routeState.go(
-                  AppRoutesName.getIdeaAnswerPath(
-                    ideaId: idea.id,
-                    answerId: answer.id,
-                  ),
-                );
-              },
-              ideaId: routeState.route.parameters['ideaId']!,
+            child: willPopScope(
+              child: IdeaProjectScreen(
+                onBack: goHome,
+                onAnswerExpand: (final answer, final idea) async {
+                  await routeState.go(
+                    AppRoutesName.getIdeaAnswerPath(
+                      ideaId: idea.id,
+                      answerId: answer.id,
+                    ),
+                  );
+                },
+                ideaId: routeState.route.parameters['ideaId']!,
+              ),
             ),
           ),
           if (routeState.route.pathTemplate == AppRoutesName.ideaAnswer)
@@ -157,16 +189,18 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               key: _ideasIdeaAnswerKey,
               restorationId: routeState.route.path,
               name: routeState.route.path,
-              child: IdeaAnswerScreen(
-                onUnknown: (final answerId, final idea) {
-                  // TODO(arenukvern): add notification - answer with id not found
-                  /// or maybe better to suggest create IdeaAnswer too
-                  /// with that message
-                  goIdeaScreen(ideaId: idea.id);
-                },
-                onBack: (final idea) => goIdeaScreen(ideaId: idea.id),
-                answerId: routeState.route.parameters['answerId']!,
-                ideaId: routeState.route.parameters['ideaId']!,
+              child: willPopScope(
+                child: IdeaAnswerScreen(
+                  onUnknown: (final answerId, final idea) {
+                    // TODO(arenukvern): add notification - answer with id not found
+                    /// or maybe better to suggest create IdeaAnswer too
+                    /// with that message
+                    goIdeaScreen(ideaId: idea.id);
+                  },
+                  onBack: (final idea) => goIdeaScreen(ideaId: idea.id),
+                  answerId: routeState.route.parameters['answerId']!,
+                  ideaId: routeState.route.parameters['ideaId']!,
+                ),
               ),
             )
         ] else

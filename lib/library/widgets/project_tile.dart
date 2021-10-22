@@ -38,9 +38,16 @@ class ProjectTile extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: defaultBorderRadius,
           ),
+          contentPadding: project is IdeaProject
+              ? const EdgeInsets.symmetric(horizontal: 16).copyWith(left: 14)
+              : null,
+          minLeadingWidth: project is IdeaProject ? 2 : null,
+          minVerticalPadding: project is NoteProject ? 12 : null,
+          leading: project is IdeaProject ? const IconIdea(size: 14) : null,
           onTap: () => onTap(project),
           tileColor: Theme.of(context).cardColor,
           title: Text(project.title),
+          // trailing: ,
           // TODO(arenukvern): add checkbox to mark project as completed
           // trailing: Checkbox(
           //   value: checkSelection(project),

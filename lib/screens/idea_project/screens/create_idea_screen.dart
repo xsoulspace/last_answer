@@ -44,29 +44,25 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 8),
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const IconIdeaButton(size: 76),
-              const SizedBox(height: 44),
-              Text(
-                S.current.whatsYourIdea,
-                style: Theme.of(context).textTheme.headline1,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 87),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: RawKeyboardListener(
-                      focusNode: _keyboardFocusNode,
-                      onKey: (final event) {
-                        if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
-                          widget.onCreate(textController.text);
-                        }
-                      },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const IconIdeaButton(size: 76),
+                const SizedBox(height: 44),
+                Text(
+                  S.current.whatsYourIdea,
+                  style: Theme.of(context).textTheme.headline1,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 87),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
                       child: TextField(
+                        onSubmitted: (final _) =>
+                            widget.onCreate(textController.text),
                         focusNode: _textFieldFocusNode,
                         controller: textController,
                         maxLength: 90,
@@ -81,15 +77,15 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                             ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 6),
-                  IconButton(
-                    onPressed: () => widget.onCreate(textController.text),
-                    icon: const Icon(Icons.send),
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 6),
+                    IconButton(
+                      onPressed: () => widget.onCreate(textController.text),
+                      icon: const Icon(Icons.send),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

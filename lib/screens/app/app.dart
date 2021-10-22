@@ -29,7 +29,9 @@ class AppProvider extends StatelessWidget {
     return ProviderScope(
       child: SettingsStateScope(
         notifier: _settings,
-        child: const AppScaffold(),
+        child: const AppStoreInitializer(
+          child: AppScaffold(),
+        ),
       ),
     );
   }
@@ -73,51 +75,49 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(final BuildContext context) {
     final settings = SettingsStateScope.of(context);
-    return AppStoreInitializer(
-      child: RouteStateScope(
-        notifier: routeState,
-        child: AnimatedBuilder(
-          animation: settings,
-          builder: (final context, final child) {
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
+    return RouteStateScope(
+      notifier: routeState,
+      child: AnimatedBuilder(
+        animation: settings,
+        builder: (final context, final child) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
 
-              /// Providing a restorationScopeId allows the Navigator built by
-              /// the MaterialApp to restore the navigation stack when a user
-              /// leaves and returns to the app after it has been killed while
-              /// running in the background.
-              restorationScopeId: 'app',
+            /// Providing a restorationScopeId allows the Navigator built by
+            /// the MaterialApp to restore the navigation stack when a user
+            /// leaves and returns to the app after it has been killed while
+            /// running in the background.
+            restorationScopeId: 'app',
 
-              // Provide the generated AppLocalizations to the MaterialApp. This
-              // allows descendant Widgets to display the correct translations
-              // depending on the user's locale.
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: Locales.values,
+            // Provide the generated AppLocalizations to the MaterialApp. This
+            // allows descendant Widgets to display the correct translations
+            // depending on the user's locale.
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: Locales.values,
 
-              // Use AppLocalizations to configure the correct application title
-              // depending on the user's locale.
-              //
-              // The appTitle is defined in .arb files found in the localization
-              // directory.
-              onGenerateTitle: (final context) => S.of(context).lastAnswer,
+            // Use AppLocalizations to configure the correct application title
+            // depending on the user's locale.
+            //
+            // The appTitle is defined in .arb files found in the localization
+            // directory.
+            onGenerateTitle: (final context) => S.of(context).lastAnswer,
 
-              // Define a light and dark color theme. Then, read the user's
-              // preferred ThemeMode (light, dark, or system default) from the
-              // SettingsController to display the correct theme.
-              theme: lightThemeData,
-              darkTheme: darkThemeData,
-              themeMode: settings.themeMode,
+            // Define a light and dark color theme. Then, read the user's
+            // preferred ThemeMode (light, dark, or system default) from the
+            // SettingsController to display the correct theme.
+            theme: lightThemeData,
+            darkTheme: darkThemeData,
+            themeMode: settings.themeMode,
 
-              routerDelegate: routerDelegate,
-              routeInformationParser: routeParser,
-            );
-          },
-        ),
+            routerDelegate: routerDelegate,
+            routeInformationParser: routeParser,
+          );
+        },
       ),
     );
   }

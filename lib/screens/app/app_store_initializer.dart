@@ -9,19 +9,29 @@ class AppStoreInitializer extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final settings = SettingsStateScope.of(context);
-    if (settings.appInitialStateLoaded) return child;
+    if (settings.appInitialStateLoaded & !settings.appInitialStateIsLoading) {
+      return child;
+    }
+    final brightness =
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
+            .platformBrightness;
     return FutureBuilder<bool>(
       future: () async {
-        if (settings.appInitialStateLoaded) return true;
-        settings.appInitialStateLoaded = true;
+        if (settings.appInitialStateLoaded) {
+          return !settings.appInitialStateIsLoading;
+        }
+        settings
+          ..appInitialStateLoaded = true
+          ..appInitialStateIsLoading = true;
         await SettingsStateScope.of(context).load();
-
-        final ideas =
-            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
 
         await Hive.openBox<IdeaProjectAnswer>(
           HiveBoxesIds.ideaProjectAnswerKey,
         );
+
+        final ideas =
+            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
@@ -89,13 +99,26 @@ class AppStoreInitializer extends ConsumerWidget {
         }
 
         /// ***************** MIGRATION END *******************
-
+        settings.appInitialStateIsLoading = false;
+        WidgetsBinding.instance?.addPostFrameCallback((final _) {
+          settings.notify();
+        });
         return true;
       }(),
       builder: (final context, final snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          // TODO(arenukvern): replace with loader
-          return Container();
+        print({snapshot.data, snapshot.connectionState});
+        if (snapshot.connectionState != ConnectionState.done ||
+            snapshot.data == false) {
+          return Container(
+            color: brightness == Brightness.dark
+                ? AppColors.black
+                : AppColors.white,
+            child: const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(AppColors.primary2),
+              ),
+            ),
+          );
         }
         return child;
       },

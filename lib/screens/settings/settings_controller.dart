@@ -49,8 +49,9 @@ class SettingsController with ChangeNotifier {
 
   /// required to load states only once
   bool appInitialStateLoaded = false;
+  bool appInitialStateIsLoading = false;
 
-  void notifyOnWorkspaceChange() => notifyListeners();
+  void notify() => notifyListeners();
 }
 
 /// Provides the current [SettingsController] to descendent widgets in the tree.

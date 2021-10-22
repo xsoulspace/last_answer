@@ -69,33 +69,24 @@ class AppStoreInitializer extends ConsumerWidget {
         /// ***************** MIGRATION START *******************
 
         // TODO(arenukvern): remove old stores after all devices migration
+        try {
+          if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
+            await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
+          }
+          if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
+              await Hive.boxExists(HiveBoxesIds.answersKey)) {
+            await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
+            final projects =
+                await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
 
-        print({'iDarkExists': await Hive.boxExists(HiveBoxesIds.darkModeKey)});
-        if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
-          await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
-        }
-        print({
-          'projectsKey': await Hive.boxExists(HiveBoxesIds.projectsKey),
-          'answersKey': await Hive.boxExists(HiveBoxesIds.answersKey)
-        });
-        if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
-            await Hive.boxExists(HiveBoxesIds.answersKey)) {
-          await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
-          final projects =
-              await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-
-          print({
-            'projects': projects.values,
-          });
-          try {
             for (final project in projects.values) {
               await project.saveAsIdeaProject(ref);
             }
             await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
             await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
-          } catch (e) {
-            print('error: $e');
           }
+        } catch (e) {
+          print('error: $e');
         }
 
         /// ***************** MIGRATION END *******************
@@ -106,7 +97,6 @@ class AppStoreInitializer extends ConsumerWidget {
         return true;
       }(),
       builder: (final context, final snapshot) {
-        print({snapshot.data, snapshot.connectionState});
         if (snapshot.connectionState != ConnectionState.done ||
             snapshot.data == false) {
           return Container(

@@ -32,7 +32,6 @@ class AppStoreInitializer extends ConsumerWidget {
             HiveBoxesIds.ideaProjectAnswerKey,
           );
           print('ideaProjectAnswerKey loaded');
-          try {} catch (e) {}
 
           final ideas =
               await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);

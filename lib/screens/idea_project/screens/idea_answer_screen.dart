@@ -36,8 +36,8 @@ class IdeaAnswerScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final idea = ref.read(ideaProjectsProvider)[ideaId]!;
-    final maybeAnswer = getInitialAnswer(ref: ref, idea: idea);
+    final maybeIdea = ref.read(ideaProjectsProvider)[ideaId]!;
+    final maybeAnswer = getInitialAnswer(ref: ref, idea: maybeIdea);
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);
     final textController = useTextEditingController(text: answer.value.text);
@@ -51,7 +51,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         leading: BackButton(
-          onPressed: () => back(idea: idea, context: context),
+          onPressed: () => back(idea: maybeIdea, context: context),
         ),
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
@@ -80,11 +80,12 @@ class IdeaAnswerScreen extends HookConsumerWidget {
                   filled: false,
                   endlessLines: true,
                   focusOnInit: textController.text.isEmpty,
-                  onSubmit: () => back(idea: idea, context: context),
+                  onSubmit: () => back(idea: maybeIdea, context: context),
                   controller: textController,
                 ),
               ),
             ),
+            const SizedBox(height: 14),
             const SafeAreaBottom(),
           ],
         ),

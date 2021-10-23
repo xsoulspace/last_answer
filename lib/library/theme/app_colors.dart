@@ -33,6 +33,9 @@ class AppColors {
   /// #212121
   static const black = Color(0xFF212121);
 
+  /// #000000
+  static const cleanBlack = Color(0xFF000000);
+
   /// #424242
   static const grey1 = Color(0xFF424242);
 

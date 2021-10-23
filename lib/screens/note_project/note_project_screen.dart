@@ -16,7 +16,7 @@ class NoteProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final maybeNote = ref.watch(noteProjectsProvider)[noteId]!;
+    final maybeNote = ref.read(noteProjectsProvider)[noteId]!;
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
 
@@ -34,6 +34,9 @@ class NoteProjectScreen extends HookConsumerWidget {
       trailing: true,
     )
         .forEach((final _) async {
+      ref
+          .read(noteProjectsProvider.notifier)
+          .put(key: maybeNote.id, value: maybeNote);
       return note.value.save();
     });
 
@@ -49,40 +52,48 @@ class NoteProjectScreen extends HookConsumerWidget {
           SizedBox(width: 10),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: ProjectTextField(
-                      hintText: 'Write a note',
-                      fillColor: Colors.transparent,
-                      filled: false,
-                      endlessLines: true,
-                      onSubmit: () => back(context),
-                      controller: noteController,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 34,
-                    width: 48,
-                    child: IconShareButton(
-                      onTap: () {
-                        ProjectSharer.of(context).share(project: note.value);
-                      },
-                    ),
-                  ),
-                ],
-              ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: ScreenLayout.maxFullscreenPageWidth,
             ),
-            const SizedBox(height: 14),
-            const SafeAreaBottom(),
-          ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: ProjectTextField(
+                          hintText: 'Write a note',
+                          fillColor: Colors.transparent,
+                          filled: false,
+                          endlessLines: true,
+                          onSubmit: () => back(context),
+                          controller: noteController,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 34,
+                        width: 48,
+                        child: IconShareButton(
+                          onTap: () {
+                            ProjectSharer.of(context)
+                                .share(project: note.value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+                const SafeAreaBottom(),
+              ],
+            ),
+          ),
         ),
       ),
     );

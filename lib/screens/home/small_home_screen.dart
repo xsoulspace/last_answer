@@ -12,6 +12,7 @@ class SmallHomeScreen extends StatefulWidget {
     required final this.onInfoTap,
     required final this.onCreateIdeaTap,
     required final this.onCreateNoteTap,
+    required final this.onGoHome,
     final this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
   }) : super(key: key);
@@ -21,6 +22,7 @@ class SmallHomeScreen extends StatefulWidget {
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
   final Alignment verticalMenuAlignment;
+  final VoidCallback onGoHome;
 
   @override
   _SmallHomeScreenState createState() => _SmallHomeScreenState();
@@ -109,6 +111,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                           // TODO(arenukvern): implement note project removal
                         }
                         await project.delete();
+                        widget.onGoHome();
                       },
                       onRemoveConfirm: (final _) async {
                         return showRemoveProjectDialog(

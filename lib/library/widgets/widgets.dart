@@ -1,5 +1,6 @@
 library widgets;
 
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/gen/assets.gen.dart';
-import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/utils/utils.dart';
@@ -38,6 +38,7 @@ part 'note_tile.dart';
 part 'project_text_field.dart';
 part 'project_tile.dart';
 part 'project_title_field.dart';
+part 'responsive_widget.dart';
 part 'safe_areas.dart';
 part 'scroll_keyboard_closer.dart';
 part 'svg_icon_button.dart';

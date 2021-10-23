@@ -1,30 +1,32 @@
 part of widgets;
 
+typedef PagesCallback = List<Page<dynamic>> Function();
+
 class ResponsiveNavigator extends StatelessWidget {
   const ResponsiveNavigator({
     required final this.navigatorKey,
-    required final this.largeScreen,
+    required final this.onLargeScreen,
     required final this.onPopPage,
-    final this.mediumScreen,
-    final this.smallScreen,
+    final this.onMediumScreen,
+    final this.onSmallScreen,
     final Key? key,
   }) : super(key: key);
-  final List<Page<dynamic>> largeScreen;
-  final List<Page<dynamic>>? mediumScreen;
-  final List<Page<dynamic>>? smallScreen;
+  final PagesCallback onLargeScreen;
+  final PagesCallback? onMediumScreen;
+  final PagesCallback? onSmallScreen;
   final GlobalKey<NavigatorState> navigatorKey;
   final PopPageCallback? onPopPage;
   List<Page<dynamic>> getPages({required final BoxConstraints constraints}) {
     final screenLayout = ScreenLayout.from(constraints);
     if (screenLayout.large) {
-      return largeScreen;
+      return onLargeScreen();
     } else if (screenLayout.medium) {
       /// if medium screen not available, then return large screen
-      return mediumScreen ?? largeScreen;
+      return onMediumScreen?.call() ?? onLargeScreen();
     } else {
       /// if small screen implementation not available, then return
       /// large screen
-      return smallScreen ?? largeScreen;
+      return onSmallScreen?.call() ?? onLargeScreen();
     }
   }
 
@@ -89,9 +91,10 @@ class ScreenLayout {
 
   final BuildContext? context;
   final BoxConstraints? constraints;
-
-  static const maxSmallWidth = 700;
-  static const maxMediumWidth = 1000;
+  static const maxFullscreenPageWidth = 500.0;
+  static const minFullscreenPageWidth = 450.0;
+  static const maxSmallWidth = 700.0;
+  static const maxMediumWidth = 1000.0;
 
   Size get size {
     if (constraints != null) {

@@ -7,6 +7,7 @@ void main() {
   Widget getScreenWidget() => MaterialApp(
         home: SmallHomeScreen(
           onCreateNoteTap: () {},
+          onGoHome: () {},
           onInfoTap: () {},
           onCreateIdeaTap: () {},
           onProjectTap: (final project) {},

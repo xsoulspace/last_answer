@@ -66,29 +66,36 @@ class IdeaAnswerScreen extends HookConsumerWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: HeroId(
-                id: answerId,
-                type: HeroIdTypes.projectIdeaAnswerText,
-                child: ProjectTextField(
-                  hintText: S.current.answer,
-                  fillColor: Colors.transparent,
-                  filled: false,
-                  endlessLines: true,
-                  focusOnInit: textController.text.isEmpty,
-                  onSubmit: () => back(idea: maybeIdea, context: context),
-                  controller: textController,
-                ),
-              ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: ScreenLayout.minFullscreenPageWidth,
             ),
-            const SizedBox(height: 14),
-            const SafeAreaBottom(),
-          ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: HeroId(
+                    id: answerId,
+                    type: HeroIdTypes.projectIdeaAnswerText,
+                    child: ProjectTextField(
+                      hintText: S.current.answer,
+                      fillColor: Colors.transparent,
+                      filled: false,
+                      endlessLines: true,
+                      focusOnInit: textController.text.isEmpty,
+                      onSubmit: () => back(idea: maybeIdea, context: context),
+                      controller: textController,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                const SafeAreaBottom(),
+              ],
+            ),
+          ),
         ),
       ),
     );

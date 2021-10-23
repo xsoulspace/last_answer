@@ -33,6 +33,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
       trailing: true,
     )
         .forEach((final _) async {
+      ref.read(ideaProjectsProvider.notifier).put(key: idea.id, value: idea);
       return idea.save();
     });
 
@@ -47,6 +48,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
     return Scaffold(
       restorationId: 'ideas/scaffold/$ideaId',
       appBar: AppBar(
+        centerTitle: true,
         leading: BackButton(
           onPressed: onBack,
         ),

@@ -94,12 +94,16 @@ class _AnswerTile extends StatelessWidget {
               children: [
                 Visibility(
                   visible: deleteIconVisible,
-                  child: IconButton(
-                    onPressed: () {
-                      final confirmed = confirmDelete();
-                      if (confirmed) onReadyToDelete();
-                    },
-                    icon: const Icon(Icons.close),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                      onPressed: () {
+                        final confirmed = confirmDelete();
+                        if (confirmed) onReadyToDelete();
+                      },
+                      color: AppColors.accent2.withOpacity(0.6),
+                      icon: const Icon(Icons.close),
+                    ),
                   ),
                 ),
                 IconButton(

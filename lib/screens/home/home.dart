@@ -12,6 +12,7 @@ import 'package:lastanswer/providers/providers.dart';
 import 'package:recase/recase.dart';
 import 'package:universal_io/io.dart';
 
-part 'home_screen.dart';
+part 'large_home_screen.dart';
 part 'remove_project_dialog.dart';
+part 'small_home_screen.dart';
 part 'vertical_projects_bar.dart';

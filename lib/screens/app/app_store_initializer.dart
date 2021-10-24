@@ -33,7 +33,15 @@ class AppStoreInitializer extends ConsumerWidget {
         settings
           ..appInitialStateLoaded = true
           ..appInitialStateIsLoading = true;
-        await SettingsStateScope.of(context).load();
+
+        final settingsState = SettingsStateScope.of(context);
+        final emojis = await EmojiUtil.getList(context);
+
+        await settingsState.load();
+        ref
+            .read(emojisProvider.notifier)
+            .putEntries(emojis.map((final e) => MapEntry(e.keywords, e)));
+
         await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
 
         final ideas =

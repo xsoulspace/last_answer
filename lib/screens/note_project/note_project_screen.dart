@@ -76,15 +76,24 @@ class NoteProjectScreen extends HookConsumerWidget {
                           controller: noteController,
                         ),
                       ),
-                      SizedBox(
-                        height: 34,
-                        width: 48,
-                        child: IconShareButton(
-                          onTap: () {
-                            ProjectSharer.of(context)
-                                .share(project: note.value);
-                          },
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            height: 34,
+                            width: 48,
+                            child: IconShareButton(
+                              onTap: () {
+                                ProjectSharer.of(context)
+                                    .share(project: note.value);
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          EmojiPopup(
+                            onChanged: (final _) {},
+                          ),
+                        ],
                       ),
                     ],
                   ),

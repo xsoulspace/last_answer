@@ -5,7 +5,9 @@ class EmojiUtil {
   static Future<Iterable<Emoji>> getList(final BuildContext context) async {
     final emojisStr =
         await DefaultAssetBundle.of(context).loadString(Assets.emojis);
-    final emojiList = jsonDecode(emojisStr) as List<Map<String, dynamic>>;
+    final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
+      jsonDecode(emojisStr),
+    );
     return emojiList.map(Emoji.fromJson);
   }
 }

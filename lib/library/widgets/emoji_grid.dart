@@ -2,10 +2,10 @@ part of widgets;
 
 class EmojiPopup extends HookWidget {
   const EmojiPopup({
-    required final this.onChanged,
+    required final this.controller,
     final Key? key,
   }) : super(key: key);
-  final ValueChanged<Emoji> onChanged;
+  final TextEditingController controller;
   @override
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
@@ -17,7 +17,29 @@ class EmojiPopup extends HookWidget {
           screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
       portal: EmojiGrid(
-        onChanged: onChanged,
+        onChanged: (final emoji) {
+          final emojiChar = emoji.emoji;
+          // Get cursor current position
+          final cursorPos = controller.selection.base.offset;
+
+          // Right text of cursor position
+          final suffixText = controller.text.substring(cursorPos);
+
+          // Add new text on cursor position
+          final length = emojiChar.length;
+
+          // Get the left text of cursor
+          final prefixText = controller.text.substring(0, cursorPos);
+
+          controller
+            ..text = prefixText + emojiChar + suffixText
+
+            // Cursor move to end of added text
+            ..selection = TextSelection(
+              baseOffset: cursorPos + length,
+              extentOffset: cursorPos + length,
+            );
+        },
         onClose: () => popupVisible.value = false,
       ),
       child: MouseRegion(

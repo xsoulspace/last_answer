@@ -197,13 +197,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.1"
-  demoji:
-    dependency: "direct main"
-    description:
-      name: demoji
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   equatable:
     dependency: "direct main"
     description:

@@ -12,6 +12,8 @@ class MapState<TValue> extends StateNotifier<Map<String, TValue>> {
         ...state,
         ...map,
       };
+  void putEntries(final Iterable<MapEntry<String, TValue>> newEntries) =>
+      state = {...state}..addEntries(newEntries);
 
   void remove({required final String key}) => state = {
         ...state,

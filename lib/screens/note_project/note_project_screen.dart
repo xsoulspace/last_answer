@@ -90,34 +90,7 @@ class NoteProjectScreen extends HookConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          EmojiPopup(
-                            onChanged: (final emoji) {
-                              final emojiChar = emoji.emoji;
-                              // Get cursor current position
-                              final cursorPos =
-                                  noteController.selection.base.offset;
-
-                              // Right text of cursor position
-                              final suffixText =
-                                  noteController.text.substring(cursorPos);
-
-                              // Add new text on cursor position
-                              final length = emojiChar.length;
-
-                              // Get the left text of cursor
-                              final prefixText =
-                                  noteController.text.substring(0, cursorPos);
-
-                              noteController.text =
-                                  prefixText + emojiChar + suffixText;
-
-                              // Cursor move to end of added text
-                              noteController.selection = TextSelection(
-                                baseOffset: cursorPos + length,
-                                extentOffset: cursorPos + length,
-                              );
-                            },
-                          ),
+                          EmojiPopup(controller: noteController),
                         ],
                       ),
                     ],

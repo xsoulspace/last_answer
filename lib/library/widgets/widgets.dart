@@ -1,6 +1,5 @@
 library widgets;
 
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -19,6 +18,7 @@ part 'choosable_bubble.dart';
 part 'circular_loader.dart';
 part 'dismissible_tile.dart';
 part 'editable_bubble.dart';
+part 'emoji_grid.dart';
 part 'focus_bubble_container.dart';
 part 'hero_id.dart';
 part 'icon_add_button.dart';

@@ -13,12 +13,15 @@ class SettingsScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         );
     final settings = SettingsStateScope.of(context);
+    final initLocale = namedLocalesMap[
+            settings.locale?.languageCode ?? Intl.getCurrentLocale()]
+        ?.locale;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
           onPressed: onBack,
         ),
-        title: const Text('Settings'),
+        title: Text(S.current.settings),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -30,29 +33,61 @@ class SettingsScreen extends StatelessWidget {
             //
             // When a user selects a theme from the dropdown list, the
             // SettingsController is updated, which rebuilds the MaterialApp.
-            DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
-              value: settings.themeMode,
-              // Call the updateThemeMode method any time the user selects
-              // theme.
-              onChanged: settings.updateThemeMode,
-              isExpanded: true,
-              items: [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: getItemText('System Theme'),
+            Row(
+              children: [
+                Text('${S.current.theme}:'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<ThemeMode>(
+                    // Read the selected themeMode from the controller
+                    value: settings.themeMode,
+                    // Call the updateThemeMode method any time the user selects
+                    // theme.
+                    onChanged: settings.updateThemeMode,
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(
+                        value: ThemeMode.system,
+                        child: getItemText(S.current.themeSystem),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.light,
+                        child: getItemText(S.current.themeLight),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.dark,
+                        child: getItemText(S.current.themeDark),
+                      ),
+                    ],
+                  ),
                 ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: getItemText('Light Theme'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: getItemText('Dark Theme'),
-                )
               ],
             ),
-
+            Row(
+              children: [
+                Text('${S.current.language}:'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<Locale>(
+                    // Read the selected themeMode from the controller
+                    value: initLocale,
+                    // Call the updateThemeMode method any time the user selects
+                    // theme.
+                    onChanged: settings.updateLocale,
+                    isExpanded: true,
+                    items: namedLocalesMap.values
+                        .map(
+                          (final e) => DropdownMenuItem<Locale>(
+                            value: e.locale,
+                            key: ValueKey(e.code),
+                            child: getItemText(e.name),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            )
             // ** An Example of how to use link **
             // Link(
             //   uri: Uri.parse('/book/0'),

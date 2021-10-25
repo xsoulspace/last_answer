@@ -53,7 +53,7 @@ class EmojiPopup extends HookWidget {
   }
 }
 
-class EmojiGrid extends ConsumerWidget {
+class EmojiGrid extends HookConsumerWidget {
   const EmojiGrid({
     required final this.onChanged,
     required final this.onClose,
@@ -63,11 +63,46 @@ class EmojiGrid extends ConsumerWidget {
   final VoidCallback onClose;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final emojis = ref.read(emojisProvider);
+    final emojis = ref.watch(filteredEmojisProvider);
+    final lastEmojisState = ref.watch(lastUsedEmojisProvider);
+    // ignore: close_sinks
+    final emojiKeywordStream = useStreamController<String>();
+    emojiKeywordStream.stream
+        .throttleTime(
+      const Duration(milliseconds: 700),
+      leading: true,
+      trailing: true,
+    )
+        .forEach((final keyword) async {
+      ref.read(emojiFilterProvider).state = keyword;
+    });
+    final lastEmojis = useState(lastEmojisState.values.toSet());
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
         : AppColors.grey4;
+    Widget emojiButton(final Emoji emoji) => TextButton(
+          key: ValueKey(emoji),
+          onPressed: () {
+            onChanged(emoji);
+            List<Emoji> newLastEmojis = [...lastEmojis.value];
+            final emojiExists = newLastEmojis.contains(emoji);
+            if (!emojiExists) {
+              newLastEmojis.insert(0, emoji);
+            }
+            if (newLastEmojis.length > 6 && !emojiExists) {
+              newLastEmojis = newLastEmojis.sublist(0, 6);
+            }
+            lastEmojis.value = newLastEmojis.toSet();
+
+            ref.read(lastUsedEmojisProvider.notifier).assignEntries(
+                  newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+                );
+          },
+          child: Center(
+            child: Text(emoji.emoji),
+          ),
+        );
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,
@@ -101,18 +136,18 @@ class EmojiGrid extends ConsumerWidget {
                     restorationId: 'emojis-grid',
                     shrinkWrap: true,
                     crossAxisCount: 6,
-                    children: emojis.values
-                        .map(
-                          (final e) => TextButton(
-                            key: ValueKey(e),
-                            onPressed: () => onChanged(e),
-                            child: Center(
-                              child: Text(e.emoji),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                    semanticChildCount: emojis.length,
+                    children: emojis.map(emojiButton).toList(),
                   ),
+                ),
+                Divider(color: borderColor, height: 1),
+                GridView.count(
+                  restorationId: 'last-emojis-grid',
+                  shrinkWrap: true,
+                  crossAxisCount: 6,
+                  semanticChildCount: lastEmojis.value.length,
+                  reverse: true,
+                  children: lastEmojis.value.map(emojiButton).toList(),
                 ),
                 Divider(color: borderColor, height: 1),
                 Material(
@@ -123,6 +158,16 @@ class EmojiGrid extends ConsumerWidget {
                         // constraints: BoxConstraints(maxHeight: 24),
                         icon: const Icon(Icons.close), iconSize: 14,
                         onPressed: onClose,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          onChanged: emojiKeywordStream.add,
+                          decoration: const InputDecoration()
+                              .applyDefaults(theme.inputDecorationTheme)
+                              .copyWith(
+                                hintText: S.current.search,
+                              ),
+                        ),
                       ),
                     ],
                   ),

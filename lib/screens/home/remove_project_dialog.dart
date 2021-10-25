@@ -20,7 +20,7 @@ Future<bool> showRemoveProjectDialog({
               child: Text(S.current.delete.titleCase),
             ),
           ],
-          content: Text(S.current.projectWillBeLost(project.title)),
+          content: Text(S.current.willBeLost(project.title)),
           title: Text(S.current.areYouSure),
         );
       },
@@ -29,18 +29,24 @@ Future<bool> showRemoveProjectDialog({
   return await showDialog(
     context: context,
     builder: (final context) {
+      final theme = Theme.of(context);
       return AlertDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(S.current.cancel.toUpperCase()),
+            child: Text(
+              S.current.cancel.toUpperCase(),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(S.current.delete.toUpperCase()),
+            child: Text(
+              S.current.delete.toUpperCase(),
+              style: theme.textTheme.button?.copyWith(color: AppColors.accent2),
+            ),
           ),
         ],
-        content: Text(S.current.projectWillBeLost(project.title)),
+        content: Text(S.current.willBeLost(project.title)),
         title: Text(S.current.areYouSure),
       );
     },

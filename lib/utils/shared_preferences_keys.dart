@@ -4,4 +4,6 @@ part of utils;
 class SharedPreferencesKeys {
   SharedPreferencesKeys._();
   static const theme = 'theme';
+  static const locale = 'locale';
+  static const lastUsedEmojis = 'lastUsedEmojis';
 }

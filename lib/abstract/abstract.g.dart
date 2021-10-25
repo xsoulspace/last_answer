@@ -246,7 +246,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
     return LocalizedText(
       en: fields[1] as String,
       ru: fields[0] as String,
-      it: fields[2] as String,
+      it: fields[2] as String?,
     );
   }
 
@@ -407,7 +407,7 @@ LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
-      it: json['it'] as String,
+      it: json['it'] as String?,
     );
 
 Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>

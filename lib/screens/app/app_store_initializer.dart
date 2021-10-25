@@ -43,13 +43,14 @@ class AppStoreInitializer extends ConsumerWidget {
 
         settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
-        await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
+        await Hive.openBox<IdeaProjectAnswer>(
+            HiveBoxesIds.ideaProjectAnswerKey);
 
         final ideas =
-            await openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
         settings.loadingStatus = AppStateLoadingStatuses.questionsForAnswers;
 
-        final questions = await openAnyway<IdeaProjectQuestion>(
+        final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
         // TODO(arenukvern): remove when all devices will be updated
@@ -78,7 +79,7 @@ class AppStoreInitializer extends ConsumerWidget {
             );
         settings.loadingStatus = AppStateLoadingStatuses.notes;
 
-        final notes = await openAnyway<NoteProject>(
+        final notes = await Hive.openBox<NoteProject>(
           HiveBoxesIds.noteProjectKey,
         );
 
@@ -87,7 +88,7 @@ class AppStoreInitializer extends ConsumerWidget {
                 notes.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-        await openAnyway<StoryProject>(
+        await Hive.openBox<StoryProject>(
           HiveBoxesIds.storyProjectKey,
         );
 

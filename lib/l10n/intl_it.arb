@@ -1,165 +1,124 @@
 {
   "language": "Lingua",
   "@language": {
-    "description": "menu title language",
-    "type": "text"
+    "description": "menu title language"
   },
-  "darkMode": "Modalità scura",
-  "@darkMode": {
-    "description": "menu title Dark mode",
-    "type": "text"
-  },
-  "languageWillBeChanged": "verrà impostata come nuova lingua. L'app verrà ricaricata, continuare?",
+  "languageWillBeChanged": "{language} verrà impostata come nuova lingua. L'app verrà ricaricata, continuare?",
   "@languageWillBeChanged": {
     "description": "languageWillBeChanged",
-    "type": "text"
+    "args": [
+      "language"
+    ]
   },
   "yes": "Si",
   "@yes": {
-    "description": "yes",
-    "type": "text"
+    "description": "yes"
   },
   "noProjectsYet": "No projects yet.",
   "@noProjectsYet": {
-    "description": "text if no projects created",
-    "type": "text"
+    "description": "text if no projects created"
   },
   "whatsYourIdea": "What's your idea?",
   "@whatsYourIdea": {
-    "description": "What's your idea? label",
-    "type": "text"
+    "description": "What's your idea? label"
   },
   "createIdeaHelperText": "Create tutorial",
   "@createIdeaHelperText": {
-    "description": "createIdeaHelperText",
-    "type": "text"
+    "description": "createIdeaHelperText"
   },
   "lastAnswer": "Last Answer",
   "@lastAnswer": {
-    "description": "menu title Last answer",
-    "type": "text"
+    "description": "menu title Last answer"
   },
   "idea": "Idea",
   "@idea": {
-    "description": "idea name",
-    "type": "text"
+    "description": "idea name"
   },
   "note": "Note",
   "@note": {
-    "description": "Note name",
-    "type": "text"
+    "description": "Note name"
   },
   "answer": "Risposta",
   "@answer": {
-    "description": "answer input",
-    "type": "text"
+    "description": "answer input"
   },
   "cancel": "CANCELLA",
   "@cancel": {
-    "description": "popup start cancel",
-    "type": "text"
+    "description": "popup start cancel"
   },
   "close": "CHIUDI",
   "@close": {
-    "description": "Close",
-    "type": "text"
-  },
-  "philosophyInspirationTitle": "Ispirazione",
-  "@philosophyInspirationTitle": {
-    "description": "Inspiration",
-    "type": "text"
-  },
-  "philosophyAbstractWhatElse": "Cos'altro?",
-  "@philosophyAbstractWhatElse": {
-    "description": "What else",
-    "type": "text"
-  },
-  "philosophyAbstractFiveWhyesWhat": "Puoi usare: \"Cinque perché\"",
-  "@philosophyAbstractFiveWhyesWhat": {
-    "description": "Method that you can use",
-    "type": "text"
-  },
-  "philosophyAbstractFiveWhyesWhy": "Perché puoi usare questa tecnica se hai un problema o un'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys",
-  "@philosophyAbstractFiveWhyesWhy": {
-    "description": "Description of Five Whyes",
-    "type": "text"
-  },
-  "philosophyAbstractPDSAWhy": "Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l'esplorazione di idee, ma a comprendere i problemi dell'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA",
-  "@philosophyAbstractPDSAWhy": {
-    "description": "Method that you can use",
-    "type": "text"
-  },
-  "philosophyAbstractPDSAWhat": "Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ",
-  "@philosophyAbstractPDSAWhat": {
-    "description": "Description of PDSA",
-    "type": "text"
-  },
-  "philosophyAbstractSixSigmaWhy": "Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma",
-  "@philosophyAbstractSixSigmaWhy": {
-    "description": "Method that you can use",
-    "type": "text"
-  },
-  "philosophyAbstractSixSigmaWhat": "Puoi usare: \"Six Sigma\"",
-  "@philosophyAbstractSixSigmaWhat": {
-    "description": "Description of Six Sigma",
-    "type": "text"
-  },
-  "about": "Informazioni",
-  "@about": {
-    "description": "About title",
-    "type": "text"
-  },
-  "aboutAbstractWhatFor": "Per che cosa?",
-  "@aboutAbstractWhatFor": {
-    "description": "What For About Abstract",
-    "type": "text"
+    "description": "Close"
   },
   "delete": "ELIMINA",
   "@delete": {
-    "description": "delete",
-    "type": "text"
+    "description": "delete"
   },
   "areYouSure": "Sei sicuro?",
   "@areYouSure": {
-    "description": "Are you sure",
-    "type": "text"
+    "description": "Are you sure"
   },
-  "titleWith": "сon",
-  "@titleWith": {
-    "description": "with",
-    "type": "text"
-  },
-  "projectWillBeLost": "{projectTitle} sarà perso per sempre",
-  "@projectWillBeLost": {
-    "description": "Project removal warning",
-    "type": "text",
+  "willBeLost": "{title} sarà perso per sempre",
+  "@willBeLost": {
+    "description": "removal warning",
     "args": [
-      "projectTitle"
+      "title"
     ]
   },
-  "answerWillBeLost": "sarà perso per sempre",
-  "@answerWillBeLost": {
-    "description": "Answer removal warning",
-    "type": "text"
+  "philosophyInspirationTitle": "Ispirazione",
+  "@philosophyInspirationTitle": {
+    "description": "Inspiration"
+  },
+  "philosophyAbstractWhatElse": "Cos'altro?",
+  "@philosophyAbstractWhatElse": {
+    "description": "What else"
+  },
+  "philosophyAbstractFiveWhyesWhat": "Puoi usare: \"Cinque perché\"",
+  "@philosophyAbstractFiveWhyesWhat": {
+    "description": "Method that you can use"
+  },
+  "philosophyAbstractFiveWhyesWhy": "Perché puoi usare questa tecnica se hai un problema o un'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys",
+  "@philosophyAbstractFiveWhyesWhy": {
+    "description": "Description of Five Whyes"
+  },
+  "philosophyAbstractPDSAWhy": "Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l'esplorazione di idee, ma a comprendere i problemi dell'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA",
+  "@philosophyAbstractPDSAWhy": {
+    "description": "Method that you can use"
+  },
+  "philosophyAbstractPDSAWhat": "Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ",
+  "@philosophyAbstractPDSAWhat": {
+    "description": "Description of PDSA"
+  },
+  "philosophyAbstractSixSigmaWhy": "Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma",
+  "@philosophyAbstractSixSigmaWhy": {
+    "description": "Method that you can use"
+  },
+  "philosophyAbstractSixSigmaWhat": "Puoi usare: \"Six Sigma\"",
+  "@philosophyAbstractSixSigmaWhat": {
+    "description": "Description of Six Sigma"
+  },
+  "about": "Informazioni",
+  "@about": {
+    "description": "About title"
+  },
+  "aboutAbstractWhatFor": "Per che cosa?",
+  "@aboutAbstractWhatFor": {
+    "description": "What For About Abstract"
   },
   "aboutAbstractWhatForDescription": "Questa app è progettata per risolvere l'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.",
   "@aboutAbstractWhatForDescription": {
-    "description": "Description of About Abstract",
-    "type": "text"
+    "description": "Description of About Abstract"
   },
   "aboutAbstractHowDescription": "Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.",
   "@aboutAbstractHowDescription": {
-    "description": "Description of About Abstract How Description",
-    "type": "text"
+    "description": "Description of About Abstract How Description"
   },
   "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?",
   "@aboutAbstractIdeasImprovementsBugs": {
-    "description": "Ideas Improvements Bugs",
-    "type": "text"
+    "description": "Ideas Improvements Bugs"
   },
   "aboutAbstractIdeasImprovementsBugsDescription": "Si prega di lasciare una recensione ovunque si desideri o inviare un messaggio a idea@xsoulspace.dev. Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
   "@aboutAbstractIdeasImprovementsBugsDescription": {
-    "description": "Ideas Improvements Bugs description",
-    "type": "text"
+    "description": "Ideas Improvements Bugs description"
   }
 }

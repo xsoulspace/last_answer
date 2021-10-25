@@ -19,7 +19,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(projectTitle) => "${projectTitle} will be lost forever";
+  static String m0(language) =>
+      "${language} will be set as a new language. The app will be reloaded, continue?";
+
+  static String m1(title) => "${title} will be lost forever";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -36,19 +39,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
             "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),
         "answer": MessageLookupByLibrary.simpleMessage("Answer"),
-        "answerWillBeLost":
-            MessageLookupByLibrary.simpleMessage("will be lost forever"),
         "areYouSure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
         "cancel": MessageLookupByLibrary.simpleMessage("CANCEL"),
         "close": MessageLookupByLibrary.simpleMessage("CLOSE"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Create tutorial"),
-        "darkMode": MessageLookupByLibrary.simpleMessage("Dark mode"),
         "delete": MessageLookupByLibrary.simpleMessage("DELETE"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
-            "will be set as a new language. The app will be reloaded, continue?"),
+        "languageWillBeChanged": m0,
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "noProjectsYet":
             MessageLookupByLibrary.simpleMessage("No projects yet."),
@@ -69,10 +68,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("What else?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Inspiration"),
-        "projectWillBeLost": m0,
-        "titleWith": MessageLookupByLibrary.simpleMessage("с"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
+        "willBeLost": m1,
         "yes": MessageLookupByLibrary.simpleMessage("YES")
       };
 }

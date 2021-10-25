@@ -17,6 +17,13 @@ final lightThemeData = _lightBase.copyWith(
     ),
   ),
 
+  scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
+    showTrackOnHover: true,
+    thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
+    trackBorderColor:
+        MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
+    interactive: true,
+  ),
   // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
@@ -38,6 +45,13 @@ final darkThemeData = _darkBase.copyWith(
       statusBarColor: _darkBase.canvasColor,
       statusBarIconBrightness: Brightness.light,
     ),
+  ),
+  scrollbarTheme: _darkBase.scrollbarTheme.copyWith(
+    interactive: true,
+    showTrackOnHover: true,
+    thumbColor: MaterialStateProperty.all(AppColors.grey4.withOpacity(0.4)),
+    trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),
+    trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
   ),
   // TODO(arenukvern): for transparent background
   // scaffoldBackgroundColor:

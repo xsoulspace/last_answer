@@ -1,5 +1,15 @@
 part of app_provider;
 
+enum AppStateLoadingStatuses {
+  settings,
+  emoji,
+  ideas,
+  questionsForAnswers,
+  answersForIdeas,
+  notes,
+  migratingOldData,
+}
+
 Future<Box<T>> openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
@@ -33,11 +43,24 @@ class AppStoreInitializer extends ConsumerWidget {
         settings
           ..appInitialStateLoaded = true
           ..appInitialStateIsLoading = true;
-        await SettingsStateScope.of(context).load();
+
+        final settingsState = SettingsStateScope.of(context);
+        await settingsState.load();
+
+        settingsState.loadingStatus = AppStateLoadingStatuses.emoji;
+        final emojis = await EmojiUtil.getList(context);
+
+        ref
+            .read(emojisProvider.notifier)
+            .putEntries(emojis.map((final e) => MapEntry(e.keywords, e)));
+
+        settings.loadingStatus = AppStateLoadingStatuses.ideas;
+
         await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
 
         final ideas =
             await openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+        settings.loadingStatus = AppStateLoadingStatuses.questionsForAnswers;
 
         final questions = await openAnyway<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
@@ -49,18 +72,21 @@ class AppStoreInitializer extends ConsumerWidget {
             ),
           );
         }
+        settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(
               Map.fromEntries(
                 questions.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
+        settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
         ref.read(ideaProjectsProvider.notifier).putAll(
               Map.fromEntries(
                 ideas.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
+        settings.loadingStatus = AppStateLoadingStatuses.notes;
 
         final notes = await openAnyway<NoteProject>(
           HiveBoxesIds.noteProjectKey,
@@ -74,6 +100,8 @@ class AppStoreInitializer extends ConsumerWidget {
         await openAnyway<StoryProject>(
           HiveBoxesIds.storyProjectKey,
         );
+
+        settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
 
         /// ***************** MIGRATION START *******************
         try {
@@ -113,9 +141,19 @@ class AppStoreInitializer extends ConsumerWidget {
             color: brightness == Brightness.dark
                 ? AppColors.black
                 : AppColors.white,
-            child: const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(AppColors.primary2),
+            child: Center(
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(AppColors.primary2),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(settings.loadingStatus.toString()),
+                  ],
+                ),
               ),
             ),
           );

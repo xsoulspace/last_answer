@@ -7,6 +7,7 @@ import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/screens/idea_project/idea_project.dart';
+import 'package:lastanswer/screens/info/app_info.dart';
 import 'package:lastanswer/screens/note_project/note_project.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
@@ -31,6 +32,7 @@ class AppNavigator extends ConsumerStatefulWidget {
 class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
   final _settingsKey = const ValueKey<String>('settings');
+  final _infoKey = const ValueKey<String>('info');
 
   final _notesKey = const ValueKey<String>('notes');
   final _notesNoteKey = const ValueKey<String>('notes/note');
@@ -76,8 +78,18 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
       return WillPopScope(onWillPop: _handleWillPop, child: child);
     }
 
+    Page appInfoPage() => MaterialPage(
+          key: _infoKey,
+          fullscreenDialog: true,
+          child: willPopScope(
+            child: AppInfoScreen(
+              onBack: _navigatorController.goHome,
+            ),
+          ),
+        );
     Page settingsPage() => MaterialPage<void>(
           key: _settingsKey,
+          fullscreenDialog: true,
           child: willPopScope(
             child: SettingsScreen(
               onBack: _navigatorController.goHome,
@@ -144,7 +156,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               child: willPopScope(
                 child: LargeHomeScreen(
                   onGoHome: _navigatorController.goHome,
-                  onInfoTap: _navigatorController.goInfo,
+                  onInfoTap: _navigatorController.goAppInfo,
                   onCreateIdeaTap: _navigatorController.goCreateIdea,
                   onCreateNoteTap: _navigatorController.goNoteScreen,
                   onProjectTap: _navigatorController.onProjectTap,
@@ -174,6 +186,8 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               createIdeaPage()
             else if (routeState.route.pathTemplate == AppRoutesName.ideaAnswer)
               ideaAnswerPage()
+            else if (routeState.route.pathTemplate == AppRoutesName.appInfo)
+              appInfoPage()
           ]
         ];
 
@@ -183,7 +197,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               key: _homeKey,
               child: willPopScope(
                 child: SmallHomeScreen(
-                  onInfoTap: _navigatorController.goInfo,
+                  onInfoTap: _navigatorController.goAppInfo,
                   onCreateIdeaTap: _navigatorController.goCreateIdea,
                   onCreateNoteTap: _navigatorController.goNoteScreen,
                   onProjectTap: _navigatorController.onProjectTap,
@@ -194,6 +208,8 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
             )
           else if (routeState.route.pathTemplate == AppRoutesName.settings)
             settingsPage()
+          else if (routeState.route.pathTemplate == AppRoutesName.appInfo)
+            appInfoPage()
           else if (routeState.route.pathTemplate == AppRoutesName.createIdea)
             createIdeaPage()
           else if (routeState.route.pathTemplate == AppRoutesName.note)

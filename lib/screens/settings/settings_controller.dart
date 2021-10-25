@@ -51,6 +51,15 @@ class SettingsController with ChangeNotifier {
   bool appInitialStateLoaded = false;
   bool appInitialStateIsLoading = false;
 
+  AppStateLoadingStatuses? _loadingStatus;
+
+  AppStateLoadingStatuses? get loadingStatus => _loadingStatus;
+
+  set loadingStatus(final AppStateLoadingStatuses? loadingStatus) {
+    _loadingStatus = loadingStatus;
+    notify();
+  }
+
   void notify() => notifyListeners();
 }
 

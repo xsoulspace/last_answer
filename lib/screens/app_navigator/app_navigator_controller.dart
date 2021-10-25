@@ -9,8 +9,8 @@ class AppNavigatorController {
   final WidgetRef ref;
 
   void goHome() => routeState.go(AppRoutesName.home);
+  void goAppInfo() => routeState.go(AppRoutesName.appInfo);
   void goSettings() => routeState.go(AppRoutesName.settings);
-  void goInfo() {}
 
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';

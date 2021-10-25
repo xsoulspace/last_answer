@@ -150,6 +150,7 @@ class AppStoreInitializer extends ConsumerWidget {
                     const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(AppColors.primary2),
                     ),
+                    const SizedBox(height: 5),
                     Text(settings.loadingStatus.toString()),
                   ],
                 ),

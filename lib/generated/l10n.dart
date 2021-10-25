@@ -70,6 +70,26 @@ class S {
     );
   }
 
+  /// `Write an answer`
+  String get writeAnAnswer {
+    return Intl.message(
+      'Write an answer',
+      name: 'writeAnAnswer',
+      desc: 'writeAnAnswer',
+      args: [],
+    );
+  }
+
+  /// `Write a note`
+  String get writeANote {
+    return Intl.message(
+      'Write a note',
+      name: 'writeANote',
+      desc: 'writeANote',
+      args: [],
+    );
+  }
+
   /// `Made with Flutter ❤ and Open Source Libraries`
   String get madeWithLoveAndFlutter {
     return Intl.message(

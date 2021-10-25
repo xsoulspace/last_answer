@@ -10,6 +10,14 @@
       "language"
     ]
   },
+  "writeAnAnswer": "Write an answer",
+  "@writeAnAnswer": {
+    "description": "writeAnAnswer"
+  },
+  "writeANote": "Write a note",
+  "@writeANote": {
+    "description": "writeANote"
+  },
   "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
   "@madeWithLoveAndFlutter": {
     "description": "madeWithLoveAndFlutter"

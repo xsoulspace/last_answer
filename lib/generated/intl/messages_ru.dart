@@ -87,6 +87,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m2,
+        "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),
+        "writeAnAnswer": MessageLookupByLibrary.simpleMessage("Запишите ответ"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")
       };
 }

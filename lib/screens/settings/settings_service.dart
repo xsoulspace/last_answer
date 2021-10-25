@@ -21,4 +21,13 @@ class SettingsService with SharedPreferencesUtil {
     // http package to persist settings over the network.
     await setString(SharedPreferencesKeys.theme, theme.index.toString());
   }
+
+  Future<Locale> locale() async {
+    final languageCode = await getString(SharedPreferencesKeys.locale);
+    return Locale.fromSubtags(languageCode: languageCode);
+  }
+
+  Future<void> updateLocale(final Locale locale) async {
+    await setString(SharedPreferencesKeys.locale, locale.languageCode);
+  }
 }

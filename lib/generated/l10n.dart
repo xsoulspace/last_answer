@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: 'Search',
+      args: [],
+    );
+  }
+
   /// `Write an answer`
   String get writeAnAnswer {
     return Intl.message(

@@ -3,6 +3,10 @@
   "@language": {
     "description": "menu title language"
   },
+  "search": "Search",
+  "@search": {
+    "description": "Search"
+  },
   "writeAnAnswer": "Write an answer",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"

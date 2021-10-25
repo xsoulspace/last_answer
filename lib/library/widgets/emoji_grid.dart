@@ -53,7 +53,7 @@ class EmojiPopup extends HookWidget {
   }
 }
 
-class EmojiGrid extends ConsumerWidget {
+class EmojiGrid extends HookConsumerWidget {
   const EmojiGrid({
     required final this.onChanged,
     required final this.onClose,
@@ -63,7 +63,19 @@ class EmojiGrid extends ConsumerWidget {
   final VoidCallback onClose;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final emojis = ref.read(emojisProvider);
+    final emojis = ref.watch(filteredEmojisProvider);
+    // ignore: close_sinks
+    final emojiKeywordStream = useStreamController<String>();
+    emojiKeywordStream.stream
+        .throttleTime(
+      const Duration(milliseconds: 700),
+      leading: true,
+      trailing: true,
+    )
+        .forEach((final keyword) async {
+      ref.read(emojiFilterProvider).state = keyword;
+    });
+
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
@@ -101,7 +113,7 @@ class EmojiGrid extends ConsumerWidget {
                     restorationId: 'emojis-grid',
                     shrinkWrap: true,
                     crossAxisCount: 6,
-                    children: emojis.values
+                    children: emojis
                         .map(
                           (final e) => TextButton(
                             key: ValueKey(e),
@@ -123,6 +135,16 @@ class EmojiGrid extends ConsumerWidget {
                         // constraints: BoxConstraints(maxHeight: 24),
                         icon: const Icon(Icons.close), iconSize: 14,
                         onPressed: onClose,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          onChanged: emojiKeywordStream.add,
+                          decoration: const InputDecoration()
+                              .applyDefaults(theme.inputDecorationTheme)
+                              .copyWith(
+                                hintText: S.current.search,
+                              ),
+                        ),
                       ),
                     ],
                   ),

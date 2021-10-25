@@ -3,6 +3,10 @@
   "@language": {
     "description": "пункт меню язык"
   },
+  "search": "Поиск",
+  "@search": {
+    "description": "Search"
+  },
   "writeAnAnswer": "Запишите ответ",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"

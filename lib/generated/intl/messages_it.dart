@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ispirazione"),
         "pleaseNotice":
             MessageLookupByLibrary.simpleMessage("Si prega di notare"),
+        "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
         "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
         "theme": MessageLookupByLibrary.simpleMessage("Tema"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Buia"),

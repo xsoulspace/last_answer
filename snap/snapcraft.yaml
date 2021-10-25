@@ -4,17 +4,17 @@ summary: Fast ideas brainstroming tool
 description: |
   !Please notice: 
 
-  New version now is available at stable channel.
-  If you need to use old version, you can switch to beta channel. 
-  It will keep old version as long, as all features from previous version will be implemented.
+  The new version now is available on the stable channel.
+  If you need to use the old version, you can switch to the beta channel. 
+  It will keep the old version as long, as all features from the previous version will be implemented.
   For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
 
   ---
 
   !Please notice:
 
-  New version has no reverse compatibility with old version, 
-  so if you decided to use old version - save all data first.
+  The new version has no reverse compatibility with the old version, 
+  so if you decided to use the old version - save all data first.
 
   ---
 

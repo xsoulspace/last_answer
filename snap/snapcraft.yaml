@@ -1,7 +1,23 @@
 name: last-answer
-version: 3.4.0+6
+version: 3.5.0+7
 summary: Fast ideas brainstroming tool
 description: |
+  !Please notice: 
+
+  New version now is available at stable channel.
+  If you need to use old version, you can switch to beta channel. 
+  It will keep old version as long, as all features from previous version will be implemented.
+  For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
+
+  ---
+
+  !Please notice:
+
+  New version has no reverse compatibility with old version, 
+  so if you decided to use old version - save all data first.
+
+  ---
+
   You have a cool idea.
   You need to write it down fast.
 
@@ -17,13 +33,6 @@ description: |
 
   Hope this app will be useful for you :)
   Thank you and have a nice day.
-
-  Please notice: 
-  The next version (^v3) is available at the edge/beta channel. 
-  BEFORE switching channels, please make sure you save all important notes because the whole app was rewritten from the ground and data loss is possible.
-
-  Also, v3 has not all old features implemented, so please be careful to migrate to it.
-  For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
 
   ---
 

@@ -24,6 +24,7 @@ class AppRoutesName {
       '$note/$storyId';
   static const unknown404 = '/404';
   static const settings = '/settings';
+  static const appInfo = '/app-info';
 
   /// In case of new routes all routes should be added to values!
   static const values = [
@@ -38,5 +39,6 @@ class AppRoutesName {
     stories,
     unknown404,
     settings,
+    appInfo,
   ];
 }

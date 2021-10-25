@@ -89,7 +89,14 @@ class _AnswerCreator extends HookWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 14),
-                    child: shareButton,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        shareButton,
+                        EmojiPopup(controller: answerController),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -16,6 +16,7 @@ part 'current_state_keys.dart';
 part 'deprecated/answer.dart';
 part 'deprecated/project.dart';
 part 'deprecated/question.dart';
+part 'emoji.dart';
 part 'hive_boxes_ids.dart';
 part 'idea_project/idea_project.dart';
 part 'idea_project/idea_project_answer.dart';

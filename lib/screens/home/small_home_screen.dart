@@ -133,7 +133,14 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
-    const _welcome = 'Good evening';
+    final _now = DateTime.now();
+    final _welcome = () {
+      if (_now.hour < 7) return 'Good night';
+      if (_now.hour < 12 && _now.hour >= 7) return 'Good morning';
+      if (_now.hour > 18) return 'Good evening';
+      return 'Good day';
+    }();
+
     final appBar = AppBar(
       title: Text(
         _welcome,

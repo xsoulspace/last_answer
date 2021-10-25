@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';

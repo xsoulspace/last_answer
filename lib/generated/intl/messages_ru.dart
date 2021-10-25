@@ -19,8 +19,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(projectTitle) =>
-      "${projectTitle} будет потерян безвозвратно";
+  static String m0(language) =>
+      "${language} будет установлен как основной язык. Приложение будет перезагружено, продолжить?";
+
+  static String m1(title) => "${title} будет потерян безвозвратно";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -36,19 +38,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
             "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми."),
         "answer": MessageLookupByLibrary.simpleMessage("Ответ"),
-        "answerWillBeLost":
-            MessageLookupByLibrary.simpleMessage("будет потерян безвозвратно"),
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
         "cancel": MessageLookupByLibrary.simpleMessage("ОТМЕНИТЬ"),
         "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
-        "darkMode": MessageLookupByLibrary.simpleMessage("Ночной режим"),
         "delete": MessageLookupByLibrary.simpleMessage("УДАЛИТЬ"),
         "idea": MessageLookupByLibrary.simpleMessage("Идея"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
-        "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
-            "будет установлен как основной язык. Приложение будет перезагружено, продолжить?"),
+        "languageWillBeChanged": m0,
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
@@ -68,9 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Что ещё?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Вдохновление"),
-        "projectWillBeLost": m0,
-        "titleWith": MessageLookupByLibrary.simpleMessage("с"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
+        "willBeLost": m1,
         "yes": MessageLookupByLibrary.simpleMessage("ДА")
       };
 }

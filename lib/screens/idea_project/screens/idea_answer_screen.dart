@@ -49,7 +49,6 @@ class IdeaAnswerScreen extends HookConsumerWidget {
     return Scaffold(
       restorationId: 'ideas/$ideaId/$answerId',
       appBar: AppBar(
-        toolbarHeight: 80,
         centerTitle: true,
         leading: BackButton(
           onPressed: () => back(idea: maybeIdea, context: context),

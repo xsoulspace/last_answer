@@ -60,23 +60,13 @@ class S {
     );
   }
 
-  /// `Dark mode`
-  String get darkMode {
+  /// `{language} will be set as a new language. The app will be reloaded, continue?`
+  String languageWillBeChanged(Object language) {
     return Intl.message(
-      'Dark mode',
-      name: 'darkMode',
-      desc: 'menu title Dark mode',
-      args: [],
-    );
-  }
-
-  /// `will be set as a new language. The app will be reloaded, continue?`
-  String get languageWillBeChanged {
-    return Intl.message(
-      'will be set as a new language. The app will be reloaded, continue?',
+      '$language will be set as a new language. The app will be reloaded, continue?',
       name: 'languageWillBeChanged',
       desc: 'languageWillBeChanged',
-      args: [],
+      args: [language],
     );
   }
 
@@ -180,6 +170,56 @@ class S {
     );
   }
 
+  /// `About`
+  String get about {
+    return Intl.message(
+      'About',
+      name: 'about',
+      desc: 'About title',
+      args: [],
+    );
+  }
+
+  /// `What for?`
+  String get aboutAbstractWhatFor {
+    return Intl.message(
+      'What for?',
+      name: 'aboutAbstractWhatFor',
+      desc: 'What For About Abstract',
+      args: [],
+    );
+  }
+
+  /// `DELETE`
+  String get delete {
+    return Intl.message(
+      'DELETE',
+      name: 'delete',
+      desc: 'delete',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get areYouSure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'areYouSure',
+      desc: 'Are you sure',
+      args: [],
+    );
+  }
+
+  /// `{title} will be lost forever`
+  String willBeLost(Object title) {
+    return Intl.message(
+      '$title will be lost forever',
+      name: 'willBeLost',
+      desc: 'removal warning',
+      args: [title],
+    );
+  }
+
   /// `Inspiration`
   String get philosophyInspirationTitle {
     return Intl.message(
@@ -256,76 +296,6 @@ class S {
       'You can use: "Six Sigma"',
       name: 'philosophyAbstractSixSigmaWhat',
       desc: 'Description of Six Sigma',
-      args: [],
-    );
-  }
-
-  /// `About`
-  String get about {
-    return Intl.message(
-      'About',
-      name: 'about',
-      desc: 'About title',
-      args: [],
-    );
-  }
-
-  /// `What for?`
-  String get aboutAbstractWhatFor {
-    return Intl.message(
-      'What for?',
-      name: 'aboutAbstractWhatFor',
-      desc: 'What For About Abstract',
-      args: [],
-    );
-  }
-
-  /// `DELETE`
-  String get delete {
-    return Intl.message(
-      'DELETE',
-      name: 'delete',
-      desc: 'delete',
-      args: [],
-    );
-  }
-
-  /// `Are you sure?`
-  String get areYouSure {
-    return Intl.message(
-      'Are you sure?',
-      name: 'areYouSure',
-      desc: 'Are you sure',
-      args: [],
-    );
-  }
-
-  /// `с`
-  String get titleWith {
-    return Intl.message(
-      'с',
-      name: 'titleWith',
-      desc: 'with',
-      args: [],
-    );
-  }
-
-  /// `{projectTitle} will be lost forever`
-  String projectWillBeLost(Object projectTitle) {
-    return Intl.message(
-      '$projectTitle will be lost forever',
-      name: 'projectWillBeLost',
-      desc: 'Project removal warning',
-      args: [projectTitle],
-    );
-  }
-
-  /// `will be lost forever`
-  String get answerWillBeLost {
-    return Intl.message(
-      'will be lost forever',
-      name: 'answerWillBeLost',
-      desc: 'Answer removal warning',
       args: [],
     );
   }

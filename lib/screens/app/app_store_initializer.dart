@@ -1,15 +1,5 @@
 part of app_provider;
 
-enum AppStateLoadingStatuses {
-  settings,
-  emoji,
-  ideas,
-  questionsForAnswers,
-  answersForIdeas,
-  notes,
-  migratingOldData,
-}
-
 Future<Box<T>> openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
@@ -32,9 +22,6 @@ class AppStoreInitializer extends ConsumerWidget {
     if (settings.appInitialStateLoaded & !settings.appInitialStateIsLoading) {
       return child;
     }
-    final brightness =
-        MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
-            .platformBrightness;
     return FutureBuilder<bool>(
       future: () async {
         if (settings.appInitialStateLoaded) {
@@ -65,13 +52,16 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await openAnyway<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        if (questions.isEmpty) {
-          await questions.putAll(
-            Map.fromEntries(
-              _initialQuestions.map((final e) => MapEntry(e.id, e)),
-            ),
-          );
-        }
+        // TODO(arenukvern): remove when all devices will be updated
+        /// to new version ^3.6
+
+        // if (questions.isEmpty) {
+        await questions.putAll(
+          Map.fromEntries(
+            _initialQuestions.map((final e) => MapEntry(e.id, e)),
+          ),
+        );
+        // }
         settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(
@@ -121,6 +111,7 @@ class AppStoreInitializer extends ConsumerWidget {
             await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
             await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
           }
+          // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
           await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
@@ -149,7 +140,11 @@ class AppStoreInitializer extends ConsumerWidget {
                       valueColor: AlwaysStoppedAnimation(AppColors.primary2),
                     ),
                     const SizedBox(height: 5),
-                    Text('Loading: ${settings.loadingStatus} ✨'),
+                    Text(
+                      appLoadingStatusesTitles[settings.loadingStatus]
+                              ?.getByLanguage(intl.Intl.systemLocale) ??
+                          '',
+                    ),
                   ],
                 ),
               ),

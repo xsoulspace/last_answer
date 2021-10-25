@@ -1,9 +1,12 @@
+library settings;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/screens/app/app.dart';
+import 'package:intl/intl.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/utils/utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'settings_controller.dart';
 part 'settings_screen.dart';

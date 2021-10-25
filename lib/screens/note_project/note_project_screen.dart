@@ -68,7 +68,7 @@ class NoteProjectScreen extends HookConsumerWidget {
                     children: [
                       Expanded(
                         child: ProjectTextField(
-                          hintText: 'Write a note',
+                          hintText: S.current.writeANote,
                           fillColor: Colors.transparent,
                           filled: false,
                           endlessLines: true,

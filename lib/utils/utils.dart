@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
+part 'abstract_util.dart';
 part 'close_keyboard.dart';
 part 'color_extension.dart';
 part 'emoji_util.dart';

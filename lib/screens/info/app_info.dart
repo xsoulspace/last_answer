@@ -21,7 +21,7 @@ class AppInfoScreen extends StatelessWidget {
           onPressed: onBack,
         ),
         centerTitle: true,
-        title: const Text('App info'),
+        title: Text(S.current.appInfo),
       ),
       body: Align(
         alignment: Alignment.topCenter,
@@ -33,8 +33,8 @@ class AppInfoScreen extends StatelessWidget {
             future: PackageInfo.fromPlatform(),
             builder: (final context, final snapshot) {
               final info = snapshot.data;
-              final version = 'App version: ${info?.version}, '
-                  'build: ${info?.buildNumber}';
+              final version = S.current
+                  .appVersion(info?.version ?? '', info?.buildNumber ?? '');
               return ListView(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(18),
@@ -42,15 +42,11 @@ class AppInfoScreen extends StatelessWidget {
                   ...[
                     SelectableText(S.current.aboutAbstractWhatForDescription),
                     const SizedBox(height: 15),
-                    const SelectableText(
-                      'Please notice',
+                    SelectableText(
+                      S.current.pleaseNotice,
                       textAlign: TextAlign.center,
                     ),
-                    const SelectableText(
-                      'This version may not have all features of '
-                      'previous version, such as languages and help and etc, '
-                      'but they will return in the next updates - stay tuned:)',
-                    ),
+                    SelectableText(S.current.versionLimitations),
                     const SizedBox(height: 15),
                     SelectableText(
                       S.current.aboutAbstractIdeasImprovementsBugs,
@@ -64,17 +60,12 @@ class AppInfoScreen extends StatelessWidget {
                               await url_launcher.launch(discordLink);
                             }
                           },
-                          child: const Text('Join Discord'),
+                          child: Text(S.current.joinDiscord),
                         ),
-                        const SelectableText(
-                          'or send a message to idea@xsoulspace.dev',
-                        ),
+                        SelectableText(S.current.feedbackTextWithEmail),
                       ],
                     ),
-                    const SelectableText(
-                      'Thank you for using this app and which you a nice day, '
-                      'full of ideas and inspiration!:)',
-                    ),
+                    SelectableText(S.current.niceDayWish),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
@@ -83,9 +74,7 @@ class AppInfoScreen extends StatelessWidget {
                           useRootNavigator: true,
                         );
                       },
-                      child: const Text(
-                        'Made with Flutter ❤ and Open Source Libraries',
-                      ),
+                      child: Text(S.current.madeWithLoveAndFlutter),
                     ),
                     SelectableText(
                       version,

@@ -10,6 +10,42 @@
       "language"
     ]
   },
+  "madeWithLoveAndFlutter": "Сделано с Flutter ❤ и Open Source Libraries",
+  "@madeWithLoveAndFlutter": {
+    "description": "madeWithLoveAndFlutter"
+  },
+  "feedbackTextWithEmail": "или отправьте сообщение на idea@xsoulspace.dev",
+  "@feedbackTextWithEmail": {
+    "description": "feedbackTextWithEmail"
+  },
+  "niceDayWish": "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!",
+  "@niceDayWish": {
+    "description": "niceDayWish"
+  },
+  "versionLimitations": "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)",
+  "@versionLimitations": {
+    "description": "version limitiations"
+  },
+  "joinDiscord": "Присоединяйтесь к Discord",
+  "@joinDiscord": {
+    "description": "joinDiscord button"
+  },
+  "pleaseNotice": "Обратите внимание",
+  "@pleaseNotice": {
+    "description": "Please notice title"
+  },
+  "appInfo": "Last Answer",
+  "@appInfo": {
+    "description": "app info title"
+  },
+  "appVersion": "Версия: {version}, билд: {buildNumber}",
+  "@appVersion": {
+    "description": "app version",
+    "args": [
+      "version",
+      "buildNumber"
+    ]
+  },
   "theme": "Тема",
   "@theme": {
     "description": "app theme"
@@ -148,9 +184,5 @@
   "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
   "@aboutAbstractIdeasImprovementsBugs": {
     "description": "Ideas Improvements Bugs"
-  },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Отправляйте ваше мнение на idea@xsoulspace.dev или напишите отзыв. Спасибо что используете приложение и хорошего дня, полного идей и впечатлений!",
-  "@aboutAbstractIdeasImprovementsBugsDescription": {
-    "description": "Ideas Improvements Bugs description"
   }
 }

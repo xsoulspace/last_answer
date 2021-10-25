@@ -70,6 +70,86 @@ class S {
     );
   }
 
+  /// `Made with Flutter ❤ and Open Source Libraries`
+  String get madeWithLoveAndFlutter {
+    return Intl.message(
+      'Made with Flutter ❤ and Open Source Libraries',
+      name: 'madeWithLoveAndFlutter',
+      desc: 'madeWithLoveAndFlutter',
+      args: [],
+    );
+  }
+
+  /// `or send a message to idea@xsoulspace.dev`
+  String get feedbackTextWithEmail {
+    return Intl.message(
+      'or send a message to idea@xsoulspace.dev',
+      name: 'feedbackTextWithEmail',
+      desc: 'feedbackTextWithEmail',
+      args: [],
+    );
+  }
+
+  /// `Thank you for using this app and have a nice day, full of ideas and inspiration!:)`
+  String get niceDayWish {
+    return Intl.message(
+      'Thank you for using this app and have a nice day, full of ideas and inspiration!:)',
+      name: 'niceDayWish',
+      desc: 'niceDayWish',
+      args: [],
+    );
+  }
+
+  /// `This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)`
+  String get versionLimitations {
+    return Intl.message(
+      'This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)',
+      name: 'versionLimitations',
+      desc: 'version limitiations',
+      args: [],
+    );
+  }
+
+  /// `Join Discord`
+  String get joinDiscord {
+    return Intl.message(
+      'Join Discord',
+      name: 'joinDiscord',
+      desc: 'joinDiscord button',
+      args: [],
+    );
+  }
+
+  /// `Please notice`
+  String get pleaseNotice {
+    return Intl.message(
+      'Please notice',
+      name: 'pleaseNotice',
+      desc: 'Please notice title',
+      args: [],
+    );
+  }
+
+  /// `Last Answer`
+  String get appInfo {
+    return Intl.message(
+      'Last Answer',
+      name: 'appInfo',
+      desc: 'app info title',
+      args: [],
+    );
+  }
+
+  /// `App version: {version}, build: {buildNumber}`
+  String appVersion(Object version, Object buildNumber) {
+    return Intl.message(
+      'App version: $version, build: $buildNumber',
+      name: 'appVersion',
+      desc: 'app version',
+      args: [version, buildNumber],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message(
@@ -376,16 +456,6 @@ class S {
       'Ideas Improvements Bugs?',
       name: 'aboutAbstractIdeasImprovementsBugs',
       desc: 'Ideas Improvements Bugs',
-      args: [],
-    );
-  }
-
-  /// `Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)`
-  String get aboutAbstractIdeasImprovementsBugsDescription {
-    return Intl.message(
-      'Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)',
-      name: 'aboutAbstractIdeasImprovementsBugsDescription',
-      desc: 'Ideas Improvements Bugs description',
       args: [],
     );
   }

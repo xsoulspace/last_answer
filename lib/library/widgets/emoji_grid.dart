@@ -64,6 +64,7 @@ class EmojiGrid extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final emojis = ref.watch(filteredEmojisProvider);
+    final lastEmojisState = ref.watch(lastUsedEmojisProvider);
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>();
     emojiKeywordStream.stream
@@ -75,11 +76,33 @@ class EmojiGrid extends HookConsumerWidget {
         .forEach((final keyword) async {
       ref.read(emojiFilterProvider).state = keyword;
     });
-
+    final lastEmojis = useState(lastEmojisState.values.toSet());
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
         : AppColors.grey4;
+    Widget emojiButton(final Emoji emoji) => TextButton(
+          key: ValueKey(emoji),
+          onPressed: () {
+            onChanged(emoji);
+            List<Emoji> newLastEmojis = [...lastEmojis.value];
+            final emojiExists = newLastEmojis.contains(emoji);
+            if (!emojiExists) {
+              newLastEmojis.insert(0, emoji);
+            }
+            if (newLastEmojis.length > 6 && !emojiExists) {
+              newLastEmojis = newLastEmojis.sublist(0, 6);
+            }
+            lastEmojis.value = newLastEmojis.toSet();
+
+            ref.read(lastUsedEmojisProvider.notifier).assignEntries(
+                  newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+                );
+          },
+          child: Center(
+            child: Text(emoji.emoji),
+          ),
+        );
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,
@@ -113,18 +136,18 @@ class EmojiGrid extends HookConsumerWidget {
                     restorationId: 'emojis-grid',
                     shrinkWrap: true,
                     crossAxisCount: 6,
-                    children: emojis
-                        .map(
-                          (final e) => TextButton(
-                            key: ValueKey(e),
-                            onPressed: () => onChanged(e),
-                            child: Center(
-                              child: Text(e.emoji),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                    semanticChildCount: emojis.length,
+                    children: emojis.map(emojiButton).toList(),
                   ),
+                ),
+                Divider(color: borderColor, height: 1),
+                GridView.count(
+                  restorationId: 'last-emojis-grid',
+                  shrinkWrap: true,
+                  crossAxisCount: 6,
+                  semanticChildCount: lastEmojis.value.length,
+                  reverse: true,
+                  children: lastEmojis.value.map(emojiButton).toList(),
                 ),
                 Divider(color: borderColor, height: 1),
                 Material(

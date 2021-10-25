@@ -8,7 +8,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final headline2 = GoogleFonts.ibmPlexSans(
     fontSize: 22,
@@ -16,7 +16,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final headline3 = GoogleFonts.ibmPlexSans(
     fontSize: 20,
@@ -24,7 +24,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final headline4 = GoogleFonts.ibmPlexSans(
     fontSize: 19,
@@ -32,7 +32,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final headline5 = GoogleFonts.ibmPlexSans(
     fontSize: 18,
@@ -40,7 +40,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w700,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final headline6 = GoogleFonts.ibmPlexSans(
     fontSize: 17,
@@ -48,7 +48,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final subtitle1 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
@@ -56,7 +56,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
 
   static final subtitle2 = GoogleFonts.ibmPlexSans(
@@ -65,14 +65,14 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w500,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final bodyText1 = bodyText2
       .copyWith(
     fontWeight: FontWeight.bold,
   )
       .copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final bodyText2 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
@@ -80,7 +80,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final overline = GoogleFonts.ibmPlexSans(
     fontSize: 12,
@@ -88,14 +88,14 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w400,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final caption1 = caption2
       .copyWith(
     fontWeight: FontWeight.bold,
   )
       .copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
   static final caption2 = GoogleFonts.ibmPlexSans(
     fontSize: 10,
@@ -103,7 +103,7 @@ class AppTextStylesLight {
     color: AppColors.black,
     fontWeight: FontWeight.w500,
   ).copyWith(
-    fontFamilyFallback: ['NotoColorEmoji'],
+    fontFamilyFallback: ['NotoSans'],
   );
 }
 

@@ -10,6 +10,42 @@
       "language"
     ]
   },
+  "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
+  "@madeWithLoveAndFlutter": {
+    "description": "madeWithLoveAndFlutter"
+  },
+  "feedbackTextWithEmail": "o inviare un messaggio a idea@xsoulspace.dev",
+  "@feedbackTextWithEmail": {
+    "description": "feedbackTextWithEmail"
+  },
+  "niceDayWish": "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
+  "@niceDayWish": {
+    "description": "niceDayWish"
+  },
+  "versionLimitations": "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)",
+  "@versionLimitations": {
+    "description": "version limitiations"
+  },
+  "joinDiscord": "Join Discord",
+  "@joinDiscord": {
+    "description": "joinDiscord button"
+  },
+  "pleaseNotice": "Please notice",
+  "@pleaseNotice": {
+    "description": "Please notice title"
+  },
+  "appInfo": "Last Answer",
+  "@appInfo": {
+    "description": "app info title"
+  },
+  "appVersion": "App version: {version}, build: {buildNumber}",
+  "@appVersion": {
+    "description": "app version",
+    "args": [
+      "version",
+      "buildNumber"
+    ]
+  },
   "theme": "Theme",
   "@theme": {
     "description": "app theme"
@@ -136,9 +172,5 @@
   "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?",
   "@aboutAbstractIdeasImprovementsBugs": {
     "description": "Ideas Improvements Bugs"
-  },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Si prega di lasciare una recensione ovunque si desideri o inviare un messaggio a idea@xsoulspace.dev. Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
-  "@aboutAbstractIdeasImprovementsBugsDescription": {
-    "description": "Ideas Improvements Bugs description"
   }
 }

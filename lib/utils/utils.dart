@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/gen/assets.gen.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
 import 'package:quiver/core.dart';
@@ -18,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 part 'close_keyboard.dart';
 part 'color_extension.dart';
+part 'emoji_util.dart';
 part 'enum.dart';
 part 'is_desktop.dart';
 part 'iterable.dart';

@@ -1,7 +1,9 @@
 part of utils;
 
-class EmojiUtil {
-  EmojiUtil._();
+class EmojiUtil
+    with SharedPreferencesUtil
+    implements AbstractUtil<Map<String, Emoji>> {
+  EmojiUtil();
   static Future<Iterable<Emoji>> getList(final BuildContext context) async {
     final emojisStr =
         await DefaultAssetBundle.of(context).loadString(Assets.emojis);
@@ -9,5 +11,28 @@ class EmojiUtil {
       jsonDecode(emojisStr),
     );
     return emojiList.map(Emoji.fromJson);
+  }
+
+  @override
+  Future<Map<String, Emoji>> load() async {
+    final map = await getMap(SharedPreferencesKeys.lastUsedEmojis);
+    if (map.isEmpty) return {};
+    try {
+      return Map.fromEntries(
+        map.entries.map(
+          (final e) => MapEntry(e.key, Emoji.fromJson(e.value)),
+        ),
+      );
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      return {};
+    }
+  }
+
+  @override
+  Future<void> save(final Map<String, Emoji> map) async {
+    final _map =
+        map.map((final key, final value) => MapEntry(key, value.toJson()));
+    await setMap(SharedPreferencesKeys.lastUsedEmojis, _map);
   }
 }

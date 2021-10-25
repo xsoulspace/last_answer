@@ -39,7 +39,10 @@ class AppStoreInitializer extends ConsumerWidget {
 
         ref
             .read(emojisProvider.notifier)
-            .putEntries(emojis.map((final e) => MapEntry(e.keywords, e)));
+            .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+
+        final lastUsedEmojis = await EmojiUtil().load();
+        ref.read(lastUsedEmojisProvider.notifier).putAll(lastUsedEmojis);
 
         settings.loadingStatus = AppStateLoadingStatuses.ideas;
 

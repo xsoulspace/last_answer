@@ -15,3 +15,8 @@ final filteredEmojisProvider = Provider((final ref) {
       .where((final emoji) => emoji.keywords.contains(keyword))
       .toList();
 });
+
+final lastUsedEmojisProvider =
+    StateNotifierProvider<MapState<Emoji>, Map<String, Emoji>>(
+  (final ref) => MapState<Emoji>(saveUtil: EmojiUtil()),
+);

@@ -10,6 +10,14 @@
       "language"
     ]
   },
+  "writeAnAnswer": "Запишите ответ",
+  "@writeAnAnswer": {
+    "description": "writeAnAnswer"
+  },
+  "writeANote": "Запишите заметку",
+  "@writeANote": {
+    "description": "writeANote"
+  },
   "madeWithLoveAndFlutter": "Сделано с Flutter ❤ и Open Source Libraries",
   "@madeWithLoveAndFlutter": {
     "description": "madeWithLoveAndFlutter"

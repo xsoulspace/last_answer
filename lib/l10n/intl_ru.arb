@@ -10,9 +10,29 @@
       "language"
     ]
   },
+  "theme": "Тема",
+  "@theme": {
+    "description": "app theme"
+  },
+  "themeSystem": "Как в системе",
+  "@themeSystem": {
+    "description": "app theme - system"
+  },
+  "themeDark": "Темная",
+  "@themeDark": {
+    "description": "app theme - dark"
+  },
+  "themeLight": "Светлая",
+  "@themeLight": {
+    "description": "app theme - light"
+  },
   "yes": "ДА",
   "@yes": {
     "description": "yes"
+  },
+  "settings": "Настройки",
+  "@settings": {
+    "description": "Settings"
   },
   "createIdeaHelperText": "Создать туториал",
   "@createIdeaHelperText": {

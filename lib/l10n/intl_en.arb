@@ -10,6 +10,26 @@
       "language"
     ]
   },
+  "theme": "Theme",
+  "@theme": {
+    "description": "app theme"
+  },
+  "themeSystem": "System",
+  "@themeSystem": {
+    "description": "app theme - system"
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "app theme - dark"
+  },
+  "themeLight": "Theme",
+  "@themeLight": {
+    "description": "app theme - light"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings"
+  },
   "yes": "YES",
   "@yes": {
     "description": "yes"

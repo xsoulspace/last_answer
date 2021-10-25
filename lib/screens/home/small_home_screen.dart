@@ -136,7 +136,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
-    final greeting = Greeting(language: Intl.getCurrentLocale());
+    final greeting = Greeting();
     final appBar = AppBar(
       // TODO(arenukvern): make popup with translation for native language
       title: SelectableText(

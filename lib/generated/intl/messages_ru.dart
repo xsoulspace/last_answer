@@ -66,6 +66,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Что ещё?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Вдохновление"),
+        "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "theme": MessageLookupByLibrary.simpleMessage("Тема"),
+        "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
+        "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),
+        "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
         "yes": MessageLookupByLibrary.simpleMessage("ДА")

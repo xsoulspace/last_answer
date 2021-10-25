@@ -70,6 +70,56 @@ class S {
     );
   }
 
+  /// `Theme`
+  String get theme {
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: 'app theme',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get themeSystem {
+    return Intl.message(
+      'System',
+      name: 'themeSystem',
+      desc: 'app theme - system',
+      args: [],
+    );
+  }
+
+  /// `Dark`
+  String get themeDark {
+    return Intl.message(
+      'Dark',
+      name: 'themeDark',
+      desc: 'app theme - dark',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get themeLight {
+    return Intl.message(
+      'Theme',
+      name: 'themeLight',
+      desc: 'app theme - light',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: 'Settings',
+      args: [],
+    );
+  }
+
   /// `YES`
   String get yes {
     return Intl.message(

@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
         leading: BackButton(
           onPressed: onBack,
         ),
-        title: const Text('Settings'),
+        title: Text(S.current.settings),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -30,26 +30,34 @@ class SettingsScreen extends StatelessWidget {
             //
             // When a user selects a theme from the dropdown list, the
             // SettingsController is updated, which rebuilds the MaterialApp.
-            DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
-              value: settings.themeMode,
-              // Call the updateThemeMode method any time the user selects
-              // theme.
-              onChanged: settings.updateThemeMode,
-              isExpanded: true,
-              items: [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: getItemText('System Theme'),
+            Row(
+              children: [
+                Text('${S.current.theme}:'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<ThemeMode>(
+                    // Read the selected themeMode from the controller
+                    value: settings.themeMode,
+                    // Call the updateThemeMode method any time the user selects
+                    // theme.
+                    onChanged: settings.updateThemeMode,
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(
+                        value: ThemeMode.system,
+                        child: getItemText('System'),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.light,
+                        child: getItemText('Light'),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.dark,
+                        child: getItemText('Dark'),
+                      )
+                    ],
+                  ),
                 ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: getItemText('Light Theme'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: getItemText('Dark Theme'),
-                )
               ],
             ),
 

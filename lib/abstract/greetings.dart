@@ -1,10 +1,9 @@
 part of abstract;
 
 class Greeting {
-  Greeting({required final this.language}) : _random = Random();
-  final String language;
+  Greeting() : _random = Random();
   final Random _random;
-  int get _randomMax => 2;
+  int get _randomMax => morning.values.length - 1;
   int get _randomMin => 0;
   int _nextRandom() => _randomMin + _random.nextInt(_randomMax - _randomMin);
 
@@ -40,7 +39,7 @@ class Greeting {
     ga: 'Maidin mhaith',
   );
   static const day = LocalizedText(
-    en: 'Good day',
+    en: 'Good afternoon',
     ru: 'Добрый день',
     it: 'Buona giornata',
     ga: 'Lá maith',

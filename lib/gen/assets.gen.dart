@@ -42,6 +42,7 @@ class $AssetsIconsGen {
 class Assets {
   Assets._();
 
+  static const String emojis = 'assets/emojis.json';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }

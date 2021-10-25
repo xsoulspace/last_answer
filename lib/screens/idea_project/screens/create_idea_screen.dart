@@ -36,7 +36,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
+        leading: CloseButton(
           onPressed: widget.onBack,
         ),
       ),

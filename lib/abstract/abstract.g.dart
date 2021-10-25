@@ -375,6 +375,18 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'id': instance.id,
     };
 
+Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
+      category: json['category'] as String,
+      emoji: json['emoji'] as String,
+      keywords: json['keywords'] as String,
+    );
+
+Map<String, dynamic> _$EmojiToJson(Emoji instance) => <String, dynamic>{
+      'category': instance.category,
+      'emoji': instance.emoji,
+      'keywords': instance.keywords,
+    };
+
 IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,

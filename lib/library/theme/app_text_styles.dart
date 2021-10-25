@@ -7,74 +7,78 @@ class AppTextStylesLight {
     height: 32 / 26,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final headline2 = GoogleFonts.ibmPlexSans(
     fontSize: 22,
     height: 28 / 22,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final headline3 = GoogleFonts.ibmPlexSans(
     fontSize: 20,
     height: 26 / 20,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final headline4 = GoogleFonts.ibmPlexSans(
     fontSize: 19,
     height: 25 / 19,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final headline5 = GoogleFonts.ibmPlexSans(
     fontSize: 18,
     height: 24 / 18,
     color: AppColors.black,
     fontWeight: FontWeight.w700,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final headline6 = GoogleFonts.ibmPlexSans(
     fontSize: 17,
     height: 23 / 17,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final subtitle1 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
     height: 18 / 16,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
 
   static final subtitle2 = GoogleFonts.ibmPlexSans(
     fontSize: 12,
     height: 14 / 12,
     color: AppColors.black,
     fontWeight: FontWeight.w500,
-  );
-  static final bodyText1 = bodyText2.copyWith(
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
+  static final bodyText1 = bodyText2
+      .copyWith(
     fontWeight: FontWeight.bold,
-  );
+  )
+      .copyWith(fontFamilyFallback: ['NotoSans']);
   static final bodyText2 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
     height: 24 / 16,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
   static final overline = GoogleFonts.ibmPlexSans(
     fontSize: 12,
     height: 15 / 12,
     color: AppColors.black,
     fontWeight: FontWeight.w400,
-  );
-  static final caption1 = caption2.copyWith(
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
+  static final caption1 = caption2
+      .copyWith(
     fontWeight: FontWeight.bold,
-  );
+  )
+      .copyWith(fontFamilyFallback: ['NotoSans']);
   static final caption2 = GoogleFonts.ibmPlexSans(
     fontSize: 10,
     height: 13 / 10,
     color: AppColors.black,
     fontWeight: FontWeight.w500,
-  );
+  ).copyWith(fontFamilyFallback: ['NotoSans']);
 }
 
 class AppTextStylesDark {

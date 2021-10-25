@@ -30,6 +30,11 @@ class $GoogleFontsGen {
       'google_fonts/IBMPlexSans-SemiBoldItalic.ttf';
   String get iBMPlexSansThin => 'google_fonts/IBMPlexSans-Thin.ttf';
   String get iBMPlexSansThinItalic => 'google_fonts/IBMPlexSans-ThinItalic.ttf';
+  String get notoColorEmoji => 'google_fonts/NotoColorEmoji.ttf';
+  String get notoSansBold => 'google_fonts/NotoSans-Bold.ttf';
+  String get notoSansBoldItalic => 'google_fonts/NotoSans-BoldItalic.ttf';
+  String get notoSansItalic => 'google_fonts/NotoSans-Italic.ttf';
+  String get notoSansRegular => 'google_fonts/NotoSans-Regular.ttf';
   String get ofl => 'google_fonts/OFL.txt';
 }
 

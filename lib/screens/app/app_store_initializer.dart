@@ -1,15 +1,5 @@
 part of app_provider;
 
-enum AppStateLoadingStatuses {
-  settings,
-  emoji,
-  ideas,
-  questionsForAnswers,
-  answersForIdeas,
-  notes,
-  migratingOldData,
-}
-
 Future<Box<T>> openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
@@ -32,9 +22,6 @@ class AppStoreInitializer extends ConsumerWidget {
     if (settings.appInitialStateLoaded & !settings.appInitialStateIsLoading) {
       return child;
     }
-    final brightness =
-        MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
-            .platformBrightness;
     return FutureBuilder<bool>(
       future: () async {
         if (settings.appInitialStateLoaded) {
@@ -52,26 +39,34 @@ class AppStoreInitializer extends ConsumerWidget {
 
         ref
             .read(emojisProvider.notifier)
-            .putEntries(emojis.map((final e) => MapEntry(e.keywords, e)));
+            .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+
+        final lastUsedEmojis = await EmojiUtil().load();
+        ref.read(lastUsedEmojisProvider.notifier).putAll(lastUsedEmojis);
 
         settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
-        await openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
+        await Hive.openBox<IdeaProjectAnswer>(
+          HiveBoxesIds.ideaProjectAnswerKey,
+        );
 
         final ideas =
-            await openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+            await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
         settings.loadingStatus = AppStateLoadingStatuses.questionsForAnswers;
 
-        final questions = await openAnyway<IdeaProjectQuestion>(
+        final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        if (questions.isEmpty) {
-          await questions.putAll(
-            Map.fromEntries(
-              _initialQuestions.map((final e) => MapEntry(e.id, e)),
-            ),
-          );
-        }
+        // TODO(arenukvern): uncomment when all devices will be updated
+        /// to new version ^3.6
+
+        // if (questions.isEmpty) {
+        await questions.putAll(
+          Map.fromEntries(
+            _initialQuestions.map((final e) => MapEntry(e.id, e)),
+          ),
+        );
+        // }
         settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(
@@ -88,7 +83,7 @@ class AppStoreInitializer extends ConsumerWidget {
             );
         settings.loadingStatus = AppStateLoadingStatuses.notes;
 
-        final notes = await openAnyway<NoteProject>(
+        final notes = await Hive.openBox<NoteProject>(
           HiveBoxesIds.noteProjectKey,
         );
 
@@ -97,7 +92,7 @@ class AppStoreInitializer extends ConsumerWidget {
                 notes.values.map((final e) => MapEntry(e.id, e)),
               ),
             );
-        await openAnyway<StoryProject>(
+        await Hive.openBox<StoryProject>(
           HiveBoxesIds.storyProjectKey,
         );
 
@@ -121,6 +116,7 @@ class AppStoreInitializer extends ConsumerWidget {
             await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
             await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
           }
+          // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
           await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
@@ -149,7 +145,11 @@ class AppStoreInitializer extends ConsumerWidget {
                       valueColor: AlwaysStoppedAnimation(AppColors.primary2),
                     ),
                     const SizedBox(height: 5),
-                    Text('Loading: ${settings.loadingStatus} ✨'),
+                    Text(
+                      appLoadingStatusesTitles[settings.loadingStatus]
+                              ?.getByLanguage(intl.Intl.systemLocale) ??
+                          '',
+                    ),
                   ],
                 ),
               ),

@@ -60,22 +60,162 @@ class S {
     );
   }
 
-  /// `Dark mode`
-  String get darkMode {
+  /// `Search`
+  String get search {
     return Intl.message(
-      'Dark mode',
-      name: 'darkMode',
-      desc: 'menu title Dark mode',
+      'Search',
+      name: 'search',
+      desc: 'Search',
       args: [],
     );
   }
 
-  /// `will be set as a new language. The app will be reloaded, continue?`
-  String get languageWillBeChanged {
+  /// `Write an answer`
+  String get writeAnAnswer {
     return Intl.message(
-      'will be set as a new language. The app will be reloaded, continue?',
-      name: 'languageWillBeChanged',
-      desc: 'languageWillBeChanged',
+      'Write an answer',
+      name: 'writeAnAnswer',
+      desc: 'writeAnAnswer',
+      args: [],
+    );
+  }
+
+  /// `Write a note`
+  String get writeANote {
+    return Intl.message(
+      'Write a note',
+      name: 'writeANote',
+      desc: 'writeANote',
+      args: [],
+    );
+  }
+
+  /// `Made with Flutter ❤ and Open Source Libraries`
+  String get madeWithLoveAndFlutter {
+    return Intl.message(
+      'Made with Flutter ❤ and Open Source Libraries',
+      name: 'madeWithLoveAndFlutter',
+      desc: 'madeWithLoveAndFlutter',
+      args: [],
+    );
+  }
+
+  /// `or send a message to idea@xsoulspace.dev`
+  String get feedbackTextWithEmail {
+    return Intl.message(
+      'or send a message to idea@xsoulspace.dev',
+      name: 'feedbackTextWithEmail',
+      desc: 'feedbackTextWithEmail',
+      args: [],
+    );
+  }
+
+  /// `Thank you for using this app and have a nice day, full of ideas and inspiration!:)`
+  String get niceDayWish {
+    return Intl.message(
+      'Thank you for using this app and have a nice day, full of ideas and inspiration!:)',
+      name: 'niceDayWish',
+      desc: 'niceDayWish',
+      args: [],
+    );
+  }
+
+  /// `This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)`
+  String get versionLimitations {
+    return Intl.message(
+      'This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)',
+      name: 'versionLimitations',
+      desc: 'version limitiations',
+      args: [],
+    );
+  }
+
+  /// `Join Discord`
+  String get joinDiscord {
+    return Intl.message(
+      'Join Discord',
+      name: 'joinDiscord',
+      desc: 'joinDiscord button',
+      args: [],
+    );
+  }
+
+  /// `Please notice`
+  String get pleaseNotice {
+    return Intl.message(
+      'Please notice',
+      name: 'pleaseNotice',
+      desc: 'Please notice title',
+      args: [],
+    );
+  }
+
+  /// `Last Answer`
+  String get appInfo {
+    return Intl.message(
+      'Last Answer',
+      name: 'appInfo',
+      desc: 'app info title',
+      args: [],
+    );
+  }
+
+  /// `App version: {version}, build: {buildNumber}`
+  String appVersion(Object version, Object buildNumber) {
+    return Intl.message(
+      'App version: $version, build: $buildNumber',
+      name: 'appVersion',
+      desc: 'app version',
+      args: [version, buildNumber],
+    );
+  }
+
+  /// `Theme`
+  String get theme {
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: 'app theme',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get themeSystem {
+    return Intl.message(
+      'System',
+      name: 'themeSystem',
+      desc: 'app theme - system',
+      args: [],
+    );
+  }
+
+  /// `Dark`
+  String get themeDark {
+    return Intl.message(
+      'Dark',
+      name: 'themeDark',
+      desc: 'app theme - dark',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get themeLight {
+    return Intl.message(
+      'Theme',
+      name: 'themeLight',
+      desc: 'app theme - light',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: 'Settings',
       args: [],
     );
   }
@@ -180,6 +320,56 @@ class S {
     );
   }
 
+  /// `About`
+  String get about {
+    return Intl.message(
+      'About',
+      name: 'about',
+      desc: 'About title',
+      args: [],
+    );
+  }
+
+  /// `What for?`
+  String get aboutAbstractWhatFor {
+    return Intl.message(
+      'What for?',
+      name: 'aboutAbstractWhatFor',
+      desc: 'What For About Abstract',
+      args: [],
+    );
+  }
+
+  /// `DELETE`
+  String get delete {
+    return Intl.message(
+      'DELETE',
+      name: 'delete',
+      desc: 'delete',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get areYouSure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'areYouSure',
+      desc: 'Are you sure',
+      args: [],
+    );
+  }
+
+  /// `{title} will be lost forever`
+  String willBeLost(Object title) {
+    return Intl.message(
+      '$title will be lost forever',
+      name: 'willBeLost',
+      desc: 'removal warning',
+      args: [title],
+    );
+  }
+
   /// `Inspiration`
   String get philosophyInspirationTitle {
     return Intl.message(
@@ -260,76 +450,6 @@ class S {
     );
   }
 
-  /// `About`
-  String get about {
-    return Intl.message(
-      'About',
-      name: 'about',
-      desc: 'About title',
-      args: [],
-    );
-  }
-
-  /// `What for?`
-  String get aboutAbstractWhatFor {
-    return Intl.message(
-      'What for?',
-      name: 'aboutAbstractWhatFor',
-      desc: 'What For About Abstract',
-      args: [],
-    );
-  }
-
-  /// `DELETE`
-  String get delete {
-    return Intl.message(
-      'DELETE',
-      name: 'delete',
-      desc: 'delete',
-      args: [],
-    );
-  }
-
-  /// `Are you sure?`
-  String get areYouSure {
-    return Intl.message(
-      'Are you sure?',
-      name: 'areYouSure',
-      desc: 'Are you sure',
-      args: [],
-    );
-  }
-
-  /// `с`
-  String get titleWith {
-    return Intl.message(
-      'с',
-      name: 'titleWith',
-      desc: 'with',
-      args: [],
-    );
-  }
-
-  /// `{projectTitle} will be lost forever`
-  String projectWillBeLost(Object projectTitle) {
-    return Intl.message(
-      '$projectTitle will be lost forever',
-      name: 'projectWillBeLost',
-      desc: 'Project removal warning',
-      args: [projectTitle],
-    );
-  }
-
-  /// `will be lost forever`
-  String get answerWillBeLost {
-    return Intl.message(
-      'will be lost forever',
-      name: 'answerWillBeLost',
-      desc: 'Answer removal warning',
-      args: [],
-    );
-  }
-
   /// `This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.`
   String get aboutAbstractWhatForDescription {
     return Intl.message(
@@ -356,16 +476,6 @@ class S {
       'Ideas Improvements Bugs?',
       name: 'aboutAbstractIdeasImprovementsBugs',
       desc: 'Ideas Improvements Bugs',
-      args: [],
-    );
-  }
-
-  /// `Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)`
-  String get aboutAbstractIdeasImprovementsBugsDescription {
-    return Intl.message(
-      'Please leave a review in anywhere you like or send a message to idea@xsoulspace.dev . Thank you for using this app and have a nice day, full of ideas and inspiration!:)',
-      name: 'aboutAbstractIdeasImprovementsBugsDescription',
-      desc: 'Ideas Improvements Bugs description',
       args: [],
     );
   }

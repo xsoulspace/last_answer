@@ -81,49 +81,52 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                     ),
                   );
                 }
-                return ListView.separated(
-                  padding: const EdgeInsets.all(5),
-                  reverse: true,
-                  shrinkWrap: true,
-                  restorationId: 'projects',
-                  itemBuilder: (final _, final i) {
-                    final project = projects[i];
-                    return ProjectTile(
-                      key: ValueKey(project.id),
-                      project: project,
-                      onSelected: changeProjectSelection,
-                      onTap: widget.onProjectTap,
-                      checkSelection: checkSelection,
-                      onRemove: (final _) async {
-                        if (project is IdeaProject) {
-                          await Future.forEach<IdeaProjectAnswer>(
-                            project.answers ?? [],
-                            (final answer) => answer.delete(),
+                return Scrollbar(
+                  isAlwaysShown: true,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(5),
+                    reverse: true,
+                    shrinkWrap: true,
+                    restorationId: 'projects',
+                    itemBuilder: (final _, final i) {
+                      final project = projects[i];
+                      return ProjectTile(
+                        key: ValueKey(project.id),
+                        project: project,
+                        onSelected: changeProjectSelection,
+                        onTap: widget.onProjectTap,
+                        checkSelection: checkSelection,
+                        onRemove: (final _) async {
+                          if (project is IdeaProject) {
+                            await Future.forEach<IdeaProjectAnswer>(
+                              project.answers ?? [],
+                              (final answer) => answer.delete(),
+                            );
+                            ref
+                                .read(ideaProjectsProvider.notifier)
+                                .remove(key: project.id);
+                          } else if (project is NoteProject) {
+                            ref
+                                .read(noteProjectsProvider.notifier)
+                                .remove(key: project.id);
+                          } else if (project is StoryProject) {
+                            // TODO(arenukvern): implement StoryProject removal
+                          }
+                          await project.delete();
+                          widget.onGoHome();
+                        },
+                        onRemoveConfirm: (final _) async {
+                          return showRemoveProjectDialog(
+                            context: context,
+                            project: project,
                           );
-                          ref
-                              .read(ideaProjectsProvider.notifier)
-                              .remove(key: project.id);
-                        } else if (project is NoteProject) {
-                          ref
-                              .read(noteProjectsProvider.notifier)
-                              .remove(key: project.id);
-                        } else if (project is StoryProject) {
-                          // TODO(arenukvern): implement note project removal
-                        }
-                        await project.delete();
-                        widget.onGoHome();
-                      },
-                      onRemoveConfirm: (final _) async {
-                        return showRemoveProjectDialog(
-                          context: context,
-                          project: project,
-                        );
-                      },
-                    );
-                  },
-                  separatorBuilder: (final _, final __) =>
-                      const SizedBox(height: 3),
-                  itemCount: projects.length,
+                        },
+                      );
+                    },
+                    separatorBuilder: (final _, final __) =>
+                        const SizedBox(height: 3),
+                    itemCount: projects.length,
+                  ),
                 );
               },
             ),
@@ -158,7 +161,6 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
           )
           .toList(),
     );
-    // TODO(arenukvern): make the welcome dependant from platform day time
     return Scaffold(
       appBar: appBar,
       body: Row(

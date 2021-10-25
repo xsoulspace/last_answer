@@ -138,9 +138,7 @@ class AppStoreInitializer extends ConsumerWidget {
         if (snapshot.connectionState != ConnectionState.done ||
             snapshot.data == false) {
           return Container(
-            color: brightness == Brightness.dark
-                ? AppColors.black
-                : AppColors.white,
+            color: AppColors.black,
             child: Center(
               child: Directionality(
                 textDirection: TextDirection.ltr,
@@ -151,7 +149,7 @@ class AppStoreInitializer extends ConsumerWidget {
                       valueColor: AlwaysStoppedAnimation(AppColors.primary2),
                     ),
                     const SizedBox(height: 5),
-                    Text(settings.loadingStatus.toString()),
+                    Text('Loading: ${settings.loadingStatus} ✨'),
                   ],
                 ),
               ),

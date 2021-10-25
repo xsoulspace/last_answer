@@ -3,13 +3,6 @@
   "@language": {
     "description": "пункт меню язык"
   },
-  "languageWillBeChanged": "{language} будет установлен как основной язык. Приложение будет перезагружено, продолжить?",
-  "@languageWillBeChanged": {
-    "description": "languageWillBeChanged",
-    "args": [
-      "language"
-    ]
-  },
   "writeAnAnswer": "Запишите ответ",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"

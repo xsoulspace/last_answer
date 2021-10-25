@@ -60,16 +60,6 @@ class S {
     );
   }
 
-  /// `{language} will be set as a new language. The app will be reloaded, continue?`
-  String languageWillBeChanged(Object language) {
-    return Intl.message(
-      '$language will be set as a new language. The app will be reloaded, continue?',
-      name: 'languageWillBeChanged',
-      desc: 'languageWillBeChanged',
-      args: [language],
-    );
-  }
-
   /// `Write an answer`
   String get writeAnAnswer {
     return Intl.message(

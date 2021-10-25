@@ -44,7 +44,8 @@ class AppStoreInitializer extends ConsumerWidget {
         settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
         await Hive.openBox<IdeaProjectAnswer>(
-            HiveBoxesIds.ideaProjectAnswerKey);
+          HiveBoxesIds.ideaProjectAnswerKey,
+        );
 
         final ideas =
             await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
@@ -53,7 +54,7 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        // TODO(arenukvern): remove when all devices will be updated
+        // TODO(arenukvern): uncomment when all devices will be updated
         /// to new version ^3.6
 
         // if (questions.isEmpty) {

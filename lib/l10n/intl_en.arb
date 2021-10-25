@@ -3,13 +3,6 @@
   "@language": {
     "description": "menu title language"
   },
-  "languageWillBeChanged": "{language} will be set as a new language. The app will be reloaded, continue?",
-  "@languageWillBeChanged": {
-    "description": "languageWillBeChanged",
-    "args": [
-      "language"
-    ]
-  },
   "writeAnAnswer": "Write an answer",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"

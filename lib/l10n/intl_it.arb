@@ -3,18 +3,11 @@
   "@language": {
     "description": "menu title language"
   },
-  "languageWillBeChanged": "{language} verrà impostata come nuova lingua. L'app verrà ricaricata, continuare?",
-  "@languageWillBeChanged": {
-    "description": "languageWillBeChanged",
-    "args": [
-      "language"
-    ]
-  },
-  "writeAnAnswer": "Write an answer",
+  "writeAnAnswer": "Scrivi una risposta",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"
   },
-  "writeANote": "Write a note",
+  "writeANote": "Scrivi una nota",
   "@writeANote": {
     "description": "writeANote"
   },
@@ -30,15 +23,15 @@
   "@niceDayWish": {
     "description": "niceDayWish"
   },
-  "versionLimitations": "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)",
+  "versionLimitations": "Questa versione potrebbe non avere tutte le funzionalità della versione precedente, come lingue, aiuto e così via, ma torneranno nei prossimi aggiornamenti - resta sintonizzato :)",
   "@versionLimitations": {
     "description": "version limitiations"
   },
-  "joinDiscord": "Join Discord",
+  "joinDiscord": "Unisciti a Discord",
   "@joinDiscord": {
     "description": "joinDiscord button"
   },
-  "pleaseNotice": "Please notice",
+  "pleaseNotice": "Si prega di notare",
   "@pleaseNotice": {
     "description": "Please notice title"
   },
@@ -46,7 +39,7 @@
   "@appInfo": {
     "description": "app info title"
   },
-  "appVersion": "App version: {version}, build: {buildNumber}",
+  "appVersion": "Versione dell'app: {version}, build: {buildNumber}",
   "@appVersion": {
     "description": "app version",
     "args": [
@@ -54,19 +47,19 @@
       "buildNumber"
     ]
   },
-  "theme": "Theme",
+  "theme": "Tema",
   "@theme": {
     "description": "app theme"
   },
-  "themeSystem": "System",
+  "themeSystem": "Sistema",
   "@themeSystem": {
     "description": "app theme - system"
   },
-  "themeDark": "Dark",
+  "themeDark": "Buia",
   "@themeDark": {
     "description": "app theme - dark"
   },
-  "themeLight": "Theme",
+  "themeLight": "Leggera",
   "@themeLight": {
     "description": "app theme - light"
   },
@@ -74,19 +67,19 @@
   "@yes": {
     "description": "yes"
   },
-  "settings": "Settings",
+  "settings": "Impostazioni",
   "@settings": {
     "description": "Settings"
   },
-  "noProjectsYet": "No projects yet.",
+  "noProjectsYet": "Nessun progetto ancora.",
   "@noProjectsYet": {
     "description": "text if no projects created"
   },
-  "whatsYourIdea": "What's your idea?",
+  "whatsYourIdea": "Qual è la tua idea?",
   "@whatsYourIdea": {
     "description": "What's your idea? label"
   },
-  "createIdeaHelperText": "Create tutorial",
+  "createIdeaHelperText": "Crea tutorial",
   "@createIdeaHelperText": {
     "description": "createIdeaHelperText"
   },
@@ -98,7 +91,7 @@
   "@idea": {
     "description": "idea name"
   },
-  "note": "Note",
+  "note": "Nota",
   "@note": {
     "description": "Note name"
   },

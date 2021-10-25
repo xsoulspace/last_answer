@@ -104,6 +104,13 @@ class _AppScaffoldState extends State<AppScaffold> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            localeListResolutionCallback:
+                (final locales, final supportedLocales) {
+              final locale = settings.locale;
+              if (locale == null) return null;
+              if (S.delegate.isSupported(locale)) return locale;
+              return null;
+            },
             supportedLocales: Locales.values,
 
             // Use AppLocalizations to configure the correct application title

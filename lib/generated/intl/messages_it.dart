@@ -20,12 +20,9 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'it';
 
   static String m0(version, buildNumber) =>
-      "App version: ${version}, build: ${buildNumber}";
+      "Versione dell\'app: ${version}, build: ${buildNumber}";
 
-  static String m1(language) =>
-      "${language} verrà impostata come nuova lingua. L\'app verrà ricaricata, continuare?";
-
-  static String m2(title) => "${title} sarà perso per sempre";
+  static String m1(title) => "${title} sarà perso per sempre";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -45,22 +42,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("CANCELLA"),
         "close": MessageLookupByLibrary.simpleMessage("CHIUDI"),
         "createIdeaHelperText":
-            MessageLookupByLibrary.simpleMessage("Create tutorial"),
+            MessageLookupByLibrary.simpleMessage("Crea tutorial"),
         "delete": MessageLookupByLibrary.simpleMessage("ELIMINA"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "o inviare un messaggio a idea@xsoulspace.dev"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
-        "joinDiscord": MessageLookupByLibrary.simpleMessage("Join Discord"),
+        "joinDiscord":
+            MessageLookupByLibrary.simpleMessage("Unisciti a Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Lingua"),
-        "languageWillBeChanged": m1,
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Made with Flutter ❤ and Open Source Libraries"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
             "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)"),
         "noProjectsYet":
-            MessageLookupByLibrary.simpleMessage("No projects yet."),
-        "note": MessageLookupByLibrary.simpleMessage("Note"),
+            MessageLookupByLibrary.simpleMessage("Nessun progetto ancora."),
+        "note": MessageLookupByLibrary.simpleMessage("Nota"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Puoi usare: \"Cinque perché\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
@@ -77,20 +74,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cos\'altro?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Ispirazione"),
-        "pleaseNotice": MessageLookupByLibrary.simpleMessage("Please notice"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "theme": MessageLookupByLibrary.simpleMessage("Theme"),
-        "themeDark": MessageLookupByLibrary.simpleMessage("Dark"),
-        "themeLight": MessageLookupByLibrary.simpleMessage("Theme"),
-        "themeSystem": MessageLookupByLibrary.simpleMessage("System"),
+        "pleaseNotice":
+            MessageLookupByLibrary.simpleMessage("Si prega di notare"),
+        "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+        "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+        "themeDark": MessageLookupByLibrary.simpleMessage("Buia"),
+        "themeLight": MessageLookupByLibrary.simpleMessage("Leggera"),
+        "themeSystem": MessageLookupByLibrary.simpleMessage("Sistema"),
         "versionLimitations": MessageLookupByLibrary.simpleMessage(
-            "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)"),
+            "Questa versione potrebbe non avere tutte le funzionalità della versione precedente, come lingue, aiuto e così via, ma torneranno nei prossimi aggiornamenti - resta sintonizzato :)"),
         "whatsYourIdea":
-            MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
-        "willBeLost": m2,
-        "writeANote": MessageLookupByLibrary.simpleMessage("Write a note"),
+            MessageLookupByLibrary.simpleMessage("Qual è la tua idea?"),
+        "willBeLost": m1,
+        "writeANote": MessageLookupByLibrary.simpleMessage("Scrivi una nota"),
         "writeAnAnswer":
-            MessageLookupByLibrary.simpleMessage("Write an answer"),
+            MessageLookupByLibrary.simpleMessage("Scrivi una risposta"),
         "yes": MessageLookupByLibrary.simpleMessage("Si")
       };
 }

@@ -22,10 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(version, buildNumber) =>
       "Версия: ${version}, билд: ${buildNumber}";
 
-  static String m1(language) =>
-      "${language} будет установлен как основной язык. Приложение будет перезагружено, продолжить?";
-
-  static String m2(title) => "${title} будет потерян безвозвратно";
+  static String m1(title) => "${title} будет потерян безвозвратно";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -52,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "joinDiscord":
             MessageLookupByLibrary.simpleMessage("Присоединяйтесь к Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
-        "languageWillBeChanged": m1,
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Сделано с Flutter ❤ и Open Source Libraries"),
@@ -86,7 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "versionLimitations": MessageLookupByLibrary.simpleMessage(
             "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
-        "willBeLost": m2,
+        "willBeLost": m1,
         "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),
         "writeAnAnswer": MessageLookupByLibrary.simpleMessage("Запишите ответ"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")

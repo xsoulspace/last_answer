@@ -13,6 +13,9 @@ class SettingsScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         );
     final settings = SettingsStateScope.of(context);
+    final initLocale = namedLocalesMap[
+            settings.locale?.languageCode ?? Intl.getCurrentLocale()]
+        ?.locale;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -45,22 +48,46 @@ class SettingsScreen extends StatelessWidget {
                     items: [
                       DropdownMenuItem(
                         value: ThemeMode.system,
-                        child: getItemText('System'),
+                        child: getItemText(S.current.themeSystem),
                       ),
                       DropdownMenuItem(
                         value: ThemeMode.light,
-                        child: getItemText('Light'),
+                        child: getItemText(S.current.themeLight),
                       ),
                       DropdownMenuItem(
                         value: ThemeMode.dark,
-                        child: getItemText('Dark'),
-                      )
+                        child: getItemText(S.current.themeDark),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
-
+            Row(
+              children: [
+                Text('${S.current.language}:'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<Locale>(
+                    // Read the selected themeMode from the controller
+                    value: initLocale,
+                    // Call the updateThemeMode method any time the user selects
+                    // theme.
+                    onChanged: settings.updateLocale,
+                    isExpanded: true,
+                    items: namedLocalesMap.values
+                        .map(
+                          (final e) => DropdownMenuItem<Locale>(
+                            value: e.locale,
+                            key: ValueKey(e.code),
+                            child: getItemText(e.name),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            )
             // ** An Example of how to use link **
             // Link(
             //   uri: Uri.parse('/book/0'),

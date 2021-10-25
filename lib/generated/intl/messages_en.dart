@@ -22,10 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(version, buildNumber) =>
       "App version: ${version}, build: ${buildNumber}";
 
-  static String m1(language) =>
-      "${language} will be set as a new language. The app will be reloaded, continue?";
-
-  static String m2(title) => "${title} will be lost forever";
+  static String m1(title) => "${title} will be lost forever";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -52,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "joinDiscord": MessageLookupByLibrary.simpleMessage("Join Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "languageWillBeChanged": m1,
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Made with Flutter ❤ and Open Source Libraries"),
@@ -87,7 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
-        "willBeLost": m2,
+        "willBeLost": m1,
         "writeANote": MessageLookupByLibrary.simpleMessage("Write a note"),
         "writeAnAnswer":
             MessageLookupByLibrary.simpleMessage("Write an answer"),

@@ -247,19 +247,22 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
       en: fields[1] as String,
       ru: fields[0] as String,
       it: fields[2] as String?,
+      ga: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, LocalizedText obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.ru)
       ..writeByte(1)
       ..write(obj.en)
       ..writeByte(2)
-      ..write(obj.it);
+      ..write(obj.it)
+      ..writeByte(3)
+      ..write(obj.ga);
   }
 
   @override
@@ -408,6 +411,7 @@ LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
       en: json['en'] as String,
       ru: json['ru'] as String,
       it: json['it'] as String?,
+      ga: json['ga'] as String?,
     );
 
 Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
@@ -415,4 +419,5 @@ Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
       'ru': instance.ru,
       'en': instance.en,
       'it': instance.it,
+      'ga': instance.ga,
     };

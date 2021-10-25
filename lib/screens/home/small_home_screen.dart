@@ -133,18 +133,12 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
-    final _now = DateTime.now();
-    final _welcome = () {
-      if (_now.hour < 7) return 'Good night';
-      if (_now.hour < 12 && _now.hour >= 7) return 'Good morning';
-      if (_now.hour > 18) return 'Good evening';
-      return 'Good day';
-    }();
-
+    final greeting = Greeting(language: Intl.getCurrentLocale());
     final appBar = AppBar(
-      title: Text(
-        _welcome,
-        style: theme.textTheme.headline1,
+      // TODO(arenukvern): make popup with translation for native language
+      title: SelectableText(
+        greeting.current,
+        style: theme.textTheme.headline2,
       ),
       actions: [
         IconButton(

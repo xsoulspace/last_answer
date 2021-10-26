@@ -133,6 +133,9 @@ flutter:
     - family: NotoColorEmoji
       fonts:
         - asset: google_fonts/NotoColorEmoji.ttf
+    - family: NotoSans
+      fonts:
+        - asset: google_fonts/NotoSans-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

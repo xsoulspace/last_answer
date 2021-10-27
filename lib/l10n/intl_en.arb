@@ -63,7 +63,7 @@
   "@themeDark": {
     "description": "app theme - dark"
   },
-  "themeLight": "Theme",
+  "themeLight": "Light",
   "@themeLight": {
     "description": "app theme - light"
   },

@@ -38,8 +38,18 @@ class LocalizedText with EquatableMixin {
         Locales.it.toString(): it,
         Locales.ga.toString(): ga
       };
-  String getByLanguage(final LanguageName language) => values[language] ?? en;
+  String getByLanguage(final LanguageName language) {
+    return values[getLanguageCode(language)] ?? en;
+  }
 
   @override
   List<Object?> get props => [ru, en, it, ga];
+}
+
+String getLanguageCode(final LanguageName language) {
+  String lang = language;
+  if (language.contains('_')) {
+    lang = language.split('_').first;
+  }
+  return lang;
 }

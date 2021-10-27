@@ -13,9 +13,11 @@ class SettingsScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         );
     final settings = SettingsStateScope.of(context);
-    final initLocale = namedLocalesMap[
-            settings.locale?.languageCode ?? Intl.getCurrentLocale()]
-        ?.locale;
+    final languageCode = settings.locale?.languageCode;
+    final String effectiveLanguageCode =
+        languageCode ?? getLanguageCode(Intl.getCurrentLocale());
+    final _initLocale =
+        namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -70,7 +72,7 @@ class SettingsScreen extends StatelessWidget {
                 Expanded(
                   child: DropdownButton<Locale>(
                     // Read the selected themeMode from the controller
-                    value: initLocale,
+                    value: _initLocale,
                     // Call the updateThemeMode method any time the user selects
                     // theme.
                     onChanged: settings.updateLocale,

@@ -82,8 +82,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
-        "versionLimitations": MessageLookupByLibrary.simpleMessage(
-            "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
         "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),

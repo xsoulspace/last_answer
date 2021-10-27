@@ -27,10 +27,6 @@
   "@niceDayWish": {
     "description": "niceDayWish"
   },
-  "versionLimitations": "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)",
-  "@versionLimitations": {
-    "description": "version limitiations"
-  },
   "joinDiscord": "Join Discord",
   "@joinDiscord": {
     "description": "joinDiscord button"

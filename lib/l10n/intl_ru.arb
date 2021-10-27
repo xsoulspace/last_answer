@@ -31,10 +31,6 @@
   "@niceDayWish": {
     "description": "niceDayWish"
   },
-  "versionLimitations": "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)",
-  "@versionLimitations": {
-    "description": "version limitiations"
-  },
   "joinDiscord": "Присоединяйтесь к Discord",
   "@joinDiscord": {
     "description": "joinDiscord button"

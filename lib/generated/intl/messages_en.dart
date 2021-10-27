@@ -82,8 +82,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeDark": MessageLookupByLibrary.simpleMessage("Dark"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Light"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("System"),
-        "versionLimitations": MessageLookupByLibrary.simpleMessage(
-            "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
         "willBeLost": m1,

@@ -3,9 +3,11 @@ part of widgets;
 class EmojiPopup extends HookWidget {
   const EmojiPopup({
     required final this.controller,
+    required final this.focusNode,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
+  final FocusNode focusNode;
   @override
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
@@ -18,34 +20,45 @@ class EmojiPopup extends HookWidget {
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
       portal: EmojiGrid(
         onChanged: (final emoji) {
-          final emojiChar = emoji.emoji;
-          // Get cursor current position
-          final cursorPos = controller.selection.base.offset;
+          void addEmoji() {
+            final emojiChar = emoji.emoji;
+            // Get cursor current position
+            final cursorPos = controller.selection.base.offset;
 
-          // Right text of cursor position
-          final suffixText = controller.text.substring(cursorPos);
+            // Right text of cursor position
+            final suffixText = controller.text.substring(cursorPos);
 
-          // Add new text on cursor position
-          final length = emojiChar.length;
+            // Add new text on cursor position
+            final length = emojiChar.length;
 
-          // Get the left text of cursor
-          final prefixText = controller.text.substring(0, cursorPos);
+            // Get the left text of cursor
+            final prefixText = controller.text.substring(0, cursorPos);
+            controller
+              ..text = prefixText + emojiChar + suffixText
 
-          controller
-            ..text = prefixText + emojiChar + suffixText
+              // Cursor move to end of added text
+              ..selection = TextSelection(
+                baseOffset: cursorPos + length,
+                extentOffset: cursorPos + length,
+              );
+            focusNode.removeListener(addEmoji);
+          }
 
-            // Cursor move to end of added text
-            ..selection = TextSelection(
-              baseOffset: cursorPos + length,
-              extentOffset: cursorPos + length,
-            );
+          if (!focusNode.hasFocus) {
+            if (!focusNode.canRequestFocus) return;
+            focusNode
+              ..addListener(addEmoji)
+              ..requestFocus();
+          } else {
+            addEmoji();
+          }
         },
         onClose: () => popupVisible.value = false,
       ),
       child: MouseRegion(
         onHover: (final _) => popupVisible.value = true,
         child: IconButton(
-          onPressed: () => popupVisible.value = !popupVisible.value,
+          onPressed: () => popupVisible.value = true,
           icon: const Icon(Icons.emoji_emotions),
         ),
       ),
@@ -81,6 +94,7 @@ class EmojiGrid extends HookConsumerWidget {
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
         : AppColors.grey4;
+    const maxItemsInRow = 9;
     Widget emojiButton(final Emoji emoji) => TextButton(
           key: ValueKey(emoji),
           onPressed: () {
@@ -90,8 +104,8 @@ class EmojiGrid extends HookConsumerWidget {
             if (!emojiExists) {
               newLastEmojis.insert(0, emoji);
             }
-            if (newLastEmojis.length > 6 && !emojiExists) {
-              newLastEmojis = newLastEmojis.sublist(0, 6);
+            if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
+              newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
             }
             lastEmojis.value = newLastEmojis.toSet();
 
@@ -114,7 +128,7 @@ class EmojiGrid extends HookConsumerWidget {
         ),
       ),
       child: SizedBox(
-        height: 300,
+        height: 320,
         width: 250,
         child: Stack(
           children: [
@@ -130,26 +144,42 @@ class EmojiGrid extends HookConsumerWidget {
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: GridView.count(
                     restorationId: 'emojis-grid',
                     shrinkWrap: true,
-                    crossAxisCount: 6,
+                    crossAxisCount: maxItemsInRow,
                     semanticChildCount: emojis.length,
+                    padding: const EdgeInsets.only(right: 12),
                     children: emojis.map(emojiButton).toList(),
                   ),
                 ),
                 Divider(color: borderColor, height: 1),
+                Visibility(
+                  visible: lastEmojis.value.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 6,
+                      bottom: 1,
+                      left: 9,
+                    ),
+                    child: Text(
+                      S.current.frequentlyUsed,
+                      style: Theme.of(context).textTheme.subtitle2,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
                 GridView.count(
                   restorationId: 'last-emojis-grid',
                   shrinkWrap: true,
-                  crossAxisCount: 6,
+                  crossAxisCount: maxItemsInRow,
                   semanticChildCount: lastEmojis.value.length,
                   reverse: true,
                   children: lastEmojis.value.map(emojiButton).toList(),
                 ),
-                Divider(color: borderColor, height: 1),
                 Material(
                   color: Colors.transparent,
                   child: Row(

@@ -24,7 +24,13 @@ class SettingsService with SharedPreferencesUtil {
 
   Future<Locale> locale() async {
     final languageCode = await getString(SharedPreferencesKeys.locale);
-    return Locale.fromSubtags(languageCode: languageCode);
+    try {
+      if (languageCode.isEmpty) return Locales.en;
+      return Locale.fromSubtags(languageCode: languageCode);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      return Locales.en;
+    }
   }
 
   Future<void> updateLocale(final Locale locale) async {

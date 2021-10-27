@@ -1,32 +1,16 @@
 name: last-answer
-version: 3.6.0+8
-summary: Fast ideas brainstroming tool
+version: 3.6.2+9
+summary: Fast ideas brainstorming tool with quick notes
 description: |
-  !Please notice: 
-
-  The new version now is available on the stable channel.
-  If you need to use the old version, you can switch to the beta channel. 
-  It will keep the old version as long, as all features from the previous version will be implemented.
-  For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
-  Screenshots are from the old version - they will be updated next week.
-
-  ---
-
-  !Please notice:
-
-  The new version has no reverse compatibility with the old version, 
-  so if you decided to use the old version - save all data first.
-
-  ---
-
   You have a cool idea.
   You need to write it down fast.
 
   Then this app is for you.
 
   Follow questions, write as many answers as you can.
-
   As a result, you will get a quick description of the idea.
+
+  Or just write a quick note.
 
   That's it!:)
 
@@ -39,7 +23,7 @@ description: |
 
   ## Have an idea, improvements, or bugs? Want to join development?
 
-  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
 
   ---
 

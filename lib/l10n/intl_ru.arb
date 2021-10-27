@@ -7,6 +7,10 @@
   "@search": {
     "description": "Search"
   },
+  "frequentlyUsed": "Часто используемые",
+  "@frequentlyUsed": {
+    "description": "frequentlyUsed"
+  },
   "writeAnAnswer": "Запишите ответ",
   "@writeAnAnswer": {
     "description": "writeAnAnswer"
@@ -26,10 +30,6 @@
   "niceDayWish": "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!",
   "@niceDayWish": {
     "description": "niceDayWish"
-  },
-  "versionLimitations": "Данная версия пока не поддерживает все функции предыдущей, но - всё появится в новых версиях:)",
-  "@versionLimitations": {
-    "description": "version limitiations"
   },
   "joinDiscord": "Присоединяйтесь к Discord",
   "@joinDiscord": {

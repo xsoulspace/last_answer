@@ -46,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("DELETE"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "or send a message to idea@xsoulspace.dev"),
+        "frequentlyUsed":
+            MessageLookupByLibrary.simpleMessage("Frequently used"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "joinDiscord": MessageLookupByLibrary.simpleMessage("Join Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
@@ -78,10 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Dark"),
-        "themeLight": MessageLookupByLibrary.simpleMessage("Theme"),
+        "themeLight": MessageLookupByLibrary.simpleMessage("Light"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("System"),
-        "versionLimitations": MessageLookupByLibrary.simpleMessage(
-            "This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
         "willBeLost": m1,

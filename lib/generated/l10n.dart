@@ -120,16 +120,6 @@ class S {
     );
   }
 
-  /// `This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)`
-  String get versionLimitations {
-    return Intl.message(
-      'This version may not have all features of previous version, such as languages and help and etc, but they will return in the next updates - stay tuned:)',
-      name: 'versionLimitations',
-      desc: 'version limitiations',
-      args: [],
-    );
-  }
-
   /// `Join Discord`
   String get joinDiscord {
     return Intl.message(
@@ -170,6 +160,16 @@ class S {
     );
   }
 
+  /// `Frequently used`
+  String get frequentlyUsed {
+    return Intl.message(
+      'Frequently used',
+      name: 'frequentlyUsed',
+      desc: 'frequentlyUsed',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message(
@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `Theme`
+  /// `Light`
   String get themeLight {
     return Intl.message(
-      'Theme',
+      'Light',
       name: 'themeLight',
       desc: 'app theme - light',
       args: [],

@@ -51,6 +51,10 @@
       "buildNumber"
     ]
   },
+  "frequentlyUsed": "Frequently used",
+  "@frequentlyUsed": {
+    "description": "frequentlyUsed"
+  },
   "theme": "Theme",
   "@theme": {
     "description": "app theme"

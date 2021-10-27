@@ -46,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("ELIMINA"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "o inviare un messaggio a idea@xsoulspace.dev"),
+        "frequentlyUsed":
+            MessageLookupByLibrary.simpleMessage("Usato frequentemente"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "joinDiscord":
             MessageLookupByLibrary.simpleMessage("Unisciti a Discord"),

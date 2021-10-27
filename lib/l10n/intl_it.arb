@@ -3,6 +3,10 @@
   "@language": {
     "description": "menu title language"
   },
+  "frequentlyUsed": "Usato frequentemente",
+  "@frequentlyUsed": {
+    "description": "frequentlyUsed"
+  },
   "search": "Кicerca",
   "@search": {
     "description": "Search"

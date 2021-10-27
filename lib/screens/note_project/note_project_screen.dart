@@ -16,6 +16,7 @@ class NoteProjectScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    final noteFocusNode = useFocusNode();
     final maybeNote = ref.read(noteProjectsProvider)[noteId]!;
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
@@ -71,6 +72,7 @@ class NoteProjectScreen extends HookConsumerWidget {
                           hintText: S.current.writeANote,
                           fillColor: Colors.transparent,
                           filled: false,
+                          focusNode: noteFocusNode,
                           endlessLines: true,
                           onSubmit: () => back(context),
                           controller: noteController,
@@ -90,7 +92,10 @@ class NoteProjectScreen extends HookConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          EmojiPopup(controller: noteController),
+                          EmojiPopup(
+                            controller: noteController,
+                            focusNode: noteFocusNode,
+                          ),
                         ],
                       ),
                     ],

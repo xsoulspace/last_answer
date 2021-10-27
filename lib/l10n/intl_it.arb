@@ -3,6 +3,10 @@
   "@language": {
     "description": "menu title language"
   },
+  "frequentlyUsed": "Usato frequentemente",
+  "@frequentlyUsed": {
+    "description": "frequentlyUsed"
+  },
   "search": "Кicerca",
   "@search": {
     "description": "Search"
@@ -26,10 +30,6 @@
   "niceDayWish": "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
   "@niceDayWish": {
     "description": "niceDayWish"
-  },
-  "versionLimitations": "Questa versione potrebbe non avere tutte le funzionalità della versione precedente, come lingue, aiuto e così via, ma torneranno nei prossimi aggiornamenti - resta sintonizzato :)",
-  "@versionLimitations": {
-    "description": "version limitiations"
   },
   "joinDiscord": "Unisciti a Discord",
   "@joinDiscord": {

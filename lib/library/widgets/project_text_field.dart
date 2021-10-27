@@ -12,12 +12,14 @@ class ProjectTextField extends StatefulHookWidget {
     final this.endlessLines = false,
     final this.focusOnInit = true,
     final this.fillColor,
+    final this.focusNode,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
   final VoidCallback onSubmit;
   final int maxLines;
   final String hintText;
+  final FocusNode? focusNode;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
@@ -33,7 +35,7 @@ class ProjectTextField extends StatefulHookWidget {
 
 class _ProjectTextFieldState extends State<ProjectTextField> {
   final _keyboardFocusNode = FocusNode();
-  final _textFieldFocusNode = FocusNode();
+  late FocusNode _textFieldFocusNode;
   @override
   void initState() {
     if (widget.focusOnInit != false) {
@@ -41,6 +43,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
         FocusScope.of(context).requestFocus(_textFieldFocusNode);
       });
     }
+    _textFieldFocusNode = widget.focusNode ?? FocusNode();
     super.initState();
   }
 

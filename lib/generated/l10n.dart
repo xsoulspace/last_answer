@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `Theme`
+  /// `Light`
   String get themeLight {
     return Intl.message(
-      'Theme',
+      'Light',
       name: 'themeLight',
       desc: 'app theme - light',
       args: [],

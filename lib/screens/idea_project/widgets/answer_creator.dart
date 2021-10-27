@@ -22,6 +22,8 @@ class _AnswerCreator extends HookWidget {
           : AppColors.grey1.withOpacity(0.15);
   @override
   Widget build(final BuildContext context) {
+    final answerFocusNode = useFocusNode();
+
     final selectedQuestion =
         useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
     selectedQuestion.addListener(() async {
@@ -94,7 +96,10 @@ class _AnswerCreator extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         shareButton,
-                        EmojiPopup(controller: answerController),
+                        EmojiPopup(
+                          controller: answerController,
+                          focusNode: answerFocusNode,
+                        ),
                       ],
                     ),
                   ),
@@ -112,6 +117,7 @@ class _AnswerCreator extends HookWidget {
                     focusOnInit: idea.answers?.isEmpty == true,
                     controller: answerController,
                     onSubmit: onCreate,
+                    focusNode: answerFocusNode,
                     onFocus: onFocus,
                   ),
                 ),

@@ -170,6 +170,16 @@ class S {
     );
   }
 
+  /// `Frequently used`
+  String get frequentlyUsed {
+    return Intl.message(
+      'Frequently used',
+      name: 'frequentlyUsed',
+      desc: 'frequentlyUsed',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message(

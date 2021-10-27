@@ -128,7 +128,7 @@ class EmojiGrid extends HookConsumerWidget {
         ),
       ),
       child: SizedBox(
-        height: 300,
+        height: 320,
         width: 250,
         child: Stack(
           children: [
@@ -144,6 +144,7 @@ class EmojiGrid extends HookConsumerWidget {
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: GridView.count(
@@ -158,10 +159,17 @@ class EmojiGrid extends HookConsumerWidget {
                 Divider(color: borderColor, height: 1),
                 Visibility(
                   visible: lastEmojis.value.isNotEmpty,
-                  child: Text(
-                    S.current.frequentlyUsed,
-                    style: Theme.of(context).textTheme.subtitle2,
-                    textAlign: TextAlign.start,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 6,
+                      bottom: 1,
+                      left: 9,
+                    ),
+                    child: Text(
+                      S.current.frequentlyUsed,
+                      style: Theme.of(context).textTheme.subtitle2,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
                 ),
                 GridView.count(
@@ -172,7 +180,6 @@ class EmojiGrid extends HookConsumerWidget {
                   reverse: true,
                   children: lastEmojis.value.map(emojiButton).toList(),
                 ),
-                Divider(color: borderColor, height: 1),
                 Material(
                   color: Colors.transparent,
                   child: Row(

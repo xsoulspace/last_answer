@@ -43,12 +43,6 @@ class AppInfoScreen extends StatelessWidget {
                     SelectableText(S.current.aboutAbstractWhatForDescription),
                     const SizedBox(height: 15),
                     SelectableText(
-                      S.current.pleaseNotice,
-                      textAlign: TextAlign.center,
-                    ),
-                    SelectableText(S.current.versionLimitations),
-                    const SizedBox(height: 15),
-                    SelectableText(
                       S.current.aboutAbstractIdeasImprovementsBugs,
                       textAlign: TextAlign.center,
                     ),

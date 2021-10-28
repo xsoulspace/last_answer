@@ -97,30 +97,39 @@ class AppStoreInitializer extends ConsumerWidget {
         );
 
         settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
+        if (!settings.migrated) {
+          await settings.setMigrated();
 
-        /// ***************** MIGRATION START *******************
-        try {
-          // TODO(arenukvern): remove old stores after all devices migration
-          if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
-            await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
-          }
-          if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
-              await Hive.boxExists(HiveBoxesIds.answersKey)) {
-            await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
-            final projects =
-                await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-
-            for (final project in projects.values) {
-              await project.saveAsIdeaProject(ref);
+          /// ***************** MIGRATION START *******************
+          try {
+            // TODO(arenukvern): remove old stores after all devices migration
+            if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
+              await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
             }
+            // ignore: avoid_catches_without_on_clauses
+          } catch (e) {
+            log('migration error: $e');
+          }
+
+          try {
+            if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
+                await Hive.boxExists(HiveBoxesIds.answersKey)) {
+              await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
+              final projects =
+                  await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
+
+              for (final project in projects.values) {
+                await project.saveAsIdeaProject(ref);
+              }
+              await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
+              await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
+            }
+            // ignore: avoid_catches_without_on_clauses
+          } catch (e) {
             await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
             await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
+            log('migration error: $e');
           }
-          // ignore: avoid_catches_without_on_clauses
-        } catch (e) {
-          await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
-          await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
-          log('migration error: $e');
         }
 
         /// ***************** MIGRATION END *******************

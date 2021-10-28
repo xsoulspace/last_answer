@@ -57,6 +57,7 @@ class SettingsController with ChangeNotifier {
   Future<void> load() async {
     _themeMode = await settingsService.themeMode();
     _locale = await settingsService.locale();
+    migrated = await settingsService.migrated();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -73,6 +74,12 @@ class SettingsController with ChangeNotifier {
   set loadingStatus(final AppStateLoadingStatuses? loadingStatus) {
     _loadingStatus = loadingStatus;
     notify();
+  }
+
+  bool migrated = false;
+  Future<void> setMigrated() async {
+    migrated = true;
+    return settingsService.setMigrated();
   }
 
   void notify() => notifyListeners();

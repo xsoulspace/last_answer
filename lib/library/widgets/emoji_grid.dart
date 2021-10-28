@@ -114,23 +114,15 @@ class EmojiGrid extends HookConsumerWidget {
             );
       }
 
-      return isAppleDevice
-          ? CupertinoButton(
-              minSize: 0,
-              padding: EdgeInsets.zero,
-              key: ValueKey(emoji),
-              onPressed: onPressed,
-              child: Center(
-                child: Text(emoji.emoji),
-              ),
-            )
-          : TextButton(
-              key: ValueKey(emoji),
-              onPressed: onPressed,
-              child: Center(
-                child: Text(emoji.emoji),
-              ),
-            );
+      return CupertinoButton(
+        minSize: 0,
+        padding: EdgeInsets.zero,
+        key: ValueKey(emoji),
+        onPressed: onPressed,
+        child: Center(
+          child: Text(emoji.emoji),
+        ),
+      );
     }
 
     return Card(

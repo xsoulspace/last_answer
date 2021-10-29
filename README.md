@@ -52,7 +52,3 @@ Please read [Code of Conduct](CODE_OF_CONDUCT.md) before get started.
 You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
 
 Thank you for your support!
-
----
-
-## Contributors:

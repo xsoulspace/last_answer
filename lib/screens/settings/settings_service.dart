@@ -36,4 +36,9 @@ class SettingsService with SharedPreferencesUtil {
   Future<void> updateLocale(final Locale locale) async {
     await setString(SharedPreferencesKeys.locale, locale.languageCode);
   }
+
+  Future<bool> migrated() async => getBool(SharedPreferencesKeys.migrated);
+
+  Future<void> setMigrated() async =>
+      setBool(SharedPreferencesKeys.migrated, true);
 }

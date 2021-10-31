@@ -42,6 +42,7 @@ class IdeaProjectAnswer extends HiveObject
   @HiveField(3)
   final DateTime created;
 
+  String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
   String toShareString() => '${question.toShareString()} \n $text';
 

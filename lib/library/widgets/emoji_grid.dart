@@ -95,28 +95,36 @@ class EmojiGrid extends HookConsumerWidget {
         ? AppColors.cleanBlack
         : AppColors.grey4;
     const maxItemsInRow = 9;
-    Widget emojiButton(final Emoji emoji) => TextButton(
-          key: ValueKey(emoji),
-          onPressed: () {
-            onChanged(emoji);
-            List<Emoji> newLastEmojis = [...lastEmojis.value];
-            final emojiExists = newLastEmojis.contains(emoji);
-            if (!emojiExists) {
-              newLastEmojis.insert(0, emoji);
-            }
-            if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
-              newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
-            }
-            lastEmojis.value = newLastEmojis.toSet();
 
-            ref.read(lastUsedEmojisProvider.notifier).assignEntries(
-                  newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
-                );
-          },
-          child: Center(
-            child: Text(emoji.emoji),
-          ),
-        );
+    Widget emojiButton(final Emoji emoji) {
+      void onPressed() {
+        onChanged(emoji);
+        List<Emoji> newLastEmojis = [...lastEmojis.value];
+        final emojiExists = newLastEmojis.contains(emoji);
+        if (!emojiExists) {
+          newLastEmojis.insert(0, emoji);
+        }
+        if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
+          newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
+        }
+        lastEmojis.value = newLastEmojis.toSet();
+
+        ref.read(lastUsedEmojisProvider.notifier).assignEntries(
+              newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+            );
+      }
+
+      return CupertinoButton(
+        minSize: 0,
+        padding: EdgeInsets.zero,
+        key: ValueKey(emoji),
+        onPressed: onPressed,
+        child: Center(
+          child: Text(emoji.emoji),
+        ),
+      );
+    }
+
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,

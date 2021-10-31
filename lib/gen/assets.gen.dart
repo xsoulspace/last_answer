@@ -42,6 +42,9 @@ class $AssetsIconsGen {
   const $AssetsIconsGen();
 
   SvgGenImage get idea => const SvgGenImage('assets/icons/idea.svg');
+  AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
+  AssetGenImage get logoWindows =>
+      const AssetGenImage('assets/icons/logo_windows.png');
 }
 
 class Assets {

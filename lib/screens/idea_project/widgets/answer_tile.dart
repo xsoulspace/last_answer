@@ -11,7 +11,7 @@ class _AnswerTile extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
   final IdeaProjectAnswer answer;
-  final BoolCallback confirmDelete;
+  final FutureBoolCallback confirmDelete;
   final VoidCallback onReadyToDelete;
   final bool deleteIconVisible;
   final ValueChanged<IdeaProjectAnswer> onExpand;
@@ -20,14 +20,11 @@ class _AnswerTile extends StatelessWidget {
   Widget build(final BuildContext context) {
     return DismissibleTile(
       dismissibleKey: Key(answer.id),
-      confirmDismiss: (final direction) async {
-        if (direction != DismissDirection.startToEnd) return false;
-        return confirmDelete();
-      },
-      onDismissed: (final direction) async {
-        if (direction != DismissDirection.startToEnd) return;
-        onReadyToDelete();
-      },
+      // confirmDismiss: (final direction) async {
+      //   if (direction != DismissDirection.startToEnd) return false;
+      //   return confirmDelete();
+      // },
+      onDismissed: onReadyToDelete,
       child: Stack(
         children: [
           Positioned(
@@ -97,8 +94,8 @@ class _AnswerTile extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: IconButton(
-                      onPressed: () {
-                        final confirmed = confirmDelete();
+                      onPressed: () async {
+                        final confirmed = await confirmDelete();
                         if (confirmed) onReadyToDelete();
                       },
                       color: AppColors.accent2.withOpacity(0.6),

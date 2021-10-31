@@ -7,11 +7,14 @@ class NoteProjectScreen extends HookConsumerWidget {
     final Key? key,
   }) : super(key: key);
   final String noteId;
-  final VoidCallback onBack;
+  final ValueChanged<NoteProject> onBack;
 
-  void back(final BuildContext context) {
+  void back({
+    required final BuildContext context,
+    required final NoteProject note,
+  }) {
     closeKeyboard(context: context);
-    onBack();
+    onBack(note);
   }
 
   @override
@@ -44,10 +47,9 @@ class NoteProjectScreen extends HookConsumerWidget {
     return Scaffold(
       restorationId: 'notes/$noteId',
       appBar: AppBar(
-        toolbarHeight: 80,
         centerTitle: true,
         leading: BackButton(
-          onPressed: () => back(context),
+          onPressed: () => back(context: context, note: note.value),
         ),
         actions: const [
           SizedBox(width: 10),
@@ -74,7 +76,8 @@ class NoteProjectScreen extends HookConsumerWidget {
                           filled: false,
                           focusNode: noteFocusNode,
                           endlessLines: true,
-                          onSubmit: () => back(context),
+                          onSubmit: () =>
+                              back(context: context, note: note.value),
                           controller: noteController,
                         ),
                       ),

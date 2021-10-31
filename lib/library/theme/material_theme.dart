@@ -17,6 +17,7 @@ final lightThemeData = _lightBase.copyWith(
     ),
   ),
 
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
     showTrackOnHover: true,
     thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
@@ -54,6 +55,7 @@ final darkThemeData = _darkBase.copyWith(
     trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),
     trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
   ),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   // TODO(arenukvern): for transparent background
   // scaffoldBackgroundColor:
   //     Platform.isMacOS ? Colors.transparent : _darkBase.scaffoldBackgroundColor,

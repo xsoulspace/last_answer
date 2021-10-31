@@ -93,7 +93,10 @@ class IdeaProjectScreen extends HookConsumerWidget {
                     onFocus: closeQuestions,
                     key: ValueKey(_answer.id),
                     answer: _answer,
-                    confirmDelete: () => true,
+                    confirmDelete: () async => showRemoveTitleDialog(
+                      title: _answer.title,
+                      context: context,
+                    ),
                     onExpand: (final _) {
                       closeKeyboard(context: context);
                       onAnswerExpand(_answer, idea);

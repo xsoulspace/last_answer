@@ -21,14 +21,23 @@ class ProjectTile extends StatelessWidget {
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
   @override
   Widget build(final BuildContext context) {
+    final effectiveLeadingIcon = () {
+      if (project is IdeaProject) {
+        return const SizedBox(
+          width: 14,
+          child: Align(
+            child: IconIdea(size: 14),
+          ),
+        );
+      }
+    }();
     return DismissibleTile(
       dismissibleKey: ValueKey(project.id),
-      confirmDismiss: (final direction) async {
-        if (direction != DismissDirection.startToEnd) return false;
-        return onRemoveConfirm(project);
-      },
-      onDismissed: (final direction) {
-        if (direction != DismissDirection.startToEnd) return;
+      // confirmDismiss: (final direction) async {
+      //   if (direction != DismissDirection.startToEnd) return false;
+      //   return onRemoveConfirm(project);
+      // },
+      onDismissed: () {
         onRemove(project);
       },
       child: HeroId(
@@ -43,17 +52,28 @@ class ProjectTile extends StatelessWidget {
               : null,
           minLeadingWidth: project is IdeaProject ? 0 : null,
           minVerticalPadding: project is NoteProject ? 12 : null,
-          leading: project is IdeaProject
-              ? SizedBox(
-                  width: 14,
-                  child: Align(
-                    child: const IconIdea(size: 14),
-                  ),
-                )
-              : null,
+          leading: effectiveLeadingIcon,
           onTap: () => onTap(project),
           tileColor: Theme.of(context).cardColor,
-          title: Text(project.title),
+          title: Stack(
+            children: [
+              if (project is NoteProject)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: Icon(
+                    Icons.book,
+                    size: 12.5,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        ?.color
+                        ?.withOpacity(0.5),
+                  ),
+                ),
+              Text((project is NoteProject ? '      ' : '') + project.title),
+            ],
+          ),
           // trailing: ,
           // TODO(arenukvern): add checkbox to mark project as completed
           // trailing: Checkbox(

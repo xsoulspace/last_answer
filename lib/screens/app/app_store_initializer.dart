@@ -96,41 +96,11 @@ class AppStoreInitializer extends ConsumerWidget {
           HiveBoxesIds.storyProjectKey,
         );
 
-        settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
-        if (!settings.migrated) {
-          await settings.setMigrated();
-
-          /// ***************** MIGRATION START *******************
-          try {
-            // TODO(arenukvern): remove old stores after all devices migration
-            if (await Hive.boxExists(HiveBoxesIds.darkModeKey)) {
-              await Hive.deleteBoxFromDisk(HiveBoxesIds.darkModeKey);
-            }
-            // ignore: avoid_catches_without_on_clauses
-          } catch (e) {
-            log('migration error: $e');
-          }
-
-          try {
-            if (await Hive.boxExists(HiveBoxesIds.projectsKey) &&
-                await Hive.boxExists(HiveBoxesIds.answersKey)) {
-              await Hive.openBox<Answer>(HiveBoxesIds.answersKey);
-              final projects =
-                  await Hive.openBox<Project>(HiveBoxesIds.projectsKey);
-
-              for (final project in projects.values) {
-                await project.saveAsIdeaProject(ref);
-              }
-              await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
-              await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
-            }
-            // ignore: avoid_catches_without_on_clauses
-          } catch (e) {
-            await Hive.deleteBoxFromDisk(HiveBoxesIds.answersKey);
-            await Hive.deleteBoxFromDisk(HiveBoxesIds.projectsKey);
-            log('migration error: $e');
-          }
-        }
+        // TODO(arenukvern): in case of future migrations
+        // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
+        // if (!settings.migrated) {
+        //   await settings.setMigrated();
+        // }
 
         /// ***************** MIGRATION END *******************
         settings.appInitialStateIsLoading = false;

@@ -12,8 +12,6 @@ Future<void> main() async {
     ..registerAdapter(IdeaProjectAnswerAdapter())
     ..registerAdapter(IdeaProjectQuestionAdapter())
     ..registerAdapter(NoteProjectAdapter())
-    ..registerAdapter(StoryProjectAdapter())
-    ..registerAdapter(ProjectAdapter())
-    ..registerAdapter(AnswerAdapter());
+    ..registerAdapter(StoryProjectAdapter());
   runApp(const AppProvider());
 }

@@ -4,33 +4,34 @@ class DismissibleTile extends StatelessWidget {
   const DismissibleTile({
     required final this.child,
     required final this.dismissibleKey,
-    final this.confirmDismiss,
-    final this.onDismissed,
+    required final this.onDismissed,
+    // final this.confirmDismiss,
     final Key? key,
   }) : super(key: key);
-  final ValueChanged<DismissDirection>? onDismissed;
-  final ConfirmDismissCallback? confirmDismiss;
+  final VoidCallback onDismissed;
+  // final ConfirmDismissCallback? confirmDismiss;
   final Widget child;
   final Key dismissibleKey;
   @override
   Widget build(final BuildContext context) {
-    return Dismissible(
+    return slidable.Slidable(
       key: dismissibleKey,
-      confirmDismiss: confirmDismiss,
-      onDismissed: onDismissed,
-      background: Container(
-        decoration: BoxDecoration(
-          borderRadius: defaultBorderRadius,
-          color: AppColors.accent2,
-        ),
-        padding: const EdgeInsets.only(right: 12),
-        alignment: Alignment.centerLeft,
-        child: const Icon(
-          Icons.delete,
-          color: AppColors.white,
-        ),
+      startActionPane: slidable.ActionPane(
+        motion: const slidable.BehindMotion(),
+        children: [
+          slidable.SlidableAction(
+            // TODO(arenukvern): uncomment if this PR will be merged
+            /// https://github.com/letsar/flutter_slidable/pull/255
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: defaultBorderRadius,
+            // ),
+            onPressed: (final _) => onDismissed(),
+            backgroundColor: AppColors.accent2.withOpacity(0.8),
+            foregroundColor: Colors.white,
+            label: 'Delete',
+          ),
+        ],
       ),
-      secondaryBackground: Container(),
       child: child,
     );
   }

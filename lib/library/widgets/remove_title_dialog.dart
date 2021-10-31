@@ -1,10 +1,10 @@
-part of home;
+part of widgets;
 
-Future<bool> showRemoveProjectDialog({
-  required final BasicProject project,
+Future<bool> showRemoveTitleDialog({
+  required final String title,
   required final BuildContext context,
 }) async {
-  if (Platform.isIOS || Platform.isMacOS) {
+  if (isAppleDevice) {
     return await showCupertinoDialog(
       context: context,
       builder: (final context) {
@@ -20,7 +20,7 @@ Future<bool> showRemoveProjectDialog({
               child: Text(S.current.delete.titleCase),
             ),
           ],
-          content: Text(S.current.willBeLost(project.title)),
+          content: Text(S.current.willBeLost(title)),
           title: Text(S.current.areYouSure),
         );
       },
@@ -46,7 +46,7 @@ Future<bool> showRemoveProjectDialog({
             ),
           ),
         ],
-        content: Text(S.current.willBeLost(project.title)),
+        content: Text(S.current.willBeLost(title)),
         title: Text(S.current.areYouSure),
       );
     },

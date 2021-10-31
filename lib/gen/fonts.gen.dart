@@ -10,4 +10,5 @@ class FontFamily {
 
   static const String iBMPlexSans = 'IBMPlexSans';
   static const String notoColorEmoji = 'NotoColorEmoji';
+  static const String notoSans = 'NotoSans';
 }

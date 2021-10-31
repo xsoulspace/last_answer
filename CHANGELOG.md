@@ -7,4 +7,4 @@
 - feat: slide to remove for idea answers
 - feat: remove dialogue for idea answers on desktop
 
-- refactor: as all users has an update to the new database structure, all deprecated models were removed
+- refactor: as all users have an update to the new database structure, all deprecated models were removed

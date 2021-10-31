@@ -116,9 +116,9 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                           widget.onGoHome();
                         },
                         onRemoveConfirm: (final _) async {
-                          return showRemoveProjectDialog(
+                          return showRemoveTitleDialog(
                             context: context,
-                            project: project,
+                            title: project.title,
                           );
                         },
                       );

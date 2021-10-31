@@ -103,7 +103,13 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
           name: routeState.route.path,
           child: willPopScope(
             child: NoteProjectScreen(
-              onBack: _navigatorController.goHome,
+              onBack: (final note) async {
+                if (note.note.replaceAll(' ', '').isEmpty) {
+                  await note.delete();
+                  ref.read(noteProjectsProvider.notifier).remove(key: note.id);
+                }
+                _navigatorController.goHome();
+              },
               noteId: noteId!,
               key: ValueKey(noteId),
             ),

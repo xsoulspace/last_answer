@@ -120,6 +120,26 @@ class S {
     );
   }
 
+  /// `Privacy Policy`
+  String get privacyPolicy {
+    return Intl.message(
+      'Privacy Policy',
+      name: 'privacyPolicy',
+      desc: 'Privacy Policy',
+      args: [],
+    );
+  }
+
+  /// `Terms & Conditions`
+  String get termsAndConditions {
+    return Intl.message(
+      'Terms & Conditions',
+      name: 'termsAndConditions',
+      desc: 'Terms & Conditions',
+      args: [],
+    );
+  }
+
   /// `Join Discord`
   String get joinDiscord {
     return Intl.message(

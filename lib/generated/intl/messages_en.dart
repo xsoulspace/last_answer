@@ -76,8 +76,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Inspiration"),
         "pleaseNotice": MessageLookupByLibrary.simpleMessage("Please notice"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Dark"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Light"),

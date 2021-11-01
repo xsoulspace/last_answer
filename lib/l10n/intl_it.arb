@@ -31,6 +31,14 @@
   "@niceDayWish": {
     "description": "niceDayWish"
   },
+  "privacyPolicy": "Politica sulla riservatezza",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "termsAndConditions": "Termini & Condizioni",
+  "@termsAndConditions": {
+    "description": "Terms & Conditions"
+  },
   "joinDiscord": "Unisciti a Discord",
   "@joinDiscord": {
     "description": "joinDiscord button"

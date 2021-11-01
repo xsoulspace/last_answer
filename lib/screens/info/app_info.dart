@@ -13,8 +13,13 @@ class AppInfoScreen extends StatelessWidget {
   }) : super(key: key);
   final VoidCallback onBack;
   static const discordLink = 'https://discord.gg/y54DpJwmAn';
+  static const privacyPolicyLink =
+      'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
+  static const termsAndConditions =
+      'https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md';
   @override
   Widget build(final BuildContext context) {
+    final bodyText1Style = Theme.of(context).textTheme.bodyText1;
     return Scaffold(
       appBar: AppBar(
         leading: CloseButton(
@@ -40,13 +45,22 @@ class AppInfoScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(18),
                 children: [
                   ...[
-                    SelectableText(S.current.aboutAbstractWhatForDescription),
+                    SelectableText(
+                      S.current.aboutAbstractWhatForDescription,
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 5),
+                    SelectableText(
+                      S.current.niceDayWish,
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 15),
                     SelectableText(
                       S.current.aboutAbstractIdeasImprovementsBugs,
                       textAlign: TextAlign.center,
                     ),
                     Wrap(
+                      alignment: WrapAlignment.center,
                       children: [
                         TextButton(
                           onPressed: () async {
@@ -54,13 +68,16 @@ class AppInfoScreen extends StatelessWidget {
                               await url_launcher.launch(discordLink);
                             }
                           },
-                          child: Text(S.current.joinDiscord),
+                          child: Text(
+                            S.current.joinDiscord,
+                            style: bodyText1Style,
+                          ),
                         ),
-                        SelectableText(S.current.feedbackTextWithEmail),
+                        SelectableText(
+                          S.current.feedbackTextWithEmail,
+                        ),
                       ],
                     ),
-                    SelectableText(S.current.niceDayWish),
-                    const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
                         showLicensePage(
@@ -68,7 +85,39 @@ class AppInfoScreen extends StatelessWidget {
                           useRootNavigator: true,
                         );
                       },
-                      child: Text(S.current.madeWithLoveAndFlutter),
+                      child: Text(
+                        S.current.madeWithLoveAndFlutter,
+                        style: bodyText1Style,
+                      ),
+                    ),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            if (await url_launcher
+                                .canLaunch(privacyPolicyLink)) {
+                              await url_launcher.launch(privacyPolicyLink);
+                            }
+                          },
+                          child: Text(
+                            S.current.privacyPolicy,
+                            style: bodyText1Style,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            if (await url_launcher
+                                .canLaunch(termsAndConditions)) {
+                              await url_launcher.launch(termsAndConditions);
+                            }
+                          },
+                          child: Text(
+                            S.current.termsAndConditions,
+                            style: bodyText1Style,
+                          ),
+                        ),
+                      ],
                     ),
                     SelectableText(
                       version,

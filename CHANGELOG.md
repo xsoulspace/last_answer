@@ -1,3 +1,8 @@
+## 3.8.1+12
+
+- feat: Privacy Policy
+- feat: Terms & Conditions
+
 ## 3.7.1+11
 
 🎉🎊🎉 🌃🌄 Removable update:) 🌇🌉 🎉🎊🎉

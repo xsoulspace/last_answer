@@ -76,8 +76,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Вдохновление"),
         "pleaseNotice":
             MessageLookupByLibrary.simpleMessage("Обратите внимание"),
+        "privacyPolicy":
+            MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("Условия использования"),
         "theme": MessageLookupByLibrary.simpleMessage("Тема"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),

@@ -31,4 +31,5 @@ part 'routing/parser.dart';
 part 'routing/route_state.dart';
 part 'shared_preferences_keys.dart';
 part 'shared_preferences_util.dart';
+part 'theme_definder.dart';
 part 'uuid.dart';

@@ -21,6 +21,9 @@ class ProjectTile extends StatelessWidget {
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
   @override
   Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final themeDefiner = ThemeDefiner.of(context);
+    final useContextTheme = themeDefiner.themeToUse == ThemeToUse.fromContext;
     final effectiveLeadingIcon = () {
       if (project is IdeaProject) {
         return const SizedBox(
@@ -43,45 +46,59 @@ class ProjectTile extends StatelessWidget {
       child: HeroId(
         id: project.id,
         type: HeroIdTypes.projectTitle,
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: defaultBorderRadius,
-          ),
-          contentPadding: project is IdeaProject
-              ? const EdgeInsets.symmetric(horizontal: 16).copyWith(left: 15)
-              : null,
-          minLeadingWidth: project is IdeaProject ? 0 : null,
-          minVerticalPadding: project is NoteProject ? 12 : null,
-          leading: effectiveLeadingIcon,
-          onTap: () => onTap(project),
-          tileColor: Theme.of(context).cardColor,
-          title: Stack(
-            children: [
-              if (project is NoteProject)
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  child: Icon(
-                    Icons.book,
-                    size: 12.5,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        ?.color
-                        ?.withOpacity(0.5),
-                  ),
+        child: Stack(
+          children: [
+            if (!useContextTheme)
+              Positioned.fill(
+                child: Container().blurred(
+                  colorOpacity: themeDefiner.themeToUse == ThemeToUse.nativeDark
+                      ? 0.2
+                      : 0.4,
+                  borderRadius: defaultBorderRadius,
                 ),
-              Text((project is NoteProject ? '      ' : '') + project.title),
-            ],
-          ),
-          // trailing: ,
-          // TODO(arenukvern): add checkbox to mark project as completed
-          // trailing: Checkbox(
-          //   value: checkSelection(project),
-          //   onChanged: (final selected) =>
-          //       onSelected(selected: selected, project: project),
-          //   shape: const CircleBorder(),
-          // ),
+              ),
+            ListTile(
+              dense: !useContextTheme,
+              shape: RoundedRectangleBorder(
+                borderRadius: defaultBorderRadius,
+              ),
+              contentPadding: project is IdeaProject
+                  ? const EdgeInsets.symmetric(horizontal: 16)
+                      .copyWith(left: 15)
+                  : null,
+              minLeadingWidth: project is IdeaProject ? 0 : null,
+              minVerticalPadding: project is NoteProject ? 12 : null,
+              leading: effectiveLeadingIcon,
+              onTap: () => onTap(project),
+              tileColor: useContextTheme ? theme.cardColor : Colors.transparent,
+              title: Stack(
+                children: [
+                  if (project is NoteProject)
+                    Positioned(
+                      left: 0,
+                      top: 0,
+                      child: Icon(
+                        Icons.book,
+                        size: 12.5,
+                        color:
+                            theme.textTheme.bodyText2?.color?.withOpacity(0.5),
+                      ),
+                    ),
+                  Text(
+                    (project is NoteProject ? '      ' : '') + project.title,
+                  ),
+                ],
+              ),
+              // trailing: ,
+              // TODO(arenukvern): add checkbox to mark project as completed
+              // trailing: Checkbox(
+              //   value: checkSelection(project),
+              //   onChanged: (final selected) =>
+              //       onSelected(selected: selected, project: project),
+              //   shape: const CircleBorder(),
+              // ),
+            ),
+          ],
         ),
       ),
     );

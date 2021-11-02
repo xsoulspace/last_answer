@@ -47,8 +47,11 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
+    final themeDefiner = ThemeDefiner.of(context);
     final verticalMenu = ColoredBox(
-      color: Theme.of(context).primaryColor.withOpacity(.03),
+      color: themeDefiner.themeToUse == ThemeToUse.fromContext
+          ? theme.primaryColor.withOpacity(.03)
+          : Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -137,11 +140,12 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
       ),
     );
     final greeting = Greeting();
+    final effectiveTheme = ThemeDefiner.of(context).effectiveTheme;
     final appBar = AppBar(
       // TODO(arenukvern): make popup with translation for native language
       title: SelectableText(
         greeting.current,
-        style: theme.textTheme.headline2,
+        style: effectiveTheme.textTheme.headline2,
       ),
       actions: [
         IconButton(
@@ -161,17 +165,21 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
           )
           .toList(),
     );
-    return Scaffold(
-      appBar: appBar,
-      body: Row(
-        children: [
-          const SizedBox(height: 2),
-          if (widget.verticalMenuAlignment == Alignment.bottomLeft)
-            verticalMenu,
-          projectsList,
-          if (widget.verticalMenuAlignment == Alignment.bottomRight)
-            verticalMenu,
-        ],
+
+    return Theme(
+      data: effectiveTheme,
+      child: Scaffold(
+        appBar: appBar,
+        body: Row(
+          children: [
+            const SizedBox(height: 2),
+            if (widget.verticalMenuAlignment == Alignment.bottomLeft)
+              verticalMenu,
+            projectsList,
+            if (widget.verticalMenuAlignment == Alignment.bottomRight)
+              verticalMenu,
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 library app_provider;
 
-import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,36 +15,9 @@ import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/app_navigator/app_navigator.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
-import 'package:universal_io/io.dart';
 
 part 'app_store_initializer.dart';
 part 'idea_questions_initializer.dart';
-
-class LinuxBlurContainer extends StatelessWidget {
-  const LinuxBlurContainer({
-    required final this.child,
-    final Key? key,
-  }) : super(key: key);
-  final Widget child;
-  @override
-  Widget build(final BuildContext context) {
-    if (!Platform.isLinux) return child;
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: const SizedBox.expand().blurred(
-              colorOpacity: 0.4,
-              blurColor: AppColors.black,
-            ),
-          ),
-          Positioned.fill(child: child),
-        ],
-      ),
-    );
-  }
-}
 
 class AppProvider extends StatelessWidget {
   const AppProvider({final Key? key}) : super(key: key);
@@ -60,10 +32,8 @@ class AppProvider extends StatelessWidget {
       child: ProviderScope(
         child: SettingsStateScope(
           notifier: _settings,
-          child: const LinuxBlurContainer(
-            child: AppStoreInitializer(
-              child: AppScaffold(),
-            ),
+          child: const AppStoreInitializer(
+            child: AppScaffold(),
           ),
         ),
       ),

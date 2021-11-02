@@ -100,6 +100,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
     Page notePage() => MaterialPage<void>(
           key: _ideasIdeaKey,
           restorationId: routeState.route.path,
+          fullscreenDialog: isNativeDesktop,
           name: routeState.route.path,
           child: willPopScope(
             child: NoteProjectScreen(
@@ -117,6 +118,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
         );
     Page ideaPage() => MaterialPage<void>(
           key: _ideasIdeaKey,
+          fullscreenDialog: isNativeDesktop,
           restorationId: routeState.route.path,
           name: routeState.route.path,
           child: willPopScope(

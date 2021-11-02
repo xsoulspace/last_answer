@@ -1,3 +1,8 @@
+## 3.9.1+14
+
+- feat: transparent theme for macOS
+- feat: transparent theme for ubuntu
+
 ## 3.8.1+12
 
 - feat: Privacy Policy

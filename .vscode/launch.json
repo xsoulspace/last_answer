@@ -44,13 +44,13 @@
       "name": "universal debug",
       "type": "dart",
       "request": "launch",
-      "args": ["--debug"]
+      "args": ["debug"]
     },
     {
       "name": "universal profile",
       "type": "dart",
       "request": "launch",
-      "args": ["--profile"]
+      "args": ["profile"]
     }
   ]
 }

@@ -1,6 +1,6 @@
 part of app_provider;
 
-Future<Box<T>> openAnyway<T>(final String boxName) async {
+Future<Box<T>> _openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
     // ignore: avoid_catches_without_on_clauses
@@ -30,11 +30,7 @@ class AppStoreInitializer extends ConsumerWidget {
         settings
           ..appInitialStateLoaded = true
           ..appInitialStateIsLoading = true;
-        if (Platform.isLinux) {
-          await Window.setEffect(
-            effect: WindowEffect.transparent,
-          );
-        }
+
         final settingsState = SettingsStateScope.of(context);
         await settingsState.load();
 

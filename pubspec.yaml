@@ -74,6 +74,7 @@ dev_dependencies:
   mocktail: ^0.2.0
 
 # flutter pub run flutter_launcher_icons:main
+# generate for macos https://appicon.co
 flutter_icons:
   image_path: "assets/icons/logo.png"
   ios: true

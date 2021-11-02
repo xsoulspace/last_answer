@@ -26,12 +26,19 @@ You need to write it down fast.
 Then this app is for you.
 
 Follow questions, write as many answers as you can.
-
 As a result, you will get a quick description of the idea.
+
+Or just write a quick note.
 
 That's it!:)
 
-Also, you can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+**Features**
+
+- Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
+- Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+- Dark & Light themes
+- English, Italian, Russian languages
+- Responsive layout - choose what you like - full screen or in a small window
 
 Hope this app will be useful for you :)
 Thank you and have a nice day.
@@ -40,15 +47,11 @@ Thank you and have a nice day.
 
 ## Have an idea, improvements, or bugs? Want to join development?
 
-`Contributions are welcome` 🎉🎉
-[Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
-
-Please read [Code of Conduct](CODE_OF_CONDUCT.md) before get started.
+[Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
 
 ---
 
 ## Support Development
 
 You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
-
 Thank you for your support!

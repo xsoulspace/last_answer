@@ -10,6 +10,7 @@ class _VerticalProjectsBar extends StatelessWidget {
   final VoidCallback onNoteTap;
   @override
   Widget build(final BuildContext context) {
+    final themeDefiner = ThemeDefiner.of(context);
     return Padding(
       padding: const EdgeInsets.only(
         left: 6,
@@ -24,7 +25,9 @@ class _VerticalProjectsBar extends StatelessWidget {
         // TODO(arenukvern): add gradient
         decoration: BoxDecoration(
           borderRadius: defaultBorderRadius,
-          color: Theme.of(context).splashColor.withOpacity(0.05),
+          color: themeDefiner.themeToUse == ThemeToUse.fromContext
+              ? Theme.of(context).splashColor.withOpacity(0.05)
+              : null,
         ),
         child: Wrap(
           direction: Axis.vertical,

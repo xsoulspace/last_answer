@@ -25,6 +25,8 @@ final lightThemeData = _lightBase.copyWith(
         MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
     interactive: true,
   ),
+  scaffoldBackgroundColor:
+      isNativeDesktop ? Colors.transparent : _lightBase.scaffoldBackgroundColor,
   // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
@@ -56,9 +58,8 @@ final darkThemeData = _darkBase.copyWith(
     trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
   ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  // TODO(arenukvern): for transparent background
-  // scaffoldBackgroundColor:
-  //     Platform.isMacOS ? Colors.transparent : _darkBase.scaffoldBackgroundColor,
+  scaffoldBackgroundColor:
+      isNativeDesktop ? Colors.transparent : _darkBase.scaffoldBackgroundColor,
   cardColor: AppColors.grey1.withOpacity(0.5),
   splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(

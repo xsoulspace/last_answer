@@ -5,5 +5,7 @@ final isDesktop = defaultTargetPlatform == TargetPlatform.linux ||
     defaultTargetPlatform == TargetPlatform.macOS ||
     defaultTargetPlatform == TargetPlatform.windows;
 
+final isNativeDesktop = Platform.isMacOS || Platform.isLinux;
+
 final isAppleDevice = defaultTargetPlatform == TargetPlatform.macOS ||
     defaultTargetPlatform == TargetPlatform.iOS;

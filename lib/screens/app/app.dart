@@ -3,7 +3,6 @@ library app_provider;
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
@@ -31,11 +30,19 @@ class LinuxBlurContainer extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     if (!Platform.isLinux) return child;
-    return Stack(
-      children: [
-        Positioned.fill(child: Container().blurred()),
-        Positioned.fill(child: child),
-      ],
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: const SizedBox.expand().blurred(
+              colorOpacity: 0.4,
+              blurColor: AppColors.black,
+            ),
+          ),
+          Positioned.fill(child: child),
+        ],
+      ),
     );
   }
 }

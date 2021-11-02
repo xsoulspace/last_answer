@@ -9,6 +9,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isLinux) {
     await Window.initialize();
+    await Window.setEffect(
+      effect: WindowEffect.transparent,
+    );
   }
   await Hive.initFlutter();
   Hive

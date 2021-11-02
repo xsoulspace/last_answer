@@ -33,12 +33,19 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
   @override
   Widget build(final BuildContext context) {
     final textController = useTextEditingController();
-
+    final effectiveInputDecoration = const InputDecoration()
+        .applyDefaults(
+          Theme.of(context).inputDecorationTheme,
+        )
+        .copyWith(
+          hintText: S.current.createIdeaHelperText,
+          border: const UnderlineInputBorder(),
+        );
     return Scaffold(
-      appBar: AppBar(
-        leading: CloseButton(
-          onPressed: widget.onBack,
-        ),
+      backgroundColor: Theme.of(context).canvasColor,
+      appBar: BackTextUniversalAppBar(
+        titleStr: '',
+        onBack: widget.onBack,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 8),
@@ -70,14 +77,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                           controller: textController,
                           maxLength: 90,
                           style: Theme.of(context).textTheme.headline1,
-                          decoration: const InputDecoration()
-                              .applyDefaults(
-                                Theme.of(context).inputDecorationTheme,
-                              )
-                              .copyWith(
-                                hintText: S.current.createIdeaHelperText,
-                                border: const UnderlineInputBorder(),
-                              ),
+                          decoration: effectiveInputDecoration,
                         ),
                       ),
                       const SizedBox(width: 6),

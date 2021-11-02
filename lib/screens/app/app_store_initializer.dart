@@ -30,10 +30,11 @@ class AppStoreInitializer extends ConsumerWidget {
         settings
           ..appInitialStateLoaded = true
           ..appInitialStateIsLoading = true;
-        await Window.setEffect(
-          effect: WindowEffect.acrylic,
-          color: const Color(0xCC222222),
-        );
+        if (Platform.isLinux) {
+          await Window.setEffect(
+            effect: WindowEffect.transparent,
+          );
+        }
         final settingsState = SettingsStateScope.of(context);
         await settingsState.load();
 

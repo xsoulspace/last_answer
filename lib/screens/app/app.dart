@@ -53,8 +53,10 @@ class AppProvider extends StatelessWidget {
       child: ProviderScope(
         child: SettingsStateScope(
           notifier: _settings,
-          child: const AppStoreInitializer(
-            child: AppScaffold(),
+          child: const LinuxBlurContainer(
+            child: AppStoreInitializer(
+              child: AppScaffold(),
+            ),
           ),
         ),
       ),

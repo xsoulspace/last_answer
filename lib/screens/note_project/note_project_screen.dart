@@ -47,14 +47,10 @@ class NoteProjectScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'notes/$noteId',
-      appBar: AppBar(
-        centerTitle: true,
-        leading: BackButton(
-          onPressed: () => back(context: context, note: note.value),
-        ),
-        actions: const [
-          SizedBox(width: 10),
-        ],
+      appBar: BackTextUniversalAppBar(
+        useBackButton: true,
+        titleStr: '',
+        onBack: () => back(context: context, note: note.value),
       ),
       body: Center(
         child: Padding(

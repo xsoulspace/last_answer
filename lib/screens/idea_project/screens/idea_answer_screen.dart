@@ -49,11 +49,8 @@ class IdeaAnswerScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'ideas/$ideaId/$answerId',
-      appBar: AppBar(
-        centerTitle: true,
-        leading: CloseButton(
-          onPressed: () => back(idea: maybeIdea, context: context),
-        ),
+      appBar: BackTextUniversalAppBar(
+        useBackButton: true,
         title: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 252),
           child: HeroId(
@@ -65,6 +62,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
             ),
           ),
         ),
+        onBack: () => back(idea: maybeIdea, context: context),
       ),
       body: Center(
         child: Padding(

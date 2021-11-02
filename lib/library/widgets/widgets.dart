@@ -24,6 +24,7 @@ import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:universal_io/io.dart';
 
 part 'choosable_bubble.dart';
 part 'circular_loader.dart';
@@ -45,6 +46,7 @@ part 'icon_settings_button.dart';
 part 'icon_share_button.dart';
 part 'icon_story_button.dart';
 part 'icon_submit_button.dart';
+part 'macos_appbar.dart';
 part 'note_tile.dart';
 part 'project_text_field.dart';
 part 'project_tile.dart';

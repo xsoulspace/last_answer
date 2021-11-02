@@ -141,35 +141,61 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
     );
     final greeting = Greeting();
     final effectiveTheme = ThemeDefiner.of(context).effectiveTheme;
-    final appBar = AppBar(
-      // TODO(arenukvern): make popup with translation for native language
-      title: SelectableText(
-        greeting.current,
-        style: effectiveTheme.textTheme.headline2,
-      ),
-      actions: [
-        IconButton(
-          onPressed: widget.onInfoTap,
-          icon: const Icon(Icons.info_outline),
-        ),
-        IconButton(
-          onPressed: widget.onSettingsTap,
-          icon: const Icon(Icons.settings),
-        ),
-      ]
-          .map(
-            (final child) => Padding(
-              padding: const EdgeInsets.only(right: 18),
-              child: child,
+
+    AppBar createAppBar() {
+      if (Platform.isMacOS) {
+        return LeftPanelMacosAppBar(
+          context: context,
+          title: greeting.current,
+          actions: [
+            IconButton(
+              onPressed: widget.onInfoTap,
+              icon: const Icon(Icons.info_outline),
             ),
-          )
-          .toList(),
-    );
+            IconButton(
+              onPressed: widget.onSettingsTap,
+              icon: const Icon(Icons.settings),
+            ),
+          ]
+              .map(
+                (final child) => Padding(
+                  padding: const EdgeInsets.only(right: 18),
+                  child: child,
+                ),
+              )
+              .toList(),
+        );
+      }
+      return AppBar(
+        // TODO(arenukvern): make popup with translation for native language
+        title: SelectableText(
+          greeting.current,
+          style: effectiveTheme.textTheme.headline2,
+        ),
+        actions: [
+          IconButton(
+            onPressed: widget.onInfoTap,
+            icon: const Icon(Icons.info_outline),
+          ),
+          IconButton(
+            onPressed: widget.onSettingsTap,
+            icon: const Icon(Icons.settings),
+          ),
+        ]
+            .map(
+              (final child) => Padding(
+                padding: const EdgeInsets.only(right: 18),
+                child: child,
+              ),
+            )
+            .toList(),
+      );
+    }
 
     return Theme(
       data: effectiveTheme,
       child: Scaffold(
-        appBar: appBar,
+        appBar: createAppBar(),
         body: Row(
           children: [
             const SizedBox(height: 2),

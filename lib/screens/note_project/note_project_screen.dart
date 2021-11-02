@@ -45,6 +45,7 @@ class NoteProjectScreen extends HookConsumerWidget {
     });
 
     return Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'notes/$noteId',
       appBar: AppBar(
         centerTitle: true,

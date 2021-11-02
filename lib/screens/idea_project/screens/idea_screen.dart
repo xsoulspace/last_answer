@@ -46,6 +46,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'ideas/scaffold/$ideaId',
       appBar: AppBar(
         centerTitle: true,

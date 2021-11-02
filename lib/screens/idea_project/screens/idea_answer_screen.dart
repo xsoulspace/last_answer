@@ -47,6 +47,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
       answer.value.save();
     });
     return Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'ideas/$ideaId/$answerId',
       appBar: AppBar(
         centerTitle: true,

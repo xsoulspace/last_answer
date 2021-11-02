@@ -61,7 +61,9 @@ class LargeHomeScreen extends StatelessWidget {
         ),
         if (rightColumn > 0)
           Container(
-            color: Theme.of(context).canvasColor,
+            color: isNativeDesktop
+                ? Theme.of(context).canvasColor.withOpacity(0.9)
+                : Theme.of(context).canvasColor,
             width: rightColumn,
           ),
       ],

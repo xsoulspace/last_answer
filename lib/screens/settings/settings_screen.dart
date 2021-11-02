@@ -19,11 +19,11 @@ class SettingsScreen extends StatelessWidget {
     final _initLocale =
         namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: onBack,
-        ),
-        title: Text(S.current.settings),
+      backgroundColor: Theme.of(context).canvasColor,
+      appBar: BackTextUniversalAppBar(
+        useBackButton: true,
+        onBack: onBack,
+        titleStr: S.current.settings,
       ),
       body: ListView(
         shrinkWrap: true,

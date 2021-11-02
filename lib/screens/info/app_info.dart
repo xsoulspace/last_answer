@@ -21,12 +21,10 @@ class AppInfoScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     final bodyText1Style = Theme.of(context).textTheme.bodyText1;
     return Scaffold(
-      appBar: AppBar(
-        leading: CloseButton(
-          onPressed: onBack,
-        ),
-        centerTitle: true,
-        title: Text(S.current.appInfo),
+      backgroundColor: Theme.of(context).canvasColor,
+      appBar: BackTextUniversalAppBar(
+        titleStr: S.current.appInfo,
+        onBack: onBack,
       ),
       body: Align(
         alignment: Alignment.topCenter,

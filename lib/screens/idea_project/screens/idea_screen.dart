@@ -48,12 +48,8 @@ class IdeaProjectScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'ideas/scaffold/$ideaId',
-      appBar: AppBar(
-        centerTitle: true,
-        leading: BackButton(
-          onPressed: onBack,
-        ),
-        toolbarHeight: 55,
+      appBar: BackTextUniversalAppBar(
+        useBackButton: true,
         title: ProjectTitleField(
           onFocus: closeQuestions,
           controller: titleController,
@@ -64,6 +60,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
             ideaUpdatesStream.add(true);
           },
         ),
+        onBack: onBack,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,

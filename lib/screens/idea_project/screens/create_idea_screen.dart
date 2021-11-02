@@ -43,10 +43,9 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
         );
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
-      appBar: AppBar(
-        leading: CloseButton(
-          onPressed: widget.onBack,
-        ),
+      appBar: BackTextUniversalAppBar(
+        titleStr: '',
+        onBack: widget.onBack,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 8),

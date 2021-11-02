@@ -1,9 +1,8 @@
 library app_provider;
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';

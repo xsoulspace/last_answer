@@ -9,10 +9,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isLinux) {
     await Window.initialize();
-    await Window.setEffect(
-      effect: WindowEffect.acrylic,
-      color: const Color(0xCC222222),
-    );
   }
   await Hive.initFlutter();
   Hive

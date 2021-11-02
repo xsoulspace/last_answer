@@ -1,5 +1,6 @@
 library app_provider;
 
+import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
@@ -16,9 +17,28 @@ import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/screens/app_navigator/app_navigator.dart';
 import 'package:lastanswer/screens/settings/settings.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 part 'app_store_initializer.dart';
 part 'idea_questions_initializer.dart';
+
+class LinuxBlurContainer extends StatelessWidget {
+  const LinuxBlurContainer({
+    required final this.child,
+    final Key? key,
+  }) : super(key: key);
+  final Widget child;
+  @override
+  Widget build(final BuildContext context) {
+    if (!Platform.isLinux) return child;
+    return Stack(
+      children: [
+        Positioned.fill(child: Container().blurred()),
+        Positioned.fill(child: child),
+      ],
+    );
+  }
+}
 
 class AppProvider extends StatelessWidget {
   const AppProvider({final Key? key}) : super(key: key);

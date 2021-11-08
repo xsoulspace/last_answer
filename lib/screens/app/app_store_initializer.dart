@@ -1,6 +1,6 @@
 part of app_provider;
 
-Future<Box<T>> openAnyway<T>(final String boxName) async {
+Future<Box<T>> _openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
     // ignore: avoid_catches_without_on_clauses

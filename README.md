@@ -7,13 +7,24 @@
   <a title="Contributors" href="https://github.com/xsoulspace/last_answer/graphs/contributors" ><img src="https://img.shields.io/github/contributors/xsoulspace/last_answer.svg" /></a>
 </p>
 
+## Desktop
+
 <p align="center">
   <a href="https://snapcraft.io/last-answer">
-    <img  alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
+    <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
   </a>
+  <br>
+  <a href="https://apps.apple.com/us/app/lastanswer-brainstorm-notes/id1592159945?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-mac-app-store/black/en-us?size=250x83&amp;releaseDate=1635811200&h=7b4ee31f392c6d52e26a1a9bff14996f" alt="Download on the Mac App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"></a>
+</p>
+
+## Touch/mobile devices
+
+<p align="center">
   <a href='https://play.google.com/store/apps/details?id=dev.xsoulspace.lastanswer&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
     <img height="90px"; alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
   </a>
+  <a href="https://apps.apple.com/us/app/lastanswer-brainstorm-notes/id1592159945?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 67px;"><img  src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1635811200&h=c0b39b674d1eebdbed8e027d3291b23c" alt="Download on the App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"></a>
+  
 </p>
 
 ---

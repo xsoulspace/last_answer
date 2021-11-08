@@ -18,42 +18,44 @@ class EmojiPopup extends HookWidget {
       portalAnchor:
           screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
-      portal: EmojiGrid(
-        onChanged: (final emoji) {
-          void addEmoji() {
-            final emojiChar = emoji.emoji;
-            // Get cursor current position
-            final cursorPos = controller.selection.base.offset;
+      portal: MouseRegion(
+        onExit: (final _) => popupVisible.value = false,
+        child: EmojiGrid(
+          onChanged: (final emoji) {
+            void addEmoji() {
+              final emojiChar = emoji.emoji;
+              // Get cursor current position
+              final cursorPos = controller.selection.base.offset;
 
-            // Right text of cursor position
-            final suffixText = controller.text.substring(cursorPos);
+              // Right text of cursor position
+              final suffixText = controller.text.substring(cursorPos);
 
-            // Add new text on cursor position
-            final length = emojiChar.length;
+              // Add new text on cursor position
+              final length = emojiChar.length;
 
-            // Get the left text of cursor
-            final prefixText = controller.text.substring(0, cursorPos);
-            controller
-              ..text = prefixText + emojiChar + suffixText
+              // Get the left text of cursor
+              final prefixText = controller.text.substring(0, cursorPos);
+              controller
+                ..text = prefixText + emojiChar + suffixText
 
-              // Cursor move to end of added text
-              ..selection = TextSelection(
-                baseOffset: cursorPos + length,
-                extentOffset: cursorPos + length,
-              );
-            focusNode.removeListener(addEmoji);
-          }
+                // Cursor move to end of added text
+                ..selection = TextSelection(
+                  baseOffset: cursorPos + length,
+                  extentOffset: cursorPos + length,
+                );
+              focusNode.removeListener(addEmoji);
+            }
 
-          if (!focusNode.hasFocus) {
-            if (!focusNode.canRequestFocus) return;
-            focusNode
-              ..addListener(addEmoji)
-              ..requestFocus();
-          } else {
-            addEmoji();
-          }
-        },
-        onClose: () => popupVisible.value = false,
+            if (!focusNode.hasFocus) {
+              if (!focusNode.canRequestFocus) return;
+              focusNode
+                ..addListener(addEmoji)
+                ..requestFocus();
+            } else {
+              addEmoji();
+            }
+          },
+        ),
       ),
       child: MouseRegion(
         onHover: (final _) => popupVisible.value = true,
@@ -69,11 +71,9 @@ class EmojiPopup extends HookWidget {
 class EmojiGrid extends HookConsumerWidget {
   const EmojiGrid({
     required final this.onChanged,
-    required final this.onClose,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
-  final VoidCallback onClose;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final emojis = ref.watch(filteredEmojisProvider);
@@ -190,24 +190,22 @@ class EmojiGrid extends HookConsumerWidget {
                 ),
                 Material(
                   color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        // constraints: BoxConstraints(maxHeight: 24),
-                        icon: const Icon(Icons.close), iconSize: 14,
-                        onPressed: onClose,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          onChanged: emojiKeywordStream.add,
-                          decoration: const InputDecoration()
-                              .applyDefaults(theme.inputDecorationTheme)
-                              .copyWith(
-                                hintText: S.current.search,
-                              ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onChanged: emojiKeywordStream.add,
+                            decoration: const InputDecoration()
+                                .applyDefaults(theme.inputDecorationTheme)
+                                .copyWith(
+                                  hintText: S.current.search,
+                                ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

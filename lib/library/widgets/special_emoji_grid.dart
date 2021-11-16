@@ -39,14 +39,14 @@ class SpecialEmojiButton extends HookWidget {
   }
 }
 
-class SpecialEmojisGrid extends StatelessWidget {
+class SpecialEmojisGrid extends ConsumerWidget {
   const SpecialEmojisGrid({
     required final this.onChanged,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
   @override
-  Widget build(final BuildContext context) {
+  Widget build(final BuildContext context, final WidgetRef ref) {
     Widget buildEmojiButton(final Emoji emoji) {
       return EmojiButton(
         key: ValueKey(emoji),
@@ -55,13 +55,14 @@ class SpecialEmojisGrid extends StatelessWidget {
       );
     }
 
+    final emojis = ref.watch(specialEmojisProvider).values;
     const maxItemsInRow = 9;
 
     return ButtonPopup(
       children: [
         Expanded(
           child: GridView.count(
-            restorationId: 'emojis-grid',
+            restorationId: 'special-emojis-grid',
             shrinkWrap: true,
             crossAxisCount: maxItemsInRow,
             semanticChildCount: emojis.length,

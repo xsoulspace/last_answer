@@ -15,7 +15,7 @@ class SpecialEmojiPopup extends HookWidget {
     required final ValueChanged<Emoji> onChanged,
     required final VoidCallback onClose,
   }) {
-    if (!ScreenLayout.of(context).small) return null;
+    if (isDesktop) return null;
     if (toOpen) {
       final emojiGrid = SpecialEmojisGrid(
         onChanged: (final emoji) {
@@ -86,9 +86,7 @@ class SpecialEmojiPopup extends HookWidget {
       onPressed: () => popupVisible.value = true,
       icon: const Icon(Icons.emoji_flags_outlined),
     );
-    if (ScreenLayout.of(context).small) {
-      return emojiButton;
-    }
+    if (!isDesktop) return emojiButton;
 
     return PortalEntry(
       visible: popupVisible.value,

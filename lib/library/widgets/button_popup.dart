@@ -4,16 +4,23 @@ class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
     required final this.children,
     final this.height,
+    final this.hideBorder = false,
     final Key? key,
   }) : super(key: key);
   final List<Widget> children;
   final double? height;
+  final bool hideBorder;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final borderColor = theme.brightness == Brightness.dark
-        ? AppColors.cleanBlack
-        : AppColors.grey4;
+    Color borderColor;
+    if (hideBorder) {
+      borderColor = Colors.transparent;
+    } else if (theme.brightness == Brightness.dark) {
+      borderColor = AppColors.cleanBlack;
+    } else {
+      borderColor = AppColors.grey4;
+    }
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,

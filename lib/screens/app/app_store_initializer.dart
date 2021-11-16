@@ -41,6 +41,11 @@ class AppStoreInitializer extends ConsumerWidget {
             .read(emojisProvider.notifier)
             .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
+        final specialEmojis = await EmojiUtil.getList(context);
+        ref
+            .read(specialEmojisProvider.notifier)
+            .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
+
         final lastUsedEmojis = await EmojiUtil().load();
         ref.read(lastUsedEmojisProvider.notifier).putAll(lastUsedEmojis);
 
@@ -57,16 +62,16 @@ class AppStoreInitializer extends ConsumerWidget {
         final questions = await Hive.openBox<IdeaProjectQuestion>(
           HiveBoxesIds.ideaProjectQuestionKey,
         );
-        // TODO(arenukvern): uncomment when all devices will be updated
-        /// to new version ^3.6
 
-        // if (questions.isEmpty) {
-        await questions.putAll(
-          Map.fromEntries(
-            _initialQuestions.map((final e) => MapEntry(e.id, e)),
-          ),
-        );
-        // }
+        // TODO(arenukvern): comment when all devices will be updated
+        /// to new version ^3.6
+        if (questions.isEmpty) {
+          await questions.putAll(
+            Map.fromEntries(
+              _initialQuestions.map((final e) => MapEntry(e.id, e)),
+            ),
+          );
+        }
         settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
         ref.read(ideaProjectQuestionsProvider.notifier).putAll(

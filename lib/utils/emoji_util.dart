@@ -13,6 +13,17 @@ class EmojiUtil
     return emojiList.map(Emoji.fromJson);
   }
 
+  static Future<Iterable<Emoji>> getSpecialList(
+    final BuildContext context,
+  ) async {
+    final emojisStr =
+        await DefaultAssetBundle.of(context).loadString(Assets.specialEmoji);
+    final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
+      jsonDecode(emojisStr),
+    );
+    return emojiList.map(Emoji.fromJson);
+  }
+
   @override
   Future<Map<String, Emoji>> load() async {
     final map = await getMap(SharedPreferencesKeys.lastUsedEmojis);

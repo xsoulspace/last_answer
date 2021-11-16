@@ -3,9 +3,11 @@ part of widgets;
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
     required final this.children,
+    final this.height,
     final Key? key,
   }) : super(key: key);
   final List<Widget> children;
+  final double? height;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -23,7 +25,7 @@ class ButtonPopup extends StatelessWidget {
         ),
       ),
       child: SizedBox(
-        height: 320,
+        height: height ?? 320,
         width: 250,
         child: Stack(
           children: [

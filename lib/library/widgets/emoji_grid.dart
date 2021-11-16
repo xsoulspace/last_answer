@@ -11,8 +11,17 @@ class EmojiPopup extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
+    final popupHovered = useIsBool();
+
+    Future<void> onClose() async {
+      await Future.delayed(const Duration(milliseconds: 300), () {
+        if (popupHovered.value) return;
+        popupVisible.value = false;
+      });
+    }
+
     final screenLayout = ScreenLayout.of(context);
-    if (screenLayout.small && !isDesktop) return const SizedBox();
+    if (!isDesktop) return const SizedBox();
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
@@ -23,13 +32,18 @@ class EmojiPopup extends HookWidget {
           screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
       portal: MouseRegion(
-        onExit: (final _) => popupVisible.value = false,
+        onExit: (final _) async {
+          popupHovered.value = false;
+          await onClose();
+        },
+        onHover: (final _) => popupHovered.value = true,
         child: EmojiGrid(
           onChanged: emojiInserter.insert,
         ),
       ),
       child: MouseRegion(
         onHover: (final _) => popupVisible.value = true,
+        onExit: (final _) async => onClose(),
         child: IconButton(
           onPressed: () => popupVisible.value = true,
           icon: const Icon(Icons.emoji_emotions),

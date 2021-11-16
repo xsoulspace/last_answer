@@ -25,7 +25,7 @@ class EmojiPopup extends HookWidget {
       portal: MouseRegion(
         onExit: (final _) => popupVisible.value = false,
         child: EmojiGrid(
-          onChanged: emojiInserter.inseert,
+          onChanged: emojiInserter.insert,
         ),
       ),
       child: MouseRegion(
@@ -159,7 +159,7 @@ class EmojiInserter {
   final TextEditingController controller;
   final FocusNode focusNode;
 
-  void inseert(final Emoji emoji) {
+  void insert(final Emoji emoji) {
     void addEmoji() {
       final emojiChar = emoji.emoji;
       // Get cursor current position

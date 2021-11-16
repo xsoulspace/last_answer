@@ -1,5 +1,6 @@
 part of app_provider;
 
+/// use for data migrations only
 Future<Box<T>> _openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
@@ -41,7 +42,7 @@ class AppStoreInitializer extends ConsumerWidget {
             .read(emojisProvider.notifier)
             .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
-        final specialEmojis = await EmojiUtil.getList(context);
+        final specialEmojis = await EmojiUtil.getSpecialList(context);
         ref
             .read(specialEmojisProvider.notifier)
             .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));

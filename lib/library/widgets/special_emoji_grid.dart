@@ -65,11 +65,18 @@ class SpecialEmojiPopup extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
+    final popupHovered = useIsBool();
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
     );
-    void onClose() => popupVisible.value = false;
+    Future<void> onClose() async {
+      await Future.delayed(const Duration(milliseconds: 300), () {
+        if (popupHovered.value) return;
+        popupVisible.value = false;
+      });
+    }
+
     useValueChanged<bool, bool>(
       popupVisible.value,
       (final _, final __) => onPopupChange(
@@ -81,7 +88,8 @@ class SpecialEmojiPopup extends HookWidget {
     );
 
     final screenLayout = ScreenLayout.of(context);
-    if (screenLayout.small && !isDesktop) return const SizedBox();
+    if (!isDesktop) return const SizedBox();
+
     final emojiButton = IconButton(
       onPressed: () => popupVisible.value = true,
       icon: const Icon(Icons.emoji_flags_outlined),
@@ -94,13 +102,20 @@ class SpecialEmojiPopup extends HookWidget {
           screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
       portal: MouseRegion(
-        onExit: (final _) => onClose(),
+        onExit: (final _) async {
+          popupHovered.value = false;
+          await onClose();
+        },
+        onHover: (final _) => popupHovered.value = true,
         child: SpecialEmojisGrid(
           onChanged: emojiInserter.insert,
         ),
       ),
       child: MouseRegion(
-        onHover: (final _) => popupVisible.value = true,
+        onHover: (final _) {
+          popupVisible.value = true;
+        },
+        onExit: (final _) async => onClose(),
         child: emojiButton,
       ),
     );

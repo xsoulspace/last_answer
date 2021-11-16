@@ -30,13 +30,13 @@ class ButtonPopup extends StatelessWidget {
         child: Stack(
           children: [
             ColoredBox(
-              color: theme.canvasColor.withOpacity(0.3),
+              color: theme.canvasColor.withOpacity(0),
               child: const SizedBox.expand(),
             ).frosted(
-              blur: theme.brightness == Brightness.dark ? 10 : 7,
+              blur: theme.brightness == Brightness.dark ? 15 : 12,
               frostOpacity: 0.1,
               frostColor: theme.brightness == Brightness.dark
-                  ? AppColors.cleanBlack
+                  ? AppColors.black
                   : AppColors.white,
             ),
             Column(

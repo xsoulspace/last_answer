@@ -9,56 +9,55 @@ class SpecialEmojiPopup extends HookWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
 
-  bool? onPopupChange({
+  bool? onOpenPopup({
     required final BuildContext context,
-    required final bool toOpen,
     required final ValueChanged<Emoji> onChanged,
     required final VoidCallback onClose,
   }) {
     if (isDesktop) return null;
-    if (toOpen) {
-      final emojiGrid = SpecialEmojisGrid(
-        onChanged: (final emoji) {
-          onChanged(emoji);
-          onClose();
-        },
-      );
-      if (isAppleDevice) {
-        showCupertinoDialog(
-          context: context,
-          builder: (final _) {
-            return CupertinoAlertDialog(
-              actions: [
-                CupertinoDialogAction(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(S.current.close.titleCase),
-                ),
-              ],
-              content: emojiGrid,
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (final _) {
-            return AlertDialog(
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    S.current.close.toUpperCase(),
-                  ),
-                ),
-              ],
-              content: emojiGrid,
-            );
-          },
-        );
-      }
-    } else {
+    void close(final BuildContext context) {
+      onClose();
       Navigator.maybePop(context);
     }
+
+    Widget buildEmojiGrid(final BuildContext context) => SpecialEmojisGrid(
+          onChanged: onChanged,
+          hideBorder: true,
+        );
+    if (isAppleDevice) {
+      showCupertinoDialog(
+        context: context,
+        builder: (final context) {
+          return CupertinoAlertDialog(
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () => close(context),
+                child: Text(S.current.close.titleCase),
+              ),
+            ],
+            content: buildEmojiGrid(context),
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (final context) {
+          return AlertDialog(
+            actions: [
+              TextButton(
+                onPressed: () => close(context),
+                child: Text(
+                  S.current.close.toUpperCase(),
+                ),
+              ),
+            ],
+            content: buildEmojiGrid(context),
+          );
+        },
+      );
+    }
+
     return null;
   }
 
@@ -79,12 +78,16 @@ class SpecialEmojiPopup extends HookWidget {
 
     useValueChanged<bool, bool>(
       popupVisible.value,
-      (final _, final __) => onPopupChange(
-        context: context,
-        toOpen: popupVisible.value,
-        onChanged: emojiInserter.insert,
-        onClose: onClose,
-      ),
+      (final _, final __) {
+        if (!popupVisible.value) return;
+        WidgetsBinding.instance?.addPostFrameCallback((final _) {
+          onOpenPopup(
+            context: context,
+            onChanged: emojiInserter.insert,
+            onClose: () => popupVisible.value = false,
+          );
+        });
+      },
     );
 
     final screenLayout = ScreenLayout.of(context);
@@ -95,7 +98,6 @@ class SpecialEmojiPopup extends HookWidget {
       icon: const Icon(Icons.emoji_flags_outlined),
     );
     if (!isDesktop) return emojiButton;
-
     return PortalEntry(
       visible: popupVisible.value,
       portalAnchor:
@@ -125,9 +127,11 @@ class SpecialEmojiPopup extends HookWidget {
 class SpecialEmojisGrid extends ConsumerWidget {
   const SpecialEmojisGrid({
     required final this.onChanged,
+    final this.hideBorder = false,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
+  final bool hideBorder;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     Widget buildEmojiButton(final Emoji emoji) {
@@ -143,6 +147,7 @@ class SpecialEmojisGrid extends ConsumerWidget {
 
     return ButtonPopup(
       height: 80,
+      hideBorder: hideBorder,
       children: [
         Expanded(
           child: GridView.count(

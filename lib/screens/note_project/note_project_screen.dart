@@ -81,6 +81,10 @@ class NoteProjectScreen extends HookConsumerWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          SpecialEmojiPopup(
+                            controller: noteController,
+                            focusNode: noteFocusNode,
+                          ),
                           SizedBox(
                             height: 34,
                             width: 48,
@@ -91,12 +95,18 @@ class NoteProjectScreen extends HookConsumerWidget {
                               },
                             ),
                           ),
-                          const SizedBox(height: 20),
                           EmojiPopup(
                             controller: noteController,
                             focusNode: noteFocusNode,
                           ),
-                        ],
+                        ]
+                            .map(
+                              (final e) => Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: e,
+                              ),
+                            )
+                            .toList(),
                       ),
                     ],
                   ),

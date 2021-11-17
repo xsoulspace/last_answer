@@ -9,9 +9,11 @@ class LargeHomeScreen extends StatelessWidget {
     required final this.onCreateNoteTap,
     required final this.mainScreenNavigator,
     required final this.onGoHome,
+    required final this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<BasicProject> onProjectTap;
+  final BoolValueChanged<BasicProject> checkIsProjectActive;
   final VoidCallback onSettingsTap;
   final VoidCallback onInfoTap;
   final VoidCallback onCreateIdeaTap;
@@ -34,6 +36,7 @@ class LargeHomeScreen extends StatelessWidget {
           child: SmallHomeScreen(
             verticalMenuAlignment: Alignment.bottomRight,
             onGoHome: onGoHome,
+            checkIsProjectActive: checkIsProjectActive,
             onCreateIdeaTap: onCreateIdeaTap,
             onCreateNoteTap: onCreateNoteTap,
             onInfoTap: onInfoTap,

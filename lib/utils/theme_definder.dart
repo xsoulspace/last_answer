@@ -33,4 +33,6 @@ class ThemeDefiner {
       return ThemeToUse.fromContext;
     }
   }
+
+  bool get useContextTheme => themeToUse == ThemeToUse.fromContext;
 }

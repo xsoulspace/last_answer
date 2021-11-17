@@ -3,7 +3,7 @@ part of abstract;
 class Greeting {
   Greeting() : _random = Random();
   final Random _random;
-  int get _randomMax => morning.values.length - 1;
+  int get _randomMax => morning.values.length;
   int get _randomMin => 0;
   int _nextRandom() => _randomMin + _random.nextInt(_randomMax - _randomMin);
 

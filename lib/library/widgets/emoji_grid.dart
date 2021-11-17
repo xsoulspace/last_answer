@@ -11,54 +11,39 @@ class EmojiPopup extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
+    final popupHovered = useIsBool();
+
+    Future<void> onClose() async {
+      await Future.delayed(const Duration(milliseconds: 300), () {
+        if (popupHovered.value) return;
+        popupVisible.value = false;
+      });
+    }
+
     final screenLayout = ScreenLayout.of(context);
-    if (screenLayout.small && !isDesktop) return const SizedBox();
+    if (!isDesktop) return const SizedBox();
+    final emojiInserter = EmojiInserter.use(
+      controller: controller,
+      focusNode: focusNode,
+    );
     return PortalEntry(
       visible: popupVisible.value,
       portalAnchor:
           screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
       childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
       portal: MouseRegion(
-        onExit: (final _) => popupVisible.value = false,
+        onExit: (final _) async {
+          popupHovered.value = false;
+          await onClose();
+        },
+        onHover: (final _) => popupHovered.value = true,
         child: EmojiGrid(
-          onChanged: (final emoji) {
-            void addEmoji() {
-              final emojiChar = emoji.emoji;
-              // Get cursor current position
-              final cursorPos = controller.selection.base.offset;
-
-              // Right text of cursor position
-              final suffixText = controller.text.substring(cursorPos);
-
-              // Add new text on cursor position
-              final length = emojiChar.length;
-
-              // Get the left text of cursor
-              final prefixText = controller.text.substring(0, cursorPos);
-              controller
-                ..text = prefixText + emojiChar + suffixText
-
-                // Cursor move to end of added text
-                ..selection = TextSelection(
-                  baseOffset: cursorPos + length,
-                  extentOffset: cursorPos + length,
-                );
-              focusNode.removeListener(addEmoji);
-            }
-
-            if (!focusNode.hasFocus) {
-              if (!focusNode.canRequestFocus) return;
-              focusNode
-                ..addListener(addEmoji)
-                ..requestFocus();
-            } else {
-              addEmoji();
-            }
-          },
+          onChanged: emojiInserter.insert,
         ),
       ),
       child: MouseRegion(
         onHover: (final _) => popupVisible.value = true,
+        onExit: (final _) async => onClose(),
         child: IconButton(
           onPressed: () => popupVisible.value = true,
           icon: const Icon(Icons.emoji_emotions),
@@ -96,7 +81,7 @@ class EmojiGrid extends HookConsumerWidget {
         : AppColors.grey4;
     const maxItemsInRow = 9;
 
-    Widget emojiButton(final Emoji emoji) {
+    Widget buildEmojiButton(final Emoji emoji) {
       void onPressed() {
         onChanged(emoji);
         List<Emoji> newLastEmojis = [...lastEmojis.value];
@@ -114,105 +99,112 @@ class EmojiGrid extends HookConsumerWidget {
             );
       }
 
-      return CupertinoButton(
-        minSize: 0,
-        padding: EdgeInsets.zero,
+      return EmojiButton(
         key: ValueKey(emoji),
+        emoji: emoji,
         onPressed: onPressed,
-        child: Center(
-          child: Text(emoji.emoji),
-        ),
       );
     }
 
-    return Card(
-      elevation: 0,
-      clipBehavior: Clip.hardEdge,
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: defaultBorderRadius,
-        side: BorderSide(
-          color: borderColor,
+    return ButtonPopup(
+      children: [
+        Expanded(
+          child: GridView.count(
+            restorationId: 'emojis-grid',
+            shrinkWrap: true,
+            crossAxisCount: maxItemsInRow,
+            semanticChildCount: emojis.length,
+            padding: const EdgeInsets.only(right: 12),
+            children: emojis.map(buildEmojiButton).toList(),
+          ),
         ),
-      ),
-      child: SizedBox(
-        height: 320,
-        width: 250,
-        child: Stack(
-          children: [
-            ColoredBox(
-              color: theme.canvasColor.withOpacity(0.3),
-              child: const SizedBox.expand(),
-            ).frosted(
-              blur: theme.brightness == Brightness.dark ? 10 : 7,
-              frostOpacity: 0.1,
-              frostColor: theme.brightness == Brightness.dark
-                  ? AppColors.cleanBlack
-                  : AppColors.white,
+        Divider(color: borderColor, height: 1),
+        Visibility(
+          visible: lastEmojis.value.isNotEmpty,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 6,
+              bottom: 1,
+              left: 9,
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Text(
+              S.current.frequentlyUsed,
+              style: Theme.of(context).textTheme.subtitle2,
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ),
+        GridView.count(
+          restorationId: 'last-emojis-grid',
+          shrinkWrap: true,
+          crossAxisCount: maxItemsInRow,
+          semanticChildCount: lastEmojis.value.length,
+          reverse: true,
+          children: lastEmojis.value.map(buildEmojiButton).toList(),
+        ),
+        Material(
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               children: [
                 Expanded(
-                  child: GridView.count(
-                    restorationId: 'emojis-grid',
-                    shrinkWrap: true,
-                    crossAxisCount: maxItemsInRow,
-                    semanticChildCount: emojis.length,
-                    padding: const EdgeInsets.only(right: 12),
-                    children: emojis.map(emojiButton).toList(),
-                  ),
-                ),
-                Divider(color: borderColor, height: 1),
-                Visibility(
-                  visible: lastEmojis.value.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 6,
-                      bottom: 1,
-                      left: 9,
-                    ),
-                    child: Text(
-                      S.current.frequentlyUsed,
-                      style: Theme.of(context).textTheme.subtitle2,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ),
-                GridView.count(
-                  restorationId: 'last-emojis-grid',
-                  shrinkWrap: true,
-                  crossAxisCount: maxItemsInRow,
-                  semanticChildCount: lastEmojis.value.length,
-                  reverse: true,
-                  children: lastEmojis.value.map(emojiButton).toList(),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: emojiKeywordStream.add,
-                            decoration: const InputDecoration()
-                                .applyDefaults(theme.inputDecorationTheme)
-                                .copyWith(
-                                  hintText: S.current.search,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: TextField(
+                    onChanged: emojiKeywordStream.add,
+                    decoration: const InputDecoration()
+                        .applyDefaults(theme.inputDecorationTheme)
+                        .copyWith(hintText: S.current.search),
                   ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
+  }
+}
+
+class EmojiInserter {
+  EmojiInserter.use({
+    required final this.controller,
+    required final this.focusNode,
+  });
+  final TextEditingController controller;
+  final FocusNode focusNode;
+
+  void insert(final Emoji emoji) {
+    void addEmoji() {
+      final emojiChar = emoji.emoji;
+      // Get cursor current position
+      final cursorPos = controller.selection.base.offset;
+
+      // Right text of cursor position
+      final suffixText = controller.text.substring(cursorPos);
+
+      // Add new text on cursor position
+      final length = emojiChar.length;
+
+      // Get the left text of cursor
+      final prefixText = controller.text.substring(0, cursorPos);
+      controller
+        ..text = prefixText + emojiChar + suffixText
+
+        // Cursor move to end of added text
+        ..selection = TextSelection(
+          baseOffset: cursorPos + length,
+          extentOffset: cursorPos + length,
+        );
+      focusNode.removeListener(addEmoji);
+    }
+
+    if (!focusNode.hasFocus) {
+      if (!focusNode.canRequestFocus) return;
+      focusNode
+        ..addListener(addEmoji)
+        ..requestFocus();
+    } else {
+      addEmoji();
+    }
   }
 }

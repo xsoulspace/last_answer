@@ -13,6 +13,7 @@ class SmallHomeScreen extends StatefulWidget {
     required final this.onCreateIdeaTap,
     required final this.onCreateNoteTap,
     required final this.onGoHome,
+    required final this.checkIsProjectActive,
     final this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
   }) : super(key: key);
@@ -22,6 +23,7 @@ class SmallHomeScreen extends StatefulWidget {
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
   final Alignment verticalMenuAlignment;
+  final BoolValueChanged<BasicProject> checkIsProjectActive;
   final VoidCallback onGoHome;
 
   @override
@@ -46,11 +48,13 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     final themeDefiner = ThemeDefiner.of(context);
+    final screenLayout = ScreenLayout.of(context);
+    final effectiveTheme = themeDefiner.effectiveTheme;
+
     final verticalMenu = ColoredBox(
-      color: themeDefiner.themeToUse == ThemeToUse.fromContext
-          ? theme.primaryColor.withOpacity(.03)
+      color: themeDefiner.useContextTheme
+          ? effectiveTheme.primaryColor.withOpacity(.03)
           : Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -79,56 +83,64 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         S.current.noProjectsYet,
-                        style: Theme.of(context).textTheme.headline2,
+                        style: effectiveTheme.textTheme.headline2,
                       ),
                     ),
                   );
                 }
-                return Scrollbar(
-                  isAlwaysShown: true,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(5),
-                    reverse: true,
-                    shrinkWrap: true,
-                    restorationId: 'projects',
-                    itemBuilder: (final _, final i) {
-                      final project = projects[i];
-                      return ProjectTile(
-                        key: ValueKey(project.id),
-                        project: project,
-                        onSelected: changeProjectSelection,
-                        onTap: widget.onProjectTap,
-                        checkSelection: checkSelection,
-                        onRemove: (final _) async {
-                          if (project is IdeaProject) {
-                            await Future.forEach<IdeaProjectAnswer>(
-                              project.answers ?? [],
-                              (final answer) => answer.delete(),
+                return ListTileTheme(
+                  textColor: screenLayout.small
+                      ? null
+                      : effectiveTheme.textTheme.subtitle2?.color
+                          ?.withOpacity(0.7),
+                  child: Scrollbar(
+                    isAlwaysShown: !isDesktop,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(5),
+                      reverse: true,
+                      shrinkWrap: true,
+                      restorationId: 'projects',
+                      itemBuilder: (final _, final i) {
+                        final project = projects[i];
+                        return ProjectTile(
+                          key: ValueKey(project.id),
+                          project: project,
+                          themeDefiner: themeDefiner,
+                          onSelected: changeProjectSelection,
+                          onTap: widget.onProjectTap,
+                          checkSelection: checkSelection,
+                          isProjectActive: widget.checkIsProjectActive(project),
+                          onRemove: (final _) async {
+                            if (project is IdeaProject) {
+                              await Future.forEach<IdeaProjectAnswer>(
+                                project.answers ?? [],
+                                (final answer) => answer.delete(),
+                              );
+                              ref
+                                  .read(ideaProjectsProvider.notifier)
+                                  .remove(key: project.id);
+                            } else if (project is NoteProject) {
+                              ref
+                                  .read(noteProjectsProvider.notifier)
+                                  .remove(key: project.id);
+                            } else if (project is StoryProject) {
+                              // TODO(arenukvern): implement StoryProject removal
+                            }
+                            await project.delete();
+                            widget.onGoHome();
+                          },
+                          onRemoveConfirm: (final _) async {
+                            return showRemoveTitleDialog(
+                              context: context,
+                              title: project.title,
                             );
-                            ref
-                                .read(ideaProjectsProvider.notifier)
-                                .remove(key: project.id);
-                          } else if (project is NoteProject) {
-                            ref
-                                .read(noteProjectsProvider.notifier)
-                                .remove(key: project.id);
-                          } else if (project is StoryProject) {
-                            // TODO(arenukvern): implement StoryProject removal
-                          }
-                          await project.delete();
-                          widget.onGoHome();
-                        },
-                        onRemoveConfirm: (final _) async {
-                          return showRemoveTitleDialog(
-                            context: context,
-                            title: project.title,
-                          );
-                        },
-                      );
-                    },
-                    separatorBuilder: (final _, final __) =>
-                        const SizedBox(height: 3),
-                    itemCount: projects.length,
+                          },
+                        );
+                      },
+                      separatorBuilder: (final _, final __) =>
+                          const SizedBox(height: 3),
+                      itemCount: projects.length,
+                    ),
                   ),
                 );
               },
@@ -139,8 +151,8 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
+
     final greeting = Greeting();
-    final effectiveTheme = ThemeDefiner.of(context).effectiveTheme;
 
     AppBar createAppBar() {
       if (Platform.isMacOS) {

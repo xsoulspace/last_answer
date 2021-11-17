@@ -11,29 +11,35 @@ class ProjectTile extends StatelessWidget {
     required final this.checkSelection,
     required final this.onRemove,
     required final this.onRemoveConfirm,
+    required final this.themeDefiner,
+    required final this.isProjectActive,
     final Key? key,
   }) : super(key: key);
   final BasicProject project;
   final BoolValueChanged<BasicProject> checkSelection;
+  final bool isProjectActive;
   final ProjectSelectionChanged onSelected;
   final ValueChanged<BasicProject> onTap;
   final ValueChanged<BasicProject> onRemove;
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
+  final ThemeDefiner themeDefiner;
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final themeDefiner = ThemeDefiner.of(context);
-    final useContextTheme = themeDefiner.themeToUse == ThemeToUse.fromContext;
-    final effectiveLeadingIcon = () {
-      if (project is IdeaProject) {
-        return const SizedBox(
-          width: 14,
-          child: Align(
-            child: IconIdea(size: 14),
-          ),
-        );
-      }
-    }();
+    final useContextTheme = themeDefiner.useContextTheme;
+    final tileColor = useContextTheme ? theme.cardColor : Colors.transparent;
+    Widget? effectiveLeadingIcon;
+
+    if (project is IdeaProject) {
+      effectiveLeadingIcon = const SizedBox(
+        width: 14,
+        child: Align(
+          child: IconIdea(size: 14),
+        ),
+      );
+    }
+
     return DismissibleTile(
       dismissibleKey: ValueKey(project.id),
       // confirmDismiss: (final direction) async {
@@ -52,8 +58,12 @@ class ProjectTile extends StatelessWidget {
               Positioned.fill(
                 child: Container().blurred(
                   colorOpacity: themeDefiner.themeToUse == ThemeToUse.nativeDark
-                      ? 0.2
-                      : 0.4,
+                      ? isProjectActive
+                          ? 0.3
+                          : 0.1
+                      : isProjectActive
+                          ? 0.8
+                          : 0.4,
                   borderRadius: defaultBorderRadius,
                 ),
               ),
@@ -70,7 +80,7 @@ class ProjectTile extends StatelessWidget {
               minVerticalPadding: project is NoteProject ? 12 : null,
               leading: effectiveLeadingIcon,
               onTap: () => onTap(project),
-              tileColor: useContextTheme ? theme.cardColor : Colors.transparent,
+              tileColor: tileColor,
               title: Stack(
                 children: [
                   if (project is NoteProject)

@@ -58,6 +58,13 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
     final String? ideaId = routeState.route.parameters['ideaId'];
     final String? answerId = routeState.route.parameters['answerId'];
     final emptyPage = MaterialPage<void>(child: Container());
+
+    bool checkIsProjectActive(final BasicProject project) {
+      if (project.id == noteId) return true;
+      if (project.id == ideaId) return true;
+      return false;
+    }
+
     Future<bool> _handleWillPop() async {
       switch (routeState.route.pathTemplate) {
         case AppRoutesName.ideaAnswer:
@@ -163,6 +170,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               key: _homeKey,
               child: willPopScope(
                 child: LargeHomeScreen(
+                  checkIsProjectActive: checkIsProjectActive,
                   onGoHome: _navigatorController.goHome,
                   onInfoTap: _navigatorController.goAppInfo,
                   onCreateIdeaTap: _navigatorController.goCreateIdea,
@@ -205,6 +213,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               key: _homeKey,
               child: willPopScope(
                 child: SmallHomeScreen(
+                  checkIsProjectActive: checkIsProjectActive,
                   onInfoTap: _navigatorController.goAppInfo,
                   onCreateIdeaTap: _navigatorController.goCreateIdea,
                   onCreateNoteTap: _navigatorController.goNoteScreen,

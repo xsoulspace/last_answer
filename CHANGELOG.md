@@ -1,8 +1,8 @@
 ## 3.10.1+15
 
 - feat: Special symbols popup
-- improvement: highlight selected project
-- improvement: desktop popup now closes whenn you outside of it
+- perf: highlight selected project
+- perf: desktop popup now closes when a mouse is outside of it
 
 ## 3.9.1+14
 

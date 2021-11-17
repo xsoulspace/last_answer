@@ -52,6 +52,7 @@ class Assets {
 
   static const String emojis = 'assets/emojis.json';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const String specialEmoji = 'assets/special_emoji.json';
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
 

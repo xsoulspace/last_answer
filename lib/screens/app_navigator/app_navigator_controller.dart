@@ -53,12 +53,8 @@ class AppNavigatorController {
   Future<void> onUnknownIdeaAnswer(
     final String answerId,
     final IdeaProject idea,
-  ) async {
-    // TODO(arenukvern): add notification - answer with id not found
-    /// or maybe better to suggest create IdeaAnswer too
-    /// with that message
-    goIdeaScreen(ideaId: idea.id);
-  }
+  ) async =>
+      goIdeaScreen(ideaId: idea.id);
 
   /// ******************************
   ///         Handlers

@@ -50,6 +50,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
       restorationId: 'ideas/scaffold/$ideaId',
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
+        screenLayout: ScreenLayout.of(context),
         title: ProjectTitleField(
           onFocus: closeQuestions,
           controller: titleController,

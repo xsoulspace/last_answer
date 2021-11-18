@@ -22,6 +22,7 @@ class SettingsScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
+        screenLayout: ScreenLayout.of(context),
         onBack: onBack,
         titleStr: S.current.settings,
       ),

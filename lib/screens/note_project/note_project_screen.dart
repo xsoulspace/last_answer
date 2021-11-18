@@ -49,6 +49,7 @@ class NoteProjectScreen extends HookConsumerWidget {
       restorationId: 'notes/$noteId',
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
+        screenLayout: ScreenLayout.of(context),
         titleStr: '',
         onBack: () => back(context: context, note: note.value),
       ),

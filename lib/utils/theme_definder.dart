@@ -21,7 +21,7 @@ class ThemeDefiner {
   }
 
   ThemeToUse get themeToUse {
-    if (isNativeDesktop) {
+    if (isNativeDesktop && transparentBackgroundSupported) {
       final platformBrightness = MediaQuery.of(context).platformBrightness;
       switch (platformBrightness) {
         case Brightness.dark:
@@ -33,6 +33,8 @@ class ThemeDefiner {
       return ThemeToUse.fromContext;
     }
   }
+
+  bool get useDarkTheme => themeToUse == ThemeToUse.nativeDark;
 
   bool get useContextTheme => themeToUse == ThemeToUse.fromContext;
 }

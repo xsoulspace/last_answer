@@ -36,6 +36,7 @@ class LeftPanelMacosAppBar extends AppBar {
 class BackTextUniversalAppBar extends AppBar {
   BackTextUniversalAppBar({
     required final VoidCallback onBack,
+    final ScreenLayout? screenLayout,
     final String? titleStr,
     final Widget? title,
     final Key? key,
@@ -46,20 +47,22 @@ class BackTextUniversalAppBar extends AppBar {
         ),
         super(
           toolbarHeight: Platform.isMacOS ? 70 : null,
-          leading: Platform.isMacOS
-              ? Column(
-                  children: [
-                    const SafeAreaTop(),
-                    const SizedBox(height: 25),
-                    if (useBackButton)
-                      BackButton(onPressed: onBack)
-                    else
-                      CloseButton(onPressed: onBack),
-                  ],
-                )
-              : useBackButton
-                  ? BackButton(onPressed: onBack)
-                  : CloseButton(onPressed: onBack),
+          leading: (screenLayout?.small ?? true)
+              ? Platform.isMacOS
+                  ? Column(
+                      children: [
+                        const SafeAreaTop(),
+                        const SizedBox(height: 25),
+                        if (useBackButton)
+                          BackButton(onPressed: onBack)
+                        else
+                          CloseButton(onPressed: onBack),
+                      ],
+                    )
+                  : useBackButton
+                      ? BackButton(onPressed: onBack)
+                      : CloseButton(onPressed: onBack)
+              : null,
           centerTitle: true,
           title: title ?? Text(titleStr!),
           key: key,

@@ -1,3 +1,9 @@
+## 3.10.1+15
+
+- feat: Special symbols popup
+- perf: highlight selected project
+- perf: desktop popup now closes when a mouse is outside of it
+
 ## 3.9.1+14
 
 - feat: transparent theme for macOS

@@ -36,12 +36,14 @@ class AppStoreInitializer extends ConsumerWidget {
         await settingsState.load();
 
         settingsState.loadingStatus = AppStateLoadingStatuses.emoji;
+        // ignore: use_build_context_synchronously
         final emojis = await EmojiUtil.getList(context);
 
         ref
             .read(emojisProvider.notifier)
             .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
+        // ignore: use_build_context_synchronously
         final specialEmojis = await EmojiUtil.getSpecialList(context);
         ref
             .read(specialEmojisProvider.notifier)

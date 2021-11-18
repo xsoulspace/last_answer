@@ -65,6 +65,7 @@ class SpecialEmojiPopup extends HookWidget {
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
     final popupHovered = useIsBool();
+    final screenLayout = ScreenLayout.of(context);
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
@@ -90,7 +91,6 @@ class SpecialEmojiPopup extends HookWidget {
       },
     );
 
-    final screenLayout = ScreenLayout.of(context);
     if (!isDesktop) return const SizedBox();
 
     final emojiButton = IconButton(

@@ -1,6 +1,6 @@
 part of abstract;
 
-/// TODO(arenukvern): implement StoryProject
+// TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
 class StoryProject extends BasicProject {
   StoryProject({

@@ -16,13 +16,14 @@ class _AnswerCreator extends HookWidget {
   final VoidCallback onShareTap;
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
-  static Color getBackground(final BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
+  static Color getBackgroundByTheme(final ThemeData theme) =>
+      theme.brightness == Brightness.light
           ? AppColors.grey4.withOpacity(0.15)
           : AppColors.grey1.withOpacity(0.15);
   @override
   Widget build(final BuildContext context) {
     final answerFocusNode = useFocusNode();
+    final theme = Theme.of(context);
 
     final selectedQuestion =
         useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
@@ -66,8 +67,8 @@ class _AnswerCreator extends HookWidget {
     );
     return Material(
       color: questionsOpened.value
-          ? getBackground(context)
-          : Theme.of(context).canvasColor,
+          ? getBackgroundByTheme(theme)
+          : theme.canvasColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

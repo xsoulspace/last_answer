@@ -124,7 +124,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                                   .read(noteProjectsProvider.notifier)
                                   .remove(key: project.id);
                             } else if (project is StoryProject) {
-                              // TODO(arenukvern): implement StoryProject removal
+                              // TODO(arenukvern): implement Story removal
                             }
                             await project.delete();
                             widget.onGoHome();

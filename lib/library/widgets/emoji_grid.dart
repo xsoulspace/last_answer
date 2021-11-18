@@ -12,6 +12,7 @@ class EmojiPopup extends HookWidget {
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
     final popupHovered = useIsBool();
+    final screenLayout = ScreenLayout.of(context);
 
     Future<void> onClose() async {
       await Future.delayed(const Duration(milliseconds: 300), () {
@@ -20,7 +21,6 @@ class EmojiPopup extends HookWidget {
       });
     }
 
-    final screenLayout = ScreenLayout.of(context);
     if (!isDesktop) return const SizedBox();
     final emojiInserter = EmojiInserter.use(
       controller: controller,

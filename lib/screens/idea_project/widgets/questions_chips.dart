@@ -10,7 +10,8 @@ class _QuestionsChips extends ConsumerWidget {
   final ValueChanged<IdeaProjectQuestion> onChange;
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final brightness = Theme.of(context).brightness;
+    final theme = Theme.of(context);
+    final brightness = theme.brightness;
     final questions = ref.watch(ideaProjectQuestionsProvider).values;
     return Wrap(
       spacing: 1,
@@ -24,10 +25,10 @@ class _QuestionsChips extends ConsumerWidget {
                 label: Text(
                   question.title.getByLanguage(Intl.getCurrentLocale()),
                 ),
-                labelStyle: Theme.of(context).textTheme.bodyText2,
+                labelStyle: theme.textTheme.bodyText2,
                 shape:
                     RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-                backgroundColor: _AnswerCreator.getBackground(context),
+                backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
                 selectedColor: AppColors.primary2.withOpacity(
                   brightness == Brightness.light ? 0.2 : 0.2,
                 ),

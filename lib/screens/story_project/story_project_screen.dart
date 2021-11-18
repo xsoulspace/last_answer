@@ -2,13 +2,13 @@ part of story_project;
 
 class StoryProjectScreen extends StatelessWidget {
   const StoryProjectScreen({
-    required this.projectId,
-    Key? key,
+    required final this.projectId,
+    final Key? key,
   }) : super(key: key);
   final ProjectId projectId;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(final BuildContext context) => Scaffold(
         appBar: AppBar(),
       );
 }

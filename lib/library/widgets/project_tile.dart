@@ -40,6 +40,31 @@ class ProjectTile extends StatelessWidget {
       );
     }
 
+    TextStyle? titleStyle;
+
+    double blurOpacity = 0.0;
+
+    if (!useContextTheme) {
+      if (isProjectActive) {
+        titleStyle = theme.textTheme.bodyText2?.copyWith(
+          color: theme.textTheme.bodyText2?.color?.withOpacity(0.85),
+          fontSize: 13.2,
+          height: 1.16,
+        );
+        if (themeDefiner.useDarkTheme) {
+          blurOpacity = 0.3;
+        } else {
+          blurOpacity = 0.8;
+        }
+      } else {
+        if (themeDefiner.useDarkTheme) {
+          blurOpacity = 0.1;
+        } else {
+          blurOpacity = 0.4;
+        }
+      }
+    }
+
     return DismissibleTile(
       dismissibleKey: ValueKey(project.id),
       // confirmDismiss: (final direction) async {
@@ -57,13 +82,7 @@ class ProjectTile extends StatelessWidget {
             if (!useContextTheme)
               Positioned.fill(
                 child: Container().blurred(
-                  colorOpacity: themeDefiner.themeToUse == ThemeToUse.nativeDark
-                      ? isProjectActive
-                          ? 0.3
-                          : 0.1
-                      : isProjectActive
-                          ? 0.8
-                          : 0.4,
+                  colorOpacity: blurOpacity,
                   borderRadius: defaultBorderRadius,
                 ),
               ),
@@ -96,6 +115,7 @@ class ProjectTile extends StatelessWidget {
                     ),
                   Text(
                     (project is NoteProject ? '      ' : '') + project.title,
+                    style: titleStyle,
                   ),
                 ],
               ),

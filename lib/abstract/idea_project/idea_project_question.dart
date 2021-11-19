@@ -1,5 +1,7 @@
 part of abstract;
 
+typedef IdeaProjectQuestionId = String;
+
 /// Use [IdeaProjectQuestion.fromTitle] to create class
 /// This class immutable so in case of adding new properties make sure that it
 /// will not broke immutabilty

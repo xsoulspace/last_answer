@@ -1,61 +1,18 @@
 part of providers;
 
-class MapState<TValue> extends StateNotifier<Map<String, TValue>> {
-  MapState({final this.saveUtil}) : super({});
-  final AbstractUtil<Map<String, TValue>>? saveUtil;
-  void put({required final String key, required final TValue value}) {
-    state = {
-      ...state,
-      key: value,
-    };
-    _save();
-  }
-
-  Future<void> _save() async => saveUtil?.save(state);
-
-  void putAll(final Map<String, TValue> map) {
-    state = {
-      ...state,
-      ...map,
-    };
-    _save();
-  }
-
-  void putEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
-    state = {...state}..addEntries(newEntries);
-    _save();
-  }
-
-  void remove({required final String key}) {
-    state = {
-      ...state,
-    }..remove(key);
-    _save();
-  }
-
-  void assignAll(final Map<String, TValue> map) {
-    state = map;
-    _save();
-  }
-
-  void assignEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
-    state = Map.fromEntries(newEntries);
-    _save();
-  }
-}
-
-final ideaProjectsProvider =
-    StateNotifierProvider<MapState<IdeaProject>, Map<String, IdeaProject>>(
+final ideaProjectsProvider = StateNotifierProvider<MapState<IdeaProject>,
+    Map<IdeaProjectId, IdeaProject>>(
   (final _) => MapState<IdeaProject>(),
 );
 
 final ideaProjectQuestionsProvider = StateNotifierProvider<
-    MapState<IdeaProjectQuestion>, Map<String, IdeaProjectQuestion>>(
+    MapState<IdeaProjectQuestion>,
+    Map<IdeaProjectQuestionId, IdeaProjectQuestion>>(
   (final _) => MapState<IdeaProjectQuestion>(),
 );
 
-final noteProjectsProvider =
-    StateNotifierProvider<MapState<NoteProject>, Map<String, NoteProject>>(
+final noteProjectsProvider = StateNotifierProvider<MapState<NoteProject>,
+    Map<NoteProjectId, NoteProject>>(
   (final _) => MapState<NoteProject>(),
 );
 
@@ -74,3 +31,16 @@ final allProjectsProviders = Provider<List<BasicProject>>(
     return _all;
   },
 );
+
+// TODO(arenukvern): replace to another file
+
+final projectsFoldersProvider =
+    StateNotifierProvider<MapState<ProjectFolder>, Map<String, ProjectFolder>>(
+  (final _) => MapState<ProjectFolder>(),
+);
+
+final currentFolderProjects = Provider<List<BasicProject>>((final ref) {
+  const chosenFolderId = '';
+  final folder = ref.watch(projectsFoldersProvider)[chosenFolderId];
+  return folder?.projects ?? [];
+});

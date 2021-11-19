@@ -41,6 +41,7 @@ part 'project_tile.dart';
 part 'project_title_field.dart';
 part 'remove_title_dialog.dart';
 part 'responsive_widget.dart';
+part 'right_scrollbar.dart';
 part 'safe_areas.dart';
 part 'scroll_keyboard_closer.dart';
 part 'special_emoji_grid.dart';

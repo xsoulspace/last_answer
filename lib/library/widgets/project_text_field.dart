@@ -74,34 +74,31 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             widget.onSubmit();
           }
         },
-        child: ScrollbarTheme(
-          data: ScrollbarThemeData(isAlwaysShown: false),
-          child: TextFormField(
-            focusNode: _textFieldFocusNode,
-            onFieldSubmitted: (final _) => widget.onSubmit(),
-            controller: widget.controller,
-            keyboardAppearance: theme.brightness,
-            minLines: widget.endlessLines ? null : 1,
-            expands: widget.endlessLines,
-            maxLines: widget.endlessLines ? null : widget.maxLines,
-            keyboardType: TextInputType.multiline,
-            textAlignVertical: TextAlignVertical.bottom,
-            onChanged: (final text) async {},
-            style: theme.textTheme.bodyText2,
-            decoration: const InputDecoration()
-                .applyDefaults(theme.inputDecorationTheme)
-                .copyWith(
-                  contentPadding: const EdgeInsets.all(6),
-                  filled: widget.filled,
-                  // labelStyle: TextStyle(color: Colors.white),
-                  // fillColor: ThemeColors.lightAccent,
-                  focusedBorder: _border,
-                  border: _border,
-                  fillColor: Colors.transparent,
-                  hintText: widget.hintText,
-                ),
-            cursorColor: theme.colorScheme.secondary,
-          ),
+        child: TextFormField(
+          focusNode: _textFieldFocusNode,
+          onFieldSubmitted: (final _) => widget.onSubmit(),
+          controller: widget.controller,
+          keyboardAppearance: theme.brightness,
+          minLines: widget.endlessLines ? null : 1,
+          expands: widget.endlessLines,
+          maxLines: widget.endlessLines ? null : widget.maxLines,
+          keyboardType: TextInputType.multiline,
+          textAlignVertical: TextAlignVertical.bottom,
+          onChanged: (final text) async {},
+          style: theme.textTheme.bodyText2,
+          decoration: const InputDecoration()
+              .applyDefaults(theme.inputDecorationTheme)
+              .copyWith(
+                contentPadding: const EdgeInsets.all(6),
+                filled: widget.filled,
+                // labelStyle: TextStyle(color: Colors.white),
+                // fillColor: ThemeColors.lightAccent,
+                focusedBorder: _border,
+                border: _border,
+                fillColor: Colors.transparent,
+                hintText: widget.hintText,
+              ),
+          cursorColor: theme.colorScheme.secondary,
         ),
       ),
     );

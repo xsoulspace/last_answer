@@ -12,6 +12,7 @@ Future<void> main() async {
     ..registerAdapter(IdeaProjectAnswerAdapter())
     ..registerAdapter(IdeaProjectQuestionAdapter())
     ..registerAdapter(NoteProjectAdapter())
+    ..registerAdapter(ProjectFolderAdapter())
     ..registerAdapter(StoryProjectAdapter());
   runApp(const AppProvider());
 }

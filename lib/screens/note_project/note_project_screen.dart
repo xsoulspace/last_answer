@@ -43,79 +43,80 @@ class NoteProjectScreen extends HookConsumerWidget {
           .put(key: maybeNote.id, value: maybeNote);
       return note.value.save();
     });
-
+    final screenLayout = ScreenLayout.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'notes/$noteId',
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
-        screenLayout: ScreenLayout.of(context),
+        height: screenLayout.small ? null : 30,
+        screenLayout: screenLayout,
         titleStr: '',
         onBack: () => back(context: context, note: note.value),
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: ScreenLayout.maxFullscreenPageWidth,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: ProjectTextField(
-                          hintText: S.current.writeANote,
-                          fillColor: Colors.transparent,
-                          filled: false,
-                          focusNode: noteFocusNode,
-                          endlessLines: true,
-                          onSubmit: () =>
-                              back(context: context, note: note.value),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: ScreenLayout.maxFullscreenPageWidth + 180,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: ProjectTextField(
+                        hintText: S.current.writeANote,
+                        fillColor: Colors.transparent,
+                        filled: false,
+                        focusNode: noteFocusNode,
+                        endlessLines: true,
+                        onSubmit: () =>
+                            back(context: context, note: note.value),
+                        controller: noteController,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SpecialEmojiPopup(
                           controller: noteController,
+                          focusNode: noteFocusNode,
                         ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SpecialEmojiPopup(
-                            controller: noteController,
-                            focusNode: noteFocusNode,
+                        SizedBox(
+                          height: 34,
+                          width: 48,
+                          child: IconShareButton(
+                            onTap: () {
+                              ProjectSharer.of(context)
+                                  .share(project: note.value);
+                            },
                           ),
-                          SizedBox(
-                            height: 34,
-                            width: 48,
-                            child: IconShareButton(
-                              onTap: () {
-                                ProjectSharer.of(context)
-                                    .share(project: note.value);
-                              },
+                        ),
+                        EmojiPopup(
+                          controller: noteController,
+                          focusNode: noteFocusNode,
+                        ),
+                      ]
+                          .map(
+                            (final e) => Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: e,
                             ),
-                          ),
-                          EmojiPopup(
-                            controller: noteController,
-                            focusNode: noteFocusNode,
-                          ),
-                        ]
-                            .map(
-                              (final e) => Padding(
-                                padding: const EdgeInsets.only(top: 15),
-                                child: e,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
-                  ),
+                          )
+                          .toList(),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 14),
-                const SafeAreaBottom(),
-              ],
-            ),
+              ),
+              const SizedBox(height: 14),
+              const SafeAreaBottom(),
+            ],
           ),
         ),
       ),

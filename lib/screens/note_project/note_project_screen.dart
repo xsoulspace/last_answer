@@ -68,7 +68,7 @@ class NoteProjectScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: ProjectTextField(
                         hintText: S.current.writeANote,

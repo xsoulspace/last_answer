@@ -19,9 +19,10 @@ final lightThemeData = _lightBase.copyWith(
 
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
-    showTrackOnHover: true,
-    isAlwaysShown: true,
+    showTrackOnHover: false,
+    isAlwaysShown: false,
     interactive: true,
+    // crossAxisMargin: -6,
     thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
     trackBorderColor:
         MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
@@ -52,11 +53,12 @@ final darkThemeData = _darkBase.copyWith(
   ),
   scrollbarTheme: _darkBase.scrollbarTheme.copyWith(
     interactive: true,
-    showTrackOnHover: true,
-    isAlwaysShown: true,
+    showTrackOnHover: false,
+    isAlwaysShown: false,
+    // crossAxisMargin: -6,
     thumbColor: MaterialStateProperty.all(AppColors.grey4.withOpacity(0.4)),
-    trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),
-    trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
+    // trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),
+    // trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
   ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scaffoldBackgroundColor:

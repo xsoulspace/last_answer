@@ -20,10 +20,11 @@ final lightThemeData = _lightBase.copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
     showTrackOnHover: true,
+    isAlwaysShown: true,
+    interactive: true,
     thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
     trackBorderColor:
         MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
-    interactive: true,
   ),
   scaffoldBackgroundColor:
       isNativeDesktop ? Colors.transparent : _lightBase.scaffoldBackgroundColor,

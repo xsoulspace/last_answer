@@ -40,6 +40,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   void initState() {
     if (widget.focusOnInit != false) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
+        if (!mounted) return;
         FocusScope.of(context).requestFocus(_textFieldFocusNode);
       });
     }
@@ -61,6 +62,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
 
   @override
   Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
     return FocusBubbleContainer(
       onFocus: widget.onFocus,
       fillColor: widget.fillColor,
@@ -72,31 +74,34 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             widget.onSubmit();
           }
         },
-        child: TextFormField(
-          focusNode: _textFieldFocusNode,
-          onFieldSubmitted: (final _) => widget.onSubmit(),
-          controller: widget.controller,
-          keyboardAppearance: Theme.of(context).brightness,
-          minLines: widget.endlessLines ? null : 1,
-          expands: widget.endlessLines,
-          maxLines: widget.endlessLines ? null : widget.maxLines,
-          keyboardType: TextInputType.multiline,
-          textAlignVertical: TextAlignVertical.bottom,
-          onChanged: (final text) async {},
-          style: Theme.of(context).textTheme.bodyText2,
-          decoration: const InputDecoration()
-              .applyDefaults(Theme.of(context).inputDecorationTheme)
-              .copyWith(
-                contentPadding: const EdgeInsets.all(6),
-                filled: widget.filled,
-                // labelStyle: TextStyle(color: Colors.white),
-                // fillColor: ThemeColors.lightAccent,
-                focusedBorder: _border,
-                border: _border,
-                fillColor: Colors.transparent,
-                hintText: widget.hintText,
-              ),
-          cursorColor: Theme.of(context).colorScheme.secondary,
+        child: ScrollbarTheme(
+          data: ScrollbarThemeData(isAlwaysShown: false),
+          child: TextFormField(
+            focusNode: _textFieldFocusNode,
+            onFieldSubmitted: (final _) => widget.onSubmit(),
+            controller: widget.controller,
+            keyboardAppearance: theme.brightness,
+            minLines: widget.endlessLines ? null : 1,
+            expands: widget.endlessLines,
+            maxLines: widget.endlessLines ? null : widget.maxLines,
+            keyboardType: TextInputType.multiline,
+            textAlignVertical: TextAlignVertical.bottom,
+            onChanged: (final text) async {},
+            style: theme.textTheme.bodyText2,
+            decoration: const InputDecoration()
+                .applyDefaults(theme.inputDecorationTheme)
+                .copyWith(
+                  contentPadding: const EdgeInsets.all(6),
+                  filled: widget.filled,
+                  // labelStyle: TextStyle(color: Colors.white),
+                  // fillColor: ThemeColors.lightAccent,
+                  focusedBorder: _border,
+                  border: _border,
+                  fillColor: Colors.transparent,
+                  hintText: widget.hintText,
+                ),
+            cursorColor: theme.colorScheme.secondary,
+          ),
         ),
       ),
     );

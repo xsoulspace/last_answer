@@ -41,12 +41,13 @@ class BackTextUniversalAppBar extends AppBar {
     final Widget? title,
     final Key? key,
     final bool useBackButton = false,
+    final double? height,
   })  : assert(
           titleStr != null || title != null,
           'Title or title str should not be empty',
         ),
         super(
-          toolbarHeight: Platform.isMacOS ? 70 : null,
+          toolbarHeight: height ?? (Platform.isMacOS ? 70 : null),
           leading: (screenLayout?.small ?? true)
               ? Platform.isMacOS
                   ? Column(

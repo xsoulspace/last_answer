@@ -5,7 +5,7 @@ typedef ProjectSelectionChanged = void Function({
   required BasicProject project,
 });
 
-class SmallHomeScreen extends StatefulWidget {
+class SmallHomeScreen extends StatefulHookWidget {
   const SmallHomeScreen({
     required final this.onProjectTap,
     required final this.onSettingsTap,
@@ -48,6 +48,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
 
   @override
   Widget build(final BuildContext context) {
+    final scrollController = useScrollController();
     final themeDefiner = ThemeDefiner.of(context);
     final screenLayout = ScreenLayout.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
@@ -93,9 +94,10 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                       ? null
                       : effectiveTheme.textTheme.subtitle2?.color
                           ?.withOpacity(0.7),
-                  child: Scrollbar(
-                    isAlwaysShown: !isDesktop,
+                  child: RightScrollbar(
+                    controller: scrollController,
                     child: ListView.separated(
+                      controller: scrollController,
                       padding: const EdgeInsets.all(5),
                       reverse: true,
                       shrinkWrap: true,

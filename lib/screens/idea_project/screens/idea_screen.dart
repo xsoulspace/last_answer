@@ -127,7 +127,7 @@ class IdeaProjectScreen extends HookConsumerWidget {
               ideaUpdatesStream.add(true);
             },
           ),
-          const SafeAreaBottom(),
+          const BottomSafeArea(),
         ],
       ),
     );

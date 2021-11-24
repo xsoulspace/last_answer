@@ -65,7 +65,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
             onNoteTap: widget.onCreateNoteTap,
           ),
           const SizedBox(height: 14),
-          const SafeAreaBottom(),
+          const BottomSafeArea(),
         ],
       ),
     );
@@ -149,7 +149,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
             ),
           ),
           const SizedBox(height: 5),
-          const SafeAreaBottom(),
+          const BottomSafeArea(),
         ],
       ),
     );

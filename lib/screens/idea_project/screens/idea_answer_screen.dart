@@ -90,7 +90,7 @@ class IdeaAnswerScreen extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const SafeAreaBottom(),
+                const BottomSafeArea(),
               ],
             ),
           ),

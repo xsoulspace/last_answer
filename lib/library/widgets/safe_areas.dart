@@ -9,8 +9,8 @@ class SafeAreaBottom extends StatelessWidget {
   }
 }
 
-class SafeAreaTop extends StatelessWidget {
-  const SafeAreaTop({final Key? key}) : super(key: key);
+class TopSafeArea extends StatelessWidget {
+  const TopSafeArea({final Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {

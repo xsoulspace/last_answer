@@ -42,15 +42,9 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _ideasIdeaKey = const ValueKey<String>('ideas/idea');
   final _ideasIdeaAnswerKey = const ValueKey<String>('ideas/idea/answer');
   final _largeScreenHomeNavigatorKey = GlobalKey();
-  late final AppNavigatorController _navigatorController;
+  late final AppNavigatorController _navigatorController =
+      AppNavigatorController.use(routeState: routeState, ref: ref);
   RouteState get routeState => widget.routeState;
-
-  @override
-  void initState() {
-    _navigatorController =
-        AppNavigatorController.use(routeState: routeState, ref: ref);
-    super.initState();
-  }
 
   @override
   Widget build(final BuildContext context) {

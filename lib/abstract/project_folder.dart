@@ -52,19 +52,31 @@ class ProjectFolder extends HiveObject
   /// Runtime projects only. Should be loaded during [onLoad]
   UnmodifiableListView<BasicProject> get projectsList =>
       UnmodifiableListView(_projects.values);
-  set projectsList(final Iterable<BasicProject> projects) {
+
+  /// This function does not add folder to projects.
+  ///
+  /// To add new project please use [addProject] or [addProjects]
+  void _setProjectsList(final Iterable<BasicProject> projects) {
     _projects = Map.fromEntries(projects.map((final e) => MapEntry(e.id, e)));
     _updateIdsString();
   }
 
   void _updateIdsString() {
     projectsIdsString = jsonEncode(
-      _projects.values.map((final e) => e.serializableId.toJson()),
+      _projects.values.map((final e) => e.serializableId.toJson()).toList(),
     );
   }
 
   void addProject(final BasicProject project) {
-    _projects[project.id] = project;
+    _projects[project.id] = project..folder = this;
+    _updateIdsString();
+  }
+
+  void addProjects(final Iterable<BasicProject> projects) {
+    for (final project in projects) {
+      project.folder = this;
+      _projects[project.id] = project;
+    }
     _updateIdsString();
   }
 
@@ -84,10 +96,11 @@ class ProjectFolder extends HiveObject
   @override
   Future<void> onLoad() async {
     if (projectsService != null) {
-      projectsList = loadProjectsFromService(
+      final list = loadProjectsFromService(
         folder: this,
         service: projectsService!,
       );
+      _setProjectsList(list);
     }
   }
 

@@ -121,8 +121,13 @@ class AppStoreInitializer extends ConsumerWidget {
 
         ProjectFolder currentFolder;
 
+        /// case if project folders is not created
         if (projectsFolders.isEmpty) {
-          currentFolder = await ProjectFolder.create();
+          currentFolder = (await ProjectFolder.create())
+            ..addProjects([
+              ...ideaProjectsState.safeState.values,
+              ...notesProjectsState.safeState.values,
+            ]);
         } else {
           MapState.load(
             ref: ref,

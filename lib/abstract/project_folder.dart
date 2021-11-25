@@ -3,7 +3,9 @@ part of abstract;
 typedef ProjectFolderId = String;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObject with EquatableMixin implements Loadable {
+class ProjectFolder extends HiveObject
+    with EquatableMixin
+    implements Loadable, HasId {
   ProjectFolder({
     required final this.id,
     required final this.title,

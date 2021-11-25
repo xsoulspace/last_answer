@@ -19,6 +19,7 @@ part 'basic_project_fields.dart';
 part 'current_state_keys.dart';
 part 'emoji.dart';
 part 'greetings.dart';
+part 'has_id.dart';
 part 'hive_boxes_ids.dart';
 part 'idea_project/idea_project.dart';
 part 'idea_project/idea_project_answer.dart';

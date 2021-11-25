@@ -11,15 +11,20 @@ class ProjectFolder extends HiveObject
     required final this.title,
     final this.projectsService,
     final this.projectsIdsString = '',
-    final Map<ProjectId, BasicProject>? projects,
-  }) : _projects = projects ?? {};
+  }) : _projects = createHashSet();
 
   ProjectFolder.zero({
     final this.id = '',
     final this.projectsIdsString = '',
     final this.title = '',
     final this.projectsService,
-  }) : _projects = {};
+  }) : _projects = createHashSet();
+
+  static LinkedHashSet<BasicProject> createHashSet() =>
+      LinkedHashSet<BasicProject>(
+        equals: (final a, final b) => a.hashCode == b.hashCode,
+        hashCode: (final a) => a.hashCode,
+      );
 
   static Future<ProjectFolder> create() async {
     final box =
@@ -29,7 +34,6 @@ class ProjectFolder extends HiveObject
       id: createId(),
       // TODO(arenukvern): add translation
       title: 'New',
-      projects: {},
     );
 
     await box.put(folder.id, folder);
@@ -37,6 +41,7 @@ class ProjectFolder extends HiveObject
     return folder;
   }
 
+  @override
   @HiveField(0)
   final ProjectFolderId id;
 
@@ -47,41 +52,42 @@ class ProjectFolder extends HiveObject
   @HiveField(2)
   String projectsIdsString;
 
-  Map<ProjectId, BasicProject> _projects;
+  LinkedHashSet<BasicProject> _projects;
 
   /// Runtime projects only. Should be loaded during [onLoad]
   UnmodifiableListView<BasicProject> get projectsList =>
-      UnmodifiableListView(_projects.values);
+      UnmodifiableListView(_projects);
 
   /// This function does not add folder to projects.
   ///
   /// To add new project please use [addProject] or [addProjects]
-  void _setProjectsList(final Iterable<BasicProject> projects) {
-    _projects = Map.fromEntries(projects.map((final e) => MapEntry(e.id, e)));
+  void setExistedProjectsList(final Iterable<BasicProject> projects) {
+    _projects = createHashSet()..addAll(projects);
     _updateIdsString();
   }
 
   void _updateIdsString() {
     projectsIdsString = jsonEncode(
-      _projects.values.map((final e) => e.serializableId.toJson()).toList(),
+      _projects.map((final e) => e.serializableId.toJson()).toList(),
     );
+    save();
   }
 
   void addProject(final BasicProject project) {
-    _projects[project.id] = project..folder = this;
+    _projects.add(project..folder = this);
     _updateIdsString();
   }
 
   void addProjects(final Iterable<BasicProject> projects) {
     for (final project in projects) {
       project.folder = this;
-      _projects[project.id] = project;
+      _projects.add(project);
     }
     _updateIdsString();
   }
 
   void removeProject(final BasicProject project) {
-    _projects.remove(project.id);
+    _projects.remove(project);
     _updateIdsString();
   }
 
@@ -100,7 +106,7 @@ class ProjectFolder extends HiveObject
         folder: this,
         service: projectsService!,
       );
-      _setProjectsList(list);
+      setExistedProjectsList(list);
     }
   }
 

@@ -172,16 +172,16 @@ class AppStoreInitializer extends ConsumerWidget {
       );
 
       for (final projectsFolder in projectsFolders.values) {
-        ProjectFolder.loadProjectsFromService(
+        final projects = ProjectFolder.loadProjectsFromService(
           folder: projectsFolder,
           service: projectsService,
         );
+        projectsFolder.setExistedProjectsList(projects);
       }
 
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-
     ref.read(currentFolderProvider.notifier).state = currentFolder;
 
     // TODO(arenukvern): in case of future migrations

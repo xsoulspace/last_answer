@@ -76,7 +76,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
             child: Consumer(
               builder: (final _, final ref, final __) {
                 final projects =
-                    ref.watch(allProjectsProviders).reversed.toList();
+                    ref.watch(currentFolderProjects).reversed.toList();
                 if (projects.isEmpty) {
                   return Align(
                     alignment: Alignment.centerLeft,
@@ -96,51 +96,63 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                           ?.withOpacity(0.7),
                   child: RightScrollbar(
                     controller: scrollController,
-                    child: ListView.separated(
-                      controller: scrollController,
+                    child: ReorderableListView.builder(
+                      scrollController: scrollController,
+                      onReorder: (final oldIndex, final newIndex) {
+                        final currentFolder =
+                            ref.read(currentFolderProvider.notifier);
+                        final reordered = currentFolder.state.projectsList
+                            .reorder(newIndex: newIndex, oldIndex: oldIndex);
+                        currentFolder.update(
+                          (final state) =>
+                              state..setExistedProjectsList(reordered),
+                        );
+                      },
                       padding: const EdgeInsets.all(5),
                       reverse: true,
                       shrinkWrap: true,
                       restorationId: 'projects',
                       itemBuilder: (final _, final i) {
                         final project = projects[i];
-                        return ProjectTile(
+                        return Padding(
                           key: ValueKey(project.id),
-                          project: project,
-                          themeDefiner: themeDefiner,
-                          onSelected: changeProjectSelection,
-                          onTap: widget.onProjectTap,
-                          checkSelection: checkSelection,
-                          isProjectActive: widget.checkIsProjectActive(project),
-                          onRemove: (final _) async {
-                            if (project is IdeaProject) {
-                              await Future.forEach<IdeaProjectAnswer>(
-                                project.answers ?? [],
-                                (final answer) => answer.delete(),
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: ProjectTile(
+                            project: project,
+                            themeDefiner: themeDefiner,
+                            onSelected: changeProjectSelection,
+                            onTap: widget.onProjectTap,
+                            checkSelection: checkSelection,
+                            isProjectActive:
+                                widget.checkIsProjectActive(project),
+                            onRemove: (final _) async {
+                              if (project is IdeaProject) {
+                                await Future.forEach<IdeaProjectAnswer>(
+                                  project.answers ?? [],
+                                  (final answer) => answer.delete(),
+                                );
+                                ref
+                                    .read(ideaProjectsProvider.notifier)
+                                    .remove(key: project.id);
+                              } else if (project is NoteProject) {
+                                ref
+                                    .read(noteProjectsProvider.notifier)
+                                    .remove(key: project.id);
+                              } else if (project is StoryProject) {
+                                // TODO(arenukvern): implement Story removal
+                              }
+                              await project.delete();
+                              widget.onGoHome();
+                            },
+                            onRemoveConfirm: (final _) async {
+                              return showRemoveTitleDialog(
+                                context: context,
+                                title: project.title,
                               );
-                              ref
-                                  .read(ideaProjectsProvider.notifier)
-                                  .remove(key: project.id);
-                            } else if (project is NoteProject) {
-                              ref
-                                  .read(noteProjectsProvider.notifier)
-                                  .remove(key: project.id);
-                            } else if (project is StoryProject) {
-                              // TODO(arenukvern): implement Story removal
-                            }
-                            await project.delete();
-                            widget.onGoHome();
-                          },
-                          onRemoveConfirm: (final _) async {
-                            return showRemoveTitleDialog(
-                              context: context,
-                              title: project.title,
-                            );
-                          },
+                            },
+                          ),
                         );
                       },
-                      separatorBuilder: (final _, final __) =>
-                          const SizedBox(height: 3),
                       itemCount: projects.length,
                     ),
                   ),

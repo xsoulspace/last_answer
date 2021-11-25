@@ -5,14 +5,14 @@ final projectsFoldersProvider =
   (final _) => MapState<ProjectFolder>(),
 );
 
-final currentFolderProvider = Provider<ProjectFolder>(
+final currentFolderProvider = StateProvider<ProjectFolder>(
   (final ref) => ProjectFolder.zero(),
   dependencies: [projectsFoldersProvider],
 );
 
-final currentFolderProjects =
-    Provider<UnmodifiableListView<BasicProject>>((final ref) {
-  const chosenFolderId = '';
-  final folder = ref.watch(projectsFoldersProvider)[chosenFolderId];
-  return folder?.projectsList ?? UnmodifiableListView<BasicProject>([]);
-});
+final currentFolderProjects = Provider<UnmodifiableListView<BasicProject>>(
+  (final ref) {
+    final currentFolder = ref.watch(currentFolderProvider);
+    return currentFolder.state.projectsList;
+  },
+);

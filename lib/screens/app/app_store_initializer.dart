@@ -60,6 +60,7 @@ class AppStoreInitializer extends ConsumerWidget {
 
         final ideas =
             await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+
         settings.loadingStatus = AppStateLoadingStatuses.questionsForAnswers;
 
         final questions = await Hive.openBox<IdeaProjectQuestion>(
@@ -67,7 +68,6 @@ class AppStoreInitializer extends ConsumerWidget {
         );
 
         // TODO(arenukvern): comment when all devices will be updated
-        /// to new version ^3.6
         if (questions.isEmpty) {
           await questions.putAll(
             Map.fromEntries(
@@ -75,34 +75,73 @@ class AppStoreInitializer extends ConsumerWidget {
             ),
           );
         }
+
         settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-        ref.read(ideaProjectQuestionsProvider.notifier).putAll(
-              Map.fromEntries(
-                questions.values.map((final e) => MapEntry(e.id, e)),
-              ),
-            );
+        MapState.load(
+          ref: ref,
+          provider: ideaProjectQuestionsProvider,
+          box: questions,
+        );
+
         settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-        ref.read(ideaProjectsProvider.notifier).putAll(
-              Map.fromEntries(
-                ideas.values.map((final e) => MapEntry(e.id, e)),
-              ),
-            );
+        final ideaProjectsState = MapState.load(
+          ref: ref,
+          provider: ideaProjectsProvider,
+          box: ideas,
+        );
+
         settings.loadingStatus = AppStateLoadingStatuses.notes;
 
         final notes = await Hive.openBox<NoteProject>(
           HiveBoxesIds.noteProjectKey,
         );
 
-        ref.read(noteProjectsProvider.notifier).putAll(
-              Map.fromEntries(
-                notes.values.map((final e) => MapEntry(e.id, e)),
-              ),
-            );
+        final notesProjectsState = MapState.load(
+          ref: ref,
+          provider: noteProjectsProvider,
+          box: notes,
+        );
+
         await Hive.openBox<StoryProject>(
           HiveBoxesIds.storyProjectKey,
         );
+
+        final projectsFolders = await Hive.openBox<ProjectFolder>(
+          HiveBoxesIds.storyProjectKey,
+        );
+
+        final projectsService = BasicProjectsService(
+          ideas: ideaProjectsState.safeState,
+          notes: notesProjectsState.safeState,
+          // TODO(arenukvern): add stories in v4
+          stories: const {},
+        );
+
+        ProjectFolder currentFolder;
+
+        if (projectsFolders.isEmpty) {
+          currentFolder = await ProjectFolder.create();
+        } else {
+          MapState.load(
+            ref: ref,
+            provider: projectsFoldersProvider,
+            box: projectsFolders,
+          );
+
+          for (final projectsFolder in projectsFolders.values) {
+            ProjectFolder.loadProjectsFromService(
+              folder: projectsFolder,
+              service: projectsService,
+            );
+          }
+
+          // TODO(arenukvern): add last used folder
+          currentFolder = projectsFolders.values.first;
+        }
+
+        ref.read(currentFolderProvider.notifier).state = currentFolder;
 
         // TODO(arenukvern): in case of future migrations
         // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;

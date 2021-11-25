@@ -13,7 +13,7 @@ typedef ProjectId = String;
 /// such as [NoteProject], [StoryProject], [IdeaProject]
 class BasicProject extends HiveObject
     with EquatableMixin
-    implements Sharable, BasicProjectFields {
+    implements Sharable, BasicProjectFields, HasId {
   BasicProject({
     required final this.id,
     required final this.title,
@@ -23,6 +23,7 @@ class BasicProject extends HiveObject
     required final this.type,
     final this.isCompleted = defaultProjectIsCompleted,
   });
+  @override
   @HiveField(0)
   final ProjectId id;
 

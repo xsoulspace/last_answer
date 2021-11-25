@@ -10,7 +10,7 @@ class NoteProject extends BasicProject {
     required final String id,
     required final DateTime created,
     required final DateTime updated,
-    required final this.folder,
+    final this.folder,
     final this.note = '',
     final bool isCompleted = defaultProjectIsCompleted,
   }) : super(
@@ -46,7 +46,7 @@ class NoteProject extends BasicProject {
 
   @override
   @HiveField(projectLatestFieldHiveId + 2)
-  ProjectFolder folder;
+  ProjectFolder? folder;
 
   @override
   @JsonKey(ignore: true)

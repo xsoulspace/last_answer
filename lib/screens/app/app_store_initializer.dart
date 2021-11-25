@@ -109,7 +109,7 @@ class AppStoreInitializer extends ConsumerWidget {
         );
 
         final projectsFolders = await Hive.openBox<ProjectFolder>(
-          HiveBoxesIds.storyProjectKey,
+          HiveBoxesIds.projectFolderKey,
         );
 
         final projectsService = BasicProjectsService(

@@ -57,7 +57,7 @@ class BasicProject extends HiveObject
   /// Always override it in extended projects
   /// to assign correct [HiveField] id
   @override
-  ProjectFolder folder;
+  ProjectFolder? folder;
 
   @override
   final ProjectTypes type;

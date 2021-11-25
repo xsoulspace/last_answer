@@ -25,7 +25,7 @@ class StoryProject extends BasicProject {
 
   @override
   @HiveField(projectLatestFieldHiveId + 1)
-  ProjectFolder folder;
+  ProjectFolder? folder;
 }
 
 /// A mock for [StoryProject].

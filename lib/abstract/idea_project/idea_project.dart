@@ -11,7 +11,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
     required final String title,
     required final DateTime created,
     required final DateTime updated,
-    required final this.folder,
+    final this.folder,
     final bool isCompleted = defaultProjectIsCompleted,
     final this.newAnswerText = '',
     final this.newQuestion,
@@ -60,7 +60,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @override
   @HiveField(projectLatestFieldHiveId + 4)
-  ProjectFolder folder;
+  ProjectFolder? folder;
 
   @override
   String toShareString() {

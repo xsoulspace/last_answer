@@ -40,17 +40,10 @@ class ProjectTile extends StatelessWidget {
       );
     }
 
-    TextStyle? titleStyle;
-
     double blurOpacity = 0.0;
 
     if (!useContextTheme) {
       if (isProjectActive) {
-        titleStyle = theme.textTheme.bodyText2?.copyWith(
-          color: theme.textTheme.bodyText2?.color?.withOpacity(0.85),
-          fontSize: 13.2,
-          height: 1.16,
-        );
         if (themeDefiner.useDarkTheme) {
           blurOpacity = 0.3;
         } else {
@@ -100,6 +93,7 @@ class ProjectTile extends StatelessWidget {
               leading: effectiveLeadingIcon,
               onTap: () => onTap(project),
               tileColor: tileColor,
+              selected: isProjectActive,
               title: Stack(
                 children: [
                   if (project is NoteProject)
@@ -115,7 +109,6 @@ class ProjectTile extends StatelessWidget {
                     ),
                   Text(
                     (project is NoteProject ? '      ' : '') + project.title,
-                    style: titleStyle,
                   ),
                 ],
               ),

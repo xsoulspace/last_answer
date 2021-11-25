@@ -12,4 +12,5 @@ class SerializableProjectId {
 
   static SerializableProjectId fromJson(final Map<String, dynamic> json) =>
       _$SerializableProjectIdFromJson(json);
+  Map<String, dynamic> toJson() => _$SerializableProjectIdToJson(this);
 }

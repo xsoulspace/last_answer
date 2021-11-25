@@ -48,6 +48,11 @@ class BasicProject extends HiveObject
   @override
   bool? get stringify => true;
 
+  SerializableProjectId get serializableId => SerializableProjectId(
+        id: id,
+        type: type,
+      );
+
   /// Always override it in extended projects
   /// to assign correct [HiveField] id
   @override

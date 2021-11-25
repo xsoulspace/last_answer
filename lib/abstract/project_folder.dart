@@ -9,8 +9,15 @@ class ProjectFolder extends HiveObject with EquatableMixin implements Loadable {
     required final this.title,
     final this.projectsService,
     final this.projectsIdsString = '',
-    final List<BasicProject>? projects,
-  }) : projects = projects ?? [];
+    final Map<ProjectId, BasicProject>? projects,
+  }) : _projects = projects ?? {};
+
+  ProjectFolder.zero({
+    final this.id = '',
+    final this.projectsIdsString = '',
+    final this.title = '',
+    final this.projectsService,
+  }) : _projects = {};
 
   static Future<ProjectFolder> create() async {
     final box =
@@ -20,7 +27,7 @@ class ProjectFolder extends HiveObject with EquatableMixin implements Loadable {
       id: createId(),
       // TODO(arenukvern): add translation
       title: 'New',
-      projects: [],
+      projects: {},
     );
 
     await box.put(folder.id, folder);
@@ -38,8 +45,36 @@ class ProjectFolder extends HiveObject with EquatableMixin implements Loadable {
   @HiveField(2)
   String projectsIdsString;
 
+  Map<ProjectId, BasicProject> _projects;
+
   /// Runtime projects only. Should be loaded during [onLoad]
-  final List<BasicProject> projects;
+  UnmodifiableListView<BasicProject> get projectsList =>
+      UnmodifiableListView(_projects.values);
+  set projectsList(final Iterable<BasicProject> projects) {
+    _projects = Map.fromEntries(projects.map((final e) => MapEntry(e.id, e)));
+    _updateIdsString();
+  }
+
+  void _updateIdsString() {
+    projectsIdsString = jsonEncode(
+      _projects.values.map((final e) => e.serializableId.toJson()),
+    );
+  }
+
+  void addProject(final BasicProject project) {
+    _projects[project.id] = project;
+    _updateIdsString();
+  }
+
+  void removeProject(final BasicProject project) {
+    _projects.remove(project.id);
+    _updateIdsString();
+  }
+
+  bool get isEmpty => _projects.isEmpty;
+  bool get isNotEmpty => _projects.isNotEmpty;
+
+  bool get isZero => id.isEmpty;
 
   /// Optional dependency to load [projects]
   final BasicProjectsService? projectsService;
@@ -47,11 +82,9 @@ class ProjectFolder extends HiveObject with EquatableMixin implements Loadable {
   @override
   Future<void> onLoad() async {
     if (projectsService != null) {
-      projects.addAll(
-        loadProjectsFromService(
-          folder: this,
-          service: projectsService!,
-        ),
+      projectsList = loadProjectsFromService(
+        folder: this,
+        service: projectsService!,
       );
     }
   }

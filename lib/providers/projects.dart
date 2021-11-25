@@ -31,16 +31,3 @@ final allProjectsProviders = Provider<List<BasicProject>>(
     return _all;
   },
 );
-
-// TODO(arenukvern): replace to another file
-
-final projectsFoldersProvider =
-    StateNotifierProvider<MapState<ProjectFolder>, Map<String, ProjectFolder>>(
-  (final _) => MapState<ProjectFolder>(),
-);
-
-final currentFolderProjects = Provider<List<BasicProject>>((final ref) {
-  const chosenFolderId = '';
-  final folder = ref.watch(projectsFoldersProvider)[chosenFolderId];
-  return folder?.projects ?? [];
-});

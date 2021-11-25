@@ -1,7 +1,8 @@
 part of app_navigator;
 
+@immutable
 class AppNavigatorController {
-  AppNavigatorController.use({
+  const AppNavigatorController.use({
     required final this.routeState,
     required final this.ref,
   });
@@ -15,7 +16,11 @@ class AppNavigatorController {
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final newNote = await NoteProject.create(title: '');
+      final currentFolder = ref.read(currentFolderProvider);
+      final newNote = await NoteProject.create(
+        title: '',
+        folder: currentFolder,
+      );
       ref
           .read(noteProjectsProvider.notifier)
           .put(key: newNote.id, value: newNote);
@@ -33,8 +38,12 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final idea = await IdeaProject.create(title: title);
+    final currentFolder = ref.read(currentFolderProvider);
+
+    final idea = await IdeaProject.create(title: title, folder: currentFolder);
+
     ref.read(ideaProjectsProvider.notifier).put(key: idea.id, value: idea);
+
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }
 

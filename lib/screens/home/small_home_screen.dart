@@ -89,6 +89,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                     ),
                   );
                 }
+                final maxIndex = projects.length - 1;
                 return ListTileTheme(
                   textColor: screenLayout.small
                       ? null
@@ -101,12 +102,15 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                       onReorder: (final oldIndex, final newIndex) {
                         final currentFolder =
                             ref.read(currentFolderProvider.notifier);
-                        final reordered = currentFolder.state.projectsList
-                            .reorder(newIndex: newIndex, oldIndex: oldIndex);
-                        currentFolder.update(
-                          (final state) =>
-                              state..setExistedProjectsList(reordered),
-                        );
+
+                        int effectiveIndex = maxIndex - newIndex;
+                        final list = [...currentFolder.state.projectsList];
+                        if (effectiveIndex > (maxIndex - oldIndex)) {
+                          effectiveIndex -= 1;
+                        }
+                        final item = list.removeAt(maxIndex - oldIndex);
+                        list.insert(effectiveIndex, item);
+                        currentFolder.setExistedProjectsList(list);
                       },
                       padding: const EdgeInsets.all(5),
                       reverse: true,

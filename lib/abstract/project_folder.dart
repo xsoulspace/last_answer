@@ -55,14 +55,15 @@ class ProjectFolder extends HiveObject
   LinkedHashSet<BasicProject> _projects;
 
   /// Runtime projects only. Should be loaded during [onLoad]
-  UnmodifiableListView<BasicProject> get projectsList =>
-      UnmodifiableListView(_projects);
+  List<BasicProject> get projectsList => _projects.toList();
 
   /// This function does not add folder to projects.
   ///
   /// To add new project please use [addProject] or [addProjects]
   void setExistedProjectsList(final Iterable<BasicProject> projects) {
-    _projects = createHashSet()..addAll(projects);
+    _projects
+      ..clear()
+      ..addAll(projects);
     _updateIdsString();
   }
 

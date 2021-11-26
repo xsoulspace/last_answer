@@ -5,14 +5,19 @@ final projectsFoldersProvider =
   (final _) => MapState<ProjectFolder>(),
 );
 
-final currentFolderProvider = StateProvider<ProjectFolder>(
-  (final ref) => ProjectFolder.zero(),
-  dependencies: [projectsFoldersProvider],
+class FolderState extends StateNotifier<ProjectFolder> {
+  FolderState(final ProjectFolder folder) : super(folder);
+  void setExistedProjectsList(final Iterable<BasicProject> projects) =>
+      state = state..setExistedProjectsList(projects);
+}
+
+final currentFolderProvider = StateNotifierProvider<FolderState, ProjectFolder>(
+  (final ref) => FolderState(ProjectFolder.zero()),
 );
 
-final currentFolderProjects = Provider<UnmodifiableListView<BasicProject>>(
+final currentFolderProjects = Provider<List<BasicProject>>(
   (final ref) {
     final currentFolder = ref.watch(currentFolderProvider);
-    return currentFolder.state.projectsList;
+    return currentFolder.projectsList;
   },
 );

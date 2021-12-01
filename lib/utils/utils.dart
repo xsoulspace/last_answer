@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/gen/assets.gen.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
 import 'package:quiver/core.dart';

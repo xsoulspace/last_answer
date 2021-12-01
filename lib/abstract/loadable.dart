@@ -1,7 +1,7 @@
 part of abstract;
 
 abstract class Loadable {
-  Loadable._();
+  Loadable();
 
   /// Use this function to load something on
   /// instance initialization

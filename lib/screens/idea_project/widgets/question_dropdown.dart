@@ -1,6 +1,6 @@
 part of idea_project;
 
-class _QuestionDropdown extends HookConsumerWidget {
+class _QuestionDropdown extends HookWidget {
   const _QuestionDropdown({
     required final this.answer,
     final this.alignment = Alignment.centerLeft,
@@ -9,9 +9,9 @@ class _QuestionDropdown extends HookConsumerWidget {
   final IdeaProjectAnswer answer;
   final Alignment alignment;
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     final chosenQuestion = useState(answer.question);
-    final questions = ref.watch(ideaProjectQuestionsProvider).values;
+    final questions = ideaProjectQuestionsProvider.state.values;
     final textStyle = Theme.of(context).textTheme.bodyText1!;
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(

@@ -1,6 +1,6 @@
 part of note_project;
 
-class NoteProjectScreen extends HookConsumerWidget {
+class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
     required final this.noteId,
     required final this.onBack,
@@ -18,9 +18,9 @@ class NoteProjectScreen extends HookConsumerWidget {
   }
 
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     final noteFocusNode = useFocusNode();
-    final maybeNote = ref.read(noteProjectsProvider)[noteId]!;
+    final maybeNote = noteProjectsProvider.state.state[noteId]!;
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
 
@@ -38,9 +38,9 @@ class NoteProjectScreen extends HookConsumerWidget {
       trailing: true,
     )
         .forEach((final _) async {
-      ref
-          .read(noteProjectsProvider.notifier)
-          .put(key: maybeNote.id, value: maybeNote);
+      noteProjectsProvider
+        ..state.put(key: maybeNote.id, value: maybeNote)
+        ..notify();
       return note.value.save();
     });
     final screenLayout = ScreenLayout.of(context);

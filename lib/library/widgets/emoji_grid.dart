@@ -62,7 +62,7 @@ class EmojiGrid extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final emojis = filteredEmojisProvider.state;
-    final lastEmojisState = lastUsedEmojisProvider.state.state;
+    final lastEmojisState = lastUsedEmojisProvider.state.values;
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>(
       onCancel: () {
@@ -80,7 +80,7 @@ class EmojiGrid extends HookWidget {
         emojiFilterProvider.state = keyword;
       },
     );
-    final lastEmojis = useState(lastEmojisState.values.toSet());
+    final lastEmojis = useState(lastEmojisState.toSet());
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack

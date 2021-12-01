@@ -6,6 +6,7 @@ class MapState<TValue> {
 
   final AbstractUtil<Map<String, TValue>>? saveUtil;
   Map<String, TValue> get safeState => state;
+  List<TValue> get values => state.values.toList();
 
   void put({required final String key, required final TValue value}) {
     state[key] = value;
@@ -39,13 +40,15 @@ class MapState<TValue> {
     _save();
   }
 
-  static void load<TValue>({
-    required final ReactiveModel<MapState<TValue>> model,
+  static MapState<TValue> load<TValue>({
+    required final ReactiveModel<MapState<TValue>> provider,
     required final Box<TValue> box,
-  }) =>
-      model
-        ..state.loadIterable(box.values)
-        ..notify();
+  }) {
+    provider
+      ..state.loadIterable(box.values)
+      ..notify();
+    return provider.state;
+  }
 
   void loadIterable(final Iterable<TValue> values) {
     if (values.isEmpty) {

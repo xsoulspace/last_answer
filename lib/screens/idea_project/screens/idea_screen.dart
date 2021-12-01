@@ -2,7 +2,7 @@ part of idea_project;
 
 typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
 
-class IdeaProjectScreen extends HookConsumerWidget {
+class IdeaProjectScreen extends HookWidget {
   const IdeaProjectScreen({
     required final this.onBack,
     required final this.ideaId,
@@ -14,16 +14,16 @@ class IdeaProjectScreen extends HookConsumerWidget {
   final ProjectId ideaId;
 
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     // ignore: close_sinks
     final ideaUpdatesStream = useStreamController<bool>();
 
-    final idea = ref.read(ideaProjectsProvider)[ideaId]!;
+    final idea = ideaProjectsProvider.state.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
     final scrollController = useScrollController();
-    final questions = ref.read(ideaProjectQuestionsProvider);
+    final questions = ideaProjectQuestionsProvider.state;
     final questionsOpened = useIsBool();
 
     ideaUpdatesStream.stream
@@ -33,7 +33,9 @@ class IdeaProjectScreen extends HookConsumerWidget {
       trailing: true,
     )
         .forEach((final _) async {
-      ref.read(ideaProjectsProvider.notifier).put(key: idea.id, value: idea);
+      ideaProjectsProvider
+        ..state.put(key: idea.id, value: idea)
+        ..notify();
       return idea.save();
     });
 

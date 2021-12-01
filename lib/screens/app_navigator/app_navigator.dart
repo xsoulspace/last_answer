@@ -1,7 +1,6 @@
 library app_navigator;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
@@ -17,7 +16,7 @@ part 'app_routes.dart';
 
 /// Builds the top-level navigator for the app. The pages to display are based
 /// on the `routeState` that was parsed by the TemplateRouteParser.
-class AppNavigator extends ConsumerStatefulWidget {
+class AppNavigator extends StatefulWidget {
   const AppNavigator({
     required final this.navigatorKey,
     required final this.routeState,
@@ -29,7 +28,7 @@ class AppNavigator extends ConsumerStatefulWidget {
   _AppNavigatorState createState() => _AppNavigatorState();
 }
 
-class _AppNavigatorState extends ConsumerState<AppNavigator> {
+class _AppNavigatorState extends State<AppNavigator> {
   final _homeKey = const ValueKey<String>('home');
   final _settingsKey = const ValueKey<String>('settings');
   final _infoKey = const ValueKey<String>('info');
@@ -43,7 +42,7 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
   final _ideasIdeaAnswerKey = const ValueKey<String>('ideas/idea/answer');
   final _largeScreenHomeNavigatorKey = GlobalKey();
   late final AppNavigatorController _navigatorController =
-      AppNavigatorController.use(routeState: routeState, ref: ref);
+      AppNavigatorController.use(routeState: routeState);
   RouteState get routeState => widget.routeState;
 
   @override
@@ -108,7 +107,9 @@ class _AppNavigatorState extends ConsumerState<AppNavigator> {
               onBack: (final note) async {
                 if (note.note.replaceAll(' ', '').isEmpty) {
                   await note.delete();
-                  ref.read(noteProjectsProvider.notifier).remove(key: note.id);
+                  noteProjectsProvider
+                    ..state.remove(key: note.id)
+                    ..notify();
                 }
                 _navigatorController.goHome();
               },

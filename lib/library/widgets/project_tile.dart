@@ -3,6 +3,11 @@ part of widgets;
 typedef BoolValueChanged<T> = bool Function(T value);
 typedef FutureBoolValueChanged<T> = Future<bool> Function(T value);
 
+typedef ProjectSelectionChanged = void Function({
+  required bool? selected,
+  required BasicProject project,
+});
+
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
     required final this.project,

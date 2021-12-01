@@ -1,0 +1,38 @@
+library pack_app;
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_idea/pack_idea.dart';
+import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/providers/providers.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
+import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
+
+part 'abstract/settings_controller.dart';
+part 'abstract/settings_service.dart';
+part 'navigator/app_navigator.dart';
+part 'navigator/app_navigator_controller.dart';
+part 'navigator/app_routes.dart';
+part 'screens/app/app_scaffold.dart';
+part 'screens/app/app_state_provider.dart';
+part 'screens/app/last_answer_app.dart';
+part 'screens/app_loading/app_loading_screen.dart';
+part 'screens/home/large_home_screen.dart';
+part 'screens/home/small_home_screen.dart';
+part 'screens/home/vertical_projects_bar.dart';
+part 'screens/info/app_info.dart';
+part 'screens/settings/settings_screen.dart';
+part 'screens/unknown/unknown_screen.dart';
+part 'state/global_state_initializer.dart';
+part 'state/global_state_notifiers.dart';

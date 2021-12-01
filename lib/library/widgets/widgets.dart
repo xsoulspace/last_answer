@@ -11,9 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart' as slidable;
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/gen/assets.gen.dart';
 import 'package:lastanswer/generated/l10n.dart';
@@ -24,6 +22,7 @@ import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:universal_io/io.dart';
 
 part 'button_popup.dart';

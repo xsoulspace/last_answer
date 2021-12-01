@@ -11,7 +11,7 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
   return Hive.openBox<T>(boxName);
 }
 
-class AppStoreInitializer extends ConsumerWidget {
+class AppStoreInitializer extends StatelessWidget {
   const AppStoreInitializer({
     required final this.child,
     final Key? key,
@@ -19,13 +19,13 @@ class AppStoreInitializer extends ConsumerWidget {
   final Widget child;
 
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     final settings = SettingsStateScope.of(context);
     if (settings.appInitialStateLoaded & !settings.appInitialStateIsLoading) {
       return child;
     }
     return FutureBuilder<bool>(
-      future: initStores(context: context, ref: ref, settings: settings),
+      future: initStores(context: context, settings: settings),
       builder: (final context, final snapshot) {
         if (snapshot.connectionState != ConnectionState.done ||
             snapshot.data == false) {
@@ -59,7 +59,6 @@ class AppStoreInitializer extends ConsumerWidget {
 
   Future<bool> initStores({
     required final SettingsController settings,
-    required final WidgetRef ref,
     required final BuildContext context,
   }) async {
     if (settings.appInitialStateLoaded) {
@@ -69,25 +68,22 @@ class AppStoreInitializer extends ConsumerWidget {
       ..appInitialStateLoaded = true
       ..appInitialStateIsLoading = true;
 
-    final settingsState = SettingsStateScope.of(context);
-    await settingsState.load();
+    await settings.load();
 
-    settingsState.loadingStatus = AppStateLoadingStatuses.emoji;
+    settings.loadingStatus = AppStateLoadingStatuses.emoji;
     // ignore: use_build_context_synchronously
     final emojis = await EmojiUtil.getList(context);
 
-    ref
-        .read(emojisProvider.notifier)
+    emojisProvider.state
         .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
     // ignore: use_build_context_synchronously
     final specialEmojis = await EmojiUtil.getSpecialList(context);
-    ref
-        .read(specialEmojisProvider.notifier)
+    specialEmojisProvider.state
         .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
 
     final lastUsedEmojis = await EmojiUtil().load();
-    ref.read(lastUsedEmojisProvider.notifier).putAll(lastUsedEmojis);
+    lastUsedEmojisProvider.state.putAll(lastUsedEmojis);
 
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
@@ -103,7 +99,7 @@ class AppStoreInitializer extends ConsumerWidget {
       HiveBoxesIds.ideaProjectQuestionKey,
     );
 
-    // TODO(arenukvern): comment when all devices will be updated
+    // TODO(arenukvern): comment if questions changed
     if (questions.isEmpty) {
       await questions.putAll(
         Map.fromEntries(
@@ -115,7 +111,6 @@ class AppStoreInitializer extends ConsumerWidget {
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
     MapState.load(
-      ref: ref,
       provider: ideaProjectQuestionsProvider,
       box: questions,
     );
@@ -123,7 +118,6 @@ class AppStoreInitializer extends ConsumerWidget {
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
     final ideaProjectsState = MapState.load(
-      ref: ref,
       provider: ideaProjectsProvider,
       box: ideas,
     );
@@ -135,7 +129,6 @@ class AppStoreInitializer extends ConsumerWidget {
     );
 
     final notesProjectsState = MapState.load(
-      ref: ref,
       provider: noteProjectsProvider,
       box: notes,
     );
@@ -166,7 +159,6 @@ class AppStoreInitializer extends ConsumerWidget {
         ]);
     } else {
       MapState.load(
-        ref: ref,
         provider: projectsFoldersProvider,
         box: projectsFolders,
       );
@@ -182,7 +174,7 @@ class AppStoreInitializer extends ConsumerWidget {
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-    ref.read(currentFolderProvider.notifier).state = currentFolder;
+    currentFolderProvider.state.state = currentFolder;
 
     // TODO(arenukvern): in case of future migrations
     // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;

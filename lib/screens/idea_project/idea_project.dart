@@ -10,8 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
@@ -19,7 +17,6 @@ import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
-import 'package:lastanswer/screens/home/home.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 

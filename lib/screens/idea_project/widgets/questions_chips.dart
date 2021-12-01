@@ -1,6 +1,6 @@
 part of idea_project;
 
-class _QuestionsChips extends ConsumerWidget {
+class _QuestionsChips extends StatelessWidget {
   const _QuestionsChips({
     required final this.value,
     required final this.onChange,
@@ -9,10 +9,10 @@ class _QuestionsChips extends ConsumerWidget {
   final IdeaProjectQuestion? value;
   final ValueChanged<IdeaProjectQuestion> onChange;
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final brightness = theme.brightness;
-    final questions = ref.watch(ideaProjectQuestionsProvider).values;
+    final questions = ideaProjectQuestionsProvider.state.values;
     return Wrap(
       spacing: 1,
       crossAxisAlignment: WrapCrossAlignment.center,

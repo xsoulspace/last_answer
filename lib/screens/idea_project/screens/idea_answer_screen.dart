@@ -1,6 +1,6 @@
 part of idea_project;
 
-class IdeaAnswerScreen extends HookConsumerWidget {
+class IdeaAnswerScreen extends HookWidget {
   const IdeaAnswerScreen({
     required final this.ideaId,
     required final this.answerId,
@@ -16,7 +16,6 @@ class IdeaAnswerScreen extends HookConsumerWidget {
   final TwoValuesChanged<IdeaProjectAnswerId, IdeaProject> onUnknown;
 
   IdeaProjectAnswer? getInitialAnswer({
-    required final WidgetRef ref,
     required final IdeaProject idea,
   }) {
     final answer =
@@ -35,9 +34,9 @@ class IdeaAnswerScreen extends HookConsumerWidget {
   }
 
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final maybeIdea = ref.read(ideaProjectsProvider)[ideaId]!;
-    final maybeAnswer = getInitialAnswer(ref: ref, idea: maybeIdea);
+  Widget build(final BuildContext context) {
+    final maybeIdea = ideaProjectsProvider.state.state[ideaId]!;
+    final maybeAnswer = getInitialAnswer(idea: maybeIdea);
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);
     final textController = useTextEditingController(text: answer.value.text);

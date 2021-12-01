@@ -73,10 +73,10 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
       child: Column(
         children: [
           Expanded(
-            child: Consumer(
-              builder: (final _, final ref, final __) {
-                final projects =
-                    ref.watch(currentFolderProjects).reversed.toList();
+            child: OnBuilder(
+              listenTo: currentFolderProjects,
+              builder: () {
+                final projects = currentFolderProjects.state.reversed.toList();
                 if (projects.isEmpty) {
                   return Align(
                     alignment: Alignment.centerLeft,
@@ -99,8 +99,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                     child: ReorderableListView.builder(
                       scrollController: scrollController,
                       onReorder: (final oldIndex, final newIndex) {
-                        final currentFolder =
-                            ref.read(currentFolderProvider.notifier);
+                        final currentFolder = currentFolderProvider.state;
 
                         int effectiveIndex = newIndex;
                         final list = [...currentFolder.state.projectsList];
@@ -133,13 +132,13 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                                   project.answers ?? [],
                                   (final answer) => answer.delete(),
                                 );
-                                ref
-                                    .read(ideaProjectsProvider.notifier)
-                                    .remove(key: project.id);
+                                ideaProjectsProvider
+                                  ..state.remove(key: project.id)
+                                  ..notify();
                               } else if (project is NoteProject) {
-                                ref
-                                    .read(noteProjectsProvider.notifier)
-                                    .remove(key: project.id);
+                                noteProjectsProvider
+                                  ..state.remove(key: project.id)
+                                  ..notify();
                               } else if (project is StoryProject) {
                                 // TODO(arenukvern): implement Story removal
                               }

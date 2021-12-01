@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/abstract/abstract.dart';
@@ -29,12 +28,10 @@ class AppProvider extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return Portal(
-      child: ProviderScope(
-        child: SettingsStateScope(
-          notifier: _settings,
-          child: const AppStoreInitializer(
-            child: AppScaffold(),
-          ),
+      child: SettingsStateScope(
+        notifier: _settings,
+        child: const AppStoreInitializer(
+          child: AppScaffold(),
         ),
       ),
     );

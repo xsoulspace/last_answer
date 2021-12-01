@@ -4,10 +4,8 @@ part of app_navigator;
 class AppNavigatorController {
   const AppNavigatorController.use({
     required final this.routeState,
-    required final this.ref,
   });
   final RouteState routeState;
-  final WidgetRef ref;
 
   void goHome() => routeState.go(AppRoutesName.home);
   void goAppInfo() => routeState.go(AppRoutesName.appInfo);
@@ -16,14 +14,14 @@ class AppNavigatorController {
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final currentFolder = ref.read(currentFolderProvider.notifier).state;
+      final currentFolder = currentFolderProvider.state.state;
       final newNote = await NoteProject.create(
         title: '',
         folder: currentFolder,
       );
-      ref
-          .read(noteProjectsProvider.notifier)
-          .put(key: newNote.id, value: newNote);
+      noteProjectsProvider
+        ..state.put(key: newNote.id, value: newNote)
+        ..notify();
       resolvedNoteId = newNote.id;
     }
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
@@ -38,11 +36,13 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final currentFolder = ref.read(currentFolderProvider.notifier).state;
+    final currentFolder = currentFolderProvider.state.state;
 
     final idea = await IdeaProject.create(title: title, folder: currentFolder);
 
-    ref.read(ideaProjectsProvider.notifier).put(key: idea.id, value: idea);
+    ideaProjectsProvider
+      ..state.put(key: idea.id, value: idea)
+      ..notify();
 
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }

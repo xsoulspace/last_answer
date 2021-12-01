@@ -2,12 +2,11 @@ part of pack_app;
 
 class AppLoadingScreen extends StatelessWidget {
   const AppLoadingScreen({
-    required final this.settings,
     final Key? key,
   }) : super(key: key);
-  final SettingsController settings;
   @override
   Widget build(final BuildContext context) {
+    final settings = SettingsStateScope.of(context);
     final statusText = appLoadingStatusesTitles[settings.loadingStatus]
             ?.getByLanguage(intl.Intl.systemLocale) ??
         '';

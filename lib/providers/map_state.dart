@@ -1,38 +1,31 @@
 part of providers;
 
-class MapState<TValue> extends StateNotifier<Map<String, TValue>> {
-  MapState({final this.saveUtil}) : super({});
+class MapState<TValue> {
+  MapState({final this.saveUtil});
+  Map<String, TValue> state = {};
 
   final AbstractUtil<Map<String, TValue>>? saveUtil;
   Map<String, TValue> get safeState => state;
 
   void put({required final String key, required final TValue value}) {
-    state = {
-      ...state,
-      key: value,
-    };
+    state[key] = value;
     _save();
   }
 
   Future<void> _save() async => saveUtil?.save(state);
 
   void putAll(final Map<String, TValue> map) {
-    state = {
-      ...state,
-      ...map,
-    };
+    state.addAll(map);
     _save();
   }
 
   void putEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
-    state = {...state}..addEntries(newEntries);
+    state.addEntries(newEntries);
     _save();
   }
 
   void remove({required final String key}) {
-    state = {
-      ...state,
-    }..remove(key);
+    state.remove(key);
     _save();
   }
 
@@ -46,12 +39,13 @@ class MapState<TValue> extends StateNotifier<Map<String, TValue>> {
     _save();
   }
 
-  static MapState<TValue> load<TValue>({
-    required final WidgetRef ref,
-    required final MapStateProvider<TValue> provider,
+  static void load<TValue>({
+    required final ReactiveModel<MapState<TValue>> model,
     required final Box<TValue> box,
   }) =>
-      ref.read(provider.notifier)..loadIterable(box.values);
+      model
+        ..state.loadIterable(box.values)
+        ..notify();
 
   void loadIterable(final Iterable<TValue> values) {
     if (values.isEmpty) {
@@ -69,6 +63,3 @@ class MapState<TValue> extends StateNotifier<Map<String, TValue>> {
     }
   }
 }
-
-typedef MapStateProvider<TValue>
-    = StateNotifierProvider<MapState<TValue>, Map<String, TValue>>;

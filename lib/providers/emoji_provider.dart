@@ -1,6 +1,6 @@
 part of providers;
 
-final emojiFilterProvider = ''.inj();
+final emojiFilterProvider = ''.inj(autoDisposeWhenNotUsed: false);
 
 final emojisProvider = MapState<Emoji>().inj(autoDisposeWhenNotUsed: false);
 
@@ -19,6 +19,7 @@ final filteredEmojisProvider = RM.inject<List<Emoji>>(
     // further notification from name injected model.
     debounceDelay: 400,
   ),
+  autoDisposeWhenNotUsed: false,
 );
 
 final lastUsedEmojisProvider = MapState<Emoji>(

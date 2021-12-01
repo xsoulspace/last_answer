@@ -142,8 +142,8 @@ class AppStoreInitializer extends StatelessWidget {
     );
 
     final projectsService = BasicProjectsService(
-      ideas: ideaProjectsState.safeState,
-      notes: notesProjectsState.safeState,
+      ideas: ideaProjectsState.state,
+      notes: notesProjectsState.state,
       // TODO(arenukvern): add stories in v4
       stories: const {},
     );
@@ -154,8 +154,8 @@ class AppStoreInitializer extends StatelessWidget {
     if (projectsFolders.isEmpty) {
       currentFolder = (await ProjectFolder.create())
         ..addProjects([
-          ...ideaProjectsState.safeState.values,
-          ...notesProjectsState.safeState.values,
+          ...ideaProjectsState.state.values,
+          ...notesProjectsState.state.values,
         ]);
     } else {
       MapState.load(
@@ -168,14 +168,13 @@ class AppStoreInitializer extends StatelessWidget {
           folder: projectsFolder,
           service: projectsService,
         );
-        projectsFolder.setExistedProjectsList(projects);
+        projectsFolder.setExistedProjects(projects);
       }
 
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
     currentFolderProvider.state.state = currentFolder;
-
     // TODO(arenukvern): in case of future migrations
     // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
     // if (!settings.migrated) {

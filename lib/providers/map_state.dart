@@ -5,7 +5,6 @@ class MapState<TValue> {
   Map<String, TValue> state = {};
 
   final AbstractUtil<Map<String, TValue>>? saveUtil;
-  Map<String, TValue> get safeState => state;
   List<TValue> get values => state.values.toList();
 
   void put({required final String key, required final TValue value}) {

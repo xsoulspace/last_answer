@@ -76,7 +76,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
             child: OnBuilder(
               listenTo: currentFolderProjects,
               builder: () {
-                final projects = currentFolderProjects.state.reversed.toList();
+                final projects = currentFolderProjects.state.toList();
                 if (projects.isEmpty) {
                   return Align(
                     alignment: Alignment.centerLeft,
@@ -96,20 +96,8 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                           ?.withOpacity(0.7),
                   child: RightScrollbar(
                     controller: scrollController,
-                    child: ReorderableListView.builder(
-                      scrollController: scrollController,
-                      onReorder: (final oldIndex, final newIndex) {
-                        final currentFolder = currentFolderProvider.state;
-
-                        int effectiveIndex = newIndex;
-                        final list = [...currentFolder.state.projectsList];
-                        if (effectiveIndex > oldIndex) {
-                          effectiveIndex -= 1;
-                        }
-                        final item = list.removeAt(oldIndex);
-                        list.insert(effectiveIndex, item);
-                        currentFolder.setExistedProjectsList(list);
-                      },
+                    child: ListView.builder(
+                      controller: scrollController,
                       padding: const EdgeInsets.all(5),
                       shrinkWrap: true,
                       restorationId: 'projects',

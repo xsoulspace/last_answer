@@ -60,11 +60,30 @@ class ProjectFolder extends HiveObject
   /// This function does not add folder to projects.
   ///
   /// To add new project please use [addProject] or [addProjects]
-  void setExistedProjectsList(final Iterable<BasicProject> projects) {
+  void setExistedProjects(final Iterable<BasicProject> projects) {
     _projects
       ..clear()
       ..addAll(projects);
     _updateIdsString();
+  }
+
+  void reorderProjects({final int oldIndex = 0, final int newIndex = 0}) {
+    final list = [...projectsList]..reorder(
+        newIndex: newIndex,
+        oldIndex: oldIndex,
+      );
+    setExistedProjects(list);
+  }
+
+  /// from new to old
+  ///
+  /// provide [project] to check its position
+  ///
+  /// returns false if has no changes
+  bool sortProjectsByDate({required final BasicProject project}) {
+    if (_projects.first == project) return false;
+    setExistedProjects([...projectsList]..sortByDate());
+    return true;
   }
 
   void _updateIdsString() {
@@ -107,7 +126,7 @@ class ProjectFolder extends HiveObject
         folder: this,
         service: projectsService!,
       );
-      setExistedProjectsList(list);
+      setExistedProjects(list);
     }
   }
 
@@ -144,6 +163,7 @@ class ProjectFolder extends HiveObject
     for (final id in ids) {
       final project = getProjectById(id);
       if (project == null) continue;
+      project.folder = folder;
       projects.add(project);
     }
     return projects;

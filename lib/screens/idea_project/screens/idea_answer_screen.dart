@@ -40,11 +40,31 @@ class IdeaAnswerScreen extends HookWidget {
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);
     final textController = useTextEditingController(text: answer.value.text);
+    // ignore: close_sinks
+    final updatesStream = useStreamController<bool>();
+
     textController.addListener(() {
       if (answer.value.text == textController.text) return;
       answer.value.text = textController.text;
-      answer.value.save();
+      maybeIdea.updated = DateTime.now();
+      updatesStream.add(true);
     });
+
+    updatesStream.stream
+        .throttleTime(
+      const Duration(milliseconds: 700),
+      leading: true,
+      trailing: true,
+    )
+        .forEach(
+      (final _) async {
+        maybeIdea.folder?.sortProjectsByDate(project: maybeIdea);
+        ideaProjectsProvider.notify();
+        await answer.value.save();
+        await maybeIdea.save();
+      },
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       restorationId: 'ideas/$ideaId/$answerId',

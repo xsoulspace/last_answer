@@ -19,6 +19,8 @@ class NoteProjectScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final screenLayout = ScreenLayout.of(context);
     final noteFocusNode = useFocusNode();
     final maybeNote = noteProjectsProvider.state.state[noteId]!;
     final note = useState<NoteProject>(maybeNote);
@@ -28,9 +30,12 @@ class NoteProjectScreen extends HookWidget {
     final updatesStream = useStreamController<bool>();
     noteController.addListener(() {
       if (note.value.note == noteController.text) return;
-      note.value.note = noteController.text;
+      note.value
+        ..note = noteController.text
+        ..updated = DateTime.now();
       updatesStream.add(true);
     });
+
     updatesStream.stream
         .throttleTime(
       const Duration(milliseconds: 700),
@@ -38,14 +43,14 @@ class NoteProjectScreen extends HookWidget {
       trailing: true,
     )
         .forEach((final _) async {
-      noteProjectsProvider
-        ..state.put(key: maybeNote.id, value: maybeNote)
-        ..notify();
+      noteProjectsProvider.state.put(key: note.value.id, value: note.value);
+      note.value.folder?.sortProjectsByDate(project: note.value);
+      noteProjectsProvider.notify();
       return note.value.save();
     });
-    final screenLayout = ScreenLayout.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
+      backgroundColor: theme.canvasColor,
       restorationId: 'notes/$noteId',
       appBar: BackTextUniversalAppBar(
         useBackButton: true,

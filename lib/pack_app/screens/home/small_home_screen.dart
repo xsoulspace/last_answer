@@ -69,9 +69,9 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         children: [
           Expanded(
             child: OnBuilder(
-              listenTo: currentFolderProjects,
+              listenTo: currentFolderProvider,
               builder: () {
-                final projects = currentFolderProjects.state.toList();
+                final projects = currentFolderProjects.toList();
                 if (projects.isEmpty) {
                   return Align(
                     alignment: Alignment.centerLeft,

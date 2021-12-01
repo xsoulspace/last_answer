@@ -17,7 +17,7 @@ class AppStateProvider extends StatelessWidget {
             context: context,
             settings: _settings,
           ),
-          loader: AppLoadingScreen(settings: _settings),
+          loader: const AppLoadingScreen(),
           child: child,
         ),
       ),

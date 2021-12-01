@@ -53,21 +53,20 @@ class EmojiPopup extends HookWidget {
   }
 }
 
-class EmojiGrid extends HookConsumerWidget {
+class EmojiGrid extends HookWidget {
   const EmojiGrid({
     required final this.onChanged,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final emojis = ref.watch(filteredEmojisProvider);
-    final notifier = ref.read(emojiFilterProvider.notifier);
-    final lastEmojisState = ref.watch(lastUsedEmojisProvider);
+  Widget build(final BuildContext context) {
+    final emojis = filteredEmojisProvider.state;
+    final lastEmojisState = lastUsedEmojisProvider.state.state;
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>(
       onCancel: () {
-        notifier.state = '';
+        emojiFilterProvider.state = '';
       },
     );
     emojiKeywordStream.stream
@@ -78,7 +77,7 @@ class EmojiGrid extends HookConsumerWidget {
     )
         .forEach(
       (final keyword) async {
-        notifier.state = keyword;
+        emojiFilterProvider.state = keyword;
       },
     );
     final lastEmojis = useState(lastEmojisState.values.toSet());
@@ -101,9 +100,11 @@ class EmojiGrid extends HookConsumerWidget {
         }
         lastEmojis.value = newLastEmojis.toSet();
 
-        ref.read(lastUsedEmojisProvider.notifier).assignEntries(
-              newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
-            );
+        lastUsedEmojisProvider
+          ..state.assignEntries(
+            newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+          )
+          ..notify();
       }
 
       return EmojiButton(
@@ -116,13 +117,15 @@ class EmojiGrid extends HookConsumerWidget {
     return ButtonPopup(
       children: [
         Expanded(
-          child: GridView.count(
-            restorationId: 'emojis-grid',
-            shrinkWrap: true,
-            crossAxisCount: maxItemsInRow,
-            semanticChildCount: emojis.length,
-            padding: const EdgeInsets.only(right: 12),
-            children: emojis.map(buildEmojiButton).toList(),
+          child: OnReactive(
+            () => GridView.count(
+              restorationId: 'emojis-grid',
+              shrinkWrap: true,
+              crossAxisCount: maxItemsInRow,
+              semanticChildCount: emojis.length,
+              padding: const EdgeInsets.only(right: 12),
+              children: emojis.map(buildEmojiButton).toList(),
+            ),
           ),
         ),
         Divider(color: borderColor, height: 1),

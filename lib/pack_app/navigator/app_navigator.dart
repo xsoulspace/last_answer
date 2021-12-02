@@ -1,5 +1,19 @@
 part of pack_app;
 
+class _ValueKeys {
+  _ValueKeys._();
+  static const _home = ValueKey<String>('home');
+  static const _settings = ValueKey<String>('settings');
+  static const _info = ValueKey<String>('info');
+  static const _notes = ValueKey<String>('notes');
+  static const _notesNote = ValueKey<String>('notes/note');
+  static const _createIdea = ValueKey<String>('createIdea');
+  static const _ideas = ValueKey<String>('ideas');
+  static const _ideasIdea = ValueKey<String>('ideas/idea');
+  static const _ideasIdeaAnswer = ValueKey<String>('ideas/idea/answer');
+  static final _largeScreenHomeNavigator = GlobalKey();
+}
+
 /// Builds the top-level navigator for the app. The pages to display are based
 /// on the `routeState` that was parsed by the TemplateRouteParser.
 class AppNavigator extends StatefulWidget {
@@ -15,29 +29,17 @@ class AppNavigator extends StatefulWidget {
 }
 
 class _AppNavigatorState extends State<AppNavigator> {
-  final _homeKey = const ValueKey<String>('home');
-  final _settingsKey = const ValueKey<String>('settings');
-  final _infoKey = const ValueKey<String>('info');
+  static final emptyPage = MaterialPage<void>(child: Container());
 
-  final _notesKey = const ValueKey<String>('notes');
-  final _notesNoteKey = const ValueKey<String>('notes/note');
-
-  final _createIdeaKey = const ValueKey<String>('createIdea');
-  final _ideasKey = const ValueKey<String>('ideas');
-  final _ideasIdeaKey = const ValueKey<String>('ideas/idea');
-  final _ideasIdeaAnswerKey = const ValueKey<String>('ideas/idea/answer');
-  final _largeScreenHomeNavigatorKey = GlobalKey();
-  late final AppNavigatorController _navigatorController =
-      AppNavigatorController.use(routeState: routeState);
   RouteState get routeState => widget.routeState;
-  String get pathTemplate => widget.routeState.route.pathTemplate;
+  String get pathTemplate => routeState.route.pathTemplate;
 
   @override
   Widget build(final BuildContext context) {
-    final String? noteId = routeState.route.parameters['noteId'];
-    final String? ideaId = routeState.route.parameters['ideaId'];
-    final String? answerId = routeState.route.parameters['answerId'];
-    final emptyPage = MaterialPage<void>(child: Container());
+    final popper = AppNavigatorPopper(routeState: routeState);
+    final pageBuilder = AppNavigatorPageBuilder(popper: popper);
+    final String? noteId = popper.params.noteId;
+    final String? ideaId = popper.params.ideaId;
 
     bool checkIsProjectActive(final BasicProject project) {
       if (project.id == noteId) return true;
@@ -45,207 +47,91 @@ class _AppNavigatorState extends State<AppNavigator> {
       return false;
     }
 
-    Future<bool> _handleWillPop() async {
-      switch (pathTemplate) {
-        case AppRoutesName.ideaAnswer:
-          _navigatorController.goIdeaScreen(ideaId: ideaId!);
-          break;
-        case AppRoutesName.idea:
-        case AppRoutesName.note:
-        case AppRoutesName.createIdea:
-        case AppRoutesName.settings:
-          _navigatorController.goHome();
-          break;
-        case AppRoutesName.home:
-      }
-      return false;
-    }
-
-    Widget willPopScope({required final Widget child}) {
-      return WillPopScope(onWillPop: _handleWillPop, child: child);
-    }
-
-    Page appInfoPage() => MaterialPage(
-          key: _infoKey,
-          fullscreenDialog: true,
-          child: willPopScope(
-            child: AppInfoScreen(
-              onBack: _navigatorController.goHome,
-            ),
-          ),
-        );
-    Page settingsPage() => MaterialPage<void>(
-          key: _settingsKey,
-          fullscreenDialog: true,
-          child: willPopScope(
-            child: SettingsScreen(
-              onBack: _navigatorController.goHome,
-            ),
-          ),
-        );
-
-    Page notePage() => MaterialPage<void>(
-          key: _ideasIdeaKey,
-          restorationId: routeState.route.path,
-          fullscreenDialog: isNativeDesktop,
-          name: routeState.route.path,
-          child: willPopScope(
-            child: NoteProjectScreen(
-              onBack: (final note) async {
-                if (note.note.replaceAll(' ', '').isEmpty) {
-                  await note.delete();
-                  noteProjectsProvider
-                    ..state.remove(key: note.id)
-                    ..notify();
-                }
-                _navigatorController.goHome();
-              },
-              noteId: noteId!,
-              key: ValueKey(noteId),
-            ),
-          ),
-        );
-    Page ideaPage() => MaterialPage<void>(
-          key: _ideasIdeaKey,
-          fullscreenDialog: isNativeDesktop,
-          restorationId: routeState.route.path,
-          name: routeState.route.path,
-          child: willPopScope(
-            child: IdeaProjectScreen(
-              onBack: _navigatorController.goHome,
-              onAnswerExpand: _navigatorController.onIdeaAnswerExpand,
-              ideaId: ideaId!,
-              key: ValueKey(ideaId),
-            ),
-          ),
-        );
-    Page ideaAnswerPage() => MaterialPage<void>(
-          fullscreenDialog: true,
-          key: _ideasIdeaAnswerKey,
-          restorationId: routeState.route.path,
-          name: routeState.route.path,
-          child: willPopScope(
-            child: IdeaAnswerScreen(
-              onUnknown: _navigatorController.onUnknownIdeaAnswer,
-              onBack: (final idea) =>
-                  _navigatorController.goIdeaScreen(ideaId: idea.id),
-              answerId: answerId!,
-              ideaId: ideaId!,
-              key: ValueKey('$ideaId-$answerId'),
-            ),
-          ),
-        );
-    Page createIdeaPage() => MaterialPage<void>(
-          key: _createIdeaKey,
-          fullscreenDialog: true,
-          child: willPopScope(
-            child: CreateIdeaProjectScreen(
-              onBack: _navigatorController.goHome,
-              onCreate: _navigatorController.onCreateIdea,
-            ),
-          ),
-        );
-
-    List<Page> getLargeScreenPages() => [
-          if (pathTemplate.startsWith(AppRoutesName.home)) ...[
-            MaterialPage<void>(
-              key: _homeKey,
-              child: willPopScope(
-                child: LargeHomeScreen(
-                  checkIsProjectActive: checkIsProjectActive,
-                  onGoHome: _navigatorController.goHome,
-                  onInfoTap: _navigatorController.goAppInfo,
-                  onCreateIdeaTap: _navigatorController.goCreateIdea,
-                  onCreateNoteTap: _navigatorController.goNoteScreen,
-                  onProjectTap: _navigatorController.onProjectTap,
-                  onSettingsTap: _navigatorController.goSettings,
-                  mainScreenNavigator: Navigator(
-                    key: _largeScreenHomeNavigatorKey,
-                    onGenerateRoute: (final _) => null,
-                    pages: [
-                      if (pathTemplate == AppRoutesName.note)
-                        notePage()
-                      else if (pathTemplate.contains(AppRoutesName.idea)) ...[
-                        ideaPage(),
-                      ] else if (routeState.route.pathTemplate ==
-                          AppRoutesName.settings)
-                        settingsPage()
-                      else
-                        emptyPage
-                    ],
-                    onPopPage: (final route, final result) =>
-                        route.didPop(result),
-                  ),
+    List<Page> getLargeScreenPages() {
+      return [
+        if (pathTemplate.startsWith(AppRoutesName.home)) ...[
+          MaterialPage<void>(
+            key: _ValueKeys._home,
+            child: AppNavigatorPopScope(
+              popper: popper,
+              child: LargeHomeScreen(
+                checkIsProjectActive: checkIsProjectActive,
+                onGoHome: popper.navigatorController.goHome,
+                onInfoTap: popper.navigatorController.goAppInfo,
+                onCreateIdeaTap: popper.navigatorController.goCreateIdea,
+                onCreateNoteTap: popper.navigatorController.goNoteScreen,
+                onProjectTap: popper.navigatorController.onProjectTap,
+                onSettingsTap: popper.navigatorController.goSettings,
+                mainScreenNavigator: Navigator(
+                  key: _ValueKeys._largeScreenHomeNavigator,
+                  onGenerateRoute: (final _) => null,
+                  pages: [
+                    if (pathTemplate == AppRoutesName.note)
+                      pageBuilder.notePage()
+                    else if (pathTemplate.contains(AppRoutesName.idea)) ...[
+                      pageBuilder.ideaPage(),
+                    ] else if (routeState.route.pathTemplate ==
+                        AppRoutesName.settings)
+                      pageBuilder.settingsPage()
+                    else
+                      emptyPage
+                  ],
+                  onPopPage: (final route, final result) =>
+                      route.didPop(result),
                 ),
               ),
             ),
-            if (pathTemplate == AppRoutesName.createIdea)
-              createIdeaPage()
-            else if (pathTemplate == AppRoutesName.ideaAnswer)
-              ideaAnswerPage()
-            else if (pathTemplate == AppRoutesName.appInfo)
-              appInfoPage()
-          ]
-        ];
-
-    List<Page> getSmallScreenPages() => [
-          if (pathTemplate == AppRoutesName.home)
-            MaterialPage<void>(
-              key: _homeKey,
-              child: willPopScope(
-                child: SmallHomeScreen(
-                  checkIsProjectActive: checkIsProjectActive,
-                  onInfoTap: _navigatorController.goAppInfo,
-                  onCreateIdeaTap: _navigatorController.goCreateIdea,
-                  onCreateNoteTap: _navigatorController.goNoteScreen,
-                  onProjectTap: _navigatorController.onProjectTap,
-                  onSettingsTap: _navigatorController.goSettings,
-                  onGoHome: _navigatorController.goHome,
-                ),
-              ),
-            )
-          else if (pathTemplate == AppRoutesName.settings)
-            settingsPage()
+          ),
+          if (pathTemplate == AppRoutesName.createIdea)
+            pageBuilder.createIdeaPage()
+          else if (pathTemplate == AppRoutesName.ideaAnswer)
+            pageBuilder.ideaAnswerPage()
           else if (pathTemplate == AppRoutesName.appInfo)
-            appInfoPage()
-          else if (pathTemplate == AppRoutesName.createIdea)
-            createIdeaPage()
-          else if (pathTemplate == AppRoutesName.note)
-            notePage()
-          else if (pathTemplate.contains(AppRoutesName.idea)) ...[
-            ideaPage(),
-            if (pathTemplate == AppRoutesName.ideaAnswer) ideaAnswerPage()
-          ] else
-            emptyPage
-        ];
+            pageBuilder.appInfoPage()
+        ]
+      ];
+    }
+
+    List<Page> getSmallScreenPages() {
+      return [
+        if (pathTemplate == AppRoutesName.home)
+          MaterialPage<void>(
+            key: _ValueKeys._home,
+            child: AppNavigatorPopScope(
+              popper: popper,
+              child: SmallHomeScreen(
+                checkIsProjectActive: checkIsProjectActive,
+                onInfoTap: popper.navigatorController.goAppInfo,
+                onCreateIdeaTap: popper.navigatorController.goCreateIdea,
+                onCreateNoteTap: popper.navigatorController.goNoteScreen,
+                onProjectTap: popper.navigatorController.onProjectTap,
+                onSettingsTap: popper.navigatorController.goSettings,
+                onGoHome: popper.navigatorController.goHome,
+              ),
+            ),
+          )
+        else if (pathTemplate == AppRoutesName.settings)
+          pageBuilder.settingsPage()
+        else if (pathTemplate == AppRoutesName.appInfo)
+          pageBuilder.appInfoPage()
+        else if (pathTemplate == AppRoutesName.createIdea)
+          pageBuilder.createIdeaPage()
+        else if (pathTemplate == AppRoutesName.note)
+          pageBuilder.notePage()
+        else if (pathTemplate.contains(AppRoutesName.idea)) ...[
+          pageBuilder.ideaPage(),
+          if (pathTemplate == AppRoutesName.ideaAnswer)
+            pageBuilder.ideaAnswerPage()
+        ] else
+          emptyPage
+      ];
+    }
 
     return ResponsiveNavigator(
       navigatorKey: widget.navigatorKey,
       onLargeScreen: getLargeScreenPages,
       onSmallScreen: getSmallScreenPages,
-      onPopPage: (final route, final dynamic result) {
-        /// ! here will go selected pages logic.
-        final maybePage = route.settings;
-        if (maybePage is Page) {
-          if (maybePage.key == _createIdeaKey) {
-            _navigatorController.goHome();
-          } else if (maybePage.key == _ideasIdeaKey) {
-            _navigatorController.goHome();
-          } else if (maybePage.key == _ideasIdeaAnswerKey) {
-            final arr = maybePage.name?.split('/') ?? [];
-            if (arr.length == 4) {
-              _navigatorController.goIdeaScreen(ideaId: arr[4]);
-            } else {
-              _navigatorController.goHome();
-            }
-          } else if (maybePage.key == _settingsKey) {
-            _navigatorController.goHome();
-          }
-        }
-
-        final popped = route.didPop(result);
-        return popped;
-      },
+      onPopPage: popper.onPopPage,
     );
   }
 }

@@ -1,0 +1,113 @@
+part of pack_app;
+
+class AppNavigatorPageBuilder {
+  AppNavigatorPageBuilder({
+    required final this.popper,
+  });
+  final AppNavigatorPopper popper;
+  AppNavigatorController get navigatorController => popper.navigatorController;
+  RouteState get routeState => popper.routeState;
+  AppRouteParameters get params => popper.params;
+  Page appInfoPage() {
+    return MaterialPage(
+      key: _ValueKeys._info,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: AppInfoScreen(
+          onBack: navigatorController.goHome,
+        ),
+      ),
+    );
+  }
+
+  Page settingsPage() {
+    return MaterialPage<void>(
+      key: _ValueKeys._settings,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: SettingsScreen(
+          onBack: navigatorController.goHome,
+        ),
+      ),
+    );
+  }
+
+  Page notePage() {
+    return MaterialPage<void>(
+      key: _ValueKeys._notesNote,
+      restorationId: routeState.route.path,
+      fullscreenDialog: isNativeDesktop,
+      name: routeState.route.path,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: NoteProjectScreen(
+          onBack: (final note) async {
+            if (note.note.replaceAll(' ', '').isEmpty) {
+              await note.delete();
+              noteProjectsProvider
+                ..state.remove(key: note.id)
+                ..notify();
+            }
+            navigatorController.goHome();
+          },
+          noteId: params.noteId!,
+          key: ValueKey(params.noteId),
+        ),
+      ),
+    );
+  }
+
+  Page ideaPage() {
+    return MaterialPage<void>(
+      key: _ValueKeys._ideasIdea,
+      fullscreenDialog: isNativeDesktop,
+      restorationId: routeState.route.path,
+      name: routeState.route.path,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: IdeaProjectScreen(
+          onBack: navigatorController.goHome,
+          onAnswerExpand: navigatorController.onIdeaAnswerExpand,
+          ideaId: params.ideaId!,
+          key: ValueKey(params.ideaId),
+        ),
+      ),
+    );
+  }
+
+  Page ideaAnswerPage() {
+    return MaterialPage<void>(
+      fullscreenDialog: true,
+      key: _ValueKeys._ideasIdeaAnswer,
+      restorationId: routeState.route.path,
+      name: routeState.route.path,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: IdeaAnswerScreen(
+          onUnknown: navigatorController.onUnknownIdeaAnswer,
+          onBack: (final idea) =>
+              navigatorController.goIdeaScreen(ideaId: idea.id),
+          answerId: params.answerId!,
+          ideaId: params.ideaId!,
+          key: ValueKey('${params.ideaId}-${params.answerId}'),
+        ),
+      ),
+    );
+  }
+
+  Page createIdeaPage() {
+    return MaterialPage<void>(
+      key: _ValueKeys._createIdea,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: CreateIdeaProjectScreen(
+          onBack: navigatorController.goHome,
+          onCreate: navigatorController.onCreateIdea,
+        ),
+      ),
+    );
+  }
+}

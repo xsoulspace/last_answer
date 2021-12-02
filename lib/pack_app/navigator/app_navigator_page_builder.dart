@@ -5,10 +5,14 @@ class AppNavigatorPageBuilder {
     required final this.popper,
   });
   final AppNavigatorPopper popper;
+   static final emptyPage = MaterialPage<void>(child: Container());
+  
   AppNavigatorController get navigatorController => popper.navigatorController;
   RouteState get routeState => popper.routeState;
   AppRouteParameters get params => popper.params;
-  Page appInfoPage() {
+  String get pathTemplate => popper.pathTemplate;
+ 
+ Page appInfoPage() {
     return MaterialPage(
       key: _ValueKeys._info,
       fullscreenDialog: true,

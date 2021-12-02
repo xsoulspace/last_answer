@@ -26,6 +26,7 @@ part 'abstract/settings_service.dart';
 part 'navigator/app_navigator.dart';
 part 'navigator/app_navigator_controller.dart';
 part 'navigator/app_navigator_data_provider.dart';
+part 'navigator/app_navigator_layout_builder.dart';
 part 'navigator/app_navigator_page_builder.dart';
 part 'navigator/app_navigator_pop_scope.dart';
 part 'navigator/app_navigator_popper.dart';

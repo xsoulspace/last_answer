@@ -3,7 +3,11 @@ part of pack_app;
 class AppNavigatorPopper extends AppNavigatorDataProvider {
   AppNavigatorPopper({
     required final RouteState routeState,
-  }) : super(routeState: routeState);
+    required final BuildContext context,
+  }) : super(
+          routeState: routeState,
+          context: context,
+        );
 
   Future<bool> handleWillPop() async {
     switch (pathTemplate) {

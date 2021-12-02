@@ -17,13 +17,15 @@ class IdeaProjectScreen extends HookWidget {
   Widget build(final BuildContext context) {
     // ignore: close_sinks
     final ideaUpdatesStream = useStreamController<bool>();
+    final ideasProvider = context.read<IdeaProjectsProvider>();
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
 
-    final idea = ideaProjectsProvider.state.state[ideaId]!;
+    final idea = ideasProvider.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
     final scrollController = useScrollController();
-    final questions = ideaProjectQuestionsProvider.state;
+    final questions = ideaQuestionsProvider.state;
     final questionsOpened = useIsBool();
 
     ideaUpdatesStream.stream
@@ -33,9 +35,7 @@ class IdeaProjectScreen extends HookWidget {
       trailing: true,
     )
         .forEach((final _) async {
-      ideaProjectsProvider
-        ..state.put(key: idea.id, value: idea)
-        ..notify();
+      ideasProvider.put(key: idea.id, value: idea);
       return idea.save();
     });
 

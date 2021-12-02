@@ -1,30 +1,29 @@
 part of providers;
 
-final emojiFilterProvider = ''.inj(autoDisposeWhenNotUsed: false);
+class EmojiProvider extends MapState<Emoji> {
+  EmojiProvider({
+    required final OnFilterCallback<Emoji> onFilter,
+  }) : super(onFilter: onFilter);
+}
 
-final emojisProvider = MapState<Emoji>().inj(autoDisposeWhenNotUsed: false);
+EmojiProvider createEmojiProvider(final BuildContext context) {
+  return EmojiProvider(
+    onFilter: (final emoji, final keyword) => emoji.keywords.contains(keyword),
+  );
+}
 
-final filteredEmojisProvider = RM.inject<List<Emoji>>(
-  () {
-    final keyword = emojiFilterProvider.state;
-    final emojis = emojisProvider.state.state.values;
-    if (keyword.isEmpty) return emojis.toList();
-    return emojis
-        .where((final emoji) => emoji.keywords.contains(keyword))
-        .toList();
-  },
-  dependsOn: DependsOn(
-    {emojiFilterProvider},
-    // Do not recalculate until 400 ms has passed without any
-    // further notification from name injected model.
-    debounceDelay: 400,
-  ),
-  autoDisposeWhenNotUsed: false,
-);
+class LastEmojiProvider extends MapState<Emoji> {
+  LastEmojiProvider({
+    required final SaveUtil<Emoji> saveUtil,
+  }) : super(saveUtil: saveUtil);
+}
 
-final lastUsedEmojisProvider = MapState<Emoji>(
-  saveUtil: EmojiUtil(),
-).inj(autoDisposeWhenNotUsed: false);
+LastEmojiProvider createLastUsedEmojisProvider(final BuildContext context) {
+  return LastEmojiProvider(saveUtil: EmojiUtil());
+}
 
-final specialEmojisProvider =
-    MapState<Emoji>().inj(autoDisposeWhenNotUsed: false);
+class SpecialEmojiProvider extends MapState<Emoji> {}
+
+SpecialEmojiProvider createSpecialEmojisProvider(final BuildContext context) {
+  return SpecialEmojiProvider();
+}

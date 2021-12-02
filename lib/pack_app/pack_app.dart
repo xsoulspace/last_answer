@@ -16,7 +16,8 @@ import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:states_rebuilder/states_rebuilder.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 

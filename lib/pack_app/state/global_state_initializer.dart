@@ -18,24 +18,29 @@ class GlobalStateInitializer implements StateInitializer {
   });
   final BuildContext context;
   final SettingsController settings;
+
   @override
   Future<void> onLoad() async {
+    final lastEmojiProvider = context.read<LastEmojiProvider>();
+    final specialEmojiProvider = context.read<SpecialEmojiProvider>();
+    final emojiProvider = context.read<EmojiProvider>();
+    final currentFolderProvider = context.read<FolderStateProvider>();
+
     await settings.load();
 
     settings.loadingStatus = AppStateLoadingStatuses.emoji;
     // ignore: use_build_context_synchronously
     final emojis = await EmojiUtil.getList(context);
 
-    emojisProvider.state
-        .putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+    emojiProvider.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
     // ignore: use_build_context_synchronously
     final specialEmojis = await EmojiUtil.getSpecialList(context);
-    specialEmojisProvider.state
+    specialEmojiProvider
         .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
 
     final lastUsedEmojis = await EmojiUtil().load();
-    lastUsedEmojisProvider.state.putAll(lastUsedEmojis);
+    lastEmojiProvider.putAll(lastUsedEmojis);
 
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
@@ -62,15 +67,15 @@ class GlobalStateInitializer implements StateInitializer {
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-    MapState.load(
-      provider: ideaProjectQuestionsProvider,
+    MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsProvider>(
+      context: context,
       box: questions,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-    final ideaProjectsState = MapState.load(
-      provider: ideaProjectsProvider,
+    final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsProvider>(
+      context: context,
       box: ideas,
     );
 
@@ -80,8 +85,8 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.noteProjectKey,
     );
 
-    final notesProjectsState = MapState.load(
-      provider: noteProjectsProvider,
+    final notesProjectsState = MapState.load<NoteProject, NoteProjectsProvider>(
+      context: context,
       box: notes,
     );
 
@@ -110,8 +115,8 @@ class GlobalStateInitializer implements StateInitializer {
           ...notesProjectsState.state.values,
         ]);
     } else {
-      MapState.load(
-        provider: projectsFoldersProvider,
+      MapState.load<ProjectFolder, ProjectsFolderProvider>(
+        context: context,
         box: projectsFolders,
       );
 
@@ -126,7 +131,7 @@ class GlobalStateInitializer implements StateInitializer {
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-    currentFolderProvider.state.state = currentFolder;
+    currentFolderProvider.setState(currentFolder);
     // TODO(arenukvern): in case of future migrations
     // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
     // if (!settings.migrated) {

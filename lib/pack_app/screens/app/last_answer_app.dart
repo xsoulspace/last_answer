@@ -5,8 +5,8 @@ class LastAnswerApp extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return const AppStateProvider(
-      child: AppScaffold(),
+    return AppStateProvider(
+      builder: (final _) => const AppScaffold(),
     );
   }
 }

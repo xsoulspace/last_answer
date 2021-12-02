@@ -11,7 +11,8 @@ class _QuestionDropdown extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final chosenQuestion = useState(answer.question);
-    final questions = ideaProjectQuestionsProvider.state.values;
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
+    final questions = ideaQuestionsProvider.values;
     final textStyle = Theme.of(context).textTheme.bodyText1!;
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(

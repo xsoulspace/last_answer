@@ -8,6 +8,7 @@ import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'screens/note_project_screen.dart';

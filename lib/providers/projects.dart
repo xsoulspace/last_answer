@@ -1,31 +1,18 @@
 part of providers;
 
-final ideaProjectsProvider =
-    MapState<IdeaProject>().inj(autoDisposeWhenNotUsed: false);
+class IdeaProjectsProvider extends MapState<IdeaProject> {}
 
-final ideaProjectQuestionsProvider =
-    MapState<IdeaProjectQuestion>().inj(autoDisposeWhenNotUsed: false);
+IdeaProjectsProvider createIdeaProjectsProvider(final BuildContext context) =>
+    IdeaProjectsProvider();
 
-final noteProjectsProvider =
-    MapState<NoteProject>().inj(autoDisposeWhenNotUsed: false);
+class IdeaProjectQuestionsProvider extends MapState<IdeaProjectQuestion> {}
 
-final allProjectsProviders = RM.inject(
-  () {
-    final _all = <BasicProject>[];
-    void _addProject(final BasicProject project) {
-      _all.add(project);
-    }
+IdeaProjectQuestionsProvider createIdeaProjectQuestionsProvider(
+  final BuildContext context,
+) =>
+    IdeaProjectQuestionsProvider();
 
-    final ideas = ideaProjectsProvider.state.state;
-    final notes = noteProjectsProvider.state.state;
-    notes.values.forEach(_addProject);
-    ideas.values.forEach(_addProject);
-    _all.sort((final p1, final p2) => p1.updated.compareTo(p2.updated));
-    return _all;
-  },
-  dependsOn: DependsOn({
-    ideaProjectsProvider,
-    noteProjectsProvider,
-  }),
-  autoDisposeWhenNotUsed: false,
-);
+class NoteProjectsProvider extends MapState<NoteProject> {}
+
+NoteProjectsProvider createNoteProjectsProvider(final BuildContext context) =>
+    NoteProjectsProvider();

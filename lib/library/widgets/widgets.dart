@@ -1,5 +1,6 @@
 library widgets;
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:blur/blur.dart';
@@ -19,9 +20,9 @@ import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:universal_io/io.dart';
 
 part 'button_popup.dart';

@@ -52,6 +52,7 @@ class AppNavigatorPageBuilder {
           onBack: (final note) async {
             if (note.note.replaceAll(' ', '').isEmpty) {
               context.read<NoteProjectsProvider>().remove(key: note.id);
+              note.folder?.removeProject(note);
               await note.delete();
             }
             navigatorController.goHome();

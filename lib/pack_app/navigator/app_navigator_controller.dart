@@ -22,6 +22,7 @@ class AppNavigatorController {
         title: '',
         folder: currentFolder,
       );
+      currentFolder.addProject(newNote);
       context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);
       resolvedNoteId = newNote.id;
     }

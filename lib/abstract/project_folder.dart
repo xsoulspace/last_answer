@@ -94,7 +94,8 @@ class ProjectFolder extends HiveObject
   }
 
   void addProject(final BasicProject project) {
-    _projects.add(project..folder = this);
+    final effectiveProjects = [project..folder = this, ..._projects];
+    _projects = createHashSet()..addAll(effectiveProjects);
     _updateIdsString();
   }
 

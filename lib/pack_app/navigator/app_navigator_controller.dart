@@ -38,12 +38,14 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final currentFolder = context.read<FolderStateProvider>();
+    final folder = context.read<FolderStateProvider>();
+    final currentFolder = folder.state;
 
     final idea = await IdeaProject.create(
       title: title,
-      folder: currentFolder.state,
+      folder: currentFolder,
     );
+    currentFolder.addProject(idea);
     context.read<IdeaProjectsProvider>().put(key: idea.id, value: idea);
 
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));

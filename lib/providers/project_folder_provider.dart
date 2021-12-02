@@ -1,17 +1,25 @@
 part of providers;
 
-final projectsFoldersProvider =
-    MapState<ProjectFolder>().inj(autoDisposeWhenNotUsed: false);
+class ProjectsFolderProvider extends MapState<ProjectFolder> {}
 
-final currentFolderProvider =
-    FolderState(ProjectFolder.zero()).inj(autoDisposeWhenNotUsed: false);
+ProjectsFolderProvider createProjectsFoldersProvider(
+  final BuildContext context,
+) =>
+    ProjectsFolderProvider();
 
-class FolderState {
-  FolderState(final this.state);
+FolderStateProvider createCurrentFolderProvider(final BuildContext context) =>
+    FolderStateProvider(ProjectFolder.zero());
+
+class FolderStateProvider extends ChangeNotifier {
+  FolderStateProvider(final this.state);
   ProjectFolder state;
-  void setExistedProjects(final Iterable<BasicProject> projects) =>
-      state.setExistedProjects(projects);
-}
+  void setState(final ProjectFolder folder) {
+    state = folder;
+    notifyListeners();
+  }
 
-List<BasicProject> get currentFolderProjects =>
-    currentFolderProvider.state.state.projectsList;
+  void setExistedProjects(final Iterable<BasicProject> projects) {
+    state.setExistedProjects(projects);
+    notifyListeners();
+  }
+}

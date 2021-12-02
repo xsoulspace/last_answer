@@ -1,14 +1,46 @@
 part of providers;
 
-class MapState<TValue> {
-  MapState({final this.saveUtil});
+typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
+
+typedef SaveUtil<TValue> = AbstractUtil<Map<String, TValue>>;
+
+class MapState<TValue> extends ChangeNotifier {
+  MapState({
+    final this.saveUtil,
+    final this.onFilter,
+  });
+  void notify() => notifyListeners();
+
   Map<String, TValue> state = {};
 
-  final AbstractUtil<Map<String, TValue>>? saveUtil;
+  /// Use [filterKeyword] to get filtered values
+  String _filterKeyword = '';
+
+  /// Use [filterKeyword] to get filtered values
+  String get filterKeyword => _filterKeyword;
+
+  /// Use [filterKeyword] to get filtered values
+  set filterKeyword(final String filterKeyword) {
+    if (_filterKeyword == filterKeyword) return;
+    _filterKeyword = filterKeyword;
+    notifyListeners();
+  }
+
+  final OnFilterCallback<TValue>? onFilter;
+  final SaveUtil<TValue>? saveUtil;
+
   List<TValue> get values => state.values.toList();
+  List<TValue> get filteredValues {
+    final list = [...values];
+    if (onFilter != null) {
+      list.retainWhere((final v) => onFilter!(v, _filterKeyword));
+    }
+    return list;
+  }
 
   void put({required final String key, required final TValue value}) {
     state[key] = value;
+    notifyListeners();
     _save();
   }
 
@@ -16,16 +48,19 @@ class MapState<TValue> {
 
   void putAll(final Map<String, TValue> map) {
     state.addAll(map);
+    notifyListeners();
     _save();
   }
 
   void putEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
     state.addEntries(newEntries);
+    notifyListeners();
     _save();
   }
 
   void remove({required final String key}) {
     state.remove(key);
+    notifyListeners();
     _save();
   }
 
@@ -36,17 +71,8 @@ class MapState<TValue> {
 
   void assignEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
     state = Map.fromEntries(newEntries);
+    notifyListeners();
     _save();
-  }
-
-  static MapState<TValue> load<TValue>({
-    required final ReactiveModel<MapState<TValue>> provider,
-    required final Box<TValue> box,
-  }) {
-    provider
-      ..state.loadIterable(box.values)
-      ..notify();
-    return provider.state;
   }
 
   void loadIterable(final Iterable<TValue> values) {
@@ -63,5 +89,12 @@ class MapState<TValue> {
         }),
       );
     }
+  }
+
+  static TProvider load<TValue, TProvider extends MapState<TValue>>({
+    required final BuildContext context,
+    required final Box<TValue> box,
+  }) {
+    return context.read<TProvider>()..loadIterable(box.values);
   }
 }

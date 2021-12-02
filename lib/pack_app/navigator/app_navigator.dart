@@ -31,8 +31,14 @@ class AppNavigator extends StatefulWidget {
 class _AppNavigatorState extends State<AppNavigator> {
   @override
   Widget build(final BuildContext context) {
-    final popper = AppNavigatorPopper(routeState: widget.routeState);
-    final pageBuilder = AppNavigatorPageBuilder(popper: popper);
+    final popper = AppNavigatorPopper(
+      routeState: widget.routeState,
+      context: context,
+    );
+    final pageBuilder = AppNavigatorPageBuilder(
+      popper: popper,
+      context: context,
+    );
     final layoutBuilder = AppNavigatorLayoutBuilder(pageBuilder: pageBuilder);
 
     return ResponsiveNavigator(

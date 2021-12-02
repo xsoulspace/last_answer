@@ -4,8 +4,10 @@ part of pack_app;
 class AppNavigatorController {
   const AppNavigatorController.use({
     required final this.routeState,
+    required final this.context,
   });
   final RouteState routeState;
+  final BuildContext context;
 
   void goHome() => routeState.go(AppRoutesName.home);
   void goAppInfo() => routeState.go(AppRoutesName.appInfo);
@@ -14,14 +16,13 @@ class AppNavigatorController {
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final currentFolder = currentFolderProvider.state.state;
+      final folder = context.read<FolderStateProvider>();
+      final currentFolder = folder.state;
       final newNote = await NoteProject.create(
         title: '',
         folder: currentFolder,
       );
-      noteProjectsProvider
-        ..state.put(key: newNote.id, value: newNote)
-        ..notify();
+      context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);
       resolvedNoteId = newNote.id;
     }
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
@@ -36,13 +37,13 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final currentFolder = currentFolderProvider.state.state;
+    final currentFolder = context.read<FolderStateProvider>();
 
-    final idea = await IdeaProject.create(title: title, folder: currentFolder);
-
-    ideaProjectsProvider
-      ..state.put(key: idea.id, value: idea)
-      ..notify();
+    final idea = await IdeaProject.create(
+      title: title,
+      folder: currentFolder.state,
+    );
+    context.read<IdeaProjectsProvider>().put(key: idea.id, value: idea);
 
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }

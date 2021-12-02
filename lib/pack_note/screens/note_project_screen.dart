@@ -22,7 +22,9 @@ class NoteProjectScreen extends HookWidget {
     final theme = Theme.of(context);
     final screenLayout = ScreenLayout.of(context);
     final noteFocusNode = useFocusNode();
-    final maybeNote = noteProjectsProvider.state.state[noteId]!;
+    final noteProvider = context.read<NoteProjectsProvider>();
+    final maybeNote = noteProvider.state[noteId]!;
+
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
 
@@ -43,9 +45,9 @@ class NoteProjectScreen extends HookWidget {
       trailing: true,
     )
         .forEach((final _) async {
-      noteProjectsProvider.state.put(key: note.value.id, value: note.value);
+      noteProvider.put(key: note.value.id, value: note.value);
       note.value.folder?.sortProjectsByDate(project: note.value);
-      noteProjectsProvider.notify();
+      // createNoteProjectsProvider.notify();
       return note.value.save();
     });
 

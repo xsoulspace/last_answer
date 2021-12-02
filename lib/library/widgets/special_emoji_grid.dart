@@ -124,7 +124,7 @@ class SpecialEmojiPopup extends HookWidget {
   }
 }
 
-class SpecialEmojisGrid extends ReactiveStatelessWidget {
+class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({
     required final this.onChanged,
     final this.hideBorder = false,
@@ -142,7 +142,8 @@ class SpecialEmojisGrid extends ReactiveStatelessWidget {
       );
     }
 
-    final emojis = specialEmojisProvider.state.values;
+    final specialEmojisProvider = context.read<SpecialEmojiProvider>();
+    final emojis = specialEmojisProvider.values;
     const maxItemsInRow = 9;
 
     return ButtonPopup(

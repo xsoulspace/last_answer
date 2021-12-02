@@ -35,7 +35,9 @@ class IdeaAnswerScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final maybeIdea = ideaProjectsProvider.state.state[ideaId]!;
+    final ideasProvider = context.read<IdeaProjectsProvider>(
+    );
+    final maybeIdea = ideasProvider.state[ideaId]!;
     final maybeAnswer = getInitialAnswer(idea: maybeIdea);
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);
@@ -59,7 +61,7 @@ class IdeaAnswerScreen extends HookWidget {
         .forEach(
       (final _) async {
         maybeIdea.folder?.sortProjectsByDate(project: maybeIdea);
-        ideaProjectsProvider.notify();
+        // ideaProjectsProvider.notify();
         await answer.value.save();
         await maybeIdea.save();
       },

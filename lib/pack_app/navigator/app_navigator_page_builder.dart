@@ -3,16 +3,18 @@ part of pack_app;
 class AppNavigatorPageBuilder {
   AppNavigatorPageBuilder({
     required final this.popper,
+    required final this.context,
   });
   final AppNavigatorPopper popper;
-   static final emptyPage = MaterialPage<void>(child: Container());
-  
+  final BuildContext context;
+  static final emptyPage = MaterialPage<void>(child: Container());
+
   AppNavigatorController get navigatorController => popper.navigatorController;
   RouteState get routeState => popper.routeState;
   AppRouteParameters get params => popper.params;
   String get pathTemplate => popper.pathTemplate;
- 
- Page appInfoPage() {
+
+  Page appInfoPage() {
     return MaterialPage(
       key: _ValueKeys._info,
       fullscreenDialog: true,
@@ -49,10 +51,8 @@ class AppNavigatorPageBuilder {
         child: NoteProjectScreen(
           onBack: (final note) async {
             if (note.note.replaceAll(' ', '').isEmpty) {
+              context.read<NoteProjectsProvider>().remove(key: note.id);
               await note.delete();
-              noteProjectsProvider
-                ..state.remove(key: note.id)
-                ..notify();
             }
             navigatorController.goHome();
           },

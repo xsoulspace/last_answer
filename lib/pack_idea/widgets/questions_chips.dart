@@ -12,7 +12,9 @@ class _QuestionsChips extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final brightness = theme.brightness;
-    final questions = ideaProjectQuestionsProvider.state.values;
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
+
+    final questions = ideaQuestionsProvider.values;
     return Wrap(
       spacing: 1,
       crossAxisAlignment: WrapCrossAlignment.center,

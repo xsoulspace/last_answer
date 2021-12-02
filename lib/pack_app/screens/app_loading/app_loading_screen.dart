@@ -10,6 +10,7 @@ class AppLoadingScreen extends StatelessWidget {
     final statusText = appLoadingStatusesTitles[settings.loadingStatus]
             ?.getByLanguage(intl.Intl.systemLocale) ??
         '';
+
     return Container(
       color: AppColors.black,
       child: Center(

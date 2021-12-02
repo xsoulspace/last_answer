@@ -29,12 +29,9 @@ class AppNavigator extends StatefulWidget {
 }
 
 class _AppNavigatorState extends State<AppNavigator> {
-  RouteState get routeState => widget.routeState;
-  String get pathTemplate => routeState.route.pathTemplate;
-
   @override
   Widget build(final BuildContext context) {
-    final popper = AppNavigatorPopper(routeState: routeState);
+    final popper = AppNavigatorPopper(routeState: widget.routeState);
     final pageBuilder = AppNavigatorPageBuilder(popper: popper);
     final layoutBuilder = AppNavigatorLayoutBuilder(pageBuilder: pageBuilder);
 

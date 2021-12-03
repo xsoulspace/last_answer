@@ -83,6 +83,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "wordNew": "New",
+  "@wordNew": {
+    "description": "New"
+  },
   "yes": "YES",
   "@yes": {
     "description": "yes"

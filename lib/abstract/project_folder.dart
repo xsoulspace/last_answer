@@ -32,8 +32,7 @@ class ProjectFolder extends HiveObject
 
     final folder = ProjectFolder(
       id: createId(),
-      // TODO(arenukvern): add translation
-      title: 'New',
+      title: S.current.wordNew,
     );
 
     await box.put(folder.id, folder);

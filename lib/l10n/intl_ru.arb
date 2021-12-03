@@ -63,6 +63,10 @@
   "@projectsDirection": {
     "description": "Projects direction"
   },
+  "wordNew": "Новое",
+  "@wordNew": {
+    "description": "New"
+  },
   "theme": "Тема",
   "@theme": {
     "description": "app theme"

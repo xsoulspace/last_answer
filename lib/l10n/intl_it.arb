@@ -59,6 +59,10 @@
       "buildNumber"
     ]
   },
+  "wordNew": "Nuovo",
+  "@wordNew": {
+    "description": "New"
+  },
   "theme": "Tema",
   "@theme": {
     "description": "app theme"

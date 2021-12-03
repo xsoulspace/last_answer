@@ -91,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("Новое"),
         "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),
         "writeAnAnswer": MessageLookupByLibrary.simpleMessage("Запишите ответ"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")

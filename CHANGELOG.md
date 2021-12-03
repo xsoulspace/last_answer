@@ -1,3 +1,15 @@
+## 3.11.0+16
+
+- feat: pop up idea or note if it was updated
+- feat: change projects direction switch
+
+- perf: new icon background
+- perf: more good looking layout for settings
+- perf: more stability in all scrolling
+- perf: now desktop versions has no back button when it is no need it
+
+- fix: scrollbars offset for desktop versions
+
 ## 3.10.1+15
 
 - feat: Special symbols popup

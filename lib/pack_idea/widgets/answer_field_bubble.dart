@@ -4,17 +4,24 @@ class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({
     required final this.answer,
     required final this.onFocus,
+    required final this.onChange,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectAnswer answer;
   final VoidCallback onFocus;
+  final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) {
     final controller = useTextEditingController(text: answer.text);
     final consts = FocusBubbleContainerConsts.of(context);
-    void _updateAnswer() => answer
-      ..text = controller.text
-      ..save();
+    void _updateAnswer() {
+      if (answer.text == controller.text) return;
+      answer
+        ..text = controller.text
+        ..save();
+      onChange();
+    }
+
     final theme = Theme.of(context);
     return FocusBubbleContainer(
       onUnfocus: _updateAnswer,

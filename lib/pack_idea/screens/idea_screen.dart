@@ -19,7 +19,7 @@ class IdeaProjectScreen extends HookWidget {
     final ideaUpdatesStream = useStreamController<bool>();
     final ideasProvider = context.read<IdeaProjectsProvider>();
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
-
+    final silentFolderProvider = context.read<FolderStateProvider>();
     final idea = ideasProvider.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
@@ -34,10 +34,20 @@ class IdeaProjectScreen extends HookWidget {
       leading: true,
       trailing: true,
     )
-        .forEach((final _) async {
-      ideasProvider.put(key: idea.id, value: idea);
-      return idea.save();
-    });
+        .forEach(
+      (final updateFolder) async {
+        ideasProvider.put(
+          key: idea.id,
+          value: idea..updated = DateTime.now(),
+        );
+
+        if (updateFolder) {
+          idea.folder?.sortProjectsByDate(project: idea);
+          silentFolderProvider.notify();
+        }
+        await idea.save();
+      },
+    );
 
     void closeQuestions() {
       if (questionsOpened.value) questionsOpened.value = false;
@@ -45,6 +55,18 @@ class IdeaProjectScreen extends HookWidget {
 
     void openQuestions() {
       if (!questionsOpened.value) questionsOpened.value = true;
+    }
+
+    bool checkToUpdateFolder({
+      final String? title,
+      final bool? answersUpdated,
+    }) {
+      final toPop = idea.folder?.projectsList.first != idea;
+      if (title != null || answersUpdated == true) {
+        if (toPop) return true;
+      }
+
+      return false;
     }
 
     return Scaffold(
@@ -60,7 +82,8 @@ class IdeaProjectScreen extends HookWidget {
           onChanged: (final text) {
             if (text == idea.title) return;
             idea.title = text;
-            ideaUpdatesStream.add(true);
+            final updateFolder = checkToUpdateFolder();
+            ideaUpdatesStream.add(updateFolder);
           },
         ),
         onBack: onBack,
@@ -105,7 +128,14 @@ class IdeaProjectScreen extends HookWidget {
                     onReadyToDelete: () async {
                       idea.answers?.remove(_answer);
                       answers.value = [...idea.answers?.reversed ?? []];
-                      ideaUpdatesStream.add(true);
+                      final updateFolder =
+                          checkToUpdateFolder(answersUpdated: true);
+                      ideaUpdatesStream.add(updateFolder);
+                    },
+                    onChange: () {
+                      final updateFolder =
+                          checkToUpdateFolder(answersUpdated: true);
+                      ideaUpdatesStream.add(updateFolder);
                     },
                     deleteIconVisible: isDesktop,
                   );
@@ -123,10 +153,15 @@ class IdeaProjectScreen extends HookWidget {
             defaultQuestion: answers.value.isNotEmpty
                 ? answers.value[0].question
                 : questions.values.first,
+            onChanged: () {
+              final updateFolder = checkToUpdateFolder(answersUpdated: true);
+              ideaUpdatesStream.add(updateFolder);
+            },
             onCreated: (final answer) async {
               idea.answers?.add(answer);
               answers.value = [...idea.answers?.reversed ?? []];
-              ideaUpdatesStream.add(true);
+              final updateFolder = checkToUpdateFolder(answersUpdated: true);
+              ideaUpdatesStream.add(updateFolder);
             },
           ),
           const BottomSafeArea(),

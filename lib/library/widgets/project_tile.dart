@@ -110,6 +110,8 @@ class ProjectTile extends StatelessWidget {
                     ),
                   Text(
                     (project is NoteProject ? '      ' : '') + project.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
                   ),
                 ],
               ),

@@ -79,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Обратите внимание"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
+        "projectsDirection":
+            MessageLookupByLibrary.simpleMessage("Направление заметок"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "termsAndConditions":

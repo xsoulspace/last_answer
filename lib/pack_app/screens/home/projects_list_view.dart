@@ -1,26 +1,28 @@
 part of pack_app;
 
-class ProjectsListView extends StatelessWidget {
+class ProjectsListView extends HookWidget {
   const ProjectsListView({
-    required final this.scrollController,
     required final this.themeDefiner,
     required final this.onGoHome,
     required final this.onProjectTap,
     required final this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
-  final ScrollController scrollController;
   final VoidCallback onGoHome;
   final ValueChanged<BasicProject> onProjectTap;
   final ThemeDefiner themeDefiner;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
   @override
   Widget build(final BuildContext context) {
+    final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;
+    final settings = SettingsStateScope.of(context);
+    final reversed = settings.projectsListReversed;
     return Consumer<FolderStateProvider>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
+
         return Expanded(
           child: Column(
             children: [
@@ -43,6 +45,7 @@ class ProjectsListView extends StatelessWidget {
                   child: RightScrollbar(
                     controller: scrollController,
                     child: ListView.builder(
+                      reverse: reversed,
                       controller: scrollController,
                       padding: const EdgeInsets.all(5),
                       shrinkWrap: true,

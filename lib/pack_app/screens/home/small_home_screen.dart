@@ -28,7 +28,6 @@ class SmallHomeScreen extends StatefulHookWidget {
 class _SmallHomeScreenState extends State<SmallHomeScreen> {
   @override
   Widget build(final BuildContext context) {
-    final scrollController = useScrollController();
     final themeDefiner = ThemeDefiner.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
 
@@ -50,7 +49,6 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
     );
 
     final projectsList = ProjectsListView(
-      scrollController: scrollController,
       checkIsProjectActive: widget.checkIsProjectActive,
       onGoHome: widget.onGoHome,
       onProjectTap: widget.onProjectTap,

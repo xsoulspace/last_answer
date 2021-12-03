@@ -45,3 +45,5 @@ part 'screens/settings/settings_screen.dart';
 part 'screens/unknown/unknown_screen.dart';
 part 'state/global_state_initializer.dart';
 part 'state/global_state_notifiers.dart';
+part 'widgets/project_direction_switch.dart';
+part 'widgets/settings_list_tile.dart';

@@ -20,6 +20,7 @@ class NoteProjectScreen extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
+    final silentFolderProvider = context.read<FolderStateProvider>();
     final screenLayout = ScreenLayout.of(context);
     final noteFocusNode = useFocusNode();
     final noteProvider = context.read<NoteProjectsProvider>();
@@ -32,10 +33,16 @@ class NoteProjectScreen extends HookWidget {
     final updatesStream = useStreamController<bool>();
     noteController.addListener(() {
       if (note.value.note == noteController.text) return;
+      bool updateFolder = false;
+      if (note.value.title != NoteProject.getTitle(noteController.text)) {
+        updateFolder = true;
+      } else {
+        updateFolder = note.value.folder?.projectsList.first != note.value;
+      }
       note.value
         ..note = noteController.text
         ..updated = DateTime.now();
-      updatesStream.add(true);
+      updatesStream.add(updateFolder);
     });
 
     updatesStream.stream
@@ -44,10 +51,11 @@ class NoteProjectScreen extends HookWidget {
       leading: true,
       trailing: true,
     )
-        .forEach((final _) async {
+        .forEach((final updateFolder) async {
       noteProvider.put(key: note.value.id, value: note.value);
       note.value.folder?.sortProjectsByDate(project: note.value);
-      // createNoteProjectsProvider.notify();
+
+      if (updateFolder) silentFolderProvider.notify();
       return note.value.save();
     });
 

@@ -26,26 +26,10 @@ class SmallHomeScreen extends StatefulHookWidget {
 }
 
 class _SmallHomeScreenState extends State<SmallHomeScreen> {
-  final selectedProjects = <ProjectId, BasicProject>{};
-  void changeProjectSelection({
-    required final bool? selected,
-    required final BasicProject project,
-  }) {
-    if (selected == true) {
-      selectedProjects.remove(project.id);
-    } else {
-      selectedProjects[project.id] = project;
-    }
-  }
-
-  bool checkSelection(final BasicProject project) =>
-      selectedProjects.containsKey(project.id);
-
   @override
   Widget build(final BuildContext context) {
     final scrollController = useScrollController();
     final themeDefiner = ThemeDefiner.of(context);
-    final screenLayout = ScreenLayout.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
 
     final verticalMenu = ColoredBox(
@@ -64,84 +48,13 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
-    final folderState = context.watch<FolderStateProvider>();
-    final projects = folderState.state.projectsList;
 
-    final projectsList = Expanded(
-      child: Column(
-        children: [
-          if (projects.isEmpty)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  S.current.noProjectsYet,
-                  style: effectiveTheme.textTheme.headline2,
-                ),
-              ),
-            ),
-          Expanded(
-            child: ListTileTheme(
-              textColor: screenLayout.small
-                  ? null
-                  : effectiveTheme.textTheme.subtitle2?.color?.withOpacity(0.7),
-              child: RightScrollbar(
-                controller: scrollController,
-                child: ListView.builder(
-                  controller: scrollController,
-                  padding: const EdgeInsets.all(5),
-                  shrinkWrap: true,
-                  restorationId: 'projects',
-                  itemBuilder: (final _, final i) {
-                    final project = projects[i];
-                    return Padding(
-                      key: ValueKey(project.id),
-                      padding: const EdgeInsets.only(bottom: 3),
-                      child: ProjectTile(
-                        project: project,
-                        themeDefiner: themeDefiner,
-                        onSelected: changeProjectSelection,
-                        onTap: widget.onProjectTap,
-                        checkSelection: checkSelection,
-                        isProjectActive: widget.checkIsProjectActive(project),
-                        onRemove: (final _) async {
-                          if (project is IdeaProject) {
-                            await Future.forEach<IdeaProjectAnswer>(
-                              project.answers ?? [],
-                              (final answer) => answer.delete(),
-                            );
-                            context
-                                .read<IdeaProjectsProvider>()
-                                .remove(key: project.id);
-                          } else if (project is NoteProject) {
-                            context
-                                .read<NoteProjectsProvider>()
-                                .remove(key: project.id);
-                          } else if (project is StoryProject) {
-                            // TODO(arenukvern): implement Story removal
-                          }
-                          await project.delete();
-                          widget.onGoHome();
-                        },
-                        onRemoveConfirm: (final _) async {
-                          return showRemoveTitleDialog(
-                            context: context,
-                            title: project.title,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: projects.length,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          const BottomSafeArea(),
-        ],
-      ),
+    final projectsList = ProjectsListView(
+      scrollController: scrollController,
+      checkIsProjectActive: widget.checkIsProjectActive,
+      onGoHome: widget.onGoHome,
+      onProjectTap: widget.onProjectTap,
+      themeDefiner: themeDefiner,
     );
 
     final greeting = Greeting();

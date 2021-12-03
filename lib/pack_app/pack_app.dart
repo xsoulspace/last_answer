@@ -17,7 +17,6 @@ import 'package:lastanswer/providers/providers.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
@@ -38,6 +37,7 @@ part 'screens/app/app_state_provider.dart';
 part 'screens/app/last_answer_app.dart';
 part 'screens/app_loading/app_loading_screen.dart';
 part 'screens/home/large_home_screen.dart';
+part 'screens/home/projects_list_view.dart';
 part 'screens/home/small_home_screen.dart';
 part 'screens/home/vertical_projects_bar.dart';
 part 'screens/info/app_info.dart';

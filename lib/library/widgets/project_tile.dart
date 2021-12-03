@@ -11,9 +11,7 @@ typedef ProjectSelectionChanged = void Function({
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
     required final this.project,
-    required final this.onSelected,
     required final this.onTap,
-    required final this.checkSelection,
     required final this.onRemove,
     required final this.onRemoveConfirm,
     required final this.themeDefiner,
@@ -21,9 +19,7 @@ class ProjectTile extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
   final BasicProject project;
-  final BoolValueChanged<BasicProject> checkSelection;
   final bool isProjectActive;
-  final ProjectSelectionChanged onSelected;
   final ValueChanged<BasicProject> onTap;
   final ValueChanged<BasicProject> onRemove;
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
@@ -117,14 +113,6 @@ class ProjectTile extends StatelessWidget {
                   ),
                 ],
               ),
-              // trailing: ,
-              // TODO(arenukvern): add checkbox to mark project as completed
-              // trailing: Checkbox(
-              //   value: checkSelection(project),
-              //   onChanged: (final selected) =>
-              //       onSelected(selected: selected, project: project),
-              //   shape: const CircleBorder(),
-              // ),
             ),
           ],
         ),

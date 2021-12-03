@@ -48,11 +48,14 @@ class NoteProject extends BasicProject {
   @HiveField(projectLatestFieldHiveId + 2)
   ProjectFolder? folder;
 
+  static const titleLimit = 90;
   @override
   @JsonKey(ignore: true)
-  String get title {
-    if (note.length <= 90) return note;
-    return note.substring(0, 90);
+  String get title => getTitle(note);
+
+  static String getTitle(final String text) {
+    if (text.length <= titleLimit) return text;
+    return text.substring(0, titleLimit);
   }
 
   /// title setter not needed to be implemented.

@@ -63,7 +63,11 @@
   "@theme": {
     "description": "app theme"
   },
-  "themeSystem": "Sistema",
+  "projectsDirection": "Note direzione",
+  "@projectsDirection": {
+    "description": "Projects direction"
+  },
+  "themeSystem": "Auto",
   "@themeSystem": {
     "description": "app theme - system"
   },

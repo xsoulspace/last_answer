@@ -59,6 +59,10 @@
       "buildNumber"
     ]
   },
+  "projectsDirection": "Направление заметок",
+  "@projectsDirection": {
+    "description": "Projects direction"
+  },
   "theme": "Тема",
   "@theme": {
     "description": "app theme"

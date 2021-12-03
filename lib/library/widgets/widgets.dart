@@ -27,6 +27,7 @@ import 'package:universal_io/io.dart';
 
 part 'button_popup.dart';
 part 'choosable_bubble.dart';
+part 'cupertino_icon_button.dart';
 part 'dismissible_tile.dart';
 part 'emoji_button.dart';
 part 'emoji_grid.dart';

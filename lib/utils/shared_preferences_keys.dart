@@ -6,5 +6,6 @@ class SharedPreferencesKeys {
   static const theme = 'theme';
   static const locale = 'locale';
   static const migrated = 'migrated';
+  static const projectsReversed = 'projectsReversed';
   static const lastUsedEmojis = 'lastUsedEmojis';
 }

@@ -30,7 +30,7 @@ class SettingsController with ChangeNotifier {
     _themeMode = newThemeMode;
 
     // Important! Inform listeners a change has occurred.
-    notifyListeners();
+    notify();
 
     // Persist the changes to a local database or the internet using the
     // SettingService.
@@ -46,7 +46,7 @@ class SettingsController with ChangeNotifier {
     if (locale == _locale) return;
     _locale = locale;
     await S.load(locale);
-    notifyListeners();
+    notify();
 
     await settingsService.updateLocale(locale);
   }
@@ -58,9 +58,10 @@ class SettingsController with ChangeNotifier {
     _themeMode = await settingsService.themeMode();
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();
+    _projectsListReversed = await settingsService.projectsReversed();
 
     // Important! Inform listeners a change has occurred.
-    notifyListeners();
+    notify();
   }
 
   AppStateLoadingStatuses? _loadingStatus;
@@ -76,6 +77,16 @@ class SettingsController with ChangeNotifier {
   Future<void> setMigrated() async {
     migrated = true;
     return settingsService.setMigrated();
+  }
+
+  bool _projectsListReversed = false;
+
+  bool get projectsListReversed => _projectsListReversed;
+
+  set projectsListReversed(final bool projectsReversed) {
+    _projectsListReversed = projectsReversed;
+    notify();
+    settingsService.setProjectsReversed(reversed: projectsReversed);
   }
 
   void notify() => notifyListeners();

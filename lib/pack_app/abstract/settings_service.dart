@@ -41,4 +41,10 @@ class SettingsService with SharedPreferencesUtil {
 
   Future<void> setMigrated() async =>
       setBool(SharedPreferencesKeys.migrated, true);
+
+  Future<bool> projectsReversed() async =>
+      getBool(SharedPreferencesKeys.projectsReversed);
+
+  Future<void> setProjectsReversed({required final bool reversed}) async =>
+      setBool(SharedPreferencesKeys.projectsReversed, reversed);
 }

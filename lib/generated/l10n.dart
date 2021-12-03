@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `System`
+  /// `Auto`
   String get themeSystem {
     return Intl.message(
-      'System',
+      'Auto',
       name: 'themeSystem',
       desc: 'app theme - system',
       args: [],
@@ -226,6 +226,16 @@ class S {
       'Light',
       name: 'themeLight',
       desc: 'app theme - light',
+      args: [],
+    );
+  }
+
+  /// `Notes direction`
+  String get projectsDirection {
+    return Intl.message(
+      'Notes direction',
+      name: 'projectsDirection',
+      desc: 'Projects direction',
       args: [],
     );
   }

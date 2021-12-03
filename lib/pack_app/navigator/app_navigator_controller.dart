@@ -24,6 +24,7 @@ class AppNavigatorController {
       );
       currentFolder.addProject(newNote);
       context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);
+      folder.notify();
       resolvedNoteId = newNote.id;
     }
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
@@ -47,7 +48,7 @@ class AppNavigatorController {
     );
     currentFolder.addProject(idea);
     context.read<IdeaProjectsProvider>().put(key: idea.id, value: idea);
-
+    folder.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }
 

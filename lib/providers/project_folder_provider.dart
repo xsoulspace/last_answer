@@ -18,6 +18,8 @@ class FolderStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void notify() => notifyListeners();
+
   void setExistedProjects(final Iterable<BasicProject> projects) {
     state.setExistedProjects(projects);
     notifyListeners();

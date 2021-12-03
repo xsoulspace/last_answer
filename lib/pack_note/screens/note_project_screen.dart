@@ -53,9 +53,11 @@ class NoteProjectScreen extends HookWidget {
     )
         .forEach((final updateFolder) async {
       noteProvider.put(key: note.value.id, value: note.value);
-      note.value.folder?.sortProjectsByDate(project: note.value);
 
-      if (updateFolder) silentFolderProvider.notify();
+      if (updateFolder) {
+        note.value.folder?.sortProjectsByDate(project: note.value);
+        silentFolderProvider.notify();
+      }
       return note.value.save();
     });
 

@@ -8,6 +8,7 @@ class _AnswerCreator extends HookWidget {
     required final this.onShareTap,
     required final this.onFocus,
     required final this.questionsOpened,
+    required final this.onChanged,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectQuestion defaultQuestion;
@@ -16,6 +17,7 @@ class _AnswerCreator extends HookWidget {
   final VoidCallback onShareTap;
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
+  final VoidCallback onChanged;
   static Color getBackgroundByTheme(final ThemeData theme) =>
       theme.brightness == Brightness.light
           ? AppColors.grey4.withOpacity(0.15)
@@ -28,6 +30,7 @@ class _AnswerCreator extends HookWidget {
     final selectedQuestion =
         useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
     selectedQuestion.addListener(() async {
+      if (selectedQuestion.value == idea.newQuestion) return;
       idea.newQuestion = selectedQuestion.value;
       unawaited(idea.save());
     });
@@ -35,8 +38,10 @@ class _AnswerCreator extends HookWidget {
     final answerController = useTextEditingController(text: idea.newAnswerText);
     final answer = useState(answerController.text);
     answerController.addListener(() {
+      if (idea.newAnswerText == answerController.text) return;
       idea.newAnswerText = answerController.text;
       answer.value = answerController.text;
+      onChanged();
       unawaited(idea.save());
     });
 

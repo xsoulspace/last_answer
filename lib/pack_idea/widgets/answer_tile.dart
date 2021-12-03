@@ -8,6 +8,7 @@ class _AnswerTile extends StatelessWidget {
     required final this.deleteIconVisible,
     required final this.onExpand,
     required final this.onFocus,
+    required final this.onChange,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectAnswer answer;
@@ -16,6 +17,7 @@ class _AnswerTile extends StatelessWidget {
   final bool deleteIconVisible;
   final ValueChanged<IdeaProjectAnswer> onExpand;
   final VoidCallback onFocus;
+  final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) {
     return DismissibleTile(
@@ -80,6 +82,7 @@ class _AnswerTile extends StatelessWidget {
                 type: HeroIdTypes.projectIdeaQuestionTitle,
                 child: _QuestionDropdown(
                   answer: answer,
+                  onChange: onChange,
                 ),
               ),
             ),
@@ -128,6 +131,7 @@ class _AnswerTile extends StatelessWidget {
                     child: AnswerFieldBubble(
                       onFocus: onFocus,
                       answer: answer,
+                      onChange: onChange,
                     ),
                   ),
                 ),

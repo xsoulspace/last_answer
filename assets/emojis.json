@@ -11785,25 +11785,25 @@
   {
     "category": "other-symbol",
     "emoji": "✅",
-    "keywords": "check,mark,button"
+    "keywords": "check,mark,button,done"
   },
   {
     "category": "other-symbol",
     "emoji": "☑️",
-    "keywords": "check,box,with,check"
+    "keywords": "check,box,with,check,done"
   },
   {
     "category": "other-symbol",
     "emoji": "☑",
-    "keywords": "check,box,with,check"
+    "keywords": "check,box,with,check,done"
   },
-  { "category": "other-symbol", "emoji": "✔️", "keywords": "check,mark" },
-  { "category": "other-symbol", "emoji": "✔", "keywords": "check,mark" },
-  { "category": "other-symbol", "emoji": "❌", "keywords": "cross,mark" },
+  { "category": "other-symbol", "emoji": "✔️", "keywords": "check,mark,done" },
+  { "category": "other-symbol", "emoji": "✔", "keywords": "check,mark,done" },
+  { "category": "other-symbol", "emoji": "❌", "keywords": "cross,mark,done" },
   {
     "category": "other-symbol",
     "emoji": "❎",
-    "keywords": "cross,mark,button"
+    "keywords": "cross,mark,button,close"
   },
   { "category": "other-symbol", "emoji": "➰", "keywords": "curly,loop" },
   {

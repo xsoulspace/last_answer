@@ -80,8 +80,9 @@ class ProjectsListView extends StatelessWidget {
                               project.folder?.removeProject(project);
                               folderState.notify();
                               await project.delete();
-
-                              onGoHome();
+                              if (checkIsProjectActive(project)) {
+                                onGoHome();
+                              }
                             },
                             onRemoveConfirm: (final _) async {
                               return showRemoveTitleDialog(

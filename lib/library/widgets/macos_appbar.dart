@@ -55,13 +55,13 @@ class BackTextUniversalAppBar extends AppBar {
                         const TopSafeArea(),
                         const SizedBox(height: 25),
                         if (useBackButton)
-                          BackButton(onPressed: onBack)
+                          AdaptiveBackButton(onPressed: onBack)
                         else
                           CloseButton(onPressed: onBack),
                       ],
                     )
                   : useBackButton
-                      ? BackButton(onPressed: onBack)
+                      ? AdaptiveBackButton(onPressed: onBack)
                       : CloseButton(onPressed: onBack)
               : null,
           centerTitle: true,

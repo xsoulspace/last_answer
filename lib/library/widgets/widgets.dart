@@ -25,6 +25,7 @@ import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
 
+part 'adaptive_back_button.dart';
 part 'button_popup.dart';
 part 'choosable_bubble.dart';
 part 'cupertino_icon_button.dart';

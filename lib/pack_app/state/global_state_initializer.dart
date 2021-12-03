@@ -1,6 +1,7 @@
 part of pack_app;
 
 /// use for data migrations only
+// ignore: unused_element
 Future<Box<T>> _openAnyway<T>(final String boxName) async {
   try {
     await Hive.openBox<T>(boxName);
@@ -132,7 +133,7 @@ class GlobalStateInitializer implements StateInitializer {
       currentFolder = projectsFolders.values.first;
     }
     currentFolderProvider.setState(currentFolder);
-    // TODO(arenukvern): in case of future migrations
+    // TODO(arenukvern): in case of future migrations - how to automate it?
     // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
     // if (!settings.migrated) {
     //   await settings.setMigrated();

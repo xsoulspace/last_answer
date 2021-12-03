@@ -250,6 +250,16 @@ class S {
     );
   }
 
+  /// `New`
+  String get wordNew {
+    return Intl.message(
+      'New',
+      name: 'wordNew',
+      desc: 'New',
+      args: [],
+    );
+  }
+
   /// `YES`
   String get yes {
     return Intl.message(

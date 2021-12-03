@@ -91,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
         "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("New"),
         "writeANote": MessageLookupByLibrary.simpleMessage("Write a note"),
         "writeAnAnswer":
             MessageLookupByLibrary.simpleMessage("Write an answer"),

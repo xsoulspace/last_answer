@@ -79,7 +79,7 @@ class SettingsController with ChangeNotifier {
     return settingsService.setMigrated();
   }
 
-  bool _projectsListReversed = false;
+  bool _projectsListReversed = isDesktop;
 
   bool get projectsListReversed => _projectsListReversed;
 

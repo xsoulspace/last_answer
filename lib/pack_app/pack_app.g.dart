@@ -6,16 +6,14 @@ part of pack_app;
 // JsonSerializableGenerator
 // **************************************************************************
 
-AppRouteParameters _$AppRouteParametersFromJson(
-        final Map<String, dynamic> json) =>
+AppRouteParameters _$AppRouteParametersFromJson(Map<String, dynamic> json) =>
     AppRouteParameters(
       noteId: json['noteId'] as String?,
       ideaId: json['ideaId'] as String?,
       answerId: json['answerId'] as String?,
     );
 
-Map<String, dynamic> _$RouteParametersToJson(
-        final AppRouteParameters instance) =>
+Map<String, dynamic> _$AppRouteParametersToJson(AppRouteParameters instance) =>
     <String, dynamic>{
       'noteId': instance.noteId,
       'ideaId': instance.ideaId,

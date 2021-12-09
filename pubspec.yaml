@@ -47,7 +47,7 @@ dependencies:
   recase: ^4.0.0
   rxdart: ^0.27.3
   share_plus: ^3.0.4
-  shared_preferences: ^2.0.9
+  shared_preferences: ^2.0.10
   universal_io: ^2.0.4
   url_launcher: ^6.0.17
   uuid: ^3.0.5
@@ -96,6 +96,7 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/json/
     - google_fonts/
 
   # To add assets to your application, add an assets section, like this:

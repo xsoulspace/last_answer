@@ -14,18 +14,17 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
-    required final this.context,
     required final this.settings,
   });
-  final BuildContext context;
   final SettingsController settings;
 
   @override
-  Future<void> onLoad() async {
+  Future<void> onLoad({required final BuildContext context}) async {
     final lastEmojiProvider = context.read<LastEmojiProvider>();
     final specialEmojiProvider = context.read<SpecialEmojiProvider>();
     final emojiProvider = context.read<EmojiProvider>();
     final currentFolderProvider = context.read<FolderStateProvider>();
+    final notificationController = context.read<NotificationController>();
 
     await settings.load();
 
@@ -138,6 +137,8 @@ class GlobalStateInitializer implements StateInitializer {
     // if (!settings.migrated) {
     //   await settings.setMigrated();
     // }
+
+    await notificationController.onLoad(context: context);
 
     /// ***************** MIGRATION END *******************
     WidgetsBinding.instance?.addPostFrameCallback((final _) {

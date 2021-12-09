@@ -25,7 +25,7 @@ class StateLoader extends HookWidget {
         if (loading.value) return false;
         loading.value = true;
         loaded.value = true;
-        await initializer.onLoad();
+        await initializer.onLoad(context: context);
         loading.value = false;
         return true;
       }(),

@@ -6,7 +6,7 @@ class EmojiUtil
   EmojiUtil();
   static Future<Iterable<Emoji>> getList(final BuildContext context) async {
     final emojisStr =
-        await DefaultAssetBundle.of(context).loadString(Assets.emojis);
+        await DefaultAssetBundle.of(context).loadString(Assets.json.emojis);
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
       jsonDecode(emojisStr),
     );
@@ -16,8 +16,8 @@ class EmojiUtil
   static Future<Iterable<Emoji>> getSpecialList(
     final BuildContext context,
   ) async {
-    final emojisStr =
-        await DefaultAssetBundle.of(context).loadString(Assets.specialEmoji);
+    final emojisStr = await DefaultAssetBundle.of(context)
+        .loadString(Assets.json.specialEmoji);
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
       jsonDecode(emojisStr),
     );

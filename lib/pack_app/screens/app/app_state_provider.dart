@@ -19,6 +19,7 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createIdeaProjectsProvider),
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
         ChangeNotifierProvider(create: createNoteProjectsProvider),
+        ChangeNotifierProvider(create: createNotificationController),
       ],
       child: Portal(
         child: SettingsStateScope(
@@ -27,7 +28,6 @@ class AppStateProvider extends StatelessWidget {
             builder: (final context) {
               return StateLoader(
                 initializer: GlobalStateInitializer(
-                  context: context,
                   settings: _settings,
                 ),
                 loader: const AppLoadingScreen(),

@@ -1,27 +1,29 @@
 part of providers;
 
-final emojiFilterProvider = StateProvider((final _) => '');
+class EmojiProvider extends MapState<Emoji> {
+  EmojiProvider({
+    required final OnFilterCallback<Emoji> onFilter,
+  }) : super(onFilter: onFilter);
+}
 
-final emojisProvider =
-    StateNotifierProvider<MapState<Emoji>, Map<String, Emoji>>(
-  (final ref) => MapState<Emoji>(),
-);
+EmojiProvider createEmojiProvider(final BuildContext context) {
+  return EmojiProvider(
+    onFilter: (final emoji, final keyword) => emoji.keywords.contains(keyword),
+  );
+}
 
-final specialEmojisProvider =
-    StateNotifierProvider<MapState<Emoji>, Map<String, Emoji>>(
-  (final ref) => MapState<Emoji>(),
-);
+class LastEmojiProvider extends MapState<Emoji> {
+  LastEmojiProvider({
+    required final SaveUtil<Emoji> saveUtil,
+  }) : super(saveUtil: saveUtil);
+}
 
-final filteredEmojisProvider = Provider((final ref) {
-  final keyword = ref.watch(emojiFilterProvider).state;
-  final emojis = ref.watch(emojisProvider);
-  if (keyword.isEmpty) return emojis.values.toList();
-  return emojis.values
-      .where((final emoji) => emoji.keywords.contains(keyword))
-      .toList();
-});
+LastEmojiProvider createLastUsedEmojisProvider(final BuildContext context) {
+  return LastEmojiProvider(saveUtil: EmojiUtil());
+}
 
-final lastUsedEmojisProvider =
-    StateNotifierProvider<MapState<Emoji>, Map<String, Emoji>>(
-  (final ref) => MapState<Emoji>(saveUtil: EmojiUtil()),
-);
+class SpecialEmojiProvider extends MapState<Emoji> {}
+
+SpecialEmojiProvider createSpecialEmojisProvider(final BuildContext context) {
+  return SpecialEmojiProvider();
+}

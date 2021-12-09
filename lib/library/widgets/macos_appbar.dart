@@ -15,7 +15,7 @@ class LeftPanelMacosAppBar extends AppBar {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: title.isNotEmpty
                 ? [
-                    const SafeAreaTop(),
+                    const TopSafeArea(),
                     const SizedBox(height: 9),
                     SelectableText(
                       title,
@@ -52,16 +52,16 @@ class BackTextUniversalAppBar extends AppBar {
               ? Platform.isMacOS
                   ? Column(
                       children: [
-                        const SafeAreaTop(),
+                        const TopSafeArea(),
                         const SizedBox(height: 25),
                         if (useBackButton)
-                          BackButton(onPressed: onBack)
+                          AdaptiveBackButton(onPressed: onBack)
                         else
                           CloseButton(onPressed: onBack),
                       ],
                     )
                   : useBackButton
-                      ? BackButton(onPressed: onBack)
+                      ? AdaptiveBackButton(onPressed: onBack)
                       : CloseButton(onPressed: onBack)
               : null,
           centerTitle: true,

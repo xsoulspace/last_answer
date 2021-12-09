@@ -6,7 +6,7 @@ typedef IdeaProjectAnswerId = String;
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
-    implements Sharable {
+    implements Sharable, HasId {
   IdeaProjectAnswer({
     required final this.text,
     required final this.question,
@@ -36,6 +36,7 @@ class IdeaProjectAnswer extends HiveObject
   @HiveField(1)
   IdeaProjectQuestion question;
 
+  @override
   @HiveField(2)
   final IdeaProjectAnswerId id;
 

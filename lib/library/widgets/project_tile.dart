@@ -3,12 +3,15 @@ part of widgets;
 typedef BoolValueChanged<T> = bool Function(T value);
 typedef FutureBoolValueChanged<T> = Future<bool> Function(T value);
 
+typedef ProjectSelectionChanged = void Function({
+  required bool? selected,
+  required BasicProject project,
+});
+
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
     required final this.project,
-    required final this.onSelected,
     required final this.onTap,
-    required final this.checkSelection,
     required final this.onRemove,
     required final this.onRemoveConfirm,
     required final this.themeDefiner,
@@ -16,9 +19,7 @@ class ProjectTile extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
   final BasicProject project;
-  final BoolValueChanged<BasicProject> checkSelection;
   final bool isProjectActive;
-  final ProjectSelectionChanged onSelected;
   final ValueChanged<BasicProject> onTap;
   final ValueChanged<BasicProject> onRemove;
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
@@ -40,17 +41,10 @@ class ProjectTile extends StatelessWidget {
       );
     }
 
-    TextStyle? titleStyle;
-
     double blurOpacity = 0.0;
 
     if (!useContextTheme) {
       if (isProjectActive) {
-        titleStyle = theme.textTheme.bodyText2?.copyWith(
-          color: theme.textTheme.bodyText2?.color?.withOpacity(0.85),
-          fontSize: 13.2,
-          height: 1.16,
-        );
         if (themeDefiner.useDarkTheme) {
           blurOpacity = 0.3;
         } else {
@@ -100,6 +94,7 @@ class ProjectTile extends StatelessWidget {
               leading: effectiveLeadingIcon,
               onTap: () => onTap(project),
               tileColor: tileColor,
+              selected: isProjectActive,
               title: Stack(
                 children: [
                   if (project is NoteProject)
@@ -115,18 +110,11 @@ class ProjectTile extends StatelessWidget {
                     ),
                   Text(
                     (project is NoteProject ? '      ' : '') + project.title,
-                    style: titleStyle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
                   ),
                 ],
               ),
-              // trailing: ,
-              // TODO(arenukvern): add checkbox to mark project as completed
-              // trailing: Checkbox(
-              //   value: checkSelection(project),
-              //   onChanged: (final selected) =>
-              //       onSelected(selected: selected, project: project),
-              //   shape: const CircleBorder(),
-              // ),
             ),
           ],
         ),

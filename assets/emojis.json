@@ -366,12 +366,12 @@
   { "category": "emotion", "emoji": "💟", "keywords": "heart,decoration" },
   { "category": "emotion", "emoji": "❣", "keywords": "heart,exclamation" },
   { "category": "emotion", "emoji": "💔", "keywords": "broken,heart" },
-  { "category": "emotion", "emoji": "❤", "keywords": "red,heart" },
-  { "category": "emotion", "emoji": "🧡", "keywords": "orange,heart" },
-  { "category": "emotion", "emoji": "💛", "keywords": "yellow,heart" },
-  { "category": "emotion", "emoji": "💚", "keywords": "green,heart" },
-  { "category": "emotion", "emoji": "💙", "keywords": "blue,heart" },
-  { "category": "emotion", "emoji": "💜", "keywords": "purple,heart" },
+  { "category": "emotion", "emoji": "❤", "keywords": "red,heart,love" },
+  { "category": "emotion", "emoji": "🧡", "keywords": "orange,heart,love" },
+  { "category": "emotion", "emoji": "💛", "keywords": "yellow,heart,love" },
+  { "category": "emotion", "emoji": "💚", "keywords": "green,heart,love" },
+  { "category": "emotion", "emoji": "💙", "keywords": "blue,heart,love" },
+  { "category": "emotion", "emoji": "💜", "keywords": "purple,heart,love" },
   { "category": "emotion", "emoji": "🤎", "keywords": "brown,heart" },
   { "category": "emotion", "emoji": "🖤", "keywords": "black,heart" },
   { "category": "emotion", "emoji": "🤍", "keywords": "white,heart" },
@@ -11785,25 +11785,25 @@
   {
     "category": "other-symbol",
     "emoji": "✅",
-    "keywords": "check,mark,button"
+    "keywords": "check,mark,button,done"
   },
   {
     "category": "other-symbol",
     "emoji": "☑️",
-    "keywords": "check,box,with,check"
+    "keywords": "check,box,with,check,done"
   },
   {
     "category": "other-symbol",
     "emoji": "☑",
-    "keywords": "check,box,with,check"
+    "keywords": "check,box,with,check,done"
   },
-  { "category": "other-symbol", "emoji": "✔️", "keywords": "check,mark" },
-  { "category": "other-symbol", "emoji": "✔", "keywords": "check,mark" },
-  { "category": "other-symbol", "emoji": "❌", "keywords": "cross,mark" },
+  { "category": "other-symbol", "emoji": "✔️", "keywords": "check,mark,done" },
+  { "category": "other-symbol", "emoji": "✔", "keywords": "check,mark,done" },
+  { "category": "other-symbol", "emoji": "❌", "keywords": "cross,mark,done" },
   {
     "category": "other-symbol",
     "emoji": "❎",
-    "keywords": "cross,mark,button"
+    "keywords": "cross,mark,button,close"
   },
   { "category": "other-symbol", "emoji": "➰", "keywords": "curly,loop" },
   {

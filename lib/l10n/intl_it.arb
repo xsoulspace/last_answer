@@ -59,11 +59,19 @@
       "buildNumber"
     ]
   },
+  "wordNew": "Nuovo",
+  "@wordNew": {
+    "description": "New"
+  },
   "theme": "Tema",
   "@theme": {
     "description": "app theme"
   },
-  "themeSystem": "Sistema",
+  "projectsDirection": "Note direzione",
+  "@projectsDirection": {
+    "description": "Projects direction"
+  },
+  "themeSystem": "Auto",
   "@themeSystem": {
     "description": "app theme - system"
   },

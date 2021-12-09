@@ -1,4 +1,8 @@
+// ignore_for_file: overridden_fields
+
 part of abstract;
+
+typedef StoryProjectId = String;
 
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
@@ -7,6 +11,7 @@ class StoryProject extends BasicProject {
     required final String id,
     required final String title,
     required final DateTime created,
+    required final this.folder,
     final bool isCompleted = defaultProjectIsCompleted,
   }) : super(
           created: created,
@@ -14,7 +19,13 @@ class StoryProject extends BasicProject {
           title: title,
           isCompleted: isCompleted,
           updated: created,
+          folder: folder,
+          type: ProjectTypes.story,
         );
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 1)
+  ProjectFolder? folder;
 }
 
 /// A mock for [StoryProject].

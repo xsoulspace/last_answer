@@ -79,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Обратите внимание"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
+        "projectsDirection":
+            MessageLookupByLibrary.simpleMessage("Направление заметок"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "termsAndConditions":
@@ -89,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("Новое"),
         "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),
         "writeAnAnswer": MessageLookupByLibrary.simpleMessage("Запишите ответ"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")

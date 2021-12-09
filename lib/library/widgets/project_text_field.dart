@@ -41,7 +41,9 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
     if (widget.focusOnInit != false) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         if (!mounted) return;
-        FocusScope.of(context).requestFocus(_textFieldFocusNode);
+        if (_textFieldFocusNode.canRequestFocus) {
+          FocusScope.of(context).requestFocus(_textFieldFocusNode);
+        }
       });
     }
     _textFieldFocusNode = widget.focusNode ?? FocusNode();
@@ -51,7 +53,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   @override
   void dispose() {
     _keyboardFocusNode.dispose();
-    _textFieldFocusNode.dispose();
+    if (widget.focusNode == null) _textFieldFocusNode.dispose();
     super.dispose();
   }
 

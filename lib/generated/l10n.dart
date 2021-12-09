@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `System`
+  /// `Auto`
   String get themeSystem {
     return Intl.message(
-      'System',
+      'Auto',
       name: 'themeSystem',
       desc: 'app theme - system',
       args: [],
@@ -230,12 +230,32 @@ class S {
     );
   }
 
+  /// `Notes direction`
+  String get projectsDirection {
+    return Intl.message(
+      'Notes direction',
+      name: 'projectsDirection',
+      desc: 'Projects direction',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settings {
     return Intl.message(
       'Settings',
       name: 'settings',
       desc: 'Settings',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get wordNew {
+    return Intl.message(
+      'New',
+      name: 'wordNew',
+      desc: 'New',
       args: [],
     );
   }

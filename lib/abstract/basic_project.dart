@@ -11,14 +11,19 @@ typedef ProjectId = String;
 
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-class BasicProject extends HiveObject with EquatableMixin implements Sharable {
+class BasicProject extends HiveObject
+    with EquatableMixin
+    implements Sharable, BasicProjectFields, HasId {
   BasicProject({
     required final this.id,
     required final this.title,
     required final this.created,
     required final this.updated,
+    required final this.folder,
+    required final this.type,
     final this.isCompleted = defaultProjectIsCompleted,
   });
+  @override
   @HiveField(0)
   final ProjectId id;
 
@@ -43,4 +48,17 @@ class BasicProject extends HiveObject with EquatableMixin implements Sharable {
 
   @override
   bool? get stringify => true;
+
+  SerializableProjectId get serializableId => SerializableProjectId(
+        id: id,
+        type: type,
+      );
+
+  /// Always override it in extended projects
+  /// to assign correct [HiveField] id
+  @override
+  ProjectFolder? folder;
+
+  @override
+  final ProjectTypes type;
 }

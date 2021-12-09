@@ -1,5 +1,7 @@
 part of abstract;
 
+typedef IdeaProjectQuestionId = String;
+
 /// Use [IdeaProjectQuestion.fromTitle] to create class
 /// This class immutable so in case of adding new properties make sure that it
 /// will not broke immutabilty
@@ -7,7 +9,7 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
 class IdeaProjectQuestion extends HiveObject
     with EquatableMixin
-    implements Sharable {
+    implements Sharable, HasId {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
@@ -20,6 +22,7 @@ class IdeaProjectQuestion extends HiveObject
   /// Use this function to create new [IdeaProjectQuestion]
   factory IdeaProjectQuestion.fromTitle(final LocalizedText title) =>
       IdeaProjectQuestion(id: createId(), title: title);
+  @override
   @HiveField(0)
   final String id;
   @HiveField(1)

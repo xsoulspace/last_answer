@@ -1,18 +1,20 @@
 part of pack_app;
 
 @immutable
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: false, explicitToJson: true)
 class NotificationMessage with EquatableMixin {
   const NotificationMessage({
     required this.id,
     required this.message,
+    required this.title,
     required this.created,
   });
   factory NotificationMessage.fromJson(final Map<String, dynamic> json) =>
       _$NotificationMessageFromJson(json);
 
   final String id;
-  final String message;
+  final LocalizedText message;
+  final LocalizedText title;
   final DateTime created;
 
   @override

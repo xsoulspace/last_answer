@@ -6,7 +6,6 @@ class AppInfoScreen extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
   final VoidCallback onBack;
-  static const discordLink = 'https://discord.gg/y54DpJwmAn';
   static const privacyPolicyLink =
       'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
   static const termsAndConditions =
@@ -54,17 +53,7 @@ class AppInfoScreen extends StatelessWidget {
                     Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        TextButton(
-                          onPressed: () async {
-                            if (await url_launcher.canLaunch(discordLink)) {
-                              await url_launcher.launch(discordLink);
-                            }
-                          },
-                          child: Text(
-                            S.current.joinDiscord,
-                            style: bodyText1Style,
-                          ),
-                        ),
+                        const DiscordButton(),
                         SelectableText(
                           S.current.feedbackTextWithEmail,
                         ),

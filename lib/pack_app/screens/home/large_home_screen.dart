@@ -20,14 +20,15 @@ class LargeHomeScreen extends StatelessWidget {
   final VoidCallback onCreateNoteTap;
   final Widget mainScreenNavigator;
   final VoidCallback onGoHome;
-  @override
-  Widget build(final BuildContext context) {
+
+  Widget buildBody({required final BuildContext context}) {
     final size = MediaQuery.of(context).size;
     final leftColumn = (size.width / 4).clamp(300, 400).toDouble();
     const centerRightBorder = 0.6;
     final rightColumn = ScreenLayout.of(context).large ? leftColumn : 0.0;
     final centerPart =
         size.width - leftColumn - rightColumn - centerRightBorder;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -71,5 +72,10 @@ class LargeHomeScreen extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    return buildBody(context: context);
   }
 }

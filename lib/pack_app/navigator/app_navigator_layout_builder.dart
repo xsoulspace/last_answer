@@ -6,7 +6,6 @@ class AppNavigatorLayoutBuilder {
   }) : popper = pageBuilder.popper;
   final AppNavigatorPageBuilder pageBuilder;
   final AppNavigatorPopper popper;
-
   String get pathTemplate => popper.pathTemplate;
   bool checkIsProjectActive(final BasicProject project) {
     if (project.id == pageBuilder.params.noteId) return true;
@@ -52,7 +51,7 @@ class AppNavigatorLayoutBuilder {
         else if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage()
         else if (pathTemplate == AppRoutesName.appInfo)
-          pageBuilder.appInfoPage()
+          pageBuilder.appInfoPage(),
       ]
     ];
   }

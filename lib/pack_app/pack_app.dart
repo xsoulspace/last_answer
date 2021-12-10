@@ -1,6 +1,7 @@
 library pack_app;
 
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
@@ -54,3 +56,4 @@ part 'state/global_state_initializer.dart';
 part 'state/global_state_notifiers.dart';
 part 'widgets/project_direction_switch.dart';
 part 'widgets/settings_list_tile.dart';
+part 'widgets/update_notification_popup.dart';

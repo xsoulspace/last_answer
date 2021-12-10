@@ -54,7 +54,7 @@ class ProjectTile extends StatelessWidget {
         if (themeDefiner.useDarkTheme) {
           blurOpacity = 0.1;
         } else {
-          blurOpacity = 0.4;
+          blurOpacity = 0.7;
         }
       }
     }

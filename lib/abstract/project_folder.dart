@@ -30,7 +30,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
 
     final folder = ProjectFolder(
       id: createId(),
-      title: S.current.wordNew,
+      title: 'New',
     );
 
     await box.put(folder.id, folder);

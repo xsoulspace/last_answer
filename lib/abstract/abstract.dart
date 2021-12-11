@@ -10,7 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/generated/l10n.dart';
-import 'package:lastanswer/providers/providers.dart';
+import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:mocktail/mocktail.dart';
 

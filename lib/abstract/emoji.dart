@@ -8,7 +8,7 @@ class Emoji {
     required final this.emoji,
     required final this.keywords,
   });
-  static Emoji fromJson(final Map<String, dynamic> json) =>
+  factory Emoji.fromJson(final Map<String, dynamic> json) =>
       _$EmojiFromJson(json);
   Map<String, dynamic> toJson() => _$EmojiToJson(this);
   final String category;

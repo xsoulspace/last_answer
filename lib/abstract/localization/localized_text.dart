@@ -39,7 +39,8 @@ class LocalizedText with EquatableMixin {
         Locales.ga.toString(): ga
       };
   String getByLanguage(final LanguageName language) {
-    return values[getLanguageCode(language)] ?? en;
+    final text = values[getLanguageCode(language)];
+    return (text == null || text.isEmpty) ? en : text;
   }
 
   @override

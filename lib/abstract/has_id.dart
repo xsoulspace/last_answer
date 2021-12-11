@@ -1,5 +1,5 @@
 part of abstract;
 
-abstract class HasId {
-  final String id = '';
+mixin HasId {
+  String get id;
 }

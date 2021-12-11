@@ -91,12 +91,24 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/logo_windows.png');
 }
 
+class $AssetsJsonGen {
+  const $AssetsJsonGen();
+
+  /// File path: assets/json/emojis.json
+  String get emojis => 'assets/json/emojis.json';
+
+  /// File path: assets/json/special_emoji.json
+  String get specialEmoji => 'assets/json/special_emoji.json';
+
+  /// File path: assets/json/updates_notifications.json
+  String get updatesNotifications => 'assets/json/updates_notifications.json';
+}
+
 class Assets {
   Assets._();
 
-  static const String emojis = 'assets/emojis.json';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
-  static const String specialEmoji = 'assets/special_emoji.json';
+  static const $AssetsJsonGen json = $AssetsJsonGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
 

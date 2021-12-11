@@ -107,21 +107,27 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
       );
     }
 
+    Widget body = Scaffold(
+      appBar: createAppBar(),
+      body: Row(
+        children: [
+          const SizedBox(height: 2),
+          if (widget.verticalMenuAlignment == Alignment.bottomLeft)
+            verticalMenu,
+          projectsList,
+          if (widget.verticalMenuAlignment == Alignment.bottomRight)
+            verticalMenu,
+        ],
+      ),
+    );
+    if (!nativeTransparentBackgroundSupported) {
+      body = Stack(
+        children: [body],
+      );
+    }
     return Theme(
       data: effectiveTheme,
-      child: Scaffold(
-        appBar: createAppBar(),
-        body: Row(
-          children: [
-            const SizedBox(height: 2),
-            if (widget.verticalMenuAlignment == Alignment.bottomLeft)
-              verticalMenu,
-            projectsList,
-            if (widget.verticalMenuAlignment == Alignment.bottomRight)
-              verticalMenu,
-          ],
-        ),
-      ),
+      child: body,
     );
   }
 }

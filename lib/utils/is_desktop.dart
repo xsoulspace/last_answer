@@ -6,7 +6,7 @@ final isDesktop = defaultTargetPlatform == TargetPlatform.linux ||
     defaultTargetPlatform == TargetPlatform.windows;
 
 final isNativeDesktop = (Platform.isMacOS || Platform.isLinux) && !kIsWeb;
-final transparentBackgroundSupported = Platform.isMacOS;
+final nativeTransparentBackgroundSupported = Platform.isMacOS;
 
 final isAppleDevice = defaultTargetPlatform == TargetPlatform.macOS ||
     defaultTargetPlatform == TargetPlatform.iOS;

@@ -20,6 +20,7 @@ import 'package:uuid/uuid.dart';
 part 'abstract_util.dart';
 part 'close_keyboard.dart';
 part 'color_extension.dart';
+part 'dio_util.dart';
 part 'emoji_util.dart';
 part 'enum.dart';
 part 'is_desktop.dart';

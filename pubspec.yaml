@@ -25,6 +25,7 @@ dependencies:
   blur: ^3.0.0
   collection: ^1.15.0
   cupertino_icons: ^1.0.4
+  dio: ^4.0.4
   equatable: ^2.0.3
   flare_flutter: ^3.0.2
   flutter:

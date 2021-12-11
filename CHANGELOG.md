@@ -1,7 +1,7 @@
 ## 3.11.0+17
 
-- new: when you edit idea or note it will pop up(down) in the list, the direction is dependant from settings
-- new: idea & notes direction switch - you can choose how idea & notes will be aligned in the list from bottom to top or from top to bottom
+- new: when you edit an idea or note it will pop up(down) in the list, the direction is dependant on settings
+- new: idea & notes direction switch - you can choose how ideas & notes will be aligned in the list from bottom to top or from top to bottom
 
 - improved: new icon
 - improved: nicer layout for settings

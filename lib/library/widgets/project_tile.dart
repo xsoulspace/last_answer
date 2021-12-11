@@ -3,12 +3,15 @@ part of widgets;
 typedef BoolValueChanged<T> = bool Function(T value);
 typedef FutureBoolValueChanged<T> = Future<bool> Function(T value);
 
+typedef ProjectSelectionChanged = void Function({
+  required bool? selected,
+  required BasicProject project,
+});
+
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
     required final this.project,
-    required final this.onSelected,
     required final this.onTap,
-    required final this.checkSelection,
     required final this.onRemove,
     required final this.onRemoveConfirm,
     required final this.themeDefiner,
@@ -16,9 +19,7 @@ class ProjectTile extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
   final BasicProject project;
-  final BoolValueChanged<BasicProject> checkSelection;
   final bool isProjectActive;
-  final ProjectSelectionChanged onSelected;
   final ValueChanged<BasicProject> onTap;
   final ValueChanged<BasicProject> onRemove;
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
@@ -40,6 +41,24 @@ class ProjectTile extends StatelessWidget {
       );
     }
 
+    double blurOpacity = 0.0;
+
+    if (!useContextTheme) {
+      if (isProjectActive) {
+        if (themeDefiner.useDarkTheme) {
+          blurOpacity = 0.3;
+        } else {
+          blurOpacity = 0.8;
+        }
+      } else {
+        if (themeDefiner.useDarkTheme) {
+          blurOpacity = 0.1;
+        } else {
+          blurOpacity = 0.7;
+        }
+      }
+    }
+
     return DismissibleTile(
       dismissibleKey: ValueKey(project.id),
       // confirmDismiss: (final direction) async {
@@ -57,13 +76,7 @@ class ProjectTile extends StatelessWidget {
             if (!useContextTheme)
               Positioned.fill(
                 child: Container().blurred(
-                  colorOpacity: themeDefiner.themeToUse == ThemeToUse.nativeDark
-                      ? isProjectActive
-                          ? 0.3
-                          : 0.1
-                      : isProjectActive
-                          ? 0.8
-                          : 0.4,
+                  colorOpacity: blurOpacity,
                   borderRadius: defaultBorderRadius,
                 ),
               ),
@@ -81,6 +94,7 @@ class ProjectTile extends StatelessWidget {
               leading: effectiveLeadingIcon,
               onTap: () => onTap(project),
               tileColor: tileColor,
+              selected: isProjectActive,
               title: Stack(
                 children: [
                   if (project is NoteProject)
@@ -96,17 +110,11 @@ class ProjectTile extends StatelessWidget {
                     ),
                   Text(
                     (project is NoteProject ? '      ' : '') + project.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
                   ),
                 ],
               ),
-              // trailing: ,
-              // TODO(arenukvern): add checkbox to mark project as completed
-              // trailing: Checkbox(
-              //   value: checkSelection(project),
-              //   onChanged: (final selected) =>
-              //       onSelected(selected: selected, project: project),
-              //   shape: const CircleBorder(),
-              // ),
             ),
           ],
         ),

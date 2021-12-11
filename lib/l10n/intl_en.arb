@@ -63,7 +63,7 @@
   "@theme": {
     "description": "app theme"
   },
-  "themeSystem": "System",
+  "themeSystem": "Auto",
   "@themeSystem": {
     "description": "app theme - system"
   },
@@ -75,9 +75,17 @@
   "@themeLight": {
     "description": "app theme - light"
   },
+  "projectsDirection": "Notes direction",
+  "@projectsDirection": {
+    "description": "Projects direction"
+  },
   "settings": "Settings",
   "@settings": {
     "description": "Settings"
+  },
+  "wordNew": "New",
+  "@wordNew": {
+    "description": "New"
   },
   "yes": "YES",
   "@yes": {

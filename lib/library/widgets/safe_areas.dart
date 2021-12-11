@@ -1,7 +1,7 @@
 part of widgets;
 
-class SafeAreaBottom extends StatelessWidget {
-  const SafeAreaBottom({final Key? key}) : super(key: key);
+class BottomSafeArea extends StatelessWidget {
+  const BottomSafeArea({final Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {
@@ -9,8 +9,8 @@ class SafeAreaBottom extends StatelessWidget {
   }
 }
 
-class SafeAreaTop extends StatelessWidget {
-  const SafeAreaTop({final Key? key}) : super(key: key);
+class TopSafeArea extends StatelessWidget {
+  const TopSafeArea({final Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {

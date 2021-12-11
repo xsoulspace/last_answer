@@ -12,6 +12,7 @@ class EmojiPopup extends HookWidget {
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
     final popupHovered = useIsBool();
+    final screenLayout = ScreenLayout.of(context);
 
     Future<void> onClose() async {
       await Future.delayed(const Duration(milliseconds: 300), () {
@@ -20,7 +21,6 @@ class EmojiPopup extends HookWidget {
       });
     }
 
-    final screenLayout = ScreenLayout.of(context);
     if (!isDesktop) return const SizedBox();
     final emojiInserter = EmojiInserter.use(
       controller: controller,
@@ -53,28 +53,43 @@ class EmojiPopup extends HookWidget {
   }
 }
 
-class EmojiGrid extends HookConsumerWidget {
+class EmojiGrid extends HookWidget {
   const EmojiGrid({
     required final this.onChanged,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
+
+  // Widget buildConsumer({
+  //   required final BuildContext context,
+  //   required final StreamController<String> emojiKeywordStream,
+  // }){
+
+  // }
+
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final emojis = ref.watch(filteredEmojisProvider);
-    final lastEmojisState = ref.watch(lastUsedEmojisProvider);
+  Widget build(final BuildContext context) {
+    final silentEmojiProider = context.read<EmojiProvider>();
+    final lastEmojisState = context.read<LastEmojiProvider>().values;
     // ignore: close_sinks
-    final emojiKeywordStream = useStreamController<String>();
+    final emojiKeywordStream = useStreamController<String>(
+      onCancel: () {
+        silentEmojiProider.filterKeyword = '';
+      },
+    );
+
     emojiKeywordStream.stream
         .throttleTime(
       const Duration(milliseconds: 700),
       leading: true,
       trailing: true,
     )
-        .forEach((final keyword) async {
-      ref.read(emojiFilterProvider).state = keyword;
-    });
-    final lastEmojis = useState(lastEmojisState.values.toSet());
+        .forEach(
+      (final keyword) async {
+        silentEmojiProider.filterKeyword = keyword;
+      },
+    );
+    final lastEmojis = useState(lastEmojisState.toSet());
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
@@ -93,8 +108,7 @@ class EmojiGrid extends HookConsumerWidget {
           newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
         }
         lastEmojis.value = newLastEmojis.toSet();
-
-        ref.read(lastUsedEmojisProvider.notifier).assignEntries(
+        context.read<LastEmojiProvider>().assignEntries(
               newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
             );
       }
@@ -109,13 +123,18 @@ class EmojiGrid extends HookConsumerWidget {
     return ButtonPopup(
       children: [
         Expanded(
-          child: GridView.count(
-            restorationId: 'emojis-grid',
-            shrinkWrap: true,
-            crossAxisCount: maxItemsInRow,
-            semanticChildCount: emojis.length,
-            padding: const EdgeInsets.only(right: 12),
-            children: emojis.map(buildEmojiButton).toList(),
+          child: Consumer<EmojiProvider>(
+            builder: (final _, final provider, final __) {
+              final emojis = provider.filteredValues;
+              return GridView.count(
+                restorationId: 'emojis-grid',
+                shrinkWrap: true,
+                crossAxisCount: maxItemsInRow,
+                semanticChildCount: emojis.length,
+                padding: const EdgeInsets.only(right: 12),
+                children: emojis.map(buildEmojiButton).toList(),
+              );
+            },
           ),
         ),
         Divider(color: borderColor, height: 1),

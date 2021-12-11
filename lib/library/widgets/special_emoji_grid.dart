@@ -65,6 +65,7 @@ class SpecialEmojiPopup extends HookWidget {
   Widget build(final BuildContext context) {
     final popupVisible = useIsBool();
     final popupHovered = useIsBool();
+    final screenLayout = ScreenLayout.of(context);
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
@@ -90,7 +91,6 @@ class SpecialEmojiPopup extends HookWidget {
       },
     );
 
-    final screenLayout = ScreenLayout.of(context);
     if (!isDesktop) return const SizedBox();
 
     final emojiButton = IconButton(
@@ -124,7 +124,7 @@ class SpecialEmojiPopup extends HookWidget {
   }
 }
 
-class SpecialEmojisGrid extends ConsumerWidget {
+class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({
     required final this.onChanged,
     final this.hideBorder = false,
@@ -133,7 +133,7 @@ class SpecialEmojisGrid extends ConsumerWidget {
   final ValueChanged<Emoji> onChanged;
   final bool hideBorder;
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  Widget build(final BuildContext context) {
     Widget buildEmojiButton(final Emoji emoji) {
       return EmojiButton(
         key: ValueKey(emoji),
@@ -142,7 +142,8 @@ class SpecialEmojisGrid extends ConsumerWidget {
       );
     }
 
-    final emojis = ref.watch(specialEmojisProvider).values;
+    final specialEmojisProvider = context.read<SpecialEmojiProvider>();
+    final emojis = specialEmojisProvider.values;
     const maxItemsInRow = 9;
 
     return ButtonPopup(

@@ -3,9 +3,7 @@ part of abstract;
 typedef ProjectFolderId = String;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObject
-    with EquatableMixin
-    implements Loadable, HasId {
+class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   ProjectFolder({
     required final this.id,
     required final this.title,
@@ -32,7 +30,7 @@ class ProjectFolder extends HiveObject
 
     final folder = ProjectFolder(
       id: createId(),
-      title: S.current.wordNew,
+      title: 'New',
     );
 
     await box.put(folder.id, folder);
@@ -118,17 +116,6 @@ class ProjectFolder extends HiveObject
 
   /// Optional dependency to load [projects]
   final BasicProjectsService? projectsService;
-
-  @override
-  Future<void> onLoad() async {
-    if (projectsService != null) {
-      final list = loadProjectsFromService(
-        folder: this,
-        service: projectsService!,
-      );
-      setExistedProjects(list);
-    }
-  }
 
   /// Run once when box is uploading to provider
   static Iterable<BasicProject> loadProjectsFromService({

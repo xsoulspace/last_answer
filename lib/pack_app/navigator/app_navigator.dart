@@ -30,6 +30,20 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator> {
   @override
+  void initState() {
+    super.initState();
+    final notificationController = context.read<NotificationController>();
+    if (notificationController.hasUnreadUpdates) {
+      WidgetsBinding.instance?.addPostFrameCallback((final _) {
+        showNotificationPopup(
+          context: widget.navigatorKey.currentContext!,
+          notificationController: notificationController,
+        );
+      });
+    }
+  }
+
+  @override
   Widget build(final BuildContext context) {
     final popper = AppNavigatorPopper(
       routeState: widget.routeState,
@@ -39,7 +53,9 @@ class _AppNavigatorState extends State<AppNavigator> {
       popper: popper,
       context: context,
     );
-    final layoutBuilder = AppNavigatorLayoutBuilder(pageBuilder: pageBuilder);
+    final layoutBuilder = AppNavigatorLayoutBuilder(
+      pageBuilder: pageBuilder,
+    );
 
     return ResponsiveNavigator(
       navigatorKey: widget.navigatorKey,

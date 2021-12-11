@@ -16,7 +16,7 @@ class SettingsService with SharedPreferencesUtil {
   }
 
   /// Persists the user's preferred ThemeMode to local or remote storage.
-  Future<void> updateThemeMode(final ThemeMode theme) async {
+  Future<void> setThemeMode(final ThemeMode theme) async {
     // Use the shared_preferences package to persist settings locally or the
     // http package to persist settings over the network.
     await setString(SharedPreferencesKeys.theme, theme.index.toString());
@@ -33,7 +33,7 @@ class SettingsService with SharedPreferencesUtil {
     }
   }
 
-  Future<void> updateLocale(final Locale locale) async {
+  Future<void> setLocale(final Locale locale) async {
     await setString(SharedPreferencesKeys.locale, locale.languageCode);
   }
 

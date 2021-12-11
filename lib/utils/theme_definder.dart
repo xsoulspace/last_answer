@@ -21,7 +21,7 @@ class ThemeDefiner {
   }
 
   ThemeToUse get themeToUse {
-    if (isNativeDesktop && transparentBackgroundSupported) {
+    if (isNativeDesktop && nativeTransparentBackgroundSupported) {
       final platformBrightness =
           WidgetsBinding.instance!.platformDispatcher.platformBrightness;
       switch (platformBrightness) {

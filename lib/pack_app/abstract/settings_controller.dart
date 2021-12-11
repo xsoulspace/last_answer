@@ -34,7 +34,7 @@ class SettingsController with ChangeNotifier {
 
     // Persist the changes to a local database or the internet using the
     // SettingService.
-    await settingsService.updateThemeMode(newThemeMode);
+    await settingsService.setThemeMode(newThemeMode);
   }
 
   Locale? _locale;
@@ -48,7 +48,7 @@ class SettingsController with ChangeNotifier {
     await S.load(locale);
     notify();
 
-    await settingsService.updateLocale(locale);
+    await settingsService.setLocale(locale);
   }
 
   /// Load the user's settings from the SettingsService. It may load from a

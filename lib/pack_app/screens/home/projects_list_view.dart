@@ -22,7 +22,6 @@ class ProjectsListView extends HookWidget {
     return Consumer<FolderStateProvider>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
-
         return Expanded(
           child: Column(
             children: [
@@ -46,10 +45,12 @@ class ProjectsListView extends HookWidget {
                     controller: scrollController,
                     child: ListView.builder(
                       reverse: reversed,
+                      key: const PageStorageKey('projects_scroll_view'),
                       controller: scrollController,
                       padding: const EdgeInsets.all(5),
                       shrinkWrap: true,
                       restorationId: 'projects',
+                      itemCount: projects.length,
                       itemBuilder: (final _, final i) {
                         final project = projects[i];
                         return Padding(
@@ -96,7 +97,6 @@ class ProjectsListView extends HookWidget {
                           ),
                         );
                       },
-                      itemCount: projects.length,
                     ),
                   ),
                 ),

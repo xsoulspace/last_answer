@@ -1,5 +1,10 @@
 library pack_app;
 
+import 'dart:convert';
+import 'dart:math' as math;
+
+import 'package:blur/blur.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,18 +13,23 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
-import 'package:lastanswer/providers/providers.dart';
+import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
+part 'abstract/notification_message.dart';
+part 'abstract/notifications_controller.dart';
+part 'abstract/notifications_service.dart';
 part 'abstract/route_parameters.dart';
 part 'abstract/settings_controller.dart';
 part 'abstract/settings_service.dart';
@@ -47,3 +57,4 @@ part 'state/global_state_initializer.dart';
 part 'state/global_state_notifiers.dart';
 part 'widgets/project_direction_switch.dart';
 part 'widgets/settings_list_tile.dart';
+part 'widgets/update_notification_popup.dart';

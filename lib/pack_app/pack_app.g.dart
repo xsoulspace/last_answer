@@ -6,6 +6,14 @@ part of pack_app;
 // JsonSerializableGenerator
 // **************************************************************************
 
+NotificationMessage _$NotificationMessageFromJson(Map<String, dynamic> json) =>
+    NotificationMessage(
+      id: json['id'] as String,
+      message: LocalizedText.fromJson(json['message'] as Map<String, dynamic>),
+      title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
+      created: DateTime.parse(json['created'] as String),
+    );
+
 AppRouteParameters _$AppRouteParametersFromJson(Map<String, dynamic> json) =>
     AppRouteParameters(
       noteId: json['noteId'] as String?,

@@ -5,5 +5,5 @@ abstract class Loadable {
 
   /// Use this function to load something on
   /// instance initialization
-  Future<void> onLoad();
+  Future<void> onLoad({required final BuildContext context});
 }

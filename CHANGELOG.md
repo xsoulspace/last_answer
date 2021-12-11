@@ -1,12 +1,12 @@
-## 3.11.0+16
+## 3.11.0+17
 
-- new: when you edit idea or note it will pops up(down) in list, direction is dependant from settings
-- new: idea & notes direction switch - you can choose how idea & notes will be aligned in list from bottom to top or from top to bottom
+- new: when you edit idea or note it will pop up(down) in the list, the direction is dependant from settings
+- new: idea & notes direction switch - you can choose how idea & notes will be aligned in the list from bottom to top or from top to bottom
 
-- imporved: new icon background
-- imporved: more good looking layout for settings
-- imporved: more stability in all scrolling
-- imporved: now desktop versions has no back button when it is no need in it
+- improved: new icon
+- improved: nicer layout for settings
+- improved: more stability in all scrolling
+- improved: now desktop versions have no back button when there is no need in it
 
 - fixed: scrollbars offset for desktop versions
 

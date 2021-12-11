@@ -1,14 +1,14 @@
 ## 3.11.0+16
 
-- feat: pop up idea or note if it was updated
-- feat: change projects direction switch
+- new: when you edit idea or note it will pops up(down) in list, direction is dependant from settings
+- new: idea & notes direction switch - you can choose how idea & notes will be aligned in list from bottom to top or from top to bottom
 
-- perf: new icon background
-- perf: more good looking layout for settings
-- perf: more stability in all scrolling
-- perf: now desktop versions has no back button when it is no need it
+- imporved: new icon background
+- imporved: more good looking layout for settings
+- imporved: more stability in all scrolling
+- imporved: now desktop versions has no back button when it is no need in it
 
-- fix: scrollbars offset for desktop versions
+- fixed: scrollbars offset for desktop versions
 
 ## 3.10.1+15
 

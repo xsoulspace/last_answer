@@ -32,15 +32,15 @@ class _AppNavigatorState extends State<AppNavigator> {
   @override
   void initState() {
     super.initState();
-    final notificaionController = context.read<NotificationController>();
-    // if (notificationController.hasUnreadUpdates) {
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
-      showNotificationPopup(
-        context: widget.navigatorKey.currentContext!,
-        notificationController: notificaionController,
-      );
-    });
-    // }
+    final notificationController = context.read<NotificationController>();
+    if (notificationController.hasUnreadUpdates) {
+      WidgetsBinding.instance?.addPostFrameCallback((final _) {
+        showNotificationPopup(
+          context: widget.navigatorKey.currentContext!,
+          notificationController: notificationController,
+        );
+      });
+    }
   }
 
   @override

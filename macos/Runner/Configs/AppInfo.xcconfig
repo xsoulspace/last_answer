@@ -11,4 +11,4 @@ PRODUCT_NAME = last_answer
 PRODUCT_BUNDLE_IDENTIFIER = dev.xsoulspace.lastAnswer
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2021 dev.xsoulspace. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2021 Anton Malofeev, Irina Veter. All rights reserved.

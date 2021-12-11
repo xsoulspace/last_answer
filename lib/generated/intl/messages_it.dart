@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Si prega di notare"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Politica sulla riservatezza"),
+        "projectsDirection":
+            MessageLookupByLibrary.simpleMessage("Note direzione"),
         "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
         "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
         "termsAndConditions":
@@ -88,10 +90,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "theme": MessageLookupByLibrary.simpleMessage("Tema"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Buia"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Leggera"),
-        "themeSystem": MessageLookupByLibrary.simpleMessage("Sistema"),
+        "themeSystem": MessageLookupByLibrary.simpleMessage("Auto"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("Qual è la tua idea?"),
         "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("Nuovo"),
         "writeANote": MessageLookupByLibrary.simpleMessage("Scrivi una nota"),
         "writeAnAnswer":
             MessageLookupByLibrary.simpleMessage("Scrivi una risposta"),

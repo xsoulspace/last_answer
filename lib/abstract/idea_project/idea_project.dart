@@ -1,4 +1,8 @@
+// ignore_for_file: overridden_fields
+
 part of abstract;
+
+typedef IdeaProjectId = String;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
 class IdeaProject extends BasicProject with EquatableMixin {
@@ -7,6 +11,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
     required final String title,
     required final DateTime created,
     required final DateTime updated,
+    final this.folder,
     final bool isCompleted = defaultProjectIsCompleted,
     final this.newAnswerText = '',
     final this.newQuestion,
@@ -17,14 +22,18 @@ class IdeaProject extends BasicProject with EquatableMixin {
           title: title,
           isCompleted: isCompleted,
           updated: updated,
+          folder: folder,
+          type: ProjectTypes.idea,
         );
   static Future<IdeaProject> create({
     required final String title,
+    required final ProjectFolder folder,
   }) async {
     final created = DateTime.now();
     final idea = IdeaProject(
       updated: created,
       created: created,
+      folder: folder,
       id: createId(),
       title: title,
     );
@@ -48,6 +57,10 @@ class IdeaProject extends BasicProject with EquatableMixin {
   /// keeps latest selected [IdeaProjectQuestion] from [AnswerCreator]
   @HiveField(projectLatestFieldHiveId + 3)
   IdeaProjectQuestion? newQuestion;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 4)
+  ProjectFolder? folder;
 
   @override
   String toShareString() {

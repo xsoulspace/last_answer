@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/screens/app/app.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +12,7 @@ Future<void> main() async {
     ..registerAdapter(IdeaProjectAnswerAdapter())
     ..registerAdapter(IdeaProjectQuestionAdapter())
     ..registerAdapter(NoteProjectAdapter())
+    ..registerAdapter(ProjectFolderAdapter())
     ..registerAdapter(StoryProjectAdapter());
-  runApp(const AppProvider());
+  runApp(const LastAnswerApp());
 }

@@ -13,7 +13,10 @@ analyzer:
   exclude:
     # - "**.g.dart"
     - "**.gen.dart"
+    - "**.g.dart"
     - old/
+    - "**/generated/"
+    - "generated_plugin_registrant.dart"
 
 linter:
   # The lint rules applied to this project can be customized in the

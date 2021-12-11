@@ -65,6 +65,12 @@ class HiveBoxesIds {
   /// index 8
   static const localizedText = 8;
 
-  /// index 9
+  /// index 8
   static const localizedTextKey = 'localizedText';
+
+  /// index 9
+  static const projectFolder = 9;
+
+  /// index 9
+  static const projectFolderKey = 'projectFolder';
 }

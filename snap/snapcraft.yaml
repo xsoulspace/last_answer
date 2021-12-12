@@ -1,6 +1,6 @@
 name: last-answer
-version: 3.3.6+1
-summary: Fast ideas brainstroming tool
+version: 3.11.2+19
+summary: Fast ideas brainstorming tool with quick notes
 description: |
   You have a cool idea.
   You need to write it down fast.
@@ -8,35 +8,33 @@ description: |
   Then this app is for you.
 
   Follow questions, write as many answers as you can.
-
   As a result, you will get a quick description of the idea.
+
+  Or just write a quick note.
 
   That's it!:)
 
-  Also, you can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+  **Features**
+  - Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers 
+  - Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+  - Dark & Light themes
+  - English, Italian, Russian languages
+  - Responsive layout - choose what you like - full screen or in a small window
 
   Hope this app will be useful for you :)
   Thank you and have a nice day.
 
-  Please notice: 
-  Next version (^v3) available at edge channel. 
-  BEFORE switching channel, please make sure you save all important notes, because the whole app was rewritten from the ground and data lose is possible.
-
-  Also v3 has not all old features implemented, so please be carefull to migrate to it.
-  For implemented features see [roadmap in GitHub](https://github.com/xsoulspace/last_answer/issues/40) 
-
   ---
 
-  ## Have an idea, improvements, or bugs? Want to join development?
+  ## Have an idea, improvements, or bugs?
 
-  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev.
+  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
 
   ---
 
   ## Support Development
 
   You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
-
   Thank you for your support!
 
 icon: snap/gui/last-answer.png
@@ -54,7 +52,7 @@ slots:
 apps:
   last-answer:
     command: lastanswer
-    extensions: [flutter-dev] # Where "master" defines which Flutter channel to use for the build
+    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     plugs:
       - home

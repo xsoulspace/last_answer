@@ -17,6 +17,21 @@ final lightThemeData = _lightBase.copyWith(
     ),
   ),
 
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
+    showTrackOnHover: false,
+    isAlwaysShown: false,
+    interactive: true,
+    // crossAxisMargin: -6,
+    thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
+    trackBorderColor:
+        MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
+  ),
+  // scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor:
+      isNativeDesktop && nativeTransparentBackgroundSupported
+          ? Colors.transparent
+          : _lightBase.scaffoldBackgroundColor,
   // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
@@ -39,9 +54,21 @@ final darkThemeData = _darkBase.copyWith(
       statusBarIconBrightness: Brightness.light,
     ),
   ),
-  // TODO(arenukvern): for transparent background
-  // scaffoldBackgroundColor:
-  //     Platform.isMacOS ? Colors.transparent : _darkBase.scaffoldBackgroundColor,
+  scrollbarTheme: _darkBase.scrollbarTheme.copyWith(
+    interactive: true,
+    showTrackOnHover: false,
+    isAlwaysShown: false,
+    // crossAxisMargin: -6,
+    thumbColor: MaterialStateProperty.all(AppColors.grey4.withOpacity(0.4)),
+    // trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),
+    // trackColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.1)),
+  ),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  // scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor:
+      isNativeDesktop && nativeTransparentBackgroundSupported
+          ? Colors.transparent
+          : _darkBase.scaffoldBackgroundColor,
   cardColor: AppColors.grey1.withOpacity(0.5),
   splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(

@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -19,8 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(projectTitle) =>
-      "${projectTitle} будет потерян безвозвратно";
+  static String m0(version, buildNumber) =>
+      "Версия: ${version}, билд: ${buildNumber}";
+
+  static String m1(title) => "${title} будет потерян безвозвратно";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -29,27 +32,31 @@ class MessageLookup extends MessageLookupByLibrary {
             "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение."),
         "aboutAbstractIdeasImprovementsBugs":
             MessageLookupByLibrary.simpleMessage("Идеи Улучшения Баги?"),
-        "aboutAbstractIdeasImprovementsBugsDescription":
-            MessageLookupByLibrary.simpleMessage(
-                "Отправляйте ваше мнение на idea@xsoulspace.dev или напишите отзыв. Спасибо что используете приложение и хорошего дня, полного идей и впечатлений!"),
         "aboutAbstractWhatFor": MessageLookupByLibrary.simpleMessage("Зачем?"),
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
             "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми."),
         "answer": MessageLookupByLibrary.simpleMessage("Ответ"),
-        "answerWillBeLost":
-            MessageLookupByLibrary.simpleMessage("будет потерян безвозвратно"),
+        "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
+        "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
         "cancel": MessageLookupByLibrary.simpleMessage("ОТМЕНИТЬ"),
         "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
-        "darkMode": MessageLookupByLibrary.simpleMessage("Ночной режим"),
         "delete": MessageLookupByLibrary.simpleMessage("УДАЛИТЬ"),
+        "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
+            "или отправьте сообщение на idea@xsoulspace.dev"),
+        "frequentlyUsed":
+            MessageLookupByLibrary.simpleMessage("Часто используемые"),
         "idea": MessageLookupByLibrary.simpleMessage("Идея"),
+        "joinDiscord":
+            MessageLookupByLibrary.simpleMessage("Присоединяйтесь к Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
-        "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
-            "будет установлен как основной язык. Приложение будет перезагружено, продолжить?"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
+        "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
+            "Сделано с Flutter ❤ и Open Source Libraries"),
+        "niceDayWish": MessageLookupByLibrary.simpleMessage(
+            "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!"),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
@@ -68,9 +75,25 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Что ещё?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Вдохновление"),
-        "projectWillBeLost": m0,
-        "titleWith": MessageLookupByLibrary.simpleMessage("с"),
+        "pleaseNotice":
+            MessageLookupByLibrary.simpleMessage("Обратите внимание"),
+        "privacyPolicy":
+            MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
+        "projectsDirection":
+            MessageLookupByLibrary.simpleMessage("Направление заметок"),
+        "search": MessageLookupByLibrary.simpleMessage("Поиск"),
+        "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("Условия использования"),
+        "theme": MessageLookupByLibrary.simpleMessage("Тема"),
+        "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
+        "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),
+        "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
+        "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("Новое"),
+        "writeANote": MessageLookupByLibrary.simpleMessage("Запишите заметку"),
+        "writeAnAnswer": MessageLookupByLibrary.simpleMessage("Запишите ответ"),
         "yes": MessageLookupByLibrary.simpleMessage("ДА")
       };
 }

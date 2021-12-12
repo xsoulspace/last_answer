@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -19,7 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'it';
 
-  static String m0(projectTitle) => "${projectTitle} sarà perso per sempre";
+  static String m0(version, buildNumber) =>
+      "Versione dell\'app: ${version}, build: ${buildNumber}";
+
+  static String m1(title) => "${title} sarà perso per sempre";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -28,31 +32,35 @@ class MessageLookup extends MessageLookupByLibrary {
             "Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate."),
         "aboutAbstractIdeasImprovementsBugs":
             MessageLookupByLibrary.simpleMessage("Idee Miglioramenti Bug?"),
-        "aboutAbstractIdeasImprovementsBugsDescription":
-            MessageLookupByLibrary.simpleMessage(
-                "Si prega di lasciare una recensione ovunque si desideri o inviare un messaggio a idea@xsoulspace.dev. Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)"),
         "aboutAbstractWhatFor":
             MessageLookupByLibrary.simpleMessage("Per che cosa?"),
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
             "Questa app è progettata per risolvere l\'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee."),
         "answer": MessageLookupByLibrary.simpleMessage("Risposta"),
-        "answerWillBeLost":
-            MessageLookupByLibrary.simpleMessage("sarà perso per sempre"),
+        "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
+        "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Sei sicuro?"),
         "cancel": MessageLookupByLibrary.simpleMessage("CANCELLA"),
         "close": MessageLookupByLibrary.simpleMessage("CHIUDI"),
         "createIdeaHelperText":
-            MessageLookupByLibrary.simpleMessage("Create tutorial"),
-        "darkMode": MessageLookupByLibrary.simpleMessage("Modalità scura"),
+            MessageLookupByLibrary.simpleMessage("Crea tutorial"),
         "delete": MessageLookupByLibrary.simpleMessage("ELIMINA"),
+        "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
+            "o inviare un messaggio a idea@xsoulspace.dev"),
+        "frequentlyUsed":
+            MessageLookupByLibrary.simpleMessage("Usato frequentemente"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
+        "joinDiscord":
+            MessageLookupByLibrary.simpleMessage("Unisciti a Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Lingua"),
-        "languageWillBeChanged": MessageLookupByLibrary.simpleMessage(
-            "verrà impostata come nuova lingua. L\'app verrà ricaricata, continuare?"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
+        "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
+            "Made with Flutter ❤ and Open Source Libraries"),
+        "niceDayWish": MessageLookupByLibrary.simpleMessage(
+            "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)"),
         "noProjectsYet":
-            MessageLookupByLibrary.simpleMessage("No projects yet."),
-        "note": MessageLookupByLibrary.simpleMessage("Note"),
+            MessageLookupByLibrary.simpleMessage("Nessun progetto ancora."),
+        "note": MessageLookupByLibrary.simpleMessage("Nota"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Puoi usare: \"Cinque perché\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
@@ -69,10 +77,27 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cos\'altro?"),
         "philosophyInspirationTitle":
             MessageLookupByLibrary.simpleMessage("Ispirazione"),
-        "projectWillBeLost": m0,
-        "titleWith": MessageLookupByLibrary.simpleMessage("сon"),
+        "pleaseNotice":
+            MessageLookupByLibrary.simpleMessage("Si prega di notare"),
+        "privacyPolicy":
+            MessageLookupByLibrary.simpleMessage("Politica sulla riservatezza"),
+        "projectsDirection":
+            MessageLookupByLibrary.simpleMessage("Note direzione"),
+        "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
+        "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("Termini & Condizioni"),
+        "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+        "themeDark": MessageLookupByLibrary.simpleMessage("Buia"),
+        "themeLight": MessageLookupByLibrary.simpleMessage("Leggera"),
+        "themeSystem": MessageLookupByLibrary.simpleMessage("Auto"),
         "whatsYourIdea":
-            MessageLookupByLibrary.simpleMessage("What\'s your idea?"),
+            MessageLookupByLibrary.simpleMessage("Qual è la tua idea?"),
+        "willBeLost": m1,
+        "wordNew": MessageLookupByLibrary.simpleMessage("Nuovo"),
+        "writeANote": MessageLookupByLibrary.simpleMessage("Scrivi una nota"),
+        "writeAnAnswer":
+            MessageLookupByLibrary.simpleMessage("Scrivi una risposta"),
         "yes": MessageLookupByLibrary.simpleMessage("Si")
       };
 }

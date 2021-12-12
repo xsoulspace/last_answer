@@ -1,6 +1,12 @@
 part of 'utils.dart';
 
 /// Returns what version of layout needs to use
-/// TODO(arenukvern): fix case when web running on touch device
-final isDesktop =
-    kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+final isDesktop = defaultTargetPlatform == TargetPlatform.linux ||
+    defaultTargetPlatform == TargetPlatform.macOS ||
+    defaultTargetPlatform == TargetPlatform.windows;
+
+final isNativeDesktop = (Platform.isMacOS || Platform.isLinux) && !kIsWeb;
+final nativeTransparentBackgroundSupported = Platform.isMacOS;
+
+final isAppleDevice = defaultTargetPlatform == TargetPlatform.macOS ||
+    defaultTargetPlatform == TargetPlatform.iOS;

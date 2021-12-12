@@ -1,0 +1,122 @@
+[
+  {
+    "category": "special-emojis",
+    "emoji": "①",
+    "keywords": "1,one"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "②",
+    "keywords": "2,two"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "③",
+    "keywords": "3,three"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "④",
+    "keywords": "4,four"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑤",
+    "keywords": "5,five"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑥",
+    "keywords": "6,six"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑦",
+    "keywords": "7,seven"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑧",
+    "keywords": "8,eight"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑨",
+    "keywords": "9,nine"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑩",
+    "keywords": "10,ten"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑪",
+    "keywords": "11,eleven"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑫",
+    "keywords": "12,twelve"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑬",
+    "keywords": "13,thirteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑭",
+    "keywords": "14,fourteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑮",
+    "keywords": "15,fifteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑯",
+    "keywords": "16,sixteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑰",
+    "keywords": "17,seventeen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑱",
+    "keywords": "18,eighteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑲",
+    "keywords": "19,nineteen"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "⑳",
+    "keywords": "20,twenty"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "—",
+    "keywords": "long line"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "–",
+    "keywords": "line"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "▸",
+    "keywords": "play,arrow right"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "•",
+    "keywords": "dot"
+  }
+]

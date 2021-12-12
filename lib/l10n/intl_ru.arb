@@ -1,184 +1,209 @@
 {
   "language": "Язык",
   "@language": {
-    "description": "пункт меню язык",
-    "type": "text"
+    "description": "пункт меню язык"
   },
-  "darkMode": "Ночной режим",
-  "@darkMode": {
-    "description": "menu title Dark mode",
-    "type": "text"
+  "search": "Поиск",
+  "@search": {
+    "description": "Search"
   },
-  "languageWillBeChanged": "будет установлен как основной язык. Приложение будет перезагружено, продолжить?",
-  "@languageWillBeChanged": {
-    "description": "languageWillBeChanged",
-    "type": "text"
+  "frequentlyUsed": "Часто используемые",
+  "@frequentlyUsed": {
+    "description": "frequentlyUsed"
+  },
+  "writeAnAnswer": "Запишите ответ",
+  "@writeAnAnswer": {
+    "description": "writeAnAnswer"
+  },
+  "writeANote": "Запишите заметку",
+  "@writeANote": {
+    "description": "writeANote"
+  },
+  "madeWithLoveAndFlutter": "Сделано с Flutter ❤ и Open Source Libraries",
+  "@madeWithLoveAndFlutter": {
+    "description": "madeWithLoveAndFlutter"
+  },
+  "feedbackTextWithEmail": "или отправьте сообщение на idea@xsoulspace.dev",
+  "@feedbackTextWithEmail": {
+    "description": "feedbackTextWithEmail"
+  },
+  "niceDayWish": "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!",
+  "@niceDayWish": {
+    "description": "niceDayWish"
+  },
+  "privacyPolicy": "Политика конфиденциальности",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "termsAndConditions": "Условия использования",
+  "@termsAndConditions": {
+    "description": "Terms & Conditions"
+  },
+  "joinDiscord": "Присоединяйтесь к Discord",
+  "@joinDiscord": {
+    "description": "joinDiscord button"
+  },
+  "pleaseNotice": "Обратите внимание",
+  "@pleaseNotice": {
+    "description": "Please notice title"
+  },
+  "appInfo": "Last Answer",
+  "@appInfo": {
+    "description": "app info title"
+  },
+  "appVersion": "Версия: {version}, билд: {buildNumber}",
+  "@appVersion": {
+    "description": "app version",
+    "args": [
+      "version",
+      "buildNumber"
+    ]
+  },
+  "projectsDirection": "Направление заметок",
+  "@projectsDirection": {
+    "description": "Projects direction"
+  },
+  "wordNew": "Новое",
+  "@wordNew": {
+    "description": "New"
+  },
+  "theme": "Тема",
+  "@theme": {
+    "description": "app theme"
+  },
+  "themeSystem": "Как в системе",
+  "@themeSystem": {
+    "description": "app theme - system"
+  },
+  "themeDark": "Темная",
+  "@themeDark": {
+    "description": "app theme - dark"
+  },
+  "themeLight": "Светлая",
+  "@themeLight": {
+    "description": "app theme - light"
   },
   "yes": "ДА",
   "@yes": {
-    "description": "yes",
-    "type": "text"
+    "description": "yes"
+  },
+  "settings": "Настройки",
+  "@settings": {
+    "description": "Settings"
   },
   "createIdeaHelperText": "Создать туториал",
   "@createIdeaHelperText": {
-    "description": "createIdeaHelperText",
-    "type": "text"
+    "description": "createIdeaHelperText"
   },
   "whatsYourIdea": "В чём идея?",
   "@whatsYourIdea": {
-    "description": "What's your idea? label",
-    "type": "text"
+    "description": "What's your idea? label"
   },
   "noProjectsYet": "Тут пока пусто",
   "@noProjectsYet": {
-    "description": "text if no projects created",
-    "type": "text"
+    "description": "text if no projects created"
   },
   "idea": "Идея",
   "@idea": {
-    "description": "idea name",
-    "type": "text"
+    "description": "idea name"
   },
   "note": "Заметка",
   "@note": {
-    "description": "Note name",
-    "type": "text"
+    "description": "Note name"
   },
   "cancel": "ОТМЕНИТЬ",
   "@cancel": {
-    "description": "Отменить",
-    "type": "text"
+    "description": "Отменить"
   },
   "close": "ЗАКРЫТЬ",
   "@close": {
-    "description": "Закрыть",
-    "type": "text"
+    "description": "Закрыть"
   },
   "delete": "УДАЛИТЬ",
   "@delete": {
-    "description": "Удалить",
-    "type": "text"
+    "description": "Удалить"
   },
   "successfullySaved": "Успешно сохранено!",
   "@successfullySaved": {
-    "description": "Successfully saved",
-    "type": "text"
+    "description": "Successfully saved"
   },
   "successfullyDeleted": "Успешно удалено!",
   "@successfullyDeleted": {
-    "description": "Successfully deleted",
-    "type": "text"
+    "description": "Successfully deleted"
   },
   "areYouSure": "Вы уверены?",
   "@areYouSure": {
-    "description": "Вы уверены",
-    "type": "text"
+    "description": "Вы уверены"
   },
-  "titleWith": "с",
-  "@titleWith": {
-    "description": "with",
-    "type": "text"
-  },
-  "projectWillBeLost": "{projectTitle} будет потерян безвозвратно",
-  "@projectWillBeLost": {
-    "description": "Project removal warning",
-    "type": "text",
+  "willBeLost": "{title} будет потерян безвозвратно",
+  "@willBeLost": {
+    "description": "removal warning",
     "args": [
-      "answersLength",
-      "projectTitle"
-    ]
-  },
-  "answerWillBeLost": "будет потерян безвозвратно",
-  "@answerWillBeLost": {
-    "description": "Answer removal warning",
-    "type": "text",
-    "args": [
-      "answerTitle"
+      "title"
     ]
   },
   "lastAnswer": "Последний ответ",
   "@lastAnswer": {
-    "description": "пункт меню последний ответ",
-    "type": "text"
+    "description": "пункт меню последний ответ"
   },
   "answer": "Ответ",
   "@answer": {
-    "description": "ввод ответа",
-    "type": "text"
+    "description": "ввод ответа"
   },
   "newQuestStart": "начать",
   "@newQuestStart": {
-    "description": "popup новый начать",
-    "type": "text"
+    "description": "popup новый начать"
   },
   "philosophyInspirationTitle": "Вдохновление",
   "@philosophyInspirationTitle": {
-    "description": "Inspiration",
-    "type": "text"
+    "description": "Inspiration"
   },
   "philosophyAbstractWhatElse": "Что ещё?",
   "@philosophyAbstractWhatElse": {
-    "description": "What else",
-    "type": "text"
+    "description": "What else"
   },
   "philosophyAbstractFiveWhyesWhat": "Можно использовать: \"Пять почему\"",
   "@philosophyAbstractFiveWhyesWhat": {
-    "description": "Method that you can use",
-    "type": "text"
+    "description": "Method that you can use"
   },
   "philosophyAbstractFiveWhyesWhy": "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",
   "@philosophyAbstractFiveWhyesWhy": {
-    "description": "Description of Five Whyes",
-    "type": "text"
+    "description": "Description of Five Whyes"
   },
   "philosophyAbstractPDSAWhy": "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",
   "@philosophyAbstractPDSAWhy": {
-    "description": "Method that you can use",
-    "type": "text"
+    "description": "Method that you can use"
   },
   "philosophyAbstractPDSAWhat": "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",
   "@philosophyAbstractPDSAWhat": {
-    "description": "Description of PDSA",
-    "type": "text"
+    "description": "Description of PDSA"
   },
   "philosophyAbstractSixSigmaWhy": "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",
   "@philosophyAbstractSixSigmaWhy": {
-    "description": "Method that you can use",
-    "type": "text"
+    "description": "Method that you can use"
   },
   "philosophyAbstractSixSigmaWhat": "Ещё можно использовать: \"Шесть сигм\" ",
   "@philosophyAbstractSixSigmaWhat": {
-    "description": "Description of Six Sigma",
-    "type": "text"
+    "description": "Description of Six Sigma"
   },
   "about": "О приложении",
   "@about": {
-    "description": "About Abstract title",
-    "type": "text"
+    "description": "About Abstract title"
   },
   "aboutAbstractWhatFor": "Зачем?",
   "@aboutAbstractWhatFor": {
-    "description": "What For About Abstract",
-    "type": "text"
+    "description": "What For About Abstract"
   },
   "aboutAbstractWhatForDescription": "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми.",
   "@aboutAbstractWhatForDescription": {
-    "description": "Description of About Abstract",
-    "type": "text"
+    "description": "Description of About Abstract"
   },
   "aboutAbstractHowDescription": "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",
   "@aboutAbstractHowDescription": {
-    "description": "Description of About Abstract How Description",
-    "type": "text"
+    "description": "Description of About Abstract How Description"
   },
   "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
   "@aboutAbstractIdeasImprovementsBugs": {
-    "description": "Ideas Improvements Bugs",
-    "type": "text"
-  },
-  "aboutAbstractIdeasImprovementsBugsDescription": "Отправляйте ваше мнение на idea@xsoulspace.dev или напишите отзыв. Спасибо что используете приложение и хорошего дня, полного идей и впечатлений!",
-  "@aboutAbstractIdeasImprovementsBugsDescription": {
-    "description": "Ideas Improvements Bugs description",
-    "type": "text"
+    "description": "Ideas Improvements Bugs"
   }
 }

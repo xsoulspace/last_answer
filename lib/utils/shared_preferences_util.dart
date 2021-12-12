@@ -13,11 +13,6 @@ mixin SharedPreferencesUtil {
   ) async =>
       setString(key, jsonEncode(value));
 
-  Future<void> setString(final String key, final String value) async {
-    final prefs = await sharedPreferences;
-    await prefs.setString(key, value);
-  }
-
   Future<Map<String, dynamic>> getMap(
     final String key,
   ) async {
@@ -28,6 +23,11 @@ mixin SharedPreferencesUtil {
     );
   }
 
+  Future<void> setString(final String key, final String value) async {
+    final prefs = await sharedPreferences;
+    await prefs.setString(key, value);
+  }
+
   Future<String> getString(
     final String key, {
     final String defaultValue = '',
@@ -35,5 +35,19 @@ mixin SharedPreferencesUtil {
     final prefs = await sharedPreferences;
     final value = prefs.getString(key);
     return value ?? defaultValue;
+  }
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setBool(final String key, final bool value) async {
+    final prefs = await sharedPreferences;
+    await prefs.setBool(key, value);
+  }
+
+  Future<bool> getBool(
+    final String key, {
+    final bool defaultValue = false,
+  }) async {
+    final prefs = await sharedPreferences;
+    return prefs.getBool(key) ?? defaultValue;
   }
 }

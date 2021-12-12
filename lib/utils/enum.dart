@@ -41,9 +41,7 @@ extension EnumExt on Enum {
 /// ```
 /// Make sure that you override operator [] for [Themes]
 /// {@endtemplate}
-E getEnumValueFromEnumValues<E>({
-// TODO(arenukvern): uncomment when dart 2.14 will be released
-// E getEnumValueFromEnumValues<E extends Enum>({
+E getEnumValueFromEnumValues<E extends Enum>({
   required final List<E> values,
   required final String value,
 }) {

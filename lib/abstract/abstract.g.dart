@@ -6,98 +6,6 @@ part of abstract;
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AnswerAdapter extends TypeAdapter<Answer> {
-  @override
-  final int typeId = 2;
-
-  @override
-  Answer read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Answer(
-      title: fields[0] as String,
-      questionId: fields[1] as String,
-      id: fields[3] as String,
-      created: fields[4] as DateTime,
-      positionIndex: fields[5] as int?,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, Answer obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
-      ..write(obj.questionId)
-      ..writeByte(3)
-      ..write(obj.id)
-      ..writeByte(4)
-      ..write(obj.created)
-      ..writeByte(5)
-      ..write(obj.positionIndex);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AnswerAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class ProjectAdapter extends TypeAdapter<Project> {
-  @override
-  final int typeId = 1;
-
-  @override
-  Project read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Project(
-      id: fields[0] as String,
-      title: fields[2] as String,
-      created: fields[4] as DateTime,
-      isCompleted: fields[1] as bool,
-      answers: (fields[3] as HiveList?)?.castHiveList(),
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, Project obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.isCompleted)
-      ..writeByte(2)
-      ..write(obj.title)
-      ..writeByte(3)
-      ..write(obj.answers)
-      ..writeByte(4)
-      ..write(obj.created);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ProjectAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   @override
   final int typeId = 3;
@@ -113,6 +21,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       title: fields[2] as String,
       created: fields[3] as DateTime,
       updated: fields[4] as DateTime,
+      folder: fields[8] as ProjectFolder?,
       isCompleted: fields[1] as bool,
       newAnswerText: fields[6] as String,
       newQuestion: fields[7] as IdeaProjectQuestion?,
@@ -123,13 +32,15 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   @override
   void write(BinaryWriter writer, IdeaProject obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(5)
       ..write(obj.answers)
       ..writeByte(6)
       ..write(obj.newAnswerText)
       ..writeByte(7)
       ..write(obj.newQuestion)
+      ..writeByte(8)
+      ..write(obj.folder)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -246,17 +157,23 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
     return LocalizedText(
       en: fields[1] as String,
       ru: fields[0] as String,
+      it: fields[2] as String?,
+      ga: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, LocalizedText obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.ru)
       ..writeByte(1)
-      ..write(obj.en);
+      ..write(obj.en)
+      ..writeByte(2)
+      ..write(obj.it)
+      ..writeByte(3)
+      ..write(obj.ga);
   }
 
   @override
@@ -284,6 +201,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       id: fields[0] as String,
       created: fields[3] as DateTime,
       updated: fields[4] as DateTime,
+      folder: fields[6] as ProjectFolder?,
       note: fields[5] as String,
       isCompleted: fields[1] as bool,
     );
@@ -292,9 +210,11 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   @override
   void write(BinaryWriter writer, NoteProject obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(5)
       ..write(obj.note)
+      ..writeByte(6)
+      ..write(obj.folder)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -316,6 +236,46 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
           typeId == other.typeId;
 }
 
+class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
+  @override
+  final int typeId = 9;
+
+  @override
+  ProjectFolder read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ProjectFolder(
+      id: fields[0] as String,
+      title: fields[1] as String,
+      projectsIdsString: fields[2] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ProjectFolder obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.projectsIdsString);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectFolderAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   @override
   final int typeId = 7;
@@ -330,6 +290,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       id: fields[0] as String,
       title: fields[2] as String,
       created: fields[3] as DateTime,
+      folder: fields[5] as ProjectFolder?,
       isCompleted: fields[1] as bool,
     )..updated = fields[4] as DateTime;
   }
@@ -337,7 +298,9 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   @override
   void write(BinaryWriter writer, StoryProject obj) {
     writer
+      ..writeByte(6)
       ..writeByte(5)
+      ..write(obj.folder)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -365,14 +328,16 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
-      title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
-      id: json['id'] as String,
+Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
+      category: json['category'] as String,
+      emoji: json['emoji'] as String,
+      keywords: json['keywords'] as String,
     );
 
-Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
-      'title': instance.title,
-      'id': instance.id,
+Map<String, dynamic> _$EmojiToJson(Emoji instance) => <String, dynamic>{
+      'category': instance.category,
+      'emoji': instance.emoji,
+      'keywords': instance.keywords,
     };
 
 IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
@@ -392,10 +357,34 @@ LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
+      it: json['it'] as String?,
+      ga: json['ga'] as String?,
     );
 
 Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,
+      'it': instance.it,
+      'ga': instance.ga,
     };
+
+SerializableProjectId _$SerializableProjectIdFromJson(
+        Map<String, dynamic> json) =>
+    SerializableProjectId(
+      id: json['id'] as String,
+      type: $enumDecode(_$ProjectTypesEnumMap, json['type']),
+    );
+
+Map<String, dynamic> _$SerializableProjectIdToJson(
+        SerializableProjectId instance) =>
+    <String, dynamic>{
+      'type': _$ProjectTypesEnumMap[instance.type],
+      'id': instance.id,
+    };
+
+const _$ProjectTypesEnumMap = {
+  ProjectTypes.idea: 'idea',
+  ProjectTypes.note: 'note',
+  ProjectTypes.story: 'story',
+};

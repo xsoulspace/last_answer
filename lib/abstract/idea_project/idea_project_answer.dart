@@ -6,7 +6,7 @@ typedef IdeaProjectAnswerId = String;
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
-    implements Sharable {
+    implements Sharable, HasId {
   IdeaProjectAnswer({
     required final this.text,
     required final this.question,
@@ -36,12 +36,14 @@ class IdeaProjectAnswer extends HiveObject
   @HiveField(1)
   IdeaProjectQuestion question;
 
+  @override
   @HiveField(2)
   final IdeaProjectAnswerId id;
 
   @HiveField(3)
   final DateTime created;
 
+  String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
   String toShareString() => '${question.toShareString()} \n $text';
 

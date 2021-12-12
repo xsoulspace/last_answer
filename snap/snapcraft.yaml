@@ -40,7 +40,7 @@ description: |
 icon: snap/gui/last-answer.png
 
 confinement: strict
-base: core20
+base: core18
 grade: stable
 
 slots:

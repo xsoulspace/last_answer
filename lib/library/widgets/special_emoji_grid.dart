@@ -91,8 +91,6 @@ class SpecialEmojiPopup extends HookWidget {
       },
     );
 
-    if (!isDesktop) return const SizedBox();
-
     final emojiButton = IconButton(
       onPressed: () => popupVisible.value = true,
       icon: const Icon(Icons.emoji_flags_outlined),

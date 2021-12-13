@@ -66,3 +66,7 @@ Thank you and have a nice day.
 
 You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
 Thank you for your support!
+
+# Huge thank you for contributors!
+
+[@albanobattistella](https://github.com/albanobattistella)

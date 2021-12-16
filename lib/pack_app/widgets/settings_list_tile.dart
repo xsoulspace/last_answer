@@ -29,9 +29,7 @@ class SettingsListTile extends StatelessWidget {
         Expanded(
           child: child,
         ),
-        SizedBox(
-          width: rightPadding,
-        )
+        SizedBox(width: rightPadding),
       ],
     );
   }

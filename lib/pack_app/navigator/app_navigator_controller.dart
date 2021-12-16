@@ -27,6 +27,7 @@ class AppNavigatorController {
       folder.notify();
       resolvedNoteId = newNote.id;
     }
+
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
   }
 

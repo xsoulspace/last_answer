@@ -58,6 +58,7 @@ class NoteProjectScreen extends HookWidget {
         note.value.folder?.sortProjectsByDate(project: note.value);
         silentFolderProvider.notify();
       }
+
       return note.value.save();
     });
 

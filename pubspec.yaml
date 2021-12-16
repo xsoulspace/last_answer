@@ -65,6 +65,7 @@ dev_dependencies:
   hive_generator: ^1.1.1
   json_serializable: ^6.1.1
   mocktail: ^0.2.0
+  dart_code_metrics: ^4.8.1
 
 # flutter pub run flutter_launcher_icons:main
 # generate for macos https://appicon.co

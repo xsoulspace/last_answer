@@ -22,6 +22,7 @@ class IdeaAnswerScreen extends HookWidget {
         idea.answers?.firstWhereOrNull((final a) => a.id == answerId);
     if (answer != null) return answer;
     onUnknown(answerId, idea);
+
     return null;
   }
 
@@ -35,8 +36,7 @@ class IdeaAnswerScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final ideasProvider = context.read<IdeaProjectsProvider>(
-    );
+    final ideasProvider = context.read<IdeaProjectsProvider>();
     final maybeIdea = ideasProvider.state[ideaId]!;
     final maybeAnswer = getInitialAnswer(idea: maybeIdea);
     if (maybeAnswer == null) return Container();

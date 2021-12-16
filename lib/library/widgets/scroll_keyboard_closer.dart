@@ -17,6 +17,7 @@ class ScrollKeyboardCloser extends StatelessWidget {
             scrollNotification.direction == ScrollDirection.forward) {
           closeKeyboard(context: context);
         }
+
         return false;
       },
       child: child,

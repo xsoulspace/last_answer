@@ -27,6 +27,7 @@ class IdeaProjectAnswer extends HiveObject
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
+    
     return answer;
   }
 

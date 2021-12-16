@@ -37,7 +37,7 @@ class ProjectsDirectionSwitch extends StatelessWidget {
                 : null,
             color: settings.projectsListReversed ? null : AppColors.primary,
             icon: Icons.vertical_align_top_rounded,
-          )
+          ),
         ],
       ),
     );

@@ -45,17 +45,9 @@ class ProjectTile extends StatelessWidget {
 
     if (!useContextTheme) {
       if (isProjectActive) {
-        if (themeDefiner.useDarkTheme) {
-          blurOpacity = 0.3;
-        } else {
-          blurOpacity = 0.8;
-        }
+        blurOpacity = themeDefiner.useDarkTheme ? 0.3 : 0.8;
       } else {
-        if (themeDefiner.useDarkTheme) {
-          blurOpacity = 0.1;
-        } else {
-          blurOpacity = 0.7;
-        }
+        blurOpacity = themeDefiner.useDarkTheme ? 0.1 : 0.7;
       }
     }
 
@@ -65,9 +57,7 @@ class ProjectTile extends StatelessWidget {
       //   if (direction != DismissDirection.startToEnd) return false;
       //   return onRemoveConfirm(project);
       // },
-      onDismissed: () {
-        onRemove(project);
-      },
+      onDismissed: () => onRemove(project),
       child: HeroId(
         id: project.id,
         type: HeroIdTypes.projectTitle,

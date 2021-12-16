@@ -11,6 +11,7 @@ class RightScrollbar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
+
     return Scrollbar(
       controller: controller,
       child: Padding(

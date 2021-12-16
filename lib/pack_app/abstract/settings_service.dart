@@ -12,6 +12,7 @@ class SettingsService with SharedPreferencesUtil {
     final index = int.tryParse(theme);
     if (index == null) return ThemeMode.system;
     if (index > ThemeMode.values.length || index < 0) return ThemeMode.system;
+
     return ThemeMode.values[index];
   }
 
@@ -26,6 +27,7 @@ class SettingsService with SharedPreferencesUtil {
     final languageCode = await getString(SharedPreferencesKeys.locale);
     try {
       if (languageCode.isEmpty) return Locales.en;
+
       return Locale.fromSubtags(languageCode: languageCode);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {

@@ -23,6 +23,7 @@ class AnswerFieldBubble extends HookWidget {
     }
 
     final theme = Theme.of(context);
+
     return FocusBubbleContainer(
       onUnfocus: _updateAnswer,
       onFocus: onFocus,

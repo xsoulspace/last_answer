@@ -11,6 +11,7 @@ class AdaptiveBackButton extends HookWidget {
     final hovered = useIsBool();
     if (isDesktop) {
       final theme = Theme.of(context);
+
       return MouseRegion(
         onEnter: (final _) => hovered.value = true,
         onExit: (final _) => hovered.value = false,

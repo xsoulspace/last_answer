@@ -26,6 +26,7 @@ class EmojiPopup extends HookWidget {
       controller: controller,
       focusNode: focusNode,
     );
+
     return PortalEntry(
       visible: popupVisible.value,
       portalAnchor:
@@ -126,6 +127,7 @@ class EmojiGrid extends HookWidget {
           child: Consumer<EmojiProvider>(
             builder: (final _, final provider, final __) {
               final emojis = provider.filteredValues;
+
               return GridView.count(
                 restorationId: 'emojis-grid',
                 shrinkWrap: true,

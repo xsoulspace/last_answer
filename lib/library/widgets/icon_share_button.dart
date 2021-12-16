@@ -20,7 +20,6 @@ class _IconShareButtonState extends State<IconShareButton> {
   void initState() {
     super.initState();
     currentIcon = defaultIcon;
-    setState(() {});
   }
 
   Future setDone() async {

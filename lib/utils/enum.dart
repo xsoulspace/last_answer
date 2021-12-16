@@ -54,5 +54,6 @@ E getEnumValueFromEnumValues<E extends Enum>({
       "enum ${E.runtimeType} contains no value '$value'",
     );
   }
+
   return resolvedValue;
 }

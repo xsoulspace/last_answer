@@ -6,6 +6,7 @@ class NotificationService with SharedPreferencesUtil {
         await getString(SharedPreferencesKeys.notificationUpdatesReadDateTime);
     final miliseconds = int.tryParse(datetimeStr);
     if (miliseconds == null) return null;
+
     return DateTime.fromMillisecondsSinceEpoch(miliseconds);
   }
 
@@ -24,6 +25,7 @@ class NotificationService with SharedPreferencesUtil {
     if (jsonStr.isEmpty) return [];
     final jsonList =
         List.castFrom<dynamic, Map<String, dynamic>>(jsonDecode(jsonStr));
+
     return jsonList.map(NotificationMessage.fromJson).toList();
   }
 }

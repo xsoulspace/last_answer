@@ -19,9 +19,11 @@ class ProjectsListView extends HookWidget {
     final textTheme = themeDefiner.effectiveTheme.textTheme;
     final settings = SettingsStateScope.of(context);
     final reversed = settings.projectsListReversed;
+
     return Consumer<FolderStateProvider>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
+
         return Expanded(
           child: Column(
             children: [
@@ -53,6 +55,7 @@ class ProjectsListView extends HookWidget {
                       itemCount: projects.length,
                       itemBuilder: (final _, final i) {
                         final project = projects[i];
+
                         return Padding(
                           key: ValueKey(project.id),
                           padding: const EdgeInsets.only(bottom: 3),

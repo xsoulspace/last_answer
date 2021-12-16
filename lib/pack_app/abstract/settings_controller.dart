@@ -76,6 +76,7 @@ class SettingsController with ChangeNotifier {
   bool migrated = false;
   Future<void> setMigrated() async {
     migrated = true;
+
     return settingsService.setMigrated();
   }
 
@@ -105,6 +106,7 @@ class SettingsStateScope extends InheritedNotifier<SettingsController> {
         .dependOnInheritedWidgetOfExactType<SettingsStateScope>()
         ?.notifier;
     if (state == null) throw ArgumentError.notNull('SettingsStateScope');
+
     return state;
   }
 }

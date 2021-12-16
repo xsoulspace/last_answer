@@ -31,6 +31,7 @@ class _QuestionDropdown extends HookWidget {
         ),
       ),
     );
+
     return DropdownButtonHideUnderline(
       child: DropdownButton<IdeaProjectQuestion>(
         isExpanded: true,

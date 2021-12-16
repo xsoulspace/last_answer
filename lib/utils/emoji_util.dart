@@ -10,6 +10,7 @@ class EmojiUtil
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
       jsonDecode(emojisStr),
     );
+
     return emojiList.map(Emoji.fromJson);
   }
 
@@ -21,6 +22,7 @@ class EmojiUtil
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
       jsonDecode(emojisStr),
     );
+
     return emojiList.map(Emoji.fromJson);
   }
 

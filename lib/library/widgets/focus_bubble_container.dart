@@ -13,8 +13,7 @@ class FocusBubbleContainerConsts {
       ? theme.cardColor.withOpacity(0.2)
       : theme.canvasColor;
 
-  Color get defaultFillFocusColor =>
-      brightness == Brightness.dark ? theme.cardColor : theme.cardColor;
+  Color get defaultFillFocusColor => theme.cardColor;
 }
 
 class FocusBubbleContainer extends HookWidget {
@@ -45,6 +44,7 @@ class FocusBubbleContainer extends HookWidget {
     useValueChanged<ThemeData, Color>(theme, (final _, final __) {
       fillColorNotifier.value = getDefaultColor();
     });
+
     return Focus(
       onFocusChange: (final hasFocus) {
         if (hasFocus) {

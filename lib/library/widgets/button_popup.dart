@@ -21,6 +21,7 @@ class ButtonPopup extends StatelessWidget {
     } else {
       borderColor = AppColors.grey4;
     }
+
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,

@@ -96,6 +96,7 @@ class SpecialEmojiPopup extends HookWidget {
       icon: const Icon(Icons.emoji_flags_outlined),
     );
     if (!isDesktop) return emojiButton;
+
     return PortalEntry(
       visible: popupVisible.value,
       portalAnchor:

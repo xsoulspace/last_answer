@@ -55,6 +55,7 @@ class NoteProject extends BasicProject {
 
   static String getTitle(final String text) {
     if (text.length <= titleLimit) return text;
+
     return text.substring(0, titleLimit);
   }
 

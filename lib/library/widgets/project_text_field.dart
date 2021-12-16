@@ -66,6 +66,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final scrollController = useScrollController();
+
     return RightScrollbar(
       controller: scrollController,
       child: FocusBubbleContainer(
@@ -90,7 +91,6 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             maxLines: widget.endlessLines ? null : widget.maxLines,
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.bottom,
-            onChanged: (final text) async {},
             style: theme.textTheme.bodyText2,
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)

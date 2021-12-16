@@ -1,5 +1,20 @@
 part of pack_app;
 
+class SettingsScreenItem extends StatelessWidget {
+  const SettingsScreenItem({
+    required this.text,
+    final Key? key,
+  }) : super(key: key);
+  final String text;
+  @override
+  Widget build(final BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.bodyText2,
+    );
+  }
+}
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
     required final this.onBack,
@@ -9,10 +24,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    Widget getItemText(final String text) => Text(
-          text,
-          style: Theme.of(context).textTheme.bodyText2,
-        );
+
     final settings = SettingsStateScope.of(context);
     final languageCode = settings.locale?.languageCode;
     final String effectiveLanguageCode =
@@ -22,6 +34,7 @@ class SettingsScreen extends StatelessWidget {
     final screenLayout = ScreenLayout.of(context);
     final leftPadding = screenLayout.small ? 90.0 : 150.0;
     final rightPadding = screenLayout.small ? 0.0 : 90.0;
+
     return Scaffold(
       backgroundColor: theme.canvasColor,
       appBar: BackTextUniversalAppBar(
@@ -53,15 +66,15 @@ class SettingsScreen extends StatelessWidget {
                 items: [
                   DropdownMenuItem(
                     value: ThemeMode.system,
-                    child: getItemText(S.current.themeSystem),
+                    child: SettingsScreenItem(text: S.current.themeSystem),
                   ),
                   DropdownMenuItem(
                     value: ThemeMode.light,
-                    child: getItemText(S.current.themeLight),
+                    child: SettingsScreenItem(text: S.current.themeLight),
                   ),
                   DropdownMenuItem(
                     value: ThemeMode.dark,
-                    child: getItemText(S.current.themeDark),
+                    child: SettingsScreenItem(text: S.current.themeDark),
                   ),
                 ],
               ),
@@ -82,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
                       (final e) => DropdownMenuItem<Locale>(
                         value: e.locale,
                         key: ValueKey(e.code),
-                        child: getItemText(e.name),
+                        child: SettingsScreenItem(text: e.name),
                       ),
                     )
                     .toList(),

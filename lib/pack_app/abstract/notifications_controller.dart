@@ -22,6 +22,7 @@ class NotificationController extends ChangeNotifier implements Loadable {
     } else {
       if (updates.isEmpty) {
         _hasUnreadUpdates = false;
+
         return;
       }
       _hasUnreadUpdates =

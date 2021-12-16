@@ -10,6 +10,7 @@ class AppNavigatorLayoutBuilder {
   bool checkIsProjectActive(final BasicProject project) {
     if (project.id == pageBuilder.params.noteId) return true;
     if (project.id == pageBuilder.params.ideaId) return true;
+
     return false;
   }
 
@@ -39,7 +40,7 @@ class AppNavigatorLayoutBuilder {
                   ] else if (pathTemplate == AppRoutesName.settings)
                     pageBuilder.settingsPage()
                   else
-                    AppNavigatorPageBuilder.emptyPage
+                    AppNavigatorPageBuilder.emptyPage,
                 ],
                 onPopPage: (final route, final result) => route.didPop(result),
               ),
@@ -52,7 +53,7 @@ class AppNavigatorLayoutBuilder {
           pageBuilder.ideaAnswerPage()
         else if (pathTemplate == AppRoutesName.appInfo)
           pageBuilder.appInfoPage(),
-      ]
+      ],
     ];
   }
 
@@ -85,9 +86,9 @@ class AppNavigatorLayoutBuilder {
       else if (pathTemplate.contains(AppRoutesName.idea)) ...[
         pageBuilder.ideaPage(),
         if (pathTemplate == AppRoutesName.ideaAnswer)
-          pageBuilder.ideaAnswerPage()
+          pageBuilder.ideaAnswerPage(),
       ] else
-        AppNavigatorPageBuilder.emptyPage
+        AppNavigatorPageBuilder.emptyPage,
     ];
   }
 }

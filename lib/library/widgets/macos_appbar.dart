@@ -49,23 +49,40 @@ class BackTextUniversalAppBar extends AppBar {
         super(
           toolbarHeight: height ?? (Platform.isMacOS ? 70 : null),
           leading: (screenLayout?.small ?? true)
-              ? Platform.isMacOS
-                  ? Column(
-                      children: [
-                        const TopSafeArea(),
-                        const SizedBox(height: 25),
-                        if (useBackButton)
-                          AdaptiveBackButton(onPressed: onBack)
-                        else
-                          CloseButton(onPressed: onBack),
-                      ],
-                    )
-                  : useBackButton
-                      ? AdaptiveBackButton(onPressed: onBack)
-                      : CloseButton(onPressed: onBack)
+              ? _AppBarLeading(
+                  onBack: onBack,
+                  useBackButton: useBackButton,
+                )
               : null,
           centerTitle: true,
-          title: title ?? Text(titleStr!),
+          title: title ?? Text(titleStr ?? ''),
           key: key,
         );
+}
+
+class _AppBarLeading extends StatelessWidget {
+  const _AppBarLeading({
+    required this.useBackButton,
+    required this.onBack,
+    final Key? key,
+  }) : super(key: key);
+  final bool useBackButton;
+  final VoidCallback onBack;
+  @override
+  Widget build(final BuildContext context) {
+    final backButton = useBackButton
+        ? AdaptiveBackButton(onPressed: onBack)
+        : CloseButton(onPressed: onBack);
+    if (Platform.isMacOS) {
+      return Column(
+        children: [
+          const TopSafeArea(),
+          const SizedBox(height: 25),
+          backButton,
+        ],
+      );
+    }
+
+    return backButton;
+  }
 }

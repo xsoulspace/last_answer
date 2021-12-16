@@ -60,6 +60,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         ],
       ),
     );
+
     return Theme(
       data: effectiveTheme,
       child: body,
@@ -79,6 +80,7 @@ class HomeVerticalMenu extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
+
     return ColoredBox(
       color: themeDefiner.useContextTheme
           ? themeDefiner.effectiveTheme.primaryColor.withOpacity(.03)
@@ -132,6 +134,7 @@ class HomeAppBar {
             .toList(),
       );
     }
+
     return AppBar(
       // TODO(arenukvern): make popup with translation for native language
       title: SelectableText(

@@ -113,6 +113,7 @@ class IdeaProjectScreen extends HookWidget {
                     return Container();
                   }
                   final _answer = answers.value[index];
+
                   return _AnswerTile(
                     onFocus: closeQuestions,
                     key: ValueKey(_answer.id),
@@ -151,7 +152,7 @@ class IdeaProjectScreen extends HookWidget {
             onFocus: openQuestions,
             idea: idea,
             defaultQuestion: answers.value.isNotEmpty
-                ? answers.value[0].question
+                ? answers.value.first.question
                 : questions.values.first,
             onChanged: () {
               final updateFolder = checkToUpdateFolder(answersUpdated: true);

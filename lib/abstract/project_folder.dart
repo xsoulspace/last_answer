@@ -80,6 +80,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   bool sortProjectsByDate({required final BasicProject project}) {
     if (_projects.first == project) return false;
     setExistedProjects([...projectsList]..sortByDate());
+
     return true;
   }
 
@@ -143,6 +144,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
         default:
           throw UnimplementedError();
       }
+
       return projects[id.id];
     }
 
@@ -153,6 +155,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
       project.folder = folder;
       projects.add(project);
     }
+
     return projects;
   }
 

@@ -23,6 +23,7 @@ Future<void> showNotificationPopup({
               size.height * 0.85,
               600,
             );
+
       return Dialog(
         insetPadding: screenLayout.small ? EdgeInsets.zero : null,
         shape: RoundedRectangleBorder(
@@ -35,6 +36,7 @@ Future<void> showNotificationPopup({
         child: WillPopScope(
           onWillPop: () async {
             await notificationController.readAllUpdates();
+
             return true;
           },
           child: SizedBox(
@@ -96,7 +98,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
                       style: textTheme.headline1,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -108,6 +110,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               itemBuilder: (final context, final i) {
                 final notification = updates[i];
+
                 return SelectableText(
                   notification.message.getByLanguage(language),
                 );
@@ -126,12 +129,12 @@ class UpdateNotificaionPopup extends StatelessWidget {
                     S.current.close.sentenceCase,
                     style: textTheme.bodyText1,
                   ),
-                )
+                ),
               ],
             ),
           ),
           const BottomSafeArea(),
-          const SizedBox(height: 10)
+          const SizedBox(height: 10),
         ],
       ),
     );

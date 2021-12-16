@@ -41,6 +41,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
           hintText: S.current.createIdeaHelperText,
           border: const UnderlineInputBorder(),
         );
+
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(

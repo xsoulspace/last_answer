@@ -38,6 +38,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(final BuildContext context) {
     final settings = SettingsStateScope.of(context);
+
     return RouteStateScope(
       notifier: routeState,
       child: AnimatedBuilder(
@@ -66,6 +67,7 @@ class _AppScaffoldState extends State<AppScaffold> {
               final locale = settings.locale;
               if (locale == null) return null;
               if (S.delegate.isSupported(locale)) return locale;
+
               return null;
             },
             supportedLocales: Locales.values,

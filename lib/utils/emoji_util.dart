@@ -28,7 +28,7 @@ class EmojiUtil
 
   @override
   Future<Map<String, Emoji>> load() async {
-    final map = await getMap(SharedPreferencesKeys.lastUsedEmojis);
+    final map = await getMap(SharedPreferencesKeys.lastUsedEmojis.name);
     if (map.isEmpty) return {};
     try {
       return Map.fromEntries(
@@ -46,6 +46,6 @@ class EmojiUtil
   Future<void> save(final Map<String, Emoji> map) async {
     final _map =
         map.map((final key, final value) => MapEntry(key, value.toJson()));
-    await setMap(SharedPreferencesKeys.lastUsedEmojis, _map);
+    await setMap(SharedPreferencesKeys.lastUsedEmojis.name, _map);
   }
 }

@@ -40,29 +40,29 @@ class IdeaScreenState implements LifeState {
   final StreamController<bool> ideaUpdatesStream;
   @override
   late ValueChanged<VoidCallback> setState;
-
+  late FolderStateProvider folderProvider;
+  late IdeaProjectsProvider ideaProjectsProvider;
   @override
   void initState() {
+    folderProvider = context.read<FolderStateProvider>();
+    ideaProjectsProvider = context.read<IdeaProjectsProvider>();
     ideaUpdatesStream.stream
-        .throttleTime(
+        .sampleTime(
           const Duration(milliseconds: 700),
-          leading: true,
-          trailing: true,
         )
         .forEach(onIdeaUpdate);
   }
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    final silentFolderProvider = context.read<FolderStateProvider>();
-    context.read<IdeaProjectsProvider>().put(
-          key: idea.id,
-          value: idea..updated = DateTime.now(),
-        );
+    ideaProjectsProvider.put(
+      key: idea.id,
+      value: idea..updated = DateTime.now(),
+    );
 
     if (updateFolder) {
       idea.folder?.sortProjectsByDate(project: idea);
-      silentFolderProvider.notify();
+      folderProvider.notify();
     }
     await idea.save();
   }

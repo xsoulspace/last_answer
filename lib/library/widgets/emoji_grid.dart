@@ -80,10 +80,8 @@ class EmojiGrid extends HookWidget {
     );
 
     emojiKeywordStream.stream
-        .throttleTime(
+        .sampleTime(
       const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
     )
         .forEach(
       (final keyword) async {

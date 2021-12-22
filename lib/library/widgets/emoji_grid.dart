@@ -47,7 +47,7 @@ class EmojiPopup extends HookWidget {
         onExit: (final _) async => onClose(),
         child: IconButton(
           onPressed: () => popupVisible.value = true,
-          icon: const Icon(Icons.emoji_emotions),
+          icon: const Icon(CupertinoIcons.smiley),
         ),
       ),
     );

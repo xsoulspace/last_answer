@@ -36,16 +36,17 @@ class NoteProjectScreenState implements LifeState {
   final ValueNotifier<NoteProject> note;
   final StreamController<bool> updatesStream;
   final ValueChanged<NoteProject> onScreenBack;
-
+  late NoteProjectsProvider notesProvider;
+  late FolderStateProvider folderProvider;
   @override
   void initState() {
     noteController.addListener(onNoteChange);
+    notesProvider = context.read<NoteProjectsProvider>();
+    folderProvider = context.read<FolderStateProvider>();
 
     updatesStream.stream
-        .throttleTime(
+        .sampleTime(
           const Duration(milliseconds: 700),
-          leading: true,
-          trailing: true,
         )
         .forEach(onUpdateFolder);
   }
@@ -54,14 +55,11 @@ class NoteProjectScreenState implements LifeState {
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onUpdateFolder(final bool updateFolder) async {
-    final noteProvider = context.read<NoteProjectsProvider>();
-    final silentFolderProvider = context.read<FolderStateProvider>();
-
-    noteProvider.put(key: note.value.id, value: note.value);
+    notesProvider.put(key: note.value.id, value: note.value);
 
     if (updateFolder) {
       note.value.folder?.sortProjectsByDate(project: note.value);
-      silentFolderProvider.notify();
+      folderProvider.notify();
     }
 
     return note.value.save();

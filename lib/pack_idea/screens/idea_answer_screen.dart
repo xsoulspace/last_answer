@@ -53,10 +53,8 @@ class IdeaAnswerScreen extends HookWidget {
     });
 
     updatesStream.stream
-        .throttleTime(
+        .sampleTime(
       const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
     )
         .forEach(
       (final _) async {

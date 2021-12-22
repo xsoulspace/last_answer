@@ -1,3 +1,8 @@
+## 3.12.0+20
+
+- new: menu in notes with two options: delete & limit note by instagram post maximum
+-
+
 ## 3.11.0+17
 
 - new: when you edit an idea or note it will pop up(down) in the list, the direction is dependant on settings

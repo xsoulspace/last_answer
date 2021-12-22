@@ -1,4 +1,4 @@
-part of note_project;
+part of pack_note;
 
 class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
@@ -9,20 +9,13 @@ class NoteProjectScreen extends HookWidget {
   final String noteId;
   final ValueChanged<NoteProject> onBack;
 
-  void back({
-    required final BuildContext context,
-    required final NoteProject note,
-  }) {
-    closeKeyboard(context: context);
-    onBack(note);
-  }
-
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final silentFolderProvider = context.read<FolderStateProvider>();
     final screenLayout = ScreenLayout.of(context);
+
     final noteFocusNode = useFocusNode();
+
     final noteProvider = context.read<NoteProjectsProvider>();
     final maybeNote = noteProvider.state[noteId]!;
 
@@ -31,36 +24,14 @@ class NoteProjectScreen extends HookWidget {
 
     // ignore: close_sinks
     final updatesStream = useStreamController<bool>();
-    noteController.addListener(() {
-      if (note.value.note == noteController.text) return;
-      bool updateFolder = false;
-      if (note.value.title != NoteProject.getTitle(noteController.text)) {
-        updateFolder = true;
-      } else {
-        updateFolder = note.value.folder?.projectsList.first != note.value;
-      }
-      note.value
-        ..note = noteController.text
-        ..updated = DateTime.now();
-      updatesStream.add(updateFolder);
-    });
 
-    updatesStream.stream
-        .throttleTime(
-      const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
-    )
-        .forEach((final updateFolder) async {
-      noteProvider.put(key: note.value.id, value: note.value);
-
-      if (updateFolder) {
-        note.value.folder?.sortProjectsByDate(project: note.value);
-        silentFolderProvider.notify();
-      }
-
-      return note.value.save();
-    });
+    final state = useNoteProjectScreenState(
+      context: context,
+      note: note,
+      onScreenBack: onBack,
+      noteController: noteController,
+      updatesStream: updatesStream,
+    );
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
@@ -70,7 +41,15 @@ class NoteProjectScreen extends HookWidget {
         height: screenLayout.small ? null : 30,
         screenLayout: screenLayout,
         titleStr: '',
-        onBack: () => back(context: context, note: note.value),
+        actions: [
+          if (!isDesktop)
+            CupertinoIconButton(
+              onPressed: state.onSettings,
+              icon: Icons.more_vert_rounded,
+            ),
+          const SizedBox(width: 20),
+        ],
+        onBack: state.onBack,
       ),
       body: Center(
         child: ConstrainedBox(
@@ -94,14 +73,17 @@ class NoteProjectScreen extends HookWidget {
                         filled: false,
                         focusNode: noteFocusNode,
                         endlessLines: true,
-                        onSubmit: () =>
-                            back(context: context, note: note.value),
+                        onSubmit: state.onBack,
                         controller: noteController,
                       ),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        IconButton(
+                          onPressed: state.onSettings,
+                          icon: const Icon(Icons.more_vert_rounded),
+                        ),
                         SpecialEmojiPopup(
                           controller: noteController,
                           focusNode: noteFocusNode,

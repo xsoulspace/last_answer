@@ -18,7 +18,9 @@ import 'package:rxdart/rxdart.dart';
 
 part 'screens/create_idea_screen.dart';
 part 'screens/idea_answer_screen.dart';
+part 'screens/idea_answer_screen_state.dart';
 part 'screens/idea_screen.dart';
+part 'screens/idea_screen_state.dart';
 part 'state/idea_questions_initializer.dart';
 part 'widgets/answer_creator.dart';
 part 'widgets/answer_field.dart';

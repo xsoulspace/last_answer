@@ -78,7 +78,7 @@ class IdeaProjectScreen extends HookWidget {
 
                   return _AnswerTile(
                     onFocus: state.closeQuestions,
-                    key: ValueKey(_answer.id),
+                    key: ValueKey(_answer),
                     answer: _answer,
                     confirmDelete: () async => showRemoveTitleDialog(
                       title: _answer.title,
@@ -88,9 +88,7 @@ class IdeaProjectScreen extends HookWidget {
                       closeKeyboard(context: context);
                       onAnswerExpand(_answer, idea);
                     },
-                    onReadyToDelete: () async => state.onReadyToDeleteAnswer(
-                      answer: _answer,
-                    ),
+                    onReadyToDelete: state.onReadyToDeleteAnswer,
                     onChange: state.onAnswersChange,
                     deleteIconVisible: isDesktop,
                   );

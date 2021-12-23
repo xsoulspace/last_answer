@@ -39,23 +39,25 @@ class IdeaAnswerScreenState implements LifeState {
   final ValueChanged<IdeaProject> onScreenBack;
   @override
   late ValueChanged<VoidCallback> setState;
-
+  late IdeaProjectsProvider ideasProvider;
   @override
   void initState() {
     textController.addListener(onTextChanged);
+    ideasProvider = context.read<IdeaProjectsProvider>();
 
     updatesStream.stream
         .sampleTime(
-      const Duration(milliseconds: 700),
-    )
-        .forEach(
-      (final _) async {
-        idea.folder?.sortProjectsByDate(project: idea);
-        // ideaProjectsProvider.notify();
-        await answer.value.save();
-        await idea.save();
-      },
-    );
+          const Duration(milliseconds: 700),
+        )
+        .forEach(onAnswerUpdate);
+  }
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> onAnswerUpdate(final bool update) async {
+    idea.folder?.sortProjectsByDate(project: idea);
+    await answer.value.save();
+    ideasProvider.notify();
+    await idea.save();
   }
 
   @override

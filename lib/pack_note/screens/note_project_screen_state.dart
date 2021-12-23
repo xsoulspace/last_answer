@@ -62,7 +62,7 @@ class NoteProjectScreenState implements LifeState {
       folderProvider.notify();
     }
 
-    return note.value.save();
+    await note.value.save();
   }
 
   void onNoteChange() {

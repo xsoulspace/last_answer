@@ -41,11 +41,11 @@ class IdeaScreenState implements LifeState {
   @override
   late ValueChanged<VoidCallback> setState;
   late FolderStateProvider folderProvider;
-  late IdeaProjectsProvider ideaProjectsProvider;
+  late IdeaProjectsProvider ideasProvider;
   @override
   void initState() {
     folderProvider = context.read<FolderStateProvider>();
-    ideaProjectsProvider = context.read<IdeaProjectsProvider>();
+    ideasProvider = context.read<IdeaProjectsProvider>();
     ideaUpdatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
@@ -55,7 +55,7 @@ class IdeaScreenState implements LifeState {
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    ideaProjectsProvider.put(
+    ideasProvider.put(
       key: idea.id,
       value: idea..updated = DateTime.now(),
     );
@@ -78,8 +78,8 @@ class IdeaScreenState implements LifeState {
   Future<void> onIdeaTitleChange(final String newText) async {
     if (newText == idea.title) return;
     idea.title = newText;
-    final updateFolder = checkToUpdateFolder();
-    ideaUpdatesStream.add(updateFolder);
+    // final updateFolder = checkToUpdateFolder(title: newText);
+    ideaUpdatesStream.add(true);
   }
 
   bool checkToUpdateFolder({
@@ -94,9 +94,7 @@ class IdeaScreenState implements LifeState {
     return false;
   }
 
-  Future<void> onReadyToDeleteAnswer({
-    required final IdeaProjectAnswer answer,
-  }) async {
+  Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
     idea.answers?.remove(answer);
     answers.value = [...idea.answers?.reversed ?? []];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);

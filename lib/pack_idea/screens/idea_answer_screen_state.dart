@@ -38,7 +38,7 @@ class IdeaAnswerScreenState implements LifeState {
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
   @override
-  late ValueChanged<VoidCallback> setState;
+  ValueChanged<VoidCallback>? setState;
   late IdeaProjectsProvider ideasProvider;
   @override
   void initState() {

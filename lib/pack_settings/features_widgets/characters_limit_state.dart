@@ -27,7 +27,7 @@ class CharactersLimitSettingState implements LifeState {
   });
 
   @override
-  late ValueChanged<VoidCallback> setState;
+  ValueChanged<VoidCallback>? setState;
   final BuildContext context;
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
@@ -62,7 +62,7 @@ class CharactersLimitSettingState implements LifeState {
     if (updateController) {
       controller.text = newLimit == 0 ? '' : '$newLimit';
     }
-    setState(() {});
+    setState?.call(() {});
   }
 
   void onSetInstagramLimit() {

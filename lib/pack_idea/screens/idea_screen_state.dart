@@ -39,7 +39,7 @@ class IdeaScreenState implements LifeState {
 
   final StreamController<bool> ideaUpdatesStream;
   @override
-  late ValueChanged<VoidCallback> setState;
+  ValueChanged<VoidCallback>? setState;
   late FolderStateProvider folderProvider;
   late IdeaProjectsProvider ideasProvider;
   @override

@@ -27,7 +27,6 @@ class CharactersLimitSetting extends HookWidget {
     final settings = SettingsStateScope.of(context);
     final initialText = getInitialLimit(settings: settings);
     final controller = useTextEditingController(text: initialText);
-
     final state = useCharactersLimitSettingStateState(
       context: context,
       note: note,
@@ -47,7 +46,7 @@ class CharactersLimitSetting extends HookWidget {
             child: Assets.icons.instagramLogo.image(
               width: 18,
               height: 18,
-              color: Colors.white,
+              color: theme.textTheme.bodyText2?.color,
             ),
           ),
         ),

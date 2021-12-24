@@ -17,6 +17,7 @@ class EmojiPopup extends HookWidget {
 
     return PopupButton(
       icon: CupertinoIcons.smiley,
+      useOnMobile: false,
       builder: (final context) {
         return EmojiGrid(
           onChanged: emojiInserter.insert,

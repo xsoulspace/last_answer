@@ -27,6 +27,7 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 part 'adaptive_back_button.dart';
 part 'app_icon_button.dart';
+part 'background_frost_box.dart';
 part 'button_popup.dart';
 part 'choosable_bubble.dart';
 part 'cupertino_icon_button.dart';

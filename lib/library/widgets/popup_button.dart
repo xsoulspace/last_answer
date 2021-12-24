@@ -10,6 +10,7 @@ class PopupButton extends HookWidget {
   final WidgetBuilder builder;
   final IconData icon;
   final bool useOnMobile;
+
   bool? onOpenPopup({
     required final BuildContext context,
     required final VoidCallback onClose,
@@ -38,17 +39,41 @@ class PopupButton extends HookWidget {
     } else {
       showDialog(
         context: context,
+        barrierColor: Colors.black12,
         builder: (final context) {
-          return AlertDialog(
-            actions: [
-              TextButton(
-                onPressed: () => close(context),
-                child: Text(
-                  S.current.close.toUpperCase(),
+          final theme = Theme.of(context);
+          return Stack(
+            children: [
+              BackgroundFrostBox(
+                onTap: () => close(context),
+              ),
+              Dialog(
+                insetPadding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 24.0,
+                ),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        builder(context),
+                      ],
+                    ),
+                    Center(
+                      child: TextButton(
+                        onPressed: () => close(context),
+                        child: Text(
+                          S.current.close.toUpperCase(),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
-            content: builder(context),
           );
         },
       );
@@ -62,10 +87,11 @@ class PopupButton extends HookWidget {
     final popupVisible = useIsBool();
     final popupHovered = useIsBool();
     final screenLayout = ScreenLayout.of(context);
-
+    final getIsMounted = useIsMounted();
     Future<void> onClose() async {
       await Future.delayed(const Duration(milliseconds: 300), () {
         if (popupHovered.value) return;
+        if (!getIsMounted()) return;
         popupVisible.value = false;
       });
     }

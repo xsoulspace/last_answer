@@ -126,30 +126,40 @@ class AppDialog extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     Widget actions;
-    final closeButton = TextButton(
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
+
+    final closeButton = OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: defaultBorderRadius,
+        ),
+        side: BorderSide(
+          color: primaryColor,
+        ),
+        primary: primaryColor,
+      ),
       onPressed: () => close(context),
       child: Text(
         S.current.close.sentenceCase,
         style: theme.textTheme.headline6?.copyWith(
-          color: AppColors.primary2,
+          color: primaryColor,
         ),
       ),
     );
+
     if (secondaryMobileAction != null) {
-      actions = Padding(
-        padding: const EdgeInsets.only(top: 24),
-        child: Row(
-          children: [
-            Expanded(child: secondaryMobileAction!),
-            Expanded(child: closeButton),
-          ],
-        ),
+      actions = Row(
+        children: [
+          Expanded(child: secondaryMobileAction!),
+          Expanded(
+            child: closeButton,
+          ),
+        ],
       );
     } else {
-      actions = Align(
-        alignment: Alignment.bottomRight,
-        child: closeButton,
-      );
+      actions = Expanded(child: closeButton);
     }
 
     return WillPopScope(
@@ -190,7 +200,10 @@ class AppDialog extends StatelessWidget {
                   endIndent: 12,
                   indent: 12,
                 ),
-                actions,
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: actions,
+                ),
               ],
             ),
           ),

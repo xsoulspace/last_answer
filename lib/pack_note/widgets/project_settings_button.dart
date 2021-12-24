@@ -60,6 +60,13 @@ class RemoveActionButton extends StatelessWidget {
   Widget build(final BuildContext context) {
     return TextButton(
       onPressed: onTap,
+      style: TextButton.styleFrom(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: defaultBorderRadius,
+        ),
+        primary: AppColors.accent3,
+      ),
       child: Text(
         S.current.delete.sentenceCase,
         style: Theme.of(context)

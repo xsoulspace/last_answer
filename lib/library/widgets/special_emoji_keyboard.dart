@@ -12,7 +12,7 @@ class SpecialEmojisKeyboardActions extends StatelessWidget {
   final TextEditingController controller;
   @override
   Widget build(final BuildContext context) {
-    if (isNativeDesktop) return child;
+    if (isNativeDesktop || kIsWeb) return child;
 
     final emojiInserter = EmojiInserter.use(
       controller: controller,

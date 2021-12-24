@@ -281,6 +281,16 @@ class S {
     );
   }
 
+  /// `Note settings`
+  String get noteSettings {
+    return Intl.message(
+      'Note settings',
+      name: 'noteSettings',
+      desc: 'noteSettings',
+      args: [],
+    );
+  }
+
   /// `New`
   String get wordNew {
     return Intl.message(

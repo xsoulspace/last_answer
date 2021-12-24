@@ -103,6 +103,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Настройки заметки",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "createIdeaHelperText": "Создать туториал",
   "@createIdeaHelperText": {
     "description": "createIdeaHelperText"

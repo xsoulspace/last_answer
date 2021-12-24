@@ -70,6 +70,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noProjectsYet":
             MessageLookupByLibrary.simpleMessage("Nessun progetto ancora."),
         "note": MessageLookupByLibrary.simpleMessage("Nota"),
+        "noteSettings":
+            MessageLookupByLibrary.simpleMessage("Impostazioni nota"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Puoi usare: \"Cinque perché\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(

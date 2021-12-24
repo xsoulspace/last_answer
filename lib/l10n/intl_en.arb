@@ -95,6 +95,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Note settings",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "wordNew": "New",
   "@wordNew": {
     "description": "New"

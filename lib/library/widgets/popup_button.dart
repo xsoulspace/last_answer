@@ -2,84 +2,44 @@ part of widgets;
 
 class PopupButton extends HookWidget {
   const PopupButton({
-    required final this.builder,
+    required this.builder,
     required this.icon,
+    final this.mobileBuilder,
+    this.secondaryMobileAction,
     this.useOnMobile = true,
+    this.title,
     final Key? key,
   }) : super(key: key);
   final WidgetBuilder builder;
+  final WidgetBuilder? mobileBuilder;
+  final Widget? secondaryMobileAction;
   final IconData icon;
   final bool useOnMobile;
+  final Widget? title;
 
-  bool? onOpenPopup({
+  void onOpenPopup({
     required final BuildContext context,
     required final VoidCallback onClose,
   }) {
-    if (isDesktop) return null;
+    if (isDesktop) return;
     void close(final BuildContext context) {
       onClose();
       Navigator.maybePop(context);
     }
 
-    if (isAppleDevice) {
-      showCupertinoDialog(
-        context: context,
-        builder: (final context) {
-          return CupertinoAlertDialog(
-            actions: [
-              CupertinoDialogAction(
-                onPressed: () => close(context),
-                child: Text(S.current.close.titleCase),
-              ),
-            ],
-            content: builder(context),
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        barrierColor: Colors.black12,
-        builder: (final context) {
-          final theme = Theme.of(context);
-          return Stack(
-            children: [
-              BackgroundFrostBox(
-                onTap: () => close(context),
-              ),
-              Dialog(
-                insetPadding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 24.0,
-                ),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        builder(context),
-                      ],
-                    ),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => close(context),
-                        child: Text(
-                          S.current.close.toUpperCase(),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    final effectiveBuilder = mobileBuilder ?? builder;
 
-    return null;
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      barrierColor: Colors.black12,
+      builder: (final context) => AppDialog(
+        builder: effectiveBuilder,
+        close: close,
+        secondaryMobileAction: secondaryMobileAction,
+        title: title,
+      ),
+    );
   }
 
   @override
@@ -100,6 +60,7 @@ class PopupButton extends HookWidget {
       popupVisible.value,
       (final _, final __) {
         if (!popupVisible.value) return;
+
         WidgetsBinding.instance?.addPostFrameCallback((final _) {
           onOpenPopup(
             context: context,
@@ -110,7 +71,12 @@ class PopupButton extends HookWidget {
     );
 
     final button = IconButton(
-      onPressed: () => popupVisible.value = true,
+      onPressed: () {
+        popupVisible
+          ..value = true
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          ..notifyListeners();
+      },
       icon: Icon(icon),
     );
 
@@ -139,6 +105,96 @@ class PopupButton extends HookWidget {
         },
         onExit: (final _) async => onClose(),
         child: button,
+      ),
+    );
+  }
+}
+
+class AppDialog extends StatelessWidget {
+  const AppDialog({
+    required final this.secondaryMobileAction,
+    required final this.title,
+    required final this.close,
+    required final this.builder,
+    final Key? key,
+  }) : super(key: key);
+  final Widget? secondaryMobileAction;
+  final Widget? title;
+  final ValueChanged<BuildContext> close;
+  final WidgetBuilder builder;
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    Widget actions;
+    final closeButton = TextButton(
+      onPressed: () => close(context),
+      child: Text(
+        S.current.close.sentenceCase,
+        style: theme.textTheme.headline6?.copyWith(
+          color: AppColors.primary2,
+        ),
+      ),
+    );
+    if (secondaryMobileAction != null) {
+      actions = Padding(
+        padding: const EdgeInsets.only(top: 24),
+        child: Row(
+          children: [
+            Expanded(child: secondaryMobileAction!),
+            Expanded(child: closeButton),
+          ],
+        ),
+      );
+    } else {
+      actions = Align(
+        alignment: Alignment.bottomRight,
+        child: closeButton,
+      );
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        close(context);
+
+        return true;
+      },
+      child: Stack(
+        children: [
+          BackgroundFrostBox(
+            onTap: () => close(context),
+          ),
+          Dialog(
+            alignment: Alignment.topCenter,
+            insetPadding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            child: Column(
+              children: [
+                if (title != null)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: title,
+                    ),
+                  ),
+                Row(
+                  children: [
+                    builder(context),
+                  ],
+                ),
+                Divider(
+                  color: theme.highlightColor,
+                  height: 10,
+                  endIndent: 12,
+                  indent: 12,
+                ),
+                actions,
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

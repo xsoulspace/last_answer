@@ -2,6 +2,7 @@ library widgets;
 
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:blur/blur.dart';
 import 'package:flutter/cupertino.dart';

@@ -103,6 +103,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Impostazioni nota",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "noProjectsYet": "Nessun progetto ancora.",
   "@noProjectsYet": {
     "description": "text if no projects created"

@@ -68,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!"),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
+        "noteSettings":
+            MessageLookupByLibrary.simpleMessage("Настройки заметки"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Можно использовать: \"Пять почему\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(

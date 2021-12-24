@@ -55,6 +55,9 @@ class CharactersLimitSetting extends HookWidget {
           child: TextField(
             controller: controller,
             keyboardType: TextInputType.number,
+            autocorrect: false,
+            keyboardAppearance: theme.brightness,
+            enableSuggestions: false,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)

@@ -20,6 +20,7 @@ class StateLoader extends HookWidget {
     if (loaded.value & !loading.value) {
       return child;
     }
+
     return FutureBuilder<bool>(
       future: () async {
         if (loading.value) return false;
@@ -27,6 +28,7 @@ class StateLoader extends HookWidget {
         loaded.value = true;
         await initializer.onLoad(context: context);
         loading.value = false;
+
         return true;
       }(),
       builder: (final context, final snapshot) {
@@ -34,6 +36,7 @@ class StateLoader extends HookWidget {
             snapshot.data == false) {
           return loader;
         }
+
         return child;
       },
     );

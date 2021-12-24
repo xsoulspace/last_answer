@@ -25,6 +25,9 @@ class ProjectTile extends StatelessWidget {
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
   final ThemeDefiner themeDefiner;
 
+  String createTitle() =>
+      (project is NoteProject ? '      ' : '') + project.title;
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -45,17 +48,9 @@ class ProjectTile extends StatelessWidget {
 
     if (!useContextTheme) {
       if (isProjectActive) {
-        if (themeDefiner.useDarkTheme) {
-          blurOpacity = 0.3;
-        } else {
-          blurOpacity = 0.8;
-        }
+        blurOpacity = themeDefiner.useDarkTheme ? 0.3 : 0.8;
       } else {
-        if (themeDefiner.useDarkTheme) {
-          blurOpacity = 0.1;
-        } else {
-          blurOpacity = 0.7;
-        }
+        blurOpacity = themeDefiner.useDarkTheme ? 0.1 : 0.7;
       }
     }
 
@@ -65,9 +60,7 @@ class ProjectTile extends StatelessWidget {
       //   if (direction != DismissDirection.startToEnd) return false;
       //   return onRemoveConfirm(project);
       // },
-      onDismissed: () {
-        onRemove(project);
-      },
+      onDismissed: () => onRemove(project),
       child: HeroId(
         id: project.id,
         type: HeroIdTypes.projectTitle,
@@ -109,7 +102,7 @@ class ProjectTile extends StatelessWidget {
                       ),
                     ),
                   Text(
-                    (project is NoteProject ? '      ' : '') + project.title,
+                    createTitle(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
                   ),

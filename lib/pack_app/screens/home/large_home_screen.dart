@@ -21,7 +21,8 @@ class LargeHomeScreen extends StatelessWidget {
   final Widget mainScreenNavigator;
   final VoidCallback onGoHome;
 
-  Widget buildBody({required final BuildContext context}) {
+  @override
+  Widget build(final BuildContext context) {
     final size = MediaQuery.of(context).size;
     final leftColumn = (size.width / 4).clamp(300, 400).toDouble();
     const centerRightBorder = 0.6;
@@ -72,10 +73,5 @@ class LargeHomeScreen extends StatelessWidget {
           ),
       ],
     );
-  }
-
-  @override
-  Widget build(final BuildContext context) {
-    return buildBody(context: context);
   }
 }

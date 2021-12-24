@@ -13,6 +13,12 @@ class AppNavigatorPageBuilder {
   RouteState get routeState => popper.routeState;
   AppRouteParameters get params => popper.params;
   String get pathTemplate => popper.pathTemplate;
+  bool checkIsProjectActive(final BasicProject project) {
+    if (project.id == params.noteId) return true;
+    if (project.id == params.ideaId) return true;
+
+    return false;
+  }
 
   Page appInfoPage() {
     return MaterialPage(
@@ -49,6 +55,8 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: NoteProjectScreen(
+          checkIsProjectActive: checkIsProjectActive,
+          onGoHome: popper.navigatorController.goHome,
           onBack: (final note) async {
             if (note.note.replaceAll(' ', '').isEmpty) {
               context.read<NoteProjectsProvider>().remove(key: note.id);

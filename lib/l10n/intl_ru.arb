@@ -19,6 +19,18 @@
   "@writeANote": {
     "description": "writeANote"
   },
+  "charactersLimit": "Лимит символов",
+  "@charactersLimit": {
+    "description": "charactersLimit"
+  },
+  "charactersLimitForNewNotesDesription": "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки.",
+  "@charactersLimitForNewNotesDesription": {
+    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
+  },
+  "charactersUnlimited": "Бесконечно..",
+  "@charactersUnlimited": {
+    "description": "charactersUnlimited"
+  },
   "madeWithLoveAndFlutter": "Сделано с Flutter ❤ и Open Source Libraries",
   "@madeWithLoveAndFlutter": {
     "description": "madeWithLoveAndFlutter"
@@ -91,6 +103,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Настройки заметки",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "createIdeaHelperText": "Создать туториал",
   "@createIdeaHelperText": {
     "description": "createIdeaHelperText"
@@ -122,6 +138,10 @@
   "delete": "УДАЛИТЬ",
   "@delete": {
     "description": "Удалить"
+  },
+  "deleteThisNote": "Удалить заметку",
+  "@deleteThisNote": {
+    "description": "deleteThisNote"
   },
   "successfullySaved": "Успешно сохранено!",
   "@successfullySaved": {

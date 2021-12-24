@@ -2,16 +2,18 @@ part of pack_app;
 
 class NotificationService with SharedPreferencesUtil {
   Future<DateTime?> get notificationUpdatesReadDateTime async {
-    final datetimeStr =
-        await getString(SharedPreferencesKeys.notificationUpdatesReadDateTime);
+    final datetimeStr = await getString(
+      SharedPreferencesKeys.notificationUpdatesReadDateTime.name,
+    );
     final miliseconds = int.tryParse(datetimeStr);
     if (miliseconds == null) return null;
+
     return DateTime.fromMillisecondsSinceEpoch(miliseconds);
   }
 
   Future<void> readUpdates() async {
     await setString(
-      SharedPreferencesKeys.notificationUpdatesReadDateTime,
+      SharedPreferencesKeys.notificationUpdatesReadDateTime.name,
       DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
     );
   }
@@ -24,6 +26,7 @@ class NotificationService with SharedPreferencesUtil {
     if (jsonStr.isEmpty) return [];
     final jsonList =
         List.castFrom<dynamic, Map<String, dynamic>>(jsonDecode(jsonStr));
+
     return jsonList.map(NotificationMessage.fromJson).toList();
   }
 }

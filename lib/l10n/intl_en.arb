@@ -15,6 +15,18 @@
   "@writeANote": {
     "description": "writeANote"
   },
+  "charactersLimit": "Characters limit",
+  "@charactersLimit": {
+    "description": "charactersLimit"
+  },
+  "charactersLimitForNewNotesDesription": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.",
+  "@charactersLimitForNewNotesDesription": {
+    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
+  },
+  "charactersUnlimited": "Unlimited..",
+  "@charactersUnlimited": {
+    "description": "charactersUnlimited"
+  },
   "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
   "@madeWithLoveAndFlutter": {
     "description": "madeWithLoveAndFlutter"
@@ -83,6 +95,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Note settings",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "wordNew": "New",
   "@wordNew": {
     "description": "New"
@@ -138,6 +154,10 @@
   "delete": "DELETE",
   "@delete": {
     "description": "delete"
+  },
+  "deleteThisNote": "Delete this note",
+  "@deleteThisNote": {
+    "description": "deleteThisNote"
   },
   "areYouSure": "Are you sure?",
   "@areYouSure": {

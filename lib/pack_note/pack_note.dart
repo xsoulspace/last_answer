@@ -21,4 +21,6 @@ import 'package:rxdart/rxdart.dart';
 part 'screens/note_project_screen.dart';
 part 'screens/note_project_screen_state.dart';
 part 'states/use_note_project_updater.dart';
-part 'widgets/project_settings_button.dart';
+part 'widgets/desktop_note_settings.dart';
+part 'widgets/mobile_note_settings.dart';
+part 'widgets/note_settings_button.dart';

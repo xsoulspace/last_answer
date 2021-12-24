@@ -15,8 +15,8 @@ analyzer:
     - "**.gen.dart"
     - "**.g.dart"
     - old/
-    - "**/generated/"
-    - "generated_plugin_registrant.dart"
+    - lib/generated/**
+    - lib/generated_plugin_registrant.dart
   plugins:
     - dart_code_metrics
 linter:

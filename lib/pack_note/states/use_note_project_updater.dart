@@ -34,7 +34,7 @@ class NoteProjectUpdaterState implements LifeState {
   });
 
   @override
-  late ValueChanged<VoidCallback> setState;
+  ValueChanged<VoidCallback>? setState;
   final BuildContext context;
   final NoteProject note;
   final StreamController<NoteProjectNotifier> updatesStream;
@@ -69,6 +69,6 @@ class NoteProjectUpdaterState implements LifeState {
     }
 
     await note.save();
-    if (notifier.charactersLimitChanged) setState(() {});
+    if (notifier.charactersLimitChanged) setState?.call(() {});
   }
 }

@@ -15,7 +15,7 @@ class NoteSettingsButton extends StatelessWidget {
     return PopupButton(
       builder: (final context) {
         return ButtonPopup(
-          height: 200,
+          height: !isNativeDesktop ? 250 : 200,
           child: NoteSettingsMenu(
             note: note,
             onRemove: onRemove,
@@ -49,21 +49,38 @@ class NoteSettingsMenu extends HookWidget {
       updatesStream: updatesStream,
       context: context,
     );
+    final divider = Divider(
+      color: theme.highlightColor,
+      height: borderPadding,
+      endIndent: borderPadding,
+      indent: borderPadding,
+    );
 
     return Column(
       children: [
+        if (!isNativeDesktop) ...[
+          const SizedBox(height: borderPadding),
+          Text(
+            S.current.settings,
+            style: theme.textTheme.headline6,
+          ),
+          const SizedBox(height: borderPadding),
+          divider,
+        ],
         const SizedBox(height: borderPadding),
         HovarableListTile(
           onTap: onRemove,
           leadingBuilder: (final context, final hovered) {
             return Icon(
               Icons.delete_outline_rounded,
-              color: hovered ? AppColors.accent3 : theme.highlightColor,
+              color: hovered || !isNativeDesktop
+                  ? AppColors.accent3
+                  : theme.highlightColor,
             );
           },
           titleBuilder: (final context, final hovered) {
             return Opacity(
-              opacity: hovered ? 1.0 : 0.7,
+              opacity: hovered || !isNativeDesktop ? 1.0 : 0.7,
               child: Text(
                 S.current.deleteThisNote.sentenceCase,
               ),
@@ -71,17 +88,12 @@ class NoteSettingsMenu extends HookWidget {
           },
         ),
         const SizedBox(height: borderPadding * 2),
-        Divider(
-          color: theme.highlightColor,
-          height: borderPadding,
-          endIndent: borderPadding,
-          indent: borderPadding,
-        ),
+        divider,
         Expanded(
           child: HoverableArea(
             builder: (final context, final hovered) {
               return Opacity(
-                opacity: hovered ? 1.0 : 0.7,
+                opacity: hovered || !isNativeDesktop ? 1.0 : 0.7,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: borderPadding),

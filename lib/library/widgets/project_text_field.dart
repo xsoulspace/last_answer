@@ -82,6 +82,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
     final theme = Theme.of(context);
     final scrollController = useScrollController();
     useEffect(
+      // ignore: unnecessary_lambdas
       () {
         setMaxLength();
       },

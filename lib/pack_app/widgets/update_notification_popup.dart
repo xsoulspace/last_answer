@@ -6,6 +6,7 @@ Future<void> showNotificationPopup({
 }) async {
   await showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (final context) {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;

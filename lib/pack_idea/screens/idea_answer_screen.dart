@@ -22,21 +22,13 @@ class IdeaAnswerScreen extends HookWidget {
         idea.answers?.firstWhereOrNull((final a) => a.id == answerId);
     if (answer != null) return answer;
     onUnknown(answerId, idea);
-    return null;
-  }
 
-  void back({
-    required final BuildContext context,
-    required final IdeaProject idea,
-  }) {
-    closeKeyboard(context: context);
-    onBack(idea);
+    return null;
   }
 
   @override
   Widget build(final BuildContext context) {
-    final ideasProvider = context.read<IdeaProjectsProvider>(
-    );
+    final ideasProvider = context.read<IdeaProjectsProvider>();
     final maybeIdea = ideasProvider.state[ideaId]!;
     final maybeAnswer = getInitialAnswer(idea: maybeIdea);
     if (maybeAnswer == null) return Container();
@@ -45,26 +37,13 @@ class IdeaAnswerScreen extends HookWidget {
     // ignore: close_sinks
     final updatesStream = useStreamController<bool>();
 
-    textController.addListener(() {
-      if (answer.value.text == textController.text) return;
-      answer.value.text = textController.text;
-      maybeIdea.updated = DateTime.now();
-      updatesStream.add(true);
-    });
-
-    updatesStream.stream
-        .throttleTime(
-      const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
-    )
-        .forEach(
-      (final _) async {
-        maybeIdea.folder?.sortProjectsByDate(project: maybeIdea);
-        // ideaProjectsProvider.notify();
-        await answer.value.save();
-        await maybeIdea.save();
-      },
+    final state = useIdeaAnswerScreenState(
+      answer: answer,
+      context: context,
+      idea: maybeIdea,
+      onScreenBack: onBack,
+      textController: textController,
+      updatesStream: updatesStream,
     );
 
     return Scaffold(
@@ -83,7 +62,7 @@ class IdeaAnswerScreen extends HookWidget {
             ),
           ),
         ),
-        onBack: () => back(idea: maybeIdea, context: context),
+        onBack: state.onBack,
       ),
       body: Center(
         child: Padding(
@@ -105,7 +84,7 @@ class IdeaAnswerScreen extends HookWidget {
                       filled: false,
                       endlessLines: true,
                       focusOnInit: textController.text.isEmpty,
-                      onSubmit: () => back(idea: maybeIdea, context: context),
+                      onSubmit: state.onBack,
                       controller: textController,
                     ),
                   ),

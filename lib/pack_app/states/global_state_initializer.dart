@@ -9,6 +9,7 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
   } catch (e) {
     await Hive.deleteBoxFromDisk(boxName);
   }
+
   return Hive.openBox<T>(boxName);
 }
 
@@ -19,6 +20,7 @@ class GlobalStateInitializer implements StateInitializer {
   final SettingsController settings;
 
   @override
+  // ignore: long-method
   Future<void> onLoad({required final BuildContext context}) async {
     final lastEmojiProvider = context.read<LastEmojiProvider>();
     final specialEmojiProvider = context.read<SpecialEmojiProvider>();

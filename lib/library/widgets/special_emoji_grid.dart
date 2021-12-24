@@ -9,115 +9,23 @@ class SpecialEmojiPopup extends HookWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
 
-  bool? onOpenPopup({
-    required final BuildContext context,
-    required final ValueChanged<Emoji> onChanged,
-    required final VoidCallback onClose,
-  }) {
-    if (isDesktop) return null;
-    void close(final BuildContext context) {
-      onClose();
-      Navigator.maybePop(context);
-    }
-
-    Widget buildEmojiGrid(final BuildContext context) => SpecialEmojisGrid(
-          onChanged: onChanged,
-          hideBorder: true,
-        );
-    if (isAppleDevice) {
-      showCupertinoDialog(
-        context: context,
-        builder: (final context) {
-          return CupertinoAlertDialog(
-            actions: [
-              CupertinoDialogAction(
-                onPressed: () => close(context),
-                child: Text(S.current.close.titleCase),
-              ),
-            ],
-            content: buildEmojiGrid(context),
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (final context) {
-          return AlertDialog(
-            actions: [
-              TextButton(
-                onPressed: () => close(context),
-                child: Text(
-                  S.current.close.toUpperCase(),
-                ),
-              ),
-            ],
-            content: buildEmojiGrid(context),
-          );
-        },
-      );
-    }
-
-    return null;
-  }
-
   @override
   Widget build(final BuildContext context) {
-    final popupVisible = useIsBool();
-    final popupHovered = useIsBool();
-    final screenLayout = ScreenLayout.of(context);
+    if (!isNativeDesktop) return const SizedBox();
+
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
     );
-    Future<void> onClose() async {
-      await Future.delayed(const Duration(milliseconds: 300), () {
-        if (popupHovered.value) return;
-        popupVisible.value = false;
-      });
-    }
 
-    useValueChanged<bool, bool>(
-      popupVisible.value,
-      (final _, final __) {
-        if (!popupVisible.value) return;
-        WidgetsBinding.instance?.addPostFrameCallback((final _) {
-          onOpenPopup(
-            context: context,
-            onChanged: emojiInserter.insert,
-            onClose: () => popupVisible.value = false,
-          );
-        });
-      },
-    );
-
-    final emojiButton = IconButton(
-      onPressed: () => popupVisible.value = true,
-      icon: const Icon(Icons.emoji_flags_outlined),
-    );
-    if (!isDesktop) return emojiButton;
-    return PortalEntry(
-      visible: popupVisible.value,
-      portalAnchor:
-          screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
-      childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
-      portal: MouseRegion(
-        onExit: (final _) async {
-          popupHovered.value = false;
-          await onClose();
-        },
-        onHover: (final _) => popupHovered.value = true,
-        child: SpecialEmojisGrid(
+    return PopupButton(
+      icon: Icons.emoji_flags_rounded,
+      builder: (final context) {
+        return SpecialEmojisGrid(
           onChanged: emojiInserter.insert,
-        ),
-      ),
-      child: MouseRegion(
-        onHover: (final _) {
-          popupVisible.value = true;
-        },
-        onExit: (final _) async => onClose(),
-        child: emojiButton,
-      ),
+          hideBorder: true,
+        );
+      },
     );
   }
 }

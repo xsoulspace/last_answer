@@ -41,14 +41,14 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..write(obj.newQuestion)
       ..writeByte(8)
       ..write(obj.folder)
+      ..writeByte(3)
+      ..write(obj.created)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isCompleted)
       ..writeByte(2)
       ..write(obj.title)
-      ..writeByte(3)
-      ..write(obj.created)
       ..writeByte(4)
       ..write(obj.updated);
   }
@@ -215,12 +215,12 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       ..write(obj.note)
       ..writeByte(6)
       ..write(obj.folder)
+      ..writeByte(3)
+      ..write(obj.created)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isCompleted)
-      ..writeByte(3)
-      ..write(obj.created)
       ..writeByte(4)
       ..write(obj.updated);
   }
@@ -301,14 +301,14 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       ..writeByte(6)
       ..writeByte(5)
       ..write(obj.folder)
+      ..writeByte(3)
+      ..write(obj.created)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isCompleted)
       ..writeByte(2)
       ..write(obj.title)
-      ..writeByte(3)
-      ..write(obj.created)
       ..writeByte(4)
       ..write(obj.updated);
   }

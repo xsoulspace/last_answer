@@ -1,65 +1,44 @@
-part of note_project;
+part of pack_note;
 
 class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
     required final this.noteId,
     required final this.onBack,
+    required this.onGoHome,
+    required this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
   final String noteId;
   final ValueChanged<NoteProject> onBack;
-
-  void back({
-    required final BuildContext context,
-    required final NoteProject note,
-  }) {
-    closeKeyboard(context: context);
-    onBack(note);
-  }
+  final BoolValueChanged<BasicProject> checkIsProjectActive;
+  final VoidCallback onGoHome;
 
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final silentFolderProvider = context.read<FolderStateProvider>();
     final screenLayout = ScreenLayout.of(context);
+
     final noteFocusNode = useFocusNode();
+
     final noteProvider = context.read<NoteProjectsProvider>();
-    final maybeNote = noteProvider.state[noteId]!;
+    final maybeNote = noteProvider.state[noteId];
+    if (maybeNote == null) return const SizedBox();
 
     final note = useState<NoteProject>(maybeNote);
     final noteController = useTextEditingController(text: maybeNote.note);
 
     // ignore: close_sinks
-    final updatesStream = useStreamController<bool>();
-    noteController.addListener(() {
-      if (note.value.note == noteController.text) return;
-      bool updateFolder = false;
-      if (note.value.title != NoteProject.getTitle(noteController.text)) {
-        updateFolder = true;
-      } else {
-        updateFolder = note.value.folder?.projectsList.first != note.value;
-      }
-      note.value
-        ..note = noteController.text
-        ..updated = DateTime.now();
-      updatesStream.add(updateFolder);
-    });
+    final updatesStream = useStreamController<NoteProjectNotifier>();
 
-    updatesStream.stream
-        .throttleTime(
-      const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
-    )
-        .forEach((final updateFolder) async {
-      noteProvider.put(key: note.value.id, value: note.value);
-
-      if (updateFolder) {
-        note.value.folder?.sortProjectsByDate(project: note.value);
-        silentFolderProvider.notify();
-      }
-      return note.value.save();
-    });
+    final state = useNoteProjectScreenState(
+      context: context,
+      note: note.value,
+      onScreenBack: onBack,
+      noteController: noteController,
+      updatesStream: updatesStream,
+      onGoHome: onGoHome,
+      checkIsProjectActive: checkIsProjectActive,
+    );
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
@@ -69,71 +48,80 @@ class NoteProjectScreen extends HookWidget {
         height: screenLayout.small ? null : 30,
         screenLayout: screenLayout,
         titleStr: '',
-        onBack: () => back(context: context, note: note.value),
+        onBack: state.onBack,
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             maxWidth: ScreenLayout.maxFullscreenPageWidth + 180,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: ProjectTextField(
-                        hintText: S.current.writeANote,
-                        fillColor: Colors.transparent,
-                        filled: false,
-                        focusNode: noteFocusNode,
-                        endlessLines: true,
-                        onSubmit: () =>
-                            back(context: context, note: note.value),
-                        controller: noteController,
+          child: SpecialEmojisKeyboardActions(
+            focusNode: noteFocusNode,
+            controller: noteController,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ProjectTextField(
+                          hintText: S.current.writeANote,
+                          fillColor: Colors.transparent,
+                          filled: false,
+                          limit: note.value.charactersLimit,
+                          focusNode: noteFocusNode,
+                          endlessLines: true,
+                          onSubmit: state.onBack,
+                          controller: noteController,
+                        ),
                       ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SpecialEmojiPopup(
-                          controller: noteController,
-                          focusNode: noteFocusNode,
-                        ),
-                        SizedBox(
-                          height: 34,
-                          width: 48,
-                          child: IconShareButton(
-                            onTap: () {
-                              ProjectSharer.of(context)
-                                  .share(project: note.value);
-                            },
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          NoteSettingsButton(
+                            note: note.value,
+                            onRemove: state.onRemove,
+                            updatesStream: updatesStream,
                           ),
-                        ),
-                        EmojiPopup(
-                          controller: noteController,
-                          focusNode: noteFocusNode,
-                        ),
-                      ]
-                          .map(
-                            (final e) => Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: e,
+                          SpecialEmojiPopup(
+                            controller: noteController,
+                            focusNode: noteFocusNode,
+                          ),
+                          SizedBox(
+                            height: 34,
+                            width: 48,
+                            child: IconShareButton(
+                              onTap: () {
+                                ProjectSharer.of(context)
+                                    .share(project: note.value);
+                              },
                             ),
-                          )
-                          .toList(),
-                    ),
-                  ],
+                          ),
+                          EmojiPopup(
+                            controller: noteController,
+                            focusNode: noteFocusNode,
+                          ),
+                        ]
+                            .map(
+                              (final e) => Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: e,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 14),
-              const BottomSafeArea(),
-            ],
+                const SizedBox(height: 14),
+                const BottomSafeArea(),
+              ],
+            ),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ Future<void> showNotificationPopup({
 }) async {
   await showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (final context) {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;
@@ -23,6 +24,7 @@ Future<void> showNotificationPopup({
               size.height * 0.85,
               600,
             );
+
       return Dialog(
         insetPadding: screenLayout.small ? EdgeInsets.zero : null,
         shape: RoundedRectangleBorder(
@@ -35,6 +37,7 @@ Future<void> showNotificationPopup({
         child: WillPopScope(
           onWillPop: () async {
             await notificationController.readAllUpdates();
+
             return true;
           },
           child: SizedBox(
@@ -96,18 +99,57 @@ class UpdateNotificaionPopup extends StatelessWidget {
                       style: textTheme.headline1,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
           const SizedBox(height: 40),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
+              separatorBuilder: (final _, final index) {
+                final notification = updates[index + 1];
+                Widget child = ListTile(
+                  title: SelectableText(
+                    notification.title.getByLanguage(language),
+                    style: theme.textTheme.headline5,
+                  ),
+                  subtitle: SelectableText(
+                    intl.DateFormat.yMd()
+                        .format(notification.created.toLocal()),
+                    style: theme.textTheme.subtitle2,
+                  ),
+                );
+
+                if (index == 0) {
+                  child = Column(
+                    children: [
+                      Divider(color: theme.highlightColor),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 35.0),
+                        child: Text(
+                          'PREVIOUS UPDATES',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.subtitle2,
+                        ),
+                      ),
+                      Divider(color: theme.highlightColor),
+                      const SizedBox(height: 35),
+                      child,
+                    ],
+                  );
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 95.0, bottom: 24),
+                  child: child,
+                );
+              },
               shrinkWrap: true,
               itemCount: updates.length,
               padding: const EdgeInsets.all(24),
               itemBuilder: (final context, final i) {
                 final notification = updates[i];
+
                 return SelectableText(
                   notification.message.getByLanguage(language),
                 );
@@ -126,12 +168,12 @@ class UpdateNotificaionPopup extends StatelessWidget {
                     S.current.close.sentenceCase,
                     style: textTheme.bodyText1,
                   ),
-                )
+                ),
               ],
             ),
           ),
           const BottomSafeArea(),
-          const SizedBox(height: 10)
+          const SizedBox(height: 10),
         ],
       ),
     );

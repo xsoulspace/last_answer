@@ -12,6 +12,7 @@ class ProjectsListView extends HookWidget {
   final ValueChanged<BasicProject> onProjectTap;
   final ThemeDefiner themeDefiner;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
+
   @override
   Widget build(final BuildContext context) {
     final scrollController = useScrollController();
@@ -19,9 +20,11 @@ class ProjectsListView extends HookWidget {
     final textTheme = themeDefiner.effectiveTheme.textTheme;
     final settings = SettingsStateScope.of(context);
     final reversed = settings.projectsListReversed;
+
     return Consumer<FolderStateProvider>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
+
         return Expanded(
           child: Column(
             children: [
@@ -53,6 +56,7 @@ class ProjectsListView extends HookWidget {
                       itemCount: projects.length,
                       itemBuilder: (final _, final i) {
                         final project = projects[i];
+
                         return Padding(
                           key: ValueKey(project.id),
                           padding: const EdgeInsets.only(bottom: 3),
@@ -61,33 +65,13 @@ class ProjectsListView extends HookWidget {
                             themeDefiner: themeDefiner,
                             onTap: onProjectTap,
                             isProjectActive: checkIsProjectActive(project),
-                            onRemove: (final _) async {
-                              if (project is IdeaProject) {
-                                final deleteAnswerFutures =
-                                    project.answers?.map(
-                                  (final answer) => answer.delete(),
-                                );
-                                if (deleteAnswerFutures != null) {
-                                  await Future.wait(deleteAnswerFutures);
-                                }
-
-                                context
-                                    .read<IdeaProjectsProvider>()
-                                    .remove(key: project.id);
-                              } else if (project is NoteProject) {
-                                context
-                                    .read<NoteProjectsProvider>()
-                                    .remove(key: project.id);
-                              } else if (project is StoryProject) {
-                                // TODO(arenukvern): implement Story removal
-                              }
-                              project.folder?.removeProject(project);
-                              folderState.notify();
-                              await project.delete();
-                              if (checkIsProjectActive(project)) {
-                                onGoHome();
-                              }
-                            },
+                            onRemove: (final _) async => removeProject(
+                              checkIsProjectActive: checkIsProjectActive,
+                              context: context,
+                              folderProvider: folderState,
+                              onGoHome: onGoHome,
+                              project: project,
+                            ),
                             onRemoveConfirm: (final _) async {
                               return showRemoveTitleDialog(
                                 context: context,
@@ -108,5 +92,35 @@ class ProjectsListView extends HookWidget {
         );
       },
     );
+  }
+}
+
+// TODO(arenukvern): move it to global functions
+Future<void> removeProject({
+  required final BuildContext context,
+  required final BasicProject project,
+  required final FolderStateProvider folderProvider,
+  required final BoolValueChanged<BasicProject> checkIsProjectActive,
+  required final VoidCallback onGoHome,
+}) async {
+  if (project is IdeaProject) {
+    final deleteAnswerFutures = project.answers?.map(
+      (final answer) => answer.delete(),
+    );
+    if (deleteAnswerFutures != null) {
+      await Future.wait(deleteAnswerFutures);
+    }
+
+    context.read<IdeaProjectsProvider>().remove(key: project.id);
+  } else if (project is NoteProject) {
+    context.read<NoteProjectsProvider>().remove(key: project.id);
+  } else if (project is StoryProject) {
+    // TODO(arenukvern): implement Story removal
+  }
+  project.folder?.removeProject(project);
+  folderProvider.notify();
+  await project.delete();
+  if (checkIsProjectActive(project)) {
+    onGoHome();
   }
 }

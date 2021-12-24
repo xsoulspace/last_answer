@@ -15,9 +15,10 @@ analyzer:
     - "**.gen.dart"
     - "**.g.dart"
     - old/
-    - "**/generated/"
-    - "generated_plugin_registrant.dart"
-
+    - lib/generated/**
+    - lib/generated_plugin_registrant.dart
+  plugins:
+    - dart_code_metrics
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
@@ -128,3 +129,34 @@ linter:
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+# https://dartcodemetrics.dev/docs/analyzer-plugin
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    maximum-nesting-level: 5
+    number-of-parameters: 6
+    source-lines-of-code: 50
+  metrics-exclude:
+    - test/**
+    - old/**
+    - lib/generated/**
+    - generated/**
+  rules-exclude:
+    - old/**
+    - lib/generated/**
+  rules:
+    - newline-before-return
+    - no-boolean-literal-compare
+    - avoid-unnecessary-setstate
+    - avoid-returning-widgets
+    - always-remove-listener
+    - no-equal-then-else
+    - avoid-nested-conditional-expressions
+    - binary-expression-operand-order
+    - no-object-declaration
+    - prefer-first
+    - prefer-last

@@ -13,6 +13,7 @@ class AppInfoScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final bodyText1Style = Theme.of(context).textTheme.bodyText1;
+
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
@@ -31,6 +32,7 @@ class AppInfoScreen extends StatelessWidget {
               final info = snapshot.data;
               final version = S.current
                   .appVersion(info?.version ?? '', info?.buildNumber ?? '');
+
               return ListView(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(18),

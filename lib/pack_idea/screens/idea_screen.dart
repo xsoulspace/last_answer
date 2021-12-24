@@ -19,55 +19,22 @@ class IdeaProjectScreen extends HookWidget {
     final ideaUpdatesStream = useStreamController<bool>();
     final ideasProvider = context.read<IdeaProjectsProvider>();
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
-    final silentFolderProvider = context.read<FolderStateProvider>();
     final idea = ideasProvider.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
-        useState<List<IdeaProjectAnswer>>([...idea.answers?.reversed ?? []]);
+        useState<List<IdeaProjectAnswer>>([...?idea.answers?.reversed]);
     final scrollController = useScrollController();
     final questions = ideaQuestionsProvider.state;
     final questionsOpened = useIsBool();
 
-    ideaUpdatesStream.stream
-        .throttleTime(
-      const Duration(milliseconds: 700),
-      leading: true,
-      trailing: true,
-    )
-        .forEach(
-      (final updateFolder) async {
-        ideasProvider.put(
-          key: idea.id,
-          value: idea..updated = DateTime.now(),
-        );
-
-        if (updateFolder) {
-          idea.folder?.sortProjectsByDate(project: idea);
-          silentFolderProvider.notify();
-        }
-        await idea.save();
-      },
+    final state = useIdeaScreenState(
+      context: context,
+      onScreenBack: onBack,
+      answers: answers,
+      ideaUpdatesStream: ideaUpdatesStream,
+      idea: idea,
+      questionsOpened: questionsOpened,
     );
-
-    void closeQuestions() {
-      if (questionsOpened.value) questionsOpened.value = false;
-    }
-
-    void openQuestions() {
-      if (!questionsOpened.value) questionsOpened.value = true;
-    }
-
-    bool checkToUpdateFolder({
-      final String? title,
-      final bool? answersUpdated,
-    }) {
-      final toPop = idea.folder?.projectsList.first != idea;
-      if (title != null || answersUpdated == true) {
-        if (toPop) return true;
-      }
-
-      return false;
-    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
@@ -76,15 +43,10 @@ class IdeaProjectScreen extends HookWidget {
         useBackButton: true,
         screenLayout: ScreenLayout.of(context),
         title: ProjectTitleField(
-          onFocus: closeQuestions,
+          onFocus: state.closeQuestions,
           controller: titleController,
           heroId: idea.id,
-          onChanged: (final text) {
-            if (text == idea.title) return;
-            idea.title = text;
-            final updateFolder = checkToUpdateFolder();
-            ideaUpdatesStream.add(updateFolder);
-          },
+          onChanged: state.onIdeaTitleChange,
         ),
         onBack: onBack,
       ),
@@ -95,7 +57,7 @@ class IdeaProjectScreen extends HookWidget {
             child: GestureDetector(
               onTap: () {
                 closeKeyboard(context: context);
-                closeQuestions();
+                state.closeQuestions();
               },
               behavior: HitTestBehavior.translucent,
               child: ListView.separated(
@@ -113,9 +75,10 @@ class IdeaProjectScreen extends HookWidget {
                     return Container();
                   }
                   final _answer = answers.value[index];
+
                   return _AnswerTile(
-                    onFocus: closeQuestions,
-                    key: ValueKey(_answer.id),
+                    onFocus: state.closeQuestions,
+                    key: ValueKey(_answer),
                     answer: _answer,
                     confirmDelete: () async => showRemoveTitleDialog(
                       title: _answer.title,
@@ -125,18 +88,8 @@ class IdeaProjectScreen extends HookWidget {
                       closeKeyboard(context: context);
                       onAnswerExpand(_answer, idea);
                     },
-                    onReadyToDelete: () async {
-                      idea.answers?.remove(_answer);
-                      answers.value = [...idea.answers?.reversed ?? []];
-                      final updateFolder =
-                          checkToUpdateFolder(answersUpdated: true);
-                      ideaUpdatesStream.add(updateFolder);
-                    },
-                    onChange: () {
-                      final updateFolder =
-                          checkToUpdateFolder(answersUpdated: true);
-                      ideaUpdatesStream.add(updateFolder);
-                    },
+                    onReadyToDelete: state.onReadyToDeleteAnswer,
+                    onChange: state.onAnswersChange,
                     deleteIconVisible: isDesktop,
                   );
                 },
@@ -148,21 +101,13 @@ class IdeaProjectScreen extends HookWidget {
               await ProjectSharer.of(context).share(project: idea);
             },
             questionsOpened: questionsOpened,
-            onFocus: openQuestions,
+            onFocus: state.openQuestions,
             idea: idea,
             defaultQuestion: answers.value.isNotEmpty
-                ? answers.value[0].question
+                ? answers.value.first.question
                 : questions.values.first,
-            onChanged: () {
-              final updateFolder = checkToUpdateFolder(answersUpdated: true);
-              ideaUpdatesStream.add(updateFolder);
-            },
-            onCreated: (final answer) async {
-              idea.answers?.add(answer);
-              answers.value = [...idea.answers?.reversed ?? []];
-              final updateFolder = checkToUpdateFolder(answersUpdated: true);
-              ideaUpdatesStream.add(updateFolder);
-            },
+            onChanged: state.onAnswersChange,
+            onCreated: state.onAnswerCreated,
           ),
           const BottomSafeArea(),
         ],

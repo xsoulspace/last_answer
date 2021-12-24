@@ -50,7 +50,7 @@ class _HowToSolveTheQuestState extends State<HowToSolveTheQuest> {
         await Hive.openBox<Answer>(HiveBoxes.answers);
         return LocaleModel.loadSavedLocale();
       })(),
-      builder: (context, snapshot) {
+      builder: (final context, final snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final locale = (() {
             final _locale = snapshot.data;
@@ -91,7 +91,7 @@ class AppScaffold extends StatelessWidget {
   Widget build(final BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: Hive.box<bool>(HiveBoxes.darkMode).listenable(),
-      builder: (final context, box, final widget) {
+      builder: (final context, final box, final widget) {
         final isDark =
             box.get(BoxDarkMode.isDark, defaultValue: false) ?? false;
         final resolvedThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
@@ -109,11 +109,15 @@ class AppScaffold extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<
-            Locale? Function(List<Locale>? p1, Iterable<Locale> p2)>.has(
-        'localeListResolutionCallback', localeListResolutionCallback));
+    properties.add(
+      ObjectFlagProperty<
+          Locale? Function(List<Locale>? p1, Iterable<Locale> p2)>.has(
+        'localeListResolutionCallback',
+        localeListResolutionCallback,
+      ),
+    );
   }
 }
 
@@ -144,7 +148,7 @@ class ProviderInit extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Locale>('locale', locale));
   }

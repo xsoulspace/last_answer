@@ -26,10 +26,12 @@ Future<bool> showRemoveTitleDialog({
       },
     );
   }
+
   return await showDialog(
     context: context,
     builder: (final context) {
       final theme = Theme.of(context);
+
       return AlertDialog(
         actions: [
           TextButton(

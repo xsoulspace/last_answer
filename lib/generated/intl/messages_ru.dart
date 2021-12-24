@@ -40,10 +40,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
         "cancel": MessageLookupByLibrary.simpleMessage("ОТМЕНИТЬ"),
+        "charactersLimit":
+            MessageLookupByLibrary.simpleMessage("Лимит символов"),
+        "charactersLimitForNewNotesDesription":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки."),
+        "charactersUnlimited":
+            MessageLookupByLibrary.simpleMessage("Бесконечно.."),
         "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
         "delete": MessageLookupByLibrary.simpleMessage("УДАЛИТЬ"),
+        "deleteThisNote":
+            MessageLookupByLibrary.simpleMessage("Удалить заметку"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "или отправьте сообщение на idea@xsoulspace.dev"),
         "frequentlyUsed":
@@ -59,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!"),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
+        "noteSettings":
+            MessageLookupByLibrary.simpleMessage("Настройки заметки"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Можно использовать: \"Пять почему\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(

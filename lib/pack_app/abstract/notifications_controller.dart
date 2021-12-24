@@ -22,10 +22,12 @@ class NotificationController extends ChangeNotifier implements Loadable {
     } else {
       if (updates.isEmpty) {
         _hasUnreadUpdates = false;
+
         return;
       }
-      _hasUnreadUpdates =
-          updates.first.created.toUtc().compareTo(lastReadTime) > 0;
+      final dateTimeComparation =
+          updates.first.created.toUtc().compareTo(lastReadTime);
+      _hasUnreadUpdates = dateTimeComparation > 0;
     }
   }
 

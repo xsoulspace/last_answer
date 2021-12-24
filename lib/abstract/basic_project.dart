@@ -7,6 +7,14 @@ const defaultProjectIsCompleted = false;
 /// `@HiveField(projectLatestFieldHiveId+1)`
 const projectLatestFieldHiveId = 4;
 
+class BasicProjectIndexes {
+  BasicProjectIndexes._();
+  static const created = 3;
+  static const id = 0;
+  static const isCompleted = 1;
+  static const title = 2;
+}
+
 typedef ProjectId = String;
 
 /// This type purpose is to support all project types
@@ -23,18 +31,26 @@ class BasicProject extends HiveObject
     required final this.type,
     final this.isCompleted = defaultProjectIsCompleted,
   });
+  @HiveField(BasicProjectIndexes.created)
+  DateTime created;
+
+  /// Always override it in extended projects
+  /// to assign correct [HiveField] id
   @override
-  @HiveField(0)
+  ProjectFolder? folder;
+
+  @override
+  @HiveField(BasicProjectIndexes.id)
   final ProjectId id;
 
-  @HiveField(1)
+  @HiveField(BasicProjectIndexes.isCompleted)
   bool isCompleted;
 
-  @HiveField(2)
+  @HiveField(BasicProjectIndexes.title)
   String title;
 
-  @HiveField(3)
-  DateTime created;
+  @override
+  final ProjectTypes type;
 
   @HiveField(projectLatestFieldHiveId)
   DateTime updated;
@@ -53,12 +69,4 @@ class BasicProject extends HiveObject
         id: id,
         type: type,
       );
-
-  /// Always override it in extended projects
-  /// to assign correct [HiveField] id
-  @override
-  ProjectFolder? folder;
-
-  @override
-  final ProjectTypes type;
 }

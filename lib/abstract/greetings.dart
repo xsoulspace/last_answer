@@ -26,6 +26,7 @@ class Greeting {
     final newGreeting = text.values.values.toList()[randomNumber] ?? '';
     if (_previousLocalizedGreeting != text) {
       _previousLocalizedGreeting = text;
+
       return _previousStrGreeting = newGreeting;
     } else {
       return _previousStrGreeting;

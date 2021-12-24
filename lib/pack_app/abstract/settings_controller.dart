@@ -59,6 +59,8 @@ class SettingsController with ChangeNotifier {
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();
     _projectsListReversed = await settingsService.projectsReversed();
+    _charactersLimitForNewNotes =
+        await settingsService.charactersLimitForNewNotes();
 
     // Important! Inform listeners a change has occurred.
     notify();
@@ -76,6 +78,7 @@ class SettingsController with ChangeNotifier {
   bool migrated = false;
   Future<void> setMigrated() async {
     migrated = true;
+
     return settingsService.setMigrated();
   }
 
@@ -89,22 +92,31 @@ class SettingsController with ChangeNotifier {
     settingsService.setProjectsReversed(reversed: projectsReversed);
   }
 
+  int _charactersLimitForNewNotes = 0;
+  int get charactersLimitForNewNotes => _charactersLimitForNewNotes;
+
+  set charactersLimitForNewNotes(final int limit) {
+    _charactersLimitForNewNotes = limit;
+    notify();
+    settingsService.setCharactersLimitForNewNotes(limit: limit);
+  }
+
   void notify() => notifyListeners();
 }
 
 /// Provides the current [SettingsController] to descendent widgets in the tree.
-class SettingsStateScope extends InheritedNotifier<SettingsController> {
-  const SettingsStateScope({
+class SettingsStateScope extends ChangeNotifierProvider<SettingsController> {
+  SettingsStateScope({
     required final SettingsController notifier,
     required final Widget child,
     final Key? key,
-  }) : super(key: key, notifier: notifier, child: child);
+  }) : super(
+          key: key,
+          create: (final _) => notifier,
+          child: child,
+        );
 
   static SettingsController of(final BuildContext context) {
-    final state = context
-        .dependOnInheritedWidgetOfExactType<SettingsStateScope>()
-        ?.notifier;
-    if (state == null) throw ArgumentError.notNull('SettingsStateScope');
-    return state;
+    return context.read<SettingsController>();
   }
 }

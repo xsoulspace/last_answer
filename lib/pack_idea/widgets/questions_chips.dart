@@ -11,10 +11,10 @@ class _QuestionsChips extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final brightness = theme.brightness;
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
 
     final questions = ideaQuestionsProvider.values;
+
     return Wrap(
       spacing: 1,
       crossAxisAlignment: WrapCrossAlignment.center,
@@ -31,9 +31,7 @@ class _QuestionsChips extends StatelessWidget {
                 shape:
                     RoundedRectangleBorder(borderRadius: defaultBorderRadius),
                 backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
-                selectedColor: AppColors.primary2.withOpacity(
-                  brightness == Brightness.light ? 0.2 : 0.2,
-                ),
+                selectedColor: AppColors.primary2.withOpacity(0.2),
                 selected: value == question,
                 onSelected: (final _) => onChange(question),
                 key: ValueKey(question.id),

@@ -11,6 +11,7 @@ class _VerticalProjectsBar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(
         left: 6,

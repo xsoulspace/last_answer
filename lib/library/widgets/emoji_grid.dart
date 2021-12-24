@@ -10,46 +10,18 @@ class EmojiPopup extends HookWidget {
   final FocusNode focusNode;
   @override
   Widget build(final BuildContext context) {
-    final popupVisible = useIsBool();
-    final popupHovered = useIsBool();
-    final screenLayout = ScreenLayout.of(context);
-
-    Future<void> onClose() async {
-      await Future.delayed(const Duration(milliseconds: 300), () {
-        if (popupHovered.value) return;
-        popupVisible.value = false;
-      });
-    }
-
-    if (!isDesktop) return const SizedBox();
     final emojiInserter = EmojiInserter.use(
       controller: controller,
       focusNode: focusNode,
     );
 
-    return PortalEntry(
-      visible: popupVisible.value,
-      portalAnchor:
-          screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
-      childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
-      portal: MouseRegion(
-        onExit: (final _) async {
-          popupHovered.value = false;
-          await onClose();
-        },
-        onHover: (final _) => popupHovered.value = true,
-        child: EmojiGrid(
+    return PopupButton(
+      icon: CupertinoIcons.smiley,
+      builder: (final context) {
+        return EmojiGrid(
           onChanged: emojiInserter.insert,
-        ),
-      ),
-      child: MouseRegion(
-        onHover: (final _) => popupVisible.value = true,
-        onExit: (final _) async => onClose(),
-        child: IconButton(
-          onPressed: () => popupVisible.value = true,
-          icon: const Icon(CupertinoIcons.smiley),
-        ),
-      ),
+        );
+      },
     );
   }
 }

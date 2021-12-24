@@ -2,15 +2,19 @@ part of pack_note;
 
 NoteProjectScreenState useNoteProjectScreenState({
   required final TextEditingController noteController,
-  required final ValueNotifier<NoteProject> note,
-  required final StreamController<bool> updatesStream,
+  required final NoteProject note,
+  required final StreamController<NoteProjectNotifier> updatesStream,
   required final BuildContext context,
   required final ValueChanged<NoteProject> onScreenBack,
+  required final BoolValueChanged<BasicProject> checkIsProjectActive,
+  required final VoidCallback onGoHome,
 }) =>
     use(
       LifeHook(
         debugLabel: 'useNoteProjectScreenState',
         state: NoteProjectScreenState(
+          checkIsProjectActive: checkIsProjectActive,
+          onGoHome: onGoHome,
           note: note,
           noteController: noteController,
           updatesStream: updatesStream,
@@ -20,72 +24,62 @@ NoteProjectScreenState useNoteProjectScreenState({
       ),
     );
 
-class NoteProjectScreenState implements LifeState {
+class NoteProjectScreenState extends NoteProjectUpdaterState {
   NoteProjectScreenState({
     required this.noteController,
-    required this.note,
-    required this.updatesStream,
-    required this.context,
     required this.onScreenBack,
-  });
+    required final this.checkIsProjectActive,
+    required final this.onGoHome,
+    required final NoteProject note,
+    required final StreamController<NoteProjectNotifier> updatesStream,
+    required final BuildContext context,
+  }) : super(context: context, note: note, updatesStream: updatesStream);
 
-  @override
-  late ValueChanged<VoidCallback> setState;
-  final BuildContext context;
   final TextEditingController noteController;
-  final ValueNotifier<NoteProject> note;
-  final StreamController<bool> updatesStream;
   final ValueChanged<NoteProject> onScreenBack;
-  late NoteProjectsProvider notesProvider;
-  late FolderStateProvider folderProvider;
+  final BoolValueChanged<BasicProject> checkIsProjectActive;
+  final VoidCallback onGoHome;
+
   @override
   void initState() {
     noteController.addListener(onNoteChange);
     notesProvider = context.read<NoteProjectsProvider>();
     folderProvider = context.read<FolderStateProvider>();
-
-    updatesStream.stream
-        .sampleTime(
-          const Duration(milliseconds: 700),
-        )
-        .forEach(onUpdateFolder);
+    super.initState();
   }
 
-  void onSettings() {}
-
-  // ignore: avoid_positional_boolean_parameters
-  Future<void> onUpdateFolder(final bool updateFolder) async {
-    notesProvider.put(key: note.value.id, value: note.value);
-
-    if (updateFolder) {
-      note.value.folder?.sortProjectsByDate(project: note.value);
-      folderProvider.notify();
-    }
-
-    await note.value.save();
+  Future<void> onRemove() async {
+    await removeProject(
+      context: context,
+      project: note,
+      folderProvider: folderProvider,
+      checkIsProjectActive: checkIsProjectActive,
+      onGoHome: onGoHome,
+    );
   }
 
   void onNoteChange() {
-    if (note.value.note == noteController.text) return;
-    bool updateFolder = false;
-    if (note.value.title != NoteProject.getTitle(noteController.text)) {
-      updateFolder = true;
+    if (note.note == noteController.text) return;
+    bool positionChanged = false;
+    if (note.title != NoteProject.getTitle(noteController.text)) {
+      positionChanged = true;
     } else {
-      updateFolder = note.value.folder?.projectsList.first != note.value;
+      positionChanged = note.folder?.projectsList.first != note;
     }
-    note.value
+    note
       ..note = noteController.text
       ..updated = DateTime.now();
-    updatesStream.add(updateFolder);
+    updatesStream.add(NoteProjectNotifier(positionChanged: positionChanged));
   }
 
   void onBack() {
     closeKeyboard(context: context);
-    onScreenBack(note.value);
+    onScreenBack(note);
   }
 
   @override
   void dispose() {
     noteController.removeListener(onNoteChange);
+    super.dispose();
   }
 }

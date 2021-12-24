@@ -53,6 +53,9 @@ class IdeaScreenState implements LifeState {
         .forEach(onIdeaUpdate);
   }
 
+  @override
+  void dispose() {}
+
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
     ideasProvider.put(
@@ -111,10 +114,5 @@ class IdeaScreenState implements LifeState {
     answers.value = [...idea.answers?.reversed ?? []];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
   }
 }

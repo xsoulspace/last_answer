@@ -83,12 +83,36 @@ class $AssetsIconsGen {
   /// File path: assets/icons/idea.svg
   SvgGenImage get idea => const SvgGenImage('assets/icons/idea.svg');
 
+  /// File path: assets/icons/instagram_logo.png
+  AssetGenImage get instagramLogo =>
+      const AssetGenImage('assets/icons/instagram_logo.png');
+
   /// File path: assets/icons/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
 
-  /// File path: assets/icons/logo_windows.png
-  AssetGenImage get logoWindows =>
-      const AssetGenImage('assets/icons/logo_windows.png');
+  /// File path: assets/icons/logo_128.png
+  AssetGenImage get logo128 => const AssetGenImage('assets/icons/logo_128.png');
+
+  /// File path: assets/icons/logo_16.png
+  AssetGenImage get logo16 => const AssetGenImage('assets/icons/logo_16.png');
+
+  /// File path: assets/icons/logo_192.png
+  AssetGenImage get logo192 => const AssetGenImage('assets/icons/logo_192.png');
+
+  /// File path: assets/icons/logo_24.png
+  AssetGenImage get logo24 => const AssetGenImage('assets/icons/logo_24.png');
+
+  /// File path: assets/icons/logo_256.png
+  AssetGenImage get logo256 => const AssetGenImage('assets/icons/logo_256.png');
+
+  /// File path: assets/icons/logo_32.png
+  AssetGenImage get logo32 => const AssetGenImage('assets/icons/logo_32.png');
+
+  /// File path: assets/icons/logo_48.png
+  AssetGenImage get logo48 => const AssetGenImage('assets/icons/logo_48.png');
+
+  /// File path: assets/icons/logo_64.png
+  AssetGenImage get logo64 => const AssetGenImage('assets/icons/logo_64.png');
 }
 
 class $AssetsJsonGen {

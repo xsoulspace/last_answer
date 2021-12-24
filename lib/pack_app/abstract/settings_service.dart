@@ -8,7 +8,7 @@ part of pack_app;
 class SettingsService with SharedPreferencesUtil {
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async {
-    final theme = await getString(SharedPreferencesKeys.theme);
+    final theme = await getString(SharedPreferencesKeys.theme.name);
     final index = int.tryParse(theme);
     if (index == null) return ThemeMode.system;
     if (index > ThemeMode.values.length || index < 0) return ThemeMode.system;
@@ -20,11 +20,11 @@ class SettingsService with SharedPreferencesUtil {
   Future<void> setThemeMode(final ThemeMode theme) async {
     // Use the shared_preferences package to persist settings locally or the
     // http package to persist settings over the network.
-    await setString(SharedPreferencesKeys.theme, theme.index.toString());
+    await setString(SharedPreferencesKeys.theme.name, theme.index.toString());
   }
 
   Future<Locale> locale() async {
-    final languageCode = await getString(SharedPreferencesKeys.locale);
+    final languageCode = await getString(SharedPreferencesKeys.locale.name);
     try {
       if (languageCode.isEmpty) return Locales.en;
 
@@ -36,17 +36,24 @@ class SettingsService with SharedPreferencesUtil {
   }
 
   Future<void> setLocale(final Locale locale) async {
-    await setString(SharedPreferencesKeys.locale, locale.languageCode);
+    await setString(SharedPreferencesKeys.locale.name, locale.languageCode);
   }
 
-  Future<bool> migrated() async => getBool(SharedPreferencesKeys.migrated);
+  Future<bool> migrated() async => getBool(SharedPreferencesKeys.migrated.name);
 
   Future<void> setMigrated() async =>
-      setBool(SharedPreferencesKeys.migrated, true);
+      setBool(SharedPreferencesKeys.migrated.name, true);
 
   Future<bool> projectsReversed() async =>
-      getBool(SharedPreferencesKeys.projectsReversed);
+      getBool(SharedPreferencesKeys.projectsReversed.name);
 
   Future<void> setProjectsReversed({required final bool reversed}) async =>
-      setBool(SharedPreferencesKeys.projectsReversed, reversed);
+      setBool(SharedPreferencesKeys.projectsReversed.name, reversed);
+
+  Future<int> charactersLimitForNewNotes() async =>
+      getInt(SharedPreferencesKeys.charactersLimitForNewNotes.name);
+  Future<void> setCharactersLimitForNewNotes({
+    required final int? limit,
+  }) async =>
+      setInt(SharedPreferencesKeys.charactersLimitForNewNotes.name, limit);
 }

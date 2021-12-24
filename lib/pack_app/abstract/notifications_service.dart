@@ -2,8 +2,9 @@ part of pack_app;
 
 class NotificationService with SharedPreferencesUtil {
   Future<DateTime?> get notificationUpdatesReadDateTime async {
-    final datetimeStr =
-        await getString(SharedPreferencesKeys.notificationUpdatesReadDateTime);
+    final datetimeStr = await getString(
+      SharedPreferencesKeys.notificationUpdatesReadDateTime.name,
+    );
     final miliseconds = int.tryParse(datetimeStr);
     if (miliseconds == null) return null;
 
@@ -12,7 +13,7 @@ class NotificationService with SharedPreferencesUtil {
 
   Future<void> readUpdates() async {
     await setString(
-      SharedPreferencesKeys.notificationUpdatesReadDateTime,
+      SharedPreferencesKeys.notificationUpdatesReadDateTime.name,
       DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
     );
   }

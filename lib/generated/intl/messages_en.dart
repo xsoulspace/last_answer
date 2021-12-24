@@ -41,10 +41,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
         "cancel": MessageLookupByLibrary.simpleMessage("CANCEL"),
+        "charactersLimit":
+            MessageLookupByLibrary.simpleMessage("Characters limit"),
+        "charactersLimitForNewNotesDesription":
+            MessageLookupByLibrary.simpleMessage(
+                "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."),
+        "charactersUnlimited":
+            MessageLookupByLibrary.simpleMessage("Unlimited.."),
         "close": MessageLookupByLibrary.simpleMessage("CLOSE"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Create tutorial"),
         "delete": MessageLookupByLibrary.simpleMessage("DELETE"),
+        "deleteThisNote":
+            MessageLookupByLibrary.simpleMessage("Delete this note"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "or send a message to idea@xsoulspace.dev"),
         "frequentlyUsed":

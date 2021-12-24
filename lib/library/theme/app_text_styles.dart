@@ -10,6 +10,8 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+  static final headline1Strut = StrutStyle.fromTextStyle(headline1);
+
   static final headline2 = GoogleFonts.ibmPlexSans(
     fontSize: 22,
     height: 28 / 22,
@@ -18,6 +20,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final headline2Strut = StrutStyle.fromTextStyle(headline2);
+
   static final headline3 = GoogleFonts.ibmPlexSans(
     fontSize: 20,
     height: 26 / 20,
@@ -26,6 +31,8 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+  static final headline3Strut = StrutStyle.fromTextStyle(headline3);
+
   static final headline4 = GoogleFonts.ibmPlexSans(
     fontSize: 19,
     height: 25 / 19,
@@ -34,6 +41,8 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+  static final headline4Strut = StrutStyle.fromTextStyle(headline4);
+
   static final headline5 = GoogleFonts.ibmPlexSans(
     fontSize: 18,
     height: 24 / 18,
@@ -42,6 +51,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final headline5Strut = StrutStyle.fromTextStyle(headline5);
+
   static final headline6 = GoogleFonts.ibmPlexSans(
     fontSize: 17,
     height: 23 / 17,
@@ -50,6 +62,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final headline6Strut = StrutStyle.fromTextStyle(headline6);
+
   static final subtitle1 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
     height: 18 / 16,
@@ -59,6 +74,8 @@ class AppTextStylesLight {
     fontFamilyFallback: ['NotoColorEmoji'],
   );
 
+  static final subtitle1Strut = StrutStyle.fromTextStyle(subtitle1);
+
   static final subtitle2 = GoogleFonts.ibmPlexSans(
     fontSize: 12,
     height: 14 / 12,
@@ -67,6 +84,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final subtitle2Strut = StrutStyle.fromTextStyle(subtitle2);
+
   static final bodyText1 = bodyText2
       .copyWith(
     fontWeight: FontWeight.bold,
@@ -74,6 +94,9 @@ class AppTextStylesLight {
       .copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final bodyText1Strut = StrutStyle.fromTextStyle(bodyText1);
+
   static final bodyText2 = GoogleFonts.ibmPlexSans(
     fontSize: 16,
     height: 24 / 16,
@@ -82,6 +105,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final bodyText2Strut = StrutStyle.fromTextStyle(bodyText2);
+
   static final overline = GoogleFonts.ibmPlexSans(
     fontSize: 12,
     height: 15 / 12,
@@ -90,6 +116,9 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final overlineStrut = StrutStyle.fromTextStyle(overline);
+
   static final caption1 = caption2
       .copyWith(
     fontWeight: FontWeight.bold,
@@ -97,6 +126,9 @@ class AppTextStylesLight {
       .copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final caption1Strut = StrutStyle.fromTextStyle(caption1);
+
   static final caption2 = GoogleFonts.ibmPlexSans(
     fontSize: 10,
     height: 13 / 10,
@@ -105,6 +137,8 @@ class AppTextStylesLight {
   ).copyWith(
     fontFamilyFallback: ['NotoColorEmoji'],
   );
+
+  static final caption2Strut = StrutStyle.fromTextStyle(caption2);
 }
 
 class AppTextStylesDark {

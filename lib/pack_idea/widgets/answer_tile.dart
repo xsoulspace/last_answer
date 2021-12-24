@@ -13,7 +13,7 @@ class _AnswerTile extends StatelessWidget {
   }) : super(key: key);
   final IdeaProjectAnswer answer;
   final FutureBoolCallback confirmDelete;
-  final VoidCallback onReadyToDelete;
+  final ValueChanged<IdeaProjectAnswer> onReadyToDelete;
   final bool deleteIconVisible;
   final ValueChanged<IdeaProjectAnswer> onExpand;
   final VoidCallback onFocus;
@@ -26,7 +26,7 @@ class _AnswerTile extends StatelessWidget {
       //   if (direction != DismissDirection.startToEnd) return false;
       //   return confirmDelete();
       // },
-      onDismissed: onReadyToDelete,
+      onDismissed: () => onReadyToDelete(answer),
       child: Stack(
         children: [
           Positioned(
@@ -99,7 +99,7 @@ class _AnswerTile extends StatelessWidget {
                     child: IconButton(
                       onPressed: () async {
                         final confirmed = await confirmDelete();
-                        if (confirmed) onReadyToDelete();
+                        if (confirmed) onReadyToDelete(answer);
                       },
                       color: AppColors.accent2.withOpacity(0.6),
                       icon: const Icon(Icons.close),

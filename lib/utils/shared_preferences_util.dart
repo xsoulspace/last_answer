@@ -53,4 +53,18 @@ mixin SharedPreferencesUtil {
 
     return prefs.getBool(key) ?? defaultValue;
   }
+
+  Future<void> setInt(final String key, final int? value) async {
+    final prefs = await sharedPreferences;
+    await prefs.setInt(key, value ?? 0);
+  }
+
+  Future<int> getInt(
+    final String key, {
+    final int defaultValue = 0,
+  }) async {
+    final prefs = await sharedPreferences;
+
+    return prefs.getInt(key) ?? defaultValue;
+  }
 }

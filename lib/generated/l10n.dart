@@ -90,6 +90,37 @@ class S {
     );
   }
 
+  /// `Characters limit`
+  String get charactersLimit {
+    return Intl.message(
+      'Characters limit',
+      name: 'charactersLimit',
+      desc: 'charactersLimit',
+      args: [],
+    );
+  }
+
+  /// `When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.`
+  String get charactersLimitForNewNotesDesription {
+    return Intl.message(
+      'When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.',
+      name: 'charactersLimitForNewNotesDesription',
+      desc:
+          'When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.',
+      args: [],
+    );
+  }
+
+  /// `Unlimited..`
+  String get charactersUnlimited {
+    return Intl.message(
+      'Unlimited..',
+      name: 'charactersUnlimited',
+      desc: 'charactersUnlimited',
+      args: [],
+    );
+  }
+
   /// `Made with Flutter ❤ and Open Source Libraries`
   String get madeWithLoveAndFlutter {
     return Intl.message(
@@ -386,6 +417,16 @@ class S {
       'DELETE',
       name: 'delete',
       desc: 'delete',
+      args: [],
+    );
+  }
+
+  /// `Delete this note`
+  String get deleteThisNote {
+    return Intl.message(
+      'Delete this note',
+      name: 'deleteThisNote',
+      desc: 'deleteThisNote',
       args: [],
     );
   }

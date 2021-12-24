@@ -13,6 +13,8 @@ class ProjectTextField extends StatefulHookWidget {
     final this.focusOnInit = true,
     final this.fillColor,
     final this.focusNode,
+    this.countCharacters = false,
+    this.limit,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -20,6 +22,8 @@ class ProjectTextField extends StatefulHookWidget {
   final int maxLines;
   final String hintText;
   final FocusNode? focusNode;
+  final int? limit;
+  final bool countCharacters;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
@@ -36,8 +40,18 @@ class ProjectTextField extends StatefulHookWidget {
 class _ProjectTextFieldState extends State<ProjectTextField> {
   final _keyboardFocusNode = FocusNode();
   late FocusNode _textFieldFocusNode;
+  int? _maxLength;
+  void setMaxLength() {
+    if (widget.limit == null || widget.limit == 0) {
+      _maxLength = widget.countCharacters ? TextField.noMaxLength : null;
+    } else {
+      _maxLength = widget.limit;
+    }
+  }
+
   @override
   void initState() {
+    setMaxLength();
     if (widget.focusOnInit != false) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         if (!mounted) return;
@@ -47,6 +61,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
       });
     }
     _textFieldFocusNode = widget.focusNode ?? FocusNode();
+
     super.initState();
   }
 
@@ -66,6 +81,12 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final scrollController = useScrollController();
+    useEffect(
+      () {
+        setMaxLength();
+      },
+      [widget.limit],
+    );
 
     return RightScrollbar(
       controller: scrollController,
@@ -81,6 +102,9 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             }
           },
           child: TextFormField(
+            maxLength: _maxLength,
+            maxLengthEnforcement: MaxLengthEnforcement.none,
+            maxLines: widget.endlessLines ? null : widget.maxLines,
             scrollController: scrollController,
             focusNode: _textFieldFocusNode,
             onFieldSubmitted: (final _) => widget.onSubmit(),
@@ -88,7 +112,6 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             keyboardAppearance: theme.brightness,
             minLines: widget.endlessLines ? null : 1,
             expands: widget.endlessLines,
-            maxLines: widget.endlessLines ? null : widget.maxLines,
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.bottom,
             style: theme.textTheme.bodyText2,

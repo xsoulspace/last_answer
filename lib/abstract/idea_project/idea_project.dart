@@ -44,6 +44,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
     );
     await ideaBox.put(idea.id, idea);
     idea.answers = HiveList<IdeaProjectAnswer>(ideaAnswersBox);
+
     return idea;
   }
 
@@ -69,6 +70,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
     for (final answer in resolvedAnswers) {
       buffer.writeln(answer.toShareString());
     }
+
     return buffer.toString();
   }
 

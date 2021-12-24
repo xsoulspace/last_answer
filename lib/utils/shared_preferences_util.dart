@@ -18,6 +18,7 @@ mixin SharedPreferencesUtil {
   ) async {
     final str = await getString(key);
     if (str.isEmpty) return {};
+
     return Map.castFrom<dynamic, dynamic, String, dynamic>(
       jsonDecode(str),
     );
@@ -34,6 +35,7 @@ mixin SharedPreferencesUtil {
   }) async {
     final prefs = await sharedPreferences;
     final value = prefs.getString(key);
+
     return value ?? defaultValue;
   }
 
@@ -48,6 +50,21 @@ mixin SharedPreferencesUtil {
     final bool defaultValue = false,
   }) async {
     final prefs = await sharedPreferences;
+
     return prefs.getBool(key) ?? defaultValue;
+  }
+
+  Future<void> setInt(final String key, final int? value) async {
+    final prefs = await sharedPreferences;
+    await prefs.setInt(key, value ?? 0);
+  }
+
+  Future<int> getInt(
+    final String key, {
+    final int defaultValue = 0,
+  }) async {
+    final prefs = await sharedPreferences;
+
+    return prefs.getInt(key) ?? defaultValue;
   }
 }

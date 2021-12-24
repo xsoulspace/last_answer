@@ -36,10 +36,11 @@ class LocalizedText with EquatableMixin {
         Locales.ru.toString(): ru,
         Locales.en.toString(): en,
         Locales.it.toString(): it,
-        Locales.ga.toString(): ga
+        Locales.ga.toString(): ga,
       };
   String getByLanguage(final LanguageName language) {
     final text = values[getLanguageCode(language)];
+
     return (text == null || text.isEmpty) ? en : text;
   }
 
@@ -52,5 +53,6 @@ String getLanguageCode(final LanguageName language) {
   if (language.contains('_')) {
     lang = language.split('_').first;
   }
+
   return lang;
 }

@@ -15,6 +15,7 @@ extension ListExt<TValue> on List<TValue> {
     }
     final item = list.removeAt(oldIndex);
     list.insert(effectiveIndex, item);
+
     return list;
   }
 }

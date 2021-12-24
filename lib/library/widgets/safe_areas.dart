@@ -2,7 +2,6 @@ part of widgets;
 
 class BottomSafeArea extends StatelessWidget {
   const BottomSafeArea({final Key? key}) : super(key: key);
-
   @override
   Widget build(final BuildContext context) {
     return const SafeArea(top: false, child: SizedBox(height: 1));

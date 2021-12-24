@@ -15,6 +15,18 @@
   "@writeAnAnswer": {
     "description": "writeAnAnswer"
   },
+  "charactersLimit": "Limite di caratteri",
+  "@charactersLimit": {
+    "description": "charactersLimit"
+  },
+  "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
+  "@charactersLimitForNewNotesDesription": {
+    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
+  },
+  "charactersUnlimited": "Illimitata..",
+  "@charactersUnlimited": {
+    "description": "charactersUnlimited"
+  },
   "writeANote": "Scrivi una nota",
   "@writeANote": {
     "description": "writeANote"
@@ -91,6 +103,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "noteSettings": "Impostazioni nota",
+  "@noteSettings": {
+    "description": "noteSettings"
+  },
   "noProjectsYet": "Nessun progetto ancora.",
   "@noProjectsYet": {
     "description": "text if no projects created"
@@ -130,6 +146,10 @@
   "delete": "ELIMINA",
   "@delete": {
     "description": "delete"
+  },
+  "deleteThisNote": "Elimina questa nota",
+  "@deleteThisNote": {
+    "description": "deleteThisNote"
   },
   "areYouSure": "Sei sicuro?",
   "@areYouSure": {

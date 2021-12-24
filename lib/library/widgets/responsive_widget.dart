@@ -100,6 +100,7 @@ class ScreenLayout {
     if (constraints != null) {
       return Size(constraints!.maxWidth, constraints!.maxHeight);
     }
+
     return MediaQuery.of(context!).size;
   }
 
@@ -112,4 +113,5 @@ class ScreenLayout {
 
   //Small screen is any screen whose width is less than 800 pixels
   bool get small => size.width < maxSmallWidth;
+  bool get notSmall => size.width > maxSmallWidth;
 }

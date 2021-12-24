@@ -39,6 +39,7 @@ class RouteStateScope extends InheritedNotifier<RouteState> {
     final state =
         context.dependOnInheritedWidgetOfExactType<RouteStateScope>()?.notifier;
     if (state == null) throw ArgumentError.notNull('RouteState');
+
     return state;
   }
 }

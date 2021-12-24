@@ -70,6 +70,7 @@ class _AnswerCreator extends HookWidget {
         onTap: onShareTap,
       ),
     );
+
     return Material(
       color: questionsOpened.value
           ? getBackgroundByTheme(theme)
@@ -127,7 +128,7 @@ class _AnswerCreator extends HookWidget {
                     onFocus: onFocus,
                   ),
                 ),
-                if (questionsOpened.value) sendButton else shareButton
+                if (questionsOpened.value) sendButton else shareButton,
               ],
             ),
           ),

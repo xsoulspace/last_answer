@@ -22,6 +22,7 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
         break;
       case AppRoutesName.home:
     }
+
     return false;
   }
 
@@ -49,6 +50,7 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
     }
 
     final popped = route.didPop(result);
+
     return popped;
   }
 }

@@ -35,6 +35,7 @@ class MapState<TValue> extends ChangeNotifier {
     if (onFilter != null) {
       list.retainWhere((final v) => onFilter!(v, _filterKeyword));
     }
+
     return list;
   }
 

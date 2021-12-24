@@ -79,14 +79,6 @@ class SpecialEmojiListActions extends HookWidget
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
-                      IconButton(
-                        padding: const EdgeInsets.all(8.0).copyWith(left: 0),
-                        onPressed: () {
-                          emojisEnabled.value = false;
-                        },
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                      ),
-                      // const SizedBox(width: 10),
                       Expanded(
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
@@ -96,11 +88,18 @@ class SpecialEmojiListActions extends HookWidget
                           itemCount: emojis.length,
                         ),
                       ),
+                      IconButton(
+                        padding: const EdgeInsets.all(8.0).copyWith(right: 0),
+                        onPressed: () {
+                          emojisEnabled.value = false;
+                        },
+                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                      ),
                     ],
                   ),
                 )
               : Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.centerRight,
                   child: IconButton(
                     icon: const Icon(Icons.emoji_flags_rounded),
                     onPressed: () {

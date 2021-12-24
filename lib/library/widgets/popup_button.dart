@@ -170,8 +170,9 @@ class AppDialog extends StatelessWidget {
       },
       child: Stack(
         children: [
-          BackgroundFrostBox(
-            onTap: () => close(context),
+          ColoredBox(
+            color: theme.canvasColor,
+            child: const SizedBox.expand(),
           ),
           Dialog(
             alignment: Alignment.topCenter,

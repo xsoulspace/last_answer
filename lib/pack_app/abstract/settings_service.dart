@@ -49,4 +49,11 @@ class SettingsService with SharedPreferencesUtil {
 
   Future<void> setProjectsReversed({required final bool reversed}) async =>
       setBool(SharedPreferencesKeys.projectsReversed.name, reversed);
+
+  Future<int> charactersLimitForNewNotes() async =>
+      getInt(SharedPreferencesKeys.charactersLimitForNewNotes.name);
+  Future<void> setCharactersLimitForNewNotes({
+    required final int? limit,
+  }) async =>
+      setInt(SharedPreferencesKeys.charactersLimitForNewNotes.name, limit);
 }

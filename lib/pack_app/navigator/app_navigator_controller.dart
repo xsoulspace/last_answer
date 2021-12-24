@@ -17,10 +17,12 @@ class AppNavigatorController {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
       final folder = context.read<FolderStateProvider>();
+      final settings = SettingsStateScope.of(context);
       final currentFolder = folder.state;
       final newNote = await NoteProject.create(
         title: '',
         folder: currentFolder,
+        charactersLimit: settings.charactersLimitForNewNotes,
       );
       currentFolder.addProject(newNote);
       context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);

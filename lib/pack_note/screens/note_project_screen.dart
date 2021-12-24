@@ -4,10 +4,14 @@ class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
     required final this.noteId,
     required final this.onBack,
+    required this.onGoHome,
+    required this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
   final String noteId;
   final ValueChanged<NoteProject> onBack;
+  final BoolValueChanged<BasicProject> checkIsProjectActive;
+  final VoidCallback onGoHome;
 
   @override
   Widget build(final BuildContext context) {
@@ -23,14 +27,16 @@ class NoteProjectScreen extends HookWidget {
     final noteController = useTextEditingController(text: maybeNote.note);
 
     // ignore: close_sinks
-    final updatesStream = useStreamController<bool>();
+    final updatesStream = useStreamController<NoteProjectNotifier>();
 
     final state = useNoteProjectScreenState(
       context: context,
-      note: note,
+      note: note.value,
       onScreenBack: onBack,
       noteController: noteController,
       updatesStream: updatesStream,
+      onGoHome: onGoHome,
+      checkIsProjectActive: checkIsProjectActive,
     );
 
     return Scaffold(
@@ -41,14 +47,14 @@ class NoteProjectScreen extends HookWidget {
         height: screenLayout.small ? null : 30,
         screenLayout: screenLayout,
         titleStr: '',
-        actions: [
-          if (!isDesktop)
-            CupertinoIconButton(
-              onPressed: state.onSettings,
-              icon: Icons.more_vert_rounded,
-            ),
-          const SizedBox(width: 20),
-        ],
+        // actions: [
+        //   if (!isDesktop)
+        //     CupertinoIconButton(
+        //       onPressed: state.onSettings,
+        //       icon: Icons.more_vert_rounded,
+        //     ),
+        //   const SizedBox(width: 20),
+        // ],
         onBack: state.onBack,
       ),
       body: Center(
@@ -71,6 +77,7 @@ class NoteProjectScreen extends HookWidget {
                         hintText: S.current.writeANote,
                         fillColor: Colors.transparent,
                         filled: false,
+                        limit: note.value.charactersLimit,
                         focusNode: noteFocusNode,
                         endlessLines: true,
                         onSubmit: state.onBack,
@@ -80,9 +87,10 @@ class NoteProjectScreen extends HookWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        IconButton(
-                          onPressed: state.onSettings,
-                          icon: const Icon(Icons.more_vert_rounded),
+                        NoteSettingsButton(
+                          note: note.value,
+                          onRemove: state.onRemove,
+                          updatesStream: updatesStream,
                         ),
                         SpecialEmojiPopup(
                           controller: noteController,

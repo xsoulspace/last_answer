@@ -104,7 +104,45 @@ class UpdateNotificaionPopup extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
+              separatorBuilder: (final _, final index) {
+                final notification = updates[index + 1];
+                Widget child = ListTile(
+                  title: SelectableText(
+                    notification.title.getByLanguage(language),
+                    style: theme.textTheme.headline5,
+                  ),
+                  subtitle: SelectableText(
+                    intl.DateFormat.yMd()
+                        .format(notification.created.toLocal()),
+                    style: theme.textTheme.subtitle2,
+                  ),
+                );
+
+                if (index == 0) {
+                  child = Column(
+                    children: [
+                      Divider(color: theme.highlightColor),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 35.0),
+                        child: Text(
+                          'PREVIOUS UPDATES',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.subtitle2,
+                        ),
+                      ),
+                      Divider(color: theme.highlightColor),
+                      const SizedBox(height: 35),
+                      child,
+                    ],
+                  );
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 95.0, bottom: 24),
+                  child: child,
+                );
+              },
               shrinkWrap: true,
               itemCount: updates.length,
               padding: const EdgeInsets.all(24),

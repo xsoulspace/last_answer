@@ -13,6 +13,7 @@ class NoteProject extends BasicProject {
     final this.folder,
     final this.note = '',
     final bool isCompleted = defaultProjectIsCompleted,
+    final this.charactersLimit,
   }) : super(
           created: created,
           id: id,
@@ -25,6 +26,7 @@ class NoteProject extends BasicProject {
   static Future<NoteProject> create({
     required final String title,
     required final ProjectFolder folder,
+    required final int charactersLimit,
   }) async {
     final created = DateTime.now();
 
@@ -33,6 +35,7 @@ class NoteProject extends BasicProject {
       created: created,
       folder: folder,
       id: createId(),
+      charactersLimit: charactersLimit,
     );
 
     final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
@@ -47,6 +50,10 @@ class NoteProject extends BasicProject {
   @override
   @HiveField(projectLatestFieldHiveId + 2)
   ProjectFolder? folder;
+
+  /// can be set via [CharactersLimitSetting]
+  @HiveField(projectLatestFieldHiveId + 3)
+  int? charactersLimit;
 
   static const titleLimit = 90;
   @override

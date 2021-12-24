@@ -7,12 +7,6 @@ class AppNavigatorLayoutBuilder {
   final AppNavigatorPageBuilder pageBuilder;
   final AppNavigatorPopper popper;
   String get pathTemplate => popper.pathTemplate;
-  bool checkIsProjectActive(final BasicProject project) {
-    if (project.id == pageBuilder.params.noteId) return true;
-    if (project.id == pageBuilder.params.ideaId) return true;
-
-    return false;
-  }
 
   List<Page> getLargeScreenPages() {
     return [
@@ -22,7 +16,7 @@ class AppNavigatorLayoutBuilder {
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
-              checkIsProjectActive: checkIsProjectActive,
+              checkIsProjectActive: pageBuilder.checkIsProjectActive,
               onGoHome: popper.navigatorController.goHome,
               onInfoTap: popper.navigatorController.goAppInfo,
               onCreateIdeaTap: popper.navigatorController.goCreateIdea,
@@ -65,7 +59,7 @@ class AppNavigatorLayoutBuilder {
           child: AppNavigatorPopScope(
             popper: popper,
             child: SmallHomeScreen(
-              checkIsProjectActive: checkIsProjectActive,
+              checkIsProjectActive: pageBuilder.checkIsProjectActive,
               onInfoTap: popper.navigatorController.goAppInfo,
               onCreateIdeaTap: popper.navigatorController.goCreateIdea,
               onCreateNoteTap: popper.navigatorController.goNoteScreen,

@@ -1,4 +1,4 @@
-part of pack_app;
+part of pack_settings;
 
 class SettingsScreenItem extends StatelessWidget {
   const SettingsScreenItem({
@@ -108,6 +108,23 @@ class SettingsScreen extends StatelessWidget {
               child: ProjectsDirectionSwitch(
                 settings: settings,
               ),
+            ),
+
+            Divider(
+              color: theme.highlightColor,
+              height: 20,
+              endIndent: 10,
+              indent: 10,
+            ),
+            Text(S.current.note),
+            const SizedBox(height: 24),
+            SettingsListTile(
+              title: S.current.charactersLimit,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              leftPadding: leftPadding,
+              rightPadding: rightPadding,
+              description: S.current.charactersLimitForNewNotesDesription,
+              child: const CharactersLimitSetting(),
             ),
 
             // ** An Example of how to use link **

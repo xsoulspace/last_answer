@@ -46,7 +46,9 @@ class ButtonPopup extends StatelessWidget {
       ),
       child: SizedBox(
         height: height,
-        width: !isNativeDesktop ? MediaQuery.of(context).size.width - 50 : 250,
+        width: !isNativeDesktop && !kIsWeb
+            ? MediaQuery.of(context).size.width - 50
+            : 250,
         child: Stack(
           children: [
             const BackgroundFrostBox(),

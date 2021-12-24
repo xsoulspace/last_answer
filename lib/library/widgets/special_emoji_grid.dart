@@ -11,7 +11,7 @@ class SpecialEmojiPopup extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    if (!isNativeDesktop) return const SizedBox();
+    if (!isNativeDesktop && !kIsWeb) return const SizedBox();
 
     final emojiInserter = EmojiInserter.use(
       controller: controller,

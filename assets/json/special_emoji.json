@@ -118,5 +118,10 @@
     "category": "special-emojis",
     "emoji": "•",
     "keywords": "dot"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "°",
+    "keywords": "degree"
   }
 ]

@@ -37,6 +37,7 @@ class BackTextUniversalAppBar extends AppBar {
   BackTextUniversalAppBar({
     required final VoidCallback onBack,
     final ScreenLayout? screenLayout,
+    final List<Widget>? actions,
     final String? titleStr,
     final Widget? title,
     final Key? key,
@@ -57,6 +58,7 @@ class BackTextUniversalAppBar extends AppBar {
           centerTitle: true,
           title: title ?? Text(titleStr ?? ''),
           key: key,
+          actions: actions,
         );
 }
 

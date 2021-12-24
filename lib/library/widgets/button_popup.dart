@@ -2,14 +2,26 @@ part of widgets;
 
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
-    required final this.children,
-    final this.height,
+    final this.children = const [],
+    final this.child,
+    final this.height = 320,
     final this.hideBorder = false,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.mainAxisSize = MainAxisSize.min,
+    this.mainAxisAlignment = MainAxisAlignment.start,
     final Key? key,
-  }) : super(key: key);
+  })  : assert(
+          children != const [] || child != null,
+          'Please provide children or child',
+        ),
+        super(key: key);
   final List<Widget> children;
-  final double? height;
+  final Widget? child;
+  final double height;
   final bool hideBorder;
+  final MainAxisSize mainAxisSize;
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -33,7 +45,7 @@ class ButtonPopup extends StatelessWidget {
         ),
       ),
       child: SizedBox(
-        height: height ?? 320,
+        height: height,
         width: 250,
         child: Stack(
           children: [
@@ -47,11 +59,15 @@ class ButtonPopup extends StatelessWidget {
                   ? AppColors.black
                   : AppColors.white,
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+            if (child != null)
+              child!
+            else
+              Column(
+                mainAxisSize: mainAxisSize,
+                crossAxisAlignment: crossAxisAlignment,
+                mainAxisAlignment: mainAxisAlignment,
+                children: children,
+              ),
           ],
         ),
       ),

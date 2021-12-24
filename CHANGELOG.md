@@ -1,4 +1,18 @@
+## 3.12.0+20
+
+🎄 Eve's update
+
+- new: menu in notes with two options: delete & limit note by Instagram post maximum (2,200 characters)
+- new: settings option to set default limit for all new notes.
+
+- fixed: ideas just.. weren't work as expected. Now it is fixed:)
+
+Wish you peace & love with a lot of cookies:)
+Anton
+
 ## 3.11.0+17
+
+❄ Snowfall update
 
 - new: when you edit an idea or note it will pop up(down) in the list, the direction is dependant on settings
 - new: idea & notes direction switch - you can choose how ideas & notes will be aligned in the list from bottom to top or from top to bottom

@@ -12,13 +12,20 @@ class IconShareButton extends StatefulWidget {
 }
 
 class _IconShareButtonState extends State<IconShareButton> {
-  final defaultIcon =
-      isDesktop ? const Icon(Icons.copy) : const Icon(Icons.share);
+  late Icon defaultIcon;
   final doneIcon = const Icon(Icons.done);
   late Icon currentIcon;
   @override
   void initState() {
     super.initState();
+    IconData iconData;
+    if (isDesktop) {
+      iconData = Icons.copy;
+    } else {
+      iconData = isAppleDevice ? CupertinoIcons.share : Icons.share;
+    }
+    defaultIcon = Icon(iconData);
+
     currentIcon = defaultIcon;
   }
 

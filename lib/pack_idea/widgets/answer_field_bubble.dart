@@ -12,7 +12,16 @@ class AnswerFieldBubble extends HookWidget {
   final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) {
-    final controller = useTextEditingController(text: answer.text);
+    final controller = useTextEditingController(
+      text: answer.text,
+    );
+
+    useEffect(
+      () {
+        controller.text = answer.text;
+      },
+      [answer.text],
+    );
     final consts = FocusBubbleContainerConsts.of(context);
     void _updateAnswer() {
       if (answer.text == controller.text) return;

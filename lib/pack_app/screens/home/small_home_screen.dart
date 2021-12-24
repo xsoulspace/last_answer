@@ -122,7 +122,11 @@ class HomeAppBar {
           ),
           IconButton(
             onPressed: onSettingsTap,
-            icon: const Icon(Icons.settings),
+            icon: Icon(
+              isAppleDevice && isDesktop
+                  ? CupertinoIcons.settings
+                  : CupertinoIcons.gear,
+            ),
           ),
         ]
             .map(

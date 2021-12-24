@@ -25,6 +25,9 @@ class ProjectTile extends StatelessWidget {
   final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
   final ThemeDefiner themeDefiner;
 
+  String createTitle() =>
+      (project is NoteProject ? '      ' : '') + project.title;
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -99,7 +102,7 @@ class ProjectTile extends StatelessWidget {
                       ),
                     ),
                   Text(
-                    (project is NoteProject ? '      ' : '') + project.title,
+                    createTitle(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
                   ),

@@ -161,9 +161,11 @@ class EmojiInserter {
   EmojiInserter.use({
     required final this.controller,
     required final this.focusNode,
+    this.requestFocusOnInsert = true,
   });
   final TextEditingController controller;
   final FocusNode focusNode;
+  final bool requestFocusOnInsert;
 
   void insert(final Emoji emoji) {
     void addEmoji() {
@@ -187,10 +189,12 @@ class EmojiInserter {
           baseOffset: cursorPos + length,
           extentOffset: cursorPos + length,
         );
-      focusNode.removeListener(addEmoji);
+      if (focusNode.hasFocus) {
+        focusNode.removeListener(addEmoji);
+      }
     }
 
-    if (!focusNode.hasFocus) {
+    if (!focusNode.hasFocus && requestFocusOnInsert) {
       if (!focusNode.canRequestFocus) return;
       focusNode
         ..addListener(addEmoji)

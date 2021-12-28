@@ -16,14 +16,45 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     if (isNativeDesktop || kIsWeb) return builder(context, () {});
     final isEmojiKeyboardOpen = useIsBool();
 
+    final emojiKeyboardController = useAnimationController(
+      duration: const Duration(milliseconds: 110),
+    );
+    final emojiKeyboardHeight = useAnimation(
+      Tween<Offset>(
+        begin: Offset.zero,
+        end: const Offset(
+          0,
+          SpecialEmojisKeyboard.height,
+        ),
+      ).animate(
+        CurvedAnimation(
+          parent: emojiKeyboardController,
+          curve: Curves.decelerate,
+        ),
+      ),
+    );
+
+    Future<void> _closeEmojiKeyboard({final bool immediately = true}) async {
+      if (immediately) {
+        emojiKeyboardController.reset();
+        isEmojiKeyboardOpen.value = false;
+      } else {
+        await emojiKeyboardController.reverse();
+        isEmojiKeyboardOpen.value = false;
+      }
+    }
+
     useEffect(
       () {
-        Future.delayed(const Duration(milliseconds: 110), () {
-          final keyboardOpen = window.viewInsets.bottom > 0;
-          if (keyboardOpen) {
-            isEmojiKeyboardOpen.value = false;
-          }
-        });
+        Future.delayed(
+          const Duration(milliseconds: 110),
+          () {
+            final keyboardOpen = window.viewInsets.bottom > 0;
+            if (keyboardOpen && isEmojiKeyboardOpen.value) {
+              _closeEmojiKeyboard();
+            }
+          },
+        );
       },
       [window.viewInsets.bottom],
     );
@@ -35,8 +66,8 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     );
     final footer = SpecialEmojisKeyboard(
       onChanged: emojiInserter.insert,
+      onHide: () => _closeEmojiKeyboard(immediately: false),
       onShowKeyboard: () {
-        isEmojiKeyboardOpen.value = false;
         if (focusNode.hasFocus) {
           SystemChannels.textInput.invokeMethod('TextInput.show');
         } else {
@@ -44,21 +75,38 @@ class SpecialEmojisKeyboardActions extends HookWidget {
         }
       },
     );
-    void _hideEmojiKeyboard() {
+    void showEmojiKeyboard() {
+      emojiKeyboardController.forward();
       SystemChannels.textInput.invokeMethod('TextInput.hide');
       isEmojiKeyboardOpen.value = true;
     }
 
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-          child: GestureDetector(
-            child: builder(context, _hideEmojiKeyboard),
+        Positioned.fill(
+          child: Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  child: builder(context, showEmojiKeyboard),
+                ),
+              ),
+              SizedBox(
+                height: isEmojiKeyboardOpen.value
+                    ? emojiKeyboardHeight.dy
+                    : window.viewInsets.bottom / window.devicePixelRatio,
+              ),
+            ],
           ),
         ),
-        Offstage(
-          offstage: !isEmojiKeyboardOpen.value,
-          child: footer,
+        Positioned(
+          bottom: emojiKeyboardHeight.dy - SpecialEmojisKeyboard.height,
+          left: 0,
+          right: 0,
+          child: Offstage(
+            offstage: !isEmojiKeyboardOpen.value,
+            child: footer,
+          ),
         ),
       ],
     );
@@ -69,12 +117,15 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
   const SpecialEmojisKeyboard({
     required this.onChanged,
     required this.onShowKeyboard,
+    required this.onHide,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<Emoji> onChanged;
   final VoidCallback onShowKeyboard;
+  final VoidCallback onHide;
+  static const height = 150.0;
   @override
-  Size get preferredSize => const Size.fromHeight(150);
+  Size get preferredSize => const Size.fromHeight(height);
 
   @override
   Widget build(final BuildContext context) {
@@ -117,6 +168,16 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
                   padding: EdgeInsets.zero,
                   icon: const Icon(Icons.arrow_drop_up_rounded),
                   onPressed: onShowKeyboard,
+                ),
+              ),
+              Positioned(
+                bottom: -5,
+                right: 80,
+                child: IconButton(
+                  iconSize: 45,
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
+                  onPressed: onHide,
                 ),
               ),
             ],

@@ -4,19 +4,17 @@ class EmojiButton extends StatelessWidget {
   const EmojiButton({
     required final this.onPressed,
     required final this.emoji,
-    this.padding,
-    this.style,
+    required final this.style,
     final Key? key,
   }) : super(key: key);
   final Emoji emoji;
   final VoidCallback onPressed;
   final TextStyle? style;
-  final EdgeInsets? padding;
   @override
   Widget build(final BuildContext context) {
     return CupertinoButton(
       minSize: 0,
-      padding: padding ?? EdgeInsets.zero,
+      padding: EdgeInsets.zero,
       onPressed: onPressed,
       child: Center(
         child: Text(

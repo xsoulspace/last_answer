@@ -46,10 +46,16 @@ class SpecialEmojisGrid extends StatelessWidget {
   final bool hideBorder;
   @override
   Widget build(final BuildContext context) {
+    final emojiStyle = isNativeDesktop && Platform.isMacOS
+        ? null
+        : Theme.of(context).textTheme.bodyText2?.copyWith(
+              fontFamily: 'NotoColorEmoji',
+            );
     Widget buildEmojiButton(final Emoji emoji) {
       return EmojiButton(
         key: ValueKey(emoji),
         emoji: emoji,
+        style: emojiStyle,
         onPressed: () => onChanged(emoji),
       );
     }

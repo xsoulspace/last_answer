@@ -43,6 +43,7 @@ class NoteProjectScreen extends HookWidget {
     return Scaffold(
       backgroundColor: theme.canvasColor,
       restorationId: 'notes/$noteId',
+      resizeToAvoidBottomInset: false,
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
         height: screenLayout.small ? null : 30,
@@ -58,7 +59,7 @@ class NoteProjectScreen extends HookWidget {
           child: SpecialEmojisKeyboardActions(
             focusNode: noteFocusNode,
             controller: noteController,
-            builder: (final context, final hideEmojiKeyboard) {
+            builder: (final context, final showEmojiKeyboard) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -92,7 +93,7 @@ class NoteProjectScreen extends HookWidget {
                             SpecialEmojiPopup(
                               controller: noteController,
                               focusNode: noteFocusNode,
-                              onHideEmojiKeyboard: hideEmojiKeyboard,
+                              onShowEmojiKeyboard: showEmojiKeyboard,
                             ),
                             SizedBox(
                               height: 34,

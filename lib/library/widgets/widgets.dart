@@ -1,6 +1,7 @@
 library widgets;
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -13,13 +14,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_slidable/flutter_slidable.dart' as slidable;
-import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
-import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';

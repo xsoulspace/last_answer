@@ -4,18 +4,18 @@ class SpecialEmojiPopup extends HookWidget {
   const SpecialEmojiPopup({
     required final this.controller,
     required final this.focusNode,
-    required final this.onHideEmojiKeyboard,
+    required final this.onShowEmojiKeyboard,
     final Key? key,
   }) : super(key: key);
   final TextEditingController controller;
   final FocusNode focusNode;
-  final VoidCallback onHideEmojiKeyboard;
+  final VoidCallback onShowEmojiKeyboard;
 
   @override
   Widget build(final BuildContext context) {
     if (!isNativeDesktop && !kIsWeb) {
       return IconButton(
-        onPressed: onHideEmojiKeyboard,
+        onPressed: onShowEmojiKeyboard,
         icon: const Icon(Icons.emoji_flags_rounded),
       );
     }

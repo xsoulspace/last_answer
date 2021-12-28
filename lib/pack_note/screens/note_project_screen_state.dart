@@ -49,13 +49,19 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   }
 
   Future<void> onRemove() async {
-    await removeProject(
+    final remove = await showRemoveTitleDialog(
+      title: note.title,
       context: context,
-      project: note,
-      folderProvider: folderProvider,
-      checkIsProjectActive: checkIsProjectActive,
-      onGoHome: onGoHome,
     );
+    if (remove) {
+      await removeProject(
+        context: context,
+        project: note,
+        folderProvider: folderProvider,
+        checkIsProjectActive: checkIsProjectActive,
+        onGoHome: onGoHome,
+      );
+    }
   }
 
   void onNoteChange() {

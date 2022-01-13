@@ -1,3 +1,14 @@
+## 3.14.0+22
+
+🚃 Social update
+
+- new: easier to set limit for note when you writing for social network. Added Instagram, Discord, Twitter, Facebook, VKontakte limits
+
+- imporved: special symbols line replaced with keyboard for mobile iews
+
+Wish you a nice weather:)
+Anton
+
 ## 3.12.0+20
 
 🎄 Eve's update

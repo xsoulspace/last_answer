@@ -112,12 +112,14 @@ class SettingsScreen extends StatelessWidget {
 
             Divider(
               color: theme.highlightColor,
-              height: 20,
+              height: 24,
               endIndent: 10,
               indent: 10,
             ),
             Text(S.current.note),
+
             const SizedBox(height: 24),
+
             SettingsListTile(
               title: S.current.charactersLimit,
               crossAxisAlignment: CrossAxisAlignment.start,

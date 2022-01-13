@@ -6,6 +6,7 @@ class SettingsListTile extends StatelessWidget {
     required final this.child,
     required final this.leftPadding,
     required final this.rightPadding,
+    this.addTitleQuote = true,
     final this.description = '',
     this.crossAxisAlignment = CrossAxisAlignment.center,
     final Key? key,
@@ -14,6 +15,7 @@ class SettingsListTile extends StatelessWidget {
   final double rightPadding;
   final String title;
   final Widget child;
+  final bool addTitleQuote;
   final String description;
   final CrossAxisAlignment crossAxisAlignment;
   @override
@@ -28,7 +30,7 @@ class SettingsListTile extends StatelessWidget {
         SizedBox(
           width: leftPadding,
           child: Text(
-            '$title:',
+            addTitleQuote ? '$title:' : title,
             textAlign: TextAlign.end,
           ),
         ),
@@ -40,7 +42,7 @@ class SettingsListTile extends StatelessWidget {
               child,
               if (description.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
+                  padding: const EdgeInsets.only(top: 7.0),
                   child: SelectableText(
                     description,
                     style: theme.textTheme.subtitle2,

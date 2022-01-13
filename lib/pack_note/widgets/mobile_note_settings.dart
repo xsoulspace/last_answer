@@ -46,6 +46,7 @@ class MobileNoteSettingsMenu extends HookWidget {
                     Expanded(
                       child: CharactersLimitSetting(
                         note: note,
+                        expanded: true,
                         updatesStream: updatesStream,
                       ),
                     ),

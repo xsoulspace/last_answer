@@ -80,12 +80,40 @@ class $GoogleFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/discord_logo_black.svg
+  SvgGenImage get discordLogoBlack =>
+      const SvgGenImage('assets/icons/discord_logo_black.svg');
+
+  /// File path: assets/icons/discord_logo_blue.svg
+  SvgGenImage get discordLogoBlue =>
+      const SvgGenImage('assets/icons/discord_logo_blue.svg');
+
+  /// File path: assets/icons/discord_logo_white.svg
+  SvgGenImage get discordLogoWhite =>
+      const SvgGenImage('assets/icons/discord_logo_white.svg');
+
+  /// File path: assets/icons/fb_logo_black.png
+  AssetGenImage get fbLogoBlack =>
+      const AssetGenImage('assets/icons/fb_logo_black.png');
+
+  /// File path: assets/icons/fb_logo_blue.png
+  AssetGenImage get fbLogoBlue =>
+      const AssetGenImage('assets/icons/fb_logo_blue.png');
+
+  /// File path: assets/icons/fb_logo_white.png
+  AssetGenImage get fbLogoWhite =>
+      const AssetGenImage('assets/icons/fb_logo_white.png');
+
   /// File path: assets/icons/idea.svg
   SvgGenImage get idea => const SvgGenImage('assets/icons/idea.svg');
 
-  /// File path: assets/icons/instagram_logo.png
-  AssetGenImage get instagramLogo =>
-      const AssetGenImage('assets/icons/instagram_logo.png');
+  /// File path: assets/icons/instagram_logo_black.png
+  AssetGenImage get instagramLogoBlack =>
+      const AssetGenImage('assets/icons/instagram_logo_black.png');
+
+  /// File path: assets/icons/instagram_logo_colorful.png
+  AssetGenImage get instagramLogoColorful =>
+      const AssetGenImage('assets/icons/instagram_logo_colorful.png');
 
   /// File path: assets/icons/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
@@ -118,9 +146,25 @@ class $AssetsIconsGen {
   SvgGenImage get twitterLogoBlack =>
       const SvgGenImage('assets/icons/twitter_logo_black.svg');
 
+  /// File path: assets/icons/twitter_logo_blue.svg
+  SvgGenImage get twitterLogoBlue =>
+      const SvgGenImage('assets/icons/twitter_logo_blue.svg');
+
   /// File path: assets/icons/twitter_logo_white.svg
   SvgGenImage get twitterLogoWhite =>
       const SvgGenImage('assets/icons/twitter_logo_white.svg');
+
+  /// File path: assets/icons/vk_logo_black.svg
+  SvgGenImage get vkLogoBlack =>
+      const SvgGenImage('assets/icons/vk_logo_black.svg');
+
+  /// File path: assets/icons/vk_logo_blue.svg
+  SvgGenImage get vkLogoBlue =>
+      const SvgGenImage('assets/icons/vk_logo_blue.svg');
+
+  /// File path: assets/icons/vk_logo_white.svg
+  SvgGenImage get vkLogoWhite =>
+      const SvgGenImage('assets/icons/vk_logo_white.svg');
 }
 
 class $AssetsJsonGen {

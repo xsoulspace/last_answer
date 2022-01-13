@@ -113,6 +113,14 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/logo_64.png
   AssetGenImage get logo64 => const AssetGenImage('assets/icons/logo_64.png');
+
+  /// File path: assets/icons/twitter_logo_black.svg
+  SvgGenImage get twitterLogoBlack =>
+      const SvgGenImage('assets/icons/twitter_logo_black.svg');
+
+  /// File path: assets/icons/twitter_logo_white.svg
+  SvgGenImage get twitterLogoWhite =>
+      const SvgGenImage('assets/icons/twitter_logo_white.svg');
 }
 
 class $AssetsJsonGen {

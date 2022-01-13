@@ -33,7 +33,7 @@ class NoteSettingsButton extends StatelessWidget {
       onMobileRemove: onRemove,
       builder: (final context) {
         return ButtonPopup(
-          height: 200,
+          height: 230,
           child: DesktopNoteSettingsMenu(
             note: note,
             onRemove: onRemove,

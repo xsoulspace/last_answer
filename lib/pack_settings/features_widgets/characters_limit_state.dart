@@ -5,6 +5,8 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
   required final StreamController<NoteProjectNotifier>? updatesStream,
   required final BuildContext context,
   required final TextEditingController controller,
+  required final ValueNotifier<bool> isCustomFieldOpen,
+  required final AnimationController customFieldController,
 }) =>
     use(
       LifeHook(
@@ -14,6 +16,8 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
           updatesStream: updatesStream,
           context: context,
           controller: controller,
+          customFieldController: customFieldController,
+          isCustomFieldOpen: isCustomFieldOpen,
         ),
       ),
     );
@@ -24,10 +28,15 @@ class CharactersLimitSettingState implements LifeState {
     required this.updatesStream,
     required this.context,
     required this.controller,
+    required this.customFieldController,
+    required this.isCustomFieldOpen,
   });
 
   @override
   ValueChanged<VoidCallback>? setState;
+  final ValueNotifier<bool> isCustomFieldOpen;
+  final AnimationController customFieldController;
+
   final BuildContext context;
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
@@ -65,8 +74,30 @@ class CharactersLimitSettingState implements LifeState {
     setState?.call(() {});
   }
 
+  static const int instagramLimit = 2200;
+  static const String instagramLimitStr = '$instagramLimit';
+  bool get isInstagramLimit => controller.text == instagramLimitStr;
   void onSetInstagramLimit() {
-    setLimit(2200, updateController: true);
+    final newLimit = isInstagramLimit ? 0 : instagramLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int twitterLimit = 280;
+  static const String twitterLimitStr = '$twitterLimit';
+  bool get isTwitterLimit => controller.text == twitterLimitStr;
+  void onSetTwitterLimit() {
+    final newLimit = isTwitterLimit ? 0 : twitterLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  void onOpenCustomField() {
+    final opened = !isCustomFieldOpen.value;
+    isCustomFieldOpen.value = opened;
+    if (opened) {
+      customFieldController.forward();
+    } else {
+      customFieldController.reverse();
+    }
   }
 
   void onClearLimit() {

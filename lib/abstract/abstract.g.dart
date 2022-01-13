@@ -204,17 +204,20 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       folder: fields[6] as ProjectFolder?,
       note: fields[5] as String,
       isCompleted: fields[1] as bool,
+      charactersLimit: fields[7] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NoteProject obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(5)
       ..write(obj.note)
       ..writeByte(6)
       ..write(obj.folder)
+      ..writeByte(7)
+      ..write(obj.charactersLimit)
       ..writeByte(3)
       ..write(obj.created)
       ..writeByte(0)

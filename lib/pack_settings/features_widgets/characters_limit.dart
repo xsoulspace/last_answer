@@ -131,6 +131,7 @@ class CharactersLimitSetting extends HookWidget {
 
     return Wrap(
       spacing: 14,
+      runSpacing: 14,
       children: [
         CharactersLimitButton(
           onTap: state.onSetInstagramLimit,

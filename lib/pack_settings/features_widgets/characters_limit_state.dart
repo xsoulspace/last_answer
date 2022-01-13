@@ -90,6 +90,30 @@ class CharactersLimitSettingState implements LifeState {
     setLimit(newLimit, updateController: true);
   }
 
+  static const int vkLimit = 4096;
+  static const String vkLimitStr = '$vkLimit';
+  bool get isVkLimit => controller.text == vkLimitStr;
+  void onSetVkLimit() {
+    final newLimit = isVkLimit ? 0 : vkLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int facebookLimit = 63206;
+  static const String facebookLimitStr = '$facebookLimit';
+  bool get isFacebookLimit => controller.text == facebookLimitStr;
+  void onSetFacebookLimit() {
+    final newLimit = isFacebookLimit ? 0 : facebookLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int discordLimit = 2000;
+  static const String discordLimitStr = '$discordLimit';
+  bool get isDiscordLimit => controller.text == discordLimitStr;
+  void onSetDiscordLimit() {
+    final newLimit = isDiscordLimit ? 0 : discordLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
   bool get noLimitIsSet => controller.text.isEmpty;
 
   void onClearLimit() {

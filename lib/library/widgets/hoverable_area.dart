@@ -13,6 +13,7 @@ class HoverableArea extends HookWidget {
   }) : super(key: key);
   final HoverableWidgetBuilder builder;
   final bool clickable;
+
   @override
   Widget build(final BuildContext context) {
     final hovered = useIsBool();

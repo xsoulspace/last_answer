@@ -111,10 +111,10 @@ class S {
     );
   }
 
-  /// `Unlimited..`
+  /// `Other`
   String get charactersUnlimited {
     return Intl.message(
-      'Unlimited..',
+      'Other',
       name: 'charactersUnlimited',
       desc: 'charactersUnlimited',
       args: [],

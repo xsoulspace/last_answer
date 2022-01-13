@@ -45,8 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
                 "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки."),
-        "charactersUnlimited":
-            MessageLookupByLibrary.simpleMessage("Бесконечно.."),
+        "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Другой"),
         "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),

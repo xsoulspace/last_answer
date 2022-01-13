@@ -32,6 +32,7 @@ class SettingsScreen extends StatelessWidget {
     final _initLocale =
         namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
     final screenLayout = ScreenLayout.of(context);
+
     final leftPadding = screenLayout.small ? 90.0 : 150.0;
     final rightPadding = screenLayout.small ? 0.0 : 90.0;
 

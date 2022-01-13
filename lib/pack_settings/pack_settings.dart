@@ -1,6 +1,7 @@
 library pack_settings;
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,7 @@ import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/src/provider.dart';
-import 'package:universal_io/io.dart';
 
 part 'features_widgets/characters_limit.dart';
 part 'features_widgets/characters_limit_state.dart';

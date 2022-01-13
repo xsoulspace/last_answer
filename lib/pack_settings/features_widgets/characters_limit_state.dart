@@ -5,8 +5,6 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
   required final StreamController<NoteProjectNotifier>? updatesStream,
   required final BuildContext context,
   required final TextEditingController controller,
-  required final ValueNotifier<bool> isCustomFieldOpen,
-  required final AnimationController customFieldController,
 }) =>
     use(
       LifeHook(
@@ -16,8 +14,6 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
           updatesStream: updatesStream,
           context: context,
           controller: controller,
-          customFieldController: customFieldController,
-          isCustomFieldOpen: isCustomFieldOpen,
         ),
       ),
     );
@@ -28,14 +24,10 @@ class CharactersLimitSettingState implements LifeState {
     required this.updatesStream,
     required this.context,
     required this.controller,
-    required this.customFieldController,
-    required this.isCustomFieldOpen,
   });
 
   @override
   ValueChanged<VoidCallback>? setState;
-  final ValueNotifier<bool> isCustomFieldOpen;
-  final AnimationController customFieldController;
 
   final BuildContext context;
   final NoteProject? note;
@@ -61,7 +53,11 @@ class CharactersLimitSettingState implements LifeState {
   static const limitNotifier =
       NoteProjectNotifier(charactersLimitChanged: true);
 
-  void setLimit(final int newLimit, {final bool updateController = false}) {
+  void setLimit(
+    final int newLimit, {
+    final bool updateController = false,
+    final bool zeroEqualNull = true,
+  }) {
     if (note == null) {
       settings.charactersLimitForNewNotes = newLimit;
     } else {
@@ -69,7 +65,11 @@ class CharactersLimitSettingState implements LifeState {
       updatesStream?.add(limitNotifier);
     }
     if (updateController) {
-      controller.text = newLimit == 0 ? '' : '$newLimit';
+      String effectiveLimit = '$newLimit';
+      if (zeroEqualNull && newLimit == 0) {
+        effectiveLimit = '';
+      }
+      controller.text = effectiveLimit;
     }
     setState?.call(() {});
   }
@@ -90,15 +90,7 @@ class CharactersLimitSettingState implements LifeState {
     setLimit(newLimit, updateController: true);
   }
 
-  void onOpenCustomField() {
-    final opened = !isCustomFieldOpen.value;
-    isCustomFieldOpen.value = opened;
-    if (opened) {
-      customFieldController.forward();
-    } else {
-      customFieldController.reverse();
-    }
-  }
+  bool get noLimitIsSet => controller.text.isEmpty;
 
   void onClearLimit() {
     setLimit(0, updateController: true);

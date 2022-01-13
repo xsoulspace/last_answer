@@ -1,7 +1,7 @@
 part of widgets;
 
-class AppIconButton extends StatelessWidget {
-  const AppIconButton({
+class HoverableButton extends StatelessWidget {
+  const HoverableButton({
     required final this.onPressed,
     required final this.child,
     final Key? key,

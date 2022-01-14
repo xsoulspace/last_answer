@@ -17,6 +17,7 @@ import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:universal_io/io.dart';
 
 part 'screens/note_project_screen.dart';
 part 'screens/note_project_screen_state.dart';

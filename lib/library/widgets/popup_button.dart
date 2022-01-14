@@ -5,17 +5,17 @@ class PopupButton extends HookWidget {
     required this.builder,
     required this.icon,
     final this.mobileBuilder,
-    this.secondaryMobileAction,
+    this.onMobileRemove,
     this.useOnMobile = true,
     this.title,
     final Key? key,
   }) : super(key: key);
   final WidgetBuilder builder;
   final WidgetBuilder? mobileBuilder;
-  final Widget? secondaryMobileAction;
   final IconData icon;
   final bool useOnMobile;
   final Widget? title;
+  final VoidCallback? onMobileRemove;
 
   void onOpenPopup({
     required final BuildContext context,
@@ -33,10 +33,10 @@ class PopupButton extends HookWidget {
       barrierDismissible: false,
       context: context,
       barrierColor: Colors.black12,
-      builder: (final context) => AppDialog(
+      builder: (final context) => MobilePopupButtonDialog(
         builder: effectiveBuilder,
+        onRemove: onMobileRemove,
         close: close,
-        secondaryMobileAction: secondaryMobileAction,
         title: title,
       ),
     );
@@ -110,57 +110,26 @@ class PopupButton extends HookWidget {
   }
 }
 
-class AppDialog extends StatelessWidget {
-  const AppDialog({
-    required final this.secondaryMobileAction,
+class MobilePopupButtonDialog extends StatelessWidget {
+  const MobilePopupButtonDialog({
     required final this.title,
     required final this.close,
     required final this.builder,
+    required this.onRemove,
     final Key? key,
   }) : super(key: key);
-  final Widget? secondaryMobileAction;
   final Widget? title;
   final ValueChanged<BuildContext> close;
+  final VoidCallback? onRemove;
   final WidgetBuilder builder;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    Widget actions;
-    final isDark = theme.brightness == Brightness.dark;
-    final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
 
-    final closeButton = OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: defaultBorderRadius,
-        ),
-        side: BorderSide(
-          color: primaryColor,
-        ),
-        primary: primaryColor,
-      ),
-      onPressed: () => close(context),
-      child: Text(
-        S.current.close.sentenceCase,
-        style: theme.textTheme.headline6?.copyWith(
-          color: primaryColor,
-        ),
-      ),
+    final closeButton = RemoveActionButton(
+      onTap: onRemove,
+      useIcon: true,
     );
-
-    if (secondaryMobileAction != null) {
-      actions = Row(
-        children: [
-          Expanded(child: secondaryMobileAction!),
-          Expanded(
-            child: closeButton,
-          ),
-        ],
-      );
-    } else {
-      actions = Expanded(child: closeButton);
-    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -168,28 +137,25 @@ class AppDialog extends StatelessWidget {
 
         return true;
       },
-      child: Stack(
-        children: [
-          ColoredBox(
-            color: theme.canvasColor,
-            child: const SizedBox.expand(),
+      child: Dialog(
+        alignment: Alignment.topCenter,
+        insetPadding: EdgeInsets.zero,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            actions: [closeButton],
+            title: title,
+            centerTitle: true,
           ),
-          Dialog(
-            alignment: Alignment.topCenter,
-            insetPadding: const EdgeInsets.symmetric(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
               horizontal: 20.0,
+              vertical: 24,
             ),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
             child: Column(
               children: [
-                if (title != null)
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: title,
-                    ),
-                  ),
                 Row(
                   children: [
                     builder(context),
@@ -201,15 +167,141 @@ class AppDialog extends StatelessWidget {
                   endIndent: 12,
                   indent: 12,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: actions,
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedPrimaryButton(
+                    onClose: () => close(context),
+                  ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class RemoveActionButton extends StatelessWidget {
+  const RemoveActionButton({
+    required this.onTap,
+    this.useIcon = false,
+    final Key? key,
+  }) : super(key: key);
+  final VoidCallback? onTap;
+  final bool useIcon;
+  @override
+  Widget build(final BuildContext context) {
+    return TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: defaultBorderRadius,
+        ),
+        primary: AppColors.accent3,
+      ),
+      child: useIcon
+          ? const Icon(Icons.delete_forever_rounded)
+          : Text(
+              S.current.delete.sentenceCase,
+              style: Theme.of(context).textTheme.headline6,
+              // ?.copyWith(color: AppColors.accent3),
+            ),
+    );
+  }
+}
+
+class OutlinedPrimaryButton extends StatelessWidget {
+  const OutlinedPrimaryButton({
+    required this.onClose,
+    this.useIcon = false,
+    final Key? key,
+  }) : super(key: key);
+  final VoidCallback? onClose;
+  final bool useIcon;
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
+
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        side: BorderSide(color: primaryColor),
+        primary: primaryColor,
+      ),
+      onPressed: onClose,
+      child: useIcon
+          ? const Icon(Icons.check)
+          : Text(
+              S.current.close.sentenceCase,
+              style: theme.textTheme.headline6?.copyWith(
+                color: primaryColor,
+              ),
+            ),
+    );
+  }
+}
+
+class DangerZone extends StatelessWidget {
+  const DangerZone({
+    required this.onRemove,
+    final Key? key,
+  }) : super(key: key);
+  final VoidCallback onRemove;
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: defaultPopupBorderRadius,
+              border: Border.all(color: AppColors.accent2),
+            ),
+            height: 50,
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 15,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: defaultPopupBorderRadius,
+              color: theme.canvasColor.withOpacity(1),
+            ),
+            child: Text(
+              'Danger',
+              style: theme.textTheme.bodyText2?.copyWith(
+                color: AppColors.accent3,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: defaultPopupBorderRadius,
+            ),
+            height: 50,
+            child: RemoveActionButton(
+              onTap: onRemove,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

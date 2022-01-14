@@ -52,6 +52,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
         divider,
         Expanded(
           child: HoverableArea(
+            clickable: false,
             builder: (final context, final hovered) {
               return Opacity(
                 opacity: hovered ? 1.0 : 0.7,

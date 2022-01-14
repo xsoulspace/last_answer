@@ -61,6 +61,7 @@ class IdeaProjectScreen extends HookWidget {
               },
               behavior: HitTestBehavior.translucent,
               child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
                 key: PageStorageKey('ideas/listeview/$ideaId/answers'),
                 controller: scrollController,
                 restorationId: 'ideas/listeview/$ideaId/answers',

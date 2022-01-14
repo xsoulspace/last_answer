@@ -46,7 +46,7 @@ class NoteProjectScreen extends HookWidget {
       resizeToAvoidBottomInset: false,
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
-        height: screenLayout.small ? null : 30,
+        height: screenLayout.small ? 40 : 30,
         screenLayout: screenLayout,
         titleStr: '',
         onBack: state.onBack,
@@ -78,6 +78,7 @@ class NoteProjectScreen extends HookWidget {
                             limit: note.value.charactersLimit,
                             focusNode: noteFocusNode,
                             endlessLines: true,
+                            focusOnInit: note.value.note.isEmpty,
                             onSubmit: state.onBack,
                             controller: noteController,
                           ),

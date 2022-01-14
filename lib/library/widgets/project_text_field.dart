@@ -27,7 +27,7 @@ class ProjectTextField extends StatefulHookWidget {
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
-  final bool? focusOnInit;
+  final bool focusOnInit;
   final bool filled;
   final Color? fillColor;
   final VoidCallback? onUnfocus;

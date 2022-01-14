@@ -2,11 +2,15 @@
 
 🚃 Social update
 
-- new: easier to set limit for note when you writing for social network. Added Instagram, Discord, Twitter, Facebook, VKontakte limits
+- new: it is easier to set limits for notes when you write for the social network. Added Instagram, Discord, Twitter, Facebook, VKontakte limits
+- new: closee keyboard button for mobile.
 
 - imporved: special symbols line replaced with keyboard for mobile iews
+- imporved: note layout has a wider window to write for mobile
 
-Wish you a nice weather:)
+- fix: hide keyboard if note or idea is not empty.
+
+Wish you nice weather:)
 Anton
 
 ## 3.12.0+20

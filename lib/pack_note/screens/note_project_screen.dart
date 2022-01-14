@@ -59,7 +59,11 @@ class NoteProjectScreen extends HookWidget {
           child: SpecialEmojisKeyboardActions(
             focusNode: noteFocusNode,
             controller: noteController,
-            builder: (final context, final showEmojiKeyboard) {
+            builder: (
+              final context,
+              final showEmojiKeyboard,
+              final closeEmojiKeyboard,
+            ) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,14 +114,16 @@ class NoteProjectScreen extends HookWidget {
                               controller: noteController,
                               focusNode: noteFocusNode,
                             ),
-                            IconButton(
-                              onPressed: () {
-                                closeKeyboard(context: context);
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.keyboard_chevron_compact_down,
+                            if (Platform.isAndroid || Platform.isIOS)
+                              IconButton(
+                                onPressed: () {
+                                  closeKeyboard(context: context);
+                                  closeEmojiKeyboard();
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.keyboard_chevron_compact_down,
+                                ),
                               ),
-                            ),
                           ]
                               .map(
                                 (final e) => Padding(

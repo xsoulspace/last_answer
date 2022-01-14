@@ -52,7 +52,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   @override
   void initState() {
     setMaxLength();
-    if (widget.focusOnInit != false) {
+    if (widget.focusOnInit) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         if (!mounted) return;
         if (_textFieldFocusNode.canRequestFocus) {

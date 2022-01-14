@@ -109,6 +109,14 @@ class NoteProjectScreen extends HookWidget {
                               controller: noteController,
                               focusNode: noteFocusNode,
                             ),
+                            IconButton(
+                              onPressed: () {
+                                closeKeyboard(context: context);
+                              },
+                              icon: const Icon(
+                                CupertinoIcons.keyboard_chevron_compact_down,
+                              ),
+                            ),
                           ]
                               .map(
                                 (final e) => Padding(
@@ -121,7 +129,7 @@ class NoteProjectScreen extends HookWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  if (isNativeDesktop) const SizedBox(height: 14),
                   const BottomSafeArea(),
                 ],
               );

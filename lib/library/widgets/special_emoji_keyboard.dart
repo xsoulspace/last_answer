@@ -7,13 +7,16 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     required this.focusNode,
     final Key? key,
   }) : super(key: key);
-  final Widget Function(BuildContext context, VoidCallback onHideEmojiKeyboard)
-      builder;
+  final Widget Function(
+    BuildContext context,
+    VoidCallback showEmojiKeyboard,
+    VoidCallback hideEmojiKeyboard,
+  ) builder;
   final FocusNode focusNode;
   final TextEditingController controller;
   @override
   Widget build(final BuildContext context) {
-    if (isNativeDesktop || kIsWeb) return builder(context, () {});
+    if (isNativeDesktop || kIsWeb) return builder(context, () {}, () {});
     final isEmojiKeyboardOpen = useIsBool();
 
     final emojiKeyboardController = useAnimationController(
@@ -34,7 +37,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       ),
     );
 
-    Future<void> _closeEmojiKeyboard({final bool immediately = true}) async {
+    Future<void> closeEmojiKeyboard({final bool immediately = true}) async {
       if (immediately) {
         emojiKeyboardController.reset();
         isEmojiKeyboardOpen.value = false;
@@ -51,7 +54,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
           () {
             final keyboardOpen = window.viewInsets.bottom > 0;
             if (keyboardOpen && isEmojiKeyboardOpen.value) {
-              _closeEmojiKeyboard();
+              closeEmojiKeyboard();
             }
           },
         );
@@ -66,7 +69,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     );
     final footer = SpecialEmojisKeyboard(
       onChanged: emojiInserter.insert,
-      onHide: () => _closeEmojiKeyboard(immediately: false),
+      onHide: () => closeEmojiKeyboard(immediately: false),
       onShowKeyboard: () {
         if (focusNode.hasFocus) {
           SoftKeyboard.open();
@@ -88,7 +91,8 @@ class SpecialEmojisKeyboardActions extends HookWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  child: builder(context, showEmojiKeyboard),
+                  child:
+                      builder(context, showEmojiKeyboard, closeEmojiKeyboard),
                 ),
               ),
               SizedBox(

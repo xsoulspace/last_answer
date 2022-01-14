@@ -21,41 +21,35 @@ class MobileNoteSettingsMenu extends HookWidget {
     );
     final theme = Theme.of(context);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: borderPadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: borderPadding),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 90,
-                      child: Text(
-                        '${S.current.charactersLimit}:',
-                        textAlign: TextAlign.end,
-                        style: theme.textTheme.headline6,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: CharactersLimitSetting(
-                        note: note,
-                        updatesStream: updatesStream,
-                      ),
-                    ),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: borderPadding),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: borderPadding),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 90,
+                child: Text(
+                  '${S.current.charactersLimit}:',
+                  textAlign: TextAlign.end,
+                  style: theme.textTheme.headline6,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: CharactersLimitSetting(
+                  note: note,
+                  updatesStream: updatesStream,
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

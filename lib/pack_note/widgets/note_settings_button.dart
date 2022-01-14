@@ -22,7 +22,7 @@ class NoteSettingsButton extends StatelessWidget {
       mobileBuilder: (final context) {
         return SizedBox(
           width: MediaQuery.of(context).size.width - 50,
-          height: 100,
+          height: 150,
           child: MobileNoteSettingsMenu(
             note: note,
             onRemove: onRemove,

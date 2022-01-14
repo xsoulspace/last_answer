@@ -69,7 +69,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       onHide: () => _closeEmojiKeyboard(immediately: false),
       onShowKeyboard: () {
         if (focusNode.hasFocus) {
-          SystemChannels.textInput.invokeMethod('TextInput.show');
+          SoftKeyboard.open();
         } else {
           focusNode.requestFocus();
         }
@@ -77,7 +77,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     );
     void showEmojiKeyboard() {
       emojiKeyboardController.forward();
-      SystemChannels.textInput.invokeMethod('TextInput.hide');
+      SoftKeyboard.close();
       isEmojiKeyboardOpen.value = true;
     }
 

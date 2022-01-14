@@ -46,8 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
                 "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note."),
-        "charactersUnlimited":
-            MessageLookupByLibrary.simpleMessage("Illimitata.."),
+        "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Altro"),
         "close": MessageLookupByLibrary.simpleMessage("CHIUDI"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Crea tutorial"),

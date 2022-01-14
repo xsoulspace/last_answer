@@ -67,7 +67,11 @@ class EmojiGrid extends HookWidget {
         ? AppColors.cleanBlack
         : AppColors.grey4;
     const maxItemsInRow = 9;
-
+    final emojiStyle = isNativeDesktop && Platform.isMacOS
+        ? null
+        : Theme.of(context).textTheme.bodyText2?.copyWith(
+              fontFamily: 'NotoColorEmoji',
+            );
     Widget buildEmojiButton(final Emoji emoji) {
       void onPressed() {
         onChanged(emoji);
@@ -87,6 +91,7 @@ class EmojiGrid extends HookWidget {
 
       return EmojiButton(
         key: ValueKey(emoji),
+        style: emojiStyle,
         emoji: emoji,
         onPressed: onPressed,
       );
@@ -161,9 +166,11 @@ class EmojiInserter {
   EmojiInserter.use({
     required final this.controller,
     required final this.focusNode,
+    this.requestFocusOnInsert = true,
   });
   final TextEditingController controller;
   final FocusNode focusNode;
+  final bool requestFocusOnInsert;
 
   void insert(final Emoji emoji) {
     void addEmoji() {
@@ -187,10 +194,12 @@ class EmojiInserter {
           baseOffset: cursorPos + length,
           extentOffset: cursorPos + length,
         );
-      focusNode.removeListener(addEmoji);
+      if (focusNode.hasFocus) {
+        focusNode.removeListener(addEmoji);
+      }
     }
 
-    if (!focusNode.hasFocus) {
+    if (!focusNode.hasFocus && requestFocusOnInsert) {
       if (!focusNode.canRequestFocus) return;
       focusNode
         ..addListener(addEmoji)

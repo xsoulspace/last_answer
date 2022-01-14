@@ -27,7 +27,7 @@
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
   },
-  "charactersUnlimited": "Бесконечно..",
+  "charactersUnlimited": "Другой",
   "@charactersUnlimited": {
     "description": "charactersUnlimited"
   },

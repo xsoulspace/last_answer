@@ -32,6 +32,7 @@ class SettingsScreen extends StatelessWidget {
     final _initLocale =
         namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
     final screenLayout = ScreenLayout.of(context);
+
     final leftPadding = screenLayout.small ? 90.0 : 150.0;
     final rightPadding = screenLayout.small ? 0.0 : 90.0;
 
@@ -112,12 +113,14 @@ class SettingsScreen extends StatelessWidget {
 
             Divider(
               color: theme.highlightColor,
-              height: 20,
+              height: 24,
               endIndent: 10,
               indent: 10,
             ),
             Text(S.current.note),
+
             const SizedBox(height: 24),
+
             SettingsListTile(
               title: S.current.charactersLimit,
               crossAxisAlignment: CrossAxisAlignment.start,

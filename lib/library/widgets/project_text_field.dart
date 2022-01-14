@@ -27,7 +27,7 @@ class ProjectTextField extends StatefulHookWidget {
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
-  final bool? focusOnInit;
+  final bool focusOnInit;
   final bool filled;
   final Color? fillColor;
   final VoidCallback? onUnfocus;
@@ -52,7 +52,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   @override
   void initState() {
     setMaxLength();
-    if (widget.focusOnInit != false) {
+    if (widget.focusOnInit) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         if (!mounted) return;
         if (_textFieldFocusNode.canRequestFocus) {
@@ -60,8 +60,8 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
         }
       });
     }
-    _textFieldFocusNode = widget.focusNode ?? FocusNode();
 
+    _textFieldFocusNode = widget.focusNode ?? FocusNode();
     super.initState();
   }
 
@@ -80,7 +80,8 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final scrollController = useScrollController();
+    final _scrollController = useScrollController();
+
     useEffect(
       // ignore: unnecessary_lambdas
       () {
@@ -90,7 +91,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
     );
 
     return RightScrollbar(
-      controller: scrollController,
+      controller: _scrollController,
       child: FocusBubbleContainer(
         onFocus: widget.onFocus,
         fillColor: widget.fillColor,
@@ -106,7 +107,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             maxLength: _maxLength,
             maxLengthEnforcement: MaxLengthEnforcement.none,
             maxLines: widget.endlessLines ? null : widget.maxLines,
-            scrollController: scrollController,
+            scrollController: _scrollController,
             focusNode: _textFieldFocusNode,
             onFieldSubmitted: (final _) => widget.onSubmit(),
             controller: widget.controller,
@@ -119,7 +120,9 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(
-                  contentPadding: const EdgeInsets.all(6),
+                  contentPadding: isNativeDesktop
+                      ? const EdgeInsets.all(6)
+                      : const EdgeInsets.only(top: 6, bottom: 4),
                   filled: widget.filled,
                   // labelStyle: TextStyle(color: Colors.white),
                   // fillColor: ThemeColors.lightAccent,

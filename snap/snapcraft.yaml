@@ -2,7 +2,7 @@ name: last-answer
 version: 3.14.5+27
 summary: Fast ideas brainstorming tool with quick notes
 description: |
-  You have a cool idea.
+  You have a cool idea or you need to write a post/article for your blog.
   You need to write it down fast.
 
   Then this app is for you.
@@ -15,26 +15,27 @@ description: |
   That's it!:)
 
   **Features**
-  - Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers 
+  - Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
+  - Quick note limit - limit characters length by social network. 
+
   - Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+
   - Dark & Light themes
   - English, Italian, Russian languages
-  - Responsive layout - choose what you like - full screen or in a small window
+  - Responsive layout - nice to you if you use it on full screen or in a small window
 
   Hope this app will be useful for you :)
   Thank you and have a nice day.
 
-  ---
-
   ## Have an idea, improvements, or bugs?
 
-  [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
+  Join Discord https://discord.gg/y54DpJwmAn or send a message to idea@xsoulspace.dev
 
   ---
 
   ## Support Development
 
-  You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+  You can support this app development by giving a star its GitHub repository - https://github.com/xsoulspace/last_answer or support on https://patreon.com/arenukvern
   Thank you for your support!
 
 icon: snap/gui/last-answer.png

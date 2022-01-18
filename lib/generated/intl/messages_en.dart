@@ -40,17 +40,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
-        "cancel": MessageLookupByLibrary.simpleMessage("CANCEL"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Characters limit"),
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
                 "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."),
         "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Other"),
-        "close": MessageLookupByLibrary.simpleMessage("CLOSE"),
+        "close": MessageLookupByLibrary.simpleMessage("Close"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Create tutorial"),
-        "delete": MessageLookupByLibrary.simpleMessage("DELETE"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Delete this note"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(

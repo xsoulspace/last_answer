@@ -381,20 +381,20 @@ class S {
     );
   }
 
-  /// `CANCEL`
+  /// `Cancel`
   String get cancel {
     return Intl.message(
-      'CANCEL',
+      'Cancel',
       name: 'cancel',
       desc: 'popup start cancel',
       args: [],
     );
   }
 
-  /// `CLOSE`
+  /// `Close`
   String get close {
     return Intl.message(
-      'CLOSE',
+      'Close',
       name: 'close',
       desc: 'Close',
       args: [],
@@ -421,10 +421,10 @@ class S {
     );
   }
 
-  /// `DELETE`
+  /// `Delete`
   String get delete {
     return Intl.message(
-      'DELETE',
+      'Delete',
       name: 'delete',
       desc: 'delete',
       args: [],

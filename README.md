@@ -5,6 +5,7 @@
   <a title="Discord" href="https://discord.com/invite/y54DpJwmAn" ><img src="https://img.shields.io/discord/696688204476055592.svg" /></a>
   <a title="Contributor Covenant" href="https://github.com/xsoulspace/last_answer/blob/master/CODE_OF_CONDUCT.md" ><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" /></a>
   <a title="Contributors" href="https://github.com/xsoulspace/last_answer/graphs/contributors" ><img src="https://img.shields.io/github/contributors/xsoulspace/last_answer.svg" /></a>
+  <a href="https://patreon.com/arenukvern"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Darenukvern%26type%3Dpatrons&style=flat" alt="Support me on Patreon" /></a>
 </p>
 
 ## Desktop

@@ -127,15 +127,15 @@
   "@note": {
     "description": "Note name"
   },
-  "cancel": "ОТМЕНИТЬ",
+  "cancel": "Отменить",
   "@cancel": {
     "description": "Отменить"
   },
-  "close": "ЗАКРЫТЬ",
+  "close": "Закрыть",
   "@close": {
     "description": "Закрыть"
   },
-  "delete": "УДАЛИТЬ",
+  "delete": "Удалить",
   "@delete": {
     "description": "Удалить"
   },

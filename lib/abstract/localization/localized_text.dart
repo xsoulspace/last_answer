@@ -33,10 +33,10 @@ class LocalizedText with EquatableMixin {
 
   /// If any new [Languages] added, add this to [values]
   Map<LanguageName, String?> get values => {
-        Locales.ru.toString(): ru,
-        Locales.en.toString(): en,
-        Locales.it.toString(): it,
-        Locales.ga.toString(): ga,
+        Locales.ru.languageCode: ru,
+        Locales.en.languageCode: en,
+        Locales.it.languageCode: it,
+        Locales.ga.languageCode: ga,
       };
   String getByLanguage(final LanguageName language) {
     final text = values[getLanguageCode(language)];

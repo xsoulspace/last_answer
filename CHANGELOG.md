@@ -1,3 +1,7 @@
+## 3.14.1+23
+
+- fix: languages switch for ideas questions
+
 ## 3.14.0+22
 
 🚃 Social update

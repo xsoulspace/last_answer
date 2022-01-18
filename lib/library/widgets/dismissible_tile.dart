@@ -28,7 +28,7 @@ class DismissibleTile extends StatelessWidget {
             onPressed: (final _) => onDismissed(),
             backgroundColor: AppColors.accent2.withOpacity(0.8),
             foregroundColor: Colors.white,
-            label: 'Delete',
+            label: S.current.delete,
           ),
         ],
       ),

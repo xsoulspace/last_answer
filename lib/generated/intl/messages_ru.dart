@@ -39,17 +39,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
-        "cancel": MessageLookupByLibrary.simpleMessage("ОТМЕНИТЬ"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Отменить"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Лимит символов"),
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
                 "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки."),
         "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Другой"),
-        "close": MessageLookupByLibrary.simpleMessage("ЗАКРЫТЬ"),
+        "close": MessageLookupByLibrary.simpleMessage("Закрыть"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
-        "delete": MessageLookupByLibrary.simpleMessage("УДАЛИТЬ"),
+        "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Удалить заметку"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(

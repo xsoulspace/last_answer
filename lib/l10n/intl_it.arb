@@ -135,15 +135,15 @@
   "@answer": {
     "description": "answer input"
   },
-  "cancel": "CANCELLA",
+  "cancel": "Cancella",
   "@cancel": {
     "description": "popup start cancel"
   },
-  "close": "CHIUDI",
+  "close": "Chiudi",
   "@close": {
     "description": "Close"
   },
-  "delete": "ELIMINA",
+  "delete": "Elimina",
   "@delete": {
     "description": "delete"
   },

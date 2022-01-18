@@ -135,11 +135,11 @@
   "@answer": {
     "description": "answer input"
   },
-  "cancel": "CANCEL",
+  "cancel": "Cancel",
   "@cancel": {
     "description": "popup start cancel"
   },
-  "close": "CLOSE",
+  "close": "Close",
   "@close": {
     "description": "Close"
   },
@@ -151,7 +151,7 @@
   "@aboutAbstractWhatFor": {
     "description": "What For About Abstract"
   },
-  "delete": "DELETE",
+  "delete": "Delete",
   "@delete": {
     "description": "delete"
   },

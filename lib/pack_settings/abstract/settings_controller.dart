@@ -101,6 +101,8 @@ class SettingsController with ChangeNotifier {
     settingsService.setCharactersLimitForNewNotes(limit: limit);
   }
 
+  bool isProUser = false;
+
   void notify() => notifyListeners();
 }
 

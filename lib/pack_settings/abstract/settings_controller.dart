@@ -1,4 +1,4 @@
-part of pack_app;
+part of pack_settings;
 
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.

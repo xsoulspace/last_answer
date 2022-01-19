@@ -32,8 +32,6 @@ part 'abstract/notification_message.dart';
 part 'abstract/notifications_controller.dart';
 part 'abstract/notifications_service.dart';
 part 'abstract/route_parameters.dart';
-part 'abstract/settings_controller.dart';
-part 'abstract/settings_service.dart';
 part 'navigator/app_navigator.dart';
 part 'navigator/app_navigator_controller.dart';
 part 'navigator/app_navigator_data_provider.dart';

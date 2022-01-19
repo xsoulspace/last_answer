@@ -1,4 +1,4 @@
-part of pack_app;
+part of pack_settings;
 
 /// A service that stores and retrieves user settings.
 ///

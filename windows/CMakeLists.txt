@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.15)
-project(lastanswer LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.14)
+project(last_answer LANGUAGES CXX)
 
-set(BINARY_NAME "lastanswer")
+set(BINARY_NAME "last_answer")
 
 cmake_policy(SET CMP0063 NEW)
 

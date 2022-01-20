@@ -56,6 +56,7 @@ dependencies:
   purchases_flutter: ^3.9.2
 
 dev_dependencies:
+  msix: ^2.8.2
   build_runner: ^2.1.5
   flutter_gen: ^4.1.2
   flutter_gen_runner: ^4.1.2
@@ -67,6 +68,15 @@ dev_dependencies:
   json_serializable: ^6.1.1
   mocktail: ^0.2.0
   dart_code_metrics: ^4.8.1
+
+msix_config:
+  display_name: "Last Answer: Ideas & Notes"
+  publisher_display_name: Anton Malofeev
+  identity_name: 31440AntonMalofeev.lastanswer
+  publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1
+  msix_version: 3.14.6.0
+  logo_path: ./assets/icons/logo_256.png
+  store: true
 
 # flutter pub run flutter_launcher_icons:main
 # generate for macos https://appicon.co

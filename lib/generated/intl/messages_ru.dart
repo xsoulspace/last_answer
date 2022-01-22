@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить заметку"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "или отправьте сообщение на idea@xsoulspace.dev"),
+        "freeSubscription": MessageLookupByLibrary.simpleMessage("Бесплатно"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Часто используемые"),
         "idea": MessageLookupByLibrary.simpleMessage("Идея"),
@@ -61,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Присоединяйтесь к Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
+        "learnMore": MessageLookupByLibrary.simpleMessage("Learn more"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Сделано с Flutter ❤ и Open Source Libraries"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
@@ -89,10 +91,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Обратите внимание"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
+        "proSubscription": MessageLookupByLibrary.simpleMessage("Pro"),
         "projectsDirection":
             MessageLookupByLibrary.simpleMessage("Направление заметок"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "subscription": MessageLookupByLibrary.simpleMessage("Подписка"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Условия использования"),
         "theme": MessageLookupByLibrary.simpleMessage("Тема"),

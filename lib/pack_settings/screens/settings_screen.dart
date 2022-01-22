@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-
+    final paymentsController = context.read<PaymentsController>();
     final settings = SettingsStateScope.of(context);
     final languageCode = settings.locale?.languageCode;
     final String effectiveLanguageCode =
@@ -80,6 +80,16 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            // TODO(enable when payments will be ready)
+            if (kDebugMode)
+              SettingsListTile(
+                title: S.current.subscription,
+                leftPadding: leftPadding,
+                rightPadding: rightPadding,
+                child: SubscriptionInfoButton(
+                  paymentsController: paymentsController,
+                ),
+              ),
             SettingsListTile(
               title: S.current.language,
               leftPadding: leftPadding,

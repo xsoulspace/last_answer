@@ -3,6 +3,7 @@ library pack_settings;
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,6 +16,7 @@ import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 

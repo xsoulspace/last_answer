@@ -55,12 +55,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delete this note"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "or send a message to idea@xsoulspace.dev"),
+        "freeSubscription": MessageLookupByLibrary.simpleMessage("Free"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Frequently used"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "joinDiscord": MessageLookupByLibrary.simpleMessage("Join Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
+        "learnMore": MessageLookupByLibrary.simpleMessage("Learn more"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Made with Flutter ❤ and Open Source Libraries"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
@@ -87,10 +89,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Inspiration"),
         "pleaseNotice": MessageLookupByLibrary.simpleMessage("Please notice"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "proSubscription": MessageLookupByLibrary.simpleMessage("Pro"),
         "projectsDirection":
             MessageLookupByLibrary.simpleMessage("Notes direction"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "subscription": MessageLookupByLibrary.simpleMessage("Subscription"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),

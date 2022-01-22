@@ -90,6 +90,46 @@ class S {
     );
   }
 
+  /// `Subscription`
+  String get subscription {
+    return Intl.message(
+      'Subscription',
+      name: 'subscription',
+      desc: 'subscription',
+      args: [],
+    );
+  }
+
+  /// `Free`
+  String get freeSubscription {
+    return Intl.message(
+      'Free',
+      name: 'freeSubscription',
+      desc: 'free Subscription',
+      args: [],
+    );
+  }
+
+  /// `Pro`
+  String get proSubscription {
+    return Intl.message(
+      'Pro',
+      name: 'proSubscription',
+      desc: 'proSubscription',
+      args: [],
+    );
+  }
+
+  /// `Learn more`
+  String get learnMore {
+    return Intl.message(
+      'Learn more',
+      name: 'learnMore',
+      desc: 'LearnMore',
+      args: [],
+    );
+  }
+
   /// `Characters limit`
   String get charactersLimit {
     return Intl.message(

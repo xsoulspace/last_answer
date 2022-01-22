@@ -127,6 +127,22 @@
   "@note": {
     "description": "Note name"
   },
+  "subscription": "Подписка",
+  "@subscription": {
+    "description": "subscription"
+  },
+  "freeSubscription": "Бесплатно",
+  "@freeSubscription": {
+    "description": "free Subscription"
+  },
+  "proSubscription": "Pro",
+  "@proSubscription": {
+    "description": "proSubscription"
+  },
+  "learnMore": "Learn more",
+  "@learnMore": {
+    "description": "LearnMore"
+  },
   "cancel": "Отменить",
   "@cancel": {
     "description": "Отменить"

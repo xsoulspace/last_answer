@@ -135,6 +135,22 @@
   "@answer": {
     "description": "answer input"
   },
+  "subscription": "Abbonamento",
+  "@subscription": {
+    "description": "subscription"
+  },
+  "freeSubscription": "Gratuito",
+  "@freeSubscription": {
+    "description": "free Subscription"
+  },
+  "proSubscription": "Pro",
+  "@proSubscription": {
+    "description": "proSubscription"
+  },
+  "learnMore": "Learn more",
+  "@learnMore": {
+    "description": "LearnMore"
+  },
   "cancel": "Cancella",
   "@cancel": {
     "description": "popup start cancel"

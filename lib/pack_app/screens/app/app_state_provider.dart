@@ -9,7 +9,7 @@ class AppStateProvider extends StatelessWidget {
   GeneralSettingsController get _settings => GlobalStateNotifiers.settings;
   @override
   Widget build(final BuildContext context) {
-    return MultiProvider(
+    final child = MultiProvider(
       providers: [
         ChangeNotifierProvider(create: createEmojiProvider),
         ChangeNotifierProvider(create: createLastUsedEmojisProvider),
@@ -37,6 +37,20 @@ class AppStateProvider extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+    if (isNativeDesktop) {
+      return child;
+    }
+
+    return Directionality(
+      // TODO(arenukvern): replace with default device textDirection
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: [
+          Container(color: AppColors.black),
+          child,
+        ],
       ),
     );
   }

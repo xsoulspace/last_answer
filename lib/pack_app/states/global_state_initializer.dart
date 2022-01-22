@@ -169,6 +169,7 @@ class GlobalStateInitializer implements StateInitializer {
     // if (!settings.migrated) {
     //   await settings.setMigrated();
     // }
+    settings.loadingStatus = AppStateLoadingStatuses.settings;
 
     await notificationController.onLoad(context: context);
 

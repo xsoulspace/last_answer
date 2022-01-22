@@ -15,6 +15,22 @@
   "@writeANote": {
     "description": "writeANote"
   },
+  "subscription": "Subscription",
+  "@subscription": {
+    "description": "subscription"
+  },
+  "freeSubscription": "Free",
+  "@freeSubscription": {
+    "description": "free Subscription"
+  },
+  "proSubscription": "Pro",
+  "@proSubscription": {
+    "description": "proSubscription"
+  },
+  "learnMore": "Learn more",
+  "@learnMore": {
+    "description": "LearnMore"
+  },
   "charactersLimit": "Characters limit",
   "@charactersLimit": {
     "description": "charactersLimit"

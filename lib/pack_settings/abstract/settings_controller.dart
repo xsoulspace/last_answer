@@ -102,8 +102,6 @@ class SettingsController with ChangeNotifier implements Loadable {
     settingsService.setCharactersLimitForNewNotes(limit: limit);
   }
 
-  bool isProUser = false;
-
   void notify() => notifyListeners();
 }
 

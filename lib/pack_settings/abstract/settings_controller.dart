@@ -6,7 +6,7 @@ part of pack_settings;
 /// Controllers glue Data Services to Flutter Widgets. The SettingsController
 /// uses the SettingsService to store and retrieve user settings.
 // ignore: prefer_mixin
-class SettingsController with ChangeNotifier {
+class SettingsController with ChangeNotifier implements Loadable {
   SettingsController({required final this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
@@ -54,7 +54,8 @@ class SettingsController with ChangeNotifier {
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
-  Future<void> load() async {
+  @override
+  Future<void> onLoad({required final BuildContext context}) async {
     _themeMode = await settingsService.themeMode();
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();

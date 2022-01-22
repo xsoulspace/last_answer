@@ -23,5 +23,8 @@ part 'abstract/general_settings_controller.dart';
 part 'abstract/general_settings_service.dart';
 part 'features_widgets/characters_limit.dart';
 part 'features_widgets/characters_limit_state.dart';
+part 'features_widgets/locale_switcher_button.dart';
+part 'features_widgets/theme_switcher_button.dart';
 part 'screens/general_settings_screen.dart';
 part 'screens/settings_screen.dart';
+part 'screens/small_settings_screen.dart';

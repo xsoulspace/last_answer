@@ -25,11 +25,6 @@ class GeneralSettingsScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final settings = GeneralSettingsStateScope.of(context);
-    final languageCode = settings.locale?.languageCode;
-    final String effectiveLanguageCode =
-        languageCode ?? getLanguageCode(intl.Intl.getCurrentLocale());
-    final _initLocale =
-        namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
     final screenLayout = ScreenLayout.of(context);
 
     final leftPadding = screenLayout.small ? 90.0 : 150.0;
@@ -56,49 +51,16 @@ class GeneralSettingsScreen extends StatelessWidget {
               title: S.current.theme,
               leftPadding: leftPadding,
               rightPadding: rightPadding,
-              child: DropdownButton<ThemeMode>(
-                // Read the selected themeMode from the controller
-                value: settings.themeMode,
-                // Call the updateThemeMode method any time the user selects
-                // theme.
-                onChanged: settings.updateThemeMode,
-                isExpanded: true,
-                items: [
-                  DropdownMenuItem(
-                    value: ThemeMode.system,
-                    child: SettingsScreenItem(text: S.current.themeSystem),
-                  ),
-                  DropdownMenuItem(
-                    value: ThemeMode.light,
-                    child: SettingsScreenItem(text: S.current.themeLight),
-                  ),
-                  DropdownMenuItem(
-                    value: ThemeMode.dark,
-                    child: SettingsScreenItem(text: S.current.themeDark),
-                  ),
-                ],
+              child: ThemeSwitcherButton(
+                settings: settings,
               ),
             ),
             SettingsListTile(
               title: S.current.language,
               leftPadding: leftPadding,
               rightPadding: rightPadding,
-              child: DropdownButton<Locale>(
-                // Read the selected themeMode from the controller
-                value: _initLocale,
-                // Call the updateThemeMode method any time the user selects
-                // theme.
-                onChanged: settings.updateLocale,
-                isExpanded: true,
-                items: namedLocalesMap.values
-                    .map(
-                      (final e) => DropdownMenuItem<Locale>(
-                        value: e.locale,
-                        key: ValueKey(e.code),
-                        child: SettingsScreenItem(text: e.name),
-                      ),
-                    )
-                    .toList(),
+              child: LocaelSwitcherButton(
+                settings: settings,
               ),
             ),
             SettingsListTile(

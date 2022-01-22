@@ -6,7 +6,7 @@ class ProjectsDirectionSwitch extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
 
-  final SettingsController settings;
+  final GeneralSettingsController settings;
 
   // ignore: use_setters_to_change_properties
   void setReverse({required final bool reverse}) {

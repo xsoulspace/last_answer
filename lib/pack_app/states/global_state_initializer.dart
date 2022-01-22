@@ -17,7 +17,7 @@ class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
     required final this.settings,
   });
-  final SettingsController settings;
+  final GeneralSettingsController settings;
 
   @override
   // ignore: long-method

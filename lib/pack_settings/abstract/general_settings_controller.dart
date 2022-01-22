@@ -6,8 +6,8 @@ part of pack_settings;
 /// Controllers glue Data Services to Flutter Widgets. The SettingsController
 /// uses the SettingsService to store and retrieve user settings.
 // ignore: prefer_mixin
-class SettingsController with ChangeNotifier implements Loadable {
-  SettingsController({required final this.settingsService});
+class GeneralSettingsController with ChangeNotifier implements Loadable {
+  GeneralSettingsController({required final this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService settingsService;
@@ -105,11 +105,11 @@ class SettingsController with ChangeNotifier implements Loadable {
   void notify() => notifyListeners();
 }
 
-/// Provides the current [SettingsController] to descendent widgets in the tree.
+/// Provides the current [GeneralSettingsController] to descendent widgets in the tree.
 class GeneralSettingsStateScope
-    extends ChangeNotifierProvider<SettingsController> {
+    extends ChangeNotifierProvider<GeneralSettingsController> {
   GeneralSettingsStateScope({
-    required final SettingsController notifier,
+    required final GeneralSettingsController notifier,
     required final Widget child,
     final Key? key,
   }) : super(
@@ -118,7 +118,7 @@ class GeneralSettingsStateScope
           child: child,
         );
 
-  static SettingsController of(final BuildContext context) {
-    return context.read<SettingsController>();
+  static GeneralSettingsController of(final BuildContext context) {
+    return context.read<GeneralSettingsController>();
   }
 }

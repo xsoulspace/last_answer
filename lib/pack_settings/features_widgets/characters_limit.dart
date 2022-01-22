@@ -132,10 +132,16 @@ class CharactersLimitSetting extends HookWidget {
     return Wrap(
       spacing: 14,
       runSpacing: 14,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         CharactersLimitButton(
           onTap: state.onSetInstagramLimit,
-          child: instagramIcon.image(
+          child: Image.asset(
+            instagramIcon.assetName,
+            bundle: instagramIcon.bundle,
+            package: instagramIcon.package,
+            cacheHeight: 36,
+            cacheWidth: 36,
             width: 18,
             height: 18,
             color: state.isInstagramLimit
@@ -155,9 +161,14 @@ class CharactersLimitSetting extends HookWidget {
         ),
         CharactersLimitButton(
           onTap: state.onSetFacebookLimit,
-          child: facebookIcon.image(
-            width: 16,
-            height: 16,
+          child: Image.asset(
+            facebookIcon.assetName,
+            bundle: facebookIcon.bundle,
+            package: facebookIcon.package,
+            cacheHeight: 36,
+            cacheWidth: 36,
+            width: 18,
+            height: 18,
           ),
         ),
         CharactersLimitButton(
@@ -170,8 +181,8 @@ class CharactersLimitSetting extends HookWidget {
         CharactersLimitButton(
           onTap: state.onSetVkLimit,
           child: vkIcon.svg(
-            width: 16,
-            height: 16,
+            width: 18,
+            height: 18,
           ),
         ),
         otherButton,

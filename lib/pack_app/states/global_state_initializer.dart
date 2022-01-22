@@ -22,13 +22,34 @@ class GlobalStateInitializer implements StateInitializer {
   @override
   // ignore: long-method
   Future<void> onLoad({required final BuildContext context}) async {
+    /// ********************************************
+    /// *      CONTEXT RELATED READINGS START
+    /// ********************************************
+
     final lastEmojiProvider = context.read<LastEmojiProvider>();
     final specialEmojiProvider = context.read<SpecialEmojiProvider>();
     final emojiProvider = context.read<EmojiProvider>();
     final currentFolderProvider = context.read<FolderStateProvider>();
     final notificationController = context.read<NotificationController>();
+    final paymentsController = context.read<PaymentsController>();
 
-    await settings.load();
+    /// ********************************************
+    /// *      CONTEXT RELATED READINGS END
+    /// ********************************************
+
+    /// ********************************************
+    /// *      CONTENT LOADING START
+    /// ********************************************
+
+    /// Loadindependent controllers
+    final loadableControllers = <Loadable>[
+      settings,
+      paymentsController,
+    ];
+    await Future.forEach<Loadable>(
+      loadableControllers,
+      (final loadable) => loadable.onLoad(context: context),
+    );
 
     settings.loadingStatus = AppStateLoadingStatuses.emoji;
     // ignore: use_build_context_synchronously
@@ -134,7 +155,16 @@ class GlobalStateInitializer implements StateInitializer {
       currentFolder = projectsFolders.values.first;
     }
     currentFolderProvider.setState(currentFolder);
-    // TODO(arenukvern): in case of future migrations - how to automate it?
+
+    /// ********************************************
+    /// *      CONTENT LOADING END
+    /// ********************************************
+
+    /// ********************************************
+    /// *      MIGRATIONS START
+    /// ********************************************
+
+    // TODO(arenukvern): keep it in case of future migrations - how to automate it?
     // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
     // if (!settings.migrated) {
     //   await settings.setMigrated();
@@ -142,7 +172,9 @@ class GlobalStateInitializer implements StateInitializer {
 
     await notificationController.onLoad(context: context);
 
-    /// ***************** MIGRATION END *******************
+    /// ********************************************
+    /// *      MIGRATIONS END
+    /// ********************************************
     WidgetsBinding.instance?.addPostFrameCallback((final _) {
       settings.notify();
     });

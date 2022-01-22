@@ -19,6 +19,7 @@ import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';

@@ -8,7 +8,6 @@ class SubscriptionInfoButton extends StatelessWidget {
 
   final PaymentsController paymentsController;
 
-  // ignore: use_setters_to_change_properties
   void openSubscriptionPopup({required final BuildContext context}) {}
 
   @override

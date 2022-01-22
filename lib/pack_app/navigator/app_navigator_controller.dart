@@ -17,7 +17,7 @@ class AppNavigatorController {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
       final folder = context.read<FolderStateProvider>();
-      final settings = SettingsStateScope.of(context);
+      final settings = GeneralSettingsStateScope.of(context);
       final currentFolder = folder.state;
       final newNote = await NoteProject.create(
         title: '',

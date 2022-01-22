@@ -106,8 +106,9 @@ class SettingsController with ChangeNotifier implements Loadable {
 }
 
 /// Provides the current [SettingsController] to descendent widgets in the tree.
-class SettingsStateScope extends ChangeNotifierProvider<SettingsController> {
-  SettingsStateScope({
+class GeneralSettingsStateScope
+    extends ChangeNotifierProvider<SettingsController> {
+  GeneralSettingsStateScope({
     required final SettingsController notifier,
     required final Widget child,
     final Key? key,

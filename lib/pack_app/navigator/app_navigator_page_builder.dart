@@ -33,6 +33,23 @@ class AppNavigatorPageBuilder {
     );
   }
 
+  /// ********************************************
+  /// *      SETTINGS START
+  /// ********************************************
+
+  Page generalSettingsPage() {
+    return MaterialPage<void>(
+      key: _ValueKeys._generalSettings,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: GeneralSettingsScreen(
+          onBack: navigatorController.goHome,
+        ),
+      ),
+    );
+  }
+
   Page settingsPage() {
     return MaterialPage<void>(
       key: _ValueKeys._settings,
@@ -45,6 +62,10 @@ class AppNavigatorPageBuilder {
       ),
     );
   }
+
+  /// ********************************************
+  /// *      SETTINGS END
+  /// ********************************************
 
   Page notePage() {
     return MaterialPage<void>(

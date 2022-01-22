@@ -29,10 +29,8 @@ class AppNavigatorLayoutBuilder {
                 pages: [
                   if (pathTemplate == AppRoutesName.note)
                     pageBuilder.notePage()
-                  else if (pathTemplate.contains(AppRoutesName.idea)) ...[
-                    pageBuilder.ideaPage(),
-                  ] else if (pathTemplate == AppRoutesName.settings)
-                    pageBuilder.settingsPage()
+                  else if (pathTemplate.contains(AppRoutesName.idea))
+                    pageBuilder.ideaPage()
                   else
                     AppNavigatorPageBuilder.emptyPage,
                 ],
@@ -45,6 +43,8 @@ class AppNavigatorLayoutBuilder {
           pageBuilder.createIdeaPage()
         else if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage()
+        else if (pathTemplate == AppRoutesName.settings)
+          pageBuilder.settingsPage()
         else if (pathTemplate == AppRoutesName.appInfo)
           pageBuilder.appInfoPage(),
       ],
@@ -69,8 +69,6 @@ class AppNavigatorLayoutBuilder {
             ),
           ),
         )
-      else if (pathTemplate == AppRoutesName.settings)
-        pageBuilder.settingsPage()
       else if (pathTemplate == AppRoutesName.appInfo)
         pageBuilder.appInfoPage()
       else if (pathTemplate == AppRoutesName.createIdea)
@@ -81,7 +79,9 @@ class AppNavigatorLayoutBuilder {
         pageBuilder.ideaPage(),
         if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage(),
-      ] else
+      ] else if (pathTemplate == AppRoutesName.settings)
+        pageBuilder.settingsPage()
+      else
         AppNavigatorPageBuilder.emptyPage,
     ];
   }

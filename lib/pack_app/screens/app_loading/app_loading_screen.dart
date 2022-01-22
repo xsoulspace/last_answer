@@ -6,7 +6,7 @@ class AppLoadingScreen extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(final BuildContext context) {
-    final settings = SettingsStateScope.of(context);
+    final settings = GeneralSettingsStateScope.of(context);
     final statusText = appLoadingStatusesTitles[settings.loadingStatus]
             ?.getByLanguage(intl.Intl.systemLocale) ??
         '';

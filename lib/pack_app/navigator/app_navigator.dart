@@ -4,7 +4,9 @@ class _ValueKeys {
   _ValueKeys._();
   static const _home = ValueKey<String>('home');
   static const _settings = ValueKey<String>('settings');
+  static const _generalSettings = ValueKey<String>('settings/general');
   static const _info = ValueKey<String>('info');
+
   static const _notes = ValueKey<String>('notes');
   static const _notesNote = ValueKey<String>('notes/note');
   static const _createIdea = ValueKey<String>('createIdea');

@@ -23,7 +23,7 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createPaymentsController)
       ],
       child: Portal(
-        child: SettingsStateScope(
+        child: GeneralSettingsStateScope(
           notifier: _settings,
           child: Builder(
             builder: (final context) {

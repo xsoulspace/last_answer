@@ -1,1 +1,13 @@
 library pack_purchases;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/envs.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:universal_io/io.dart';
+
+part 'states/payments_controller.dart';
+part 'states/payments_service.dart';
+part 'widgets/parental_gate.dart';
+part 'widgets/subscription_popup.dart';

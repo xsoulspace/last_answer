@@ -16,12 +16,12 @@ import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-part 'abstract/settings_controller.dart';
-part 'abstract/settings_service.dart';
+part 'abstract/general_settings_controller.dart';
+part 'abstract/general_settings_service.dart';
 part 'features_widgets/characters_limit.dart';
 part 'features_widgets/characters_limit_state.dart';
+part 'screens/general_settings_screen.dart';
 part 'screens/settings_screen.dart';

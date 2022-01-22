@@ -12,33 +12,48 @@ class StateLoader extends HookWidget {
   final Widget child;
   final StateInitializer initializer;
   final Widget loader;
+  static const _transitionDurationInMiliseconds = 350;
   @override
   Widget build(final BuildContext context) {
     final loaded = useIsBool();
     final loading = useIsBool();
 
-    if (loaded.value & !loading.value) {
-      return child;
-    }
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: _transitionDurationInMiliseconds),
+      transitionBuilder: (final child, final animation) {
+        const begin = 0.99;
+        const end = 1.0;
+        const curve = Curves.easeInOutBack;
 
-    return FutureBuilder<bool>(
-      future: () async {
-        if (loading.value) return false;
-        loading.value = true;
-        loaded.value = true;
-        await initializer.onLoad(context: context);
-        loading.value = false;
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-        return true;
-      }(),
-      builder: (final context, final snapshot) {
-        if (snapshot.connectionState != ConnectionState.done ||
-            snapshot.data == false) {
-          return loader;
-        }
-
-        return child;
+        return ScaleTransition(
+          scale: animation.drive(tween),
+          child: child,
+        );
       },
+      child: loaded.value & !loading.value
+          ? child
+          : FutureBuilder<bool>(
+              future: () async {
+                if (loading.value) return false;
+                loading.value = true;
+                loaded.value = true;
+                await initializer.onLoad(context: context);
+                loading.value = false;
+
+                return true;
+              }(),
+              builder: (final context, final snapshot) {
+                if (snapshot.connectionState != ConnectionState.done ||
+                    snapshot.data == false) {
+                  return loader;
+                }
+
+                return child;
+              },
+            ),
     );
   }
 }

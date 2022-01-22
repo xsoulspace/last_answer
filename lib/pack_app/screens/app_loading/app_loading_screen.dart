@@ -11,22 +11,16 @@ class AppLoadingScreen extends StatelessWidget {
             ?.getByLanguage(intl.Intl.systemLocale) ??
         '';
 
-    return Container(
-      color: AppColors.black,
-      child: Center(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(AppColors.primary2),
-              ),
-              const SizedBox(height: 5),
-              Text(statusText),
-            ],
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(AppColors.primary2),
           ),
-        ),
+          const SizedBox(height: 5),
+          Text(statusText),
+        ],
       ),
     );
   }

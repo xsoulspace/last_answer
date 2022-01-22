@@ -5,5 +5,5 @@ class GlobalStateNotifiers {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   static final settings =
-      SettingsController(settingsService: SettingsService());
+      GeneralSettingsController(settingsService: SettingsService());
 }

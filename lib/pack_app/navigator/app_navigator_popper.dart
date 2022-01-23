@@ -50,8 +50,12 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
         } else {
           navigatorController.goHome();
         }
-      } else if (maybePage.key == NavigatorValueKeys.generalSettings) {
-        navigatorController.goHome();
+      } else if (maybePage.name?.contains(AppRoutesName.settings) == true) {
+        if (maybePage.name == AppRoutesName.settings) {
+          navigatorController.goHome();
+        } else {
+          navigatorController.goSettings();
+        }
       }
     }
 

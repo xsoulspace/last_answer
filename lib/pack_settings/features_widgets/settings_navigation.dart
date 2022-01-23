@@ -10,43 +10,48 @@ class SettingsNavigation extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
+    final screenLayout = ScreenLayout.of(context);
+    BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
+    if (screenLayout.notSmall) {
+      effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: screenLayout.small
+          ? CrossAxisAlignment.stretch
+          : CrossAxisAlignment.start,
+      mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
       children: [
         SettingsButton(
           routeName: AppRoutesName.generalSettings,
           fallbackRouteName: AppRoutesName.settings,
           onSelected: onSelectRoute,
-          checkSelected: routeState.checkIsCurrentRoute,
-          // TODO(arenukvern): add translation
-          text: 'General',
+          checkSelected: effectiveSelectedRouteCheck,
+          text: screenLayout.small
+              ? S.current.generalSettingsFullTitle
+              : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
         SettingsButton(
           routeName: AppRoutesName.profile,
           onSelected: onSelectRoute,
           checkSelected: routeState.checkIsCurrentRoute,
-          // TODO(arenukvern): add translation
-          text: 'My account',
+          text: S.current.myAccount,
           // TODO(arenukvern): add avatar
         ),
         SettingsButton(
           routeName: AppRoutesName.subscription,
           onSelected: onSelectRoute,
           checkSelected: routeState.checkIsCurrentRoute,
-          // TODO(arenukvern): add translation
-          text: 'Subscription',
+          text: S.current.subscription,
           // TODO(arenukvern): add avatar
         ),
         SettingsButton(
           routeName: AppRoutesName.changelog,
           onSelected: onSelectRoute,
           checkSelected: routeState.checkIsCurrentRoute,
-          // TODO(arenukvern): add translation
-          text: 'Change Log',
+          text: S.current.changeLog,
           // TODO(arenukvern): add avatar
         ),
       ],

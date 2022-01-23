@@ -40,13 +40,20 @@ class NoteProjectScreen extends HookWidget {
       checkIsProjectActive: checkIsProjectActive,
     );
 
+    double? appBarHeight;
+    if (Platform.isMacOS) {
+      appBarHeight = null;
+    } else {
+      appBarHeight = screenLayout.small ? 40 : 30;
+    }
+
     return Scaffold(
       backgroundColor: theme.canvasColor,
       restorationId: 'notes/$noteId',
       resizeToAvoidBottomInset: false,
       appBar: BackTextUniversalAppBar(
         useBackButton: true,
-        height: screenLayout.small ? 40 : 30,
+        height: appBarHeight,
         screenLayout: screenLayout,
         titleStr: '',
         onBack: state.onBack,

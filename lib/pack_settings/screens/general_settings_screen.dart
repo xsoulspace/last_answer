@@ -17,7 +17,7 @@ class GeneralSettingsScreen extends StatelessWidget {
         useBackButton: true,
         screenLayout: screenLayout,
         onBack: onBack,
-        titleStr: S.current.settings,
+        titleStr: S.current.generalSettingsFullTitle,
       ),
       body: const GeneralSettings(),
     );

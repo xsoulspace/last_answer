@@ -4,10 +4,6 @@ class NavigatorValueKeys {
   NavigatorValueKeys._();
   static const _home = ValueKey<String>('home');
   static const _settings = ValueKey<String>('settings');
-  static const generalSettings = ValueKey<String>('settings/general');
-  static const profile = ValueKey<String>('settings/profile');
-  static const subscription = ValueKey<String>('settings/subscription');
-  static const changelog = ValueKey<String>('settings/changelog');
 
   static const _info = ValueKey<String>('info');
 

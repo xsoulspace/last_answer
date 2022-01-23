@@ -23,13 +23,25 @@
   "@freeSubscription": {
     "description": "free Subscription"
   },
-  "proSubscription": "Pro",
-  "@proSubscription": {
-    "description": "proSubscription"
+  "patronSubscription": "Patron",
+  "@patronSubscription": {
+    "description": "patronSubscription"
   },
-  "learnMore": "Learn more",
-  "@learnMore": {
-    "description": "LearnMore"
+  "myAccount": "My Account",
+  "@myAccount": {
+    "description": "myAccount"
+  },
+  "changeLog": "Change Log",
+  "@changeLog": {
+    "description": "changeLog"
+  },
+  "generalSettingsFullTitle": "General Settings",
+  "@generalSettingsFullTitle": {
+    "description": "generalSettingsFullTitle"
+  },
+  "generalSettingsShortTitle": "General",
+  "@generalSettingsShortTitle": {
+    "description": "generalSettingsShortTitle"
   },
   "charactersLimit": "Characters limit",
   "@charactersLimit": {

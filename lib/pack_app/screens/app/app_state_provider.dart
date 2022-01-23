@@ -21,21 +21,19 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createNoteProjectsProvider),
         ChangeNotifierProvider(create: createNotificationController),
         ChangeNotifierProvider(create: createPaymentsController),
-        ChangeNotifierProvider(create: createGeneralSettingsController),
       ],
       child: Portal(
         child: Builder(
-            builder: (final context) {
-              return StateLoader(
-                initializer: GlobalStateInitializer(
-                  settings: _settings,
-                ),
-                loader: const AppLoadingScreen(),
-                child: builder(context),
-              );
-            },
-          ),
-        
+          builder: (final context) {
+            return StateLoader(
+              initializer: GlobalStateInitializer(
+                settings: _settings,
+              ),
+              loader: const AppLoadingScreen(),
+              child: builder(context),
+            );
+          },
+        ),
       ),
     );
     if (isNativeDesktop) {

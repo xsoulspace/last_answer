@@ -37,6 +37,10 @@ class SmallSettingsScreen extends HookWidget {
               subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
               await toPage();
               break;
+            case AppRoutesName.profile:
+              subSettingsPage.value = MyAccountScreen(onBack: onBack);
+              await toPage();
+              break;
             default:
               await toNavigation();
               subSettingsPage.value = const SizedBox();

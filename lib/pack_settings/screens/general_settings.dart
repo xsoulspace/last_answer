@@ -2,21 +2,20 @@ part of pack_settings;
 
 class GeneralSettings extends StatelessWidget {
   const GeneralSettings({
-    required final this.onBack,
+    this.padding,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onBack;
+  final EdgeInsets? padding;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final settings = GeneralSettingsStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
 
-    final leftPadding = screenLayout.small ? 90.0 : 150.0;
-    final rightPadding = screenLayout.small ? 0.0 : 90.0;
+    final leftColumnWidth = screenLayout.small ? 90.0 : 150.0;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(18),
+      padding: padding ?? const EdgeInsets.all(18),
       child: Column(
         children: [
           // Glue the SettingsController to the theme selection
@@ -26,24 +25,21 @@ class GeneralSettings extends StatelessWidget {
           // SettingsController is updated, which rebuilds the MaterialApp.
           SettingsListTile(
             title: S.current.theme,
-            leftPadding: leftPadding,
-            rightPadding: rightPadding,
+            leftColumnWidth: leftColumnWidth,
             child: ThemeSwitcherButton(
               settings: settings,
             ),
           ),
           SettingsListTile(
             title: S.current.language,
-            leftPadding: leftPadding,
-            rightPadding: rightPadding,
+            leftColumnWidth: leftColumnWidth,
             child: LocaelSwitcherButton(
               settings: settings,
             ),
           ),
           SettingsListTile(
             title: S.current.projectsDirection,
-            leftPadding: leftPadding,
-            rightPadding: rightPadding,
+            leftColumnWidth: leftColumnWidth,
             child: ProjectsDirectionSwitch(
               settings: settings,
             ),
@@ -62,8 +58,7 @@ class GeneralSettings extends StatelessWidget {
           SettingsListTile(
             title: S.current.charactersLimit,
             crossAxisAlignment: CrossAxisAlignment.start,
-            leftPadding: leftPadding,
-            rightPadding: rightPadding,
+            leftColumnWidth: leftColumnWidth,
             description: S.current.charactersLimitForNewNotesDesription,
             child: const CharactersLimitSetting(),
           ),

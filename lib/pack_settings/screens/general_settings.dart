@@ -9,7 +9,7 @@ class GeneralSettings extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final settings = GeneralSettingsStateScope.of(context);
+    final settings = context.watch<GeneralSettingsController>();
     final screenLayout = ScreenLayout.of(context);
 
     final leftColumnWidth = screenLayout.small ? 90.0 : 150.0;

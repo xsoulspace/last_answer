@@ -25,7 +25,7 @@ class CharactersLimitSetting extends HookWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
-    final settings = GeneralSettingsStateScope.of(context);
+    final settings = context.watch<GeneralSettingsController>();
     final initialText = getInitialLimit(settings: settings);
     final controller = useTextEditingController(text: initialText);
 
@@ -48,11 +48,7 @@ class CharactersLimitSetting extends HookWidget {
             updateController: true,
             zeroEqualNull: false,
           ),
-          child: AnimatedBuilder(
-            animation: settings,
-            builder: (final context, final _) =>
-                Text(S.current.charactersUnlimited),
-          ),
+          child: Text(S.current.charactersUnlimited),
         ),
       );
     } else {

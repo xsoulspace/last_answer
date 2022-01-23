@@ -20,12 +20,11 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
         ChangeNotifierProvider(create: createNoteProjectsProvider),
         ChangeNotifierProvider(create: createNotificationController),
-        ChangeNotifierProvider(create: createPaymentsController)
+        ChangeNotifierProvider(create: createPaymentsController),
+        ChangeNotifierProvider(create: createGeneralSettingsController),
       ],
       child: Portal(
-        child: GeneralSettingsStateScope(
-          notifier: _settings,
-          child: Builder(
+        child: Builder(
             builder: (final context) {
               return StateLoader(
                 initializer: GlobalStateInitializer(
@@ -36,7 +35,7 @@ class AppStateProvider extends StatelessWidget {
               );
             },
           ),
-        ),
+        
       ),
     );
     if (isNativeDesktop) {

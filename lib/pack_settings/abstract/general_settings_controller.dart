@@ -1,5 +1,12 @@
 part of pack_settings;
 
+GeneralSettingsController createGeneralSettingsController(
+  final BuildContext context,
+) =>
+    GeneralSettingsController(
+      settingsService: SettingsService(),
+    );
+
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.
 ///
@@ -14,7 +21,7 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
-  late ThemeMode _themeMode;
+  ThemeMode _themeMode = ThemeMode.light;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
@@ -103,22 +110,4 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
   }
 
   void notify() => notifyListeners();
-}
-
-/// Provides the current [GeneralSettingsController] to descendent widgets in the tree.
-class GeneralSettingsStateScope
-    extends ChangeNotifierProvider<GeneralSettingsController> {
-  GeneralSettingsStateScope({
-    required final GeneralSettingsController notifier,
-    required final Widget child,
-    final Key? key,
-  }) : super(
-          key: key,
-          create: (final _) => notifier,
-          child: child,
-        );
-
-  static GeneralSettingsController of(final BuildContext context) {
-    return context.read<GeneralSettingsController>();
-  }
 }

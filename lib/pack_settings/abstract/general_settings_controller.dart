@@ -1,12 +1,5 @@
 part of pack_settings;
 
-GeneralSettingsController createGeneralSettingsController(
-  final BuildContext context,
-) =>
-    GeneralSettingsController(
-      settingsService: SettingsService(),
-    );
-
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.
 ///

@@ -11,6 +11,9 @@ class AppStateProvider extends StatelessWidget {
   Widget build(final BuildContext context) {
     final child = MultiProvider(
       providers: [
+        /// Keep _settings is global is important as it will not lose all
+        /// changes during global rebuild
+        ChangeNotifierProvider(create: (final _) => _settings),
         ChangeNotifierProvider(create: createEmojiProvider),
         ChangeNotifierProvider(create: createLastUsedEmojisProvider),
         ChangeNotifierProvider(create: createSpecialEmojisProvider),

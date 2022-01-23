@@ -12,7 +12,7 @@ class AppNavigatorLayoutBuilder {
     return [
       if (pageBuilder.pathTemplate.startsWith(AppRoutesName.home)) ...[
         MaterialPage<void>(
-          key: _ValueKeys._home,
+          key: NavigatorValueKeys._home,
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
@@ -24,7 +24,7 @@ class AppNavigatorLayoutBuilder {
               onProjectTap: popper.navigatorController.onProjectTap,
               onSettingsTap: popper.navigatorController.goSettings,
               mainScreenNavigator: Navigator(
-                key: _ValueKeys._largeScreenHomeNavigator,
+                key: NavigatorValueKeys._largeScreenHomeNavigator,
                 onGenerateRoute: (final _) => null,
                 pages: [
                   if (pathTemplate == AppRoutesName.note)
@@ -55,7 +55,7 @@ class AppNavigatorLayoutBuilder {
     return [
       if (pathTemplate == AppRoutesName.home)
         MaterialPage<void>(
-          key: _ValueKeys._home,
+          key: NavigatorValueKeys._home,
           child: AppNavigatorPopScope(
             popper: popper,
             child: SmallHomeScreen(

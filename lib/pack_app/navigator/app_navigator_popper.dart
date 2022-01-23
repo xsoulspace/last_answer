@@ -18,7 +18,13 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
       case AppRoutesName.note:
       case AppRoutesName.createIdea:
       case AppRoutesName.settings:
+      case AppRoutesName.generalSettings:
         navigatorController.goHome();
+        break;
+      case AppRoutesName.subscription:
+      case AppRoutesName.changelog:
+      case AppRoutesName.profile:
+        navigatorController.goSettings();
         break;
       case AppRoutesName.home:
     }
@@ -33,18 +39,18 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
     /// ! here will go selected pages logic.
     final maybePage = route.settings;
     if (maybePage is Page) {
-      if (maybePage.key == _ValueKeys._createIdea) {
+      if (maybePage.key == NavigatorValueKeys._createIdea) {
         navigatorController.goHome();
-      } else if (maybePage.key == _ValueKeys._ideasIdea) {
+      } else if (maybePage.key == NavigatorValueKeys._ideasIdea) {
         navigatorController.goHome();
-      } else if (maybePage.key == _ValueKeys._ideasIdeaAnswer) {
+      } else if (maybePage.key == NavigatorValueKeys._ideasIdeaAnswer) {
         final arr = maybePage.name?.split('/') ?? [];
         if (arr.length == 4) {
           navigatorController.goIdeaScreen(ideaId: arr[4]);
         } else {
           navigatorController.goHome();
         }
-      } else if (maybePage.key == _ValueKeys._generalSettings) {
+      } else if (maybePage.key == NavigatorValueKeys.generalSettings) {
         navigatorController.goHome();
       }
     }

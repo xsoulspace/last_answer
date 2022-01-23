@@ -3,10 +3,12 @@ part of pack_app;
 class AppNavigatorPopper extends AppNavigatorDataProvider {
   AppNavigatorPopper({
     required final RouteState routeState,
+    required final ScreenLayout screenLayout,
     required final BuildContext context,
   }) : super(
           routeState: routeState,
           context: context,
+          screenLayout: screenLayout,
         );
 
   Future<bool> handleWillPop() async {
@@ -24,7 +26,11 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
       case AppRoutesName.subscription:
       case AppRoutesName.changelog:
       case AppRoutesName.profile:
-        navigatorController.goSettings();
+        if (navigatorController.screenLayout.small) {
+          navigatorController.goSettings();
+        } else {
+          navigatorController.goHome();
+        }
         break;
       case AppRoutesName.home:
     }
@@ -51,7 +57,8 @@ class AppNavigatorPopper extends AppNavigatorDataProvider {
           navigatorController.goHome();
         }
       } else if (maybePage.name?.contains(AppRoutesName.settings) == true) {
-        if (maybePage.name == AppRoutesName.settings) {
+        if (maybePage.name == AppRoutesName.settings ||
+            navigatorController.screenLayout.notSmall) {
           navigatorController.goHome();
         } else {
           navigatorController.goSettings();

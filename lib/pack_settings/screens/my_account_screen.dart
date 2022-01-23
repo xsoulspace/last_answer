@@ -19,7 +19,7 @@ class MyAccountScreen extends StatelessWidget {
         onBack: onBack,
         titleStr: S.current.myAccount,
       ),
-      body: const GeneralSettings(),
+      body: const MyAccount(),
     );
   }
 }

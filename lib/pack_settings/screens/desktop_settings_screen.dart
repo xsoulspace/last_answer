@@ -60,24 +60,29 @@ class DesktopSettingsScreen extends StatelessWidget {
   }
 }
 
-class DesktopSettingsNavigator extends StatelessWidget {
+class DesktopSettingsNavigator extends HookWidget {
   const DesktopSettingsNavigator({final Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenLayout = ScreenLayout.of(context);
-
+    final previousChild = useState<Widget>(const SizedBox());
     Widget child;
     final routeState = RouteStateScope.of(context);
     final pathTemplate = routeState.route.pathTemplate;
     switch (pathTemplate) {
+      case AppRoutesName.profile:
+        child = previousChild.value = const MyAccount();
+        break;
       case AppRoutesName.settings:
       case AppRoutesName.generalSettings:
-      default:
-        child = const GeneralSettings(
+        child = previousChild.value = const GeneralSettings(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );
+        break;
+      default:
+        child = previousChild.value;
     }
 
     return AnimatedSize(

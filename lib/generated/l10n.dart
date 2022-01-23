@@ -140,6 +140,46 @@ class S {
     );
   }
 
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: 'username',
+      args: [],
+    );
+  }
+
+  /// `E-mail`
+  String get email {
+    return Intl.message(
+      'E-mail',
+      name: 'email',
+      desc: 'email',
+      args: [],
+    );
+  }
+
+  /// `Delete Account`
+  String get deleteMyAccount {
+    return Intl.message(
+      'Delete Account',
+      name: 'deleteMyAccount',
+      desc: 'deleteMyAccount',
+      args: [],
+    );
+  }
+
+  /// `Danger`
+  String get danger {
+    return Intl.message(
+      'Danger',
+      name: 'danger',
+      desc: 'danger',
+      args: [],
+    );
+  }
+
   /// `General Settings`
   String get generalSettingsFullTitle {
     return Intl.message(

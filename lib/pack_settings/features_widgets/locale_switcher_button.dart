@@ -27,7 +27,7 @@ class LocaelSwitcherButton extends StatelessWidget {
             (final e) => DropdownMenuItem<Locale>(
               value: e.locale,
               key: ValueKey(e.code),
-              child: SettingsScreenItem(text: e.name),
+              child: SettingsText(text: e.name),
             ),
           )
           .toList(),

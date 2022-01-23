@@ -17,14 +17,17 @@ class ThemeSwitcherButton extends StatelessWidget {
       isExpanded: true,
       items: [
         DropdownMenuItem(
+          key: const ValueKey(ThemeMode.system),
           value: ThemeMode.system,
           child: SettingsText(text: S.current.themeSystem),
         ),
         DropdownMenuItem(
+          key: const ValueKey(ThemeMode.light),
           value: ThemeMode.light,
           child: SettingsText(text: S.current.themeLight),
         ),
         DropdownMenuItem(
+          key: const ValueKey(ThemeMode.dark),
           value: ThemeMode.dark,
           child: SettingsText(text: S.current.themeDark),
         ),

@@ -21,7 +21,7 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;

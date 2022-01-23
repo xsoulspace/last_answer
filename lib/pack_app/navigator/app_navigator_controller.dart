@@ -9,6 +9,7 @@ class AppNavigatorController {
   final RouteState routeState;
   final BuildContext context;
 
+  void go(final AppRouteName routeName) => routeState.go(routeName);
   void goHome() => routeState.go(AppRoutesName.home);
   void goAppInfo() => routeState.go(AppRoutesName.appInfo);
   void goSettings() => routeState.go(AppRoutesName.settings);

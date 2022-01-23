@@ -11,8 +11,17 @@ class AppNavigatorController {
 
   void go(final AppRouteName routeName) => routeState.go(routeName);
   void goHome() => routeState.go(AppRoutesName.home);
-  void goAppInfo() => routeState.go(AppRoutesName.appInfo);
+  void goBackFromSettings() {
+    if (routeState.route.pathTemplate == AppRoutesName.settings) {
+      goHome();
+    } else {
+      goSettings();
+    }
+  }
+
   void goSettings() => routeState.go(AppRoutesName.settings);
+
+  void goAppInfo() => routeState.go(AppRoutesName.appInfo);
 
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';

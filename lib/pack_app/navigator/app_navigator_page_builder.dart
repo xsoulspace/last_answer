@@ -37,19 +37,6 @@ class AppNavigatorPageBuilder {
   /// *      SETTINGS START
   /// ********************************************
 
-  Page generalSettingsPage() {
-    return MaterialPage<void>(
-      key: NavigatorValueKeys.generalSettings,
-      fullscreenDialog: true,
-      child: AppNavigatorPopScope(
-        popper: popper,
-        child: GeneralSettingsScreen(
-          onBack: navigatorController.goHome,
-        ),
-      ),
-    );
-  }
-
   Page settingsPage() {
     return FadedRailPage<void>(
       key: NavigatorValueKeys._settings,
@@ -57,8 +44,9 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: SettingsScreen(
+          onPopPage: popper.onPopPage,
           onSelectRoute: navigatorController.go,
-          onBack: navigatorController.goHome,
+          onBack: navigatorController.goBackFromSettings,
         ),
       ),
     );

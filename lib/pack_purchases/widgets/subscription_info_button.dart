@@ -22,13 +22,10 @@ class SubscriptionInfoButton extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: paymentsController.isProSubscription
-                        ? S.current.proSubscription
+                    text: paymentsController.isPatronSubscription
+                        ? S.current.patronSubscription
                         : S.current.freeSubscription,
                   ),
-                  TextSpan(
-                    text: S.current.learnMore,
-                  )
                 ],
               ),
             ),

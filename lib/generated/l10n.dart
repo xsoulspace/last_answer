@@ -110,22 +110,52 @@ class S {
     );
   }
 
-  /// `Pro`
-  String get proSubscription {
+  /// `Patron`
+  String get patronSubscription {
     return Intl.message(
-      'Pro',
-      name: 'proSubscription',
-      desc: 'proSubscription',
+      'Patron',
+      name: 'patronSubscription',
+      desc: 'patronSubscription',
       args: [],
     );
   }
 
-  /// `Learn more`
-  String get learnMore {
+  /// `My Account`
+  String get myAccount {
     return Intl.message(
-      'Learn more',
-      name: 'learnMore',
-      desc: 'LearnMore',
+      'My Account',
+      name: 'myAccount',
+      desc: 'myAccount',
+      args: [],
+    );
+  }
+
+  /// `Change Log`
+  String get changeLog {
+    return Intl.message(
+      'Change Log',
+      name: 'changeLog',
+      desc: 'changeLog',
+      args: [],
+    );
+  }
+
+  /// `General Settings`
+  String get generalSettingsFullTitle {
+    return Intl.message(
+      'General Settings',
+      name: 'generalSettingsFullTitle',
+      desc: 'generalSettingsFullTitle',
+      args: [],
+    );
+  }
+
+  /// `General`
+  String get generalSettingsShortTitle {
+    return Intl.message(
+      'General',
+      name: 'generalSettingsShortTitle',
+      desc: 'generalSettingsShortTitle',
       args: [],
     );
   }

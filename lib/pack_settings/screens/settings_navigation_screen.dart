@@ -1,11 +1,14 @@
 part of pack_settings;
 
-class GeneralSettingsScreen extends StatelessWidget {
-  const GeneralSettingsScreen({
+class SettingsNavigationScreen extends StatelessWidget {
+  const SettingsNavigationScreen({
     required final this.onBack,
+    required this.onSelectRoute,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onBack;
+  final ValueChanged<AppRouteName> onSelectRoute;
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -17,9 +20,11 @@ class GeneralSettingsScreen extends StatelessWidget {
         useBackButton: true,
         screenLayout: screenLayout,
         onBack: onBack,
-        titleStr: S.current.generalSettingsFullTitle,
+        titleStr: S.current.settings,
       ),
-      body: const GeneralSettings(),
+      body: SettingsNavigation(
+        onSelectRoute: onSelectRoute,
+      ),
     );
   }
 }

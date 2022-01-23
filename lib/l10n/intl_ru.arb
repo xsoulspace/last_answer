@@ -23,6 +23,10 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
+  "changeLog": "Change Log",
+  "@changeLog": {
+    "description": "changeLog"
+  },
   "charactersLimitForNewNotesDesription": "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки.",
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
@@ -135,13 +139,21 @@
   "@freeSubscription": {
     "description": "free Subscription"
   },
-  "proSubscription": "Pro",
-  "@proSubscription": {
-    "description": "proSubscription"
+  "patronSubscription": "Patron",
+  "@patronSubscription": {
+    "description": "patronSubscription"
   },
-  "learnMore": "Learn more",
-  "@learnMore": {
-    "description": "LearnMore"
+  "myAccount": "Мой аккаунт",
+  "@myAccount": {
+    "description": "myAccount"
+  },
+  "generalSettingsFullTitle": "Общие настройки",
+  "@generalSettingsFullTitle": {
+    "description": "generalSettingsFullTitle"
+  },
+  "generalSettingsShortTitle": "Общие",
+  "@generalSettingsShortTitle": {
+    "description": "generalSettingsShortTitle"
   },
   "cancel": "Отменить",
   "@cancel": {

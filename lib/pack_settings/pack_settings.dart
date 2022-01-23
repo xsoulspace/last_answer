@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -30,6 +29,7 @@ part 'features_widgets/settings_navigation.dart';
 part 'features_widgets/theme_switcher_button.dart';
 part 'screens/desktop_settings_screen.dart';
 part 'screens/general_settings_screen.dart';
+part 'screens/settings_navigation_screen.dart';
 part 'screens/settings_screen.dart';
 part 'screens/small_settings_screen.dart';
 part 'widgets/settings_button.dart';

@@ -3,10 +3,10 @@ part of pack_settings;
 class SettingsButton extends StatelessWidget {
   const SettingsButton({
     required this.onSelected,
-    required this.checkSelected,
     required this.routeName,
-    this.fallbackRouteName,
     required this.text,
+    this.checkSelected,
+    this.fallbackRouteName,
     this.avatar,
     final Key? key,
   }) : super(key: key);
@@ -14,16 +14,16 @@ class SettingsButton extends StatelessWidget {
       RoundedRectangleBorder(borderRadius: defaultBorderRadius);
   final AppRouteName? fallbackRouteName;
   final String text;
-  final BoolValueChanged<AppRouteName> checkSelected;
+  final BoolValueChanged<AppRouteName>? checkSelected;
   final ValueChanged<AppRouteName> onSelected;
   final String routeName;
   final Widget? avatar;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    bool selected = checkSelected(routeName);
+    bool selected = checkSelected?.call(routeName) ?? false;
     if (!selected && fallbackRouteName != null) {
-      selected = checkSelected(fallbackRouteName!);
+      selected = checkSelected?.call(fallbackRouteName!) ?? false;
     }
 
     return Padding(

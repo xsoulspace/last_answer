@@ -53,22 +53,23 @@ class AppNavigatorLayoutBuilder {
 
   List<Page> getSmallScreenPages() {
     return [
-      if (pathTemplate == AppRoutesName.home)
-        MaterialPage<void>(
-          key: NavigatorValueKeys._home,
-          child: AppNavigatorPopScope(
-            popper: popper,
-            child: SmallHomeScreen(
-              checkIsProjectActive: pageBuilder.checkIsProjectActive,
-              onInfoTap: popper.navigatorController.goAppInfo,
-              onCreateIdeaTap: popper.navigatorController.goCreateIdea,
-              onCreateNoteTap: popper.navigatorController.goNoteScreen,
-              onProjectTap: popper.navigatorController.onProjectTap,
-              onSettingsTap: popper.navigatorController.goSettings,
-              onGoHome: popper.navigatorController.goHome,
-            ),
+      FadedRailPage<void>(
+        key: NavigatorValueKeys._home,
+        child: AppNavigatorPopScope(
+          popper: popper,
+          child: SmallHomeScreen(
+            checkIsProjectActive: pageBuilder.checkIsProjectActive,
+            onInfoTap: popper.navigatorController.goAppInfo,
+            onCreateIdeaTap: popper.navigatorController.goCreateIdea,
+            onCreateNoteTap: popper.navigatorController.goNoteScreen,
+            onProjectTap: popper.navigatorController.onProjectTap,
+            onSettingsTap: popper.navigatorController.goSettings,
+            onGoHome: popper.navigatorController.goHome,
           ),
-        )
+        ),
+      ),
+      if (pathTemplate.startsWith(AppRoutesName.settings))
+        pageBuilder.settingsPage()
       else if (pathTemplate == AppRoutesName.appInfo)
         pageBuilder.appInfoPage()
       else if (pathTemplate == AppRoutesName.createIdea)
@@ -79,10 +80,7 @@ class AppNavigatorLayoutBuilder {
         pageBuilder.ideaPage(),
         if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage(),
-      ] else if (pathTemplate.startsWith(AppRoutesName.settings))
-        pageBuilder.settingsPage()
-      else
-        AppNavigatorPageBuilder.emptyPage,
+      ]
     ];
   }
 }

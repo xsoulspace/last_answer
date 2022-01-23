@@ -19,6 +19,10 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
+  "changeLog": "Change Log",
+  "@changeLog": {
+    "description": "changeLog"
+  },
   "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
@@ -143,13 +147,21 @@
   "@freeSubscription": {
     "description": "free Subscription"
   },
-  "proSubscription": "Pro",
-  "@proSubscription": {
-    "description": "proSubscription"
+  "patronSubscription": "Patron",
+  "@patronSubscription": {
+    "description": "patronSubscription"
   },
-  "learnMore": "Learn more",
-  "@learnMore": {
-    "description": "LearnMore"
+  "myAccount": "Il mio account",
+  "@myAccount": {
+    "description": "myAccount"
+  },
+  "generalSettingsFullTitle": "Impostazioni generali",
+  "@generalSettingsFullTitle": {
+    "description": "generalSettingsFullTitle"
+  },
+  "generalSettingsShortTitle": "General",
+  "@generalSettingsShortTitle": {
+    "description": "generalSettingsShortTitle"
   },
   "cancel": "Cancella",
   "@cancel": {

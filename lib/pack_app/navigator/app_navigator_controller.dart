@@ -5,14 +5,17 @@ class AppNavigatorController {
   const AppNavigatorController.use({
     required final this.routeState,
     required final this.context,
+    required this.screenLayout,
   });
   final RouteState routeState;
   final BuildContext context;
+  final ScreenLayout screenLayout;
 
   void go(final AppRouteName routeName) => routeState.go(routeName);
   void goHome() => routeState.go(AppRoutesName.home);
   void goBackFromSettings() {
-    if (routeState.route.pathTemplate == AppRoutesName.settings) {
+    if (routeState.route.pathTemplate == AppRoutesName.settings ||
+        screenLayout.notSmall) {
       goHome();
     } else {
       goSettings();

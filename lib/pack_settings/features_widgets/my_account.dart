@@ -15,12 +15,36 @@ class MyAccount extends StatelessWidget {
     return SettingsListContainer(
       padding: padding,
       builder: (final context, final leftColumnWidth) => [
-        const ListTile(
-          title: Text('Username'),
+        const SizedBox(height: 24),
+        SettingsListTile(
+          title: S.current.username,
+          leftColumnWidth: leftColumnWidth,
+          // TODO(arenukvern): add username
+          child: Text(''),
         ),
-        const ListTile(
-          title: Text('E-mail'),
+        const SizedBox(height: 24),
+        SettingsListTile(
+          title: S.current.email,
+          leftColumnWidth: leftColumnWidth,
+          // TODO(arenukvern): add email
+          child: Text(''),
         ),
+        // TODO(arenukvern): add linked accounts
+        const SizedBox(height: 24),
+
+        Divider(
+          color: theme.highlightColor,
+          height: 24,
+          endIndent: 10,
+          indent: 10,
+        ),
+        const SizedBox(height: 24),
+        DangerZone(
+          // TODO(arenukvern): add delete account
+          onRemove: () {},
+          removeText: S.current.deleteMyAccount,
+        ),
+        const SizedBox(height: 24),
       ],
     );
   }

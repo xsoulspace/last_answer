@@ -47,8 +47,11 @@ class _AppNavigatorState extends State<AppNavigator> {
 
   @override
   Widget build(final BuildContext context) {
+    final screenLayout = ScreenLayout.of(context);
+
     final popper = AppNavigatorPopper(
       routeState: widget.routeState,
+      screenLayout: screenLayout,
       context: context,
     );
     final pageBuilder = AppNavigatorPageBuilder(

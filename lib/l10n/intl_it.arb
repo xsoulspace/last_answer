@@ -23,6 +23,22 @@
   "@changeLog": {
     "description": "changeLog"
   },
+  "username": "Nome utente",
+  "@username": {
+    "description": "username"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "email"
+  },
+  "deleteMyAccount": "Eliminare l'account",
+  "@deleteMyAccount": {
+    "description": "deleteMyAccount"
+  },
+  "danger": "Pericolo",
+  "@danger": {
+    "description": "danger"
+  },
   "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."

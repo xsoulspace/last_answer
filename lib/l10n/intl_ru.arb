@@ -27,6 +27,22 @@
   "@changeLog": {
     "description": "changeLog"
   },
+  "username": "Имя пользователя",
+  "@username": {
+    "description": "username"
+  },
+  "deleteMyAccount": "Удалить аккаунт",
+  "@deleteMyAccount": {
+    "description": "deleteMyAccount"
+  },
+  "danger": "Опасно",
+  "@danger": {
+    "description": "danger"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "email"
+  },
   "charactersLimitForNewNotesDesription": "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки.",
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."

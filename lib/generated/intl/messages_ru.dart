@@ -50,9 +50,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Закрыть"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
+        "danger": MessageLookupByLibrary.simpleMessage("Опасно"),
         "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
+        "deleteMyAccount":
+            MessageLookupByLibrary.simpleMessage("Удалить аккаунт"),
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Удалить заметку"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "или отправьте сообщение на idea@xsoulspace.dev"),
         "freeSubscription": MessageLookupByLibrary.simpleMessage("Бесплатно"),
@@ -108,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
+        "username": MessageLookupByLibrary.simpleMessage("Имя пользователя"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
         "wordNew": MessageLookupByLibrary.simpleMessage("Новое"),

@@ -35,6 +35,22 @@
   "@changeLog": {
     "description": "changeLog"
   },
+  "username": "Username",
+  "@username": {
+    "description": "username"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "email"
+  },
+  "deleteMyAccount": "Delete Account",
+  "@deleteMyAccount": {
+    "description": "deleteMyAccount"
+  },
+  "danger": "Danger",
+  "@danger": {
+    "description": "danger"
+  },
   "generalSettingsFullTitle": "General Settings",
   "@generalSettingsFullTitle": {
     "description": "generalSettingsFullTitle"

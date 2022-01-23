@@ -186,12 +186,35 @@ class RemoveActionButton extends StatelessWidget {
   const RemoveActionButton({
     required this.onTap,
     this.useIcon = false,
+    this.filled = false,
+    this.text,
     final Key? key,
   }) : super(key: key);
   final VoidCallback? onTap;
   final bool useIcon;
+  final String? text;
+  final bool filled;
+
   @override
   Widget build(final BuildContext context) {
+    if (filled) {
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.all(14),
+          shape: RoundedRectangleBorder(
+            borderRadius: defaultBorderRadius,
+          ),
+          primary: AppColors.accent3,
+        ),
+        onPressed: onTap,
+        child: Text(
+          text ?? S.current.delete.sentenceCase,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      );
+    }
+
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
@@ -204,7 +227,7 @@ class RemoveActionButton extends StatelessWidget {
       child: useIcon
           ? const Icon(Icons.delete_forever_rounded)
           : Text(
-              S.current.delete.sentenceCase,
+              text ?? S.current.delete.sentenceCase,
               style: Theme.of(context).textTheme.headline6,
               // ?.copyWith(color: AppColors.accent3),
             ),
@@ -244,64 +267,6 @@ class OutlinedPrimaryButton extends StatelessWidget {
                 color: primaryColor,
               ),
             ),
-    );
-  }
-}
-
-class DangerZone extends StatelessWidget {
-  const DangerZone({
-    required this.onRemove,
-    final Key? key,
-  }) : super(key: key);
-  final VoidCallback onRemove;
-  @override
-  Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: defaultPopupBorderRadius,
-              border: Border.all(color: AppColors.accent2),
-            ),
-            height: 50,
-          ),
-        ),
-        Positioned(
-          top: 0,
-          left: 15,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              borderRadius: defaultPopupBorderRadius,
-              color: theme.canvasColor.withOpacity(1),
-            ),
-            child: Text(
-              'Danger',
-              style: theme.textTheme.bodyText2?.copyWith(
-                color: AppColors.accent3,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: defaultPopupBorderRadius,
-            ),
-            height: 50,
-            child: RemoveActionButton(
-              onTap: onRemove,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

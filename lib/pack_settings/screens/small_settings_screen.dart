@@ -28,26 +28,37 @@ class SmallSettingsScreen extends HookWidget {
 
     Future<void> toNavigation() async => toPage(page: 0);
 
+    Future<void> switchToPage() async {
+      switch (routeState.route.pathTemplate) {
+        case AppRoutesName.generalSettings:
+          subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
+          await toPage();
+          break;
+        case AppRoutesName.profile:
+          subSettingsPage.value = MyAccountScreen(onBack: onBack);
+          await toPage();
+          break;
+        default:
+          await toNavigation();
+          subSettingsPage.value = const SizedBox();
+      }
+    }
+
     useEffect(
       // ignore: unnecessary_lambdas
       () {
-        () async {
-          switch (routeState.route.pathTemplate) {
-            case AppRoutesName.generalSettings:
-              subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
-              await toPage();
-              break;
-            case AppRoutesName.profile:
-              subSettingsPage.value = MyAccountScreen(onBack: onBack);
-              await toPage();
-              break;
-            default:
-              await toNavigation();
-              subSettingsPage.value = const SizedBox();
-          }
-        }();
+        switchToPage();
       },
       [routeState.route],
+    );
+    final screenLayout = ScreenLayout.of(context);
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback((final _) {
+          switchToPage();
+        });
+      },
+      [screenLayout.small],
     );
 
     return PageView(

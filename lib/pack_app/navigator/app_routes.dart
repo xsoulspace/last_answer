@@ -1,6 +1,9 @@
 part of pack_app;
 
-/// In case of new routes all routes should be added to values!
+/// Choose name from [AppRoutesName]
+typedef AppRouteName = String;
+
+/// !In case of new routes all routes should be added to values!
 class AppRoutesName {
   AppRoutesName._();
   static const home = '/';
@@ -30,7 +33,7 @@ class AppRoutesName {
   static const changelog = '$settings/changelog';
   static const appInfo = '/app-info';
 
-  /// In case of new routes all routes should be added to values!
+  /// !In case of new routes all routes should be added to values!
   static const values = [
     home,
     createIdea,
@@ -44,5 +47,9 @@ class AppRoutesName {
     unknown404,
     settings,
     appInfo,
+    generalSettings,
+    profile,
+    subscription,
+    changelog,
   ];
 }

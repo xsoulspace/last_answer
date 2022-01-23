@@ -51,12 +51,13 @@ class AppNavigatorPageBuilder {
   }
 
   Page settingsPage() {
-    return MaterialPage<void>(
+    return FadedRailPage<void>(
       key: _ValueKeys._settings,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
         child: SettingsScreen(
+          onSelectRoute: navigatorController.go,
           onBack: navigatorController.goHome,
         ),
       ),

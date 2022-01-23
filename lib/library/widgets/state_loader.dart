@@ -46,16 +46,16 @@ class StateLoader extends HookWidget {
       textDirection: TextDirection.ltr,
       child: Stack(
         children: [
-          if (isNativeDesktop && loaderOpacity.value > 0.0)
+          if (!nativeTransparentBackgroundSupported)
+            Container(
+              color: AppColors.black,
+            ),
+          if (nativeTransparentBackgroundSupported && loaderOpacity.value > 0.0)
             Opacity(
               opacity: loaderOpacity.value,
               child: Container(
                 color: AppColors.black,
               ),
-            ),
-          if (!isNativeDesktop)
-            Container(
-              color: AppColors.black,
             ),
           if (renderAllowed.value)
             Transform.scale(

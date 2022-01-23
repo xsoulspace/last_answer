@@ -42,7 +42,7 @@ class _PageBasedFadedRailPageRoute<T> extends PageRoute<T>
     required final FadedRailPage<T> page,
   }) : super(settings: page);
 
-  MaterialPage<T> get _page => settings as MaterialPage<T>;
+  FadedRailPage<T> get _page => settings as FadedRailPage<T>;
 
   @override
   Widget buildContent(final BuildContext context) {
@@ -104,7 +104,10 @@ mixin FadedRailRouteTransitionMixin<T> on PageRoute<T> {
     final Animation<double> secondaryAnimation,
     final Widget child,
   ) {
-    return child;
+    return FadedRailTransition(
+      animation: animation,
+      child: child,
+    );
   }
 }
 
@@ -116,27 +119,40 @@ class FadedRailTransition extends StatelessWidget {
   }) : super(key: key);
   final Widget child;
   final Animation<double> animation;
-  static const _minScale = 0.98;
+  static const _minScale = 1.1;
   static const _maxScale = 1.0;
   static const _scaleDiff = _maxScale - _minScale;
 
   @override
   Widget build(final BuildContext context) {
     final tween = Tween(begin: _minScale, end: _maxScale).chain(
-      CurveTween(curve: Curves.easeOutBack),
+      CurveTween(curve: Curves.easeInOutQuad),
     );
-    final animationValue = animation.drive(tween);
-    return Container();
+    final drivenAnimation = animation.drive(tween);
+    double opacity = (drivenAnimation.value - _minScale) / _scaleDiff;
+    if (opacity > 1) {
+      opacity = 1;
+    } else if (opacity < 0) {
+      opacity = 0;
+    }
+
+    return Opacity(
+      opacity: opacity,
+      child: Transform.scale(
+        scale: drivenAnimation.value,
+        child: child,
+      ),
+    );
   }
 }
 
 // TODO(antmalofeev): plugin FadeRailMagentController to FadeRailMagent
 /// and FadedRailTransition
-class FadeRailMagentController extends ChangeNotifier {}
+class RailMagnetController extends ChangeNotifier {}
 
 /// Can scale up and down
-class FadeRailMagent extends HookWidget {
-  const FadeRailMagent({
+class RailMagnet extends HookWidget {
+  const RailMagnet({
     required this.child,
     final Key? key,
   }) : super(key: key);
@@ -150,6 +166,7 @@ class FadeRailMagent extends HookWidget {
       lowerBound: _minScale,
     );
     final animation = useAnimation(animationController);
+    final railMagnetController = context.read<RailMagnetController>();
 
     return Transform.scale(scale: animation, child: child);
   }

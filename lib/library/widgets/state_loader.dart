@@ -12,7 +12,7 @@ class StateLoader extends HookWidget {
   final Widget child;
   final StateInitializer initializer;
   final Widget loader;
-  static const _transitionDuration = Duration(milliseconds: 700);
+  static const _transitionDuration = Duration(milliseconds: 450);
   static const _minScale = 0.98;
   static const _maxScale = 1.0;
   static const _scaleDiff = _maxScale - _minScale;

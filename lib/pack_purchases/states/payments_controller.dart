@@ -19,7 +19,7 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   });
   final PaymentsService paymentsService;
   SubscriptionTypes subscriptionType = SubscriptionTypes.free;
-  bool get isProSubscription {
+  bool get isPatronSubscription {
     switch (subscriptionType) {
       case SubscriptionTypes.free:
         return false;

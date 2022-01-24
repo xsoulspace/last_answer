@@ -17,7 +17,7 @@ class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
     required final this.settings,
   });
-  final SettingsController settings;
+  final GeneralSettingsController settings;
 
   @override
   // ignore: long-method
@@ -169,6 +169,7 @@ class GlobalStateInitializer implements StateInitializer {
     // if (!settings.migrated) {
     //   await settings.setMigrated();
     // }
+    settings.loadingStatus = AppStateLoadingStatuses.settings;
 
     await notificationController.onLoad(context: context);
 

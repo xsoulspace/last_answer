@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Sei sicuro?"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancella"),
+        "changeLog": MessageLookupByLibrary.simpleMessage("Change Log"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Limite di caratteri"),
         "charactersLimitForNewNotesDesription":
@@ -50,22 +51,31 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Chiudi"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Crea tutorial"),
+        "danger": MessageLookupByLibrary.simpleMessage("Pericolo"),
         "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
+        "deleteMyAccount":
+            MessageLookupByLibrary.simpleMessage("Eliminare l\'account"),
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Elimina questa nota"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "esc": MessageLookupByLibrary.simpleMessage("ESC"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "o inviare un messaggio a idea@xsoulspace.dev"),
         "freeSubscription": MessageLookupByLibrary.simpleMessage("Gratuito"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Usato frequentemente"),
+        "generalSettingsFullTitle":
+            MessageLookupByLibrary.simpleMessage("Impostazioni generali"),
+        "generalSettingsShortTitle":
+            MessageLookupByLibrary.simpleMessage("General"),
         "idea": MessageLookupByLibrary.simpleMessage("Idea"),
         "joinDiscord":
             MessageLookupByLibrary.simpleMessage("Unisciti a Discord"),
         "language": MessageLookupByLibrary.simpleMessage("Lingua"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
-        "learnMore": MessageLookupByLibrary.simpleMessage("Learn more"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Made with Flutter ❤ and Open Source Libraries"),
+        "myAccount": MessageLookupByLibrary.simpleMessage("Il mio account"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
             "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)"),
         "noProjectsYet":
@@ -73,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note": MessageLookupByLibrary.simpleMessage("Nota"),
         "noteSettings":
             MessageLookupByLibrary.simpleMessage("Impostazioni nota"),
+        "patronSubscription": MessageLookupByLibrary.simpleMessage("Patron"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Puoi usare: \"Cinque perché\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
@@ -93,7 +104,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Si prega di notare"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Politica sulla riservatezza"),
-        "proSubscription": MessageLookupByLibrary.simpleMessage("Pro"),
         "projectsDirection":
             MessageLookupByLibrary.simpleMessage("Note direzione"),
         "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
@@ -105,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "themeDark": MessageLookupByLibrary.simpleMessage("Buia"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Leggera"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("Auto"),
+        "username": MessageLookupByLibrary.simpleMessage("Nome utente"),
         "whatsYourIdea":
             MessageLookupByLibrary.simpleMessage("Qual è la tua idea?"),
         "willBeLost": m1,

@@ -35,6 +35,10 @@
   "@deleteMyAccount": {
     "description": "deleteMyAccount"
   },
+  "esc": "ESC",
+  "@esc": {
+    "description": "esc"
+  },
   "danger": "Опасно",
   "@danger": {
     "description": "danger"

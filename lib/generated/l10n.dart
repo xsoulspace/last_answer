@@ -180,6 +180,16 @@ class S {
     );
   }
 
+  /// `ESC`
+  String get esc {
+    return Intl.message(
+      'ESC',
+      name: 'esc',
+      desc: 'esc',
+      args: [],
+    );
+  }
+
   /// `General Settings`
   String get generalSettingsFullTitle {
     return Intl.message(

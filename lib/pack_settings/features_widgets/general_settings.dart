@@ -30,7 +30,7 @@ class GeneralSettings extends StatelessWidget {
         SettingsListTile(
           title: S.current.language,
           leftColumnWidth: leftColumnWidth,
-          child: LocaelSwitcherButton(
+          child: LocaleSwitcherButton(
             settings: settings,
           ),
         ),

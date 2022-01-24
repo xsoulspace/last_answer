@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Удалить заметку"),
         "email": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "esc": MessageLookupByLibrary.simpleMessage("ESC"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "или отправьте сообщение на idea@xsoulspace.dev"),
         "freeSubscription": MessageLookupByLibrary.simpleMessage("Бесплатно"),

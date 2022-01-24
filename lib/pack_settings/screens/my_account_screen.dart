@@ -9,15 +9,12 @@ class MyAccountScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final screenLayout = ScreenLayout.of(context);
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
-      appBar: BackTextUniversalAppBar(
-        useBackButton: true,
-        screenLayout: screenLayout,
-        onBack: onBack,
-        titleStr: S.current.myAccount,
+      appBar: AppBar(
+        leading: AdaptiveBackButton(onPressed: onBack),
+        title: Text(S.current.myAccount),
       ),
       body: const MyAccount(),
     );

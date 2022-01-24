@@ -14,11 +14,12 @@ class SmallSettingsScreen extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
-    final subSettingsPage = useState<Widget>(const SizedBox());
+    final subSettingsPage = useState<Widget?>(null);
     final pageController = usePageController();
-
+    final chosenPage = useState(0);
     Future<void> toPage({final int page = 1}) async {
       if (!pageController.hasClients) return;
+      chosenPage.value = page;
       await pageController.animateToPage(
         page,
         duration: const Duration(milliseconds: 350),
@@ -30,19 +31,25 @@ class SmallSettingsScreen extends HookWidget {
 
     Future<void> switchToPage() async {
       switch (routeState.route.pathTemplate) {
-        case AppRoutesName.generalSettings:
-          subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
-          await toPage();
-          break;
         case AppRoutesName.profile:
           subSettingsPage.value = MyAccountScreen(onBack: onBack);
           await toPage();
           break;
+        case AppRoutesName.generalSettings:
+          subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
+          await toPage();
+          break;
         default:
           await toNavigation();
-          subSettingsPage.value = const SizedBox();
       }
     }
+
+    pageController.addListener(() {
+      if (!pageController.hasClients) return;
+      final controllerPage = pageController.page?.ceil();
+      if (chosenPage.value == controllerPage) return;
+      onSelectRoute(AppRoutesName.settings);
+    });
 
     useEffect(
       // ignore: unnecessary_lambdas
@@ -60,6 +67,7 @@ class SmallSettingsScreen extends HookWidget {
       },
       [screenLayout.small],
     );
+    final subPage = subSettingsPage.value;
 
     return PageView(
       controller: pageController,
@@ -68,7 +76,7 @@ class SmallSettingsScreen extends HookWidget {
           onBack: onBack,
           onSelectRoute: onSelectRoute,
         ),
-        subSettingsPage.value,
+        if (subPage != null) subPage,
       ],
     );
   }

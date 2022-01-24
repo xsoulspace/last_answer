@@ -1,7 +1,7 @@
 part of pack_settings;
 
-class LocaelSwitcherButton extends StatelessWidget {
-  const LocaelSwitcherButton({
+class LocaleSwitcherButton extends StatelessWidget {
+  const LocaleSwitcherButton({
     required this.settings,
     final Key? key,
   }) : super(key: key);

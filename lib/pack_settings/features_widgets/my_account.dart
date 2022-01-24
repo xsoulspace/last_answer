@@ -20,14 +20,14 @@ class MyAccount extends StatelessWidget {
           title: S.current.username,
           leftColumnWidth: leftColumnWidth,
           // TODO(arenukvern): add username
-          child: Text(''),
+          child: const Text(''),
         ),
         const SizedBox(height: 24),
         SettingsListTile(
           title: S.current.email,
           leftColumnWidth: leftColumnWidth,
           // TODO(arenukvern): add email
-          child: Text(''),
+          child: const Text(''),
         ),
         // TODO(arenukvern): add linked accounts
         const SizedBox(height: 24),

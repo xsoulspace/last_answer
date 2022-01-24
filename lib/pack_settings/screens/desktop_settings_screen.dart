@@ -20,9 +20,7 @@ class DesktopSettingsScreen extends StatelessWidget {
           Positioned(
             top: 70,
             left: 50,
-            child: AdaptiveBackButton(
-              onPressed: onBack,
-            ),
+            child: CupertinoCloseButton(onPressed: onBack),
           ),
           Center(
             child: ConstrainedBox(

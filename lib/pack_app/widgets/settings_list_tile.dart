@@ -4,15 +4,13 @@ class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
     required final this.title,
     required final this.child,
-    required final this.leftPadding,
-    required final this.rightPadding,
+    required final this.leftColumnWidth,
     this.addTitleQuote = true,
     final this.description = '',
     this.crossAxisAlignment = CrossAxisAlignment.center,
     final Key? key,
   }) : super(key: key);
-  final double leftPadding;
-  final double rightPadding;
+  final double leftColumnWidth;
   final String title;
   final Widget child;
   final bool addTitleQuote;
@@ -28,7 +26,7 @@ class SettingsListTile extends StatelessWidget {
       crossAxisAlignment: crossAxisAlignment,
       children: [
         SizedBox(
-          width: leftPadding,
+          width: leftColumnWidth,
           child: Text(
             addTitleQuote ? '$title:' : title,
             textAlign: TextAlign.end,
@@ -51,7 +49,6 @@ class SettingsListTile extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: rightPadding),
       ],
     );
   }

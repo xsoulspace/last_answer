@@ -13,6 +13,7 @@ class AdaptiveBackButton extends HookWidget {
       final theme = Theme.of(context);
 
       return MouseRegion(
+        cursor: SystemMouseCursors.click,
         onEnter: (final _) => hovered.value = true,
         onExit: (final _) => hovered.value = false,
         child: CupertinoIconButton(

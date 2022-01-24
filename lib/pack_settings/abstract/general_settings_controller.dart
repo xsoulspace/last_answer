@@ -6,15 +6,15 @@ part of pack_settings;
 /// Controllers glue Data Services to Flutter Widgets. The SettingsController
 /// uses the SettingsService to store and retrieve user settings.
 // ignore: prefer_mixin
-class SettingsController with ChangeNotifier implements Loadable {
-  SettingsController({required final this.settingsService});
+class GeneralSettingsController with ChangeNotifier implements Loadable {
+  GeneralSettingsController({required final this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService settingsService;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
-  late ThemeMode _themeMode;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
@@ -103,21 +103,4 @@ class SettingsController with ChangeNotifier implements Loadable {
   }
 
   void notify() => notifyListeners();
-}
-
-/// Provides the current [SettingsController] to descendent widgets in the tree.
-class SettingsStateScope extends ChangeNotifierProvider<SettingsController> {
-  SettingsStateScope({
-    required final SettingsController notifier,
-    required final Widget child,
-    final Key? key,
-  }) : super(
-          key: key,
-          create: (final _) => notifier,
-          child: child,
-        );
-
-  static SettingsController of(final BuildContext context) {
-    return context.read<SettingsController>();
-  }
 }

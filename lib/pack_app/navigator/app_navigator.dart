@@ -1,10 +1,12 @@
 part of pack_app;
 
-class _ValueKeys {
-  _ValueKeys._();
+class NavigatorValueKeys {
+  NavigatorValueKeys._();
   static const _home = ValueKey<String>('home');
   static const _settings = ValueKey<String>('settings');
+
   static const _info = ValueKey<String>('info');
+
   static const _notes = ValueKey<String>('notes');
   static const _notesNote = ValueKey<String>('notes/note');
   static const _createIdea = ValueKey<String>('createIdea');
@@ -45,8 +47,11 @@ class _AppNavigatorState extends State<AppNavigator> {
 
   @override
   Widget build(final BuildContext context) {
+    final screenLayout = ScreenLayout.of(context);
+
     final popper = AppNavigatorPopper(
       routeState: widget.routeState,
+      screenLayout: screenLayout,
       context: context,
     );
     final pageBuilder = AppNavigatorPageBuilder(

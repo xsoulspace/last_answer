@@ -65,7 +65,7 @@ Thank you and have a nice day.
 
 ## Support Development
 
-You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or be support on [Patreon](https://patreon.com/arenukvern)
+You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or support on [Patreon](https://patreon.com/arenukvern)
 
 Thank you for your support!
 

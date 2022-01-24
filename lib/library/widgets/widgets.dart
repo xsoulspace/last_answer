@@ -31,6 +31,7 @@ part 'app_icon_button.dart';
 part 'background_frost_box.dart';
 part 'button_popup.dart';
 part 'choosable_bubble.dart';
+part 'cupertino_close_button.dart';
 part 'cupertino_icon_button.dart';
 part 'danger_zone.dart';
 part 'discord_button.dart';

@@ -12,15 +12,12 @@ class SettingsNavigationScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final screenLayout = ScreenLayout.of(context);
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
-      appBar: BackTextUniversalAppBar(
-        useBackButton: true,
-        screenLayout: screenLayout,
-        onBack: onBack,
-        titleStr: S.current.settings,
+      appBar: AppBar(
+        leading: CupertinoCloseButton(onPressed: onBack),
+        title: Text(S.current.settings),
       ),
       body: SettingsNavigation(
         onSelectRoute: onSelectRoute,

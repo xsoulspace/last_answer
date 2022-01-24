@@ -51,6 +51,10 @@
   "@danger": {
     "description": "danger"
   },
+  "esc": "ESC",
+  "@esc": {
+    "description": "esc"
+  },
   "generalSettingsFullTitle": "General Settings",
   "@generalSettingsFullTitle": {
     "description": "generalSettingsFullTitle"

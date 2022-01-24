@@ -22,13 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.0"
-  animations:
-    dependency: "direct main"
-    description:
-      name: animations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   ansicolor:
     dependency: transitive
     description:
@@ -547,7 +540,7 @@ packages:
     source: hosted
     version: "1.0.1"
   mockito:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: mockito
       url: "https://pub.dartlang.org"

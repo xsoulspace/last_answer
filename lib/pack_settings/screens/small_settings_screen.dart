@@ -39,6 +39,10 @@ class SmallSettingsScreen extends HookWidget {
           subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
           await toPage();
           break;
+        case AppRoutesName.subscription:
+          subSettingsPage.value = SubscriptionScreen(onBack: onBack);
+          await toPage();
+          break;
         default:
           await toNavigation();
       }

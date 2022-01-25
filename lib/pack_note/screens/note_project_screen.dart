@@ -70,6 +70,7 @@ class NoteProjectScreen extends HookWidget {
               final context,
               final showEmojiKeyboard,
               final closeEmojiKeyboard,
+              final isEmojiKeyboardOpen,
             ) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -94,56 +95,20 @@ class NoteProjectScreen extends HookWidget {
                             controller: noteController,
                           ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            NoteSettingsButton(
-                              note: note.value,
-                              onRemove: state.onRemove,
-                              updatesStream: updatesStream,
-                            ),
-                            SpecialEmojiPopup(
-                              controller: noteController,
-                              focusNode: noteFocusNode,
-                              onShowEmojiKeyboard: showEmojiKeyboard,
-                            ),
-                            SizedBox(
-                              height: 34,
-                              width: 48,
-                              child: IconShareButton(
-                                onTap: () {
-                                  ProjectSharer.of(context)
-                                      .share(project: note.value);
-                                },
-                              ),
-                            ),
-                            EmojiPopup(
-                              controller: noteController,
-                              focusNode: noteFocusNode,
-                            ),
-                            if (Platform.isAndroid || Platform.isIOS)
-                              IconButton(
-                                onPressed: () {
-                                  closeKeyboard(context: context);
-                                  closeEmojiKeyboard();
-                                },
-                                icon: const Icon(
-                                  CupertinoIcons.keyboard_chevron_compact_down,
-                                ),
-                              ),
-                          ]
-                              .map(
-                                (final e) => Padding(
-                                  padding: const EdgeInsets.only(top: 15),
-                                  child: e,
-                                ),
-                              )
-                              .toList(),
+                        NoteProjectSideActionBar(
+                          closeEmojiKeyboard: closeEmojiKeyboard,
+                          isEmojiKeyboardOpen: isEmojiKeyboardOpen,
+                          note: note,
+                          noteController: noteController,
+                          noteFocusNode: noteFocusNode,
+                          onRemove: state.onRemove,
+                          showEmojiKeyboard: showEmojiKeyboard,
+                          updatesStream: updatesStream,
                         ),
                       ],
                     ),
                   ),
-                  if (isNativeDesktop) const SizedBox(height: 14),
+                  if (isNativeDesktop || kIsWeb) const SizedBox(height: 14),
                   const BottomSafeArea(),
                 ],
               );

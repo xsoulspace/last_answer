@@ -11,13 +11,16 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     BuildContext context,
     VoidCallback showEmojiKeyboard,
     VoidCallback hideEmojiKeyboard,
+    ValueNotifier<bool> isEmojiKeyboardOpen,
   ) builder;
   final FocusNode focusNode;
   final TextEditingController controller;
   @override
   Widget build(final BuildContext context) {
-    if (isNativeDesktop || kIsWeb) return builder(context, () {}, () {});
     final isEmojiKeyboardOpen = useIsBool();
+    if (isNativeDesktop || kIsWeb) {
+      return builder(context, () {}, () {}, isEmojiKeyboardOpen);
+    }
 
     final emojiKeyboardController = useAnimationController(
       duration: const Duration(milliseconds: 110),
@@ -91,8 +94,12 @@ class SpecialEmojisKeyboardActions extends HookWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  child:
-                      builder(context, showEmojiKeyboard, closeEmojiKeyboard),
+                  child: builder(
+                    context,
+                    showEmojiKeyboard,
+                    closeEmojiKeyboard,
+                    isEmojiKeyboardOpen,
+                  ),
                 ),
               ),
               SizedBox(
@@ -151,41 +158,15 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
       child: SizedBox(
         height: preferredSize.height,
         width: preferredSize.width,
-        child: Center(
-          child: Stack(
-            children: [
-              GridView.count(
-                restorationId: 'special-emojis-grid',
-                shrinkWrap: true,
-                crossAxisCount: 10,
-                semanticChildCount: emojis.length,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 4,
-                padding: const EdgeInsets.all(12),
-                children: emojis.map(buildEmojiButton).toList(),
-              ),
-              Positioned(
-                bottom: -5,
-                right: 20,
-                child: IconButton(
-                  iconSize: 45,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.arrow_drop_up_rounded),
-                  onPressed: onShowKeyboard,
-                ),
-              ),
-              Positioned(
-                bottom: -5,
-                right: 80,
-                child: IconButton(
-                  iconSize: 45,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.arrow_drop_down_rounded),
-                  onPressed: onHide,
-                ),
-              ),
-            ],
-          ),
+        child: GridView.count(
+          restorationId: 'special-emojis-grid',
+          shrinkWrap: true,
+          crossAxisCount: 10,
+          semanticChildCount: emojis.length,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          padding: const EdgeInsets.all(12),
+          children: emojis.map(buildEmojiButton).toList(),
         ),
       ),
     );

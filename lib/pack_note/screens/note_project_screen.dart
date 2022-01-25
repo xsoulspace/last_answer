@@ -63,56 +63,62 @@ class NoteProjectScreen extends HookWidget {
           constraints: const BoxConstraints(
             maxWidth: ScreenLayout.maxFullscreenPageWidth + 180,
           ),
-          child: SpecialEmojisKeyboardActions(
-            focusNode: noteFocusNode,
-            controller: noteController,
-            builder: (
-              final context,
-              final showEmojiKeyboard,
-              final closeEmojiKeyboard,
-              final isEmojiKeyboardOpen,
-            ) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            children: [
+              Expanded(
+                child: SpecialEmojisKeyboardActions(
+                  focusNode: noteFocusNode,
+                  controller: noteController,
+                  builder: (
+                    final context,
+                    final showEmojiKeyboard,
+                    final closeEmojiKeyboard,
+                    final isEmojiKeyboardOpen,
+                  ) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const SizedBox(width: 20),
                         Expanded(
-                          child: ProjectTextField(
-                            hintText: S.current.writeANote,
-                            fillColor: Colors.transparent,
-                            filled: false,
-                            limit: note.value.charactersLimit,
-                            focusNode: noteFocusNode,
-                            endlessLines: true,
-                            focusOnInit: note.value.note.isEmpty,
-                            onSubmit: state.onBack,
-                            controller: noteController,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: ProjectTextField(
+                                  hintText: S.current.writeANote,
+                                  fillColor: Colors.transparent,
+                                  filled: false,
+                                  limit: note.value.charactersLimit,
+                                  focusNode: noteFocusNode,
+                                  endlessLines: true,
+                                  focusOnInit: note.value.note.isEmpty,
+                                  onSubmit: state.onBack,
+                                  controller: noteController,
+                                ),
+                              ),
+                              NoteProjectSideActionBar(
+                                closeEmojiKeyboard: closeEmojiKeyboard,
+                                isEmojiKeyboardOpen: isEmojiKeyboardOpen,
+                                note: note,
+                                noteController: noteController,
+                                noteFocusNode: noteFocusNode,
+                                onRemove: state.onRemove,
+                                showEmojiKeyboard: showEmojiKeyboard,
+                                updatesStream: updatesStream,
+                              ),
+                            ],
                           ),
                         ),
-                        NoteProjectSideActionBar(
-                          closeEmojiKeyboard: closeEmojiKeyboard,
-                          isEmojiKeyboardOpen: isEmojiKeyboardOpen,
-                          note: note,
-                          noteController: noteController,
-                          noteFocusNode: noteFocusNode,
-                          onRemove: state.onRemove,
-                          showEmojiKeyboard: showEmojiKeyboard,
-                          updatesStream: updatesStream,
-                        ),
                       ],
-                    ),
-                  ),
-                  if (isNativeDesktop || kIsWeb) const SizedBox(height: 14),
-                  const BottomSafeArea(),
-                ],
-              );
-            },
+                    );
+                  },
+                ),
+              ),
+              if (isNativeDesktop || kIsWeb) const SizedBox(height: 14),
+              const BottomSafeArea(),
+            ],
           ),
         ),
       ),

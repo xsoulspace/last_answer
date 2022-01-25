@@ -14,28 +14,26 @@ class _KeyboardVisiblityHook extends Hook<ValueNotifier<bool>> {
 class _KeyboardVisiblityHookState
     extends HookState<ValueNotifier<bool>, _KeyboardVisiblityHook> {
   late final _state = ValueNotifier<bool>(false)..addListener(_listener);
-  final keyboardVisiblityNotifier = KeyboardVisibilityNotification();
-  int? keyboardSubscription;
+  StreamSubscription<bool>? keyboardSubscription;
   @override
   void initHook() {
-    keyboardSubscription = keyboardVisiblityNotifier.addNewListener(
-      onChange: onKeyboardVisibiltyChange,
-    );
+    final keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen(onKeyboardVisibiltyChange);
+
     super.initHook();
   }
 
   @override
   void dispose() {
-    if (keyboardSubscription != null) {
-      keyboardVisiblityNotifier.removeListener(keyboardSubscription);
-    }
-
-    keyboardVisiblityNotifier.dispose();
+    keyboardSubscription?.cancel();
     _state.dispose();
   }
 
-  // ignore: avoid_positional_boolean_parameters
-  void onKeyboardVisibiltyChange(final bool visible) {}
+  // ignore: avoid_positional_boolean_parameters, use_setters_to_change_properties
+  void onKeyboardVisibiltyChange(final bool visible) {
+    _state.value = visible;
+  }
 
   @override
   ValueNotifier<bool> build(final BuildContext context) => _state;

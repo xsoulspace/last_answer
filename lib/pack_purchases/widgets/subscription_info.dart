@@ -86,7 +86,7 @@ class SubscriptionInfo extends StatelessWidget {
             description: 'This app is an Open Source software and '
                 'your support makes possible to keep it that way, '
                 'and provides more time for quality and usabily updates.',
-            icon: Icon(Icons.photo_size_select_actual_rounded),
+            icon: Icon(Icons.code_rounded),
           ),
         ],
       ),

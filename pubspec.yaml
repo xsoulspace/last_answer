@@ -69,6 +69,8 @@ dev_dependencies:
   json_serializable: ^6.1.1
   mockito: ^5.0.16
   mocktail: ^0.2.0
+  # https://monarchapp.io
+  monarch: ^2.1.0
   msix: ^2.8.2
 
 msix_config:

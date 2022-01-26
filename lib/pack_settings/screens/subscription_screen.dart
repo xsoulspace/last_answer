@@ -14,10 +14,9 @@ class SubscriptionScreen extends StatelessWidget {
       backgroundColor: theme.canvasColor,
       appBar: AppBar(
         leading: AdaptiveBackButton(onPressed: onBack),
-        title: Text(S.current.myAccount),
+        title: Text(S.current.subscription),
       ),
-      // TODO(arenukvern): replace with subscription screen
-      body: const MyAccount(),
+      body: const SubscriptionInfo(),
     );
   }
 }

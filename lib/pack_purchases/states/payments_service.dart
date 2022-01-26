@@ -6,4 +6,10 @@ class PaymentsService {
       (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) &&
       !kIsWeb;
   bool get paymentsNotAccessable => !paymentsAccessable;
+  Future<PurchaserInfo> getPurchaserInfo() async {
+    final purchaserInfo = await Purchases.getPurchaserInfo();
+    print(purchaserInfo.toString());
+
+    return purchaserInfo;
+  }
 }

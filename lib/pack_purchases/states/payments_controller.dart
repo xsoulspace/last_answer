@@ -9,8 +9,8 @@ PaymentsController createPaymentsController(
 
 enum SubscriptionTypes {
   free,
-  paidPro,
-  advertisementPro,
+  paidPatron,
+  advertisementPatron,
 }
 
 class PaymentsController extends ChangeNotifier implements Loadable {
@@ -28,9 +28,20 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     }
   }
 
+  PurchaserInfo? purchaserInfo;
+
   @override
   Future<void> onLoad({required final BuildContext context}) async {
     if (paymentsService.paymentsNotAccessable) return;
     await Purchases.setup(Envs.revenueCatApiKey);
+    await Purchases.setDebugLogsEnabled(true);
+
+    final effectivePurchaserInfo =
+        purchaserInfo = await paymentsService.getPurchaserInfo();
+    final allFeaturesEntitlment =
+        effectivePurchaserInfo.entitlements.all['all_features'];
+    if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
+      subscriptionType = SubscriptionTypes.paidPatron;
+    }
   }
 }

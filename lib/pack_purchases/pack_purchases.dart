@@ -1,7 +1,5 @@
 library pack_purchases;
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/envs.dart';
 import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:provider/src/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

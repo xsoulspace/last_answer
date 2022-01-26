@@ -10,14 +10,14 @@ class PaymentsService {
 
   Future<PurchaserInfo> getPurchaserInfo() async {
     final purchaserInfo = await Purchases.getPurchaserInfo();
-    log(purchaserInfo.toJson().toString());
+    print('${{"!!! purchaserInfo": purchaserInfo.toJson().toString()}}');
 
     return purchaserInfo;
   }
 
   Future<Offerings> getOfferings() async {
     final offerings = await Purchases.getOfferings();
-    log(offerings.toJson().toString());
+    print('${{"!!! offerings": offerings.toJson().toString()}}');
 
     return offerings;
   }

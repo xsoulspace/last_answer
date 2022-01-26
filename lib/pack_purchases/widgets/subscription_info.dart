@@ -20,15 +20,9 @@ class SubscriptionInfo extends StatelessWidget {
     final BuildContext context,
     final double leftColumnWidth,
   ) {
+    final paymentsController = context.read<PaymentsController>();
     final theme = Theme.of(context);
-    final monthlySubscribe = TextButton(
-      onPressed: () {},
-      child: const Text('Monthly subscription'),
-    );
-    final annualSubscribe = TextButton(
-      onPressed: () {},
-      child: const Text('Annual subscription'),
-    );
+    final screenLayout = ScreenLayout.of(context);
 
     return [
       Row(
@@ -46,7 +40,16 @@ class SubscriptionInfo extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          annualSubscribe,
+          TextButton(
+            onPressed: () {},
+            child: SizedBox(
+              width: screenLayout.small ? 180 : null,
+              child: Text(
+                paymentsController.monthlySubscriptionTitle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ],
       ),
       const SizedBox(height: 40),
@@ -56,6 +59,7 @@ class SubscriptionInfo extends StatelessWidget {
       ),
       const SizedBox(height: 40),
       const Text("What's included:"),
+      const SizedBox(height: 24),
       Wrap(
         children: const [
           FeatureCard(
@@ -87,9 +91,27 @@ class SubscriptionInfo extends StatelessWidget {
         ],
       ),
       const SizedBox(height: 40),
-      Center(child: annualSubscribe),
+      Center(
+        child: TextButton(
+          onPressed: () {},
+          child: Text(
+            paymentsController.monthlySubscriptionTitle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
       const SizedBox(height: 14),
-      Center(child: monthlySubscribe),
+      Center(
+        child: TextButton(
+          onPressed: () {},
+          child: Text(
+            paymentsController.annualSubscriptionTitle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+      const SizedBox(height: 14),
+      const BottomSafeArea(),
     ];
   }
 

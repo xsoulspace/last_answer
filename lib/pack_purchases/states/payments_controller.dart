@@ -31,6 +31,17 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   PurchaserInfo? purchaserInfo;
   Offerings? offerings;
 
+  Package? get annualSubscription => offerings?.current?.annual;
+
+  String get annualSubscriptionTitle =>
+      //TODO(arenukvern): translate
+      'Subscribe - ${annualSubscription?.product.priceString} / year';
+
+  Package? get monthlySubscription => offerings?.current?.monthly;
+  //TODO(arenukvern): translate
+  String get monthlySubscriptionTitle =>
+      'Subscribe - ${monthlySubscription?.product.priceString} / month';
+
   @override
   Future<void> onLoad({required final BuildContext context}) async {
     if (paymentsService.paymentsNotAccessable) return;
@@ -43,8 +54,7 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     if (key.isEmpty) throw ArgumentError.value('key is not provided');
     try {
       await Purchases.setup(key);
-      await Purchases.setDebugLogsEnabled(true);
-
+      await Purchases.setDebugLogsEnabled(false);
       final effectivePurchaserInfo =
           purchaserInfo = await paymentsService.getPurchaserInfo();
       final allFeaturesEntitlment =

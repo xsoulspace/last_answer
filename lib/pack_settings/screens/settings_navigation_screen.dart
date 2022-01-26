@@ -16,6 +16,7 @@ class SettingsNavigationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.canvasColor,
       appBar: AppBar(
+        centerTitle: true,
         leading: CupertinoCloseButton(onPressed: onBack),
         title: Text(S.current.settings),
       ),

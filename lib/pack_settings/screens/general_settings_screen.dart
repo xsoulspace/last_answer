@@ -13,6 +13,7 @@ class GeneralSettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.canvasColor,
       appBar: AppBar(
+        centerTitle: true,
         leading: AdaptiveBackButton(onPressed: onBack),
         title: Text(S.current.generalSettingsFullTitle),
       ),

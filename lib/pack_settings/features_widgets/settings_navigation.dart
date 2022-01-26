@@ -15,6 +15,7 @@ class SettingsNavigation extends StatelessWidget {
     if (screenLayout.notSmall) {
       effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
     }
+    final notificationController = context.read<NotificationController>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -33,23 +34,30 @@ class SettingsNavigation extends StatelessWidget {
               : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
-        SettingsButton(
-          routeName: AppRoutesName.profile,
-          onSelected: onSelectRoute,
-          checkSelected: routeState.checkIsCurrentRoute,
-          text: S.current.myAccount,
-          // TODO(arenukvern): add avatar
-        ),
-        SettingsButton(
-          routeName: AppRoutesName.subscription,
-          onSelected: onSelectRoute,
-          checkSelected: routeState.checkIsCurrentRoute,
-          text: S.current.subscription,
-          // TODO(arenukvern): add avatar
-        ),
+        if (kDebugMode)
+          SettingsButton(
+            routeName: AppRoutesName.profile,
+            onSelected: onSelectRoute,
+            checkSelected: routeState.checkIsCurrentRoute,
+            text: S.current.myAccount,
+            // TODO(arenukvern): add avatar
+          ),
+        if (kDebugMode)
+          SettingsButton(
+            routeName: AppRoutesName.subscription,
+            onSelected: onSelectRoute,
+            checkSelected: routeState.checkIsCurrentRoute,
+            text: S.current.subscription,
+            // TODO(arenukvern): add avatar
+          ),
         SettingsButton(
           routeName: AppRoutesName.changelog,
-          onSelected: onSelectRoute,
+          onSelected: (final _) {
+            showNotificationPopup(
+              context: context,
+              notificationController: notificationController,
+            );
+          },
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.changeLog,
           // TODO(arenukvern): add avatar

@@ -1,4 +1,4 @@
-part of widgets;
+part of pack_app;
 
 typedef BoolValueChanged<T> = bool Function(T value);
 typedef FutureBoolValueChanged<T> = Future<bool> Function(T value);

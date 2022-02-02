@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:blur/blur.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -58,5 +59,8 @@ part 'screens/unknown/unknown_screen.dart';
 part 'states/global_state_initializer.dart';
 part 'states/global_state_notifiers.dart';
 part 'widgets/project_direction_switch.dart';
+part 'widgets/project_text_field.dart';
+part 'widgets/project_tile.dart';
+part 'widgets/project_title_field.dart';
 part 'widgets/settings_list_tile.dart';
 part 'widgets/update_notification_popup.dart';

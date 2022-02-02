@@ -1,4 +1,4 @@
-part of widgets;
+part of pack_app;
 
 class ProjectTextField extends StatefulHookWidget {
   const ProjectTextField({

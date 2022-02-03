@@ -56,9 +56,10 @@ class SmallSettingsScreen extends HookWidget {
     });
 
     useEffect(
-      // ignore: unnecessary_lambdas
       () {
         switchToPage();
+
+        return null;
       },
       [routeState.route],
     );
@@ -68,6 +69,8 @@ class SmallSettingsScreen extends HookWidget {
         WidgetsBinding.instance?.addPostFrameCallback((final _) {
           switchToPage();
         });
+
+        return null;
       },
       [screenLayout.small],
     );

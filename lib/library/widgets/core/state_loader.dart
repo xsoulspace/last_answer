@@ -38,6 +38,8 @@ class StateLoader extends HookWidget {
         homeOpacity.value = progressPercent;
         loaderOpacity.value = 1 - progressPercent;
         loaderScale.value = animation + 0.1;
+
+        return null;
       },
       [animation],
     );

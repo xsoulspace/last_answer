@@ -12,12 +12,12 @@ class LocaleSwitcherButton extends StatelessWidget {
     final languageCode = settings.locale?.languageCode;
     final String effectiveLanguageCode =
         languageCode ?? getLanguageCode(intl.Intl.getCurrentLocale());
-    final _initLocale =
+    final initLocale =
         namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
 
     return DropdownButton<Locale>(
       // Read the selected themeMode from the controller
-      value: _initLocale,
+      value: initLocale,
       // Call the updateThemeMode method any time the user selects
       // theme.
       onChanged: settings.updateLocale,

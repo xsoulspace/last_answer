@@ -80,18 +80,20 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final _scrollController = useScrollController();
+    final scrollController = useScrollController();
 
     useEffect(
       // ignore: unnecessary_lambdas
       () {
         setMaxLength();
+
+        return null;
       },
       [widget.limit],
     );
 
     return RightScrollbar(
-      controller: _scrollController,
+      controller: scrollController,
       child: FocusBubbleContainer(
         onFocus: widget.onFocus,
         fillColor: widget.fillColor,
@@ -107,7 +109,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             maxLength: _maxLength,
             maxLengthEnforcement: MaxLengthEnforcement.none,
             maxLines: widget.endlessLines ? null : widget.maxLines,
-            scrollController: _scrollController,
+            scrollController: scrollController,
             focusNode: _textFieldFocusNode,
             onFieldSubmitted: (final _) => widget.onSubmit(),
             controller: widget.controller,

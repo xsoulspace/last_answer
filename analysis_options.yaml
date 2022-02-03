@@ -19,6 +19,7 @@ analyzer:
     - lib/generated_plugin_registrant.dart
   plugins:
     - dart_code_metrics
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
@@ -50,7 +51,14 @@ linter:
     avoid_dynamic_calls: true
     always_use_package_imports: true
     # Style
+    unnecessary_late: true
+    conditional_uri_does_not_exist: true
     avoid_void_async: true
+    no_leading_underscores_for_library_prefixes: true
+    no_leading_underscores_for_local_identifiers: true
+    secure_pubspec_urls: true
+    sized_box_shrink_expand: true
+    use_decorated_box: true
     avoid_setters_without_getters: true
     avoid_returning_this: true
     avoid_returning_null: true

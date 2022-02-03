@@ -17,6 +17,8 @@ class _QuestionDropdown extends HookWidget {
     useEffect(
       () {
         chosenQuestion.value = answer.question;
+
+        return null;
       },
       [answer.question],
     );

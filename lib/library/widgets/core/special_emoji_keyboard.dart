@@ -61,6 +61,8 @@ class SpecialEmojisKeyboardActions extends HookWidget {
             }
           },
         );
+
+        return null;
       },
       [window.viewInsets.bottom],
     );

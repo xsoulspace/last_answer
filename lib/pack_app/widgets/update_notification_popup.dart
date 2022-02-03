@@ -69,7 +69,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
 
     final screenLayout = ScreenLayout.of(context);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: defaultPopupBorderRadius,
       ),

@@ -41,7 +41,7 @@ class FocusBubbleContainer extends HookWidget {
     Color getDefaultColor() =>
         fillDefaultWithCanvas ? theme.canvasColor : consts.defaultFillColor;
     final fillColorNotifier = useState(getDefaultColor());
-    useValueChanged<ThemeData, Color>(theme, (final _, final __) {
+    useValueChanged<ThemeData, void>(theme, (final _, final __) {
       fillColorNotifier.value = getDefaultColor();
     });
 

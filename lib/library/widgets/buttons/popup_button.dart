@@ -56,7 +56,7 @@ class PopupButton extends HookWidget {
       });
     }
 
-    useValueChanged<bool, bool>(
+    useValueChanged<bool, void>(
       popupVisible.value,
       (final _, final __) {
         if (!popupVisible.value) return;

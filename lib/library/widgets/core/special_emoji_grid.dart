@@ -1,41 +1,5 @@
 part of widgets;
 
-class SpecialEmojiPopup extends HookWidget {
-  const SpecialEmojiPopup({
-    required final this.controller,
-    required final this.focusNode,
-    required final this.onShowEmojiKeyboard,
-    final Key? key,
-  }) : super(key: key);
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final VoidCallback onShowEmojiKeyboard;
-
-  @override
-  Widget build(final BuildContext context) {
-    if (!isNativeDesktop && !kIsWeb) {
-      return IconButton(
-        onPressed: onShowEmojiKeyboard,
-        icon: const Icon(Icons.emoji_flags_rounded),
-      );
-    }
-    final emojiInserter = EmojiInserter.use(
-      controller: controller,
-      focusNode: focusNode,
-    );
-
-    return PopupButton(
-      icon: Icons.emoji_flags_rounded,
-      builder: (final context) {
-        return SpecialEmojisGrid(
-          onChanged: emojiInserter.insert,
-          hideBorder: true,
-        );
-      },
-    );
-  }
-}
-
 class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({
     required final this.onChanged,
@@ -65,7 +29,7 @@ class SpecialEmojisGrid extends StatelessWidget {
     const maxItemsInRow = 9;
 
     return ButtonPopup(
-      height: 80,
+      height: 200,
       hideBorder: hideBorder,
       children: [
         Expanded(

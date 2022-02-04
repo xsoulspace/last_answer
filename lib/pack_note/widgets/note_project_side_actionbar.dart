@@ -59,7 +59,7 @@ class NoteProjectSideActionBar extends HookWidget {
           onRemove: onRemove,
           updatesStream: updatesStream,
         ),
-        SpecialEmojiPopup(
+        SpecialEmojiButton(
           controller: noteController,
           focusNode: noteFocusNode,
           onShowEmojiKeyboard: showEmojiKeyboard,

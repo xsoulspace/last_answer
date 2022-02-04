@@ -11,7 +11,7 @@ class SettingsNavigation extends StatelessWidget {
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
-    final paymentsService = context.read<PaymentsService>();
+    final paymentsService = context.read<PaymentsController>();
 
     BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
     if (screenLayout.notSmall) {

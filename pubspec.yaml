@@ -28,7 +28,6 @@ dependencies:
   cupertino_icons: ^1.0.4
   dio: ^4.0.4
   equatable: ^2.0.3
-  flare_flutter: ^3.0.2
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.1
@@ -69,8 +68,6 @@ dev_dependencies:
   json_serializable: ^6.1.1
   mockito: ^5.0.16
   mocktail: ^0.2.0
-  # https://monarchapp.io
-  monarch: ^2.1.0
   msix: ^2.8.2
 
 msix_config:

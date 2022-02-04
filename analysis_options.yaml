@@ -19,6 +19,10 @@ analyzer:
     - lib/generated_plugin_registrant.dart
   plugins:
     - dart_code_metrics
+  errors:
+    avoid_void_async: error
+    sort_constructors_first: info
+    always_declare_return_types: error
 
 linter:
   # The lint rules applied to this project can be customized in the

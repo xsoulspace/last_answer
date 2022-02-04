@@ -2,10 +2,12 @@ part of pack_purchases;
 
 class PaymentsService {
   bool get paymentsAccessable =>
-      Envs.revenueCatApiKeyAppleIsNotEmpty &&
-      Envs.revenueCatApiKeyGoogleIsNotEmpty &&
-      (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) &&
-      !kIsWeb;
+      // TODO(antmalofeev): remove kDebugMode when purchases will be released
+      kDebugMode &&
+      ((Platform.isIOS || Platform.isMacOS || Platform.isAndroid) &&
+          !kIsWeb &&
+          Envs.revenueCatApiKeyAppleIsNotEmpty &&
+          Envs.revenueCatApiKeyGoogleIsNotEmpty);
   bool get paymentsNotAccessable => !paymentsAccessable;
 
   Future<PurchaserInfo> getPurchaserInfo() async {

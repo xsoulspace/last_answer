@@ -11,6 +11,8 @@ class SettingsNavigation extends StatelessWidget {
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
+    final paymentsService = context.read<PaymentsService>();
+
     BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
     if (screenLayout.notSmall) {
       effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
@@ -34,7 +36,7 @@ class SettingsNavigation extends StatelessWidget {
               : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
-        if (kDebugMode)
+        if (paymentsService.paymentsNotAccessable)
           SettingsButton(
             routeName: AppRoutesName.profile,
             onSelected: onSelectRoute,
@@ -42,7 +44,7 @@ class SettingsNavigation extends StatelessWidget {
             text: S.current.myAccount,
             // TODO(arenukvern): add avatar
           ),
-        if (kDebugMode)
+        if (paymentsService.paymentsNotAccessable)
           SettingsButton(
             routeName: AppRoutesName.subscription,
             onSelected: onSelectRoute,

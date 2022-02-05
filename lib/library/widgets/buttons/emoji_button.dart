@@ -12,14 +12,17 @@ class EmojiButton extends StatelessWidget {
   final TextStyle? style;
   @override
   Widget build(final BuildContext context) {
-    return CupertinoButton(
-      minSize: 0,
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: Center(
-        child: Text(
-          emoji.emoji,
-          style: style,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: CupertinoButton(
+        minSize: 0,
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        child: Center(
+          child: Text(
+            emoji.emoji,
+            style: style,
+          ),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-part of pack_app;
+part of pack_settings;
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({

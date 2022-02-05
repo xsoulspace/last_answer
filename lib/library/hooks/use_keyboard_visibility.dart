@@ -17,6 +17,8 @@ class _KeyboardVisiblityHookState
   StreamSubscription<bool>? keyboardSubscription;
   @override
   void initHook() {
+    if (isNativeDesktop) return;
+
     final keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen(onKeyboardVisibiltyChange);

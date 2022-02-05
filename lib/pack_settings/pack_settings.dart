@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -39,4 +38,5 @@ part 'screens/small_settings_screen.dart';
 part 'screens/subscription_screen.dart';
 part 'widgets/settings_button.dart';
 part 'widgets/settings_list_container.dart';
+part 'widgets/settings_list_tile.dart';
 part 'widgets/settings_text.dart';

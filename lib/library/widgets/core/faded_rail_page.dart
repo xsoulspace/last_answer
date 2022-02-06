@@ -65,7 +65,7 @@ mixin FadedRailRouteTransitionMixin<T> on PageRoute<T> {
   Widget buildContent(final BuildContext context);
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 300);
+  Duration get transitionDuration => const Duration(milliseconds: 200);
 
   @override
   Color? get barrierColor => null;

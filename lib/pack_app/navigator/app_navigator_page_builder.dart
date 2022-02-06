@@ -22,7 +22,7 @@ class AppNavigatorPageBuilder {
 
   Page appInfoPage() {
     return MaterialPage(
-      key: _ValueKeys._info,
+      key: NavigatorValueKeys._info,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
@@ -33,22 +33,32 @@ class AppNavigatorPageBuilder {
     );
   }
 
+  /// ********************************************
+  /// *      SETTINGS START
+  /// ********************************************
+
   Page settingsPage() {
-    return MaterialPage<void>(
-      key: _ValueKeys._settings,
+    return FadedRailPage<void>(
+      key: NavigatorValueKeys._settings,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
         child: SettingsScreen(
-          onBack: navigatorController.goHome,
+          onPopPage: popper.onPopPage,
+          onSelectRoute: navigatorController.go,
+          onBack: navigatorController.goBackFromSettings,
         ),
       ),
     );
   }
 
+  /// ********************************************
+  /// *      SETTINGS END
+  /// ********************************************
+
   Page notePage() {
     return MaterialPage<void>(
-      key: _ValueKeys._notesNote,
+      key: NavigatorValueKeys._notesNote,
       restorationId: routeState.route.path,
       fullscreenDialog: isNativeDesktop,
       name: routeState.route.path,
@@ -74,7 +84,7 @@ class AppNavigatorPageBuilder {
 
   Page ideaPage() {
     return MaterialPage<void>(
-      key: _ValueKeys._ideasIdea,
+      key: NavigatorValueKeys._ideasIdea,
       fullscreenDialog: isNativeDesktop,
       restorationId: routeState.route.path,
       name: routeState.route.path,
@@ -93,7 +103,7 @@ class AppNavigatorPageBuilder {
   Page ideaAnswerPage() {
     return MaterialPage<void>(
       fullscreenDialog: true,
-      key: _ValueKeys._ideasIdeaAnswer,
+      key: NavigatorValueKeys._ideasIdeaAnswer,
       restorationId: routeState.route.path,
       name: routeState.route.path,
       child: AppNavigatorPopScope(
@@ -112,7 +122,7 @@ class AppNavigatorPageBuilder {
 
   Page createIdeaPage() {
     return MaterialPage<void>(
-      key: _ValueKeys._createIdea,
+      key: NavigatorValueKeys._createIdea,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,

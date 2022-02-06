@@ -9,7 +9,8 @@ void closeKeyboard({required final BuildContext context}) {
 
 class SoftKeyboard {
   SoftKeyboard._();
-  static void close() =>
+  static Future<void> close() async =>
       SystemChannels.textInput.invokeMethod('TextInput.hide');
-  static void open() => SystemChannels.textInput.invokeMethod('TextInput.show');
+  static Future<void> open() async =>
+      SystemChannels.textInput.invokeMethod('TextInput.show');
 }

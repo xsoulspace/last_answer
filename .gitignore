@@ -32,6 +32,7 @@ android/key.properties
 .pub-cache/
 .pub/
 /build/
+.env
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -46,3 +47,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Monarch related
+.monarch/

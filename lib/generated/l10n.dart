@@ -90,6 +90,126 @@ class S {
     );
   }
 
+  /// `Subscription`
+  String get subscription {
+    return Intl.message(
+      'Subscription',
+      name: 'subscription',
+      desc: 'subscription',
+      args: [],
+    );
+  }
+
+  /// `Free`
+  String get freeSubscription {
+    return Intl.message(
+      'Free',
+      name: 'freeSubscription',
+      desc: 'free Subscription',
+      args: [],
+    );
+  }
+
+  /// `Patron`
+  String get patronSubscription {
+    return Intl.message(
+      'Patron',
+      name: 'patronSubscription',
+      desc: 'patronSubscription',
+      args: [],
+    );
+  }
+
+  /// `My Account`
+  String get myAccount {
+    return Intl.message(
+      'My Account',
+      name: 'myAccount',
+      desc: 'myAccount',
+      args: [],
+    );
+  }
+
+  /// `Change Log`
+  String get changeLog {
+    return Intl.message(
+      'Change Log',
+      name: 'changeLog',
+      desc: 'changeLog',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: 'username',
+      args: [],
+    );
+  }
+
+  /// `E-mail`
+  String get email {
+    return Intl.message(
+      'E-mail',
+      name: 'email',
+      desc: 'email',
+      args: [],
+    );
+  }
+
+  /// `Delete Account`
+  String get deleteMyAccount {
+    return Intl.message(
+      'Delete Account',
+      name: 'deleteMyAccount',
+      desc: 'deleteMyAccount',
+      args: [],
+    );
+  }
+
+  /// `Danger`
+  String get danger {
+    return Intl.message(
+      'Danger',
+      name: 'danger',
+      desc: 'danger',
+      args: [],
+    );
+  }
+
+  /// `ESC`
+  String get esc {
+    return Intl.message(
+      'ESC',
+      name: 'esc',
+      desc: 'esc',
+      args: [],
+    );
+  }
+
+  /// `General Settings`
+  String get generalSettingsFullTitle {
+    return Intl.message(
+      'General Settings',
+      name: 'generalSettingsFullTitle',
+      desc: 'generalSettingsFullTitle',
+      args: [],
+    );
+  }
+
+  /// `General`
+  String get generalSettingsShortTitle {
+    return Intl.message(
+      'General',
+      name: 'generalSettingsShortTitle',
+      desc: 'generalSettingsShortTitle',
+      args: [],
+    );
+  }
+
   /// `Characters limit`
   String get charactersLimit {
     return Intl.message(

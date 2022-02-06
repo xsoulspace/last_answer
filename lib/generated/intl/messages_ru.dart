@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Вы уверены?"),
         "cancel": MessageLookupByLibrary.simpleMessage("Отменить"),
+        "changeLog": MessageLookupByLibrary.simpleMessage("Change Log"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Лимит символов"),
         "charactersLimitForNewNotesDesription":
@@ -49,13 +50,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Закрыть"),
         "createIdeaHelperText":
             MessageLookupByLibrary.simpleMessage("Создать туториал"),
+        "danger": MessageLookupByLibrary.simpleMessage("Опасно"),
         "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
+        "deleteMyAccount":
+            MessageLookupByLibrary.simpleMessage("Удалить аккаунт"),
         "deleteThisNote":
             MessageLookupByLibrary.simpleMessage("Удалить заметку"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "esc": MessageLookupByLibrary.simpleMessage("ESC"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
             "или отправьте сообщение на idea@xsoulspace.dev"),
+        "freeSubscription": MessageLookupByLibrary.simpleMessage("Бесплатно"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Часто используемые"),
+        "generalSettingsFullTitle":
+            MessageLookupByLibrary.simpleMessage("Общие настройки"),
+        "generalSettingsShortTitle":
+            MessageLookupByLibrary.simpleMessage("Общие"),
         "idea": MessageLookupByLibrary.simpleMessage("Идея"),
         "joinDiscord":
             MessageLookupByLibrary.simpleMessage("Присоединяйтесь к Discord"),
@@ -63,12 +74,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
             "Сделано с Flutter ❤ и Open Source Libraries"),
+        "myAccount": MessageLookupByLibrary.simpleMessage("Мой аккаунт"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
             "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!"),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
         "noteSettings":
             MessageLookupByLibrary.simpleMessage("Настройки заметки"),
+        "patronSubscription": MessageLookupByLibrary.simpleMessage("Patron"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
             "Можно использовать: \"Пять почему\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
@@ -93,12 +106,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Направление заметок"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "subscription": MessageLookupByLibrary.simpleMessage("Подписка"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Условия использования"),
         "theme": MessageLookupByLibrary.simpleMessage("Тема"),
         "themeDark": MessageLookupByLibrary.simpleMessage("Темная"),
         "themeLight": MessageLookupByLibrary.simpleMessage("Светлая"),
         "themeSystem": MessageLookupByLibrary.simpleMessage("Как в системе"),
+        "username": MessageLookupByLibrary.simpleMessage("Имя пользователя"),
         "whatsYourIdea": MessageLookupByLibrary.simpleMessage("В чём идея?"),
         "willBeLost": m1,
         "wordNew": MessageLookupByLibrary.simpleMessage("Новое"),

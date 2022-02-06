@@ -5,7 +5,7 @@
   <a title="Discord" href="https://discord.com/invite/y54DpJwmAn" ><img src="https://img.shields.io/discord/696688204476055592.svg" /></a>
   <a title="Contributor Covenant" href="https://github.com/xsoulspace/last_answer/blob/master/CODE_OF_CONDUCT.md" ><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" /></a>
   <a title="Contributors" href="https://github.com/xsoulspace/last_answer/graphs/contributors" ><img src="https://img.shields.io/github/contributors/xsoulspace/last_answer.svg" /></a>
-  <a href="https://patreon.com/arenukvern"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Darenukvern%26type%3Dpatrons&style=flat" alt="Support me on Patreon" /></a>
+  <a href="https://patreon.com/arenukvern"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-Patron.vercel.app%2Fapi%3Fusername%3Darenukvern%26type%3Dpatrons&style=flat" alt="Support me on Patron" /></a>
 </p>
 
 ## Desktop
@@ -65,7 +65,8 @@ Thank you and have a nice day.
 
 ## Support Development
 
-You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or support on [Patreon](https://patreon.com/arenukvern)
+
 Thank you for your support!
 
 # Huge thank you for contributions!

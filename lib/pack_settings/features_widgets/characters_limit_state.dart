@@ -32,11 +32,11 @@ class CharactersLimitSettingState implements LifeState {
   final BuildContext context;
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
-  late SettingsController settings;
+  late GeneralSettingsController settings;
   final TextEditingController controller;
   @override
   void initState() {
-    settings = context.read<SettingsController>();
+    settings = context.read<GeneralSettingsController>();
     controller.addListener(onLimitChanged);
   }
 

@@ -8,7 +8,7 @@ PODS:
     - Flutter
   - Purchases (3.13.2):
     - PurchasesCoreSwift (= 3.13.2)
-  - purchases_flutter (3.9.2):
+  - purchases_flutter (3.9.3):
     - Flutter
     - PurchasesHybridCommon (= 1.11.2)
   - PurchasesCoreSwift (3.13.2)
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   Purchases: 03200de9288724e77de435000d1828601e6b8e00
-  purchases_flutter: c5054b356c8d8ae8ce02795b51550c3b7b1ef6c6
+  purchases_flutter: 0b70f7dff03a6bc5acd425f1b07bc511bfdee52b
   PurchasesCoreSwift: 2ea4b33e5cece5c8a0751594ef7c6cbfcbd747a9
   PurchasesHybridCommon: 56ef42d85c3e930d49aff4ac5fa027373d2e1bb8
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68

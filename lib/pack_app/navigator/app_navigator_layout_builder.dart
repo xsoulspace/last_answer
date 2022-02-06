@@ -12,7 +12,7 @@ class AppNavigatorLayoutBuilder {
     return [
       if (pageBuilder.pathTemplate.startsWith(AppRoutesName.home)) ...[
         MaterialPage<void>(
-          key: _ValueKeys._home,
+          key: NavigatorValueKeys._home,
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
@@ -24,15 +24,13 @@ class AppNavigatorLayoutBuilder {
               onProjectTap: popper.navigatorController.onProjectTap,
               onSettingsTap: popper.navigatorController.goSettings,
               mainScreenNavigator: Navigator(
-                key: _ValueKeys._largeScreenHomeNavigator,
+                key: NavigatorValueKeys._largeScreenHomeNavigator,
                 onGenerateRoute: (final _) => null,
                 pages: [
                   if (pathTemplate == AppRoutesName.note)
                     pageBuilder.notePage()
-                  else if (pathTemplate.contains(AppRoutesName.idea)) ...[
-                    pageBuilder.ideaPage(),
-                  ] else if (pathTemplate == AppRoutesName.settings)
-                    pageBuilder.settingsPage()
+                  else if (pathTemplate.contains(AppRoutesName.idea))
+                    pageBuilder.ideaPage()
                   else
                     AppNavigatorPageBuilder.emptyPage,
                 ],
@@ -45,6 +43,8 @@ class AppNavigatorLayoutBuilder {
           pageBuilder.createIdeaPage()
         else if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage()
+        else if (pathTemplate.startsWith(AppRoutesName.settings))
+          pageBuilder.settingsPage()
         else if (pathTemplate == AppRoutesName.appInfo)
           pageBuilder.appInfoPage(),
       ],
@@ -53,23 +53,22 @@ class AppNavigatorLayoutBuilder {
 
   List<Page> getSmallScreenPages() {
     return [
-      if (pathTemplate == AppRoutesName.home)
-        MaterialPage<void>(
-          key: _ValueKeys._home,
-          child: AppNavigatorPopScope(
-            popper: popper,
-            child: SmallHomeScreen(
-              checkIsProjectActive: pageBuilder.checkIsProjectActive,
-              onInfoTap: popper.navigatorController.goAppInfo,
-              onCreateIdeaTap: popper.navigatorController.goCreateIdea,
-              onCreateNoteTap: popper.navigatorController.goNoteScreen,
-              onProjectTap: popper.navigatorController.onProjectTap,
-              onSettingsTap: popper.navigatorController.goSettings,
-              onGoHome: popper.navigatorController.goHome,
-            ),
+      FadedRailPage<void>(
+        key: NavigatorValueKeys._home,
+        child: AppNavigatorPopScope(
+          popper: popper,
+          child: SmallHomeScreen(
+            checkIsProjectActive: pageBuilder.checkIsProjectActive,
+            onInfoTap: popper.navigatorController.goAppInfo,
+            onCreateIdeaTap: popper.navigatorController.goCreateIdea,
+            onCreateNoteTap: popper.navigatorController.goNoteScreen,
+            onProjectTap: popper.navigatorController.onProjectTap,
+            onSettingsTap: popper.navigatorController.goSettings,
+            onGoHome: popper.navigatorController.goHome,
           ),
-        )
-      else if (pathTemplate == AppRoutesName.settings)
+        ),
+      ),
+      if (pathTemplate.startsWith(AppRoutesName.settings))
         pageBuilder.settingsPage()
       else if (pathTemplate == AppRoutesName.appInfo)
         pageBuilder.appInfoPage()
@@ -81,8 +80,7 @@ class AppNavigatorLayoutBuilder {
         pageBuilder.ideaPage(),
         if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage(),
-      ] else
-        AppNavigatorPageBuilder.emptyPage,
+      ]
     ];
   }
 }

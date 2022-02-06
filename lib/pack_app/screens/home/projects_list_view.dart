@@ -18,79 +18,70 @@ class ProjectsListView extends HookWidget {
     final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;
-    final settings = SettingsStateScope.of(context);
+    final settings = context.read<GeneralSettingsController>();
     final reversed = settings.projectsListReversed;
 
     return Consumer<FolderStateProvider>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
 
-        return Expanded(
-          child: Column(
-            children: [
-              if (projects.isEmpty)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      S.current.noProjectsYet,
-                      style: textTheme.headline2,
-                    ),
-                  ),
-                ),
-              Expanded(
-                child: ListTileTheme(
-                  textColor: screenLayout.small
-                      ? null
-                      : textTheme.subtitle2?.color?.withOpacity(0.7),
-                  child: RightScrollbar(
-                    controller: scrollController,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      reverse: reversed,
-                      key: const PageStorageKey('projects_scroll_view'),
-                      controller: scrollController,
-                      padding: const EdgeInsets.all(5),
-                      shrinkWrap: true,
-                      restorationId: 'projects',
-                      itemCount: projects.length,
-                      itemBuilder: (final _, final i) {
-                        final project = projects[i];
+        if (projects.isEmpty) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.current.noProjectsYet,
+                style: textTheme.headline2,
+              ),
+            ),
+          );
+        } else {
+          return ListTileTheme(
+            textColor: screenLayout.small
+                ? null
+                : textTheme.subtitle2?.color?.withOpacity(0.7),
+            child: RightScrollbar(
+              controller: scrollController,
+              child: ListView.builder(
+                reverse: reversed,
+                key: const PageStorageKey('projects_scroll_view'),
+                controller: scrollController,
+                padding: const EdgeInsets.all(5),
+                // shrinkWrap: true,
+                restorationId: 'projects',
+                itemCount: projects.length,
+                itemBuilder: (final _, final i) {
+                  final project = projects[i];
 
-                        return Padding(
-                          key: ValueKey(project.id),
-                          padding: const EdgeInsets.only(bottom: 3),
-                          child: ProjectTile(
-                            project: project,
-                            themeDefiner: themeDefiner,
-                            onTap: onProjectTap,
-                            isProjectActive: checkIsProjectActive(project),
-                            onRemove: (final _) async => removeProject(
-                              checkIsProjectActive: checkIsProjectActive,
-                              context: context,
-                              folderProvider: folderState,
-                              onGoHome: onGoHome,
-                              project: project,
-                            ),
-                            onRemoveConfirm: (final _) async {
-                              return showRemoveTitleDialog(
-                                context: context,
-                                title: project.title,
-                              );
-                            },
-                          ),
+                  return Padding(
+                    key: ValueKey(project.id),
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: ProjectTile(
+                      project: project,
+                      themeDefiner: themeDefiner,
+                      onTap: onProjectTap,
+                      isProjectActive: checkIsProjectActive(project),
+                      onRemove: (final _) async => removeProject(
+                        checkIsProjectActive: checkIsProjectActive,
+                        context: context,
+                        folderProvider: folderState,
+                        onGoHome: onGoHome,
+                        project: project,
+                      ),
+                      onRemoveConfirm: (final _) async {
+                        return showRemoveTitleDialog(
+                          context: context,
+                          title: project.title,
                         );
                       },
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
-              const SizedBox(height: 5),
-              const BottomSafeArea(),
-            ],
-          ),
-        );
+            ),
+          );
+        }
       },
     );
   }

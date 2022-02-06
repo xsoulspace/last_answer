@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "dev.xsoulspace" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "Anton Malofeev" "\0"
+            VALUE "FileDescription", "Write Ideas and Notes" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "lastanswer" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 dev.xsoulspace. All rights reserved." "\0"
-            VALUE "OriginalFilename", "lastanswer.exe" "\0"
-            VALUE "ProductName", "lastanswer" "\0"
+            VALUE "InternalName", "last_answer" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 Anton Malofeev, Irina Veter. All rights reserved." "\0"
+            VALUE "OriginalFilename", "last_answer.exe" "\0"
+            VALUE "ProductName", "Last Answer: Ideas & Notes" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -49,14 +49,24 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
         onInfoTap: widget.onInfoTap,
         onSettingsTap: widget.onSettingsTap,
       ),
-      body: Row(
+      body: Column(
         children: [
-          const SizedBox(height: 2),
-          if (widget.verticalMenuAlignment == Alignment.bottomLeft)
-            verticalMenu,
-          projectsList,
-          if (widget.verticalMenuAlignment == Alignment.bottomRight)
-            verticalMenu,
+          Expanded(
+            child: Row(
+              children: [
+                const SizedBox(height: 2),
+                if (widget.verticalMenuAlignment == Alignment.bottomLeft)
+                  verticalMenu,
+                Expanded(
+                  child: projectsList,
+                ),
+                if (widget.verticalMenuAlignment == Alignment.bottomRight)
+                  verticalMenu,
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          const BottomSafeArea(),
         ],
       ),
     );
@@ -85,16 +95,12 @@ class HomeVerticalMenu extends StatelessWidget {
       color: themeDefiner.useContextTheme
           ? themeDefiner.effectiveTheme.primaryColor.withOpacity(.03)
           : Colors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _VerticalProjectsBar(
-            onIdeaTap: onCreateIdeaTap,
-            onNoteTap: onCreateNoteTap,
-          ),
-          const SizedBox(height: 14),
-          const BottomSafeArea(),
-        ],
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: _VerticalProjectsBar(
+          onIdeaTap: onCreateIdeaTap,
+          onNoteTap: onCreateNoteTap,
+        ),
       ),
     );
   }

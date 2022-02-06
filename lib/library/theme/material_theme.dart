@@ -32,7 +32,6 @@ final lightThemeData = _lightBase.copyWith(
       isNativeDesktop && nativeTransparentBackgroundSupported
           ? Colors.transparent
           : _lightBase.scaffoldBackgroundColor,
-  // splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),

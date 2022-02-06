@@ -3,6 +3,7 @@ library pack_note;
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
@@ -24,4 +25,5 @@ part 'screens/note_project_screen_state.dart';
 part 'states/use_note_project_updater.dart';
 part 'widgets/desktop_note_settings.dart';
 part 'widgets/mobile_note_settings.dart';
+part 'widgets/note_project_side_actionbar.dart';
 part 'widgets/note_settings_button.dart';

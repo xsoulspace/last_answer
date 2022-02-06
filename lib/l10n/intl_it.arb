@@ -19,6 +19,30 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
+  "changeLog": "Change Log",
+  "@changeLog": {
+    "description": "changeLog"
+  },
+  "username": "Nome utente",
+  "@username": {
+    "description": "username"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "email"
+  },
+  "deleteMyAccount": "Eliminare l'account",
+  "@deleteMyAccount": {
+    "description": "deleteMyAccount"
+  },
+  "danger": "Pericolo",
+  "@danger": {
+    "description": "danger"
+  },
+  "esc": "ESC",
+  "@esc": {
+    "description": "esc"
+  },
   "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
@@ -134,6 +158,30 @@
   "answer": "Risposta",
   "@answer": {
     "description": "answer input"
+  },
+  "subscription": "Abbonamento",
+  "@subscription": {
+    "description": "subscription"
+  },
+  "freeSubscription": "Gratuito",
+  "@freeSubscription": {
+    "description": "free Subscription"
+  },
+  "patronSubscription": "Patron",
+  "@patronSubscription": {
+    "description": "patronSubscription"
+  },
+  "myAccount": "Il mio account",
+  "@myAccount": {
+    "description": "myAccount"
+  },
+  "generalSettingsFullTitle": "Impostazioni generali",
+  "@generalSettingsFullTitle": {
+    "description": "generalSettingsFullTitle"
+  },
+  "generalSettingsShortTitle": "General",
+  "@generalSettingsShortTitle": {
+    "description": "generalSettingsShortTitle"
   },
   "cancel": "Cancella",
   "@cancel": {

@@ -2,7 +2,7 @@ part of theme;
 
 class AppTextStylesLight {
   AppTextStylesLight._();
-  static final headline1 = GoogleFonts.ibmPlexSans(
+  static final headline1 = GoogleFonts.notoSans(
     fontSize: 26,
     height: 32 / 26,
     color: AppColors.black,
@@ -12,7 +12,7 @@ class AppTextStylesLight {
   );
   static final headline1Strut = StrutStyle.fromTextStyle(headline1);
 
-  static final headline2 = GoogleFonts.ibmPlexSans(
+  static final headline2 = GoogleFonts.notoSans(
     fontSize: 22,
     height: 28 / 22,
     color: AppColors.black,
@@ -23,7 +23,7 @@ class AppTextStylesLight {
 
   static final headline2Strut = StrutStyle.fromTextStyle(headline2);
 
-  static final headline3 = GoogleFonts.ibmPlexSans(
+  static final headline3 = GoogleFonts.notoSans(
     fontSize: 20,
     height: 26 / 20,
     color: AppColors.black,
@@ -33,7 +33,7 @@ class AppTextStylesLight {
   );
   static final headline3Strut = StrutStyle.fromTextStyle(headline3);
 
-  static final headline4 = GoogleFonts.ibmPlexSans(
+  static final headline4 = GoogleFonts.notoSans(
     fontSize: 19,
     height: 25 / 19,
     color: AppColors.black,
@@ -43,7 +43,7 @@ class AppTextStylesLight {
   );
   static final headline4Strut = StrutStyle.fromTextStyle(headline4);
 
-  static final headline5 = GoogleFonts.ibmPlexSans(
+  static final headline5 = GoogleFonts.notoSans(
     fontSize: 18,
     height: 24 / 18,
     color: AppColors.black,
@@ -54,7 +54,7 @@ class AppTextStylesLight {
 
   static final headline5Strut = StrutStyle.fromTextStyle(headline5);
 
-  static final headline6 = GoogleFonts.ibmPlexSans(
+  static final headline6 = GoogleFonts.notoSans(
     fontSize: 17,
     height: 23 / 17,
     color: AppColors.black,
@@ -65,7 +65,7 @@ class AppTextStylesLight {
 
   static final headline6Strut = StrutStyle.fromTextStyle(headline6);
 
-  static final subtitle1 = GoogleFonts.ibmPlexSans(
+  static final subtitle1 = GoogleFonts.notoSans(
     fontSize: 16,
     height: 18 / 16,
     color: AppColors.black,
@@ -76,7 +76,7 @@ class AppTextStylesLight {
 
   static final subtitle1Strut = StrutStyle.fromTextStyle(subtitle1);
 
-  static final subtitle2 = GoogleFonts.ibmPlexSans(
+  static final subtitle2 = GoogleFonts.notoSans(
     fontSize: 12,
     height: 14 / 12,
     color: AppColors.black,
@@ -97,7 +97,7 @@ class AppTextStylesLight {
 
   static final bodyText1Strut = StrutStyle.fromTextStyle(bodyText1);
 
-  static final bodyText2 = GoogleFonts.ibmPlexSans(
+  static final bodyText2 = GoogleFonts.notoSans(
     fontSize: 16,
     height: 24 / 16,
     color: AppColors.black,
@@ -108,7 +108,7 @@ class AppTextStylesLight {
 
   static final bodyText2Strut = StrutStyle.fromTextStyle(bodyText2);
 
-  static final overline = GoogleFonts.ibmPlexSans(
+  static final overline = GoogleFonts.notoSans(
     fontSize: 12,
     height: 15 / 12,
     color: AppColors.black,
@@ -129,7 +129,7 @@ class AppTextStylesLight {
 
   static final caption1Strut = StrutStyle.fromTextStyle(caption1);
 
-  static final caption2 = GoogleFonts.ibmPlexSans(
+  static final caption2 = GoogleFonts.notoSans(
     fontSize: 10,
     height: 13 / 10,
     color: AppColors.black,

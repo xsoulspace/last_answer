@@ -12,6 +12,8 @@ class RouteState extends ChangeNotifier {
   ParsedRoute _route;
 
   ParsedRoute get route => _route;
+  bool checkIsCurrentRoute(final String routeName) =>
+      route.pathTemplate == routeName;
 
   set route(final ParsedRoute route) {
     // Don't notify listeners if the path hasn't changed.

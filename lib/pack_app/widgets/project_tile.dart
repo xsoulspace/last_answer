@@ -95,7 +95,7 @@ class ProjectTile extends StatelessWidget {
                       left: 0,
                       top: 0,
                       child: Icon(
-                        Icons.book,
+                        Icons.book_rounded,
                         size: 12.5,
                         color:
                             theme.textTheme.bodyText2?.color?.withOpacity(0.5),

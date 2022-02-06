@@ -31,9 +31,11 @@ class _IconShareButtonState extends State<IconShareButton> {
 
   Future setDone() async {
     currentIcon = doneIcon;
+    if (!mounted) return;
     setState(() {});
     await Future.delayed(const Duration(milliseconds: 1450), () {
       currentIcon = defaultIcon;
+      if (!mounted) return;
       setState(() {});
     });
   }

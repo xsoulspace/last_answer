@@ -36,7 +36,7 @@ class SettingsNavigation extends StatelessWidget {
               : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
-        if (paymentsService.paymentsNotAccessable)
+        if (paymentsService.paymentsAccessable)
           SettingsButton(
             routeName: AppRoutesName.profile,
             onSelected: onSelectRoute,
@@ -44,7 +44,7 @@ class SettingsNavigation extends StatelessWidget {
             text: S.current.myAccount,
             // TODO(arenukvern): add avatar
           ),
-        if (paymentsService.paymentsNotAccessable)
+        if (paymentsService.paymentsAccessable)
           SettingsButton(
             routeName: AppRoutesName.subscription,
             onSelected: onSelectRoute,

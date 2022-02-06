@@ -11,6 +11,7 @@ class SpecialEmojisGrid extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final emojiStyle = Theme.of(context).textTheme.bodyText2;
+
     Widget buildEmojiButton(final Emoji emoji) {
       return EmojiButton(
         key: ValueKey(emoji),

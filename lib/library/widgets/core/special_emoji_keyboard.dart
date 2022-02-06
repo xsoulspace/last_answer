@@ -24,7 +24,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     }
 
     final emojiKeyboardController = useAnimationController(
-      duration: const Duration(milliseconds: 110),
+      duration: const Duration(milliseconds: 200),
     );
     final emojiKeyboardHeight = useAnimation(
       Tween<Offset>(
@@ -36,7 +36,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       ).animate(
         CurvedAnimation(
           parent: emojiKeyboardController,
-          curve: Curves.decelerate,
+          curve: Curves.linearToEaseOut,
         ),
       ),
     );
@@ -87,12 +87,16 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       },
     );
     Future<void> showEmojiKeyboard() async {
-      isEmojiKeyboardOpening.value = true;
-      await SoftKeyboard.close();
-      await emojiKeyboardController.forward();
-      isEmojiKeyboardOpen.value = true;
-      await Future.delayed(const Duration(milliseconds: 400));
-      isEmojiKeyboardOpening.value = false;
+      if (isEmojiKeyboardOpen.value) {
+        await closeEmojiKeyboard(immediately: false);
+      } else {
+        isEmojiKeyboardOpening.value = true;
+        await SoftKeyboard.close();
+        isEmojiKeyboardOpen.value = true;
+        await emojiKeyboardController.forward();
+        await Future.delayed(const Duration(milliseconds: 400));
+        isEmojiKeyboardOpening.value = false;
+      }
     }
 
     return Stack(
@@ -142,7 +146,7 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
   final ValueChanged<Emoji> onChanged;
   final VoidCallback onShowKeyboard;
   final VoidCallback onHide;
-  static const height = 150.0;
+  static const height = 200.0;
   @override
   Size get preferredSize => const Size.fromHeight(height);
 
@@ -162,21 +166,27 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
       );
     }
 
-    return Material(
-      color: theme.highlightColor.withOpacity(0.2),
-      child: SizedBox(
-        height: preferredSize.height,
-        width: preferredSize.width,
-        child: GridView.count(
-          restorationId: 'special-emojis-grid',
-          shrinkWrap: true,
-          crossAxisCount: 10,
-          semanticChildCount: emojis.length,
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
-          padding: const EdgeInsets.all(12),
-          children: emojis.map(buildEmojiButton).toList(),
-        ),
+    return Container(
+      color: theme.highlightColor.withOpacity(0.1),
+      height: preferredSize.height,
+      width: preferredSize.width,
+      child: Column(
+        children: [
+          const SizedBox(height: 4),
+          Expanded(
+            child: GridView.count(
+              restorationId: 'special-emojis-grid',
+              shrinkWrap: true,
+              crossAxisCount: 10,
+              semanticChildCount: emojis.length,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 2,
+              padding: EdgeInsets.zero,
+              children: emojis.map(buildEmojiButton).toList(),
+            ),
+          ),
+          const BottomSafeArea(),
+        ],
       ),
     );
   }

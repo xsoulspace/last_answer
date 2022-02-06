@@ -43,25 +43,22 @@ class KeyboardEmojiButton extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2.0),
-      child: CupertinoButton(
-        minSize: 0,
-        onPressed: onPressed,
-        padding: EdgeInsets.zero,
-        child: Container(
-          width: 30,
-          height: 40,
-          decoration: BoxDecoration(
-            color: theme.highlightColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          padding: const EdgeInsets.all(5),
-          child: FittedBox(
-            child: Text(
-              emoji.emoji,
-              style: style,
-            ),
+    return CupertinoButton(
+      minSize: 0,
+      onPressed: onPressed,
+      padding: EdgeInsets.zero,
+      child: Container(
+        width: 35,
+        height: 40,
+        decoration: BoxDecoration(
+          color: theme.highlightColor.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        padding: const EdgeInsets.all(7),
+        child: FittedBox(
+          child: Text(
+            emoji.emoji,
+            style: style,
           ),
         ),
       ),

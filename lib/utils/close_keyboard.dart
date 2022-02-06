@@ -6,3 +6,11 @@ void closeKeyboard({required final BuildContext context}) {
     currentFocus.focusedChild?.unfocus();
   }
 }
+
+class SoftKeyboard {
+  SoftKeyboard._();
+  static Future<void> close() async =>
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+  static Future<void> open() async =>
+      SystemChannels.textInput.invokeMethod('TextInput.show');
+}

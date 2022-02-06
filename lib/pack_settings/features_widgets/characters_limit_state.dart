@@ -28,14 +28,15 @@ class CharactersLimitSettingState implements LifeState {
 
   @override
   ValueChanged<VoidCallback>? setState;
+
   final BuildContext context;
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
-  late SettingsController settings;
+  late GeneralSettingsController settings;
   final TextEditingController controller;
   @override
   void initState() {
-    settings = context.read<SettingsController>();
+    settings = context.read<GeneralSettingsController>();
     controller.addListener(onLimitChanged);
   }
 
@@ -52,7 +53,11 @@ class CharactersLimitSettingState implements LifeState {
   static const limitNotifier =
       NoteProjectNotifier(charactersLimitChanged: true);
 
-  void setLimit(final int newLimit, {final bool updateController = false}) {
+  void setLimit(
+    final int newLimit, {
+    final bool updateController = false,
+    final bool zeroEqualNull = true,
+  }) {
     if (note == null) {
       settings.charactersLimitForNewNotes = newLimit;
     } else {
@@ -60,14 +65,56 @@ class CharactersLimitSettingState implements LifeState {
       updatesStream?.add(limitNotifier);
     }
     if (updateController) {
-      controller.text = newLimit == 0 ? '' : '$newLimit';
+      String effectiveLimit = '$newLimit';
+      if (zeroEqualNull && newLimit == 0) {
+        effectiveLimit = '';
+      }
+      controller.text = effectiveLimit;
     }
     setState?.call(() {});
   }
 
+  static const int instagramLimit = 2200;
+  static const String instagramLimitStr = '$instagramLimit';
+  bool get isInstagramLimit => controller.text == instagramLimitStr;
   void onSetInstagramLimit() {
-    setLimit(2200, updateController: true);
+    final newLimit = isInstagramLimit ? 0 : instagramLimit;
+    setLimit(newLimit, updateController: true);
   }
+
+  static const int twitterLimit = 280;
+  static const String twitterLimitStr = '$twitterLimit';
+  bool get isTwitterLimit => controller.text == twitterLimitStr;
+  void onSetTwitterLimit() {
+    final newLimit = isTwitterLimit ? 0 : twitterLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int vkLimit = 4096;
+  static const String vkLimitStr = '$vkLimit';
+  bool get isVkLimit => controller.text == vkLimitStr;
+  void onSetVkLimit() {
+    final newLimit = isVkLimit ? 0 : vkLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int facebookLimit = 63206;
+  static const String facebookLimitStr = '$facebookLimit';
+  bool get isFacebookLimit => controller.text == facebookLimitStr;
+  void onSetFacebookLimit() {
+    final newLimit = isFacebookLimit ? 0 : facebookLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  static const int discordLimit = 2000;
+  static const String discordLimitStr = '$discordLimit';
+  bool get isDiscordLimit => controller.text == discordLimitStr;
+  void onSetDiscordLimit() {
+    final newLimit = isDiscordLimit ? 0 : discordLimit;
+    setLimit(newLimit, updateController: true);
+  }
+
+  bool get noLimitIsSet => controller.text.isEmpty;
 
   void onClearLimit() {
     setLimit(0, updateController: true);

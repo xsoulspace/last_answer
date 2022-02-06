@@ -1,10 +1,11 @@
-# Last Answer
+# Last Answer: Ideas and Notes
 
 <p align="center">
   <a title="License" href="https://github.com/xsoulspace/last_answer/blob/master/LICENSE" ><img src="https://img.shields.io/github/license/xsoulspace/last_answer.svg" /></a>
   <a title="Discord" href="https://discord.com/invite/y54DpJwmAn" ><img src="https://img.shields.io/discord/696688204476055592.svg" /></a>
   <a title="Contributor Covenant" href="https://github.com/xsoulspace/last_answer/blob/master/CODE_OF_CONDUCT.md" ><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" /></a>
   <a title="Contributors" href="https://github.com/xsoulspace/last_answer/graphs/contributors" ><img src="https://img.shields.io/github/contributors/xsoulspace/last_answer.svg" /></a>
+  <a href="https://patreon.com/arenukvern"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Darenukvern%26type%3Dpatrons&style=flat" alt="Support me on Patreon" /></a>
 </p>
 
 ## Desktop
@@ -31,28 +32,35 @@
 
 ## Getting Started
 
-You have a cool idea.
-You need to write it down fast.
+Do you have a cool idea and need to get it down quickly? Or do you blog / write articles on social media?
 
 Then this app is for you.
 
-Follow questions, write as many answers as you can.
-As a result, you will get a quick description of the idea.
+In "ideas" answer the questions, write as many answers as you can to get a brief description of the idea and an understanding of how to implement it.
+In "notes" write posts and articles.
 
-Or just write a quick note.
+That's all ! :)
 
-That's it!:)
+## Main features
 
-**Features**
+"Notes" - for bloggers and those who like to write in social networks:
 
-- Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
-- Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
-- Dark & Light themes
-- English, Italian, Russian languages
-- Responsive layout - choose what you like - full screen or in a small window
+- Write a note by adding a character limit for the chosen social network.
+- Share it on social networks or messengers.
 
-Hope this app will be useful for you :)
-Thank you and have a nice day.
+"Ideas" - for developers and anyone with ideas to do something new:
+
+- start with an idea topic, pick questions and answers and share it.
+  P.s.: you can become a super ninja if you use techniques such as Five Why's, PDSA, Six Sigma.
+
+## Extra features
+
+- Dark and light themes.
+- English, Italian, Russian.
+- Adaptive layout: you can work on laptop as well as on smartphone.
+
+I hope you find the application useful :)
+Have a nice day!
 
 ---
 
@@ -64,7 +72,8 @@ Thank you and have a nice day.
 
 ## Support Development
 
-You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer).
+You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or support on [Patreon](https://patreon.com/arenukvern)
+
 Thank you for your support!
 
 # Huge thank you for contributions!

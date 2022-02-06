@@ -44,8 +44,9 @@ class EmojiUtil
 
   @override
   Future<void> save(final Map<String, Emoji> map) async {
-    final _map =
-        map.map((final key, final value) => MapEntry(key, value.toJson()));
-    await setMap(SharedPreferencesKeys.lastUsedEmojis.name, _map);
+    final effectiveMap = map.map(
+      (final key, final value) => MapEntry(key, value.toJson()),
+    );
+    await setMap(SharedPreferencesKeys.lastUsedEmojis.name, effectiveMap);
   }
 }

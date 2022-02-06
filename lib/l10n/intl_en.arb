@@ -15,6 +15,54 @@
   "@writeANote": {
     "description": "writeANote"
   },
+  "subscription": "Subscription",
+  "@subscription": {
+    "description": "subscription"
+  },
+  "freeSubscription": "Free",
+  "@freeSubscription": {
+    "description": "free Subscription"
+  },
+  "patronSubscription": "Patron",
+  "@patronSubscription": {
+    "description": "patronSubscription"
+  },
+  "myAccount": "My Account",
+  "@myAccount": {
+    "description": "myAccount"
+  },
+  "changeLog": "Change Log",
+  "@changeLog": {
+    "description": "changeLog"
+  },
+  "username": "Username",
+  "@username": {
+    "description": "username"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "email"
+  },
+  "deleteMyAccount": "Delete Account",
+  "@deleteMyAccount": {
+    "description": "deleteMyAccount"
+  },
+  "danger": "Danger",
+  "@danger": {
+    "description": "danger"
+  },
+  "esc": "ESC",
+  "@esc": {
+    "description": "esc"
+  },
+  "generalSettingsFullTitle": "General Settings",
+  "@generalSettingsFullTitle": {
+    "description": "generalSettingsFullTitle"
+  },
+  "generalSettingsShortTitle": "General",
+  "@generalSettingsShortTitle": {
+    "description": "generalSettingsShortTitle"
+  },
   "charactersLimit": "Characters limit",
   "@charactersLimit": {
     "description": "charactersLimit"
@@ -23,7 +71,7 @@
   "@charactersLimitForNewNotesDesription": {
     "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
   },
-  "charactersUnlimited": "Unlimited..",
+  "charactersUnlimited": "Other",
   "@charactersUnlimited": {
     "description": "charactersUnlimited"
   },
@@ -135,11 +183,11 @@
   "@answer": {
     "description": "answer input"
   },
-  "cancel": "CANCEL",
+  "cancel": "Cancel",
   "@cancel": {
     "description": "popup start cancel"
   },
-  "close": "CLOSE",
+  "close": "Close",
   "@close": {
     "description": "Close"
   },
@@ -151,7 +199,7 @@
   "@aboutAbstractWhatFor": {
     "description": "What For About Abstract"
   },
-  "delete": "DELETE",
+  "delete": "Delete",
   "@delete": {
     "description": "delete"
   },

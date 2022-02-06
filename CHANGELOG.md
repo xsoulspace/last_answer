@@ -1,4 +1,4 @@
-## 3.15.0+28
+## 3.15.0+29
 
 - new: new settings screen optimized for large screens, desktop, web and mobile
 - new: animated entry when app starts

@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 3.14.6+28
+version: 3.15.0+29
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
@@ -75,7 +75,7 @@ msix_config:
   publisher_display_name: Anton Malofeev
   identity_name: 31440AntonMalofeev.lastanswer
   publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1
-  msix_version: 3.14.6.0
+  msix_version: 3.15.0.29
   logo_path: ./assets/icons/logo_256.png
   store: true
 

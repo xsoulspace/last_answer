@@ -42,7 +42,7 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   String get monthlySubscriptionTitle =>
       'Subscribe - ${monthlySubscription?.product.priceString} / month';
 
-  bool get paymentsNotAccessable => paymentsService.paymentsNotAccessable;
+  bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
   @override
   Future<void> onLoad({required final BuildContext context}) async {

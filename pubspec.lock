@@ -22,13 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.0"
-  animations:
-    dependency: "direct main"
-    description:
-      name: animations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   ansicolor:
     dependency: transitive
     description:
@@ -281,6 +274,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  flare_flutter:
+    dependency: "direct main"
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -314,27 +314,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.18.1"
-  flutter_keyboard_visibility:
-    dependency: "direct main"
-    description:
-      name: flutter_keyboard_visibility
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.1.1"
-  flutter_keyboard_visibility_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_keyboard_visibility_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  flutter_keyboard_visibility_web:
-    dependency: transitive
-    description:
-      name: flutter_keyboard_visibility_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -392,13 +371,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  freezed_annotation:
-    dependency: transitive
-    description:
-      name: freezed_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -419,7 +391,7 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.1"
+    version: "2.1.0"
   graphs:
     dependency: transitive
     description:
@@ -483,13 +455,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-  injector:
-    dependency: transitive
-    description:
-      name: injector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   intl:
     dependency: transitive
     description:
@@ -568,7 +533,7 @@ packages:
     source: hosted
     version: "1.0.1"
   mockito:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: mockito
       url: "https://pub.dartlang.org"
@@ -581,13 +546,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  msix:
-    dependency: "direct dev"
-    description:
-      name: msix
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.8.2"
   nested:
     dependency: transitive
     description:
@@ -784,13 +742,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  purchases_flutter:
-    dependency: "direct main"
-    description:
-      name: purchases_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.9.2"
   quiver:
     dependency: "direct main"
     description:
@@ -1068,7 +1019,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.18"
+    version: "6.0.17"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1189,5 +1140,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.16.0 <3.0.0"
-  flutter: ">=2.10.0-0"
+  dart: ">=2.15.0 <3.0.0"
+  flutter: ">=2.5.0"

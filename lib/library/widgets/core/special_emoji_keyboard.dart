@@ -18,6 +18,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final isEmojiKeyboardOpen = useIsBool();
+    final isEmojiKeyboardOpening = useIsBool();
     if (isNativeDesktop || kIsWeb) {
       return builder(context, () {}, () {}, isEmojiKeyboardOpen);
     }
@@ -56,7 +57,9 @@ class SpecialEmojisKeyboardActions extends HookWidget {
           const Duration(milliseconds: 110),
           () {
             final keyboardOpen = window.viewInsets.bottom > 0;
-            if (keyboardOpen && isEmojiKeyboardOpen.value) {
+            if (keyboardOpen &&
+                isEmojiKeyboardOpen.value &&
+                !isEmojiKeyboardOpening.value) {
               closeEmojiKeyboard();
             }
           },
@@ -83,10 +86,13 @@ class SpecialEmojisKeyboardActions extends HookWidget {
         }
       },
     );
-    void showEmojiKeyboard() {
-      emojiKeyboardController.forward();
-      SoftKeyboard.close();
+    Future<void> showEmojiKeyboard() async {
+      isEmojiKeyboardOpening.value = true;
+      await SoftKeyboard.close();
+      await emojiKeyboardController.forward();
       isEmojiKeyboardOpen.value = true;
+      await Future.delayed(const Duration(milliseconds: 400));
+      isEmojiKeyboardOpening.value = false;
     }
 
     return Stack(
@@ -157,6 +163,7 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
     }
 
     return Material(
+      color: theme.highlightColor.withOpacity(0.2),
       child: SizedBox(
         height: preferredSize.height,
         width: preferredSize.width,

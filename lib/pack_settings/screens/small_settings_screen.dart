@@ -22,8 +22,8 @@ class SmallSettingsScreen extends HookWidget {
       chosenPage.value = page;
       await pageController.animateToPage(
         page,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.linear,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linearToEaseOut,
       );
     }
 
@@ -77,6 +77,7 @@ class SmallSettingsScreen extends HookWidget {
     final subPage = subSettingsPage.value;
 
     return PageView(
+      physics: const SpeedyPageViewScrollPhysics(),
       controller: pageController,
       children: [
         SettingsNavigationScreen(
@@ -87,4 +88,21 @@ class SmallSettingsScreen extends HookWidget {
       ],
     );
   }
+}
+
+class SpeedyPageViewScrollPhysics extends ScrollPhysics {
+  const SpeedyPageViewScrollPhysics({final ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  SpeedyPageViewScrollPhysics applyTo(final ScrollPhysics? ancestor) {
+    return SpeedyPageViewScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  @override
+  SpringDescription get spring => const SpringDescription(
+        mass: 80,
+        stiffness: 100,
+        damping: 1,
+      );
 }

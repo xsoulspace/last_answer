@@ -2,7 +2,7 @@
 Name=Last Answer
 
 GenericName=Last Answer
-Comment=A tool to express ideas during brainstorming
+Comment=Express your ideas
 Exec=last-answer
 Icon=${SNAP}/meta/gui/last-answer.png
 Terminal=false

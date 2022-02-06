@@ -121,7 +121,174 @@
   },
   {
     "category": "special-emojis",
-    "emoji": "°",
+    "emoji": "·",
+    "keywords": "degree"
+  },
+
+  {
+    "category": "special-emojis",
+    "emoji": "×",
+    "keywords": "degree"
+  },
+
+  {
+    "category": "special-emojis",
+    "emoji": "±",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "≈",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "½",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "◇",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "▹",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "▸",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✔️",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✕",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✖️",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✗",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✘",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "➜",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "➝",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "➞",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "←",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "↑",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "→",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "↓",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "➔",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✦",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✩",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "✪",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "❛",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "❜",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "❝",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "❞",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "♩",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "♪",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "♫",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "♬",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "«",
+    "keywords": "degree"
+  },
+  {
+    "category": "special-emojis",
+    "emoji": "»",
     "keywords": "degree"
   }
 ]

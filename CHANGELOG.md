@@ -1,3 +1,11 @@
+## 3.15.0+29
+
+- new: new settings screen optimized for large screens, desktop, web and mobile
+- new: animated entry when app starts
+
+- fix: app usabilty in windows (earlier it was using mobile/touch features instead of desktop layout)
+- fix: keep position in list when idea or note open
+
 ## 3.14.5+27
 
 - fix: languages switch for ideas questions

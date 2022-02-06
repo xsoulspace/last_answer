@@ -16,7 +16,7 @@ class _VerticalProjectsBar extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: 6,
         right: 6,
-        bottom: 8,
+        bottom: 22,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(

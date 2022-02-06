@@ -19,6 +19,8 @@ class AnswerFieldBubble extends HookWidget {
     useEffect(
       () {
         controller.text = answer.text;
+
+        return null;
       },
       [answer.text],
     );

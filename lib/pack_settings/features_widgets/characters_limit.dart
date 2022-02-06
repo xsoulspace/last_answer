@@ -9,7 +9,7 @@ class CharactersLimitSetting extends HookWidget {
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
 
-  String getInitialLimit({required final SettingsController settings}) {
+  String getInitialLimit({required final GeneralSettingsController settings}) {
     int limit;
 
     if (note != null) {
@@ -25,7 +25,7 @@ class CharactersLimitSetting extends HookWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
-    final settings = SettingsStateScope.of(context);
+    final settings = context.watch<GeneralSettingsController>();
     final initialText = getInitialLimit(settings: settings);
     final controller = useTextEditingController(text: initialText);
 
@@ -48,11 +48,7 @@ class CharactersLimitSetting extends HookWidget {
             updateController: true,
             zeroEqualNull: false,
           ),
-          child: AnimatedBuilder(
-            animation: settings,
-            builder: (final context, final _) =>
-                Text(S.current.charactersUnlimited),
-          ),
+          child: Text(S.current.charactersUnlimited),
         ),
       );
     } else {
@@ -132,10 +128,16 @@ class CharactersLimitSetting extends HookWidget {
     return Wrap(
       spacing: 14,
       runSpacing: 14,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         CharactersLimitButton(
           onTap: state.onSetInstagramLimit,
-          child: instagramIcon.image(
+          child: Image.asset(
+            instagramIcon.assetName,
+            bundle: instagramIcon.bundle,
+            package: instagramIcon.package,
+            cacheHeight: 36,
+            cacheWidth: 36,
             width: 18,
             height: 18,
             color: state.isInstagramLimit
@@ -155,9 +157,14 @@ class CharactersLimitSetting extends HookWidget {
         ),
         CharactersLimitButton(
           onTap: state.onSetFacebookLimit,
-          child: facebookIcon.image(
-            width: 16,
-            height: 16,
+          child: Image.asset(
+            facebookIcon.assetName,
+            bundle: facebookIcon.bundle,
+            package: facebookIcon.package,
+            cacheHeight: 36,
+            cacheWidth: 36,
+            width: 18,
+            height: 18,
           ),
         ),
         CharactersLimitButton(
@@ -170,8 +177,8 @@ class CharactersLimitSetting extends HookWidget {
         CharactersLimitButton(
           onTap: state.onSetVkLimit,
           child: vkIcon.svg(
-            width: 16,
-            height: 16,
+            width: 18,
+            height: 18,
           ),
         ),
         otherButton,

@@ -23,6 +23,11 @@ analyzer:
     avoid_void_async: error
     sort_constructors_first: info
     always_declare_return_types: error
+    unrelated_type_equality_checks: error
+    avoid_type_to_string: error
+    avoid_slow_async_io: error
+    avoid_returning_null_for_future: error
+    avoid_dynamic_calls: error
 
 linter:
   # The lint rules applied to this project can be customized in the

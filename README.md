@@ -16,6 +16,9 @@
   </a>
   <br>
   <a href="https://apps.apple.com/us/app/lastanswer-brainstorm-notes/id1592159945?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-mac-app-store/black/en-us?size=250x83&amp;releaseDate=1635811200&h=7b4ee31f392c6d52e26a1a9bff14996f" alt="Download on the Mac App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"></a>
+  <br><br> 
+  <a href="https://www.microsoft.com/ru-ru/p/last-answer-ideas-notes/9n1r319w0rvd?rtc=1&activetab=pivot:overviewtab" alt="Get it from the Microsoft Store">Get it from the Microsoft Store<a/>
+  <br><br>
 </p>
 
 ## Touch/mobile devices

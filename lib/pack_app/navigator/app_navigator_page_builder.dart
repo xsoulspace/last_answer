@@ -44,7 +44,6 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: SettingsScreen(
-          onPopPage: popper.onPopPage,
           onSelectRoute: navigatorController.go,
           onBack: navigatorController.goBackFromSettings,
         ),

@@ -4,12 +4,10 @@ class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
     required this.onSelectRoute,
     required this.onBack,
-    required this.onPopPage,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<AppRouteName> onSelectRoute;
   final VoidCallback onBack;
-  final PopPageCallback? onPopPage;
 
   @override
   Widget build(final BuildContext context) {

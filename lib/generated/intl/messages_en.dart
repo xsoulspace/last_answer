@@ -20,22 +20,22 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(version, buildNumber) =>
+  static String m0(final version, final buildNumber) =>
       "App version: ${version}, build: ${buildNumber}";
 
-  static String m1(title) => "${title} will be lost forever";
+  static String m1(final title) => "${title} will be lost forever";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(final _) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "aboutAbstractHowDescription": MessageLookupByLibrary.simpleMessage(
-            "You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied."),
+            "You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.",),
         "aboutAbstractIdeasImprovementsBugs":
             MessageLookupByLibrary.simpleMessage("Ideas Improvements Bugs?"),
         "aboutAbstractWhatFor":
             MessageLookupByLibrary.simpleMessage("What for?"),
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
-            "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding."),
+            "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",),
         "answer": MessageLookupByLibrary.simpleMessage("Answer"),
         "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "appVersion": m0,
@@ -46,7 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Characters limit"),
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
-                "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."),
+                "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.",),
         "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Other"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "createIdeaHelperText":
@@ -60,7 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "esc": MessageLookupByLibrary.simpleMessage("ESC"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
-            "or send a message to idea@xsoulspace.dev"),
+            "or send a message to idea@xsoulspace.dev",),
         "freeSubscription": MessageLookupByLibrary.simpleMessage("Free"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Frequently used"),
@@ -73,10 +73,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
-            "Made with Flutter ❤ and Open Source Libraries"),
+            "Made with Flutter ❤ and Open Source Libraries",),
         "myAccount": MessageLookupByLibrary.simpleMessage("My Account"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
-            "Thank you for using this app and have a nice day, full of ideas and inspiration!:)"),
+            "Thank you for using this app and have a nice day, full of ideas and inspiration!:)",),
         "noProjectsYet":
             MessageLookupByLibrary.simpleMessage("No projects yet."),
         "note": MessageLookupByLibrary.simpleMessage("Note"),
@@ -85,15 +85,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "philosophyAbstractFiveWhyesWhat":
             MessageLookupByLibrary.simpleMessage("You can use: \"Five whys\""),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
-            "Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys"),
+            "Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys",),
         "philosophyAbstractPDSAWhat": MessageLookupByLibrary.simpleMessage(
-            "You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" "),
+            "You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" ",),
         "philosophyAbstractPDSAWhy": MessageLookupByLibrary.simpleMessage(
-            "Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA"),
+            "Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA",),
         "philosophyAbstractSixSigmaWhat":
             MessageLookupByLibrary.simpleMessage("You can use: \"Six Sigma\""),
         "philosophyAbstractSixSigmaWhy": MessageLookupByLibrary.simpleMessage(
-            "Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma"),
+            "Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma",),
         "philosophyAbstractWhatElse":
             MessageLookupByLibrary.simpleMessage("What else?"),
         "philosophyInspirationTitle":

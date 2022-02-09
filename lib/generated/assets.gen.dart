@@ -7,7 +7,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart';
 
 class $GoogleFontsGen {
   const $GoogleFontsGen();
@@ -189,23 +188,23 @@ class Assets {
 }
 
 class AssetGenImage extends AssetImage {
-  const AssetGenImage(String assetName) : super(assetName);
+  const AssetGenImage(final String assetName) : super(assetName);
 
   Image image({
-    Key? key,
-    ImageFrameBuilder? frameBuilder,
-    ImageLoadingBuilder? loadingBuilder,
-    ImageErrorWidgetBuilder? errorBuilder,
-    String? semanticLabel,
+    final Key? key,
+    final ImageFrameBuilder? frameBuilder,
+    final ImageLoadingBuilder? loadingBuilder,
+    final ImageErrorWidgetBuilder? errorBuilder,
+    final String? semanticLabel,
     bool excludeFromSemantics = false,
-    double? width,
-    double? height,
-    Color? color,
-    BlendMode? colorBlendMode,
-    BoxFit? fit,
+    final double? width,
+    final double? height,
+    final Color? color,
+    final BlendMode? colorBlendMode,
+    final BoxFit? fit,
     AlignmentGeometry alignment = Alignment.center,
     ImageRepeat repeat = ImageRepeat.noRepeat,
-    Rect? centerSlice,
+    final Rect? centerSlice,
     bool matchTextDirection = false,
     bool gaplessPlayback = false,
     bool isAntiAlias = false,
@@ -243,19 +242,19 @@ class SvgGenImage {
   final String _assetName;
 
   SvgPicture svg({
-    Key? key,
+    final Key? key,
     bool matchTextDirection = false,
-    AssetBundle? bundle,
-    String? package,
-    double? width,
-    double? height,
+    final AssetBundle? bundle,
+    final String? package,
+    final double? width,
+    final double? height,
     BoxFit fit = BoxFit.contain,
     AlignmentGeometry alignment = Alignment.center,
     bool allowDrawingOutsideViewBox = false,
-    WidgetBuilder? placeholderBuilder,
-    Color? color,
+    final WidgetBuilder? placeholderBuilder,
+    final Color? color,
     BlendMode colorBlendMode = BlendMode.srcIn,
-    String? semanticsLabel,
+    final String? semanticsLabel,
     bool excludeFromSemantics = false,
     Clip clipBehavior = Clip.hardEdge,
   }) {

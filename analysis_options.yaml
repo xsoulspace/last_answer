@@ -11,11 +11,7 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    # - "**.g.dart"
-    - "**.gen.dart"
-    - "**.g.dart"
     - old/
-    - lib/generated/**
     - lib/generated_plugin_registrant.dart
   plugins:
     - dart_code_metrics

@@ -20,21 +20,21 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(version, buildNumber) =>
+  static String m0(final version, final buildNumber) =>
       "Версия: ${version}, билд: ${buildNumber}";
 
-  static String m1(title) => "${title} будет потерян безвозвратно";
+  static String m1(final title) => "${title} будет потерян безвозвратно";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(final _) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("О приложении"),
         "aboutAbstractHowDescription": MessageLookupByLibrary.simpleMessage(
-            "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение."),
+            "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",),
         "aboutAbstractIdeasImprovementsBugs":
             MessageLookupByLibrary.simpleMessage("Идеи Улучшения Баги?"),
         "aboutAbstractWhatFor": MessageLookupByLibrary.simpleMessage("Зачем?"),
         "aboutAbstractWhatForDescription": MessageLookupByLibrary.simpleMessage(
-            "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми."),
+            "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми.",),
         "answer": MessageLookupByLibrary.simpleMessage("Ответ"),
         "appInfo": MessageLookupByLibrary.simpleMessage("Last Answer"),
         "appVersion": m0,
@@ -45,7 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Лимит символов"),
         "charactersLimitForNewNotesDesription":
             MessageLookupByLibrary.simpleMessage(
-                "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки."),
+                "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки.",),
         "charactersUnlimited": MessageLookupByLibrary.simpleMessage("Другой"),
         "close": MessageLookupByLibrary.simpleMessage("Закрыть"),
         "createIdeaHelperText":
@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "esc": MessageLookupByLibrary.simpleMessage("ESC"),
         "feedbackTextWithEmail": MessageLookupByLibrary.simpleMessage(
-            "или отправьте сообщение на idea@xsoulspace.dev"),
+            "или отправьте сообщение на idea@xsoulspace.dev",),
         "freeSubscription": MessageLookupByLibrary.simpleMessage("Бесплатно"),
         "frequentlyUsed":
             MessageLookupByLibrary.simpleMessage("Часто используемые"),
@@ -73,27 +73,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
         "lastAnswer": MessageLookupByLibrary.simpleMessage("Последний ответ"),
         "madeWithLoveAndFlutter": MessageLookupByLibrary.simpleMessage(
-            "Сделано с Flutter ❤ и Open Source Libraries"),
+            "Сделано с Flutter ❤ и Open Source Libraries",),
         "myAccount": MessageLookupByLibrary.simpleMessage("Мой аккаунт"),
         "niceDayWish": MessageLookupByLibrary.simpleMessage(
-            "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!"),
+            "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!",),
         "noProjectsYet": MessageLookupByLibrary.simpleMessage("Тут пока пусто"),
         "note": MessageLookupByLibrary.simpleMessage("Заметка"),
         "noteSettings":
             MessageLookupByLibrary.simpleMessage("Настройки заметки"),
         "patronSubscription": MessageLookupByLibrary.simpleMessage("Patron"),
         "philosophyAbstractFiveWhyesWhat": MessageLookupByLibrary.simpleMessage(
-            "Можно использовать: \"Пять почему\""),
+            "Можно использовать: \"Пять почему\"",),
         "philosophyAbstractFiveWhyesWhy": MessageLookupByLibrary.simpleMessage(
-            "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему"),
+            "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",),
         "philosophyAbstractPDSAWhat": MessageLookupByLibrary.simpleMessage(
-            "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\""),
+            "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",),
         "philosophyAbstractPDSAWhy": MessageLookupByLibrary.simpleMessage(
-            "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга"),
+            "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",),
         "philosophyAbstractSixSigmaWhat": MessageLookupByLibrary.simpleMessage(
-            "Ещё можно использовать: \"Шесть сигм\" "),
+            "Ещё можно использовать: \"Шесть сигм\" ",),
         "philosophyAbstractSixSigmaWhy": MessageLookupByLibrary.simpleMessage(
-            "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм"),
+            "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",),
         "philosophyAbstractWhatElse":
             MessageLookupByLibrary.simpleMessage("Что ещё?"),
         "philosophyInspirationTitle":

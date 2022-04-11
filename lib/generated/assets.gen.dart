@@ -7,6 +7,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 class $GoogleFontsGen {
   const $GoogleFontsGen();
@@ -117,6 +118,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
 
+  /// File path: assets/icons/logo_1024.png
+  AssetGenImage get logo1024 =>
+      const AssetGenImage('assets/icons/logo_1024.png');
+
+  /// File path: assets/icons/logo_1080.png
+  AssetGenImage get logo1080 =>
+      const AssetGenImage('assets/icons/logo_1080.png');
+
   /// File path: assets/icons/logo_128.png
   AssetGenImage get logo128 => const AssetGenImage('assets/icons/logo_128.png');
 
@@ -132,11 +141,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logo_256.png
   AssetGenImage get logo256 => const AssetGenImage('assets/icons/logo_256.png');
 
+  /// File path: assets/icons/logo_300.png
+  AssetGenImage get logo300 => const AssetGenImage('assets/icons/logo_300.png');
+
   /// File path: assets/icons/logo_32.png
   AssetGenImage get logo32 => const AssetGenImage('assets/icons/logo_32.png');
 
   /// File path: assets/icons/logo_48.png
   AssetGenImage get logo48 => const AssetGenImage('assets/icons/logo_48.png');
+
+  /// File path: assets/icons/logo_512.png
+  AssetGenImage get logo512 => const AssetGenImage('assets/icons/logo_512.png');
 
   /// File path: assets/icons/logo_64.png
   AssetGenImage get logo64 => const AssetGenImage('assets/icons/logo_64.png');
@@ -188,23 +203,23 @@ class Assets {
 }
 
 class AssetGenImage extends AssetImage {
-  const AssetGenImage(final String assetName) : super(assetName);
+  const AssetGenImage(String assetName) : super(assetName);
 
   Image image({
-    final Key? key,
-    final ImageFrameBuilder? frameBuilder,
-    final ImageLoadingBuilder? loadingBuilder,
-    final ImageErrorWidgetBuilder? errorBuilder,
-    final String? semanticLabel,
+    Key? key,
+    ImageFrameBuilder? frameBuilder,
+    ImageLoadingBuilder? loadingBuilder,
+    ImageErrorWidgetBuilder? errorBuilder,
+    String? semanticLabel,
     bool excludeFromSemantics = false,
-    final double? width,
-    final double? height,
-    final Color? color,
-    final BlendMode? colorBlendMode,
-    final BoxFit? fit,
+    double? width,
+    double? height,
+    Color? color,
+    BlendMode? colorBlendMode,
+    BoxFit? fit,
     AlignmentGeometry alignment = Alignment.center,
     ImageRepeat repeat = ImageRepeat.noRepeat,
-    final Rect? centerSlice,
+    Rect? centerSlice,
     bool matchTextDirection = false,
     bool gaplessPlayback = false,
     bool isAntiAlias = false,
@@ -242,19 +257,19 @@ class SvgGenImage {
   final String _assetName;
 
   SvgPicture svg({
-    final Key? key,
+    Key? key,
     bool matchTextDirection = false,
-    final AssetBundle? bundle,
-    final String? package,
-    final double? width,
-    final double? height,
+    AssetBundle? bundle,
+    String? package,
+    double? width,
+    double? height,
     BoxFit fit = BoxFit.contain,
     AlignmentGeometry alignment = Alignment.center,
     bool allowDrawingOutsideViewBox = false,
-    final WidgetBuilder? placeholderBuilder,
-    final Color? color,
+    WidgetBuilder? placeholderBuilder,
+    Color? color,
     BlendMode colorBlendMode = BlendMode.srcIn,
-    final String? semanticsLabel,
+    String? semanticsLabel,
     bool excludeFromSemantics = false,
     Clip clipBehavior = Clip.hardEdge,
   }) {

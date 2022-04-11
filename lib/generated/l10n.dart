@@ -25,12 +25,12 @@ class S {
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
-  static Future<S> load(final Locale locale) {
+  static Future<S> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false)
         ? locale.languageCode
         : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
-    return initializeMessages(localeName).then((final _) {
+    return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
@@ -39,14 +39,14 @@ class S {
     });
   }
 
-  static S of(final BuildContext context) {
+  static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null,
         'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
-  static S? maybeOf(final BuildContext context) {
+  static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
 
@@ -322,7 +322,7 @@ class S {
   }
 
   /// `App version: {version}, build: {buildNumber}`
-  String appVersion(final Object version, final Object buildNumber) {
+  String appVersion(Object version, Object buildNumber) {
     return Intl.message(
       'App version: $version, build: $buildNumber',
       name: 'appVersion',
@@ -572,7 +572,7 @@ class S {
   }
 
   /// `{title} will be lost forever`
-  String willBeLost(final Object title) {
+  String willBeLost(Object title) {
     return Intl.message(
       '$title will be lost forever',
       name: 'willBeLost',
@@ -704,13 +704,13 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   }
 
   @override
-  bool isSupported(final Locale locale) => _isSupported(locale);
+  bool isSupported(Locale locale) => _isSupported(locale);
   @override
-  Future<S> load(final Locale locale) => S.load(locale);
+  Future<S> load(Locale locale) => S.load(locale);
   @override
-  bool shouldReload(final AppLocalizationDelegate old) => false;
+  bool shouldReload(AppLocalizationDelegate old) => false;
 
-  bool _isSupported(final Locale locale) {
+  bool _isSupported(Locale locale) {
     for (var supportedLocale in supportedLocales) {
       if (supportedLocale.languageCode == locale.languageCode) {
         return true;

@@ -43,12 +43,12 @@ class EmojiGrid extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final silentEmojiProider = context.read<EmojiProvider>();
+    final silentEmojiProvider = context.read<EmojiProvider>();
     final lastEmojisState = context.read<LastEmojiProvider>().values;
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>(
       onCancel: () {
-        silentEmojiProider.filterKeyword = '';
+        silentEmojiProvider.filterKeyword = '';
       },
     );
 
@@ -58,7 +58,7 @@ class EmojiGrid extends HookWidget {
     )
         .forEach(
       (final keyword) async {
-        silentEmojiProider.filterKeyword = keyword;
+        silentEmojiProvider.filterKeyword = keyword;
       },
     );
     final lastEmojis = useState(lastEmojisState.toSet());

@@ -12,6 +12,8 @@ class SmallSettingsScreen extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
+    final state = useSmallSettingsScreenStateState();
+
     final subSettingsPage = useState<Widget?>(null);
     final pageController = usePageController();
     final chosenPage = useState(0);

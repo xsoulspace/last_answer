@@ -24,6 +24,7 @@ part 'screens/idea_screen.dart';
 part 'screens/idea_screen_state.dart';
 part 'states/idea_questions_initializer.dart';
 part 'widgets/answer_creator.dart';
+part 'widgets/answer_creator_state.dart';
 part 'widgets/answer_field.dart';
 part 'widgets/answer_field_bubble.dart';
 part 'widgets/answer_tile.dart';

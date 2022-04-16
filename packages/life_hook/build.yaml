@@ -1,0 +1,13 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+builders:
+  modelBuilder:
+    import: "package:life_hook/life_hook.dart"
+    builder_factories: ["modelBuilder"]
+    build_extensions: { ".dart": [".g.dart"] }
+    build_to: source
+    auto_apply: root_package
+    applies_builders: ["json_serializable|builder"]
+    runs_before: ["json_serializable|builder"]

@@ -36,6 +36,7 @@ part 'screens/my_account_screen.dart';
 part 'screens/settings_navigation_screen.dart';
 part 'screens/settings_screen.dart';
 part 'screens/small_settings_screen.dart';
+part 'screens/small_settings_screen_state.dart';
 part 'screens/subscription_screen.dart';
 part 'widgets/settings_button.dart';
 part 'widgets/settings_list_container.dart';

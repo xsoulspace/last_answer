@@ -34,7 +34,7 @@ class SettingsNavigation extends StatelessWidget {
           text: screenLayout.small
               ? S.current.generalSettingsFullTitle
               : S.current.generalSettingsShortTitle,
-          // TODO(arenukvern): add avatar
+          // TODO(arenukvern): add icon
         ),
         if (paymentsService.paymentsAccessable)
           SettingsButton(
@@ -42,7 +42,7 @@ class SettingsNavigation extends StatelessWidget {
             onSelected: onSelectRoute,
             checkSelected: routeState.checkIsCurrentRoute,
             text: S.current.myAccount,
-            // TODO(arenukvern): add avatar
+            // TODO(arenukvern): add icon
           ),
         if (paymentsService.paymentsAccessable)
           SettingsButton(
@@ -50,7 +50,7 @@ class SettingsNavigation extends StatelessWidget {
             onSelected: onSelectRoute,
             checkSelected: routeState.checkIsCurrentRoute,
             text: S.current.subscription,
-            // TODO(arenukvern): add avatar
+            // TODO(arenukvern): add icon
           ),
         SettingsButton(
           routeName: AppRoutesName.changelog,

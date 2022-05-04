@@ -44,6 +44,7 @@ class ProjectsListView extends HookWidget {
             child: RightScrollbar(
               controller: scrollController,
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 reverse: reversed,
                 key: const PageStorageKey('projects_scroll_view'),
                 controller: scrollController,

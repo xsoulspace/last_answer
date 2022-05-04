@@ -39,8 +39,20 @@
     "prefix": "uselifehook",
     "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State implements LifeState {\n  ${1}State();\n\n  @override\n  ValueChanged<VoidCallback>? setState;\n\n  @override\n  void initState() {\n    // TODO: implement initState\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n  }\n}"
   },
-  "section": {
-    "prefix": "section",
-    "body": "/// ********************************************\n/// *      CONTEXT RELATED READINGS START\n/// ********************************************"
+  "unimplemented": {
+    "prefix": "unimplemented",
+    "body": "// TODO(${1:username}): ${2:description}\nthrow UnimplementedError();"
+  },
+  "hook-widget": {
+    "prefix": "hookwidget",
+    "body": "class ${1} extends HookWidget {\n  const ${1}({ Key? key }) : super(key: key);\n\n  @override\n  Widget build(BuildContext context) {\n    final state = use${1}State(); \n    return Container(\n      \n    );\n  }\n}"
+  },
+  "section-start": {
+    "prefix": "section start",
+    "body": "/// ********************************************\n/// *      ${1:TITLE} START\n/// ********************************************"
+  },
+  "section-end": {
+    "prefix": "section end",
+    "body": "/// ********************************************\n/// *      ${1:TITLE} END\n/// ********************************************"
   }
 }

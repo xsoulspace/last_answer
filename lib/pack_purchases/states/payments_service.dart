@@ -1,9 +1,11 @@
 part of pack_purchases;
 
+// TODO(antmalofeev): enable  when purchases will be released
+const kPaymentsAccessable = true;
+
 class PaymentsService {
   bool get paymentsAccessable =>
-      // TODO(antmalofeev): remove kDebugMode when purchases will be released
-      kDebugMode &&
+      kPaymentsAccessable &&
       ((Platform.isIOS || Platform.isMacOS || Platform.isAndroid) &&
           !kIsWeb &&
           Envs.revenueCatApiKeyAppleIsNotEmpty &&

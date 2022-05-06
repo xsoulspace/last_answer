@@ -86,12 +86,14 @@ class PopupButton extends HookWidget {
       return const SizedBox();
     }
 
-    return PortalEntry(
+    return PortalTarget(
       visible: popupVisible.value,
-      portalAnchor:
-          screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
-      childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
-      portal: MouseRegion(
+      anchor: Aligned(
+        follower:
+            screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
+        target: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
+      ),
+      portalFollower: MouseRegion(
         onExit: (final _) async {
           popupHovered.value = false;
           await onClose();

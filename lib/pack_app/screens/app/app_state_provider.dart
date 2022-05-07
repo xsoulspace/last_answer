@@ -14,7 +14,10 @@ class AppStateProvider extends StatelessWidget {
       providers: [
         /// Keep _settings is global is important as it will not lose all
         /// changes during global rebuild
-        ChangeNotifierProvider(create: (final _) => _settings),
+        ChangeNotifierProvider(create: (final context) => _settings),
+        Provider<supabase_lib.SupabaseClient>(
+          create: (final context) => GlobalStateNotifiers.supabase,
+        ),
         ChangeNotifierProvider(create: createEmojiProvider),
         ChangeNotifierProvider(create: createLastUsedEmojisProvider),
         ChangeNotifierProvider(create: createSpecialEmojisProvider),

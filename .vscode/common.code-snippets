@@ -37,11 +37,11 @@
   },
   "use-life-hook": {
     "prefix": "uselifehook",
-    "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends LifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n  }\n}"
+    "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends LifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
   },
   "use-contextlife-hook": {
     "prefix": "usectxlifehook",
-    "body": "${1}State use${1}State() => use(\n      ContextfulLifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends ContextfulLifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n  }\n}"
+    "body": "${1}State use${1}State() => use(\n      ContextfulLifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends ContextfulLifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
   },
   "unimplemented": {
     "prefix": "unimplemented",

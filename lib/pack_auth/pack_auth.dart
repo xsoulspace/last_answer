@@ -9,4 +9,8 @@ import 'package:supabase_hooks/supabase_hooks.dart';
 
 part '_hooks/auth_required_state.dart';
 part '_hooks/auth_state.dart';
+part '_screens/sign_in_screen.dart';
+part '_screens/sign_in_screen_state.dart';
+part '_screens/sign_up_screen.dart';
+part '_screens/sign_up_screen_state.dart';
 part '_services/auth_service.dart';

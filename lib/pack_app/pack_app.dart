@@ -29,6 +29,7 @@ import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase_lib;
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 

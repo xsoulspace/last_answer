@@ -26,15 +26,13 @@ NoteProjectUpdaterState useNoteProjectUpdaterState({
       ),
     );
 
-class NoteProjectUpdaterState implements LifeState {
+class NoteProjectUpdaterState extends LifeState {
   NoteProjectUpdaterState({
     required this.note,
     required this.updatesStream,
     required this.context,
   });
 
-  @override
-  ValueChanged<VoidCallback>? setState;
   final BuildContext context;
   final NoteProject note;
   final StreamController<NoteProjectNotifier> updatesStream;
@@ -52,11 +50,8 @@ class NoteProjectUpdaterState implements LifeState {
           const Duration(milliseconds: 700),
         )
         .forEach(onUpdateFolder);
+    super.initState();
   }
-
-  @override
-  @mustCallSuper
-  void dispose() {}
 
   @mustCallSuper
   // ignore: avoid_positional_boolean_parameters
@@ -69,6 +64,6 @@ class NoteProjectUpdaterState implements LifeState {
     }
 
     await note.save();
-    if (notifier.charactersLimitChanged) setState?.call(() {});
+    if (notifier.charactersLimitChanged) setState();
   }
 }

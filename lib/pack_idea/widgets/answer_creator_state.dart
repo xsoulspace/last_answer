@@ -24,7 +24,7 @@ AnswerCreatorState useAnswerCreatorState({
       ),
     );
 
-class AnswerCreatorState implements LifeState {
+class AnswerCreatorState extends LifeState {
   AnswerCreatorState({
     required this.defaultQuestion,
     required this.onCreated,
@@ -43,9 +43,6 @@ class AnswerCreatorState implements LifeState {
   final ValueNotifier<bool> questionsOpened;
   final VoidCallback onChanged;
 
-  @override
-  ValueChanged<VoidCallback>? setState;
-
   final answerFocusNode = FocusNode();
   late final selectedQuestion =
       ValueNotifier<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
@@ -56,6 +53,7 @@ class AnswerCreatorState implements LifeState {
   void initState() {
     selectedQuestion.addListener(onSelectedQuestionChanged);
     answerController.addListener(onAnswerControllerChanged);
+    super.initState();
   }
 
   @override
@@ -68,6 +66,7 @@ class AnswerCreatorState implements LifeState {
     answerController
       ..removeListener(onAnswerControllerChanged)
       ..dispose();
+    super.dispose();
   }
 
   Future<void> onAnswerControllerChanged() async {

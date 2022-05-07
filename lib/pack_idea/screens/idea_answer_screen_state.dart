@@ -22,7 +22,7 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
       ),
     );
 
-class IdeaAnswerScreenState implements LifeState {
+class IdeaAnswerScreenState extends LifeState {
   IdeaAnswerScreenState({
     required final this.context,
     required this.textController,
@@ -37,8 +37,7 @@ class IdeaAnswerScreenState implements LifeState {
   final ValueNotifier<IdeaProjectAnswer> answer;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
-  @override
-  ValueChanged<VoidCallback>? setState;
+
   late IdeaProjectsProvider ideasProvider;
   @override
   void initState() {
@@ -50,6 +49,7 @@ class IdeaAnswerScreenState implements LifeState {
           const Duration(milliseconds: 700),
         )
         .forEach(onAnswerUpdate);
+    super.initState();
   }
 
   // ignore: avoid_positional_boolean_parameters
@@ -62,6 +62,7 @@ class IdeaAnswerScreenState implements LifeState {
 
   @override
   void dispose() {
+    super.dispose();
     textController.removeListener(onTextChanged);
   }
 

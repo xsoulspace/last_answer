@@ -18,16 +18,13 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
       ),
     );
 
-class CharactersLimitSettingState implements LifeState {
+class CharactersLimitSettingState extends LifeState {
   CharactersLimitSettingState({
     required this.note,
     required this.updatesStream,
     required this.context,
     required this.controller,
   });
-
-  @override
-  ValueChanged<VoidCallback>? setState;
 
   final BuildContext context;
   final NoteProject? note;
@@ -38,10 +35,12 @@ class CharactersLimitSettingState implements LifeState {
   void initState() {
     settings = context.read<GeneralSettingsController>();
     controller.addListener(onLimitChanged);
+    super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     controller.removeListener(onLimitChanged);
   }
 
@@ -71,7 +70,7 @@ class CharactersLimitSettingState implements LifeState {
       }
       controller.text = effectiveLimit;
     }
-    setState?.call(() {});
+    setState();
   }
 
   static const int instagramLimit = 2200;

@@ -37,7 +37,7 @@
   },
   "use-life-hook": {
     "prefix": "uselifehook",
-    "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State implements LifeState {\n  ${1}State();\n\n  @override\n  ValueChanged<VoidCallback>? setState;\n\n  @override\n  void initState() {\n    // TODO: implement initState\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n  }\n}"
+    "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State implements LifeState {\n  ${1}State();\n\n  @override\n  late VoidCallback setState;\n\n  @override\n  void initState() {\n    // TODO: implement initState\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n  }\n}"
   },
   "unimplemented": {
     "prefix": "unimplemented",

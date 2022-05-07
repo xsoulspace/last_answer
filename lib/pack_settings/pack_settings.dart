@@ -12,13 +12,13 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/generated/l10n.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
 part 'abstract/general_settings_controller.dart';

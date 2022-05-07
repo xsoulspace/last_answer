@@ -22,7 +22,7 @@ IdeaScreenState useIdeaScreenState({
       ),
     );
 
-class IdeaScreenState implements LifeState {
+class IdeaScreenState extends LifeState {
   IdeaScreenState({
     required final this.context,
     required this.onScreenBack,
@@ -38,8 +38,7 @@ class IdeaScreenState implements LifeState {
   final ValueNotifier<List<IdeaProjectAnswer>> answers;
 
   final StreamController<bool> ideaUpdatesStream;
-  @override
-  ValueChanged<VoidCallback>? setState;
+
   late FolderStateProvider folderProvider;
   late IdeaProjectsProvider ideasProvider;
   @override
@@ -51,10 +50,8 @@ class IdeaScreenState implements LifeState {
           const Duration(milliseconds: 700),
         )
         .forEach(onIdeaUpdate);
+    super.initState();
   }
-
-  @override
-  void dispose() {}
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {

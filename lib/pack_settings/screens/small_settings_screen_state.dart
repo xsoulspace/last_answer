@@ -18,7 +18,7 @@ SmallSettingsScreenState useSmallSettingsScreenStateState({
       ),
     );
 
-class SmallSettingsScreenState implements LifeState {
+class SmallSettingsScreenState extends LifeState {
   SmallSettingsScreenState({
     required this.routeState,
     required this.onSelectRoute,
@@ -26,8 +26,7 @@ class SmallSettingsScreenState implements LifeState {
     required this.screenLayout,
   });
   final RouteState routeState;
-  @override
-  ValueChanged<VoidCallback>? setState;
+
   final ValueChanged<AppRouteName> onSelectRoute;
   final VoidCallback onBack;
   final pageController = PageController();
@@ -38,10 +37,12 @@ class SmallSettingsScreenState implements LifeState {
   @override
   void initState() {
     pageController.addListener(onPageCahnged);
+    super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     pageController
       ..removeListener(onPageCahnged)
       ..dispose();

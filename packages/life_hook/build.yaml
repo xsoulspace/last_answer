@@ -4,7 +4,7 @@ targets:
       - lib/**
 builders:
   modelBuilder:
-    import: "package:life_hook/life_hook.dart"
+    import: "package:life_hooks/life_hooks.dart"
     builder_factories: ["modelBuilder"]
     build_extensions: { ".dart": [".g.dart"] }
     build_to: source

@@ -32,7 +32,7 @@ class AuthState extends SupabaseAuthLifeState {
     String? redirectTo;
 
     if (kIsWeb) {
-    } else if (Platform.isAndroid) {
+    } else if (Platform.isAndroid || Platform.isIOS) {
       redirectTo = 'dev.xsoulspace.lastanswer://login-callback/';
     }
     final GotrueSessionResponse res = await supabase.auth.signIn(
@@ -46,9 +46,7 @@ class AuthState extends SupabaseAuthLifeState {
       final authUri = Uri.parse(res.url!);
       LaunchMode mode = LaunchMode.platformDefault;
       if (kIsWeb) {
-      } else if (Platform.isIOS) {
-        mode = LaunchMode.externalApplication;
-      } else if (Platform.isAndroid) {
+      } else if (Platform.isIOS || Platform.isAndroid) {
         mode = LaunchMode.externalApplication;
       }
 

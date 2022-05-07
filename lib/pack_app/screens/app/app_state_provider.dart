@@ -59,15 +59,18 @@ class _AppStateInitializer extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final authState = useAuthState();
+    final authState = useAppAuthState();
 
-    return StateLoader(
-      initializer: GlobalStateInitializer(
-        settings: context.read(),
-        authState: authState,
+    return Provider(
+      create: (final context) => authState,
+      child: StateLoader(
+        initializer: GlobalStateInitializer(
+          settings: context.read(),
+          authState: authState,
+        ),
+        loader: const AppLoadingScreen(),
+        child: builder(context),
       ),
-      loader: const AppLoadingScreen(),
-      child: builder(context),
     );
   }
 }

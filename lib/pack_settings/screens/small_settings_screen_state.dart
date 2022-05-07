@@ -4,6 +4,7 @@ SmallSettingsScreenState useSmallSettingsScreenStateState({
   required final RouteState routeState,
   required final ValueChanged<AppRouteName> onSelectRoute,
   required final VoidCallback onBack,
+  required final VoidCallback onSignIn,
   required final ScreenLayout screenLayout,
 }) =>
     use(
@@ -11,6 +12,7 @@ SmallSettingsScreenState useSmallSettingsScreenStateState({
         debugLabel: 'SmallSettingsScreenState',
         state: SmallSettingsScreenState(
           routeState: routeState,
+          onSignIn: onSignIn,
           screenLayout: screenLayout,
           onSelectRoute: onSelectRoute,
           onBack: onBack,
@@ -23,9 +25,11 @@ class SmallSettingsScreenState extends LifeState {
     required this.routeState,
     required this.onSelectRoute,
     required this.onBack,
+    required this.onSignIn,
     required this.screenLayout,
   });
   final RouteState routeState;
+  final VoidCallback onSignIn;
 
   final ValueChanged<AppRouteName> onSelectRoute;
   final VoidCallback onBack;
@@ -72,7 +76,10 @@ class SmallSettingsScreenState extends LifeState {
   Future<void> switchToPage() async {
     switch (routeState.route.pathTemplate) {
       case AppRoutesName.profile:
-        subSettingsPage.value = MyAccountScreen(onBack: onBack);
+        subSettingsPage.value = MyAccountScreen(
+          onBack: onBack,
+          onSignIn: onSignIn,
+        );
         await toPage();
         break;
       case AppRoutesName.generalSettings:

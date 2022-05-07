@@ -69,12 +69,20 @@ class DesktopSettingsNavigator extends HookWidget {
     Widget child;
     final routeState = RouteStateScope.of(context);
     final pathTemplate = routeState.route.pathTemplate;
+
+    final navigatorController = AppNavigatorController.use(
+      routeState: routeState,
+      context: context,
+      screenLayout: screenLayout,
+    );
     switch (pathTemplate) {
       case AppRoutesName.subscription:
         child = previousChild.value = const SubscriptionInfo();
         break;
       case AppRoutesName.profile:
-        child = previousChild.value = const MyAccount();
+        child = previousChild.value = MyAccount(
+          onSignIn: navigatorController.goSignIn,
+        );
         break;
       case AppRoutesName.settings:
       case AppRoutesName.generalSettings:

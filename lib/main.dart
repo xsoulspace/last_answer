@@ -11,6 +11,8 @@ Future<void> main() async {
   await Supabase.initialize(
     url: Envs.supabaseUrl,
     anonKey: Envs.supabaseAnon,
+    debug: true,
+    localStorage: const HiveLocalStorage(),
   );
 
   Hive

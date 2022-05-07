@@ -2,7 +2,7 @@
     package="dev.xsoulspace.lastanswer">
     <uses-permission android:name="android.permission.INTERNET" />
     
-   <application
+    <application
         android:label="Last Answer"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -41,7 +41,8 @@
               <!-- Accepts URIs that begin with YOUR_SCHEME://YOUR_HOST -->
               <data
                 android:scheme="dev.xsoulspace.lastanswer"
-                android:host="login-callback" />
+                android:host="login-callback" 
+              />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

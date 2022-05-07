@@ -36,14 +36,14 @@ class SettingsNavigation extends StatelessWidget {
               : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add icon
         ),
-        if (paymentsService.paymentsAccessable)
-          SettingsButton(
-            routeName: AppRoutesName.profile,
-            onSelected: onSelectRoute,
-            checkSelected: routeState.checkIsCurrentRoute,
-            text: S.current.myAccount,
-            // TODO(arenukvern): add icon
-          ),
+        // if (paymentsService.paymentsAccessable)
+        SettingsButton(
+          routeName: AppRoutesName.profile,
+          onSelected: onSelectRoute,
+          checkSelected: routeState.checkIsCurrentRoute,
+          text: S.current.myAccount,
+          // TODO(arenukvern): add icon
+        ),
         if (paymentsService.paymentsAccessable)
           SettingsButton(
             routeName: AppRoutesName.subscription,

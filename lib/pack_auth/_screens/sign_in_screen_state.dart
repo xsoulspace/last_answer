@@ -1,30 +1,39 @@
 part of pack_auth;
 
-SignInScreenState useSignInScreenState() => use(
-      LifeHook(
+SignInScreenState useSignInScreenState({
+  required final AuthState authState,
+}) =>
+    use(
+      ContextfulLifeHook(
         debugLabel: 'SignInScreenState',
-        state: SignInScreenState(),
+        state: SignInScreenState(
+          authState: authState,
+        ),
       ),
     );
 
-class SignInScreenState extends LifeState {
-  SignInScreenState();
-  late AuthState authState;
-  @override
-  void registerHooks(final BuildContext context) {
-    authState = useAuthState();
-    super.registerHooks(context);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class SignInScreenState extends ContextfulLifeState {
+  SignInScreenState({
+    required this.authState,
+  });
+  final AuthState authState;
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
+    isLoading.dispose();
+  }
+
+  void onSignOut() {
+    authState.signOut();
+  }
+
+  Future<void> signInWithDiscord() async {
+    try {
+      isLoading.value = true;
+      await authState.signInWithDiscord();
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

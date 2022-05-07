@@ -40,6 +40,13 @@ class ParsedRoute {
         pathTemplate: pathTemplate ?? this.pathTemplate,
         queryParameters: queryParameters ?? this.queryParameters,
       );
+
+  String get pathWithoutLastSegment {
+    final segments = path.split('/')..removeLast();
+
+    return segments.join('/');
+  }
+
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(final Object other) =>

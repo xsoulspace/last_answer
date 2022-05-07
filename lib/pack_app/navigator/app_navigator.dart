@@ -4,6 +4,7 @@ class NavigatorValueKeys {
   NavigatorValueKeys._();
   static const _home = ValueKey<String>('home');
   static const _settings = ValueKey<String>('settings');
+  static const _signIn = ValueKey<String>('sign-in');
 
   static const _info = ValueKey<String>('info');
 

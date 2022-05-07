@@ -132,4 +132,15 @@ class AppNavigatorPageBuilder {
       ),
     );
   }
+
+  Page signInPage() {
+    return MaterialPage<void>(
+      key: NavigatorValueKeys._signIn,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: const SignInScreen(),
+      ),
+    );
+  }
 }

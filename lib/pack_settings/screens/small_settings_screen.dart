@@ -13,7 +13,13 @@ class SmallSettingsScreen extends HookWidget {
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
+    final navigatorController = AppNavigatorController.use(
+      routeState: routeState,
+      context: context,
+      screenLayout: screenLayout,
+    );
     final state = useSmallSettingsScreenStateState(
+      onSignIn: navigatorController.goSignIn,
       onBack: onBack,
       onSelectRoute: onSelectRoute,
       routeState: routeState,

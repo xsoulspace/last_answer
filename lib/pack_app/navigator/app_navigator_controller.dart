@@ -10,12 +10,17 @@ class AppNavigatorController {
   final RouteState routeState;
   final BuildContext context;
   final ScreenLayout screenLayout;
-
+  ParsedRoute get route => routeState.route;
   void go(final AppRouteName routeName) => routeState.go(routeName);
   void goHome() => routeState.go(AppRoutesName.home);
+
+  void pop() {
+    final path = route.pathWithoutLastSegment;
+    go(path);
+  }
+
   void goBackFromSettings() {
-    if (routeState.route.pathTemplate == AppRoutesName.settings ||
-        screenLayout.notSmall) {
+    if (route.pathTemplate == AppRoutesName.settings || screenLayout.notSmall) {
       goHome();
     } else {
       goSettings();
@@ -25,6 +30,10 @@ class AppNavigatorController {
   void goSettings() => routeState.go(AppRoutesName.settings);
 
   void goAppInfo() => routeState.go(AppRoutesName.appInfo);
+
+  void goSignIn() {
+    routeState.go(AppRoutesName.profileSignIn);
+  }
 
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';

@@ -47,13 +47,9 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   @override
   Future<void> onLoad({required final BuildContext context}) async {
     if (paymentsService.paymentsNotAccessable) return;
-    String key = '';
-    if (Platform.isIOS) {
-      key = Envs.revenueCatApiKeyApple;
-    } else if (Platform.isAndroid) {
-      key = Envs.revenueCatApiKeyGoogle;
-    }
+    final key = paymentsService.paymentInitialKey;
     if (key.isEmpty) throw ArgumentError.value('key is not provided');
+
     try {
       await Purchases.setup(key);
       await Purchases.setDebugLogsEnabled(false);

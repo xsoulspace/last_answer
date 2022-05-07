@@ -53,7 +53,7 @@ dependencies:
   share_plus: ^4.0.4
   shared_preferences: ^2.0.13
   supabase_flutter: ^0.3.0
-  supabase_hooks: ^0.0.2
+  supabase_hooks: ^0.0.3
   universal_io: ^2.0.4
   url_launcher: ^6.1.0
   uuid: ^3.0.6
@@ -72,6 +72,10 @@ dev_dependencies:
   mockito: ^5.1.0
   mocktail: ^0.2.0
   msix: ^3.6.1
+
+dependency_overrides:
+  supabase_flutter:
+    git: git@github.com:Arenukvern/supabase-flutter.git
 
 msix_config:
   display_name: "Last Answer: Ideas and Notes"

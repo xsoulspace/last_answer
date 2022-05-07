@@ -1,5 +1,12 @@
 part of pack_auth;
 
+AuthRequiredState useAuthRequiredState() => use(
+      ContextfulLifeHook(
+        debugLabel: 'AuthRequiredState',
+        state: AuthRequiredState(),
+      ),
+    );
+
 class AuthRequiredState extends SupabaseAuthRequiredLifeState {
   @override
   void onUnauthenticated() {

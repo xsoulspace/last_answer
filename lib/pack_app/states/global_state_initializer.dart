@@ -16,8 +16,10 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
     required final this.settings,
+    required final this.authState,
   });
   final GeneralSettingsController settings;
+  final AuthState authState;
 
   @override
   // ignore: long-method
@@ -179,5 +181,10 @@ class GlobalStateInitializer implements StateInitializer {
     WidgetsBinding.instance?.addPostFrameCallback((final _) {
       settings.notify();
     });
+
+    /// ********************************************
+    /// *      AUTH START
+    /// ********************************************
+    await authState.recoverSupabaseSession();
   }
 }

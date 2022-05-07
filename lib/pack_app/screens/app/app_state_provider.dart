@@ -7,6 +7,7 @@ class AppStateProvider extends StatelessWidget {
   }) : super(key: key);
   final WidgetBuilder builder;
   GeneralSettingsController get _settings => GlobalStateNotifiers.settings;
+
   @override
   Widget build(final BuildContext context) {
     final child = MultiProvider(
@@ -26,17 +27,7 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createPaymentsController),
       ],
       child: Portal(
-        child: Builder(
-          builder: (final context) {
-            return StateLoader(
-              initializer: GlobalStateInitializer(
-                settings: _settings,
-              ),
-              loader: const AppLoadingScreen(),
-              child: builder(context),
-            );
-          },
-        ),
+        child: _AppStateInitializer(builder: builder),
       ),
     );
     if (isNativeDesktop) {
@@ -52,6 +43,28 @@ class AppStateProvider extends StatelessWidget {
           child,
         ],
       ),
+    );
+  }
+}
+
+class _AppStateInitializer extends HookWidget {
+  const _AppStateInitializer({
+    required final this.builder,
+    final Key? key,
+  }) : super(key: key);
+  final WidgetBuilder builder;
+
+  @override
+  Widget build(final BuildContext context) {
+    final authState = useAuthState();
+
+    return StateLoader(
+      initializer: GlobalStateInitializer(
+        settings: context.read(),
+        authState: authState,
+      ),
+      loader: const AppLoadingScreen(),
+      child: builder(context),
     );
   }
 }

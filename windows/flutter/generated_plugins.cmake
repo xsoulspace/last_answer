@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  protocol_handler
   url_launcher_windows
 )
 

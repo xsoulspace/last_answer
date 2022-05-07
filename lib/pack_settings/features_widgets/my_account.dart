@@ -19,7 +19,7 @@ class MyAccount extends StatelessWidget {
       valueListenable: authState.authenticated,
       builder: (final context, final authenticated, final child) {
         if (!authenticated) {
-          return SignInScreen();
+          return GlobalSignInScreen();
         }
 
         return SettingsListContainer(

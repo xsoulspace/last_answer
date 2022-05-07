@@ -3,14 +3,16 @@ part of widgets;
 class CupertinoIconButton extends StatelessWidget {
   const CupertinoIconButton({
     required final this.onPressed,
-    required final this.icon,
-    final this.color,
-    final this.backgroundColor,
-    final this.padding,
-    final this.size,
+    this.icon,
+    this.svg,
+    this.color,
+    this.backgroundColor,
+    this.padding,
+    this.size,
     final Key? key,
   }) : super(key: key);
-  final IconData icon;
+  final IconData? icon;
+  final SvgGenImage? svg;
   final VoidCallback? onPressed;
   final Color? color;
   final Color? backgroundColor;
@@ -24,11 +26,16 @@ class CupertinoIconButton extends StatelessWidget {
       padding: padding ?? EdgeInsets.zero,
       color: backgroundColor,
       onPressed: onPressed,
-      child: Icon(
-        icon,
-        color: color,
-        size: size,
-      ),
+      child: svg?.svg(
+            color: color,
+            height: size,
+            width: size,
+          ) ??
+          Icon(
+            icon,
+            color: color,
+            size: size,
+          ),
     );
   }
 }

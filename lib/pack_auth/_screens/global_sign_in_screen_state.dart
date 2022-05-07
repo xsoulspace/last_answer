@@ -1,19 +1,19 @@
 part of pack_auth;
 
-SignInScreenState useSignInScreenState({
+GlobalSignInScreenState useGlobalSignInScreenState({
   required final AuthState authState,
 }) =>
     use(
       ContextfulLifeHook(
-        debugLabel: 'SignInScreenState',
-        state: SignInScreenState(
+        debugLabel: 'GlobalSignInScreenState',
+        state: GlobalSignInScreenState(
           authState: authState,
         ),
       ),
     );
 
-class SignInScreenState extends ContextfulLifeState {
-  SignInScreenState({
+class GlobalSignInScreenState extends ContextfulLifeState {
+  GlobalSignInScreenState({
     required this.authState,
   });
   final AuthState authState;

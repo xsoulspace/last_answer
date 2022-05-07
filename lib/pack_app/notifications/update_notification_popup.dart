@@ -160,7 +160,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
             padding: const EdgeInsets.all(14.0),
             child: Row(
               children: [
-                const DiscordButton(text: 'Discord'),
+                const JoinDiscordButton(text: 'Discord'),
                 const Spacer(),
                 TextButton(
                   onPressed: close,

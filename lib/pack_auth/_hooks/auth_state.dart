@@ -9,7 +9,8 @@ AuthState useAppAuthState() => use(
 
 class AuthState extends SupabaseAuthLifeState {
   ValueNotifier<bool> authenticated = ValueNotifier(false);
-
+  bool get discordSignInAvailable =>
+      kIsWeb || Platform.isAndroid || Platform.isIOS;
   @override
   void initState() {
     startAuthObserver();
@@ -32,7 +33,7 @@ class AuthState extends SupabaseAuthLifeState {
     String? redirectTo;
 
     if (kIsWeb) {
-    } else if (Platform.isAndroid || Platform.isIOS) {
+    } else {
       redirectTo = 'dev.xsoulspace.lastanswer://login-callback/';
     }
     final GotrueSessionResponse res = await supabase.auth.signIn(

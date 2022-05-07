@@ -139,7 +139,7 @@ class AppNavigatorPageBuilder {
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
-        child: const SignInScreen(),
+        child: const GlobalSignInScreen(),
       ),
     );
   }

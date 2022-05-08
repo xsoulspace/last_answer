@@ -5,7 +5,7 @@ Future<void> showNotificationPopup({
 }) async {
   await showFrostedDialog(
     context: context,
-    content: const UpdateNotificaionDialogContent(),
+    builder: (final context) => const UpdateNotificaionDialogContent(),
   );
 }
 
@@ -23,7 +23,6 @@ class UpdateNotificaionDialogContent extends StatelessWidget {
     return FrostedDialogContent(
       onClose: (final context) {
         notificationController.readAllUpdates();
-        Navigator.pop(context);
       },
       title: lastMessage.title.getByLanguage(language),
       onWillPop: () async {

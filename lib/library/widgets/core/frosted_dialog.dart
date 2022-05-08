@@ -2,7 +2,7 @@ part of widgets;
 
 Future<void> showFrostedDialog({
   required final BuildContext context,
-  required final Widget content,
+  required final WidgetBuilder builder,
 }) async {
   final theme = Theme.of(context);
   final isDark = theme.brightness == Brightness.dark;
@@ -10,20 +10,21 @@ Future<void> showFrostedDialog({
   await showDialog(
     context: context,
     useRootNavigator: true,
-    barrierColor:
-        (isDark ? AppColors.black : AppColors.cleanWhite).withOpacity(0.5),
+    barrierColor: isDark
+        ? AppColors.black.withOpacity(0.8)
+        : AppColors.cleanWhite.withOpacity(0.6),
     useSafeArea: false,
     barrierDismissible: true,
     builder: (final context) {
-      return FrostDialog(
-        content: content,
+      return FrostedDialog(
+        content: builder(context),
       );
     },
   );
 }
 
-class FrostDialog extends StatelessWidget {
-  const FrostDialog({
+class FrostedDialog extends StatelessWidget {
+  const FrostedDialog({
     required this.content,
     final Key? key,
   }) : super(key: key);
@@ -47,9 +48,13 @@ class FrostDialog extends StatelessWidget {
             size.height * 0.85,
             600,
           );
-    final backgroundColor =
-        isDark ? AppColors.cleanBlack : AppColors.cleanWhite;
+    final backgroundColor = isDark ? AppColors.black : AppColors.cleanWhite;
     final shape = RoundedRectangleBorder(
+      side: isDark
+          ? const BorderSide(
+              color: AppColors.grey1,
+            )
+          : BorderSide.none,
       borderRadius: defaultPopupBorderRadius,
     );
 
@@ -68,20 +73,20 @@ class FrostDialog extends StatelessWidget {
                 border: Border.symmetric(
                   horizontal: BorderSide(
                     color: backgroundColor,
-                    width: 24,
+                    // width: 24,
                   ),
                   vertical: BorderSide(
                     color: backgroundColor,
-                    width: 12,
+                    // width: 12,
                   ),
                 ),
               ),
               child: const SizedBox.expand(),
             ).blurred(
               borderRadius: defaultPopupBorderRadius,
-              colorOpacity: isDark ? 0.01 : 0.8,
+              colorOpacity: isDark ? 0.7 : 0.88,
               blurColor: backgroundColor,
-              blur: 32,
+              blur: isDark ? 54 : 32,
             ),
             Material(
               type: MaterialType.transparency,
@@ -96,24 +101,29 @@ class FrostDialog extends StatelessWidget {
 
 class FrostedDialogContent extends StatelessWidget {
   const FrostedDialogContent({
-    required this.onWillPop,
-    required this.onClose,
     required this.title,
     required this.content,
+    this.onWillPop,
+    this.onClose,
     this.leftAction,
     final Key? key,
   }) : super(key: key);
 
-  final ValueChanged<BuildContext> onClose;
+  final ValueChanged<BuildContext>? onClose;
   final WillPopCallback? onWillPop;
   final String title;
   final Widget content;
   final Widget? leftAction;
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final screenLayout = ScreenLayout.of(context);
+    void close() {
+      Navigator.of(context, rootNavigator: true).pop();
+      onClose?.call(context);
+    }
 
     return WillPopScope(
       onWillPop: onWillPop,
@@ -134,7 +144,7 @@ class FrostedDialogContent extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(14.0),
                       child: CloseButton(
-                        onPressed: () => onClose(context),
+                        onPressed: close,
                       ),
                     ),
                   ),
@@ -162,7 +172,7 @@ class FrostedDialogContent extends StatelessWidget {
                   if (leftAction != null) leftAction!,
                   const Spacer(),
                   TextButton(
-                    onPressed: () => onClose(context),
+                    onPressed: close,
                     child: Text(
                       S.current.close.sentenceCase,
                       style: textTheme.bodyText1,

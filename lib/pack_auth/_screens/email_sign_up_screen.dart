@@ -7,8 +7,6 @@ class EmailSignUpScreen extends HookWidget {
   Widget build(final BuildContext context) {
     final state = useSignUpScreenState();
 
-    return Column(
-      children: const [],
-    );
+    return Column();
   }
 }

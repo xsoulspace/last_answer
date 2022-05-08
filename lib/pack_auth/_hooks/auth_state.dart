@@ -81,6 +81,5 @@ class AuthState extends SupabaseAuthLifeState {
   @override
   void onErrorAuthenticating(final String message) {
     authenticated.value = false;
-    context.showErrorSnackBar(message: message);
   }
 }

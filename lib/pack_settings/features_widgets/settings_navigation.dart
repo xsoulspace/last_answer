@@ -17,7 +17,6 @@ class SettingsNavigation extends StatelessWidget {
     if (screenLayout.notSmall) {
       effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
     }
-    final notificationController = context.read<NotificationController>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -9,6 +9,9 @@ class AppColors {
   /// prevents instantiation and extension.
   AppColors._();
 
+  /// #F2F3F1
+  static const white2 = Color(0xFFF2F3F1);
+
   /// #F8F9F7
   static const white = Color(0xFFF8F9F7);
 

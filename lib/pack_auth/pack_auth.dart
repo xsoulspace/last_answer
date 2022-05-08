@@ -18,8 +18,10 @@ import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part '_hooks/auth_state.dart';
+part '_screens/email_sign_in_screen.dart';
+part '_screens/email_sign_in_screen_state.dart';
+part '_screens/email_sign_up_screen.dart';
+part '_screens/email_sign_up_screen_state.dart';
 part '_screens/global_sign_in_screen.dart';
 part '_screens/global_sign_in_screen_state.dart';
-part '_screens/sign_up_screen.dart';
-part '_screens/sign_up_screen_state.dart';
 part '_utils/lifecycle_observer.dart';

@@ -1,14 +1,14 @@
 part of pack_auth;
 
-SignUpScreenState useSignUpScreenState() => use(
+EmailSignUpScreenState useSignUpScreenState() => use(
       LifeHook(
         debugLabel: 'SignUpScreenState',
-        state: SignUpScreenState(),
+        state: EmailSignUpScreenState(),
       ),
     );
 
-class SignUpScreenState extends LifeState {
-  SignUpScreenState();
+class EmailSignUpScreenState extends LifeState {
+  EmailSignUpScreenState();
 
   @override
   void initState() {

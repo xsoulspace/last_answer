@@ -55,10 +55,7 @@ class SettingsNavigation extends StatelessWidget {
         SettingsButton(
           routeName: AppRoutesName.changelog,
           onSelected: (final _) {
-            showNotificationPopup(
-              context: context,
-              notificationController: notificationController,
-            );
+            showNotificationPopup(context: context);
           },
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.changeLog,

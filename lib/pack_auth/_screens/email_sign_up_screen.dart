@@ -8,7 +8,7 @@ class EmailSignUpScreen extends HookWidget {
     final state = useSignUpScreenState();
 
     return Column(
-      children: [],
+      children: const [],
     );
   }
 }

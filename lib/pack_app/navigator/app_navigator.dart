@@ -40,7 +40,6 @@ class _AppNavigatorState extends State<AppNavigator> {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
         showNotificationPopup(
           context: widget.navigatorKey.currentContext!,
-          notificationController: notificationController,
         );
       });
     }

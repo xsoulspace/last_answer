@@ -17,7 +17,7 @@ class BackgroundFrostBox extends StatelessWidget {
         child: const SizedBox.expand(),
       ).frosted(
         blur: theme.brightness == Brightness.dark ? 15 : 12,
-        frostOpacity: 0.1,
+        frostOpacity: 0.4,
         frostColor: theme.brightness == Brightness.dark
             ? AppColors.black
             : AppColors.white,

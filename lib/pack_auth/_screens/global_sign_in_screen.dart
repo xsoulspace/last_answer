@@ -9,40 +9,48 @@ class GlobalSignInScreen extends HookWidget {
     final state = useGlobalSignInScreenState(
       authState: context.read(),
     );
+    final screenLayout = ScreenLayout.of(context);
+
+    Widget child = SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const FeatureCard(
+            title: 'Sign in',
+            description: 'But only if you want:)\n\n'
+                'In future there will be data synchronization '
+                'accross all devices, and to start using this '
+                'feature - sign in will be required.',
+            icon: Icon(Icons.login),
+          ),
+          const SizedBox(height: 18),
+          SignInUpFilledButton(
+            onPressed: state.signInWithDiscord,
+            text: 'Sign In',
+            hero: 'sign-in',
+          ),
+          const SizedBox(height: 18),
+          SignInUpOutlinedButton(
+            onPressed: state.signInWithDiscord,
+            text: 'Sign Up',
+            hero: 'sign-up',
+          ),
+        ],
+      ),
+    );
+    if (screenLayout.small) {
+      child = Expanded(
+        child: child,
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
       child: Column(
+        mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  const FeatureCard(
-                    title: 'Sign in',
-                    description: 'But only if you want:)\n\n'
-                        'In future there will be data synchronization '
-                        'accross all devices, and to start using this '
-                        'feature - sign in will be required.',
-                    icon: Icon(Icons.login),
-                  ),
-                  const SizedBox(height: 18),
-                  SignInUpFilledButton(
-                    onPressed: state.signInWithDiscord,
-                    text: 'Sign In',
-                    hero: 'sign-in',
-                  ),
-                  const SizedBox(height: 18),
-                  SignInUpOutlinedButton(
-                    onPressed: state.signInWithDiscord,
-                    text: 'Sign Up',
-                    hero: 'sign-up',
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child,
           if (state.authState.discordSignInAvailable) ...[
             const SizedBox(height: 18),
             const Text('Sign in with'),

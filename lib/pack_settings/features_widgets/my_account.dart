@@ -50,9 +50,7 @@ class MyAccount extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             TextButton(
-              onPressed: () async {
-                authState.signOut();
-              },
+              onPressed: authState.signOut,
               child: const Text('Sign out'),
             ),
             const SizedBox(height: 24),

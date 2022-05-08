@@ -28,6 +28,14 @@ class GlobalSignInScreenState extends ContextfulLifeState {
     authState.signOut();
   }
 
+  void onSignInByEmail() {
+    showEmailSignInScreen(context: context);
+  }
+
+  void onSignUpByEmail() {
+    showEmailSignInScreen(context: context);
+  }
+
   Future<void> signInWithDiscord() async {
     try {
       isLoading.value = true;

@@ -1,7 +1,6 @@
 library pack_app;
 
 import 'dart:convert';
-import 'dart:math' as math;
 
 import 'package:blur/blur.dart';
 import 'package:equatable/equatable.dart';
@@ -28,7 +27,6 @@ import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase_lib;
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -45,7 +43,7 @@ part 'navigator/route_parameters.dart';
 part 'notifications/notification_message.dart';
 part 'notifications/notifications_controller.dart';
 part 'notifications/notifications_service.dart';
-part 'notifications/update_notification_popup.dart';
+part 'notifications/update_notification_dialog.dart';
 part 'pack_app.g.dart';
 part 'screens/app/app_scaffold.dart';
 part 'screens/app/app_state_provider.dart';

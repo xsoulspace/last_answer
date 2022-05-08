@@ -1,6 +1,6 @@
 part of pack_app;
 
-Future<void> showNotificationPopup({
+Future<void> showNotificationDialog({
   required final BuildContext context,
 }) async {
   await showFrostedDialog(
@@ -76,6 +76,7 @@ class UpdateNotificaionDialogContent extends StatelessWidget {
 
           return SelectableText(
             notification.message.getByLanguage(language),
+            key: ValueKey(notification.id),
           );
         },
       ),

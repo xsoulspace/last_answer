@@ -62,6 +62,7 @@ class FrostedDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       insetPadding: screenLayout.small ? EdgeInsets.zero : null,
       shape: screenLayout.small ? null : shape,
+      elevation: 14,
       child: SizedBox(
         height: height,
         width: width,

@@ -38,7 +38,7 @@ class _AppNavigatorState extends State<AppNavigator> {
     final notificationController = context.read<NotificationController>();
     if (notificationController.hasUnreadUpdates) {
       WidgetsBinding.instance?.addPostFrameCallback((final _) {
-        showNotificationPopup(
+        showNotificationDialog(
           context: widget.navigatorKey.currentContext!,
         );
       });

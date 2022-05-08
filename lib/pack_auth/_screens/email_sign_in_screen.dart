@@ -21,6 +21,8 @@ class EmailSignInScreen extends HookWidget {
   Widget build(final BuildContext context) {
     final state = useEmailSignInScreenState();
 
-    return Column();
+    return Column(
+      children: [],
+    );
   }
 }

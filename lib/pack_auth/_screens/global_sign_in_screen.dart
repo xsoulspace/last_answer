@@ -26,13 +26,13 @@ class GlobalSignInScreen extends HookWidget {
           ),
           const SizedBox(height: 18),
           SignInUpFilledButton(
-            onPressed: state.signInWithDiscord,
+            onPressed: state.onSignInByEmail,
             text: 'Sign In',
             hero: 'sign-in',
           ),
           const SizedBox(height: 18),
           SignInUpOutlinedButton(
-            onPressed: state.signInWithDiscord,
+            onPressed: state.onSignUpByEmail,
             text: 'Sign Up',
             hero: 'sign-up',
           ),

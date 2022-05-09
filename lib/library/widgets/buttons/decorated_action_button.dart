@@ -36,7 +36,7 @@ class DecoratedActionButton extends StatelessWidget {
           elevation: 0,
           padding: const EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: defaultPopupBorderRadius,
           ),
           primary: surfaceColor,
         ),
@@ -50,7 +50,7 @@ class DecoratedActionButton extends StatelessWidget {
       style: TextButton.styleFrom(
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: defaultBorderRadius,
+          borderRadius: defaultPopupBorderRadius,
         ),
         primary: surfaceColor,
       ),

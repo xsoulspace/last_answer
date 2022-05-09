@@ -1,6 +1,6 @@
 part of pack_settings;
 
-class MyAccount extends StatelessWidget {
+class MyAccount extends HookWidget {
   const MyAccount({
     required this.onSignIn,
     this.padding,
@@ -14,12 +14,15 @@ class MyAccount extends StatelessWidget {
     final theme = Theme.of(context);
     final settings = context.watch<GeneralSettingsController>();
     final authState = context.read<AuthState>();
+    final state = useMyAccountState(
+      authState: authState,
+    );
 
     return ValueListenableBuilder<bool>(
       valueListenable: authState.authenticated,
       builder: (final context, final authenticated, final child) {
         if (!authenticated) {
-          return GlobalSignInScreen();
+          return const GlobalSignInScreen();
         }
 
         return SettingsListContainer(
@@ -41,7 +44,6 @@ class MyAccount extends StatelessWidget {
             ),
             // TODO(arenukvern): add linked accounts
             const SizedBox(height: 24),
-
             Divider(
               color: theme.highlightColor,
               height: 24,
@@ -50,13 +52,12 @@ class MyAccount extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             TextButton(
-              onPressed: authState.signOut,
+              onPressed: state.onSingOut,
               child: const Text('Sign out'),
             ),
             const SizedBox(height: 24),
             DangerZone(
-              // TODO(arenukvern): add delete account
-              onRemove: () {},
+              onRemove: state.onDeleteAccount,
               removeText: S.current.deleteMyAccount,
             ),
             const SizedBox(height: 24),

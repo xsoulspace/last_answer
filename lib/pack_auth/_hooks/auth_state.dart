@@ -1,46 +1,87 @@
 part of pack_auth;
 
-AuthState useAppAuthState() => use(
-      ContextfulLifeHook(
+AuthState useAppAuthState({
+  required final SupabaseClient supabaseClient,
+}) =>
+    use(
+      LifeHook(
         debugLabel: 'AuthState',
-        state: AuthState(),
+        state: AuthState(
+          supabaseClient: supabaseClient,
+        ),
       ),
     );
 
 class AuthState extends SupabaseAuthLifeState {
-  ValueNotifier<bool> authenticated = ValueNotifier(false);
+  AuthState({
+    required this.supabaseClient,
+  });
+  final SupabaseClient supabaseClient;
+  GoTrueClient get supabaseAuth => supabaseClient.auth;
+  final authenticated = ValueNotifier(false);
   bool get discordSignInAvailable =>
       kIsWeb || Platform.isAndroid || Platform.isIOS;
-  @override
-  void initState() {
-    startAuthObserver();
-    super.initState();
-  }
+  bool get magicLinkSignInAvailable => discordSignInAvailable;
 
   @override
   void dispose() {
     super.dispose();
-    stopAuthObserver();
+    authenticated.dispose();
+  }
+
+  /// iOS, Android and web only
+  Future<GotrueSessionResponse> signInWithMagicLink({
+    required final String email,
+  }) async {
+    return supabaseAuth.signIn(
+      email: email,
+      options: _getAuthOptions(),
+    );
+  }
+
+  /// Supports all platforms
+  Future<GotrueSessionResponse> signInWithEmail({
+    required final String email,
+    required final String password,
+  }) async {
+    return supabaseClient.auth.signIn(
+      email: email,
+      password: password,
+    );
+  }
+
+  /// Supports all platforms
+  Future<GotrueSessionResponse> signUpWithEmail({
+    required final String email,
+    required final String password,
+  }) async {
+    return supabaseAuth.signUp(
+      email,
+      password,
+    );
   }
 
   Future<void> signInWithDiscord() async {
     return _signInWithProvider(provider: Provider.discord);
   }
 
-  Future<void> _signInWithProvider({required final Provider provider}) async {
-    final supabase = context.read<SupabaseClient>();
-
+  AuthOptions _getAuthOptions() {
     String? redirectTo;
 
     if (kIsWeb) {
     } else {
       redirectTo = 'dev.xsoulspace.lastanswer://login-callback/';
     }
-    final GotrueSessionResponse res = await supabase.auth.signIn(
+
+    return AuthOptions(
+      redirectTo: redirectTo,
+    );
+  }
+
+  Future<void> _signInWithProvider({required final Provider provider}) async {
+    final GotrueSessionResponse res = await supabaseAuth.signIn(
       provider: provider,
-      options: AuthOptions(
-        redirectTo: redirectTo,
-      ),
+      options: _getAuthOptions(),
     );
 
     if (res.url != null) {
@@ -59,10 +100,20 @@ class AuthState extends SupabaseAuthLifeState {
     }
   }
 
-  Future<GotrueResponse> signOut() async {
-    final supabase = context.read<SupabaseClient>();
+  Future<void> deleteUser() async {
+    /// see more: https://github.com/supabase/supabase/discussions/1066
+    final response = await supabaseClient.rpc('delete_user').execute();
+    if (response.status == 200 || response.status == 204) {
+      try {
+        await signOut();
+        // ignore: empty_catches, avoid_catches_without_on_clauses
+      } catch (e) {}
+      onUnauthenticated();
+    }
+  }
 
-    return supabase.auth.signOut();
+  Future<GotrueResponse> signOut() async {
+    return supabaseAuth.signOut();
   }
 
   @override

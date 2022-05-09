@@ -34,4 +34,5 @@ part 'project_folder.dart';
 part 'project_types.dart';
 part 'serialazable_project_id.dart';
 part 'story_project/story_project.dart';
+part 'supabase_error.dart';
 part 'typedefs.dart';

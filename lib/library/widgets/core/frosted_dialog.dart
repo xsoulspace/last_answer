@@ -107,9 +107,10 @@ class FrostedDialogContent extends StatelessWidget {
     this.onWillPop,
     this.onClose,
     this.leftAction,
+    this.isCloseButtonVisible = true,
     final Key? key,
   }) : super(key: key);
-
+  final bool isCloseButtonVisible;
   final ValueChanged<BuildContext>? onClose;
   final WillPopCallback? onWillPop;
   final String title;
@@ -139,16 +140,17 @@ class FrostedDialogContent extends StatelessWidget {
               height: 50,
               child: Stack(
                 children: [
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: CloseButton(
-                        onPressed: close,
+                  if (isCloseButtonVisible)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: CloseButton(
+                          onPressed: close,
+                        ),
                       ),
                     ),
-                  ),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 18.0),

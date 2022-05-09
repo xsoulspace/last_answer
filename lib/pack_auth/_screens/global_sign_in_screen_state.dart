@@ -33,7 +33,7 @@ class GlobalSignInScreenState extends ContextfulLifeState {
   }
 
   void onSignUpByEmail() {
-    showEmailSignInScreen(context: context);
+    showEmailSignUpScreen(context: context);
   }
 
   Future<void> signInWithDiscord() async {

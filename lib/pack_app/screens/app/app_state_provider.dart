@@ -59,7 +59,9 @@ class _AppStateInitializer extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final authState = useAppAuthState();
+    final authState = useAppAuthState(
+      supabaseClient: context.read(),
+    );
 
     return Provider(
       create: (final context) => authState,

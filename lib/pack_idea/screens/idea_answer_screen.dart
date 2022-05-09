@@ -78,7 +78,7 @@ class IdeaAnswerScreen extends HookWidget {
                   child: HeroId(
                     id: answerId,
                     type: HeroIdTypes.projectIdeaAnswerText,
-                    child: ProjectTextField(
+                    child: FlatTextField(
                       hintText: S.current.answer,
                       fillColor: Colors.transparent,
                       filled: false,

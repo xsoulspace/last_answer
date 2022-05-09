@@ -5,16 +5,32 @@ class OutlinedActionButton extends StatelessWidget {
     required this.onPressed,
     this.text,
     this.iconData,
+    this.loading = false,
     final Key? key,
   }) : super(key: key);
   final VoidCallback? onPressed;
   final IconData? iconData;
   final String? text;
+  final bool loading;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
+    Widget child;
+
+    if (loading) {
+      child = const CircularProgress();
+    } else if (iconData != null) {
+      child = Icon(iconData);
+    } else {
+      child = Text(
+        text ?? '',
+        style: theme.textTheme.headline6?.copyWith(
+          color: primaryColor,
+        ),
+      );
+    }
 
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
@@ -23,20 +39,13 @@ class OutlinedActionButton extends StatelessWidget {
           vertical: 14,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: defaultPopupBorderRadius,
         ),
         side: BorderSide(color: primaryColor),
         primary: primaryColor,
       ),
       onPressed: onPressed,
-      child: iconData != null
-          ? Icon(iconData)
-          : Text(
-              text ?? '',
-              style: theme.textTheme.headline6?.copyWith(
-                color: primaryColor,
-              ),
-            ),
+      child: child,
     );
   }
 }

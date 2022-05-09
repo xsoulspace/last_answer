@@ -61,6 +61,7 @@ class _AppScaffoldState extends State<AppScaffold> {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
+              FormBuilderLocalizations.delegate,
             ],
             localeListResolutionCallback:
                 (final locales, final supportedLocales) {

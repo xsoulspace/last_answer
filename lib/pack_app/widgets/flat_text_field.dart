@@ -1,22 +1,27 @@
 part of pack_app;
 
-class ProjectTextField extends StatefulHookWidget {
-  const ProjectTextField({
+class FlatTextField extends StatefulHookWidget {
+  const FlatTextField({
     required final this.controller,
     required final this.onSubmit,
     required final this.hintText,
-    final this.onUnfocus,
-    final this.onFocus,
-    final this.filled = true,
-    final this.maxLines = 7,
-    final this.endlessLines = false,
-    final this.focusOnInit = true,
-    final this.fillColor,
-    final this.focusNode,
+    this.onUnfocus,
+    this.onFocus,
+    this.filled = true,
+    this.maxLines = 7,
+    this.endlessLines = false,
+    this.focusOnInit = true,
+    this.fillColor,
+    this.focusNode,
     this.countCharacters = false,
     this.limit,
+    this.labelText,
+    this.contentPadding,
+    this.obscureText = false,
+    this.validator,
     final Key? key,
   }) : super(key: key);
+  final String? labelText;
   final TextEditingController controller;
   final VoidCallback onSubmit;
   final int maxLines;
@@ -24,6 +29,9 @@ class ProjectTextField extends StatefulHookWidget {
   final FocusNode? focusNode;
   final int? limit;
   final bool countCharacters;
+  final EdgeInsets? contentPadding;
+  final FormFieldValidator<String>? validator;
+  final bool obscureText;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
@@ -37,7 +45,7 @@ class ProjectTextField extends StatefulHookWidget {
   _ProjectTextFieldState createState() => _ProjectTextFieldState();
 }
 
-class _ProjectTextFieldState extends State<ProjectTextField> {
+class _ProjectTextFieldState extends State<FlatTextField> {
   final _keyboardFocusNode = FocusNode();
   late FocusNode _textFieldFocusNode;
   int? _maxLength;
@@ -107,6 +115,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
           },
           child: TextFormField(
             maxLength: _maxLength,
+            validator: widget.validator,
             maxLengthEnforcement: MaxLengthEnforcement.none,
             maxLines: widget.endlessLines ? null : widget.maxLines,
             scrollController: scrollController,
@@ -119,13 +128,16 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.bottom,
             style: theme.textTheme.bodyText2,
+            obscureText: widget.obscureText,
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(
-                  contentPadding: isNativeDesktop
-                      ? const EdgeInsets.all(6)
-                      : const EdgeInsets.only(top: 6, bottom: 4),
+                  contentPadding: widget.contentPadding ??
+                      (isNativeDesktop
+                          ? const EdgeInsets.all(6)
+                          : const EdgeInsets.only(top: 6, bottom: 4)),
                   filled: widget.filled,
+                  labelText: widget.labelText,
                   // labelStyle: TextStyle(color: Colors.white),
                   // fillColor: ThemeColors.lightAccent,
                   focusedBorder: _border,

@@ -134,15 +134,18 @@ class FeatureCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.icon,
+    this.onTap,
     final Key? key,
   }) : super(key: key);
   final String title;
   final String description;
   final Widget icon;
+  final VoidCallback? onTap;
   @override
   Widget build(final BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
           horizontal: 10,

@@ -1,35 +1,33 @@
 part of pack_auth;
 
-EmailSignInScreenState useEmailSignInScreenState({
+MagicLinkSignInScreenState useMagicLinkSignInScreenState({
   required final FormHelperState formHelper,
   required final AuthState authState,
 }) =>
     use(
       ContextfulLifeHook(
-        debugLabel: 'EmailSignInScreenState',
-        state: EmailSignInScreenState(
+        debugLabel: 'MagicLinkSignInScreenState',
+        state: MagicLinkSignInScreenState(
           formHelper: formHelper,
           authState: authState,
         ),
       ),
     );
 
-class EmailSignInScreenState extends ContextfulLifeState {
-  EmailSignInScreenState({
+class MagicLinkSignInScreenState extends ContextfulLifeState {
+  MagicLinkSignInScreenState({
     required this.formHelper,
     required this.authState,
   });
   final FormHelperState formHelper;
   final AuthState authState;
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
-  Future<void> onSingIn() async {
+  Future<void> onSubmit() async {
     await formHelper.submit(
       onValide: () async {
-        final response = await authState.signInWithEmail(
+        final response = await authState.signInWithMagicLink(
           email: emailController.text,
-          password: passwordController.text,
         );
         final error = response.error;
         if (!mounted) return;
@@ -46,6 +44,5 @@ class EmailSignInScreenState extends ContextfulLifeState {
   void dispose() {
     super.dispose();
     emailController.dispose();
-    passwordController.dispose();
   }
 }

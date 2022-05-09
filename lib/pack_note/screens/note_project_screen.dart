@@ -83,7 +83,7 @@ class NoteProjectScreen extends HookWidget {
                       children: [
                         const SizedBox(width: 20),
                         Expanded(
-                          child: ProjectTextField(
+                          child: FlatTextField(
                             hintText: S.current.writeANote,
                             fillColor: Colors.transparent,
                             filled: false,

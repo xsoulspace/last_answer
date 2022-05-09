@@ -1,22 +1,22 @@
 part of pack_auth;
 
-Future<void> showEmailSignInScreen({
+Future<void> showMagicLinkSignInScreen({
   required final BuildContext context,
 }) async {
   await showFrostedDialog(
     context: context,
     builder: (final context) => const FrostedDialog(
       content: FrostedDialogContent(
-        title: 'Sign In',
-        content: EmailSignInScreen(),
+        title: 'Sign in',
+        content: MagicLinkSignInScreen(),
         isCloseButtonVisible: false,
       ),
     ),
   );
 }
 
-class EmailSignInScreen extends HookWidget {
-  const EmailSignInScreen({final Key? key}) : super(key: key);
+class MagicLinkSignInScreen extends HookWidget {
+  const MagicLinkSignInScreen({final Key? key}) : super(key: key);
 
   static const _contentPadding = EdgeInsets.symmetric(
     horizontal: 18,
@@ -26,10 +26,11 @@ class EmailSignInScreen extends HookWidget {
   Widget build(final BuildContext context) {
     final authState = context.read<AuthState>();
     final formHelper = useFormHelper();
-    final state = useEmailSignInScreenState(
+    final state = useMagicLinkSignInScreenState(
       formHelper: formHelper,
       authState: authState,
     );
+    final textTheme = Theme.of(context).textTheme;
 
     return Form(
       key: formHelper.formKey,
@@ -42,6 +43,12 @@ class EmailSignInScreen extends HookWidget {
             padding: const EdgeInsets.all(18),
             child: Column(
               children: [
+                Text(
+                  'Sign in via the magic link \nwith your email below',
+                  textAlign: TextAlign.center,
+                  style: textTheme.labelLarge,
+                ),
+                const SizedBox(height: 32),
                 FlatTextField(
                   labelText: 'E-mail',
                   controller: state.emailController,
@@ -55,23 +62,6 @@ class EmailSignInScreen extends HookWidget {
                     FormBuilderValidators.email(),
                   ]),
                 ),
-                const SizedBox(height: 36),
-                FlatTextField(
-                  focusOnInit: false,
-                  controller: state.passwordController,
-                  onSubmit: () {},
-                  filled: false,
-                  maxLines: 1,
-                  contentPadding: _contentPadding,
-                  labelText: 'Password',
-                  obscureText: true,
-                  countCharacters: true,
-                  hintText: '',
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.minLength(8),
-                  ]),
-                ),
                 const SizedBox(height: 48),
                 FractionallySizedBox(
                   widthFactor: 0.8,
@@ -80,8 +70,8 @@ class EmailSignInScreen extends HookWidget {
                     builder: (final context, final loading, final child) {
                       return OutlinedActionButton(
                         loading: loading,
-                        onPressed: state.onSingIn,
-                        text: 'Sign In',
+                        onPressed: state.onSubmit,
+                        text: 'Send Magic Link',
                       );
                     },
                   ),

@@ -8,17 +8,17 @@ typedef NoteProjectId = String;
 class NoteProject extends BasicProject {
   NoteProject({
     required final String id,
-    required final DateTime created,
-    required final DateTime updated,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
     final this.folder,
     final this.note = '',
     final bool isCompleted = defaultProjectIsCompleted,
     final this.charactersLimit,
   }) : super(
-          created: created,
+          createdAt: createdAt,
           id: id,
           isCompleted: isCompleted,
-          updated: updated,
+          updatedAt: updatedAt,
           title: '',
           folder: folder,
           type: ProjectTypes.note,
@@ -31,8 +31,8 @@ class NoteProject extends BasicProject {
     final created = DateTime.now();
 
     final note = NoteProject(
-      updated: created,
-      created: created,
+      updatedAt: created,
+      createdAt: created,
       folder: folder,
       id: createId(),
       charactersLimit: charactersLimit,

@@ -19,8 +19,8 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
     return IdeaProject(
       id: fields[0] as String,
       title: fields[2] as String,
-      created: fields[3] as DateTime,
-      updated: fields[4] as DateTime,
+      createdAt: fields[3] as DateTime,
+      updatedAt: fields[4] as DateTime,
       folder: fields[8] as ProjectFolder?,
       isCompleted: fields[1] as bool,
       newAnswerText: fields[6] as String,
@@ -42,7 +42,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..writeByte(8)
       ..write(obj.folder)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +50,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..writeByte(2)
       ..write(obj.title)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -199,8 +199,8 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
     };
     return NoteProject(
       id: fields[0] as String,
-      created: fields[3] as DateTime,
-      updated: fields[4] as DateTime,
+      createdAt: fields[3] as DateTime,
+      updatedAt: fields[4] as DateTime,
       folder: fields[6] as ProjectFolder?,
       note: fields[5] as String,
       isCompleted: fields[1] as bool,
@@ -219,13 +219,13 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       ..writeByte(7)
       ..write(obj.charactersLimit)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isCompleted)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -292,10 +292,10 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
     return StoryProject(
       id: fields[0] as String,
       title: fields[2] as String,
-      created: fields[3] as DateTime,
+      createdAt: fields[3] as DateTime,
       folder: fields[5] as ProjectFolder?,
       isCompleted: fields[1] as bool,
-    )..updated = fields[4] as DateTime;
+    )..updatedAt = fields[4] as DateTime;
   }
 
   @override
@@ -305,7 +305,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       ..writeByte(5)
       ..write(obj.folder)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -313,7 +313,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       ..writeByte(2)
       ..write(obj.title)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override

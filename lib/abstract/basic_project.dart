@@ -25,14 +25,14 @@ class BasicProject extends HiveObject
   BasicProject({
     required final this.id,
     required final this.title,
-    required final this.created,
-    required final this.updated,
+    required final this.createdAt,
+    required final this.updatedAt,
     required final this.folder,
     required final this.type,
     final this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(BasicProjectIndexes.created)
-  DateTime created;
+  DateTime createdAt;
 
   /// Always override it in extended projects
   /// to assign correct [HiveField] id
@@ -53,7 +53,7 @@ class BasicProject extends HiveObject
   final ProjectTypes type;
 
   @HiveField(projectLatestFieldHiveId)
-  DateTime updated;
+  DateTime updatedAt;
 
   /// Always override it in extended projects
   @override

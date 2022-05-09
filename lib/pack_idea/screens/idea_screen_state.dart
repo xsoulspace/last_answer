@@ -57,7 +57,7 @@ class IdeaScreenState extends LifeState {
   Future<void> onIdeaUpdate(final bool updateFolder) async {
     ideasProvider.put(
       key: idea.id,
-      value: idea..updated = DateTime.now(),
+      value: idea..updatedAt = DateTime.now(),
     );
 
     if (updateFolder) {

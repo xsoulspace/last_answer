@@ -10,15 +10,15 @@ class StoryProject extends BasicProject {
   StoryProject({
     required final String id,
     required final String title,
-    required final DateTime created,
+    required final DateTime createdAt,
     required final this.folder,
     final bool isCompleted = defaultProjectIsCompleted,
   }) : super(
-          created: created,
+          createdAt: createdAt,
           id: id,
           title: title,
           isCompleted: isCompleted,
-          updated: created,
+          updatedAt: createdAt,
           folder: folder,
           type: ProjectTypes.story,
         );

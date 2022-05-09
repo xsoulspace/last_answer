@@ -9,19 +9,19 @@ class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProject({
     required final String id,
     required final String title,
-    required final DateTime created,
-    required final DateTime updated,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
     final this.folder,
     final bool isCompleted = defaultProjectIsCompleted,
     final this.newAnswerText = '',
     final this.newQuestion,
     final this.answers,
   }) : super(
-          created: created,
+          createdAt: createdAt,
           id: id,
           title: title,
           isCompleted: isCompleted,
-          updated: updated,
+          updatedAt: updatedAt,
           folder: folder,
           type: ProjectTypes.idea,
         );
@@ -31,8 +31,8 @@ class IdeaProject extends BasicProject with EquatableMixin {
   }) async {
     final created = DateTime.now();
     final idea = IdeaProject(
-      updated: created,
-      created: created,
+      updatedAt: created,
+      createdAt: created,
       folder: folder,
       id: createId(),
       title: title,

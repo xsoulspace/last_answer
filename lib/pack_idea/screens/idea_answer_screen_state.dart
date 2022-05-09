@@ -69,7 +69,7 @@ class IdeaAnswerScreenState extends LifeState {
   void onTextChanged() {
     if (answer.value.text == textController.text) return;
     answer.value.text = textController.text;
-    idea.updated = DateTime.now();
+    idea.updatedAt = DateTime.now();
     updatesStream.add(true);
   }
 

@@ -78,7 +78,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
       id: fields[2] as String,
-      created: fields[3] as DateTime,
+      createdAt: fields[3] as DateTime,
     );
   }
 
@@ -93,7 +93,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       ..writeByte(2)
       ..write(obj.id)
       ..writeByte(3)
-      ..write(obj.created);
+      ..write(obj.createdAt);
   }
 
   @override

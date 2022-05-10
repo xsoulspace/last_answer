@@ -11,7 +11,7 @@ class IdeaProjectAnswer extends HiveObject
     required final this.text,
     required final this.question,
     required final this.id,
-    required final this.created,
+    required final this.createdAt,
   });
   static Future<IdeaProjectAnswer> create({
     required final String text,
@@ -21,13 +21,13 @@ class IdeaProjectAnswer extends HiveObject
       text: text,
       question: question,
       id: createId(),
-      created: DateTime.now(),
+      createdAt: DateTime.now(),
     );
     final box = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
-    
+
     return answer;
   }
 
@@ -42,7 +42,7 @@ class IdeaProjectAnswer extends HiveObject
   final IdeaProjectAnswerId id;
 
   @HiveField(3)
-  final DateTime created;
+  final DateTime createdAt;
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override

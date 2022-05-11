@@ -20,7 +20,7 @@ class StoryProject extends BasicProject {
           isCompleted: isCompleted,
           updatedAt: createdAt,
           folder: folder,
-          type: ProjectTypes.story,
+          type: ProjectType.story,
         );
 
   @override
@@ -31,4 +31,4 @@ class StoryProject extends BasicProject {
 /// A mock for [StoryProject].
 /// To create use `final mockNoteProject = MockStoryProject();`
 // ignore: avoid_implementing_value_types
-class MockStoryProject extends Mock implements StoryProject {}
+// class MockStoryProject extends Mock implements StoryProject {}

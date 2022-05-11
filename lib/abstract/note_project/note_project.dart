@@ -21,7 +21,7 @@ class NoteProject extends BasicProject {
           updatedAt: updatedAt,
           title: '',
           folder: folder,
-          type: ProjectTypes.note,
+          type: ProjectType.note,
         );
   static Future<NoteProject> create({
     required final String title,
@@ -77,4 +77,4 @@ class NoteProject extends BasicProject {
 /// A mock for [NoteProject].
 /// To create use `final mockNoteProject = MockNoteProject();`
 // ignore: avoid_implementing_value_types
-class MockNoteProject extends Mock implements NoteProject {}
+// class MockNoteProject extends Mock implements NoteProject {}

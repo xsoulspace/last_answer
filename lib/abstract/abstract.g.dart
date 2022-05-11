@@ -331,6 +331,97 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
+        Map<String, dynamic> json) =>
+    _$_ProjectFolderModel(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      ownerId: json['owner_id'] as String,
+    );
+
+Map<String, dynamic> _$$_ProjectFolderModelToJson(
+        _$_ProjectFolderModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'owner_id': instance.ownerId,
+    };
+
+_$_NoteProjectModel _$$_NoteProjectModelFromJson(Map<String, dynamic> json) =>
+    _$_NoteProjectModel(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      isCompleted: json['is_completed'] as bool,
+      projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
+      userId: json['user_id'] as String,
+      folderId: json['folder_id'] as String,
+      charactersLimit: json['characters_limit'] as int?,
+      note: json['note'] as String,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$_NoteProjectModelToJson(_$_NoteProjectModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'is_completed': instance.isCompleted,
+      'project_type': _$ProjectTypeEnumMap[instance.projectType],
+      'user_id': instance.userId,
+      'folder_id': instance.folderId,
+      'characters_limit': instance.charactersLimit,
+      'note': instance.note,
+      'runtimeType': instance.$type,
+    };
+
+const _$ProjectTypeEnumMap = {
+  ProjectType.idea: 'idea',
+  ProjectType.note: 'note',
+  ProjectType.story: 'story',
+};
+
+_$_IdeaProjectModel _$$_IdeaProjectModelFromJson(Map<String, dynamic> json) =>
+    _$_IdeaProjectModel(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
+      userId: json['user_id'] as String,
+      folderId: json['folder_id'] as String,
+      newAnswerText: json['new_answer_text'] as String,
+      newQuestionId: json['new_question_id'] as String,
+      title: json['title'] as String,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$_IdeaProjectModelToJson(_$_IdeaProjectModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'project_type': _$ProjectTypeEnumMap[instance.projectType],
+      'user_id': instance.userId,
+      'folder_id': instance.folderId,
+      'new_answer_text': instance.newAnswerText,
+      'new_question_id': instance.newQuestionId,
+      'title': instance.title,
+      'runtimeType': instance.$type,
+    };
+
+_$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
+      id: json['id'] as String,
+    );
+
+Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+    };
+
 Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
       category: json['category'] as String,
       emoji: json['emoji'] as String,
@@ -376,21 +467,15 @@ SerializableProjectId _$SerializableProjectIdFromJson(
         Map<String, dynamic> json) =>
     SerializableProjectId(
       id: json['id'] as String,
-      type: $enumDecode(_$ProjectTypesEnumMap, json['type']),
+      type: $enumDecode(_$ProjectTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$SerializableProjectIdToJson(
         SerializableProjectId instance) =>
     <String, dynamic>{
-      'type': _$ProjectTypesEnumMap[instance.type],
+      'type': _$ProjectTypeEnumMap[instance.type],
       'id': instance.id,
     };
-
-const _$ProjectTypesEnumMap = {
-  ProjectTypes.idea: 'idea',
-  ProjectTypes.note: 'note',
-  ProjectTypes.story: 'story',
-};
 
 SupabaseError _$SupabaseErrorFromJson(Map<String, dynamic> json) =>
     SupabaseError(

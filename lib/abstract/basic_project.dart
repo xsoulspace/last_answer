@@ -50,7 +50,7 @@ class BasicProject extends HiveObject
   String title;
 
   @override
-  final ProjectTypes type;
+  final ProjectType type;
 
   @HiveField(projectLatestFieldHiveId)
   DateTime updatedAt;

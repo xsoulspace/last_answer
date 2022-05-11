@@ -1,6 +1,6 @@
 part of abstract;
 
-enum ProjectTypes {
+enum ProjectType {
   idea,
   note,
   story,

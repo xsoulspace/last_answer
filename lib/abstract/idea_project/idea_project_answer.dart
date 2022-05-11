@@ -58,4 +58,4 @@ class IdeaProjectAnswer extends HiveObject
 /// A mock for [IdeaProjectAnswer].
 /// To create use `final mockIdeaProjectAnswer = MockIdeaProjectAnswer();`
 // ignore: avoid_implementing_value_types
-class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}
+// class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}

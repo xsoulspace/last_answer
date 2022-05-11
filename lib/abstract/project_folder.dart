@@ -7,7 +7,6 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   ProjectFolder({
     required final this.id,
     required final this.title,
-    final this.projectsService,
     final this.projectsIdsString = '',
   }) : _projects = createHashSet();
 
@@ -15,7 +14,6 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
     final this.id = '',
     final this.projectsIdsString = '',
     final this.title = '',
-    final this.projectsService,
   }) : _projects = createHashSet();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
@@ -115,9 +113,6 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
 
   bool get isZero => id.isEmpty;
 
-  /// Optional dependency to load [projects]
-  final BasicProjectsService? projectsService;
-
   /// Run once when box is uploading to provider
   static Iterable<BasicProject> loadProjectsFromService({
     required final ProjectFolder folder,
@@ -132,13 +127,13 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
     BasicProject? getProjectById(final SerializableProjectId id) {
       Map<ProjectId, BasicProject?> projects;
       switch (id.type) {
-        case ProjectTypes.note:
+        case ProjectType.note:
           projects = service.notes;
           break;
-        case ProjectTypes.idea:
+        case ProjectType.idea:
           projects = service.ideas;
           break;
-        case ProjectTypes.story:
+        case ProjectType.story:
           projects = service.stories;
           break;
         default:

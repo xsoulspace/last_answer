@@ -23,7 +23,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
           isCompleted: isCompleted,
           updatedAt: updatedAt,
           folder: folder,
-          type: ProjectTypes.idea,
+          type: ProjectType.idea,
         );
   static Future<IdeaProject> create({
     required final String title,
@@ -84,4 +84,4 @@ class IdeaProject extends BasicProject with EquatableMixin {
 /// A mock for [IdeaProject].
 /// To create use `final mockIdeaProject = MockIdeaProject();`
 // ignore: avoid_implementing_value_types
-class MockIdeaProject extends Mock implements IdeaProject {}
+// class MockIdeaProject extends Mock implements IdeaProject {}

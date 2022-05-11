@@ -12,12 +12,38 @@ class AppStateProvider extends StatelessWidget {
   Widget build(final BuildContext context) {
     final child = MultiProvider(
       providers: [
-        /// Keep _settings is global is important as it will not lose all
-        /// changes during global rebuild
-        ChangeNotifierProvider(create: (final context) => _settings),
+        /// ********************************************
+        /// *      API START
+        /// ********************************************
         Provider<supabase_lib.SupabaseClient>(
           create: (final context) => GlobalStateNotifiers.supabase,
         ),
+        Provider(
+          create: createApiProviderBuilder(FoldersApi.new),
+        ),
+        Provider(
+          create: createApiProviderBuilder(ProjectsApi.new),
+        ),
+        Provider(
+          create: createApiProviderBuilder(IdeaProjectAnswersApi.new),
+        ),
+        Provider(
+          create: createApiProviderBuilder(IdeaProjectQuestionApi.new),
+        ),
+        Provider(
+          create: createApiProviderBuilder(UsersApi.new),
+        ),
+
+        /// ********************************************
+        /// *      API END
+        /// ********************************************
+        ///
+        /// ********************************************
+        /// *      IN MEMORY NOTIFIERS START
+        /// ********************************************
+        /// Keep _settings is global is important as it will not lose all
+        /// changes during global rebuild
+        ChangeNotifierProvider(create: (final context) => _settings),
         ChangeNotifierProvider(create: createEmojiProvider),
         ChangeNotifierProvider(create: createLastUsedEmojisProvider),
         ChangeNotifierProvider(create: createSpecialEmojisProvider),

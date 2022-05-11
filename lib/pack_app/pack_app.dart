@@ -15,6 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/api/api.dart';
 import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';

@@ -22,4 +22,6 @@ class ProjectFolderModel with _$ProjectFolderModel {
   const ProjectFolderModel._();
   factory ProjectFolderModel.fromJson(final Map<String, dynamic> json) =>
       _$ProjectFolderModelFromJson(json);
+  static Map<String, dynamic> modelToJson(final ProjectFolderModel model) =>
+      model.toJson();
 }

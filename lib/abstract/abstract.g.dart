@@ -75,9 +75,9 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
+      id: fields[2] as String,
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
-      id: fields[2] as String,
       createdAt: fields[3] as DateTime,
     );
   }
@@ -331,6 +331,40 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
+        Map<String, dynamic> json) =>
+    _$_IdeaProjectAnswerModel(
+      id: json['id'] as String,
+      text: json['text'] as String,
+      questionId: json['question_id'] as String,
+      projectId: json['project_id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+    );
+
+Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
+        _$_IdeaProjectAnswerModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'text': instance.text,
+      'question_id': instance.questionId,
+      'project_id': instance.projectId,
+      'created_at': instance.createdAt.toIso8601String(),
+    };
+
+_$_IdeaProjectQuestionModel _$$_IdeaProjectQuestionModelFromJson(
+        Map<String, dynamic> json) =>
+    _$_IdeaProjectQuestionModel(
+      id: json['id'] as String,
+      title: json['title'] as String,
+    );
+
+Map<String, dynamic> _$$_IdeaProjectQuestionModelToJson(
+        _$_IdeaProjectQuestionModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+    };
+
 _$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
         Map<String, dynamic> json) =>
     _$_ProjectFolderModel(
@@ -415,12 +449,21 @@ Map<String, dynamic> _$$_IdeaProjectModelToJson(_$_IdeaProjectModel instance) =>
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       id: json['id'] as String,
+      status: $enumDecode(_$UserStatusEnumMap, json['status']),
+      username: json['username'] as String,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'status': _$UserStatusEnumMap[instance.status],
+      'username': instance.username,
     };
+
+const _$UserStatusEnumMap = {
+  UserStatus.online: 'online',
+  UserStatus.offline: 'offline',
+};
 
 Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
       category: json['category'] as String,

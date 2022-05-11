@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 
+part '_models/idea_project_answer_model.dart';
+part '_models/idea_project_question_model.dart';
 part '_models/project_folder_model.dart';
 part '_models/union_project_model.dart';
 part '_models/user_model.dart';

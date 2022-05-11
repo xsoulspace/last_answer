@@ -1,6 +1,10 @@
 part of abstract;
 
 typedef UserModelId = String;
+enum UserStatus {
+  online,
+  offline,
+}
 
 @immutable
 @Freezed(
@@ -16,8 +20,12 @@ class UserModel with _$UserModel {
   )
   const factory UserModel({
     required final UserModelId id,
+    required final UserStatus status,
+    required final String username,
   }) = _UserModel;
 
   factory UserModel.fromJson(final Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+  static Map<String, dynamic> modelToJson(final UserModel model) =>
+      model.toJson();
 }

@@ -42,4 +42,8 @@ class BasicProjectModel with _$BasicProjectModel {
   }) = _IdeaProjectModel;
   factory BasicProjectModel.fromJson(final Map<String, dynamic> json) =>
       _$BasicProjectModelFromJson(json);
+  static Map<String, dynamic> modelToJson(
+    final BasicProjectModel model,
+  ) =>
+      model.toJson();
 }

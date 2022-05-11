@@ -8,9 +8,9 @@ class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
     implements Sharable, HasId {
   IdeaProjectAnswer({
+    required final this.id,
     required final this.text,
     required final this.question,
-    required final this.id,
     required final this.createdAt,
   });
   static Future<IdeaProjectAnswer> create({

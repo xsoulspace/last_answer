@@ -14,6 +14,426 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(
+    Map<String, dynamic> json) {
+  return _IdeaProjectAnswerModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$IdeaProjectAnswerModel {
+  String get id => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  @JsonKey(name: 'question_id')
+  String get questionId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'project_id')
+  String get projectId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $IdeaProjectAnswerModelCopyWith<IdeaProjectAnswerModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
+  factory $IdeaProjectAnswerModelCopyWith(IdeaProjectAnswerModel value,
+          $Res Function(IdeaProjectAnswerModel) then) =
+      _$IdeaProjectAnswerModelCopyWithImpl<$Res>;
+  $Res call(
+      {String id,
+      String text,
+      @JsonKey(name: 'question_id') String questionId,
+      @JsonKey(name: 'project_id') String projectId,
+      @JsonKey(name: 'created_at') DateTime createdAt});
+}
+
+/// @nodoc
+class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
+    implements $IdeaProjectAnswerModelCopyWith<$Res> {
+  _$IdeaProjectAnswerModelCopyWithImpl(this._value, this._then);
+
+  final IdeaProjectAnswerModel _value;
+  // ignore: unused_field
+  final $Res Function(IdeaProjectAnswerModel) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? text = freezed,
+    Object? questionId = freezed,
+    Object? projectId = freezed,
+    Object? createdAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      questionId: questionId == freezed
+          ? _value.questionId
+          : questionId // ignore: cast_nullable_to_non_nullable
+              as String,
+      projectId: projectId == freezed
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
+    implements $IdeaProjectAnswerModelCopyWith<$Res> {
+  factory _$$_IdeaProjectAnswerModelCopyWith(_$_IdeaProjectAnswerModel value,
+          $Res Function(_$_IdeaProjectAnswerModel) then) =
+      __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String id,
+      String text,
+      @JsonKey(name: 'question_id') String questionId,
+      @JsonKey(name: 'project_id') String projectId,
+      @JsonKey(name: 'created_at') DateTime createdAt});
+}
+
+/// @nodoc
+class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
+    extends _$IdeaProjectAnswerModelCopyWithImpl<$Res>
+    implements _$$_IdeaProjectAnswerModelCopyWith<$Res> {
+  __$$_IdeaProjectAnswerModelCopyWithImpl(_$_IdeaProjectAnswerModel _value,
+      $Res Function(_$_IdeaProjectAnswerModel) _then)
+      : super(_value, (v) => _then(v as _$_IdeaProjectAnswerModel));
+
+  @override
+  _$_IdeaProjectAnswerModel get _value =>
+      super._value as _$_IdeaProjectAnswerModel;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? text = freezed,
+    Object? questionId = freezed,
+    Object? projectId = freezed,
+    Object? createdAt = freezed,
+  }) {
+    return _then(_$_IdeaProjectAnswerModel(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      questionId: questionId == freezed
+          ? _value.questionId
+          : questionId // ignore: cast_nullable_to_non_nullable
+              as String,
+      projectId: projectId == freezed
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel
+    with DiagnosticableTreeMixin {
+  const _$_IdeaProjectAnswerModel(
+      {required this.id,
+      required this.text,
+      @JsonKey(name: 'question_id') required this.questionId,
+      @JsonKey(name: 'project_id') required this.projectId,
+      @JsonKey(name: 'created_at') required this.createdAt})
+      : super._();
+
+  factory _$_IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =>
+      _$$_IdeaProjectAnswerModelFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String text;
+  @override
+  @JsonKey(name: 'question_id')
+  final String questionId;
+  @override
+  @JsonKey(name: 'project_id')
+  final String projectId;
+  @override
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'IdeaProjectAnswerModel(id: $id, text: $text, questionId: $questionId, projectId: $projectId, createdAt: $createdAt)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'IdeaProjectAnswerModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('text', text))
+      ..add(DiagnosticsProperty('questionId', questionId))
+      ..add(DiagnosticsProperty('projectId', projectId))
+      ..add(DiagnosticsProperty('createdAt', createdAt));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_IdeaProjectAnswerModel &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.text, text) &&
+            const DeepCollectionEquality()
+                .equals(other.questionId, questionId) &&
+            const DeepCollectionEquality().equals(other.projectId, projectId) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(questionId),
+      const DeepCollectionEquality().hash(projectId),
+      const DeepCollectionEquality().hash(createdAt));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>
+      __$$_IdeaProjectAnswerModelCopyWithImpl<_$_IdeaProjectAnswerModel>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_IdeaProjectAnswerModelToJson(this);
+  }
+}
+
+abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
+  const factory _IdeaProjectAnswerModel(
+          {required final String id,
+          required final String text,
+          @JsonKey(name: 'question_id') required final String questionId,
+          @JsonKey(name: 'project_id') required final String projectId,
+          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
+      _$_IdeaProjectAnswerModel;
+  const _IdeaProjectAnswerModel._() : super._();
+
+  factory _IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =
+      _$_IdeaProjectAnswerModel.fromJson;
+
+  @override
+  String get id => throw _privateConstructorUsedError;
+  @override
+  String get text => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'question_id')
+  String get questionId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'project_id')
+  String get projectId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
+    Map<String, dynamic> json) {
+  return _IdeaProjectQuestionModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$IdeaProjectQuestionModel {
+  String get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $IdeaProjectQuestionModelCopyWith<IdeaProjectQuestionModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
+  factory $IdeaProjectQuestionModelCopyWith(IdeaProjectQuestionModel value,
+          $Res Function(IdeaProjectQuestionModel) then) =
+      _$IdeaProjectQuestionModelCopyWithImpl<$Res>;
+  $Res call({String id, String title});
+}
+
+/// @nodoc
+class _$IdeaProjectQuestionModelCopyWithImpl<$Res>
+    implements $IdeaProjectQuestionModelCopyWith<$Res> {
+  _$IdeaProjectQuestionModelCopyWithImpl(this._value, this._then);
+
+  final IdeaProjectQuestionModel _value;
+  // ignore: unused_field
+  final $Res Function(IdeaProjectQuestionModel) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
+    implements $IdeaProjectQuestionModelCopyWith<$Res> {
+  factory _$$_IdeaProjectQuestionModelCopyWith(
+          _$_IdeaProjectQuestionModel value,
+          $Res Function(_$_IdeaProjectQuestionModel) then) =
+      __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>;
+  @override
+  $Res call({String id, String title});
+}
+
+/// @nodoc
+class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
+    extends _$IdeaProjectQuestionModelCopyWithImpl<$Res>
+    implements _$$_IdeaProjectQuestionModelCopyWith<$Res> {
+  __$$_IdeaProjectQuestionModelCopyWithImpl(_$_IdeaProjectQuestionModel _value,
+      $Res Function(_$_IdeaProjectQuestionModel) _then)
+      : super(_value, (v) => _then(v as _$_IdeaProjectQuestionModel));
+
+  @override
+  _$_IdeaProjectQuestionModel get _value =>
+      super._value as _$_IdeaProjectQuestionModel;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+  }) {
+    return _then(_$_IdeaProjectQuestionModel(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel
+    with DiagnosticableTreeMixin {
+  const _$_IdeaProjectQuestionModel({required this.id, required this.title})
+      : super._();
+
+  factory _$_IdeaProjectQuestionModel.fromJson(Map<String, dynamic> json) =>
+      _$$_IdeaProjectQuestionModelFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String title;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'IdeaProjectQuestionModel(id: $id, title: $title)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'IdeaProjectQuestionModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('title', title));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_IdeaProjectQuestionModel &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_IdeaProjectQuestionModelCopyWith<_$_IdeaProjectQuestionModel>
+      get copyWith => __$$_IdeaProjectQuestionModelCopyWithImpl<
+          _$_IdeaProjectQuestionModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_IdeaProjectQuestionModelToJson(this);
+  }
+}
+
+abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
+  const factory _IdeaProjectQuestionModel(
+      {required final String id,
+      required final String title}) = _$_IdeaProjectQuestionModel;
+  const _IdeaProjectQuestionModel._() : super._();
+
+  factory _IdeaProjectQuestionModel.fromJson(Map<String, dynamic> json) =
+      _$_IdeaProjectQuestionModel.fromJson;
+
+  @override
+  String get id => throw _privateConstructorUsedError;
+  @override
+  String get title => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_IdeaProjectQuestionModelCopyWith<_$_IdeaProjectQuestionModel>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 ProjectFolderModel _$ProjectFolderModelFromJson(Map<String, dynamic> json) {
   return _ProjectFolderModel.fromJson(json);
 }
@@ -1194,6 +1614,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   String get id => throw _privateConstructorUsedError;
+  UserStatus get status => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1205,7 +1627,7 @@ mixin _$UserModel {
 abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res>;
-  $Res call({String id});
+  $Res call({String id, UserStatus status, String username});
 }
 
 /// @nodoc
@@ -1219,11 +1641,21 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? status = freezed,
+    Object? username = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as UserStatus,
+      username: username == freezed
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -1235,7 +1667,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           _$_UserModel value, $Res Function(_$_UserModel) then) =
       __$$_UserModelCopyWithImpl<$Res>;
   @override
-  $Res call({String id});
+  $Res call({String id, UserStatus status, String username});
 }
 
 /// @nodoc
@@ -1251,11 +1683,21 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? status = freezed,
+    Object? username = freezed,
   }) {
     return _then(_$_UserModel(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as UserStatus,
+      username: username == freezed
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -1265,17 +1707,22 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
-  const _$_UserModel({required this.id});
+  const _$_UserModel(
+      {required this.id, required this.status, required this.username});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
 
   @override
   final String id;
+  @override
+  final UserStatus status;
+  @override
+  final String username;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(id: $id)';
+    return 'UserModel(id: $id, status: $status, username: $username)';
   }
 
   @override
@@ -1283,7 +1730,9 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UserModel'))
-      ..add(DiagnosticsProperty('id', id));
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('status', status))
+      ..add(DiagnosticsProperty('username', username));
   }
 
   @override
@@ -1291,13 +1740,18 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
-            const DeepCollectionEquality().equals(other.id, id));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.username, username));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(id));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(username));
 
   @JsonKey(ignore: true)
   @override
@@ -1311,13 +1765,20 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
 }
 
 abstract class _UserModel implements UserModel {
-  const factory _UserModel({required final String id}) = _$_UserModel;
+  const factory _UserModel(
+      {required final String id,
+      required final UserStatus status,
+      required final String username}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
 
   @override
   String get id => throw _privateConstructorUsedError;
+  @override
+  UserStatus get status => throw _privateConstructorUsedError;
+  @override
+  String get username => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

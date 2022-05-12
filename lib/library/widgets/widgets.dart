@@ -21,6 +21,7 @@ import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:pack_core/pack_core.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';

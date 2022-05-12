@@ -10,15 +10,15 @@ class Greeting {
   static LocalizedText? _previousLocalizedGreeting;
   static String _previousStrGreeting = '';
   String get current {
-    final _now = DateTime.now();
+    final now = DateTime.now();
 
     final int randomNumber = _nextRandom();
     LocalizedText text;
-    if (_now.hour < 7) {
+    if (now.hour < 7) {
       text = night;
-    } else if (_now.hour < 12 && _now.hour >= 7) {
+    } else if (now.hour < 12 && now.hour >= 7) {
       text = morning;
-    } else if (_now.hour > 18) {
+    } else if (now.hour > 18) {
       text = evening;
     } else {
       text = day;

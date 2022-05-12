@@ -6,14 +6,6 @@ PODS:
     - FlutterMacOS
   - path_provider_macos (0.0.1):
     - FlutterMacOS
-  - Purchases (3.13.2):
-    - PurchasesCoreSwift (= 3.13.2)
-  - purchases_flutter (3.10.0):
-    - FlutterMacOS
-    - PurchasesHybridCommon (= 1.11.2)
-  - PurchasesCoreSwift (3.13.2)
-  - PurchasesHybridCommon (1.11.2):
-    - Purchases (= 3.13.2)
   - share_plus_macos (0.0.1):
     - FlutterMacOS
   - shared_preferences_macos (0.0.1):
@@ -26,16 +18,9 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - package_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
-  - purchases_flutter (from `Flutter/ephemeral/.symlinks/plugins/purchases_flutter/macos`)
   - share_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/share_plus_macos/macos`)
   - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
-
-SPEC REPOS:
-  trunk:
-    - Purchases
-    - PurchasesCoreSwift
-    - PurchasesHybridCommon
 
 EXTERNAL SOURCES:
   flutter_platform_alert:
@@ -46,8 +31,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos
   path_provider_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
-  purchases_flutter:
-    :path: Flutter/ephemeral/.symlinks/plugins/purchases_flutter/macos
   share_plus_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/share_plus_macos/macos
   shared_preferences_macos:
@@ -60,10 +43,6 @@ SPEC CHECKSUMS:
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
   path_provider_macos: 160cab0d5461f0c0e02995469a98f24bdb9a3f1f
-  Purchases: 03200de9288724e77de435000d1828601e6b8e00
-  purchases_flutter: ec56bb806ae9076a2edced385860f1fea4b30639
-  PurchasesCoreSwift: 2ea4b33e5cece5c8a0751594ef7c6cbfcbd747a9
-  PurchasesHybridCommon: 56ef42d85c3e930d49aff4ac5fa027373d2e1bb8
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
   shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
   url_launcher_macos: 45af3d61de06997666568a7149c1be98b41c95d4

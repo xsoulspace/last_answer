@@ -1,24 +1,28 @@
-part of pack_purchases;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pack_purchases/pack_purchases.dart';
+import 'package:pack_purchases_i/pack_purchases_i.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
-PaymentsController createPaymentsController(
-  final BuildContext context,
-) =>
+PaymentsControllerI createPaymentsController({
+  required final BuildContext context,
+  required final String appleKey,
+  required final String googleKey,
+}) =>
     PaymentsController(
-      paymentsService: PaymentsService(),
+      paymentsService: RevenueCatPaymentsService(
+        appleKey: appleKey,
+        googleKey: googleKey,
+      ),
     );
 
-enum SubscriptionTypes {
-  free,
-  paidPatron,
-  advertisementPatron,
-}
-
-class PaymentsController extends ChangeNotifier implements Loadable {
+class PaymentsController extends PaymentsControllerI {
   PaymentsController({
     required this.paymentsService,
   });
-  final PaymentsService paymentsService;
-  SubscriptionTypes subscriptionType = SubscriptionTypes.free;
+  final PaymentsServiceI<PurchaserInfo, Offerings> paymentsService;
+  @override
   bool get isPatronSubscription {
     switch (subscriptionType) {
       case SubscriptionTypes.free:
@@ -31,17 +35,20 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   PurchaserInfo? purchaserInfo;
   Offerings? offerings;
 
-  Package? get annualSubscription => offerings?.current?.annual;
+  Package? get _annualSubscription => offerings?.current?.annual;
 
+  @override
   String get annualSubscriptionTitle =>
       //TODO(arenukvern): translate
-      'Subscribe - ${annualSubscription?.product.priceString} / year';
+      'Subscribe - ${_annualSubscription?.product.priceString} / year';
 
-  Package? get monthlySubscription => offerings?.current?.monthly;
+  Package? get _monthlySubscription => offerings?.current?.monthly;
   //TODO(arenukvern): translate
+  @override
   String get monthlySubscriptionTitle =>
-      'Subscribe - ${monthlySubscription?.product.priceString} / month';
+      'Subscribe - ${_monthlySubscription?.product.priceString} / month';
 
+  @override
   bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
   @override

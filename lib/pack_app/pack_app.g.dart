@@ -7,7 +7,8 @@ part of pack_app;
 // **************************************************************************
 
 AppRouteParameters _$AppRouteParametersFromJson(
-        final Map<String, dynamic> json) =>
+  final Map<String, dynamic> json,
+) =>
     AppRouteParameters(
       noteId: json['noteId'] as String?,
       ideaId: json['ideaId'] as String?,
@@ -15,7 +16,8 @@ AppRouteParameters _$AppRouteParametersFromJson(
     );
 
 Map<String, dynamic> _$AppRouteParametersToJson(
-        final AppRouteParameters instance) =>
+  final AppRouteParameters instance,
+) =>
     <String, dynamic>{
       'noteId': instance.noteId,
       'ideaId': instance.ideaId,
@@ -23,7 +25,8 @@ Map<String, dynamic> _$AppRouteParametersToJson(
     };
 
 NotificationMessage _$NotificationMessageFromJson(
-        final Map<String, dynamic> json) =>
+  final Map<String, dynamic> json,
+) =>
     NotificationMessage(
       id: json['id'] as String,
       message: LocalizedText.fromJson(json['message'] as Map<String, dynamic>),

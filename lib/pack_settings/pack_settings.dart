@@ -21,6 +21,8 @@ import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:life_hooks/life_hooks.dart';
+import 'package:pack_core/pack_core.dart';
+import 'package:pack_purchases_i/pack_purchases_i.dart';
 import 'package:provider/provider.dart';
 
 part 'abstract/general_settings_controller.dart';

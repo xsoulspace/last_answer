@@ -1,4 +1,4 @@
-part of abstract;
+import 'package:flutter/material.dart';
 
 abstract class Loadable {
   Loadable();

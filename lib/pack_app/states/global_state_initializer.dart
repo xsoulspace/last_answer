@@ -33,7 +33,7 @@ class GlobalStateInitializer implements StateInitializer {
     final emojiProvider = context.read<EmojiProvider>();
     final currentFolderProvider = context.read<FolderStateProvider>();
     final notificationController = context.read<NotificationController>();
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.read<PaymentsControllerI>();
 
     /// ********************************************
     /// *      CONTEXT RELATED READINGS END
@@ -178,7 +178,7 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      MIGRATIONS END
     /// ********************************************
-    WidgetsBinding.instance.addPostFrameCallback((final _) {
+    WidgetsBinding.instance!.addPostFrameCallback((final _) {
       settings.notify();
     });
 

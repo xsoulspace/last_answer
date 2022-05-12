@@ -61,7 +61,7 @@ class PopupButton extends HookWidget {
       (final _, final __) {
         if (!popupVisible.value) return;
 
-        WidgetsBinding.instance.addPostFrameCallback((final _) {
+        WidgetsBinding.instance!.addPostFrameCallback((final _) {
           onOpenPopup(
             context: context,
             onClose: () => popupVisible.value = false,

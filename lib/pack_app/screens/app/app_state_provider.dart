@@ -53,7 +53,9 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
         ChangeNotifierProvider(create: createNoteProjectsProvider),
         ChangeNotifierProvider(create: createNotificationController),
-        ChangeNotifierProvider(create: createPaymentsController),
+        ChangeNotifierProvider<PaymentsControllerI>(
+          create: (final context) => createMockPaymentsController(),
+        ),
       ],
       child: Portal(
         child: _AppStateInitializer(builder: builder),

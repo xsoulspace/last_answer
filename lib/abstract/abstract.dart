@@ -30,7 +30,6 @@ part 'hive_boxes_ids.dart';
 part 'idea_project/idea_project.dart';
 part 'idea_project/idea_project_answer.dart';
 part 'idea_project/idea_project_question.dart';
-part 'loadable.dart';
 part 'loading_statuses.dart';
 part 'localization/language.dart';
 part 'localization/localized_text.dart';

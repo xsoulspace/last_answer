@@ -5,7 +5,7 @@ class SubscriptionInfo extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.read<PaymentsControllerI>();
 
     return SettingsListContainer(
       builder: paymentsController.isPatronSubscription
@@ -20,7 +20,7 @@ class SubscriptionInfo extends StatelessWidget {
     final BuildContext context,
     final double leftColumnWidth,
   ) {
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.read<PaymentsControllerI>();
     final theme = Theme.of(context);
     final screenLayout = ScreenLayout.of(context);
 

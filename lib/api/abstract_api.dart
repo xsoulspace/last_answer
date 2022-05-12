@@ -17,6 +17,9 @@ abstract class AbstractApi<TModel> extends AbstractApiProps<TModel> {}
 mixin AbstractApiMixin<TModel> on AbstractApiProps<TModel> {
   SupabaseQueryBuilder _getBuilder() => client.from(tableName);
 
+  /// ********************************************
+  /// *      SUBSCRIPTION START
+  /// ********************************************
   @override
   RealtimeSubscription subscribeToNew(final ValueChanged<TModel> onNew) {
     return _getBuilder().on(SupabaseEventTypes.insert, (final payload) {
@@ -44,55 +47,66 @@ mixin AbstractApiMixin<TModel> on AbstractApiProps<TModel> {
     }).subscribe();
   }
 
+  /// ********************************************
+  /// *      SUBSCRIPTION END
+  /// ********************************************
+
+  /// ********************************************
+  /// *      METHODS START
+  /// ********************************************
   @override
   Future<Iterable<TModel>> getAll() async {
-    final response = await _getBuilder().select().execute();
-    final data = response.data;
+    final response =
+        await _getBuilder().select().withConverter(_jsonConverter).execute();
 
-    if (response.hasError) throw Exception(data);
+    if (response.hasError) throw Exception(response.error);
 
-    return List.castFrom<dynamic, Map<String, dynamic>>(data).map(
-      fromJson,
-    );
+    return response.data ?? [];
   }
 
   @override
   Future<TModel?> getById(final String id) async {
-    final response = await _getBuilder().select().eq('id', id).execute();
-    final data = response.data;
-    if (response.hasError) throw Exception(data);
+    final response = await _getBuilder()
+        .select()
+        .eq('id', id)
+        .withConverter<Iterable<TModel>>(_jsonConverter)
+        .execute();
+    if (response.hasError) throw Exception(response.error);
 
-    return List.castFrom<dynamic, Map<String, dynamic>>(data)
-        .map(fromJson)
-        .firstOrNull;
+    return response.data?.firstOrNull;
   }
 
   Future<TModel> create(final TModel model) async {
     final response = await _getBuilder()
-        .insert(
-          modelToJson(model),
-        )
+        .insert(modelToJson(model))
+        .withConverter<Iterable<TModel>>(_jsonConverter)
         .execute();
-    final data = response.data;
-    if (response.hasError) throw Exception(data);
+    if (response.hasError) throw Exception(response.error);
 
-    return List.castFrom<dynamic, Map<String, dynamic>>(data)
-        .map(fromJson)
-        .first;
+    final data = response.data?.firstOrNull;
+    if (data == null) throw Exception();
+
+    return data;
   }
 
-  Future<TModel> update(final TModel model) async {
+  late final _jsonConverter = _jsonConverterBuilder(fromJson);
+  Future<TModel?> update(final TModel model) async {
     final response = await _getBuilder()
-        .update(
-          modelToJson(model),
-          returning: ReturningOption.minimal,
-        )
+        .update(modelToJson(model))
+        .withConverter<Iterable<TModel>>(_jsonConverter)
         .execute();
-    final data = response.data;
-    if (response.hasError) throw Exception(data);
+    if (response.hasError) throw Exception(response.error);
+    final data = response.data?.firstOrNull;
 
-    return List.castFrom<dynamic, Map<String, dynamic>>(data)
-        .map(fromJson)
-        .first;
+    return data;
   }
 }
+
+typedef FromJsonCallback<TModel> = TModel Function(Map<String, dynamic> json);
+typedef IterableModelCallback<TModel> = Iterable<TModel> Function(dynamic json);
+
+IterableModelCallback<TModel> _jsonConverterBuilder<TModel>(
+  final FromJsonCallback<TModel> fromJson,
+) =>
+    (final dynamic json) =>
+        List.castFrom<dynamic, Map<String, dynamic>>(json ?? []).map(fromJson);

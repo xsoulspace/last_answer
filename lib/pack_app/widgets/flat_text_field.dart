@@ -61,7 +61,7 @@ class _ProjectTextFieldState extends State<FlatTextField> {
   void initState() {
     setMaxLength();
     if (widget.focusOnInit) {
-      WidgetsBinding.instance?.addPostFrameCallback((final _) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
         if (!mounted) return;
         if (_textFieldFocusNode.canRequestFocus) {
           FocusScope.of(context).requestFocus(_textFieldFocusNode);

@@ -8,11 +8,12 @@ class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
     implements Sharable, HasId {
   IdeaProjectAnswer({
-    required final this.id,
-    required final this.text,
-    required final this.question,
-    required final this.createdAt,
-  });
+    required this.id,
+    required this.text,
+    required this.question,
+    required this.createdAt,
+    final DateTime? updatedAt,
+  }) : updatedAt = updatedAt ?? DateTime.now();
   static Future<IdeaProjectAnswer> create({
     required final String text,
     required final IdeaProjectQuestion question,
@@ -43,6 +44,9 @@ class IdeaProjectAnswer extends HiveObject
 
   @HiveField(3)
   final DateTime createdAt;
+
+  @HiveField(4)
+  final DateTime updatedAt;
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override

@@ -23,7 +23,7 @@ class BasicProjectModel with _$BasicProjectModel {
     @JsonKey(name: 'folder_id') required final ProjectFolderId folderId,
     @JsonKey(name: 'characters_limit') required final int? charactersLimit,
     required final String note,
-  }) = _NoteProjectModel;
+  }) = NoteProjectModel;
 
   @JsonSerializable(
     explicitToJson: true,
@@ -39,7 +39,7 @@ class BasicProjectModel with _$BasicProjectModel {
     @JsonKey(name: 'new_question_id')
         required final IdeaProjectQuestionId newQuestionId,
     required final String title,
-  }) = _IdeaProjectModel;
+  }) = IdeaProjectModel;
   factory BasicProjectModel.fromJson(final Map<String, dynamic> json) =>
       _$BasicProjectModelFromJson(json);
   static Map<String, dynamic> modelToJson(

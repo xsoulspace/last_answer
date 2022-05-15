@@ -16,7 +16,7 @@ abstract class Diff<T, TOther> {
 }
 
 class StringMergeDiff<T, TOther> extends Diff<T, TOther> {
-  StringNoMergeDiff({
+  StringMergeDiff({
     required final T original,
     required final TOther other,
   }) : super(original: original, other: other);
@@ -35,13 +35,15 @@ class DiffFinder<T extends Differable, TOther extends Differable> {
   Iterable<Diff<T, TOther>> compare(
     final Iterable<T> list,
     final Iterable<TOther> otherList,
-  ) {}
+  ) {
+    return [];
+  }
 
-  compareContent() {}
+  void compareContent() {}
 
   /// Compares the elements of the lists,
   ///
-  compareConsistency() {
+  void compareConsistency() {
     /// Generate a id map
   }
 }

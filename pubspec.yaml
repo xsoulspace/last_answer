@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.15.1+30
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -55,10 +55,10 @@ dependencies:
   rxdart: ^0.27.3
   share_plus: ^4.0.4
   shared_preferences: ^2.0.13
-  supabase_flutter: ^0.3.0
+  supabase_flutter: ^0.3.1
   supabase_hooks: ^0.0.5
   universal_io: ^2.0.4
-  url_launcher: ^6.1.0
+  url_launcher: ^6.1.2
   uuid: ^3.0.6
 
 dev_dependencies:

@@ -18,7 +18,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
   final _textFieldFocusNode = FocusNode();
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       FocusScope.of(context).requestFocus(_textFieldFocusNode);
     });
     super.initState();

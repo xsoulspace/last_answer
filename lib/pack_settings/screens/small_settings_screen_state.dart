@@ -110,7 +110,7 @@ void useSmallSettingsScreenEffects({
 
   useEffect(
     () {
-      WidgetsBinding.instance!.addPostFrameCallback((final _) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
         state.switchToPage();
       });
 

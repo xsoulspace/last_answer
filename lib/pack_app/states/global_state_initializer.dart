@@ -178,7 +178,7 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      MIGRATIONS END
     /// ********************************************
-    WidgetsBinding.instance!.addPostFrameCallback((final _) {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       settings.notify();
     });
 

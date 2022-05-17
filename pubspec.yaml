@@ -56,7 +56,7 @@ dependencies:
   share_plus: ^4.0.4
   shared_preferences: ^2.0.13
   supabase_flutter: ^0.3.1
-  supabase_hooks: ^0.0.5
+  supabase_hooks: ^0.0.6
   universal_io: ^2.0.4
   url_launcher: ^6.1.2
   uuid: ^3.0.6

@@ -47,12 +47,9 @@ dependencies:
   json_annotation: ^4.5.0
   life_hooks: ^0.0.7
   package_info_plus: ^1.4.2
-  pack_core:
-    path: "packages/pack_core"
-  pack_purchases_i:
-    path: "packages/pack_purchases_i"
   path_to_regexp: ^0.4.0
   provider: ^6.0.2
+  purchases_flutter: ^3.10.0
   quiver: ^3.1.0
   recase: ^4.0.0
   rxdart: ^0.27.3

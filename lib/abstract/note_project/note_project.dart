@@ -2,12 +2,10 @@
 
 part of abstract;
 
-typedef NoteProjectId = String;
-
 @HiveType(typeId: HiveBoxesIds.noteProject)
 class NoteProject extends BasicProject {
   NoteProject({
-    required final String id,
+    required final ProjectId id,
     required final DateTime createdAt,
     required final DateTime updatedAt,
     final this.folder,

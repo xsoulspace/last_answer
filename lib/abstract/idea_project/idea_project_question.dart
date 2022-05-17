@@ -1,7 +1,5 @@
 part of abstract;
 
-typedef IdeaProjectQuestionId = String;
-
 /// Use [IdeaProjectQuestion.fromTitle] to create class
 /// This class immutable so in case of adding new properties make sure that it
 /// will not broke immutabilty
@@ -24,7 +22,7 @@ class IdeaProjectQuestion extends HiveObject
       IdeaProjectQuestion(id: createId(), title: title);
   @override
   @HiveField(0)
-  final String id;
+  final IdeaProjectQuestionId id;
   @HiveField(1)
   final LocalizedText title;
 

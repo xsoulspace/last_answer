@@ -2,13 +2,11 @@
 
 part of abstract;
 
-typedef StoryProjectId = String;
-
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
 class StoryProject extends BasicProject {
   StoryProject({
-    required final String id,
+    required final ProjectId id,
     required final String title,
     required final DateTime createdAt,
     required final this.folder,

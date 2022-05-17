@@ -1,7 +1,5 @@
 part of abstract;
 
-typedef ProjectFolderId = String;
-
 @HiveType(typeId: HiveBoxesIds.projectFolder)
 class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   ProjectFolder({

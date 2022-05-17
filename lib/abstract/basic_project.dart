@@ -15,8 +15,6 @@ class BasicProjectIndexes {
   static const title = 2;
 }
 
-typedef ProjectId = String;
-
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
 class BasicProject extends HiveObject

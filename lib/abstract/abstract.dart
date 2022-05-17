@@ -5,20 +5,14 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 
-part '_models/idea_project_answer_model.dart';
-part '_models/idea_project_question_model.dart';
-part '_models/project_folder_model.dart';
-part '_models/union_project_model.dart';
-part '_models/user_model.dart';
-part 'abstract.freezed.dart';
 part 'abstract.g.dart';
 part 'basic_project.dart';
 part 'basic_project_fields.dart';

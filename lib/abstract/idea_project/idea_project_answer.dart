@@ -1,7 +1,5 @@
 part of abstract;
 
-typedef IdeaProjectAnswerId = String;
-
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject

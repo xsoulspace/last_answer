@@ -11,7 +11,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   final int typeId = 3;
 
   @override
-  IdeaProject read(final BinaryReader reader) {
+  IdeaProject read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -30,7 +30,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   }
 
   @override
-  void write(final BinaryWriter writer, final IdeaProject obj) {
+  void write(BinaryWriter writer, IdeaProject obj) {
     writer
       ..writeByte(9)
       ..writeByte(5)
@@ -57,7 +57,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -69,7 +69,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   final int typeId = 4;
 
   @override
-  IdeaProjectAnswer read(final BinaryReader reader) {
+  IdeaProjectAnswer read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -79,13 +79,14 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
       createdAt: fields[3] as DateTime,
+      updatedAt: fields[4] as DateTime?,
     );
   }
 
   @override
-  void write(final BinaryWriter writer, final IdeaProjectAnswer obj) {
+  void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.text)
       ..writeByte(1)
@@ -93,14 +94,16 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       ..writeByte(2)
       ..write(obj.id)
       ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.updatedAt);
   }
 
   @override
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectAnswerAdapter &&
           runtimeType == other.runtimeType &&
@@ -112,7 +115,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   final int typeId = 5;
 
   @override
-  IdeaProjectQuestion read(final BinaryReader reader) {
+  IdeaProjectQuestion read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -124,7 +127,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   }
 
   @override
-  void write(final BinaryWriter writer, final IdeaProjectQuestion obj) {
+  void write(BinaryWriter writer, IdeaProjectQuestion obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -137,7 +140,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectQuestionAdapter &&
           runtimeType == other.runtimeType &&
@@ -149,7 +152,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   final int typeId = 8;
 
   @override
-  LocalizedText read(final BinaryReader reader) {
+  LocalizedText read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -163,7 +166,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   }
 
   @override
-  void write(final BinaryWriter writer, final LocalizedText obj) {
+  void write(BinaryWriter writer, LocalizedText obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -180,7 +183,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is LocalizedTextAdapter &&
           runtimeType == other.runtimeType &&
@@ -192,7 +195,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   final int typeId = 6;
 
   @override
-  NoteProject read(final BinaryReader reader) {
+  NoteProject read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -209,7 +212,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   }
 
   @override
-  void write(final BinaryWriter writer, final NoteProject obj) {
+  void write(BinaryWriter writer, NoteProject obj) {
     writer
       ..writeByte(7)
       ..writeByte(5)
@@ -232,7 +235,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is NoteProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -244,7 +247,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   final int typeId = 9;
 
   @override
-  ProjectFolder read(final BinaryReader reader) {
+  ProjectFolder read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -257,7 +260,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   }
 
   @override
-  void write(final BinaryWriter writer, final ProjectFolder obj) {
+  void write(BinaryWriter writer, ProjectFolder obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -272,7 +275,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is ProjectFolderAdapter &&
           runtimeType == other.runtimeType &&
@@ -284,7 +287,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   final int typeId = 7;
 
   @override
-  StoryProject read(final BinaryReader reader) {
+  StoryProject read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -299,7 +302,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   }
 
   @override
-  void write(final BinaryWriter writer, final StoryProject obj) {
+  void write(BinaryWriter writer, StoryProject obj) {
     writer
       ..writeByte(6)
       ..writeByte(5)
@@ -320,7 +323,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is StoryProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -331,179 +334,32 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
-  final Map<String, dynamic> json,
-) =>
-    _$_IdeaProjectAnswerModel(
-      id: json['id'] as String,
-      text: json['text'] as String,
-      questionId: json['question_id'] as String,
-      projectId: json['project_id'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-    );
-
-Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
-  final _$_IdeaProjectAnswerModel instance,
-) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'text': instance.text,
-      'question_id': instance.questionId,
-      'project_id': instance.projectId,
-      'created_at': instance.createdAt.toIso8601String(),
-    };
-
-_$_IdeaProjectQuestionModel _$$_IdeaProjectQuestionModelFromJson(
-  final Map<String, dynamic> json,
-) =>
-    _$_IdeaProjectQuestionModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-    );
-
-Map<String, dynamic> _$$_IdeaProjectQuestionModelToJson(
-  final _$_IdeaProjectQuestionModel instance,
-) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-    };
-
-_$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
-  final Map<String, dynamic> json,
-) =>
-    _$_ProjectFolderModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-      ownerId: json['owner_id'] as String,
-    );
-
-Map<String, dynamic> _$$_ProjectFolderModelToJson(
-  final _$_ProjectFolderModel instance,
-) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt.toIso8601String(),
-      'owner_id': instance.ownerId,
-    };
-
-_$_NoteProjectModel _$$_NoteProjectModelFromJson(
-        final Map<String, dynamic> json) =>
-    _$_NoteProjectModel(
-      id: json['id'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-      isCompleted: json['is_completed'] as bool,
-      projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
-      userId: json['user_id'] as String,
-      folderId: json['folder_id'] as String,
-      charactersLimit: json['characters_limit'] as int?,
-      note: json['note'] as String,
-      $type: json['runtimeType'] as String?,
-    );
-
-Map<String, dynamic> _$$_NoteProjectModelToJson(
-        final _$_NoteProjectModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt.toIso8601String(),
-      'is_completed': instance.isCompleted,
-      'project_type': _$ProjectTypeEnumMap[instance.projectType],
-      'user_id': instance.userId,
-      'folder_id': instance.folderId,
-      'characters_limit': instance.charactersLimit,
-      'note': instance.note,
-      'runtimeType': instance.$type,
-    };
-
-const _$ProjectTypeEnumMap = {
-  ProjectType.idea: 'idea',
-  ProjectType.note: 'note',
-  ProjectType.story: 'story',
-};
-
-_$_IdeaProjectModel _$$_IdeaProjectModelFromJson(
-        final Map<String, dynamic> json) =>
-    _$_IdeaProjectModel(
-      id: json['id'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-      projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
-      userId: json['user_id'] as String,
-      folderId: json['folder_id'] as String,
-      newAnswerText: json['new_answer_text'] as String,
-      newQuestionId: json['new_question_id'] as String,
-      title: json['title'] as String,
-      $type: json['runtimeType'] as String?,
-    );
-
-Map<String, dynamic> _$$_IdeaProjectModelToJson(
-        final _$_IdeaProjectModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt.toIso8601String(),
-      'project_type': _$ProjectTypeEnumMap[instance.projectType],
-      'user_id': instance.userId,
-      'folder_id': instance.folderId,
-      'new_answer_text': instance.newAnswerText,
-      'new_question_id': instance.newQuestionId,
-      'title': instance.title,
-      'runtimeType': instance.$type,
-    };
-
-_$_UserModel _$$_UserModelFromJson(final Map<String, dynamic> json) =>
-    _$_UserModel(
-      id: json['id'] as String,
-      status: $enumDecode(_$UserStatusEnumMap, json['status']),
-      username: json['username'] as String,
-    );
-
-Map<String, dynamic> _$$_UserModelToJson(final _$_UserModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'status': _$UserStatusEnumMap[instance.status],
-      'username': instance.username,
-    };
-
-const _$UserStatusEnumMap = {
-  UserStatus.online: 'online',
-  UserStatus.offline: 'offline',
-};
-
-Emoji _$EmojiFromJson(final Map<String, dynamic> json) => Emoji(
+Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
       category: json['category'] as String,
       emoji: json['emoji'] as String,
       keywords: json['keywords'] as String,
     );
 
-Map<String, dynamic> _$EmojiToJson(final Emoji instance) => <String, dynamic>{
+Map<String, dynamic> _$EmojiToJson(Emoji instance) => <String, dynamic>{
       'category': instance.category,
       'emoji': instance.emoji,
       'keywords': instance.keywords,
     };
 
-IdeaProjectQuestion _$IdeaProjectQuestionFromJson(
-        final Map<String, dynamic> json) =>
+IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
-  final IdeaProjectQuestion instance,
-) =>
+        IdeaProjectQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
     };
 
-LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
+LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
@@ -511,7 +367,7 @@ LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
       ga: json['ga'] as String?,
     );
 
-Map<String, dynamic> _$LocalizedTextToJson(final LocalizedText instance) =>
+Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,
@@ -520,28 +376,32 @@ Map<String, dynamic> _$LocalizedTextToJson(final LocalizedText instance) =>
     };
 
 SerializableProjectId _$SerializableProjectIdFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     SerializableProjectId(
       id: json['id'] as String,
       type: $enumDecode(_$ProjectTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$SerializableProjectIdToJson(
-  final SerializableProjectId instance,
-) =>
+        SerializableProjectId instance) =>
     <String, dynamic>{
       'type': _$ProjectTypeEnumMap[instance.type],
       'id': instance.id,
     };
 
-SupabaseError _$SupabaseErrorFromJson(final Map<String, dynamic> json) =>
+const _$ProjectTypeEnumMap = {
+  ProjectType.idea: 'idea',
+  ProjectType.note: 'note',
+  ProjectType.story: 'story',
+};
+
+SupabaseError _$SupabaseErrorFromJson(Map<String, dynamic> json) =>
     SupabaseError(
       error: json['error'] as String,
       errorDescription: json['error_description'] as String,
     );
 
-Map<String, dynamic> _$SupabaseErrorToJson(final SupabaseError instance) =>
+Map<String, dynamic> _$SupabaseErrorToJson(SupabaseError instance) =>
     <String, dynamic>{
       'error': instance.error,
       'error_description': instance.errorDescription,

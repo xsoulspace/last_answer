@@ -2,12 +2,10 @@
 
 part of abstract;
 
-typedef IdeaProjectId = String;
-
 @HiveType(typeId: HiveBoxesIds.ideaProject)
 class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProject({
-    required final String id,
+    required final ProjectId id,
     required final String title,
     required final DateTime createdAt,
     required final DateTime updatedAt,

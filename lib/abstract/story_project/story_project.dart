@@ -4,19 +4,18 @@ part of abstract;
 
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
-class StoryProject extends BasicProject {
+class StoryProject extends BasicProject implements Deletable {
   StoryProject({
-    required final ProjectId id,
-    required final String title,
-    required final DateTime createdAt,
+    required final super.id,
+    required final super.title,
+    required final super.createdAt,
     required final this.folder,
+    this.isToDelete = false,
+    final DateTime? updatedAt,
     final bool isCompleted = defaultProjectIsCompleted,
   }) : super(
-          createdAt: createdAt,
-          id: id,
-          title: title,
           isCompleted: isCompleted,
-          updatedAt: createdAt,
+          updatedAt: updatedAt ?? createdAt,
           folder: folder,
           type: ProjectType.story,
         );
@@ -24,6 +23,10 @@ class StoryProject extends BasicProject {
   @override
   @HiveField(projectLatestFieldHiveId + 1)
   ProjectFolder? folder;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 2)
+  bool isToDelete;
 }
 
 /// A mock for [StoryProject].

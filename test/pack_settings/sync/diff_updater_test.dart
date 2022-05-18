@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/diff_updater.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 void main() {
-  group('DiffFinder', () {
+  group('DiffUpdater', () {
     test('one note project can be updated with note model', () {
       final id = createId();
       final createdAt = DateTime.now().subtract(const Duration(days: 1));

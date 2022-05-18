@@ -1,17 +1,21 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObject with EquatableMixin, HasId {
+class ProjectFolder extends HiveObject
+    with EquatableMixin, HasId
+    implements Deletable {
   ProjectFolder({
-    required final this.id,
-    required final this.title,
-    final this.projectsIdsString = '',
+    required this.id,
+    required this.title,
+    this.projectsIdsString = '',
+    this.isToDelete = false,
   }) : _projects = createHashSet();
 
   ProjectFolder.zero({
-    final this.id = '',
-    final this.projectsIdsString = '',
-    final this.title = '',
+    this.id = '',
+    this.projectsIdsString = '',
+    this.title = '',
+    this.isToDelete = false,
   }) : _projects = createHashSet();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
@@ -44,6 +48,10 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   /// Used to keep [SerializableProjectId] as json
   @HiveField(2)
   String projectsIdsString;
+
+  @override
+  @HiveField(3)
+  bool isToDelete;
 
   LinkedHashSet<BasicProject> _projects;
 

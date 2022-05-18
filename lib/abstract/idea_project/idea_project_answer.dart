@@ -4,12 +4,13 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
-    implements Sharable, HasId {
+    implements Sharable, HasId, Deletable {
   IdeaProjectAnswer({
     required this.id,
     required this.text,
     required this.question,
     required this.createdAt,
+    this.isToDelete = false,
     final DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
   static Future<IdeaProjectAnswer> create({
@@ -45,6 +46,10 @@ class IdeaProjectAnswer extends HiveObject
 
   @HiveField(4)
   final DateTime updatedAt;
+
+  @override
+  @HiveField(5)
+  bool isToDelete;
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override

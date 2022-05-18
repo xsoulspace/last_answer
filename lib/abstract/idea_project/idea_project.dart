@@ -3,23 +3,23 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
-class IdeaProject extends BasicProject with EquatableMixin {
+class IdeaProject extends BasicProject
+    with EquatableMixin
+    implements Deletable {
   IdeaProject({
-    required final ProjectId id,
-    required final String title,
-    required final DateTime createdAt,
-    required final DateTime updatedAt,
-    final this.folder,
+    required final super.id,
+    required final super.title,
+    required final super.createdAt,
+    this.isToDelete = false,
+    this.newAnswerText = '',
+    this.folder,
+    this.newQuestion,
+    this.answers,
+    final DateTime? updatedAt,
     final bool isCompleted = defaultProjectIsCompleted,
-    final this.newAnswerText = '',
-    final this.newQuestion,
-    final this.answers,
   }) : super(
-          createdAt: createdAt,
-          id: id,
-          title: title,
           isCompleted: isCompleted,
-          updatedAt: updatedAt,
+          updatedAt: updatedAt ?? createdAt,
           folder: folder,
           type: ProjectType.idea,
         );
@@ -60,6 +60,10 @@ class IdeaProject extends BasicProject with EquatableMixin {
   @override
   @HiveField(projectLatestFieldHiveId + 4)
   ProjectFolder? folder;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 5)
+  bool isToDelete;
 
   @override
   String toShareString() {

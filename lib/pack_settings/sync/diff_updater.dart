@@ -22,18 +22,15 @@ class StringMergeDiff<T, TOther> extends Diff<T, TOther> {
   }) : super(original: original, other: other);
 }
 
-class DiffFinder<T extends Differable, TOther extends Differable> {
-  DiffFinder.of({
-    required final Iterable<T> list,
-    required final Iterable<TOther> otherList,
+class DiffUpdater<T extends Differable, TOther extends Differable> {
+  DiffUpdater.of({
+    required this.list,
     this.policy = DiffConflictPolicy.replaceByActiveDevice,
-  }) {
-    changes = compare(list, otherList);
-  }
+  });
+  final Iterable<T> list;
   final DiffConflictPolicy policy;
-  Iterable<Diff<T, TOther>> changes = [];
-  Iterable<Diff<T, TOther>> compare(
-    final Iterable<T> list,
+
+  Iterable<T> updateByOther(
     final Iterable<TOther> otherList,
   ) {
     return [];

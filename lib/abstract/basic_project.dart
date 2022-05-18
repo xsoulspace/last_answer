@@ -21,13 +21,13 @@ class BasicProject extends HiveObject
     with EquatableMixin
     implements Sharable, BasicProjectFields, HasId {
   BasicProject({
-    required final this.id,
-    required final this.title,
-    required final this.createdAt,
-    required final this.updatedAt,
-    required final this.folder,
-    required final this.type,
-    final this.isCompleted = defaultProjectIsCompleted,
+    required this.id,
+    required this.title,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.folder,
+    required this.type,
+    this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(BasicProjectIndexes.created)
   DateTime createdAt;

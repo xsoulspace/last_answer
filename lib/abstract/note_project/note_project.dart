@@ -3,20 +3,19 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.noteProject)
-class NoteProject extends BasicProject {
+class NoteProject extends BasicProject implements Deletable {
   NoteProject({
-    required final ProjectId id,
-    required final DateTime createdAt,
-    required final DateTime updatedAt,
-    final this.folder,
-    final this.note = '',
+    required final super.id,
+    required final super.createdAt,
+    this.note = '',
+    this.isToDelete = false,
+    this.folder,
+    this.charactersLimit,
     final bool isCompleted = defaultProjectIsCompleted,
-    final this.charactersLimit,
+    final DateTime? updatedAt,
   }) : super(
-          createdAt: createdAt,
-          id: id,
           isCompleted: isCompleted,
-          updatedAt: updatedAt,
+          updatedAt: updatedAt ?? createdAt,
           title: '',
           folder: folder,
           type: ProjectType.note,
@@ -52,6 +51,10 @@ class NoteProject extends BasicProject {
   /// can be set via [CharactersLimitSetting]
   @HiveField(projectLatestFieldHiveId + 3)
   int? charactersLimit;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 4)
+  bool isToDelete;
 
   static const titleLimit = 90;
   @override

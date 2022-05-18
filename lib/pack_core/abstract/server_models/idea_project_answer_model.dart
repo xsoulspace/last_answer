@@ -23,6 +23,7 @@ class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel {
         required final IdeaProjectQuestionId questionId,
     @JsonKey(name: 'project_id') required final ProjectId projectId,
     @JsonKey(name: 'created_at') required final DateTime createdAt,
+    @JsonKey(name: 'updated_at') required final DateTime updatedAt,
   }) = _IdeaProjectAnswerModel;
   factory IdeaProjectAnswerModel.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectAnswerModelFromJson(json);

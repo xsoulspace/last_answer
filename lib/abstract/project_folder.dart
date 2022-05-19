@@ -9,14 +9,17 @@ class ProjectFolder extends HiveObject
     required this.title,
     this.projectsIdsString = '',
     this.isToDelete = false,
-  }) : _projects = createHashSet();
+    final DateTime? updatedAt,
+  })  : _projects = createHashSet(),
+        updatedAt = updatedAt ?? DateTime.now();
 
   ProjectFolder.zero({
     this.id = '',
     this.projectsIdsString = '',
     this.title = '',
     this.isToDelete = false,
-  }) : _projects = createHashSet();
+  })  : _projects = createHashSet(),
+        updatedAt = DateTime.now();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
       LinkedHashSet<BasicProject>(
@@ -52,6 +55,9 @@ class ProjectFolder extends HiveObject
   @override
   @HiveField(3)
   bool isToDelete;
+
+  @HiveField(4)
+  DateTime updatedAt;
 
   LinkedHashSet<BasicProject> _projects;
 

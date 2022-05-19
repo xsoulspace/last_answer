@@ -13,52 +13,18 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
     required final ModelUpdaterDiff<ProjectFolder, ProjectFolderModel> diff,
   }) async {
     final updatedDiffs =
-        <ProjectId, InstanceDiff<ProjectFolder, ProjectFolderModel>>{};
+        <ProjectFolderId, InstanceDiff<ProjectFolder, ProjectFolderModel>>{};
     for (final noteDiff in diff.instancesToCheck.values) {
       final original = noteDiff.original;
-      NoteProjectModel other = noteDiff.other;
+      ProjectFolderModel other = noteDiff.other;
       bool otherWasUpdated = false;
       bool originalWasUpdated = false;
 
-      /// check folder
-      if (original.folder?.id != other.folderId) {
-        if (original.folder != null) {
-          switch (policy) {
-            case InstanceUpdatePolicy.useClientVersion:
-              other = other.copyWith(
-                folderId: original.folder!.id,
-              );
-              otherWasUpdated = true;
-              break;
-            default:
-              // TODO(arenukvern): description
-              throw UnimplementedError();
-          }
-        } else {
-          final folder = foldersNotifier.state[other.folderId];
-          folder?.addProject(original);
-          originalWasUpdated = true;
-        }
-      }
-
-      /// check note
-      if (original.note != other.note) {
+      /// check title
+      if (original.title != other.title) {
         switch (policy) {
           case InstanceUpdatePolicy.useClientVersion:
-            other = other.copyWith(note: original.note);
-            otherWasUpdated = true;
-            break;
-          default:
-            // TODO(arenukvern): description
-            throw UnimplementedError();
-        }
-      }
-
-      /// check [NoteProjectModel.charactersLimit]
-      if (original.charactersLimit != other.charactersLimit) {
-        switch (policy) {
-          case InstanceUpdatePolicy.useClientVersion:
-            other = other.copyWith(charactersLimit: original.charactersLimit);
+            other = other.copyWith(title: original.title);
             otherWasUpdated = true;
             break;
           default:

@@ -1,7 +1,7 @@
 part of pack_settings;
 
-class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
-  NoteUpdater.of({
+class IdeaUpdater extends InstanceUpdater<IdeaProject, IdeaProjectModel> {
+  IdeaUpdater.of({
     required final super.list,
     required this.foldersNotifier,
   });
@@ -9,11 +9,11 @@ class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
   final ProjectFoldersNotifier foldersNotifier;
 
   @override
-  Future<ModelUpdaterDiff<NoteProject, NoteProjectModel>> compareContent({
-    required final ModelUpdaterDiff<NoteProject, NoteProjectModel> diff,
+  Future<ModelUpdaterDiff<IdeaProject, IdeaProjectModel>> compareContent({
+    required final ModelUpdaterDiff<IdeaProject, IdeaProjectModel> diff,
   }) async {
     final updatedDiffs =
-        <ProjectId, InstanceDiff<NoteProject, NoteProjectModel>>{};
+        <ProjectId, InstanceDiff<IdeaProject, IdeaProjectModel>>{};
     for (final noteDiff in diff.instancesToCheck.values) {
       final original = noteDiff.original;
       NoteProjectModel other = noteDiff.other;
@@ -82,7 +82,7 @@ class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
 
   @override
   Future<void> saveChanges({
-    required final ModelUpdaterDiff<NoteProject, NoteProjectModel> diff,
+    required final ModelUpdaterDiff<IdeaProject, IdeaProjectModel> diff,
   }) {
     // TODO: implement saveChanges
     throw UnimplementedError();

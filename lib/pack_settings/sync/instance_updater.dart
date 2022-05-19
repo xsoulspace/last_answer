@@ -1,6 +1,7 @@
 part of pack_settings;
 
-class InstanceUpdater<T extends DeletableWithId, TOther extends HasId> {
+class InstanceUpdater<T extends DeletableWithId, TOther extends HasId>
+    implements RemotelyUpdatable<T, TOther> {
   InstanceUpdater({
     required this.list,
     this.policy = InstanceUpdatePolicy.useClientVersion,
@@ -68,6 +69,12 @@ class InstanceUpdater<T extends DeletableWithId, TOther extends HasId> {
     required final ModelUpdaterDiff<T, TOther> diff,
   }) async {
     // TODO(arenukvern): description
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveChanges({required final ModelUpdaterDiff<T, TOther> diff}) {
+    // TODO: implement saveChanges
     throw UnimplementedError();
   }
 }

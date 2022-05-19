@@ -9,4 +9,4 @@ abstract class Deletable {
   bool isToDelete = false;
 }
 
-abstract class DeletableWithId implements Deletable, HasId {}
+abstract class DeletableWithId extends Deletable implements HasId {}

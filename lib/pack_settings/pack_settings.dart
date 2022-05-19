@@ -3,6 +3,7 @@ library pack_settings;
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';

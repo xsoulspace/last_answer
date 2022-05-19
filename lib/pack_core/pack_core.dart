@@ -14,3 +14,4 @@ part 'abstract/server_models/union_project_model.dart';
 part 'abstract/server_models/user_model.dart';
 part 'pack_core.freezed.dart';
 part 'pack_core.g.dart';
+part 'utils/iterable_functions.dart';

@@ -84,9 +84,7 @@ class GlobalStateInitializer implements StateInitializer {
     // TODO(arenukvern): comment if questions changed
     if (questions.isEmpty) {
       await questions.putAll(
-        Map.fromEntries(
-          initialQuestions.map((final e) => MapEntry(e.id, e)),
-        ),
+        listWithIdToMap(initialQuestions),
       );
     }
 

@@ -1,6 +1,6 @@
 part of pack_settings;
 
-abstract class ModelUpdater<T extends DeletableWithId, TOther extends HasId> {
+class ModelUpdater<T extends DeletableWithId, TOther extends HasId> {
   ModelUpdater({
     required this.list,
   });
@@ -20,8 +20,7 @@ abstract class ModelUpdater<T extends DeletableWithId, TOther extends HasId> {
     final Iterable<TOther> otherList,
   ) {
     /// Generate other Map
-    final otherMap =
-        Map.fromEntries(otherList.map((final e) => MapEntry(e.id, e)));
+    final otherMap = listWithIdToMap(otherList);
 
     final instancesToDeleteForOther = <InstanceId, T>{};
     final instancesToCreateForOther = <InstanceId, T>{};
@@ -47,7 +46,7 @@ abstract class ModelUpdater<T extends DeletableWithId, TOther extends HasId> {
     final instancesToCreateForList = <InstanceId, TOther>{};
 
     /// find differnces with [list] - offline (client side)
-    for (final el in otherList) {
+    for (final el in otherMap.values) {
       final isNotExists = !instancesToCheckForOther.containsKey(el.id);
       if (isNotExists) {
         instancesToCreateForList[el.id] = el;

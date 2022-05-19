@@ -46,11 +46,21 @@ void main() {
             ),
           ) +
           originalListToCreate;
-      final instancesToDelete = listWithIdToMap<DeletableTestItem>([
-        DeletableTestItem(id: '0'),
-        DeletableTestItem(id: '2'),
-        DeletableTestItem(id: '4'),
-      ]);
+      final instancesToDelete = {
+        '0': OptionalInstanceDiff(
+          original: DeletableTestItem(id: '0'),
+          other: TestItem('0'),
+        ),
+        '2': OptionalInstanceDiff(
+          original: DeletableTestItem(id: '2'),
+          other: TestItem('2'),
+        ),
+        '4': OptionalInstanceDiff(
+          original: DeletableTestItem(id: '4'),
+          other: TestItem('4'),
+        ),
+      };
+
       final otherList = List.generate(20, (final index) => TestItem('$index'));
       final diff =
           InstanceUpdater<DeletableTestItem, TestItem>(list: originalList)

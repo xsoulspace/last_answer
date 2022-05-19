@@ -26,14 +26,19 @@ class InstanceUpdater<T extends DeletableWithId, TOther extends HasId>
     /// Generate other Map
     final otherMap = listWithIdToMap(otherList);
 
-    final instancesToDeleteForOther = <InstanceId, T>{};
+    final instancesToDeleteForOther =
+        <InstanceId, OptionalInstanceDiff<T, TOther>>{};
     final instancesToCreateForOther = <InstanceId, T>{};
     final instancesToCheckForOther = <InstanceId, InstanceDiff<T, TOther>>{};
 
     /// find differnces with [otherList] - online (server side)
     for (final el in list) {
       if (el.isToDelete) {
-        instancesToDeleteForOther[el.id] = el;
+        final other = otherMap[el.id];
+        instancesToDeleteForOther[el.id] = OptionalInstanceDiff(
+          original: el,
+          other: other,
+        );
         otherMap.remove(el.id);
       } else {
         final other = otherMap[el.id];

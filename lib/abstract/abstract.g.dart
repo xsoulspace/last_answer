@@ -266,13 +266,14 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
       isToDelete: fields[3] as bool,
+      updatedAt: fields[4] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectFolder obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -280,7 +281,9 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       ..writeByte(2)
       ..write(obj.projectsIdsString)
       ..writeByte(3)
-      ..write(obj.isToDelete);
+      ..write(obj.isToDelete)
+      ..writeByte(4)
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -366,6 +369,7 @@ IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
+      isToDelete: json['isToDelete'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
@@ -373,6 +377,7 @@ Map<String, dynamic> _$IdeaProjectQuestionToJson(
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'isToDelete': instance.isToDelete,
     };
 
 LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>

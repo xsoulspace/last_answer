@@ -7,12 +7,13 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
 class IdeaProjectQuestion extends HiveObject
     with EquatableMixin
-    implements Sharable, HasId {
+    implements Sharable, DeletableWithId {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
     required final this.id,
     required final this.title,
+    this.isToDelete = false,
   });
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionFromJson(json);
@@ -25,6 +26,9 @@ class IdeaProjectQuestion extends HiveObject
   final IdeaProjectQuestionId id;
   @HiveField(1)
   final LocalizedText title;
+
+  @override
+  bool isToDelete;
 
   Map<String, dynamic> toJson() => _$IdeaProjectQuestionToJson(this);
 

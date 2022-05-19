@@ -20,25 +20,24 @@ class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
       bool otherWasUpdated = false;
       bool originalWasUpdated = false;
 
-      /// check folder
-      if (original.folder?.id != other.folderId) {
-        if (original.folder != null) {
-          switch (policy) {
-            case InstanceUpdatePolicy.useClientVersion:
-              other = other.copyWith(
-                folderId: original.folder!.id,
-              );
-              otherWasUpdated = true;
-              break;
-            default:
-              // TODO(arenukvern): description
-              throw UnimplementedError();
-          }
-        } else {
+      /// check folder - how to unify for all projects?
+      InstanceUpdatePolicy effectivePolicy =
+          InstanceUpdatePolicy.useClientVersion;
+      if (original.folder == null) {
+        effectivePolicy = InstanceUpdatePolicy.useServerVersion;
+      }
+      switch (effectivePolicy) {
+        case InstanceUpdatePolicy.useClientVersion:
+          other = other.copyWith(
+            folderId: original.folder!.id,
+          );
+          otherWasUpdated = true;
+          break;
+        case InstanceUpdatePolicy.useServerVersion:
           final folder = foldersNotifier.state[other.folderId];
           folder?.addProject(original);
           originalWasUpdated = true;
-        }
+          break;
       }
 
       /// check note

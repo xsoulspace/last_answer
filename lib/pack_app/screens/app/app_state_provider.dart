@@ -49,9 +49,9 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createSpecialEmojisProvider),
         ChangeNotifierProvider(create: createFoldersNotifier),
         ChangeNotifierProvider(create: createCurrentFoldersNotifier),
-        ChangeNotifierProvider(create: createIdeaProjectsProvider),
+        ChangeNotifierProvider(create: createIdeaProjectsNotifier),
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
-        ChangeNotifierProvider(create: createNoteProjectsProvider),
+        ChangeNotifierProvider(create: createNoteProjectsNotifier),
         ChangeNotifierProvider(create: createNotificationController),
         ChangeNotifierProvider<PaymentsControllerI>(
           create: (final context) => createMockPaymentsController(),

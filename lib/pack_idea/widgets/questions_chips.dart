@@ -11,7 +11,7 @@ class _QuestionsChips extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsNotifier>();
 
     final questions = ideaQuestionsProvider.values;
 

@@ -36,13 +36,13 @@ class NoteProjectUpdaterState extends LifeState {
   final BuildContext context;
   final NoteProject note;
   final StreamController<NoteProjectNotifier> updatesStream;
-  late NoteProjectsProvider notesProvider;
+  late NoteProjectsNotifier notesProvider;
   late CurrentFolderNotifier folderProvider;
 
   @override
   @mustCallSuper
   void initState() {
-    notesProvider = context.read<NoteProjectsProvider>();
+    notesProvider = context.read<NoteProjectsNotifier>();
     folderProvider = context.read<CurrentFolderNotifier>();
 
     updatesStream.stream

@@ -25,4 +25,6 @@ class IdeaProjectQuestionModel
     final IdeaProjectQuestionModel model,
   ) =>
       model.toJson();
+
+  LocalizedText get localizedTitle => LocalizedText.fromJson(jsonDecode(title));
 }

@@ -38,11 +38,11 @@ class IdeaAnswerScreenState extends LifeState {
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
 
-  late IdeaProjectsProvider ideasProvider;
+  late IdeaProjectsNotifier ideasProvider;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsProvider>();
+    ideasProvider = context.read<IdeaProjectsNotifier>();
 
     updatesStream.stream
         .sampleTime(

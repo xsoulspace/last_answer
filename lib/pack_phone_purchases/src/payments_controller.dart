@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lastanswer/pack_phone_purchases/src/revenue_cat_payment_service.dart';
 import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
-import 'package:lastanswer/pack_purchases_impl/src/revenue_cat_payment_service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 PaymentsControllerI createPaymentsController({

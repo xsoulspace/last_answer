@@ -1,7 +1,10 @@
 library pack_core;
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
 
 part 'abstract/primitives/deletable.dart';
 part 'abstract/primitives/has_id.dart';

@@ -104,9 +104,9 @@ Future<void> removeProject({
       await Future.wait(deleteAnswerFutures);
     }
 
-    context.read<IdeaProjectsProvider>().remove(key: project.id);
+    context.read<IdeaProjectsNotifier>().remove(key: project.id);
   } else if (project is NoteProject) {
-    context.read<NoteProjectsProvider>().remove(key: project.id);
+    context.read<NoteProjectsNotifier>().remove(key: project.id);
   } else if (project is StoryProject) {
     // TODO(arenukvern): implement Story removal
   }

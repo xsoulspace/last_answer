@@ -17,8 +17,8 @@ class IdeaProjectScreen extends HookWidget {
   Widget build(final BuildContext context) {
     // ignore: close_sinks
     final ideaUpdatesStream = useStreamController<bool>();
-    final ideasProvider = context.read<IdeaProjectsProvider>();
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
+    final ideasProvider = context.read<IdeaProjectsNotifier>();
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsNotifier>();
     final idea = ideasProvider.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =

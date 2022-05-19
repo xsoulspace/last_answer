@@ -47,7 +47,7 @@ class AppNavigatorController {
         charactersLimit: settings.charactersLimitForNewNotes,
       );
       currentFolder.addProject(newNote);
-      context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);
+      context.read<NoteProjectsNotifier>().put(key: newNote.id, value: newNote);
       folder.notify();
       resolvedNoteId = newNote.id;
     }
@@ -72,7 +72,7 @@ class AppNavigatorController {
       folder: currentFolder,
     );
     currentFolder.addProject(idea);
-    context.read<IdeaProjectsProvider>().put(key: idea.id, value: idea);
+    context.read<IdeaProjectsNotifier>().put(key: idea.id, value: idea);
     folder.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }

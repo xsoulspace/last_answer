@@ -45,7 +45,7 @@ class IdeaProjectAnswer extends HiveObject
   final DateTime createdAt;
 
   @HiveField(4)
-  final DateTime updatedAt;
+  DateTime updatedAt;
 
   @override
   @HiveField(5)

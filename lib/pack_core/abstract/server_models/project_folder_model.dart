@@ -10,7 +10,7 @@ typedef ProjectFolderId = String;
   addImplicitFinal: true,
   copyWith: true,
 )
-class ProjectFolderModel with _$ProjectFolderModel {
+class ProjectFolderModel with _$ProjectFolderModel implements HasId {
   @JsonSerializable(
     explicitToJson: true,
   )

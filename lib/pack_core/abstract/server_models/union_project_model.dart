@@ -9,7 +9,7 @@ part of pack_core;
   copyWith: true,
   unionValueCase: FreezedUnionCase.pascal,
 )
-class BasicProjectModel with _$BasicProjectModel {
+class BasicProjectModel with _$BasicProjectModel implements HasId {
   @JsonSerializable(
     explicitToJson: true,
   )

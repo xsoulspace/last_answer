@@ -4,7 +4,7 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
-    implements Sharable, HasId, Deletable {
+    implements Sharable, DeletableWithId {
   IdeaProjectAnswer({
     required this.id,
     required this.text,

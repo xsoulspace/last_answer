@@ -8,3 +8,5 @@ abstract class Deletable {
   /// is established, the instance should be deleted.
   bool isToDelete = false;
 }
+
+abstract class DeletableWithId implements Deletable, HasId {}

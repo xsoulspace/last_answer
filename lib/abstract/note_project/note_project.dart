@@ -3,7 +3,7 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.noteProject)
-class NoteProject extends BasicProject implements Deletable {
+class NoteProject extends BasicProject implements DeletableWithId {
   NoteProject({
     required final super.id,
     required final super.createdAt,

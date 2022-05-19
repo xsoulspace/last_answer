@@ -2,8 +2,8 @@ part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
 class ProjectFolder extends HiveObject
-    with EquatableMixin, HasId
-    implements Deletable {
+    with EquatableMixin
+    implements DeletableWithId {
   ProjectFolder({
     required this.id,
     required this.title,

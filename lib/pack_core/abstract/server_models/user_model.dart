@@ -15,7 +15,7 @@ enum UserStatus {
   addImplicitFinal: true,
   copyWith: true,
 )
-class UserModel with _$UserModel {
+class UserModel with _$UserModel implements HasId {
   @JsonSerializable(
     explicitToJson: true,
   )

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
-import 'package:lastanswer/pack_settings/sync/diff_updater.dart';
+import 'package:lastanswer/pack_settings/sync/note_updater.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 void main() {
@@ -32,7 +32,7 @@ void main() {
       final existedProjects = [noteProject];
       final serverProjects = [noteModel];
 
-      final updated = DiffUpdater.of(
+      final updated = NoteUpdater.of(
         list: existedProjects,
       ).updateByOther(serverProjects);
 
@@ -66,7 +66,7 @@ void main() {
       final existedProjects = [ideaProjectAnswer];
       final serverProjects = [ideaProjectAnswerModel];
 
-      final updated = DiffUpdater.of(
+      final updated = NoteUpdater.of(
         list: existedProjects,
       ).updateByOther(serverProjects);
 

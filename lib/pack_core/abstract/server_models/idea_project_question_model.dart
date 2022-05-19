@@ -8,7 +8,9 @@ part of pack_core;
   addImplicitFinal: true,
   copyWith: true,
 )
-class IdeaProjectQuestionModel with _$IdeaProjectQuestionModel {
+class IdeaProjectQuestionModel
+    with _$IdeaProjectQuestionModel
+    implements HasId {
   @JsonSerializable(
     explicitToJson: true,
   )

@@ -4,7 +4,7 @@ part of abstract;
 
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
-class StoryProject extends BasicProject implements Deletable {
+class StoryProject extends BasicProject implements DeletableWithId {
   StoryProject({
     required final super.id,
     required final super.title,

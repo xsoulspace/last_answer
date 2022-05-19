@@ -20,19 +20,20 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       id: fields[0] as String,
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
-      updatedAt: fields[4] as DateTime,
-      folder: fields[8] as ProjectFolder?,
-      isCompleted: fields[1] as bool,
+      isToDelete: fields[9] as bool,
       newAnswerText: fields[6] as String,
+      folder: fields[8] as ProjectFolder?,
       newQuestion: fields[7] as IdeaProjectQuestion?,
       answers: (fields[5] as HiveList?)?.castHiveList(),
+      updatedAt: fields[4] as DateTime?,
+      isCompleted: fields[1] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, IdeaProject obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(5)
       ..write(obj.answers)
       ..writeByte(6)
@@ -41,6 +42,8 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..write(obj.newQuestion)
       ..writeByte(8)
       ..write(obj.folder)
+      ..writeByte(9)
+      ..write(obj.isToDelete)
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(0)
@@ -79,6 +82,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
       createdAt: fields[3] as DateTime,
+      isToDelete: fields[5] as bool,
       updatedAt: fields[4] as DateTime?,
     );
   }
@@ -86,7 +90,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   @override
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.text)
       ..writeByte(1)
@@ -96,7 +100,9 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(4)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(5)
+      ..write(obj.isToDelete);
   }
 
   @override
@@ -203,24 +209,27 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
     return NoteProject(
       id: fields[0] as String,
       createdAt: fields[3] as DateTime,
-      updatedAt: fields[4] as DateTime,
-      folder: fields[6] as ProjectFolder?,
       note: fields[5] as String,
-      isCompleted: fields[1] as bool,
+      isToDelete: fields[8] as bool,
+      folder: fields[6] as ProjectFolder?,
       charactersLimit: fields[7] as int?,
+      isCompleted: fields[1] as bool,
+      updatedAt: fields[4] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NoteProject obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(5)
       ..write(obj.note)
       ..writeByte(6)
       ..write(obj.folder)
       ..writeByte(7)
       ..write(obj.charactersLimit)
+      ..writeByte(8)
+      ..write(obj.isToDelete)
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(0)
@@ -256,19 +265,22 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       id: fields[0] as String,
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
+      isToDelete: fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectFolder obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.projectsIdsString);
+      ..write(obj.projectsIdsString)
+      ..writeByte(3)
+      ..write(obj.isToDelete);
   }
 
   @override
@@ -297,16 +309,20 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
       folder: fields[5] as ProjectFolder?,
+      isToDelete: fields[6] as bool,
+      updatedAt: fields[4] as DateTime?,
       isCompleted: fields[1] as bool,
-    )..updatedAt = fields[4] as DateTime;
+    );
   }
 
   @override
   void write(BinaryWriter writer, StoryProject obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(5)
       ..write(obj.folder)
+      ..writeByte(6)
+      ..write(obj.isToDelete)
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(0)

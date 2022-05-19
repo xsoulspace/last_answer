@@ -12,7 +12,7 @@ typedef ProjectId = String;
   addImplicitFinal: true,
   copyWith: true,
 )
-class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel {
+class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel implements HasId {
   @JsonSerializable(
     explicitToJson: true,
   )

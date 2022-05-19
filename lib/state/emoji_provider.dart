@@ -1,4 +1,4 @@
-part of providers;
+part of notifiers;
 
 class EmojiProvider extends MapState<Emoji> {
   EmojiProvider({

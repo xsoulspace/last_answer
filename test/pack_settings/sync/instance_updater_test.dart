@@ -29,7 +29,7 @@ class TestItem with EquatableMixin implements HasId {
 }
 
 void main() {
-  group('ModelUpdater', () {
+  group('InstanceUpdater', () {
     test('compareConsistency - original creates,deletes, other creates,remains',
         () {
       final originalListToCreate = List.generate(
@@ -52,8 +52,9 @@ void main() {
         DeletableTestItem(id: '4'),
       ]);
       final otherList = List.generate(20, (final index) => TestItem('$index'));
-      final diff = ModelUpdater<DeletableTestItem, TestItem>(list: originalList)
-          .compareConsistency(otherList);
+      final diff =
+          InstanceUpdater<DeletableTestItem, TestItem>(list: originalList)
+              .compareConsistency(otherList);
 
       /// ********************************************
       /// *      DELETE START

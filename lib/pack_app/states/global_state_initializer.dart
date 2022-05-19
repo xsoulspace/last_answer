@@ -31,7 +31,7 @@ class GlobalStateInitializer implements StateInitializer {
     final lastEmojiProvider = context.read<LastEmojiProvider>();
     final specialEmojiProvider = context.read<SpecialEmojiProvider>();
     final emojiProvider = context.read<EmojiProvider>();
-    final currentFolderProvider = context.read<FolderStateProvider>();
+    final currentFolderProvider = context.read<CurrentFolderNotifier>();
     final notificationController = context.read<NotificationController>();
     final paymentsController = context.read<PaymentsControllerI>();
 
@@ -138,7 +138,7 @@ class GlobalStateInitializer implements StateInitializer {
           ...notesProjectsState.state.values,
         ]);
     } else {
-      MapState.load<ProjectFolder, ProjectsFolderProvider>(
+      MapState.load<ProjectFolder, ProjectFoldersNotifier>(
         context: context,
         box: projectsFolders,
       );

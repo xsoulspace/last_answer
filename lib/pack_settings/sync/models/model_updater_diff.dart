@@ -16,6 +16,8 @@ class ModelUpdaterDiff<T extends HasId, TOther extends HasId>
     @Default({})
         final Map<InstanceId, InstanceDiff<T, TOther>> instancesToCheck,
     @Default({})
+        final Map<InstanceId, InstanceDiff<T, TOther>> instancesToUpdate,
+    @Default({})
         final Map<InstanceId, InstanceDiff<T, TOther>> updatedInstances,
     @Default({}) final Map<InstanceId, T> instancesToDelete,
   }) = _ModelUpdaterDiff<T, TOther>;

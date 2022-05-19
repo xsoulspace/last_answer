@@ -38,7 +38,7 @@ class AppNavigatorController {
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final folder = context.read<FolderStateProvider>();
+      final folder = context.read<CurrentFolderNotifier>();
       final settings = context.read<GeneralSettingsController>();
       final currentFolder = folder.state;
       final newNote = await NoteProject.create(
@@ -64,7 +64,7 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final folder = context.read<FolderStateProvider>();
+    final folder = context.read<CurrentFolderNotifier>();
     final currentFolder = folder.state;
 
     final idea = await IdeaProject.create(

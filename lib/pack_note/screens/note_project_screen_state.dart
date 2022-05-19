@@ -44,7 +44,7 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   void initState() {
     noteController.addListener(onNoteChange);
     notesProvider = context.read<NoteProjectsProvider>();
-    folderProvider = context.read<FolderStateProvider>();
+    folderProvider = context.read<CurrentFolderNotifier>();
     super.initState();
   }
 

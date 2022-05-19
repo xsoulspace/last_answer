@@ -164,6 +164,8 @@ mixin _$ModelUpdaterDiff<T extends HasId, TOther extends HasId> {
       throw _privateConstructorUsedError;
   Map<String, InstanceDiff<T, TOther>> get instancesToCheck =>
       throw _privateConstructorUsedError;
+  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate =>
+      throw _privateConstructorUsedError;
   Map<String, InstanceDiff<T, TOther>> get updatedInstances =>
       throw _privateConstructorUsedError;
   Map<String, T> get instancesToDelete => throw _privateConstructorUsedError;
@@ -183,6 +185,7 @@ abstract class $ModelUpdaterDiffCopyWith<T extends HasId, TOther extends HasId,
       {Map<String, T> instancesToCreate,
       Map<String, TOther> otherInstancesToCreate,
       Map<String, InstanceDiff<T, TOther>> instancesToCheck,
+      Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
       Map<String, InstanceDiff<T, TOther>> updatedInstances,
       Map<String, T> instancesToDelete});
 }
@@ -201,6 +204,7 @@ class _$ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
     Object? instancesToCreate = freezed,
     Object? otherInstancesToCreate = freezed,
     Object? instancesToCheck = freezed,
+    Object? instancesToUpdate = freezed,
     Object? updatedInstances = freezed,
     Object? instancesToDelete = freezed,
   }) {
@@ -216,6 +220,10 @@ class _$ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
       instancesToCheck: instancesToCheck == freezed
           ? _value.instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
+              as Map<String, InstanceDiff<T, TOther>>,
+      instancesToUpdate: instancesToUpdate == freezed
+          ? _value.instancesToUpdate
+          : instancesToUpdate // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
       updatedInstances: updatedInstances == freezed
           ? _value.updatedInstances
@@ -242,6 +250,7 @@ abstract class _$$_ModelUpdaterDiffCopyWith<
       {Map<String, T> instancesToCreate,
       Map<String, TOther> otherInstancesToCreate,
       Map<String, InstanceDiff<T, TOther>> instancesToCheck,
+      Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
       Map<String, InstanceDiff<T, TOther>> updatedInstances,
       Map<String, T> instancesToDelete});
 }
@@ -263,6 +272,7 @@ class __$$_ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
     Object? instancesToCreate = freezed,
     Object? otherInstancesToCreate = freezed,
     Object? instancesToCheck = freezed,
+    Object? instancesToUpdate = freezed,
     Object? updatedInstances = freezed,
     Object? instancesToDelete = freezed,
   }) {
@@ -278,6 +288,10 @@ class __$$_ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
       instancesToCheck: instancesToCheck == freezed
           ? _value._instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
+              as Map<String, InstanceDiff<T, TOther>>,
+      instancesToUpdate: instancesToUpdate == freezed
+          ? _value._instancesToUpdate
+          : instancesToUpdate // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
       updatedInstances: updatedInstances == freezed
           ? _value._updatedInstances
@@ -299,11 +313,13 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
       {final Map<String, T> instancesToCreate = const {},
       final Map<String, TOther> otherInstancesToCreate = const {},
       final Map<String, InstanceDiff<T, TOther>> instancesToCheck = const {},
+      final Map<String, InstanceDiff<T, TOther>> instancesToUpdate = const {},
       final Map<String, InstanceDiff<T, TOther>> updatedInstances = const {},
       final Map<String, T> instancesToDelete = const {}})
       : _instancesToCreate = instancesToCreate,
         _otherInstancesToCreate = otherInstancesToCreate,
         _instancesToCheck = instancesToCheck,
+        _instancesToUpdate = instancesToUpdate,
         _updatedInstances = updatedInstances,
         _instancesToDelete = instancesToDelete,
         super._();
@@ -332,6 +348,14 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
     return EqualUnmodifiableMapView(_instancesToCheck);
   }
 
+  final Map<String, InstanceDiff<T, TOther>> _instancesToUpdate;
+  @override
+  @JsonKey()
+  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_instancesToUpdate);
+  }
+
   final Map<String, InstanceDiff<T, TOther>> _updatedInstances;
   @override
   @JsonKey()
@@ -350,7 +374,7 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
 
   @override
   String toString() {
-    return 'ModelUpdaterDiff<$T, $TOther>(instancesToCreate: $instancesToCreate, otherInstancesToCreate: $otherInstancesToCreate, instancesToCheck: $instancesToCheck, updatedInstances: $updatedInstances, instancesToDelete: $instancesToDelete)';
+    return 'ModelUpdaterDiff<$T, $TOther>(instancesToCreate: $instancesToCreate, otherInstancesToCreate: $otherInstancesToCreate, instancesToCheck: $instancesToCheck, instancesToUpdate: $instancesToUpdate, updatedInstances: $updatedInstances, instancesToDelete: $instancesToDelete)';
   }
 
   @override
@@ -365,6 +389,8 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
             const DeepCollectionEquality()
                 .equals(other._instancesToCheck, _instancesToCheck) &&
             const DeepCollectionEquality()
+                .equals(other._instancesToUpdate, _instancesToUpdate) &&
+            const DeepCollectionEquality()
                 .equals(other._updatedInstances, _updatedInstances) &&
             const DeepCollectionEquality()
                 .equals(other._instancesToDelete, _instancesToDelete));
@@ -376,6 +402,7 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
       const DeepCollectionEquality().hash(_instancesToCreate),
       const DeepCollectionEquality().hash(_otherInstancesToCreate),
       const DeepCollectionEquality().hash(_instancesToCheck),
+      const DeepCollectionEquality().hash(_instancesToUpdate),
       const DeepCollectionEquality().hash(_updatedInstances),
       const DeepCollectionEquality().hash(_instancesToDelete));
 
@@ -392,6 +419,7 @@ abstract class _ModelUpdaterDiff<T extends HasId, TOther extends HasId>
       {final Map<String, T> instancesToCreate,
       final Map<String, TOther> otherInstancesToCreate,
       final Map<String, InstanceDiff<T, TOther>> instancesToCheck,
+      final Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
       final Map<String, InstanceDiff<T, TOther>> updatedInstances,
       final Map<String, T> instancesToDelete}) = _$_ModelUpdaterDiff<T, TOther>;
   const _ModelUpdaterDiff._() : super._();
@@ -403,6 +431,9 @@ abstract class _ModelUpdaterDiff<T extends HasId, TOther extends HasId>
       throw _privateConstructorUsedError;
   @override
   Map<String, InstanceDiff<T, TOther>> get instancesToCheck =>
+      throw _privateConstructorUsedError;
+  @override
+  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate =>
       throw _privateConstructorUsedError;
   @override
   Map<String, InstanceDiff<T, TOther>> get updatedInstances =>

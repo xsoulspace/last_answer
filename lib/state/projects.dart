@@ -1,4 +1,4 @@
-part of providers;
+part of notifiers;
 
 class IdeaProjectsProvider extends MapState<IdeaProject> {}
 

@@ -1,4 +1,4 @@
-part of providers;
+part of notifiers;
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 

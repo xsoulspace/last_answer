@@ -1,81 +1,91 @@
 part of pack_settings;
 
-class ModelUpdater<T extends DeletableWithId, TOther extends HasId> {
-  ModelUpdater({
-    required this.list,
-  });
-  final Iterable<T> list;
-
-  @mustCallSuper
-  ModelUpdaterDiff<T, TOther> updateByOther(
-    final Iterable<TOther> otherList,
-  ) {
-    // TODO(arenukvern): add diff computation
-    return const ModelUpdaterDiff();
-  }
-
-  /// Compares the elements of the lists, returns
-  /// the new ones with deleted
-  ModelUpdaterDiff<T, TOther> compareConsistency(
-    final Iterable<TOther> otherList,
-  ) {
-    /// Generate other Map
-    final otherMap = listWithIdToMap(otherList);
-
-    final instancesToDeleteForOther = <InstanceId, T>{};
-    final instancesToCreateForOther = <InstanceId, T>{};
-    final instancesToCheckForOther = <InstanceId, InstanceDiff<T, TOther>>{};
-
-    /// find differnces with [otherList] - online (server side)
-    for (final el in list) {
-      if (el.isToDelete) {
-        instancesToDeleteForOther[el.id] = el;
-        otherMap.remove(el.id);
-      } else {
-        final other = otherMap[el.id];
-        final isExists = other != null;
-        if (isExists) {
-          instancesToCheckForOther[el.id] =
-              InstanceDiff(original: el, other: other);
-        } else {
-          instancesToCreateForOther[el.id] = el;
-        }
-      }
-    }
-
-    final instancesToCreateForList = <InstanceId, TOther>{};
-
-    /// find differnces with [list] - offline (client side)
-    for (final el in otherMap.values) {
-      final isNotExists = !instancesToCheckForOther.containsKey(el.id);
-      if (isNotExists) {
-        instancesToCreateForList[el.id] = el;
-      }
-    }
-
-    return ModelUpdaterDiff(
-      instancesToCheck: instancesToCheckForOther,
-      otherInstancesToCreate: instancesToCreateForList,
-      instancesToCreate: instancesToCreateForOther,
-      instancesToDelete: instancesToDeleteForOther,
-    );
-  }
-}
-
-class NoteUpdater extends ModelUpdater<NoteProject, NoteProjectModel> {
+class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel>
+    implements RemotelyUpdatable {
   NoteUpdater.of({
     required final super.list,
+    required this.foldersNotifier,
   });
 
-  @override
-  ModelUpdaterDiff<NoteProject, NoteProjectModel> updateByOther(
-    final Iterable<NoteProjectModel> otherList,
-  ) {
-    final diff = super.updateByOther(otherList);
-    // TODO(arenukvern): add diff update
+  final ProjectFoldersNotifier foldersNotifier;
 
-    return const ModelUpdaterDiff();
+  @override
+  Future<ModelUpdaterDiff<NoteProject, NoteProjectModel>> compareContent({
+    required final ModelUpdaterDiff<NoteProject, NoteProjectModel> diff,
+  }) async {
+    final updatedDiffs =
+        <ProjectId, InstanceDiff<NoteProject, NoteProjectModel>>{};
+    for (final noteDiff in diff.instancesToCheck.values) {
+      final original = noteDiff.original;
+      NoteProjectModel other = noteDiff.other;
+      bool otherWasUpdated = false;
+      bool originalWasUpdated = false;
+
+      /// check folder
+      if (original.folder?.id != other.folderId) {
+        if (original.folder != null) {
+          switch (policy) {
+            case InstanceUpdatePolicy.useClientVersion:
+              other = other.copyWith(
+                folderId: original.folder!.id,
+              );
+              otherWasUpdated = true;
+              break;
+            default:
+              // TODO(arenukvern): description
+              throw UnimplementedError();
+          }
+        } else {
+          final folder = foldersNotifier.state[other.folderId];
+          folder?.addProject(original);
+          originalWasUpdated = true;
+        }
+      }
+
+      /// check note
+      if (original.note != other.note) {
+        switch (policy) {
+          case InstanceUpdatePolicy.useClientVersion:
+            other = other.copyWith(note: original.note);
+            otherWasUpdated = true;
+            break;
+          default:
+            // TODO(arenukvern): description
+            throw UnimplementedError();
+        }
+      }
+
+      /// check [NoteProjectModel.charactersLimit]
+      if (original.charactersLimit != other.charactersLimit) {
+        switch (policy) {
+          case InstanceUpdatePolicy.useClientVersion:
+            other = other.copyWith(charactersLimit: original.charactersLimit);
+            otherWasUpdated = true;
+            break;
+          default:
+            // TODO(arenukvern): description
+            throw UnimplementedError();
+        }
+      }
+
+      if (otherWasUpdated || originalWasUpdated) {
+        other = other.copyWith(updatedAt: DateTime.now());
+        original.updatedAt = DateTime.now();
+        await original.save();
+        updatedDiffs[other.id] = InstanceDiff(original: original, other: other);
+      }
+    }
+
+    return diff.copyWith(
+      instancesToUpdate: updatedDiffs,
+    );
   }
 
-  void compareContent() {}
+  @override
+  Future<void> saveChanges<T extends DeletableWithId, TOther extends HasId>({
+    required final ModelUpdaterDiff<T, TOther> diff,
+  }) {
+    // TODO: implement saveChanges
+    throw UnimplementedError();
+  }
 }

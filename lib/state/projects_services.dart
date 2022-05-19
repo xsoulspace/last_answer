@@ -1,4 +1,4 @@
-part of providers;
+part of notifiers;
 
 @immutable
 class BasicProjectsService {

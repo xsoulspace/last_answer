@@ -22,7 +22,7 @@ class IdeaQuestionUpdater
       final original = noteDiff.original;
       IdeaProjectQuestionModel other = noteDiff.other;
       bool otherWasUpdated = false;
-      bool originalWasUpdated = false;
+      const bool originalWasUpdated = false;
 
       /// check title
       if (original.title != other.localizedTitle) {

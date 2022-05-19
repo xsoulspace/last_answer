@@ -18,7 +18,7 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
       final original = noteDiff.original;
       ProjectFolderModel other = noteDiff.other;
       bool otherWasUpdated = false;
-      bool originalWasUpdated = false;
+      const bool originalWasUpdated = false;
 
       /// check title
       if (original.title != other.title) {

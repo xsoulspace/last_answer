@@ -21,7 +21,7 @@ class IdeaAnswerUpdater
       final original = noteDiff.original;
       IdeaProjectAnswerModel other = noteDiff.other;
       bool otherWasUpdated = false;
-      bool originalWasUpdated = false;
+      const bool originalWasUpdated = false;
 
       /// check text
       if (original.text != other.text) {

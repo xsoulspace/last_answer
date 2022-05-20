@@ -46,55 +46,49 @@ void main() {
             ),
           ) +
           originalListToCreate;
-      final instancesToDelete = {
-        '0': OptionalInstanceDiff(
-          original: DeletableTestItem(id: '0'),
-          other: TestItem('0'),
-        ),
-        '2': OptionalInstanceDiff(
-          original: DeletableTestItem(id: '2'),
-          other: TestItem('2'),
-        ),
-        '4': OptionalInstanceDiff(
-          original: DeletableTestItem(id: '4'),
-          other: TestItem('4'),
-        ),
-      };
+      final instancesToDelete = [
+        TestItem('0'),
+        TestItem('2'),
+        TestItem('4'),
+      ];
 
       final otherList = List.generate(20, (final index) => TestItem('$index'));
-      final diff =
-          InstanceUpdater<DeletableTestItem, TestItem>(list: originalList)
-              .compareConsistency(otherList);
+      final diff = InstanceUpdater<DeletableTestItem, TestItem>(
+        list: originalList,
+        clientSyncService: InstancesSyncService(),
+        serverSyncService: InstancesSyncService(),
+      ).compareConsistency(otherList);
+      final otherUpdates = diff.otherUpdates;
+      final originalUpdates = diff.originalUpdates;
 
       /// ********************************************
-      /// *      DELETE START
+      /// *      OTHER DELETE START
       /// ********************************************
-      expect(diff.instancesToDelete.length, equals(instancesToDelete.length));
-      expect(diff.instancesToDelete.length, equals(instancesToDelete.length));
-      expect(diff.instancesToDelete, equals(instancesToDelete));
-
-      /// ********************************************
-      /// *      CREATE START
-      /// ********************************************
-      expect(
-        diff.instancesToCreate.length,
-        equals(originalListToCreate.length),
-      );
-      expect(
-        diff.instancesToCreate,
-        equals(listWithIdToMap(originalListToCreate)),
-      );
+      expect(otherUpdates.toDelete.length, equals(instancesToDelete.length));
+      expect(otherUpdates.toDelete.toList(), equals(instancesToDelete));
 
       /// ********************************************
       /// *      OTHER CREATE START
       /// ********************************************
       expect(
-        diff.otherInstancesToCreate.length,
+        otherUpdates.toCreateFromOther.length,
+        equals(originalListToCreate.length),
+      );
+      expect(
+        otherUpdates.toCreateFromOther.toList(),
+        equals(originalListToCreate),
+      );
+
+      /// ********************************************
+      /// *      CREATE START
+      /// ********************************************
+      expect(
+        originalUpdates.toCreateFromOther.length,
         equals(15),
       );
       expect(
-        diff.otherInstancesToCreate,
-        equals(listWithIdToMap(otherList.getRange(5, 20))),
+        originalUpdates.toCreateFromOther,
+        equals(otherList.getRange(5, 20)),
       );
 
       /// ********************************************

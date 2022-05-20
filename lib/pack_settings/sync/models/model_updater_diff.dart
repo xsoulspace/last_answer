@@ -8,20 +8,31 @@ part of pack_settings;
   addImplicitFinal: true,
   copyWith: true,
 )
-class ModelUpdaterDiff<T extends HasId, TOther extends HasId>
-    with _$ModelUpdaterDiff<T, TOther> {
-  const factory ModelUpdaterDiff({
-    @Default({}) final Map<InstanceId, T> instancesToCreate,
-    @Default({}) final Map<InstanceId, TOther> otherInstancesToCreate,
+class InstanceUpdaterDto<T extends HasId, TOther extends HasId>
+    with _$InstanceUpdaterDto<T, TOther> {
+  const factory InstanceUpdaterDto({
+    required final InstancesUpdatesDto<T, TOther> originalUpdates,
+    required final InstancesUpdatesDto<TOther, T> otherUpdates,
     @Default({})
         final Map<InstanceId, InstanceDiff<T, TOther>> instancesToCheck,
-    @Default({})
-        final Map<InstanceId, InstanceDiff<T, TOther>> instancesToUpdate,
-    @Default({})
-        final Map<InstanceId, InstanceDiff<T, TOther>> updatedInstances,
-    @Default({})
-        final Map<InstanceId, OptionalInstanceDiff<T, TOther>>
-            instancesToDelete,
-  }) = _ModelUpdaterDiff<T, TOther>;
-  const ModelUpdaterDiff._();
+  }) = _InstanceUpdaterDto<T, TOther>;
+  const InstanceUpdaterDto._();
+}
+
+@immutable
+@Freezed(
+  fromJson: false,
+  toJson: false,
+  equal: true,
+  addImplicitFinal: true,
+  copyWith: true,
+)
+class InstancesUpdatesDto<T extends HasId, TOther extends HasId>
+    with _$InstancesUpdatesDto<T, TOther> {
+  const factory InstancesUpdatesDto({
+    @Default([]) final Iterable<TOther> toCreateFromOther,
+    @Default([]) final Iterable<T> toUpdate,
+    @Default([]) final Iterable<T> toDelete,
+  }) = _InstancesUpdatesDto<T, TOther>;
+  const InstancesUpdatesDto._();
 }

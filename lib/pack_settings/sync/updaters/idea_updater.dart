@@ -3,6 +3,8 @@ part of pack_settings;
 class IdeaUpdater extends InstanceUpdater<IdeaProject, IdeaProjectModel> {
   IdeaUpdater.of({
     required final super.list,
+    required final super.clientSyncService,
+    required final super.serverSyncService,
     required this.foldersNotifier,
     required this.questionsNotifier,
   });
@@ -11,11 +13,11 @@ class IdeaUpdater extends InstanceUpdater<IdeaProject, IdeaProjectModel> {
   final IdeaProjectQuestionsNotifier questionsNotifier;
 
   @override
-  Future<ModelUpdaterDiff<IdeaProject, IdeaProjectModel>> compareContent({
-    required final ModelUpdaterDiff<IdeaProject, IdeaProjectModel> diff,
+  Future<InstanceUpdaterDto<IdeaProject, IdeaProjectModel>> compareContent({
+    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> diff,
   }) async {
-    final updatedDiffs =
-        <ProjectId, InstanceDiff<IdeaProject, IdeaProjectModel>>{};
+    final otherUpdates = <IdeaProjectModel>[];
+    final originalUpdates = <IdeaProject>[];
     for (final noteDiff in diff.instancesToCheck.values) {
       final original = noteDiff.original;
       IdeaProjectModel other = noteDiff.other;
@@ -94,18 +96,25 @@ class IdeaUpdater extends InstanceUpdater<IdeaProject, IdeaProjectModel> {
         other = other.copyWith(updatedAt: DateTime.now());
         original.updatedAt = other.updatedAt;
         await original.save();
-        updatedDiffs[other.id] = InstanceDiff(original: original, other: other);
+
+        otherUpdates.add(other);
+        originalUpdates.add(original);
       }
     }
 
     return diff.copyWith(
-      instancesToUpdate: updatedDiffs,
+      otherUpdates: diff.otherUpdates.copyWith(
+        toUpdate: otherUpdates,
+      ),
+      originalUpdates: diff.originalUpdates.copyWith(
+        toUpdate: originalUpdates,
+      ),
     );
   }
 
   @override
   Future<void> saveChanges({
-    required final ModelUpdaterDiff<IdeaProject, IdeaProjectModel> diff,
+    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> diff,
   }) {
     // TODO: implement saveChanges
     throw UnimplementedError();

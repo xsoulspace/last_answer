@@ -158,340 +158,152 @@ abstract class _InstanceDiff<T extends HasId, TOther extends HasId>
 }
 
 /// @nodoc
-mixin _$OptionalInstanceDiff<T extends HasId, TOther extends HasId> {
-  T get original => throw _privateConstructorUsedError;
-  TOther? get other => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $OptionalInstanceDiffCopyWith<T, TOther, OptionalInstanceDiff<T, TOther>>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $OptionalInstanceDiffCopyWith<T extends HasId,
-    TOther extends HasId, $Res> {
-  factory $OptionalInstanceDiffCopyWith(OptionalInstanceDiff<T, TOther> value,
-          $Res Function(OptionalInstanceDiff<T, TOther>) then) =
-      _$OptionalInstanceDiffCopyWithImpl<T, TOther, $Res>;
-  $Res call({T original, TOther? other});
-}
-
-/// @nodoc
-class _$OptionalInstanceDiffCopyWithImpl<T extends HasId, TOther extends HasId,
-    $Res> implements $OptionalInstanceDiffCopyWith<T, TOther, $Res> {
-  _$OptionalInstanceDiffCopyWithImpl(this._value, this._then);
-
-  final OptionalInstanceDiff<T, TOther> _value;
-  // ignore: unused_field
-  final $Res Function(OptionalInstanceDiff<T, TOther>) _then;
-
-  @override
-  $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
-  }) {
-    return _then(_value.copyWith(
-      original: original == freezed
-          ? _value.original
-          : original // ignore: cast_nullable_to_non_nullable
-              as T,
-      other: other == freezed
-          ? _value.other
-          : other // ignore: cast_nullable_to_non_nullable
-              as TOther?,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_OptionalInstanceDiffCopyWith<
-    T extends HasId,
-    TOther extends HasId,
-    $Res> implements $OptionalInstanceDiffCopyWith<T, TOther, $Res> {
-  factory _$$_OptionalInstanceDiffCopyWith(
-          _$_OptionalInstanceDiff<T, TOther> value,
-          $Res Function(_$_OptionalInstanceDiff<T, TOther>) then) =
-      __$$_OptionalInstanceDiffCopyWithImpl<T, TOther, $Res>;
-  @override
-  $Res call({T original, TOther? other});
-}
-
-/// @nodoc
-class __$$_OptionalInstanceDiffCopyWithImpl<
-        T extends HasId,
-        TOther extends HasId,
-        $Res> extends _$OptionalInstanceDiffCopyWithImpl<T, TOther, $Res>
-    implements _$$_OptionalInstanceDiffCopyWith<T, TOther, $Res> {
-  __$$_OptionalInstanceDiffCopyWithImpl(
-      _$_OptionalInstanceDiff<T, TOther> _value,
-      $Res Function(_$_OptionalInstanceDiff<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_OptionalInstanceDiff<T, TOther>));
-
-  @override
-  _$_OptionalInstanceDiff<T, TOther> get _value =>
-      super._value as _$_OptionalInstanceDiff<T, TOther>;
-
-  @override
-  $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
-  }) {
-    return _then(_$_OptionalInstanceDiff<T, TOther>(
-      original: original == freezed
-          ? _value.original
-          : original // ignore: cast_nullable_to_non_nullable
-              as T,
-      other: other == freezed
-          ? _value.other
-          : other // ignore: cast_nullable_to_non_nullable
-              as TOther?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_OptionalInstanceDiff<T extends HasId, TOther extends HasId>
-    extends _OptionalInstanceDiff<T, TOther> {
-  const _$_OptionalInstanceDiff({required this.original, required this.other})
-      : super._();
-
-  @override
-  final T original;
-  @override
-  final TOther? other;
-
-  @override
-  String toString() {
-    return 'OptionalInstanceDiff<$T, $TOther>(original: $original, other: $other)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_OptionalInstanceDiff<T, TOther> &&
-            const DeepCollectionEquality().equals(other.original, original) &&
-            const DeepCollectionEquality().equals(other.other, this.other));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(original),
-      const DeepCollectionEquality().hash(other));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_OptionalInstanceDiffCopyWith<T, TOther,
-          _$_OptionalInstanceDiff<T, TOther>>
-      get copyWith => __$$_OptionalInstanceDiffCopyWithImpl<T, TOther,
-          _$_OptionalInstanceDiff<T, TOther>>(this, _$identity);
-}
-
-abstract class _OptionalInstanceDiff<T extends HasId, TOther extends HasId>
-    extends OptionalInstanceDiff<T, TOther> {
-  const factory _OptionalInstanceDiff(
-      {required final T original,
-      required final TOther? other}) = _$_OptionalInstanceDiff<T, TOther>;
-  const _OptionalInstanceDiff._() : super._();
-
-  @override
-  T get original => throw _privateConstructorUsedError;
-  @override
-  TOther? get other => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$$_OptionalInstanceDiffCopyWith<T, TOther,
-          _$_OptionalInstanceDiff<T, TOther>>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$ModelUpdaterDiff<T extends HasId, TOther extends HasId> {
-  Map<String, T> get instancesToCreate => throw _privateConstructorUsedError;
-  Map<String, TOther> get otherInstancesToCreate =>
+mixin _$InstanceUpdaterDto<T extends HasId, TOther extends HasId> {
+  InstancesUpdatesDto<T, TOther> get originalUpdates =>
+      throw _privateConstructorUsedError;
+  InstancesUpdatesDto<TOther, T> get otherUpdates =>
       throw _privateConstructorUsedError;
   Map<String, InstanceDiff<T, TOther>> get instancesToCheck =>
       throw _privateConstructorUsedError;
-  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate =>
-      throw _privateConstructorUsedError;
-  Map<String, InstanceDiff<T, TOther>> get updatedInstances =>
-      throw _privateConstructorUsedError;
-  Map<String, OptionalInstanceDiff<T, TOther>> get instancesToDelete =>
-      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ModelUpdaterDiffCopyWith<T, TOther, ModelUpdaterDiff<T, TOther>>
+  $InstanceUpdaterDtoCopyWith<T, TOther, InstanceUpdaterDto<T, TOther>>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ModelUpdaterDiffCopyWith<T extends HasId, TOther extends HasId,
-    $Res> {
-  factory $ModelUpdaterDiffCopyWith(ModelUpdaterDiff<T, TOther> value,
-          $Res Function(ModelUpdaterDiff<T, TOther>) then) =
-      _$ModelUpdaterDiffCopyWithImpl<T, TOther, $Res>;
+abstract class $InstanceUpdaterDtoCopyWith<T extends HasId,
+    TOther extends HasId, $Res> {
+  factory $InstanceUpdaterDtoCopyWith(InstanceUpdaterDto<T, TOther> value,
+          $Res Function(InstanceUpdaterDto<T, TOther>) then) =
+      _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>;
   $Res call(
-      {Map<String, T> instancesToCreate,
-      Map<String, TOther> otherInstancesToCreate,
-      Map<String, InstanceDiff<T, TOther>> instancesToCheck,
-      Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
-      Map<String, InstanceDiff<T, TOther>> updatedInstances,
-      Map<String, OptionalInstanceDiff<T, TOther>> instancesToDelete});
+      {InstancesUpdatesDto<T, TOther> originalUpdates,
+      InstancesUpdatesDto<TOther, T> otherUpdates,
+      Map<String, InstanceDiff<T, TOther>> instancesToCheck});
+
+  $InstancesUpdatesDtoCopyWith<T, TOther, $Res> get originalUpdates;
+  $InstancesUpdatesDtoCopyWith<TOther, T, $Res> get otherUpdates;
 }
 
 /// @nodoc
-class _$ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
-    $Res> implements $ModelUpdaterDiffCopyWith<T, TOther, $Res> {
-  _$ModelUpdaterDiffCopyWithImpl(this._value, this._then);
+class _$InstanceUpdaterDtoCopyWithImpl<T extends HasId, TOther extends HasId,
+    $Res> implements $InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
+  _$InstanceUpdaterDtoCopyWithImpl(this._value, this._then);
 
-  final ModelUpdaterDiff<T, TOther> _value;
+  final InstanceUpdaterDto<T, TOther> _value;
   // ignore: unused_field
-  final $Res Function(ModelUpdaterDiff<T, TOther>) _then;
+  final $Res Function(InstanceUpdaterDto<T, TOther>) _then;
 
   @override
   $Res call({
-    Object? instancesToCreate = freezed,
-    Object? otherInstancesToCreate = freezed,
+    Object? originalUpdates = freezed,
+    Object? otherUpdates = freezed,
     Object? instancesToCheck = freezed,
-    Object? instancesToUpdate = freezed,
-    Object? updatedInstances = freezed,
-    Object? instancesToDelete = freezed,
   }) {
     return _then(_value.copyWith(
-      instancesToCreate: instancesToCreate == freezed
-          ? _value.instancesToCreate
-          : instancesToCreate // ignore: cast_nullable_to_non_nullable
-              as Map<String, T>,
-      otherInstancesToCreate: otherInstancesToCreate == freezed
-          ? _value.otherInstancesToCreate
-          : otherInstancesToCreate // ignore: cast_nullable_to_non_nullable
-              as Map<String, TOther>,
+      originalUpdates: originalUpdates == freezed
+          ? _value.originalUpdates
+          : originalUpdates // ignore: cast_nullable_to_non_nullable
+              as InstancesUpdatesDto<T, TOther>,
+      otherUpdates: otherUpdates == freezed
+          ? _value.otherUpdates
+          : otherUpdates // ignore: cast_nullable_to_non_nullable
+              as InstancesUpdatesDto<TOther, T>,
       instancesToCheck: instancesToCheck == freezed
           ? _value.instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
-      instancesToUpdate: instancesToUpdate == freezed
-          ? _value.instancesToUpdate
-          : instancesToUpdate // ignore: cast_nullable_to_non_nullable
-              as Map<String, InstanceDiff<T, TOther>>,
-      updatedInstances: updatedInstances == freezed
-          ? _value.updatedInstances
-          : updatedInstances // ignore: cast_nullable_to_non_nullable
-              as Map<String, InstanceDiff<T, TOther>>,
-      instancesToDelete: instancesToDelete == freezed
-          ? _value.instancesToDelete
-          : instancesToDelete // ignore: cast_nullable_to_non_nullable
-              as Map<String, OptionalInstanceDiff<T, TOther>>,
     ));
+  }
+
+  @override
+  $InstancesUpdatesDtoCopyWith<T, TOther, $Res> get originalUpdates {
+    return $InstancesUpdatesDtoCopyWith<T, TOther, $Res>(_value.originalUpdates,
+        (value) {
+      return _then(_value.copyWith(originalUpdates: value));
+    });
+  }
+
+  @override
+  $InstancesUpdatesDtoCopyWith<TOther, T, $Res> get otherUpdates {
+    return $InstancesUpdatesDtoCopyWith<TOther, T, $Res>(_value.otherUpdates,
+        (value) {
+      return _then(_value.copyWith(otherUpdates: value));
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$_ModelUpdaterDiffCopyWith<
+abstract class _$$_InstanceUpdaterDtoCopyWith<
     T extends HasId,
     TOther extends HasId,
-    $Res> implements $ModelUpdaterDiffCopyWith<T, TOther, $Res> {
-  factory _$$_ModelUpdaterDiffCopyWith(_$_ModelUpdaterDiff<T, TOther> value,
-          $Res Function(_$_ModelUpdaterDiff<T, TOther>) then) =
-      __$$_ModelUpdaterDiffCopyWithImpl<T, TOther, $Res>;
+    $Res> implements $InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
+  factory _$$_InstanceUpdaterDtoCopyWith(_$_InstanceUpdaterDto<T, TOther> value,
+          $Res Function(_$_InstanceUpdaterDto<T, TOther>) then) =
+      __$$_InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>;
   @override
   $Res call(
-      {Map<String, T> instancesToCreate,
-      Map<String, TOther> otherInstancesToCreate,
-      Map<String, InstanceDiff<T, TOther>> instancesToCheck,
-      Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
-      Map<String, InstanceDiff<T, TOther>> updatedInstances,
-      Map<String, OptionalInstanceDiff<T, TOther>> instancesToDelete});
+      {InstancesUpdatesDto<T, TOther> originalUpdates,
+      InstancesUpdatesDto<TOther, T> otherUpdates,
+      Map<String, InstanceDiff<T, TOther>> instancesToCheck});
+
+  @override
+  $InstancesUpdatesDtoCopyWith<T, TOther, $Res> get originalUpdates;
+  @override
+  $InstancesUpdatesDtoCopyWith<TOther, T, $Res> get otherUpdates;
 }
 
 /// @nodoc
-class __$$_ModelUpdaterDiffCopyWithImpl<T extends HasId, TOther extends HasId,
-        $Res> extends _$ModelUpdaterDiffCopyWithImpl<T, TOther, $Res>
-    implements _$$_ModelUpdaterDiffCopyWith<T, TOther, $Res> {
-  __$$_ModelUpdaterDiffCopyWithImpl(_$_ModelUpdaterDiff<T, TOther> _value,
-      $Res Function(_$_ModelUpdaterDiff<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_ModelUpdaterDiff<T, TOther>));
+class __$$_InstanceUpdaterDtoCopyWithImpl<T extends HasId, TOther extends HasId,
+        $Res> extends _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>
+    implements _$$_InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
+  __$$_InstanceUpdaterDtoCopyWithImpl(_$_InstanceUpdaterDto<T, TOther> _value,
+      $Res Function(_$_InstanceUpdaterDto<T, TOther>) _then)
+      : super(_value, (v) => _then(v as _$_InstanceUpdaterDto<T, TOther>));
 
   @override
-  _$_ModelUpdaterDiff<T, TOther> get _value =>
-      super._value as _$_ModelUpdaterDiff<T, TOther>;
+  _$_InstanceUpdaterDto<T, TOther> get _value =>
+      super._value as _$_InstanceUpdaterDto<T, TOther>;
 
   @override
   $Res call({
-    Object? instancesToCreate = freezed,
-    Object? otherInstancesToCreate = freezed,
+    Object? originalUpdates = freezed,
+    Object? otherUpdates = freezed,
     Object? instancesToCheck = freezed,
-    Object? instancesToUpdate = freezed,
-    Object? updatedInstances = freezed,
-    Object? instancesToDelete = freezed,
   }) {
-    return _then(_$_ModelUpdaterDiff<T, TOther>(
-      instancesToCreate: instancesToCreate == freezed
-          ? _value._instancesToCreate
-          : instancesToCreate // ignore: cast_nullable_to_non_nullable
-              as Map<String, T>,
-      otherInstancesToCreate: otherInstancesToCreate == freezed
-          ? _value._otherInstancesToCreate
-          : otherInstancesToCreate // ignore: cast_nullable_to_non_nullable
-              as Map<String, TOther>,
+    return _then(_$_InstanceUpdaterDto<T, TOther>(
+      originalUpdates: originalUpdates == freezed
+          ? _value.originalUpdates
+          : originalUpdates // ignore: cast_nullable_to_non_nullable
+              as InstancesUpdatesDto<T, TOther>,
+      otherUpdates: otherUpdates == freezed
+          ? _value.otherUpdates
+          : otherUpdates // ignore: cast_nullable_to_non_nullable
+              as InstancesUpdatesDto<TOther, T>,
       instancesToCheck: instancesToCheck == freezed
           ? _value._instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
-      instancesToUpdate: instancesToUpdate == freezed
-          ? _value._instancesToUpdate
-          : instancesToUpdate // ignore: cast_nullable_to_non_nullable
-              as Map<String, InstanceDiff<T, TOther>>,
-      updatedInstances: updatedInstances == freezed
-          ? _value._updatedInstances
-          : updatedInstances // ignore: cast_nullable_to_non_nullable
-              as Map<String, InstanceDiff<T, TOther>>,
-      instancesToDelete: instancesToDelete == freezed
-          ? _value._instancesToDelete
-          : instancesToDelete // ignore: cast_nullable_to_non_nullable
-              as Map<String, OptionalInstanceDiff<T, TOther>>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
-    extends _ModelUpdaterDiff<T, TOther> {
-  const _$_ModelUpdaterDiff(
-      {final Map<String, T> instancesToCreate = const {},
-      final Map<String, TOther> otherInstancesToCreate = const {},
-      final Map<String, InstanceDiff<T, TOther>> instancesToCheck = const {},
-      final Map<String, InstanceDiff<T, TOther>> instancesToUpdate = const {},
-      final Map<String, InstanceDiff<T, TOther>> updatedInstances = const {},
-      final Map<String, OptionalInstanceDiff<T, TOther>> instancesToDelete =
-          const {}})
-      : _instancesToCreate = instancesToCreate,
-        _otherInstancesToCreate = otherInstancesToCreate,
-        _instancesToCheck = instancesToCheck,
-        _instancesToUpdate = instancesToUpdate,
-        _updatedInstances = updatedInstances,
-        _instancesToDelete = instancesToDelete,
+class _$_InstanceUpdaterDto<T extends HasId, TOther extends HasId>
+    extends _InstanceUpdaterDto<T, TOther> {
+  const _$_InstanceUpdaterDto(
+      {required this.originalUpdates,
+      required this.otherUpdates,
+      final Map<String, InstanceDiff<T, TOther>> instancesToCheck = const {}})
+      : _instancesToCheck = instancesToCheck,
         super._();
 
-  final Map<String, T> _instancesToCreate;
   @override
-  @JsonKey()
-  Map<String, T> get instancesToCreate {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_instancesToCreate);
-  }
-
-  final Map<String, TOther> _otherInstancesToCreate;
+  final InstancesUpdatesDto<T, TOther> originalUpdates;
   @override
-  @JsonKey()
-  Map<String, TOther> get otherInstancesToCreate {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_otherInstancesToCreate);
-  }
-
+  final InstancesUpdatesDto<TOther, T> otherUpdates;
   final Map<String, InstanceDiff<T, TOther>> _instancesToCheck;
   @override
   @JsonKey()
@@ -500,102 +312,236 @@ class _$_ModelUpdaterDiff<T extends HasId, TOther extends HasId>
     return EqualUnmodifiableMapView(_instancesToCheck);
   }
 
-  final Map<String, InstanceDiff<T, TOther>> _instancesToUpdate;
-  @override
-  @JsonKey()
-  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_instancesToUpdate);
-  }
-
-  final Map<String, InstanceDiff<T, TOther>> _updatedInstances;
-  @override
-  @JsonKey()
-  Map<String, InstanceDiff<T, TOther>> get updatedInstances {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_updatedInstances);
-  }
-
-  final Map<String, OptionalInstanceDiff<T, TOther>> _instancesToDelete;
-  @override
-  @JsonKey()
-  Map<String, OptionalInstanceDiff<T, TOther>> get instancesToDelete {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_instancesToDelete);
-  }
-
   @override
   String toString() {
-    return 'ModelUpdaterDiff<$T, $TOther>(instancesToCreate: $instancesToCreate, otherInstancesToCreate: $otherInstancesToCreate, instancesToCheck: $instancesToCheck, instancesToUpdate: $instancesToUpdate, updatedInstances: $updatedInstances, instancesToDelete: $instancesToDelete)';
+    return 'InstanceUpdaterDto<$T, $TOther>(originalUpdates: $originalUpdates, otherUpdates: $otherUpdates, instancesToCheck: $instancesToCheck)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ModelUpdaterDiff<T, TOther> &&
+            other is _$_InstanceUpdaterDto<T, TOther> &&
             const DeepCollectionEquality()
-                .equals(other._instancesToCreate, _instancesToCreate) &&
-            const DeepCollectionEquality().equals(
-                other._otherInstancesToCreate, _otherInstancesToCreate) &&
+                .equals(other.originalUpdates, originalUpdates) &&
             const DeepCollectionEquality()
-                .equals(other._instancesToCheck, _instancesToCheck) &&
+                .equals(other.otherUpdates, otherUpdates) &&
             const DeepCollectionEquality()
-                .equals(other._instancesToUpdate, _instancesToUpdate) &&
-            const DeepCollectionEquality()
-                .equals(other._updatedInstances, _updatedInstances) &&
-            const DeepCollectionEquality()
-                .equals(other._instancesToDelete, _instancesToDelete));
+                .equals(other._instancesToCheck, _instancesToCheck));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_instancesToCreate),
-      const DeepCollectionEquality().hash(_otherInstancesToCreate),
-      const DeepCollectionEquality().hash(_instancesToCheck),
-      const DeepCollectionEquality().hash(_instancesToUpdate),
-      const DeepCollectionEquality().hash(_updatedInstances),
-      const DeepCollectionEquality().hash(_instancesToDelete));
+      const DeepCollectionEquality().hash(originalUpdates),
+      const DeepCollectionEquality().hash(otherUpdates),
+      const DeepCollectionEquality().hash(_instancesToCheck));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ModelUpdaterDiffCopyWith<T, TOther, _$_ModelUpdaterDiff<T, TOther>>
-      get copyWith => __$$_ModelUpdaterDiffCopyWithImpl<T, TOther,
-          _$_ModelUpdaterDiff<T, TOther>>(this, _$identity);
+  _$$_InstanceUpdaterDtoCopyWith<T, TOther, _$_InstanceUpdaterDto<T, TOther>>
+      get copyWith => __$$_InstanceUpdaterDtoCopyWithImpl<T, TOther,
+          _$_InstanceUpdaterDto<T, TOther>>(this, _$identity);
 }
 
-abstract class _ModelUpdaterDiff<T extends HasId, TOther extends HasId>
-    extends ModelUpdaterDiff<T, TOther> {
-  const factory _ModelUpdaterDiff(
-      {final Map<String, T> instancesToCreate,
-      final Map<String, TOther> otherInstancesToCreate,
-      final Map<String, InstanceDiff<T, TOther>> instancesToCheck,
-      final Map<String, InstanceDiff<T, TOther>> instancesToUpdate,
-      final Map<String, InstanceDiff<T, TOther>> updatedInstances,
-      final Map<String, OptionalInstanceDiff<T, TOther>>
-          instancesToDelete}) = _$_ModelUpdaterDiff<T, TOther>;
-  const _ModelUpdaterDiff._() : super._();
+abstract class _InstanceUpdaterDto<T extends HasId, TOther extends HasId>
+    extends InstanceUpdaterDto<T, TOther> {
+  const factory _InstanceUpdaterDto(
+          {required final InstancesUpdatesDto<T, TOther> originalUpdates,
+          required final InstancesUpdatesDto<TOther, T> otherUpdates,
+          final Map<String, InstanceDiff<T, TOther>> instancesToCheck}) =
+      _$_InstanceUpdaterDto<T, TOther>;
+  const _InstanceUpdaterDto._() : super._();
 
   @override
-  Map<String, T> get instancesToCreate => throw _privateConstructorUsedError;
+  InstancesUpdatesDto<T, TOther> get originalUpdates =>
+      throw _privateConstructorUsedError;
   @override
-  Map<String, TOther> get otherInstancesToCreate =>
+  InstancesUpdatesDto<TOther, T> get otherUpdates =>
       throw _privateConstructorUsedError;
   @override
   Map<String, InstanceDiff<T, TOther>> get instancesToCheck =>
       throw _privateConstructorUsedError;
   @override
-  Map<String, InstanceDiff<T, TOther>> get instancesToUpdate =>
-      throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$$_InstanceUpdaterDtoCopyWith<T, TOther, _$_InstanceUpdaterDto<T, TOther>>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$InstancesUpdatesDto<T extends HasId, TOther extends HasId> {
+  Iterable<TOther> get toCreateFromOther => throw _privateConstructorUsedError;
+  Iterable<T> get toUpdate => throw _privateConstructorUsedError;
+  Iterable<T> get toDelete => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $InstancesUpdatesDtoCopyWith<T, TOther, InstancesUpdatesDto<T, TOther>>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $InstancesUpdatesDtoCopyWith<T extends HasId,
+    TOther extends HasId, $Res> {
+  factory $InstancesUpdatesDtoCopyWith(InstancesUpdatesDto<T, TOther> value,
+          $Res Function(InstancesUpdatesDto<T, TOther>) then) =
+      _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>;
+  $Res call(
+      {Iterable<TOther> toCreateFromOther,
+      Iterable<T> toUpdate,
+      Iterable<T> toDelete});
+}
+
+/// @nodoc
+class _$InstancesUpdatesDtoCopyWithImpl<T extends HasId, TOther extends HasId,
+    $Res> implements $InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
+  _$InstancesUpdatesDtoCopyWithImpl(this._value, this._then);
+
+  final InstancesUpdatesDto<T, TOther> _value;
+  // ignore: unused_field
+  final $Res Function(InstancesUpdatesDto<T, TOther>) _then;
+
   @override
-  Map<String, InstanceDiff<T, TOther>> get updatedInstances =>
-      throw _privateConstructorUsedError;
+  $Res call({
+    Object? toCreateFromOther = freezed,
+    Object? toUpdate = freezed,
+    Object? toDelete = freezed,
+  }) {
+    return _then(_value.copyWith(
+      toCreateFromOther: toCreateFromOther == freezed
+          ? _value.toCreateFromOther
+          : toCreateFromOther // ignore: cast_nullable_to_non_nullable
+              as Iterable<TOther>,
+      toUpdate: toUpdate == freezed
+          ? _value.toUpdate
+          : toUpdate // ignore: cast_nullable_to_non_nullable
+              as Iterable<T>,
+      toDelete: toDelete == freezed
+          ? _value.toDelete
+          : toDelete // ignore: cast_nullable_to_non_nullable
+              as Iterable<T>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_InstancesUpdatesDtoCopyWith<
+    T extends HasId,
+    TOther extends HasId,
+    $Res> implements $InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
+  factory _$$_InstancesUpdatesDtoCopyWith(
+          _$_InstancesUpdatesDto<T, TOther> value,
+          $Res Function(_$_InstancesUpdatesDto<T, TOther>) then) =
+      __$$_InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>;
   @override
-  Map<String, OptionalInstanceDiff<T, TOther>> get instancesToDelete =>
-      throw _privateConstructorUsedError;
+  $Res call(
+      {Iterable<TOther> toCreateFromOther,
+      Iterable<T> toUpdate,
+      Iterable<T> toDelete});
+}
+
+/// @nodoc
+class __$$_InstancesUpdatesDtoCopyWithImpl<
+        T extends HasId,
+        TOther extends HasId,
+        $Res> extends _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>
+    implements _$$_InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
+  __$$_InstancesUpdatesDtoCopyWithImpl(_$_InstancesUpdatesDto<T, TOther> _value,
+      $Res Function(_$_InstancesUpdatesDto<T, TOther>) _then)
+      : super(_value, (v) => _then(v as _$_InstancesUpdatesDto<T, TOther>));
+
+  @override
+  _$_InstancesUpdatesDto<T, TOther> get _value =>
+      super._value as _$_InstancesUpdatesDto<T, TOther>;
+
+  @override
+  $Res call({
+    Object? toCreateFromOther = freezed,
+    Object? toUpdate = freezed,
+    Object? toDelete = freezed,
+  }) {
+    return _then(_$_InstancesUpdatesDto<T, TOther>(
+      toCreateFromOther: toCreateFromOther == freezed
+          ? _value.toCreateFromOther
+          : toCreateFromOther // ignore: cast_nullable_to_non_nullable
+              as Iterable<TOther>,
+      toUpdate: toUpdate == freezed
+          ? _value.toUpdate
+          : toUpdate // ignore: cast_nullable_to_non_nullable
+              as Iterable<T>,
+      toDelete: toDelete == freezed
+          ? _value.toDelete
+          : toDelete // ignore: cast_nullable_to_non_nullable
+              as Iterable<T>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_InstancesUpdatesDto<T extends HasId, TOther extends HasId>
+    extends _InstancesUpdatesDto<T, TOther> {
+  const _$_InstancesUpdatesDto(
+      {this.toCreateFromOther = const [],
+      this.toUpdate = const [],
+      this.toDelete = const []})
+      : super._();
+
+  @override
+  @JsonKey()
+  final Iterable<TOther> toCreateFromOther;
+  @override
+  @JsonKey()
+  final Iterable<T> toUpdate;
+  @override
+  @JsonKey()
+  final Iterable<T> toDelete;
+
+  @override
+  String toString() {
+    return 'InstancesUpdatesDto<$T, $TOther>(toCreateFromOther: $toCreateFromOther, toUpdate: $toUpdate, toDelete: $toDelete)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_InstancesUpdatesDto<T, TOther> &&
+            const DeepCollectionEquality()
+                .equals(other.toCreateFromOther, toCreateFromOther) &&
+            const DeepCollectionEquality().equals(other.toUpdate, toUpdate) &&
+            const DeepCollectionEquality().equals(other.toDelete, toDelete));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(toCreateFromOther),
+      const DeepCollectionEquality().hash(toUpdate),
+      const DeepCollectionEquality().hash(toDelete));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_InstancesUpdatesDtoCopyWith<T, TOther, _$_InstancesUpdatesDto<T, TOther>>
+      get copyWith => __$$_InstancesUpdatesDtoCopyWithImpl<T, TOther,
+          _$_InstancesUpdatesDto<T, TOther>>(this, _$identity);
+}
+
+abstract class _InstancesUpdatesDto<T extends HasId, TOther extends HasId>
+    extends InstancesUpdatesDto<T, TOther> {
+  const factory _InstancesUpdatesDto(
+      {final Iterable<TOther> toCreateFromOther,
+      final Iterable<T> toUpdate,
+      final Iterable<T> toDelete}) = _$_InstancesUpdatesDto<T, TOther>;
+  const _InstancesUpdatesDto._() : super._();
+
+  @override
+  Iterable<TOther> get toCreateFromOther => throw _privateConstructorUsedError;
+  @override
+  Iterable<T> get toUpdate => throw _privateConstructorUsedError;
+  @override
+  Iterable<T> get toDelete => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_ModelUpdaterDiffCopyWith<T, TOther, _$_ModelUpdaterDiff<T, TOther>>
+  _$$_InstancesUpdatesDtoCopyWith<T, TOther, _$_InstancesUpdatesDto<T, TOther>>
       get copyWith => throw _privateConstructorUsedError;
 }

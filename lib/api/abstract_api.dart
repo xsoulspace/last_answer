@@ -1,6 +1,6 @@
 part of api;
 
-abstract class AbstractApiProps<TModel> {
+abstract class AbstractApiProps<TModel extends HasId> {
   String get tableName;
   SupabaseClient get client;
   TModel Function(Map<String, dynamic> json) get fromJson;
@@ -10,11 +10,15 @@ abstract class AbstractApiProps<TModel> {
   RealtimeSubscription subscribeToDeletes(final ValueChanged<TModel> onDelete);
   Future<TModel?> getById(final String id);
   Future<Iterable<TModel>> getAll();
+  Future<TModel> upsert(final TModel model);
+  Future<Iterable<TModel>> upsertElements(final Iterable<TModel> models);
+  Future<TModel?> delete(final TModel model);
 }
 
-abstract class AbstractApi<TModel> extends AbstractApiProps<TModel> {}
+abstract class AbstractApi<TModel extends HasId>
+    extends AbstractApiProps<TModel> {}
 
-mixin AbstractApiMixin<TModel> on AbstractApiProps<TModel> {
+mixin AbstractApiMixin<TModel extends HasId> on AbstractApiProps<TModel> {
   SupabaseQueryBuilder _getBuilder() => client.from(tableName);
 
   /// ********************************************
@@ -54,6 +58,7 @@ mixin AbstractApiMixin<TModel> on AbstractApiProps<TModel> {
   /// ********************************************
   /// *      METHODS START
   /// ********************************************
+  late final _jsonConverter = _jsonConverterBuilder(fromJson);
   @override
   Future<Iterable<TModel>> getAll() async {
     final response =
@@ -76,23 +81,34 @@ mixin AbstractApiMixin<TModel> on AbstractApiProps<TModel> {
     return response.data?.firstOrNull;
   }
 
-  Future<TModel> create(final TModel model) async {
+  @override
+  Future<TModel> upsert(final TModel model) async {
     final response = await _getBuilder()
-        .insert(modelToJson(model))
+        .upsert(modelToJson(model))
+        .withConverter<Iterable<TModel>>(_jsonConverter)
+        .execute();
+    if (response.hasError) throw Exception(response.error);
+    final data = response.data?.firstOrNull;
+
+    return data!;
+  }
+
+  @override
+  Future<Iterable<TModel>> upsertElements(final Iterable<TModel> model) async {
+    final response = await _getBuilder()
+        .upsert(model.map(modelToJson).toList())
         .withConverter<Iterable<TModel>>(_jsonConverter)
         .execute();
     if (response.hasError) throw Exception(response.error);
 
-    final data = response.data?.firstOrNull;
-    if (data == null) throw Exception();
-
-    return data;
+    return response.data!;
   }
 
-  late final _jsonConverter = _jsonConverterBuilder(fromJson);
-  Future<TModel?> update(final TModel model) async {
+  @override
+  Future<TModel?> delete(final TModel model) async {
     final response = await _getBuilder()
-        .update(modelToJson(model))
+        .delete()
+        .eq('id', model.id)
         .withConverter<Iterable<TModel>>(_jsonConverter)
         .execute();
     if (response.hasError) throw Exception(response.error);

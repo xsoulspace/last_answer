@@ -3,17 +3,19 @@ part of pack_settings;
 class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
   FolderUpdater.of({
     required final super.list,
+    required final super.clientSyncService,
+    required final super.serverSyncService,
     required this.foldersNotifier,
   });
 
   final ProjectFoldersNotifier foldersNotifier;
 
   @override
-  Future<ModelUpdaterDiff<ProjectFolder, ProjectFolderModel>> compareContent({
-    required final ModelUpdaterDiff<ProjectFolder, ProjectFolderModel> diff,
+  Future<InstanceUpdaterDto<ProjectFolder, ProjectFolderModel>> compareContent({
+    required final InstanceUpdaterDto<ProjectFolder, ProjectFolderModel> diff,
   }) async {
-    final updatedDiffs =
-        <ProjectFolderId, InstanceDiff<ProjectFolder, ProjectFolderModel>>{};
+    final otherUpdates = <ProjectFolderModel>[];
+    final originalUpdates = <ProjectFolder>[];
     for (final noteDiff in diff.instancesToCheck.values) {
       final original = noteDiff.original;
       ProjectFolderModel other = noteDiff.other;
@@ -37,20 +39,19 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
         other = other.copyWith(updatedAt: DateTime.now());
         original.updatedAt = other.updatedAt;
         await original.save();
-        updatedDiffs[other.id] = InstanceDiff(original: original, other: other);
+
+        otherUpdates.add(other);
+        originalUpdates.add(original);
       }
     }
 
     return diff.copyWith(
-      instancesToUpdate: updatedDiffs,
+      otherUpdates: diff.otherUpdates.copyWith(
+        toUpdate: otherUpdates,
+      ),
+      originalUpdates: diff.originalUpdates.copyWith(
+        toUpdate: originalUpdates,
+      ),
     );
-  }
-
-  @override
-  Future<void> saveChanges({
-    required final ModelUpdaterDiff<ProjectFolder, ProjectFolderModel> diff,
-  }) {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
   }
 }

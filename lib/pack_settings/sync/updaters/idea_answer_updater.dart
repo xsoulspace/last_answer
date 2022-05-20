@@ -4,19 +4,21 @@ class IdeaAnswerUpdater
     extends InstanceUpdater<IdeaProjectAnswer, IdeaProjectAnswerModel> {
   IdeaAnswerUpdater.of({
     required final super.list,
+    required final super.clientSyncService,
+    required final super.serverSyncService,
     required this.questionsNotifier,
   });
 
   final IdeaProjectQuestionsNotifier questionsNotifier;
 
   @override
-  Future<ModelUpdaterDiff<IdeaProjectAnswer, IdeaProjectAnswerModel>>
+  Future<InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>>
       compareContent({
-    required final ModelUpdaterDiff<IdeaProjectAnswer, IdeaProjectAnswerModel>
+    required final InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>
         diff,
   }) async {
-    final updatedDiffs =
-        <ProjectId, InstanceDiff<IdeaProjectAnswer, IdeaProjectAnswerModel>>{};
+    final otherUpdates = <IdeaProjectAnswerModel>[];
+    final originalUpdates = <IdeaProjectAnswer>[];
     for (final noteDiff in diff.instancesToCheck.values) {
       final original = noteDiff.original;
       IdeaProjectAnswerModel other = noteDiff.other;
@@ -53,18 +55,25 @@ class IdeaAnswerUpdater
         other = other.copyWith(updatedAt: DateTime.now());
         original.updatedAt = other.updatedAt;
         await original.save();
-        updatedDiffs[other.id] = InstanceDiff(original: original, other: other);
+
+        otherUpdates.add(other);
+        originalUpdates.add(original);
       }
     }
 
     return diff.copyWith(
-      instancesToUpdate: updatedDiffs,
+      otherUpdates: diff.otherUpdates.copyWith(
+        toUpdate: otherUpdates,
+      ),
+      originalUpdates: diff.originalUpdates.copyWith(
+        toUpdate: originalUpdates,
+      ),
     );
   }
 
   @override
   Future<void> saveChanges({
-    required final ModelUpdaterDiff<IdeaProjectAnswer, IdeaProjectAnswerModel>
+    required final InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>
         diff,
   }) {
     // TODO: implement saveChanges

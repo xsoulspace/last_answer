@@ -33,7 +33,7 @@ class CharactersLimitSettingState extends LifeState {
   final TextEditingController controller;
   @override
   void initState() {
-    settings = context.read<GeneralSettingsController>();
+    settings = context.watch<GeneralSettingsController>();
     controller.addListener(onLimitChanged);
     super.initState();
   }

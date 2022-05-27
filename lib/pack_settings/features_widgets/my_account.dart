@@ -13,7 +13,7 @@ class MyAccount extends HookWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final settings = context.watch<GeneralSettingsController>();
-    final authState = context.read<AuthState>();
+    final authState = context.watch<AuthState>();
     final state = useMyAccountState(
       authState: authState,
     );

@@ -18,7 +18,7 @@ class ProjectsListView extends HookWidget {
     final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;
-    final settings = context.read<GeneralSettingsController>();
+    final settings = context.watch<GeneralSettingsController>();
     final reversed = settings.projectsListReversed;
 
     return Consumer<CurrentFolderNotifier>(

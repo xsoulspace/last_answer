@@ -42,8 +42,8 @@ class NoteProjectUpdaterState extends LifeState {
   @override
   @mustCallSuper
   void initState() {
-    notesProvider = context.read<NoteProjectsNotifier>();
-    folderProvider = context.read<CurrentFolderNotifier>();
+    notesProvider = context.watch<NoteProjectsNotifier>();
+    folderProvider = context.watch<CurrentFolderNotifier>();
 
     updatesStream.stream
         .sampleTime(

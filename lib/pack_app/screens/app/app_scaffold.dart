@@ -37,7 +37,7 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   @override
   Widget build(final BuildContext context) {
-    final settings = context.read<GeneralSettingsController>();
+    final settings = context.watch<GeneralSettingsController>();
 
     return RouteStateScope(
       notifier: routeState,

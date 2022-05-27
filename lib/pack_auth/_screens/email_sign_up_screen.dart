@@ -25,7 +25,7 @@ class EmailSignUpScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final authState = context.read<AuthState>();
+    final authState = context.watch<AuthState>();
     final formHelper = useFormHelper();
     final state = useSignUpScreenState(
       formHelper: formHelper,

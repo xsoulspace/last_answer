@@ -43,8 +43,8 @@ class IdeaScreenState extends LifeState {
   late IdeaProjectsNotifier ideasProvider;
   @override
   void initState() {
-    folderProvider = context.read<CurrentFolderNotifier>();
-    ideasProvider = context.read<IdeaProjectsNotifier>();
+    folderProvider = context.watch<CurrentFolderNotifier>();
+    ideasProvider = context.watch<IdeaProjectsNotifier>();
     ideaUpdatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),

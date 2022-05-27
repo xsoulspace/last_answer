@@ -5,7 +5,7 @@ class SubscriptionInfo extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final paymentsController = context.read<PaymentsControllerI>();
+    final paymentsController = context.watch<PaymentsControllerI>();
 
     return SettingsListContainer(
       builder: paymentsController.isPatronSubscription

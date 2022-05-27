@@ -42,7 +42,7 @@ class IdeaAnswerScreenState extends LifeState {
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsNotifier>();
+    ideasProvider = context.watch<IdeaProjectsNotifier>();
 
     updatesStream.stream
         .sampleTime(

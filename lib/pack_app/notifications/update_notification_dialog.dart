@@ -14,7 +14,7 @@ class UpdateNotificaionDialogContent extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final notificationController = context.read<NotificationController>();
+    final notificationController = context.watch<NotificationController>();
     final updates = notificationController.updates;
     final lastMessage = updates.first;
     final language = intl.Intl.getCurrentLocale();

@@ -11,19 +11,19 @@ class InstanceUpdater<TMutable extends DeletableWithId,
   });
   final Iterable<TMutable> list;
   final InstanceUpdatePolicy policy;
-  final InstancesSyncService<TMutable> clientSyncService;
-  final InstancesSyncService<TImmutableOther> serverSyncService;
+  final InstancesSyncService<TMutable, TImmutableOther> clientSyncService;
+  final InstancesSyncService<TMutable, TImmutableOther> serverSyncService;
 
   @mustCallSuper
   Future<void> updateByOther(
     final Iterable<TImmutableOther> otherList,
   ) async {
-    InstanceUpdaterDto<TMutable, TImmutableOther> diff =
+    InstanceUpdaterDto<TMutable, TImmutableOther> dto =
         compareConsistency(otherList);
 
-    diff = await compareContent(diff: diff);
+    dto = await compareContent(dto: dto);
 
-    await saveChanges(diff: diff);
+    await saveChanges(dto: dto);
   }
 
   /// Compares the elements of the lists, returns
@@ -84,7 +84,7 @@ class InstanceUpdater<TMutable extends DeletableWithId,
 
   /// Use [compareDiffContent] to create [compareContent] function
   Future<InstanceUpdaterDto<TMutable, TImmutableOther>> compareContent({
-    required final InstanceUpdaterDto<TMutable, TImmutableOther> diff,
+    required final InstanceUpdaterDto<TMutable, TImmutableOther> dto,
   }) async {
     // TODO(arenukvern): unimplemented
     throw UnimplementedError();
@@ -147,8 +147,8 @@ class InstanceUpdater<TMutable extends DeletableWithId,
 
   @override
   Future<void> saveChanges({
-    required final InstanceUpdaterDto<TMutable, TImmutableOther> diff,
-  }) {
+    required final InstanceUpdaterDto<TMutable, TImmutableOther> dto,
+  }) async {
     // TODO: implement saveChanges
     throw UnimplementedError();
   }

@@ -1,8 +1,9 @@
 part of pack_settings;
 
-abstract class RemotelyUpdatable<T extends DeletableWithId,
-    TOther extends HasId> {
+// ignore: one_member_abstracts
+abstract class RemotelyUpdatable<TMutable extends DeletableWithId,
+    TImmutableOther extends HasId> {
   Future<void> saveChanges({
-    required final InstanceUpdaterDto<T, TOther> diff,
+    required final InstanceUpdaterDto<TMutable, TImmutableOther> dto,
   });
 }

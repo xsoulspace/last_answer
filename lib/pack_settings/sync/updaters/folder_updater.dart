@@ -12,10 +12,10 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
 
   @override
   Future<InstanceUpdaterDto<ProjectFolder, ProjectFolderModel>> compareContent({
-    required final InstanceUpdaterDto<ProjectFolder, ProjectFolderModel> diff,
+    required final InstanceUpdaterDto<ProjectFolder, ProjectFolderModel> dto,
   }) async {
     return compareDiffContent(
-      diff: diff,
+      diff: dto,
       onCheck: (final updatableDiff) {
         final original = updatableDiff.original;
         ProjectFolderModel other = updatableDiff.other;

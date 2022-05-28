@@ -12,10 +12,10 @@ class NoteUpdater
   // ignore: long-method
   @override
   Future<InstanceUpdaterDto<NoteProject, NoteProjectModel>> compareContent({
-    required final InstanceUpdaterDto<NoteProject, NoteProjectModel> diff,
+    required final InstanceUpdaterDto<NoteProject, NoteProjectModel> dto,
   }) async {
     return compareDiffContent(
-      diff: diff,
+      diff: dto,
       onCheck: (final updatableDiff) {
         final original = updatableDiff.original;
         NoteProjectModel other = updatableDiff.other;
@@ -60,9 +60,8 @@ class NoteUpdater
 
   @override
   Future<void> saveChanges({
-    required final InstanceUpdaterDto<NoteProject, NoteProjectModel> diff,
-  }) {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
+    required final InstanceUpdaterDto<NoteProject, NoteProjectModel> dto,
+  }) async {
+    super.serverSyncService.applyUpdaterDto(dto: dto);
   }
 }

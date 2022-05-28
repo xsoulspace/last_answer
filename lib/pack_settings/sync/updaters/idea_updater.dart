@@ -14,10 +14,10 @@ class IdeaUpdater
   @override
   // ignore: long-method
   Future<InstanceUpdaterDto<IdeaProject, IdeaProjectModel>> compareContent({
-    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> diff,
+    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> dto,
   }) async {
     return compareDiffContent(
-      diff: diff,
+      diff: dto,
       onCheck: (final updatableDiff) {
         final original = updatableDiff.original;
         IdeaProjectModel other = updatableDiff.other;
@@ -82,8 +82,8 @@ class IdeaUpdater
 
   @override
   Future<void> saveChanges({
-    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> diff,
-  }) {
+    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> dto,
+  }) async {
     // TODO: implement saveChanges
     throw UnimplementedError();
   }

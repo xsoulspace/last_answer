@@ -1,18 +1,20 @@
 part of pack_settings;
 
-class InstancesSyncService<T extends HasId> {
+class InstancesSyncService<T extends HasId, TOther extends HasId> {
   Future<void> onCreate(final Iterable<T> elements) async {}
   Future<void> onUpdate(final Iterable<T> elements) async {}
   Future<void> onDelete(final Iterable<T> elements) async {}
-  Future<void> applyDiff() async {
+  Future<void> applyUpdaterDto({
+    required final InstanceUpdaterDto<T, TOther> dto,
+  }) async {
     // await onCreate();
     // await onUpdate();
     // await onDelete();
   }
 }
 
-class HiveClientSyncService<T extends HiveObjectWithId>
-    extends InstancesSyncService<T> {
+class HiveClientSyncService<T extends HiveObjectWithId, TOther extends HasId>
+    extends InstancesSyncService<T, TOther> {
   @override
   Future<void> onCreate(
     final Iterable<T> elements,
@@ -35,9 +37,15 @@ class HiveClientSyncService<T extends HiveObjectWithId>
       await el.delete();
     }
   }
+
+  @override
+  Future<void> applyUpdaterDto({
+    required final InstanceUpdaterDto<T, TOther> dto,
+  }) async {}
 }
 
-class ServerSyncService<T extends HasId> extends InstancesSyncService<T> {
+class ServerSyncService<T extends HiveObjectWithId, TOther extends HasId>
+    extends InstancesSyncService<T, TOther> {
   ServerSyncService({
     required this.api,
   });

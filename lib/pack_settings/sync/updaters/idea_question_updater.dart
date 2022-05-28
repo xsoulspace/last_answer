@@ -16,10 +16,10 @@ class IdeaQuestionUpdater
       compareContent({
     required final InstanceUpdaterDto<IdeaProjectQuestion,
             IdeaProjectQuestionModel>
-        diff,
+        dto,
   }) async {
     return compareDiffContent(
-      diff: diff,
+      diff: dto,
       onCheck: (final updatableDiff) {
         final original = updatableDiff.original;
         IdeaProjectQuestionModel other = updatableDiff.other;
@@ -54,7 +54,7 @@ class IdeaQuestionUpdater
   Future<void> saveChanges({
     required final InstanceUpdaterDto<IdeaProjectQuestion,
             IdeaProjectQuestionModel>
-        diff,
+        dto,
   }) {
     // TODO: implement saveChanges
     throw UnimplementedError();

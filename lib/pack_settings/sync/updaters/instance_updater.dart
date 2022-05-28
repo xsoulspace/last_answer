@@ -15,12 +15,15 @@ class InstanceUpdater<TMutable extends DeletableWithId,
   final InstancesSyncService<TImmutableOther> serverSyncService;
 
   @mustCallSuper
-  Future<InstanceUpdaterDto<TMutable, TImmutableOther>> updateByOther(
+  Future<void> updateByOther(
     final Iterable<TImmutableOther> otherList,
   ) async {
-    final effectiveDiff = compareConsistency(otherList);
+    InstanceUpdaterDto<TMutable, TImmutableOther> diff =
+        compareConsistency(otherList);
 
-    return compareContent(diff: effectiveDiff);
+    diff = await compareContent(diff: diff);
+
+    await saveChanges(diff: diff);
   }
 
   /// Compares the elements of the lists, returns
@@ -79,6 +82,7 @@ class InstanceUpdater<TMutable extends DeletableWithId,
     );
   }
 
+  /// Use [compareDiffContent] to create [compareContent] function
   Future<InstanceUpdaterDto<TMutable, TImmutableOther>> compareContent({
     required final InstanceUpdaterDto<TMutable, TImmutableOther> diff,
   }) async {
@@ -201,6 +205,7 @@ abstract class BasicProjectInstanceUpdater<T extends BasicProject,
     );
   }
 
+  @override
   Future<InstanceUpdaterDto<T, TOther>> compareDiffContent({
     required final InstanceUpdaterDto<T, TOther> diff,
     required final OnCheckUpdater<T, TOther> onCheck,

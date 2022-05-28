@@ -1,16 +1,16 @@
 part of pack_settings;
 
-class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
+class NoteUpdater
+    extends BasicProjectInstanceUpdater<NoteProject, NoteProjectModel> {
   NoteUpdater.of({
     required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
-    required this.foldersNotifier,
+    required final super.foldersNotifier,
   });
 
-  final ProjectFoldersNotifier foldersNotifier;
-
   @override
+  // ignore: long-method
   Future<InstanceUpdaterDto<NoteProject, NoteProjectModel>> compareContent({
     required final InstanceUpdaterDto<NoteProject, NoteProjectModel> diff,
   }) async {
@@ -23,25 +23,10 @@ class NoteUpdater extends InstanceUpdater<NoteProject, NoteProjectModel> {
       bool otherWasUpdated = false;
       bool originalWasUpdated = false;
 
-      /// check folder - how to unify for all projects?
-      InstanceUpdatePolicy effectivePolicy =
-          InstanceUpdatePolicy.useClientVersion;
-      if (original.folder == null) {
-        effectivePolicy = InstanceUpdatePolicy.useServerVersion;
-      }
-      switch (effectivePolicy) {
-        case InstanceUpdatePolicy.useClientVersion:
-          other = other.copyWith(
-            folderId: original.folder!.id,
-          );
-          otherWasUpdated = true;
-          break;
-        case InstanceUpdatePolicy.useServerVersion:
-          final folder = foldersNotifier.state[other.folderId];
-          folder?.addProject(original);
-          originalWasUpdated = true;
-          break;
-      }
+      final folderDiffResult = updateFolder(original: original, other: other);
+      other = folderDiffResult.other;
+      otherWasUpdated = folderDiffResult.otherWasUpdated;
+      originalWasUpdated = folderDiffResult.originalWasUpdated;
 
       /// check note
       if (original.note != other.note) {

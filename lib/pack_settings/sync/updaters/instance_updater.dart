@@ -18,6 +18,7 @@ class InstanceUpdater<T extends DeletableWithId, TOther extends HasId>
     final Iterable<TOther> otherList,
   ) async {
     final effectiveDiff = compareConsistency(otherList);
+
     return compareContent(diff: effectiveDiff);
   }
 
@@ -84,9 +85,57 @@ class InstanceUpdater<T extends DeletableWithId, TOther extends HasId>
   }
 
   @override
-  Future<void> saveChanges(
-      {required final InstanceUpdaterDto<T, TOther> diff}) {
+  Future<void> saveChanges({
+    required final InstanceUpdaterDto<T, TOther> diff,
+  }) {
     // TODO: implement saveChanges
     throw UnimplementedError();
+  }
+}
+
+abstract class BasicProjectInstanceUpdater<T extends BasicProject,
+    TOther extends BasicProjectModel> extends InstanceUpdater<T, TOther> {
+  BasicProjectInstanceUpdater({
+    required final super.list,
+    required final super.clientSyncService,
+    required final super.serverSyncService,
+    required this.foldersNotifier,
+  });
+
+  final ProjectFoldersNotifier foldersNotifier;
+  UpdatableInstanceDiff<T, TOther> updateFolder({
+    required final T original,
+    required final TOther other,
+  }) {
+    bool otherWasUpdated = false;
+    bool originalWasUpdated = false;
+    TOther effectiveOther = other;
+    if (original.folder?.id != other.folderId) {
+      InstanceUpdatePolicy folderUpdatePolicy =
+          InstanceUpdatePolicy.useClientVersion;
+      if (original.folder == null) {
+        folderUpdatePolicy = InstanceUpdatePolicy.useServerVersion;
+      }
+      switch (folderUpdatePolicy) {
+        case InstanceUpdatePolicy.useClientVersion:
+          effectiveOther = effectiveOther.copyWith(
+            folderId: original.folder!.id,
+          ) as TOther;
+          otherWasUpdated = true;
+          break;
+        case InstanceUpdatePolicy.useServerVersion:
+          final folder = foldersNotifier.state[other.folderId];
+          folder?.addProject(original);
+          originalWasUpdated = true;
+          break;
+      }
+    }
+
+    return UpdatableInstanceDiff(
+      original: original,
+      other: effectiveOther,
+      originalWasUpdated: originalWasUpdated,
+      otherWasUpdated: otherWasUpdated,
+    );
   }
 }

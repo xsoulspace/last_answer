@@ -10,11 +10,10 @@ class StoryProject extends BasicProject implements DeletableWithId {
     required final super.title,
     required final super.createdAt,
     required final this.folder,
-    this.isToDelete = false,
+    this.isToDelete = defaultProjectIsDeleted,
     final DateTime? updatedAt,
-    final bool isCompleted = defaultProjectIsCompleted,
+    final super.isCompleted = defaultProjectIsCompleted,
   }) : super(
-          isCompleted: isCompleted,
           updatedAt: updatedAt ?? createdAt,
           folder: folder,
           type: ProjectType.story,

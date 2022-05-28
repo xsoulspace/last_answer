@@ -2,6 +2,7 @@ part of abstract;
 
 /// Use this for constructor default value in other projects
 const defaultProjectIsCompleted = false;
+const defaultProjectIsDeleted = false;
 
 /// Use this field to count fields in other projects like
 /// `@HiveField(projectLatestFieldHiveId+1)`
@@ -17,9 +18,9 @@ class BasicProjectIndexes {
 
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-class BasicProject extends HiveObject
+abstract class BasicProject extends HiveObject
     with EquatableMixin
-    implements Sharable, BasicProjectFields, HasId {
+    implements Sharable, BasicProjectFields, DeletableWithId {
   BasicProject({
     required this.id,
     required this.title,
@@ -27,6 +28,7 @@ class BasicProject extends HiveObject
     required this.updatedAt,
     required this.folder,
     required this.type,
+    this.isToDelete = defaultProjectIsDeleted,
     this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(BasicProjectIndexes.created)
@@ -52,6 +54,9 @@ class BasicProject extends HiveObject
 
   @HiveField(projectLatestFieldHiveId)
   DateTime updatedAt;
+
+  @override
+  bool isToDelete;
 
   /// Always override it in extended projects
   @override

@@ -285,6 +285,8 @@ IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
 mixin _$IdeaProjectQuestionModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -297,7 +299,10 @@ abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
   factory $IdeaProjectQuestionModelCopyWith(IdeaProjectQuestionModel value,
           $Res Function(IdeaProjectQuestionModel) then) =
       _$IdeaProjectQuestionModelCopyWithImpl<$Res>;
-  $Res call({String id, String title});
+  $Res call(
+      {String id,
+      String title,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -313,6 +318,7 @@ class _$IdeaProjectQuestionModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -323,6 +329,10 @@ class _$IdeaProjectQuestionModelCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -335,7 +345,10 @@ abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
           $Res Function(_$_IdeaProjectQuestionModel) then) =
       __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String title});
+  $Res call(
+      {String id,
+      String title,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -354,6 +367,7 @@ class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$_IdeaProjectQuestionModel(
       id: id == freezed
@@ -364,6 +378,10 @@ class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -372,7 +390,10 @@ class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
-  const _$_IdeaProjectQuestionModel({required this.id, required this.title})
+  const _$_IdeaProjectQuestionModel(
+      {required this.id,
+      required this.title,
+      @JsonKey(name: 'updated_at') required this.updatedAt})
       : super._();
 
   factory _$_IdeaProjectQuestionModel.fromJson(Map<String, dynamic> json) =>
@@ -382,10 +403,13 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
   final String id;
   @override
   final String title;
+  @override
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'IdeaProjectQuestionModel(id: $id, title: $title)';
+    return 'IdeaProjectQuestionModel(id: $id, title: $title, updatedAt: $updatedAt)';
   }
 
   @override
@@ -394,7 +418,8 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
         (other.runtimeType == runtimeType &&
             other is _$_IdeaProjectQuestionModel &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title));
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -402,7 +427,8 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title));
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -418,8 +444,10 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
 
 abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
   const factory _IdeaProjectQuestionModel(
-      {required final String id,
-      required final String title}) = _$_IdeaProjectQuestionModel;
+          {required final String id,
+          required final String title,
+          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
+      _$_IdeaProjectQuestionModel;
   const _IdeaProjectQuestionModel._() : super._();
 
   factory _IdeaProjectQuestionModel.fromJson(Map<String, dynamic> json) =
@@ -429,6 +457,9 @@ abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
   String get id => throw _privateConstructorUsedError;
   @override
   String get title => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'updated_at')
+  DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectQuestionModelCopyWith<_$_IdeaProjectQuestionModel>

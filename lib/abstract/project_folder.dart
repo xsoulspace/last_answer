@@ -56,6 +56,7 @@ class ProjectFolder extends HiveObject
   @HiveField(3)
   bool isToDelete;
 
+  @override
   @HiveField(4)
   DateTime updatedAt;
 

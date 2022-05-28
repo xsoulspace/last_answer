@@ -17,6 +17,7 @@ class IdeaProjectQuestionModel
   const factory IdeaProjectQuestionModel({
     required final IdeaProjectQuestionId id,
     required final String title,
+    @JsonKey(name: 'updated_at') required final DateTime updatedAt,
   }) = _IdeaProjectQuestionModel;
   const IdeaProjectQuestionModel._();
   factory IdeaProjectQuestionModel.fromJson(final Map<String, dynamic> json) =>
@@ -25,6 +26,5 @@ class IdeaProjectQuestionModel
     final IdeaProjectQuestionModel model,
   ) =>
       model.toJson();
-
   LocalizedText get localizedTitle => LocalizedText.fromJson(jsonDecode(title));
 }

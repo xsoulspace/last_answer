@@ -1,14 +1,18 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObjectWithId with EquatableMixin {
+class ProjectFolder extends HiveObjectWithId
+    with EquatableMixin
+    implements RemotelyAvailable<ProjectFolderModel> {
   ProjectFolder({
     required this.id,
     required this.title,
     this.projectsIdsString = '',
     this.isToDelete = false,
     final DateTime? updatedAt,
+    final DateTime? createdAt,
   })  : _projects = createHashSet(),
+        createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
   ProjectFolder.zero({
@@ -17,7 +21,8 @@ class ProjectFolder extends HiveObjectWithId with EquatableMixin {
     this.title = '',
     this.isToDelete = false,
   })  : _projects = createHashSet(),
-        updatedAt = DateTime.now();
+        updatedAt = DateTime.now(),
+        createdAt = DateTime.now();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
       LinkedHashSet<BasicProject>(
@@ -54,9 +59,11 @@ class ProjectFolder extends HiveObjectWithId with EquatableMixin {
   @HiveField(3)
   bool isToDelete;
 
-  @override
   @HiveField(4)
   DateTime updatedAt;
+
+  @HiveField(5)
+  DateTime createdAt;
 
   LinkedHashSet<BasicProject> _projects;
 
@@ -170,4 +177,15 @@ class ProjectFolder extends HiveObjectWithId with EquatableMixin {
 
   @override
   bool? get stringify => true;
+
+  @override
+  ProjectFolderModel toModel({required final UserModel user}) {
+    return ProjectFolderModel(
+      id: id,
+      title: title,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      ownerId: user.id,
+    );
+  }
 }

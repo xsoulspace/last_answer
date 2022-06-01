@@ -4,24 +4,27 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObjectWithId
     with EquatableMixin
-    implements Sharable {
+    implements Sharable, RemotelyAvailable<IdeaProjectAnswerModel> {
   IdeaProjectAnswer({
     required this.id,
     required this.text,
     required this.question,
     required this.createdAt,
+    required this.projectId,
     this.isToDelete = false,
     final DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
   static Future<IdeaProjectAnswer> create({
     required final String text,
     required final IdeaProjectQuestion question,
+    required final IdeaProject idea,
   }) async {
     final answer = IdeaProjectAnswer(
       text: text,
       question: question,
       id: createId(),
       createdAt: DateTime.now(),
+      projectId: idea.id,
     );
     final box = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
@@ -51,6 +54,9 @@ class IdeaProjectAnswer extends HiveObjectWithId
   @HiveField(5)
   bool isToDelete;
 
+  @HiveField(6)
+  final ProjectId projectId;
+
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
   String toShareString() => '${question.toShareString()} \n $text';
@@ -60,6 +66,18 @@ class IdeaProjectAnswer extends HiveObjectWithId
 
   @override
   bool? get stringify => true;
+
+  @override
+  IdeaProjectAnswerModel toModel({required final UserModel user}) {
+    return IdeaProjectAnswerModel(
+      createdAt: createdAt,
+      id: id,
+      projectId: projectId,
+      questionId: question.id,
+      text: text,
+      updatedAt: updatedAt,
+    );
+  }
 }
 
 /// A mock for [IdeaProjectAnswer].

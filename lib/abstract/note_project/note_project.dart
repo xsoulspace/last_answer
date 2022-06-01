@@ -3,7 +3,7 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.noteProject)
-class NoteProject extends BasicProject {
+class NoteProject extends BasicProject<NoteProjectModel> {
   NoteProject({
     required final super.id,
     required final super.createdAt,
@@ -72,6 +72,21 @@ class NoteProject extends BasicProject {
 
   @override
   String toShareString() => note;
+
+  @override
+  NoteProjectModel toModel({required final UserModel user}) {
+    return NoteProjectModel(
+      charactersLimit: charactersLimit,
+      createdAt: createdAt,
+      folderId: folder!.id,
+      id: id,
+      isCompleted: isCompleted,
+      note: note,
+      projectType: type,
+      updatedAt: updatedAt,
+      userId: user.id,
+    );
+  }
 }
 
 /// A mock for [NoteProject].

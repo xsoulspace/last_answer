@@ -10,6 +10,7 @@ import 'package:lastanswer/abstract/abstract.dart';
 part 'abstract/primitives/deletable.dart';
 part 'abstract/primitives/has_id.dart';
 part 'abstract/primitives/loadable.dart';
+part 'abstract/primitives/remotely_available.dart';
 part 'abstract/project_type.dart';
 part 'abstract/server_models/idea_project_answer_model.dart';
 part 'abstract/server_models/idea_project_question_model.dart';

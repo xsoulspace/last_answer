@@ -3,7 +3,7 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
-class IdeaProject extends BasicProject with EquatableMixin {
+class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   IdeaProject({
     required final super.id,
     required final super.title,
@@ -78,6 +78,21 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @override
   bool? get stringify => true;
+
+  @override
+  IdeaProjectModel toModel({required final UserModel user}) {
+    return IdeaProjectModel(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      projectType: type,
+      userId: user.id,
+      folderId: folder!.id,
+      newAnswerText: newAnswerText,
+      newQuestionId: newQuestion!.id,
+      title: title,
+    );
+  }
 }
 
 /// A mock for [IdeaProject].

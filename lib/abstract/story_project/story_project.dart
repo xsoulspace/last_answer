@@ -26,6 +26,12 @@ class StoryProject extends BasicProject {
   @override
   @HiveField(projectLatestFieldHiveId + 2)
   bool isToDelete;
+
+  @override
+  HasId toModel({required final UserModel user}) {
+    // TODO: implement toModel
+    throw UnimplementedError();
+  }
 }
 
 /// A mock for [StoryProject].

@@ -82,6 +82,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
       createdAt: fields[3] as DateTime,
+      projectId: fields[6] as String,
       isToDelete: fields[5] as bool,
       updatedAt: fields[4] as DateTime?,
     );
@@ -90,7 +91,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   @override
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.text)
       ..writeByte(1)
@@ -102,7 +103,9 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       ..writeByte(4)
       ..write(obj.updatedAt)
       ..writeByte(5)
-      ..write(obj.isToDelete);
+      ..write(obj.isToDelete)
+      ..writeByte(6)
+      ..write(obj.projectId);
   }
 
   @override
@@ -267,13 +270,14 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       projectsIdsString: fields[2] as String,
       isToDelete: fields[3] as bool,
       updatedAt: fields[4] as DateTime?,
+      createdAt: fields[5] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectFolder obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -283,7 +287,9 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       ..writeByte(3)
       ..write(obj.isToDelete)
       ..writeByte(4)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(5)
+      ..write(obj.createdAt);
   }
 
   @override

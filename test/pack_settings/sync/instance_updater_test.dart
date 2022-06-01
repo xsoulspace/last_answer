@@ -162,6 +162,7 @@ void main() {
         updatedAt: updatedAt,
         text: 'Because of the world',
         question: question,
+        projectId: 'p',
       );
       final ideaProjectAnswerModel = IdeaProjectAnswerModel(
         id: id,

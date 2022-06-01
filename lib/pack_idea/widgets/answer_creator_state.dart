@@ -88,8 +88,11 @@ class AnswerCreatorState extends LifeState {
     answerController.clear();
     final question = selectedQuestion.value;
     if (question == null || text.isEmpty) return;
-    final answer =
-        await IdeaProjectAnswer.create(text: text, question: question);
+    final answer = await IdeaProjectAnswer.create(
+      text: text,
+      question: question,
+      idea: idea,
+    );
 
     onCreated(answer);
   }

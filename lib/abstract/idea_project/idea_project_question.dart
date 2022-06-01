@@ -7,7 +7,7 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
 class IdeaProjectQuestion extends HiveObjectWithId
     with EquatableMixin
-    implements Sharable {
+    implements Sharable, RemotelyAvailable<IdeaProjectQuestionModel> {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
@@ -40,6 +40,14 @@ class IdeaProjectQuestion extends HiveObjectWithId
 
   @override
   String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+
+  @override
+  IdeaProjectQuestionModel toModel({required final UserModel user}) {
+    return IdeaProjectQuestionModel(
+      id: id,
+      title: jsonEncode(title.toJson()),
+    );
+  }
 }
 
 /// A mock for [IdeaProjectQuestion].

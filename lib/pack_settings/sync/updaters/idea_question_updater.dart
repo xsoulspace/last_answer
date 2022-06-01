@@ -28,7 +28,7 @@ class IdeaQuestionUpdater
 
         /// check title
         if (original.title != other.localizedTitle) {
-          switch (policy) {
+          switch (defaultPolicy) {
             case InstanceUpdatePolicy.useClientVersion:
               other =
                   other.copyWith(title: jsonEncode(original.title.toJson()));

@@ -10,6 +10,16 @@ class IdeaAnswerUpdater
   });
 
   final IdeaProjectQuestionsNotifier questionsNotifier;
+  @override
+  InstanceUpdatePolicy getPolicyForDiff(
+    final UpdatableInstanceDiff<IdeaProjectAnswer, IdeaProjectAnswerModel> diff,
+  ) {
+    final useOriginalPolicy =
+        diff.original.updatedAt.isAfter(diff.other.updatedAt);
+    if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;
+
+    return InstanceUpdatePolicy.useServerVersion;
+  }
 
   @override
   Future<InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>>
@@ -24,6 +34,7 @@ class IdeaAnswerUpdater
         IdeaProjectAnswerModel other = updatableDiff.other;
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
+        final policy = getPolicyForDiff(updatableDiff);
 
         /// check text
         if (original.text != other.text) {
@@ -31,6 +42,10 @@ class IdeaAnswerUpdater
             case InstanceUpdatePolicy.useClientVersion:
               other = other.copyWith(text: original.text);
               otherWasUpdated = true;
+              break;
+            case InstanceUpdatePolicy.useServerVersion:
+              original.text = other.text;
+              originalWasUpdated = true;
               break;
             default:
               // TODO(arenukvern): description

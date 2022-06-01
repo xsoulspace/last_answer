@@ -7,10 +7,10 @@ class InstanceUpdater<TMutable extends DeletableWithId,
     required this.list,
     required this.clientSyncService,
     required this.serverSyncService,
-    this.policy = InstanceUpdatePolicy.useClientVersion,
+    this.defaultPolicy = InstanceUpdatePolicy.useClientVersion,
   });
   final Iterable<TMutable> list;
-  final InstanceUpdatePolicy policy;
+  final InstanceUpdatePolicy defaultPolicy;
   final InstancesSyncService<TMutable, TImmutableOther> clientSyncService;
   final InstancesSyncService<TMutable, TImmutableOther> serverSyncService;
 
@@ -152,6 +152,13 @@ class InstanceUpdater<TMutable extends DeletableWithId,
     // TODO: implement saveChanges
     throw UnimplementedError();
   }
+
+  InstanceUpdatePolicy getPolicyForDiff(
+    final UpdatableInstanceDiff<TMutable, TImmutableOther> diff,
+  ) {
+    // TODO(arenukvern): description
+    throw UnimplementedError();
+  }
 }
 
 typedef OnCheckUpdater<T extends HasId, TOther extends HasId>
@@ -159,8 +166,9 @@ typedef OnCheckUpdater<T extends HasId, TOther extends HasId>
   UpdatableInstanceDiff<T, TOther> updatableDiff,
 );
 
-abstract class BasicProjectInstanceUpdater<T extends BasicProject,
-    TOther extends BasicProjectModel> extends InstanceUpdater<T, TOther> {
+abstract class BasicProjectInstanceUpdater<TMutable extends BasicProject,
+        TImmutableOther extends BasicProjectModel>
+    extends InstanceUpdater<TMutable, TImmutableOther> {
   BasicProjectInstanceUpdater({
     required final super.list,
     required final super.clientSyncService,
@@ -169,13 +177,13 @@ abstract class BasicProjectInstanceUpdater<T extends BasicProject,
   });
 
   final ProjectFoldersNotifier foldersNotifier;
-  UpdatableInstanceDiff<T, TOther> updateFolder(
-    final UpdatableInstanceDiff<T, TOther> diff,
+  UpdatableInstanceDiff<TMutable, TImmutableOther> updateFolder(
+    final UpdatableInstanceDiff<TMutable, TImmutableOther> diff,
   ) {
     final original = diff.original;
     bool otherWasUpdated = diff.otherWasUpdated;
     bool originalWasUpdated = diff.originalWasUpdated;
-    TOther other = diff.other;
+    TImmutableOther other = diff.other;
     if (original.folder?.id != other.folderId) {
       InstanceUpdatePolicy folderUpdatePolicy =
           InstanceUpdatePolicy.useClientVersion;
@@ -186,7 +194,7 @@ abstract class BasicProjectInstanceUpdater<T extends BasicProject,
         case InstanceUpdatePolicy.useClientVersion:
           other = other.copyWith(
             folderId: original.folder!.id,
-          ) as TOther;
+          ) as TImmutableOther;
           otherWasUpdated = true;
           break;
         case InstanceUpdatePolicy.useServerVersion:
@@ -206,18 +214,29 @@ abstract class BasicProjectInstanceUpdater<T extends BasicProject,
   }
 
   @override
-  Future<InstanceUpdaterDto<T, TOther>> compareDiffContent({
-    required final InstanceUpdaterDto<T, TOther> diff,
-    required final OnCheckUpdater<T, TOther> onCheck,
+  Future<InstanceUpdaterDto<TMutable, TImmutableOther>> compareDiffContent({
+    required final InstanceUpdaterDto<TMutable, TImmutableOther> diff,
+    required final OnCheckUpdater<TMutable, TImmutableOther> onCheck,
   }) async =>
       _compareDiffContent(
         diff: diff,
         updatables: [updateFolder, onCheck],
         onUpdated: (final original, final other) {
-          other.copyWith(updatedAt: DateTime.now()) as TOther;
+          other.copyWith(updatedAt: DateTime.now()) as TImmutableOther;
           original.updatedAt = other.updatedAt;
 
           return other;
         },
       );
+
+  @override
+  InstanceUpdatePolicy getPolicyForDiff(
+    final UpdatableInstanceDiff<TMutable, TImmutableOther> diff,
+  ) {
+    final useOriginalPolicy =
+        diff.original.updatedAt.isAfter(diff.other.updatedAt);
+    if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;
+
+    return InstanceUpdatePolicy.useServerVersion;
+  }
 }

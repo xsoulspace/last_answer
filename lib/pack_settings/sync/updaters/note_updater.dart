@@ -21,6 +21,7 @@ class NoteUpdater
         NoteProjectModel other = updatableDiff.other;
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
+        final policy = getPolicyForDiff(updatableDiff);
 
         /// check note
         if (original.note != other.note) {
@@ -28,6 +29,10 @@ class NoteUpdater
             case InstanceUpdatePolicy.useClientVersion:
               other = other.copyWith(note: original.note);
               otherWasUpdated = true;
+              break;
+            case InstanceUpdatePolicy.useServerVersion:
+              original.note = other.note;
+              originalWasUpdated = true;
               break;
             default:
               // TODO(arenukvern): description
@@ -41,6 +46,10 @@ class NoteUpdater
             case InstanceUpdatePolicy.useClientVersion:
               other = other.copyWith(charactersLimit: original.charactersLimit);
               otherWasUpdated = true;
+              break;
+            case InstanceUpdatePolicy.useServerVersion:
+              original.charactersLimit = other.charactersLimit;
+              originalWasUpdated = true;
               break;
             default:
               // TODO(arenukvern): description
@@ -62,6 +71,9 @@ class NoteUpdater
   Future<void> saveChanges({
     required final InstanceUpdaterDto<NoteProject, NoteProjectModel> dto,
   }) async {
-    super.serverSyncService.applyUpdaterDto(dto: dto);
+    await Future.wait([
+      super.serverSyncService.applyUpdaterDto(dto: dto),
+      super.clientSyncService.applyUpdaterDto(dto: dto),
+    ]);
   }
 }

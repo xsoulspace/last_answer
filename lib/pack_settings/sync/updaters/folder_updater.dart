@@ -21,6 +21,7 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
         ProjectFolderModel other = updatableDiff.other;
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
+        final policy = getPolicyForDiff(updatableDiff);
 
         /// check title
         if (original.title != other.title) {
@@ -28,6 +29,11 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
             case InstanceUpdatePolicy.useClientVersion:
               other = other.copyWith(title: original.title);
               otherWasUpdated = true;
+              break;
+
+            case InstanceUpdatePolicy.useServerVersion:
+              original.title = other.title;
+              originalWasUpdated = true;
               break;
             default:
               // TODO(arenukvern): description

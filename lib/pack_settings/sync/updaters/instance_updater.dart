@@ -1,6 +1,6 @@
 part of pack_settings;
 
-class InstanceUpdater<TMutable extends DeletableWithId,
+class InstanceUpdater<TMutable extends HiveObjectWithId,
         TImmutableOther extends HasId>
     implements RemotelyUpdatable<TMutable, TImmutableOther> {
   InstanceUpdater({
@@ -11,8 +11,10 @@ class InstanceUpdater<TMutable extends DeletableWithId,
   });
   final Iterable<TMutable> list;
   final InstanceUpdatePolicy defaultPolicy;
-  final InstancesSyncService<TMutable, TImmutableOther> clientSyncService;
-  final InstancesSyncService<TMutable, TImmutableOther> serverSyncService;
+  final ClientInstancesSyncServiceI<TMutable, TImmutableOther>
+      clientSyncService;
+  final ServerInstancesSyncServiceI<TMutable, TImmutableOther>
+      serverSyncService;
 
   @mustCallSuper
   Future<void> updateByOther(

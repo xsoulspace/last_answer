@@ -5,9 +5,9 @@ part of abstract;
 /// will not broke immutabilty
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
-class IdeaProjectQuestion extends HiveObject
+class IdeaProjectQuestion extends HiveObjectWithId
     with EquatableMixin
-    implements Sharable, DeletableWithId {
+    implements Sharable {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({

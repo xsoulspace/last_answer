@@ -5,7 +5,7 @@ import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 
-class DeletableTestItem with EquatableMixin implements DeletableWithId {
+class DeletableTestItem extends HiveObjectWithId with EquatableMixin {
   DeletableTestItem({
     required this.id,
     this.isToDelete = false,
@@ -55,8 +55,8 @@ void main() {
       final otherList = List.generate(20, (final index) => TestItem('$index'));
       final diff = InstanceUpdater<DeletableTestItem, TestItem>(
         list: originalList,
-        clientSyncService: InstancesSyncService(),
-        serverSyncService: InstancesSyncService(),
+        clientSyncService: ClientInstancesSyncServiceI(),
+        serverSyncService: ServerInstancesSyncServiceI(),
       ).compareConsistency(otherList);
       final otherUpdates = diff.otherUpdates;
       final originalUpdates = diff.originalUpdates;

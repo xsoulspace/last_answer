@@ -18,9 +18,9 @@ class BasicProjectIndexes {
 
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-abstract class BasicProject extends HiveObject
+abstract class BasicProject extends HiveObjectWithId
     with EquatableMixin
-    implements Sharable, BasicProjectFields, DeletableWithId {
+    implements Sharable, BasicProjectFields {
   BasicProject({
     required this.id,
     required this.title,

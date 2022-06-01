@@ -9,6 +9,5 @@ abstract class Deletable {
   bool isToDelete = false;
 }
 
-abstract class DeletableWithId extends Deletable implements HasId {}
-
-abstract class HiveObjectWithId extends HiveObject implements HasId {}
+abstract class HiveObjectWithId extends HiveObject implements Deletable, HasId {
+}

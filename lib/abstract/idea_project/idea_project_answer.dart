@@ -2,9 +2,9 @@ part of abstract;
 
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
-class IdeaProjectAnswer extends HiveObject
+class IdeaProjectAnswer extends HiveObjectWithId
     with EquatableMixin
-    implements Sharable, DeletableWithId {
+    implements Sharable {
   IdeaProjectAnswer({
     required this.id,
     required this.text,

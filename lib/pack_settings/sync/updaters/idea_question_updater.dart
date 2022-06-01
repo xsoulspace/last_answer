@@ -24,7 +24,7 @@ class IdeaQuestionUpdater
         final original = updatableDiff.original;
         IdeaProjectQuestionModel other = updatableDiff.other;
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
-        bool originalWasUpdated = updatableDiff.originalWasUpdated;
+        final bool originalWasUpdated = updatableDiff.originalWasUpdated;
 
         /// check title
         if (original.title != other.localizedTitle) {

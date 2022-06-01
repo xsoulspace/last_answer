@@ -3,9 +3,7 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
-class IdeaProject extends BasicProject
-    with EquatableMixin
-    implements DeletableWithId {
+class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProject({
     required final super.id,
     required final super.title,

@@ -57,7 +57,6 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
       await removeProject(
         context: context,
         project: note,
-        folderNotifier: folderProvider,
         checkIsProjectActive: checkIsProjectActive,
         onGoHome: onGoHome,
       );

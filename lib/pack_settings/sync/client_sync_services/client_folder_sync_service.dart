@@ -16,11 +16,9 @@ class ClientFolderSyncService
 
   @override
   Future<void> onDelete(final Iterable<ProjectFolder> elements) async {
-    context
-        .read<ProjectFoldersNotifier>()
-        .removeByKeys(keys: elements.map((final e) => e.id));
-    for (final folder in elements) {
-      await folder.deleteWithRelatives(context: context);
-    }
+    await Future.wait(
+      elements
+          .map((final folder) => folder.deleteWithRelatives(context: context)),
+    );
   }
 }

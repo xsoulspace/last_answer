@@ -212,5 +212,6 @@ class ProjectFolder extends HiveObjectWithId
         },
       ),
     );
+    await delete();
   }
 }

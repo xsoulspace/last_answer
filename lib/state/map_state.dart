@@ -65,6 +65,14 @@ class MapState<TValue> extends ChangeNotifier {
     _save();
   }
 
+  void removeByKeys({required final Iterable<String> keys}) {
+    for (final key in keys) {
+      state.remove(key);
+    }
+    notifyListeners();
+    _save();
+  }
+
   void assignAll(final Map<String, TValue> map) {
     state = map;
     _save();

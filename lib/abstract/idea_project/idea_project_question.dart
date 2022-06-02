@@ -48,6 +48,13 @@ class IdeaProjectQuestion extends HiveObjectWithId
       title: jsonEncode(title.toJson()),
     );
   }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    await delete();
+  }
 }
 
 /// A mock for [IdeaProjectQuestion].

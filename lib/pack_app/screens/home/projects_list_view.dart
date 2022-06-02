@@ -66,7 +66,6 @@ class ProjectsListView extends HookWidget {
                       onRemove: (final _) async => removeProject(
                         checkIsProjectActive: checkIsProjectActive,
                         context: context,
-                        folderProvider: folderState,
                         onGoHome: onGoHome,
                         project: project,
                       ),
@@ -92,27 +91,12 @@ class ProjectsListView extends HookWidget {
 Future<void> removeProject({
   required final BuildContext context,
   required final BasicProject project,
-  required final CurrentFolderNotifier folderProvider,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
 }) async {
-  if (project is IdeaProject) {
-    final deleteAnswerFutures = project.answers?.map(
-      (final answer) => answer.delete(),
-    );
-    if (deleteAnswerFutures != null) {
-      await Future.wait(deleteAnswerFutures);
-    }
-
-    context.read<IdeaProjectsNotifier>().remove(key: project.id);
-  } else if (project is NoteProject) {
-    context.read<NoteProjectsNotifier>().remove(key: project.id);
-  } else if (project is StoryProject) {
-    // TODO(arenukvern): implement Story removal
-  }
+  await project.deleteWithRelatives(context: context);
   project.folder?.removeProject(project);
-  folderProvider.notify();
-  await project.delete();
+  context.read<CurrentFolderNotifier>().notify();
   if (checkIsProjectActive(project)) {
     onGoHome();
   }

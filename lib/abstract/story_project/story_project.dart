@@ -29,7 +29,13 @@ class StoryProject extends BasicProject {
 
   @override
   HasId toModel({required final UserModel user}) {
-    // TODO: implement toModel
+    // TODO(arenukvern): implement toModel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteWithRelatives({required final BuildContext context}) {
+    // TODO: implement deleteWithRelatives
     throw UnimplementedError();
   }
 }

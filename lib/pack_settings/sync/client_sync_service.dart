@@ -8,6 +8,10 @@ class ClientInstancesSyncServiceI<T extends HiveObjectWithId,
 
 class HiveClientSyncServiceImpl<T extends HiveObjectWithId,
     TOther extends HasId> extends ClientInstancesSyncServiceI<T, TOther> {
+  HiveClientSyncServiceImpl({
+    required this.context,
+  });
+  final BuildContext context;
   @override
   Future<void> onUpdate(
     final Iterable<T> elements,

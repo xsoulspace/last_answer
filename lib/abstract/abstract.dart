@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 part 'abstract.g.dart';
 part 'basic_project.dart';

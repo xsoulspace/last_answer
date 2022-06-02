@@ -29,19 +29,41 @@ class ProjectFolder extends HiveObjectWithId
         equals: (final a, final b) => a.hashCode == b.hashCode,
         hashCode: (final a) => a.hashCode,
       );
+  static Future<ProjectFolder> fromModel(final ProjectFolderModel model) async {
+    final folder = ProjectFolder(
+      id: model.id,
+      title: model.title,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
+    );
 
-  static Future<ProjectFolder> create() async {
+    return create(folder);
+  }
+
+  static Future<ProjectFolder> create([final ProjectFolder? folder]) async {
     final box =
         await Hive.openBox<ProjectFolder>(HiveBoxesIds.projectFolderKey);
 
-    final folder = ProjectFolder(
-      id: createId(),
-      title: 'New',
+    final effectiveFolder = folder ??
+        ProjectFolder(
+          id: createId(),
+          title: 'New',
+        );
+
+    await box.put(effectiveFolder.id, effectiveFolder);
+
+    return effectiveFolder;
+  }
+
+  @override
+  ProjectFolderModel toModel({required final UserModel user}) {
+    return ProjectFolderModel(
+      id: id,
+      title: title,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      ownerId: user.id,
     );
-
-    await box.put(folder.id, folder);
-
-    return folder;
   }
 
   @override
@@ -179,13 +201,16 @@ class ProjectFolder extends HiveObjectWithId
   bool? get stringify => true;
 
   @override
-  ProjectFolderModel toModel({required final UserModel user}) {
-    return ProjectFolderModel(
-      id: id,
-      title: title,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      ownerId: user.id,
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<ProjectFoldersNotifier>().remove(key: key);
+    await Future.wait(
+      _projects.map(
+        (final project) async {
+          await project.deleteWithRelatives(context: context);
+        },
+      ),
     );
   }
 }

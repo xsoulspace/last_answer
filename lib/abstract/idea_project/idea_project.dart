@@ -93,6 +93,20 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
       title: title,
     );
   }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<IdeaProjectsNotifier>().remove(key: key);
+    final deleteAnswerFutures = answers?.map(
+      (final answer) => answer.deleteWithRelatives(context: context),
+    );
+    if (deleteAnswerFutures != null) {
+      await Future.wait(deleteAnswerFutures);
+    }
+    await delete();
+  }
 }
 
 /// A mock for [IdeaProject].

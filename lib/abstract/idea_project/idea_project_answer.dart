@@ -78,6 +78,13 @@ class IdeaProjectAnswer extends HiveObjectWithId
       updatedAt: updatedAt,
     );
   }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    await delete();
+  }
 }
 
 /// A mock for [IdeaProjectAnswer].

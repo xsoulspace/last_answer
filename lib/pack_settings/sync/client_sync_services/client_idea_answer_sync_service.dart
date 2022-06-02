@@ -1,4 +1,6 @@
 part of pack_settings;
 
 class ClientIdeaAnswerSyncService extends HiveClientSyncServiceImpl<
-    IdeaProjectAnswer, IdeaProjectAnswerModel> {}
+    IdeaProjectAnswer, IdeaProjectAnswerModel> {
+  ClientIdeaAnswerSyncService({required final super.context});
+}

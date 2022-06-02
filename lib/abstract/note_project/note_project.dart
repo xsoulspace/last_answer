@@ -87,6 +87,14 @@ class NoteProject extends BasicProject<NoteProjectModel> {
       userId: user.id,
     );
   }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<NoteProjectsNotifier>().remove(key: key);
+    await delete();
+  }
 }
 
 /// A mock for [NoteProject].

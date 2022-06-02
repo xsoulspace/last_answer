@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
@@ -18,6 +19,12 @@ class DeletableTestItem extends HiveObjectWithId with EquatableMixin {
 
   @override
   List<Object?> get props => [id];
+
+  @override
+  Future<void> deleteWithRelatives({required final BuildContext context}) {
+    // TODO: implement deleteWithRelatives
+    throw UnimplementedError();
+  }
 }
 
 class TestItem with EquatableMixin implements HasId {

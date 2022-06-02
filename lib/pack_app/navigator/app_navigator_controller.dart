@@ -42,7 +42,6 @@ class AppNavigatorController {
       final settings = context.read<GeneralSettingsController>();
       final currentFolder = folder.state;
       final newNote = await NoteProject.create(
-        title: '',
         folder: currentFolder,
         charactersLimit: settings.charactersLimitForNewNotes,
       );

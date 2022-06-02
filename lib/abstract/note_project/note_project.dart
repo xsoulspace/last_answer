@@ -19,25 +19,51 @@ class NoteProject extends BasicProject<NoteProjectModel> {
           folder: folder,
           type: ProjectType.note,
         );
+
+  static Future<NoteProject> fromModel({
+    required final NoteProjectModel model,
+    required final BuildContext context,
+  }) async {
+    final foldersNotifier = context.read<ProjectFoldersNotifier>();
+    final folder = foldersNotifier.state[model.folderId]!;
+
+    return create(
+      note: model.note,
+      folder: folder,
+      charactersLimit: model.charactersLimit,
+      createdAt: model.createdAt,
+      id: model.id,
+      isCompleted: model.isCompleted,
+      updatedAt: model.updatedAt,
+    );
+  }
+
+  // ignore: long-parameter-list
   static Future<NoteProject> create({
-    required final String title,
     required final ProjectFolder folder,
-    required final int charactersLimit,
+    final int? charactersLimit,
+    final String? id,
+    final DateTime? updatedAt,
+    final DateTime? createdAt,
+    final String note = '',
+    final bool isCompleted = defaultProjectIsCompleted,
   }) async {
     final created = DateTime.now();
 
-    final note = NoteProject(
-      updatedAt: created,
-      createdAt: created,
+    final noteProject = NoteProject(
+      updatedAt: updatedAt ?? created,
+      createdAt: createdAt ?? created,
       folder: folder,
-      id: createId(),
+      id: id ?? createId(),
+      isCompleted: isCompleted,
+      note: note,
       charactersLimit: charactersLimit,
     );
 
     final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
-    await box.put(note.id, note);
+    await box.put(noteProject.id, noteProject);
 
-    return note;
+    return noteProject;
   }
 
   @HiveField(projectLatestFieldHiveId + 1)

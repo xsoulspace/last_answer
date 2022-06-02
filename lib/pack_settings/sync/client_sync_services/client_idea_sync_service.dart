@@ -8,12 +8,14 @@ class ClientIdeaSyncService
     final Iterable<IdeaProjectModel> elements,
   ) async {
     final ideasNotifier = context.read<IdeaProjectsNotifier>();
-    for (final model in elements) {
-      final idea = await IdeaProject.fromModel(
-        model: model,
-        context: context,
-      );
-      ideasNotifier.put(key: idea.id, value: idea);
-    }
+    await Future.wait(
+      elements.map((final model) async {
+        final idea = await IdeaProject.fromModel(
+          model: model,
+          context: context,
+        );
+        ideasNotifier.put(key: idea.id, value: idea);
+      }),
+    );
   }
 }

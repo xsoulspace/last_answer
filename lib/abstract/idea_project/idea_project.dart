@@ -20,16 +20,48 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
           folder: folder,
           type: ProjectType.idea,
         );
+
+  static Future<IdeaProject> fromModel({
+    required final IdeaProjectModel model,
+    required final BuildContext context,
+  }) async {
+    final foldersNotifier = context.read<ProjectFoldersNotifier>();
+    final folder = foldersNotifier.state[model.folderId]!;
+    final questionsNotifier = context.read<IdeaProjectQuestionsNotifier>();
+    final question = questionsNotifier.state[model.newQuestionId];
+
+    return create(
+      title: model.title,
+      folder: folder,
+      createdAt: model.createdAt,
+      id: model.id,
+      isCompleted: model.isCompleted,
+      newAnswerText: model.newAnswerText,
+      newQuestion: question,
+      updatedAt: model.updatedAt,
+    );
+  }
+
+  // ignore: long-parameter-list
   static Future<IdeaProject> create({
     required final String title,
     required final ProjectFolder folder,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
+    final String? id,
+    final bool isCompleted = defaultProjectIsCompleted,
+    final String newAnswerText = '',
+    final IdeaProjectQuestion? newQuestion,
   }) async {
     final created = DateTime.now();
     final idea = IdeaProject(
-      updatedAt: created,
-      createdAt: created,
+      updatedAt: updatedAt ?? created,
+      createdAt: createdAt ?? created,
       folder: folder,
-      id: createId(),
+      isCompleted: isCompleted,
+      newAnswerText: newAnswerText,
+      newQuestion: newQuestion,
+      id: id ?? createId(),
       title: title,
     );
     final ideaBox =
@@ -87,6 +119,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
       updatedAt: updatedAt,
       projectType: type,
       userId: user.id,
+      isCompleted: isCompleted,
       folderId: folder!.id,
       newAnswerText: newAnswerText,
       newQuestionId: newQuestion!.id,

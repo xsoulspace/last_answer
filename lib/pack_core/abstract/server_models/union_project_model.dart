@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 part of pack_core;
 
 @immutable
@@ -32,6 +34,7 @@ class BasicProjectModel with _$BasicProjectModel implements HasId {
     required final ProjectFolderId id,
     @JsonKey(name: 'created_at') required final DateTime createdAt,
     @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+    @JsonKey(name: 'is_completed') required final bool isCompleted,
     @JsonKey(name: 'project_type') required final ProjectType projectType,
     @JsonKey(name: 'user_id') required final UserModelId userId,
     @JsonKey(name: 'folder_id') required final ProjectFolderId folderId,

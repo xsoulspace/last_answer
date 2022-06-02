@@ -16,18 +16,22 @@ class HiveClientSyncServiceImpl<T extends HiveObjectWithId,
   Future<void> onUpdate(
     final Iterable<T> elements,
   ) async {
-    for (final el in elements) {
-      await el.save();
-    }
+    await Future.wait(
+      elements.map(
+        (final el) => el.save(),
+      ),
+    );
   }
 
   @override
   Future<void> onDelete(
     final Iterable<T> elements,
   ) async {
-    for (final el in elements) {
-      await el.delete();
-    }
+    await Future.wait(
+      elements.map(
+        (final el) => el.deleteWithRelatives(context: context),
+      ),
+    );
   }
 
   @override

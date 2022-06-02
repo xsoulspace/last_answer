@@ -14,17 +14,38 @@ class IdeaProjectAnswer extends HiveObjectWithId
     this.isToDelete = false,
     final DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
+  static Future<IdeaProjectAnswer> fromModel({
+    required final IdeaProjectAnswerModel model,
+    required final BuildContext context,
+  }) async {
+    final questions = context.read<IdeaProjectQuestionsNotifier>();
+    final question = questions.state[model.questionId]!;
+
+    return create(
+      ideaId: model.projectId,
+      question: question,
+      text: model.text,
+      createdAt: model.createdAt,
+      id: model.id,
+      updatedAt: model.updatedAt,
+    );
+  }
+
   static Future<IdeaProjectAnswer> create({
     required final String text,
     required final IdeaProjectQuestion question,
-    required final IdeaProject idea,
+    required final ProjectId ideaId,
+    final String? id,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
   }) async {
     final answer = IdeaProjectAnswer(
       text: text,
       question: question,
-      id: createId(),
-      createdAt: DateTime.now(),
-      projectId: idea.id,
+      id: id ?? createId(),
+      createdAt: createdAt ?? DateTime.now(),
+      projectId: ideaId,
+      updatedAt: updatedAt,
     );
     final box = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,

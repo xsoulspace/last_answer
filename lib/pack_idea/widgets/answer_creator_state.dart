@@ -1,5 +1,6 @@
 part of pack_idea;
 
+// ignore: long-parameter-list
 AnswerCreatorState useAnswerCreatorState({
   required final IdeaProject idea,
   required final IdeaProjectQuestion defaultQuestion,
@@ -91,7 +92,7 @@ class AnswerCreatorState extends LifeState {
     final answer = await IdeaProjectAnswer.create(
       text: text,
       question: question,
-      idea: idea,
+      ideaId: idea.id,
     );
 
     onCreated(answer);

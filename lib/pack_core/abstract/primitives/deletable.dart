@@ -9,8 +9,9 @@ abstract class Deletable {
   bool isToDelete = false;
 
   /// Call this method before the instance is to be deleted
-  Future<void> deleteWithRelatives(
-      {required final BuildContext context}) async {}
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {}
 }
 
 abstract class HiveObjectWithId extends HiveObject implements Deletable, HasId {

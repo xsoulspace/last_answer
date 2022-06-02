@@ -30,29 +30,33 @@ class ProjectFolder extends HiveObjectWithId
         hashCode: (final a) => a.hashCode,
       );
   static Future<ProjectFolder> fromModel(final ProjectFolderModel model) async {
-    final folder = ProjectFolder(
+    return create(
       id: model.id,
       title: model.title,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     );
-
-    return create(folder);
   }
 
-  static Future<ProjectFolder> create([final ProjectFolder? folder]) async {
+  static Future<ProjectFolder> create({
+    final String? id,
+    final String? title,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
+  }) async {
     final box =
         await Hive.openBox<ProjectFolder>(HiveBoxesIds.projectFolderKey);
 
-    final effectiveFolder = folder ??
-        ProjectFolder(
-          id: createId(),
-          title: 'New',
-        );
+    final folder = ProjectFolder(
+      id: id ?? createId(),
+      title: title ?? 'New',
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
 
-    await box.put(effectiveFolder.id, effectiveFolder);
+    await box.put(folder.id, folder);
 
-    return effectiveFolder;
+    return folder;
   }
 
   @override

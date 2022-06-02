@@ -8,9 +8,11 @@ class ClientFolderSyncService
     final Iterable<ProjectFolderModel> elements,
   ) async {
     final foldersNotifier = context.read<ProjectFoldersNotifier>();
-    for (final model in elements) {
-      final folder = await ProjectFolder.fromModel(model);
-      foldersNotifier.put(key: folder.id, value: folder);
-    }
+    await Future.wait(
+      elements.map((final model) async {
+        final folder = await ProjectFolder.fromModel(model);
+        foldersNotifier.put(key: folder.id, value: folder);
+      }),
+    );
   }
 }

@@ -7,6 +7,10 @@
   "@search": {
     "description": "Search"
   },
+  "signOut": "Выйти",
+  "@signOut": {
+    "description": "signOut"
+  },
   "frequentlyUsed": "Часто используемые",
   "@frequentlyUsed": {
     "description": "frequentlyUsed"

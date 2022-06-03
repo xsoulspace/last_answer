@@ -7,6 +7,10 @@
   "@frequentlyUsed": {
     "description": "frequentlyUsed"
   },
+  "signOut": "Сantare",
+  "@signOut": {
+    "description": "signOut"
+  },
   "search": "Кicerca",
   "@search": {
     "description": "Search"

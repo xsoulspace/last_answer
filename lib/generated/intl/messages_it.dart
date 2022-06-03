@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Note direzione"),
         "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
         "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+        "signOut": MessageLookupByLibrary.simpleMessage("Сantare"),
         "subscription": MessageLookupByLibrary.simpleMessage("Abbonamento"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Termini & Condizioni"),

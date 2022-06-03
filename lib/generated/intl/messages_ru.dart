@@ -106,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Направление заметок"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "signOut": MessageLookupByLibrary.simpleMessage("Выйти"),
         "subscription": MessageLookupByLibrary.simpleMessage("Подписка"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Условия использования"),

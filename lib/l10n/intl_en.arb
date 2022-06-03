@@ -11,6 +11,10 @@
   "@writeAnAnswer": {
     "description": "writeAnAnswer"
   },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "signOut"
+  },
   "writeANote": "Write a note",
   "@writeANote": {
     "description": "writeANote"

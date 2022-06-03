@@ -53,7 +53,7 @@ class MyAccount extends HookWidget {
             const SizedBox(height: 24),
             TextButton(
               onPressed: state.onSingOut,
-              child: const Text('Sign out'),
+              child: Text(S.current.signOut),
             ),
             const SizedBox(height: 24),
             DangerZone(

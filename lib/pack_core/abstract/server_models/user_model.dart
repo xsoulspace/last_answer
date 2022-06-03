@@ -24,9 +24,14 @@ class UserModel with _$UserModel implements HasId {
     required final UserStatus status,
     required final String username,
   }) = _UserModel;
-
   factory UserModel.fromJson(final Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+  UserModel._();
   static Map<String, dynamic> modelToJson(final UserModel model) =>
       model.toJson();
+  static const UserModel zero = UserModel(
+    id: '',
+    status: UserStatus.offline,
+    username: '',
+  );
 }

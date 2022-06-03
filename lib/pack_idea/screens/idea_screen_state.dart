@@ -95,7 +95,7 @@ class IdeaScreenState extends LifeState {
   }
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
-    idea.answers?.remove(answer);
+    idea.removeAnswer(answer);
     answers.value = [...idea.answers?.reversed ?? []];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
@@ -107,7 +107,7 @@ class IdeaScreenState extends LifeState {
   }
 
   Future<void> onAnswerCreated(final IdeaProjectAnswer answer) async {
-    idea.answers?.add(answer);
+    idea.addAnswer(answer);
     answers.value = [...idea.answers?.reversed ?? []];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);

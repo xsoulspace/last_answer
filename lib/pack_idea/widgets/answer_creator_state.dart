@@ -92,7 +92,7 @@ class AnswerCreatorState extends LifeState {
     final answer = await IdeaProjectAnswer.create(
       text: text,
       question: question,
-      ideaId: idea.id,
+      idea: idea,
     );
 
     onCreated(answer);

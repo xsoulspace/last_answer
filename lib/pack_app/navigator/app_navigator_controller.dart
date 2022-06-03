@@ -38,16 +38,15 @@ class AppNavigatorController {
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final folder = context.read<CurrentFolderNotifier>();
-      final settings = context.read<GeneralSettingsController>();
-      final currentFolder = folder.state;
+      final folderNotifier = context.read<CurrentFolderNotifier>();
+      final settingsNotifier = context.read<GeneralSettingsController>();
+      final currentFolder = folderNotifier.state;
       final newNote = await NoteProject.create(
         folder: currentFolder,
-        charactersLimit: settings.charactersLimitForNewNotes,
+        charactersLimit: settingsNotifier.charactersLimitForNewNotes,
       );
-      currentFolder.addProject(newNote);
       context.read<NoteProjectsNotifier>().put(key: newNote.id, value: newNote);
-      folder.notify();
+      folderNotifier.notify();
       resolvedNoteId = newNote.id;
     }
 
@@ -63,16 +62,15 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final folder = context.read<CurrentFolderNotifier>();
-    final currentFolder = folder.state;
+    final folderNotifier = context.read<CurrentFolderNotifier>();
+    final currentFolder = folderNotifier.state;
 
     final idea = await IdeaProject.create(
       title: title,
       folder: currentFolder,
     );
-    currentFolder.addProject(idea);
     context.read<IdeaProjectsNotifier>().put(key: idea.id, value: idea);
-    folder.notify();
+    folderNotifier.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }
 

@@ -71,6 +71,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     );
     await ideaBox.put(idea.id, idea);
     idea.answers = HiveList<IdeaProjectAnswer>(ideaAnswersBox);
+    folder.addProject(idea);
 
     return idea;
   }
@@ -138,7 +139,16 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     if (deleteAnswerFutures != null) {
       await Future.wait(deleteAnswerFutures);
     }
+    folder?.removeProject(this);
     await delete();
+  }
+
+  void addAnswer(final IdeaProjectAnswer answer) {
+    answers?.add(answer);
+  }
+
+  void removeAnswer(final IdeaProjectAnswer answer) {
+    answers?.remove(answer);
   }
 }
 

@@ -62,6 +62,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
 
     final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
     await box.put(noteProject.id, noteProject);
+    folder.addProject(noteProject);
 
     return noteProject;
   }
@@ -119,6 +120,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
     required final BuildContext context,
   }) async {
     context.read<NoteProjectsNotifier>().remove(key: key);
+    folder?.removeProject(this);
     await delete();
   }
 }

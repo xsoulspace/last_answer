@@ -20,9 +20,11 @@ class IdeaProjectAnswer extends HiveObjectWithId
   }) async {
     final questions = context.read<IdeaProjectQuestionsNotifier>();
     final question = questions.state[model.questionId]!;
+    final ideas = context.read<IdeaProjectsNotifier>();
+    final idea = ideas.state[model.projectId];
 
     return create(
-      ideaId: model.projectId,
+      idea: idea!,
       question: question,
       text: model.text,
       createdAt: model.createdAt,
@@ -34,7 +36,7 @@ class IdeaProjectAnswer extends HiveObjectWithId
   static Future<IdeaProjectAnswer> create({
     required final String text,
     required final IdeaProjectQuestion question,
-    required final ProjectId ideaId,
+    required final IdeaProject idea,
     final String? id,
     final DateTime? createdAt,
     final DateTime? updatedAt,
@@ -44,13 +46,14 @@ class IdeaProjectAnswer extends HiveObjectWithId
       question: question,
       id: id ?? createId(),
       createdAt: createdAt ?? DateTime.now(),
-      projectId: ideaId,
+      projectId: idea.id,
       updatedAt: updatedAt,
     );
     final box = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
+    idea.addAnswer(answer);
 
     return answer;
   }
@@ -104,6 +107,9 @@ class IdeaProjectAnswer extends HiveObjectWithId
   Future<void> deleteWithRelatives({
     required final BuildContext context,
   }) async {
+    final ideasNotifier = context.read<IdeaProjectsNotifier>();
+    final idea = ideasNotifier.state[projectId];
+    idea?.answers?.remove(this);
     await delete();
   }
 }

@@ -28,7 +28,6 @@ class IdeaProjectScreen extends HookWidget {
     final questionsOpened = useIsBool();
 
     final state = useIdeaScreenState(
-      context: context,
       onScreenBack: onBack,
       answers: answers,
       ideaUpdatesStream: ideaUpdatesStream,

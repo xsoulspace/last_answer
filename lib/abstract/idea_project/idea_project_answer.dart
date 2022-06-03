@@ -106,10 +106,16 @@ class IdeaProjectAnswer extends HiveObjectWithId
   @override
   Future<void> deleteWithRelatives({
     required final BuildContext context,
+    final IdeaProject? idea,
   }) async {
-    final ideasNotifier = context.read<IdeaProjectsNotifier>();
-    final idea = ideasNotifier.state[projectId];
-    idea?.answers?.remove(this);
+    final effectiveIdea = () {
+      if (idea != null) return idea;
+      final ideasNotifier = context.read<IdeaProjectsNotifier>();
+
+      return ideasNotifier.state[projectId];
+    }();
+
+    effectiveIdea?.answers?.remove(this);
     await delete();
   }
 }

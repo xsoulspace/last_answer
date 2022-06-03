@@ -1,7 +1,6 @@
 part of pack_idea;
 
 IdeaScreenState useIdeaScreenState({
-  required final BuildContext context,
   required final VoidCallback onScreenBack,
   required final StreamController<bool> ideaUpdatesStream,
   required final IdeaProject idea,
@@ -9,10 +8,9 @@ IdeaScreenState useIdeaScreenState({
   required final ValueNotifier<List<IdeaProjectAnswer>> answers,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useIdeaScreenState',
         state: IdeaScreenState(
-          context: context,
           onScreenBack: onScreenBack,
           idea: idea,
           ideaUpdatesStream: ideaUpdatesStream,
@@ -22,16 +20,14 @@ IdeaScreenState useIdeaScreenState({
       ),
     );
 
-class IdeaScreenState extends LifeState {
+class IdeaScreenState extends ContextfulLifeState {
   IdeaScreenState({
-    required final this.context,
     required this.onScreenBack,
     required this.ideaUpdatesStream,
     required this.idea,
     required this.questionsOpened,
     required this.answers,
   });
-  final BuildContext context;
   final VoidCallback onScreenBack;
   final IdeaProject idea;
   final ValueNotifier<bool> questionsOpened;
@@ -95,7 +91,7 @@ class IdeaScreenState extends LifeState {
   }
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
-    idea.removeAnswer(answer);
+    unawaited(idea.removeAnswer(answer: answer, context: context));
     answers.value = [...idea.answers?.reversed ?? []];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);

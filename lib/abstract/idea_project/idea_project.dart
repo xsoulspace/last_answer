@@ -134,7 +134,10 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   }) async {
     context.read<IdeaProjectsNotifier>().remove(key: key);
     final deleteAnswerFutures = answers?.map(
-      (final answer) => answer.deleteWithRelatives(context: context),
+      (final answer) => answer.deleteWithRelatives(
+        context: context,
+        idea: this,
+      ),
     );
     if (deleteAnswerFutures != null) {
       await Future.wait(deleteAnswerFutures);
@@ -147,9 +150,11 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     answers?.add(answer);
   }
 
-  void removeAnswer(final IdeaProjectAnswer answer) {
-    answers?.remove(answer);
-  }
+  Future<void> removeAnswer({
+    required final IdeaProjectAnswer answer,
+    required final BuildContext context,
+  }) async =>
+      answer.deleteWithRelatives(context: context);
 }
 
 /// A mock for [IdeaProject].

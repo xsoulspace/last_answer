@@ -116,13 +116,11 @@ class AuthState extends SupabaseAuthLifeState {
   @override
   void onUnauthenticated() {
     usersNotifier.authenticated.value = false;
-    usersNotifier.currentUser.value = UserModel.zero;
   }
 
   @override
   void onAuthenticated(final Session session) {
     usersNotifier.authenticated.value = true;
-    // TODO(arenukvern): fetch user
   }
 
   @override
@@ -131,6 +129,5 @@ class AuthState extends SupabaseAuthLifeState {
   @override
   void onErrorAuthenticating(final String message) {
     usersNotifier.authenticated.value = false;
-    usersNotifier.currentUser.value = UserModel.zero;
   }
 }

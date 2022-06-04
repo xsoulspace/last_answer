@@ -12,9 +12,6 @@ class AppStateProvider extends StatelessWidget {
   Widget build(final BuildContext context) {
     final child = MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: createConnectivityNotifier),
-        ChangeNotifierProvider(create: createUsersNotifier),
-
         /// ********************************************
         /// *      API START
         /// ********************************************
@@ -36,6 +33,8 @@ class AppStateProvider extends StatelessWidget {
         Provider(
           create: createApiProviderBuilder(UsersApi.new),
         ),
+        ChangeNotifierProvider(create: createConnectivityNotifier),
+        ChangeNotifierProvider(create: createUsersNotifier),
 
         /// ********************************************
         /// *      API END

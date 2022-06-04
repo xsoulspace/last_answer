@@ -28,12 +28,13 @@ class GlobalStateInitializer implements StateInitializer {
     /// *      CONTEXT RELATED READINGS START
     /// ********************************************
 
-    final lastEmojiProvider = context.read<LastEmojiProvider>();
-    final specialEmojiProvider = context.read<SpecialEmojiProvider>();
-    final emojiProvider = context.read<EmojiProvider>();
-    final currentFolderProvider = context.read<CurrentFolderNotifier>();
+    final lastEmojiNotifier = context.read<LastEmojiProvider>();
+    final specialEmojiNotifier = context.read<SpecialEmojiProvider>();
+    final emojiNotifier = context.read<EmojiProvider>();
+    final currentFolderNotifier = context.read<CurrentFolderNotifier>();
     final notificationController = context.read<NotificationController>();
     final paymentsController = context.read<PaymentsControllerI>();
+    final usersNotifier = context.read<UsersNotifier>();
 
     /// ********************************************
     /// *      CONTEXT RELATED READINGS END
@@ -47,6 +48,7 @@ class GlobalStateInitializer implements StateInitializer {
     final loadableControllers = <Loadable>[
       settings,
       paymentsController,
+      usersNotifier,
     ];
     await Future.forEach<Loadable>(
       loadableControllers,
@@ -57,15 +59,15 @@ class GlobalStateInitializer implements StateInitializer {
     // ignore: use_build_context_synchronously
     final emojis = await EmojiUtil.getList(context);
 
-    emojiProvider.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+    emojiNotifier.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
     // ignore: use_build_context_synchronously
     final specialEmojis = await EmojiUtil.getSpecialList(context);
-    specialEmojiProvider
+    specialEmojiNotifier
         .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
 
     final lastUsedEmojis = await EmojiUtil().load();
-    lastEmojiProvider.putAll(lastUsedEmojis);
+    lastEmojiNotifier.putAll(lastUsedEmojis);
 
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
@@ -158,7 +160,7 @@ class GlobalStateInitializer implements StateInitializer {
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-    currentFolderProvider.setState(currentFolder);
+    currentFolderNotifier.setState(currentFolder);
 
     /// ********************************************
     /// *      CONTENT LOADING END

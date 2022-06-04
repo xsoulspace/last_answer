@@ -69,7 +69,7 @@ class GlobalStateInitializer implements StateInitializer {
 
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
-    await Hive.openBox<IdeaProjectAnswer>(
+    final answers = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
 
@@ -95,11 +95,15 @@ class GlobalStateInitializer implements StateInitializer {
       box: questions,
     );
 
-    settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
-
     final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsNotifier>(
       context: context,
       box: ideas,
+    );
+
+    final ideaProjectAnswersState =
+        MapState.load<IdeaProjectAnswer, IdeaProjectAnswersNotifier>(
+      context: context,
+      box: answers,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.notes;
@@ -121,10 +125,10 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.projectFolderKey,
     );
 
-    final projectsService = BasicProjectsService(
+    final projectsDto = BasicProjectsDto(
       ideas: ideaProjectsState.state,
       notes: notesProjectsState.state,
-      // TODO(arenukvern): add stories in v4
+      // TODO(arenukvern): add stories in future
       stories: const {},
     );
 
@@ -146,7 +150,7 @@ class GlobalStateInitializer implements StateInitializer {
       for (final projectsFolder in projectsFolders.values) {
         final projects = ProjectFolder.loadProjectsFromService(
           folder: projectsFolder,
-          service: projectsService,
+          service: projectsDto,
         );
         projectsFolder.setExistedProjects(projects);
       }

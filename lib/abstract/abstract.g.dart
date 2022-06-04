@@ -24,6 +24,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       newAnswerText: fields[6] as String,
       folder: fields[8] as ProjectFolder?,
       newQuestion: fields[7] as IdeaProjectQuestion?,
+      answers: (fields[5] as HiveList?)?.castHiveList(),
       updatedAt: fields[4] as DateTime?,
       isCompleted: fields[1] as bool,
     );
@@ -32,7 +33,9 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   @override
   void write(BinaryWriter writer, IdeaProject obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
+      ..writeByte(5)
+      ..write(obj.answers)
       ..writeByte(6)
       ..write(obj.newAnswerText)
       ..writeByte(7)
@@ -265,7 +268,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       id: fields[0] as String,
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
-      isToDelete: fields[3] as bool,
+      isToDelete: fields[3] as bool?,
       updatedAt: fields[4] as DateTime?,
       createdAt: fields[5] as DateTime?,
     );

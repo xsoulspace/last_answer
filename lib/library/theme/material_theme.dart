@@ -3,6 +3,7 @@ part of theme;
 final _lightBase = ThemeData.from(
   colorScheme: lightColorScheme,
   textTheme: lightTextTheme,
+  useMaterial3: true,
 );
 
 final lightThemeData = _lightBase.copyWith(
@@ -40,6 +41,7 @@ final lightThemeData = _lightBase.copyWith(
 final _darkBase = ThemeData.from(
   colorScheme: darkColorScheme,
   textTheme: darkTextTheme,
+  useMaterial3: true,
 );
 
 final darkThemeData = _darkBase.copyWith(

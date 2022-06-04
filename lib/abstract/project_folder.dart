@@ -8,10 +8,11 @@ class ProjectFolder extends HiveObjectWithId
     required this.id,
     required this.title,
     this.projectsIdsString = '',
-    this.isToDelete = false,
+    bool? isToDelete,
     final DateTime? updatedAt,
     final DateTime? createdAt,
   })  : _projects = createHashSet(),
+        isToDelete = isToDelete ?? false,
         createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
@@ -160,7 +161,7 @@ class ProjectFolder extends HiveObjectWithId
   /// Run once when box is uploading to provider
   static Iterable<BasicProject> loadProjectsFromService({
     required final ProjectFolder folder,
-    required final BasicProjectsService service,
+    required final BasicProjectsDto service,
   }) {
     final Iterable<SerializableProjectId> ids = folder.projectsIdsString.isEmpty
         ? []

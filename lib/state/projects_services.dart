@@ -1,8 +1,8 @@
 part of notifiers;
 
 @immutable
-class BasicProjectsService {
-  const BasicProjectsService({
+class BasicProjectsDto {
+  const BasicProjectsDto({
     required final this.ideas,
     required final this.notes,
     required final this.stories,

@@ -2,6 +2,9 @@ part of notifiers;
 
 class IdeaProjectsNotifier extends MapState<IdeaProject> {}
 
+IdeaProjectsNotifier createIdeaProjectsNotifier(final BuildContext context) =>
+    IdeaProjectsNotifier();
+
 class IdeaProjectAnswersNotifier extends MapState<IdeaProjectAnswer> {
   Iterable<IdeaProjectAnswer> getAllByIdea({
     required final ProjectId ideaId,
@@ -19,8 +22,10 @@ class IdeaProjectAnswersNotifier extends MapState<IdeaProjectAnswer> {
   }
 }
 
-IdeaProjectsNotifier createIdeaProjectsNotifier(final BuildContext context) =>
-    IdeaProjectsNotifier();
+IdeaProjectAnswersNotifier createIdeaProjectAnswersNotifier(
+  final BuildContext context,
+) =>
+    IdeaProjectAnswersNotifier();
 
 class IdeaProjectQuestionsNotifier extends MapState<IdeaProjectQuestion> {}
 

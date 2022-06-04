@@ -50,6 +50,7 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createFoldersNotifier),
         ChangeNotifierProvider(create: createCurrentFoldersNotifier),
         ChangeNotifierProvider(create: createIdeaProjectsNotifier),
+        ChangeNotifierProvider(create: createIdeaProjectAnswersNotifier),
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
         ChangeNotifierProvider(create: createNoteProjectsNotifier),
         ChangeNotifierProvider(create: createNotificationController),

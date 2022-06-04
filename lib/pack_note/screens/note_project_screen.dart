@@ -31,13 +31,14 @@ class NoteProjectScreen extends HookWidget {
     final updatesStream = useStreamController<NoteProjectUpdate>();
 
     final state = useNoteProjectScreenState(
-      context: context,
       note: note.value,
       onScreenBack: onBack,
       noteController: noteController,
       updatesStream: updatesStream,
       onGoHome: onGoHome,
       checkIsProjectActive: checkIsProjectActive,
+      folderNotifier: context.watch(),
+      notesNotifier: context.watch(),
     );
 
     double? appBarHeight;

@@ -17,7 +17,8 @@ class MobileNoteSettingsMenu extends HookWidget {
     useNoteProjectUpdaterState(
       note: note,
       updatesStream: updatesStream,
-      context: context,
+      folderNotifier: context.watch(),
+      notesNotifier: context.watch(),
     );
     final theme = Theme.of(context);
 

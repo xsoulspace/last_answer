@@ -20,11 +20,11 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       id: fields[0] as String,
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
-      isToDelete: fields[9] as bool,
       newAnswerText: fields[6] as String,
       folder: fields[8] as ProjectFolder?,
       newQuestion: fields[7] as IdeaProjectQuestion?,
       answers: (fields[5] as HiveList?)?.castHiveList(),
+      isToDelete: fields[9] as bool?,
       updatedAt: fields[4] as DateTime?,
       isCompleted: fields[1] as bool,
     );
@@ -213,10 +213,10 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       id: fields[0] as String,
       createdAt: fields[3] as DateTime,
       note: fields[5] as String,
-      isToDelete: fields[8] as bool,
       folder: fields[6] as ProjectFolder?,
       charactersLimit: fields[7] as int?,
       isCompleted: fields[1] as bool,
+      isToDelete: fields[8] as bool?,
       updatedAt: fields[4] as DateTime?,
     );
   }

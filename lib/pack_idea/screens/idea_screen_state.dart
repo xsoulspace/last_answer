@@ -1,21 +1,26 @@
 part of pack_idea;
 
+// ignore: long-parameter-list
 IdeaScreenState useIdeaScreenState({
   required final VoidCallback onScreenBack,
   required final StreamController<bool> ideaUpdatesStream,
   required final IdeaProject idea,
   required final ValueNotifier<bool> questionsOpened,
-  required final ValueNotifier<List<IdeaProjectAnswer>> answers,
+  required final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier,
+  required final CurrentFolderNotifier folderNotifier,
+  required final IdeaProjectsNotifier ideasNotifier,
 }) =>
     use(
       ContextfulLifeHook(
         debugLabel: 'useIdeaScreenState',
         state: IdeaScreenState(
+          folderNotifier: folderNotifier,
+          ideasNotifier: ideasNotifier,
           onScreenBack: onScreenBack,
           idea: idea,
           ideaUpdatesStream: ideaUpdatesStream,
           questionsOpened: questionsOpened,
-          answers: answers,
+          answersNotifier: answersNotifier,
         ),
       ),
     );
@@ -26,21 +31,21 @@ class IdeaScreenState extends ContextfulLifeState {
     required this.ideaUpdatesStream,
     required this.idea,
     required this.questionsOpened,
-    required this.answers,
+    required this.answersNotifier,
+    required this.folderNotifier,
+    required this.ideasNotifier,
   });
   final VoidCallback onScreenBack;
   final IdeaProject idea;
   final ValueNotifier<bool> questionsOpened;
-  final ValueNotifier<List<IdeaProjectAnswer>> answers;
+  final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier;
 
   final StreamController<bool> ideaUpdatesStream;
 
-  late CurrentFolderNotifier folderProvider;
-  late IdeaProjectsNotifier ideasProvider;
+  final CurrentFolderNotifier folderNotifier;
+  final IdeaProjectsNotifier ideasNotifier;
   @override
   void initState() {
-    folderProvider = context.watch<CurrentFolderNotifier>();
-    ideasProvider = context.watch<IdeaProjectsNotifier>();
     ideaUpdatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
@@ -51,14 +56,14 @@ class IdeaScreenState extends ContextfulLifeState {
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    ideasProvider.put(
+    ideasNotifier.put(
       key: idea.id,
       value: idea..updatedAt = DateTime.now(),
     );
 
     if (updateFolder) {
       idea.folder?.sortProjectsByDate(project: idea);
-      folderProvider.notify();
+      folderNotifier.notify();
     }
     await idea.save();
   }
@@ -92,7 +97,7 @@ class IdeaScreenState extends ContextfulLifeState {
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
     await idea.removeAnswer(answer: answer, context: context);
-    answers.value = [...answers.value]..remove(answer);
+    answersNotifier.value = [...answersNotifier.value]..remove(answer);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }
@@ -103,7 +108,7 @@ class IdeaScreenState extends ContextfulLifeState {
   }
 
   Future<void> onAnswerCreated(final IdeaProjectAnswer answer) async {
-    answers.value = [...answers.value, answer];
+    answersNotifier.value = [...answersNotifier.value, answer];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }

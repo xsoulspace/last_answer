@@ -13,38 +13,37 @@ class NoteProjectUpdate {
 NoteProjectUpdaterState useNoteProjectUpdaterState({
   required final NoteProject note,
   required final StreamController<NoteProjectUpdate> updatesStream,
-  required final BuildContext context,
+  required final NoteProjectsNotifier notesNotifier,
+  required final CurrentFolderNotifier folderNotifier,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useNoteProjectUpdaterState',
         state: NoteProjectUpdaterState(
           note: note,
           updatesStream: updatesStream,
-          context: context,
+          folderNotifier: folderNotifier,
+          notesNotifier: notesNotifier,
         ),
       ),
     );
 
-class NoteProjectUpdaterState extends LifeState {
+class NoteProjectUpdaterState extends ContextfulLifeState {
   NoteProjectUpdaterState({
+    required this.folderNotifier,
+    required this.notesNotifier,
     required this.note,
     required this.updatesStream,
-    required this.context,
   });
 
-  final BuildContext context;
   final NoteProject note;
   final StreamController<NoteProjectUpdate> updatesStream;
-  late NoteProjectsNotifier notesProvider;
-  late CurrentFolderNotifier folderProvider;
+  final NoteProjectsNotifier notesNotifier;
+  final CurrentFolderNotifier folderNotifier;
 
   @override
   @mustCallSuper
   void initState() {
-    notesProvider = context.watch<NoteProjectsNotifier>();
-    folderProvider = context.watch<CurrentFolderNotifier>();
-
     updatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
@@ -56,11 +55,11 @@ class NoteProjectUpdaterState extends LifeState {
   @mustCallSuper
   // ignore: avoid_positional_boolean_parameters
   Future<void> onUpdateFolder(final NoteProjectUpdate notifier) async {
-    notesProvider.put(key: note.id, value: note);
+    notesNotifier.put(key: note.id, value: note);
 
     if (notifier.positionChanged) {
       note.folder?.sortProjectsByDate(project: note);
-      folderProvider.notify();
+      folderNotifier.notify();
     }
 
     await note.save();

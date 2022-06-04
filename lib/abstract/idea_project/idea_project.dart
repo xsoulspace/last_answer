@@ -8,14 +8,15 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     required final super.id,
     required final super.title,
     required final super.createdAt,
-    this.isToDelete = defaultProjectIsDeleted,
     this.newAnswerText = '',
     this.folder,
     this.newQuestion,
-    this.answers,
+    @Deprecated('use getAnswers instead') this.answers,
+    final bool? isToDelete,
     final DateTime? updatedAt,
     final super.isCompleted = defaultProjectIsCompleted,
-  }) : super(
+  })  : isToDelete = isToDelete ?? defaultProjectIsDeleted,
+        super(
           updatedAt: updatedAt ?? createdAt,
           folder: folder,
           type: ProjectType.idea,
@@ -75,7 +76,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     return idea;
   }
 
-  @Deprecated('Answers should be accessed on db manner')
+  @Deprecated('use getAnswers instead')
   @HiveField(projectLatestFieldHiveId + 1)
   HiveList<IdeaProjectAnswer>? answers;
 

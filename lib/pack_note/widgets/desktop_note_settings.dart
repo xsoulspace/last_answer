@@ -19,7 +19,8 @@ class DesktopNoteSettingsMenu extends HookWidget {
     useNoteProjectUpdaterState(
       note: note,
       updatesStream: updatesStream,
-      context: context,
+      folderNotifier: context.watch(),
+      notesNotifier: context.watch(),
     );
     final divider = Divider(
       color: theme.highlightColor,

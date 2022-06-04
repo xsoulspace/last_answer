@@ -17,9 +17,11 @@ class IdeaProjectScreen extends HookWidget {
   Widget build(final BuildContext context) {
     // ignore: close_sinks
     final ideaUpdatesStream = useStreamController<bool>();
-    final ideasProvider = context.watch<IdeaProjectsNotifier>();
+    final ideasNotifier = context.watch<IdeaProjectsNotifier>();
     final ideaQuestionsProvider = context.watch<IdeaProjectQuestionsNotifier>();
-    final idea = ideasProvider.state[ideaId]!;
+    final idea = ideasNotifier.state[ideaId];
+    if (idea == null) return const SizedBox();
+
     final titleController = useTextEditingController(text: idea.title);
     final answers = idea.getAnswers(context);
     final answersNotifier = useState<List<IdeaProjectAnswer>>([...answers]);
@@ -29,7 +31,9 @@ class IdeaProjectScreen extends HookWidget {
 
     final state = useIdeaScreenState(
       onScreenBack: onBack,
-      answers: answersNotifier,
+      folderNotifier: context.watch(),
+      ideasNotifier: ideasNotifier,
+      answersNotifier: answersNotifier,
       ideaUpdatesStream: ideaUpdatesStream,
       idea: idea,
       questionsOpened: questionsOpened,

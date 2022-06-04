@@ -42,8 +42,8 @@ class IdeaAnswerScreen extends HookWidget {
     final updatesStream = useStreamController<bool>();
 
     final state = useIdeaAnswerScreenState(
+      ideasNotifier: ideasNotifier,
       answer: answer,
-      context: context,
       idea: maybeIdea,
       onScreenBack: onBack,
       textController: textController,

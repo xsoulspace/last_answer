@@ -1,10 +1,12 @@
 part of pack_note;
 
+// ignore: long-parameter-list
 NoteProjectScreenState useNoteProjectScreenState({
   required final TextEditingController noteController,
+  required final NoteProjectsNotifier notesNotifier,
+  required final CurrentFolderNotifier folderNotifier,
   required final NoteProject note,
   required final StreamController<NoteProjectUpdate> updatesStream,
-  required final BuildContext context,
   required final ValueChanged<NoteProject> onScreenBack,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
@@ -18,8 +20,9 @@ NoteProjectScreenState useNoteProjectScreenState({
           note: note,
           noteController: noteController,
           updatesStream: updatesStream,
-          context: context,
           onScreenBack: onScreenBack,
+          folderNotifier: folderNotifier,
+          notesNotifier: notesNotifier,
         ),
       ),
     );
@@ -30,10 +33,11 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     required this.onScreenBack,
     required final this.checkIsProjectActive,
     required final this.onGoHome,
-    required final NoteProject note,
-    required final StreamController<NoteProjectUpdate> updatesStream,
-    required final BuildContext context,
-  }) : super(context: context, note: note, updatesStream: updatesStream);
+    required final super.folderNotifier,
+    required final super.notesNotifier,
+    required final super.note,
+    required final super.updatesStream,
+  });
 
   final TextEditingController noteController;
   final ValueChanged<NoteProject> onScreenBack;
@@ -43,8 +47,6 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   @override
   void initState() {
     noteController.addListener(onNoteChange);
-    notesProvider = context.watch<NoteProjectsNotifier>();
-    folderProvider = context.watch<CurrentFolderNotifier>();
     super.initState();
   }
 

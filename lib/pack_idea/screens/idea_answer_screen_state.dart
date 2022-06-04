@@ -1,18 +1,19 @@
 part of pack_idea;
 
+// ignore: long-parameter-list
 IdeaAnswerScreenState useIdeaAnswerScreenState({
-  required final BuildContext context,
   required final TextEditingController textController,
   required final StreamController<bool> updatesStream,
   required final ValueNotifier<IdeaProjectAnswer> answer,
   required final IdeaProject idea,
   required final ValueChanged<IdeaProject> onScreenBack,
+  required final IdeaProjectsNotifier ideasNotifier,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useIdeaAnswerScreenState',
         state: IdeaAnswerScreenState(
-          context: context,
+          ideasNotifier: ideasNotifier,
           textController: textController,
           updatesStream: updatesStream,
           answer: answer,
@@ -22,27 +23,25 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
       ),
     );
 
-class IdeaAnswerScreenState extends LifeState {
+class IdeaAnswerScreenState extends ContextfulLifeState {
   IdeaAnswerScreenState({
-    required final this.context,
     required this.textController,
+    required this.ideasNotifier,
     required this.updatesStream,
     required this.answer,
     required this.idea,
     required this.onScreenBack,
   });
-  final BuildContext context;
   final TextEditingController textController;
   final StreamController<bool> updatesStream;
   final ValueNotifier<IdeaProjectAnswer> answer;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
 
-  late IdeaProjectsNotifier ideasProvider;
+  final IdeaProjectsNotifier ideasNotifier;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.watch<IdeaProjectsNotifier>();
 
     updatesStream.stream
         .sampleTime(
@@ -56,7 +55,7 @@ class IdeaAnswerScreenState extends LifeState {
   Future<void> onAnswerUpdate(final bool update) async {
     idea.folder?.sortProjectsByDate(project: idea);
     await answer.value.save();
-    ideasProvider.notify();
+    ideasNotifier.notify();
     await idea.save();
   }
 

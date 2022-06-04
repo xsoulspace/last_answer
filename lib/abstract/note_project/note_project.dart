@@ -8,12 +8,13 @@ class NoteProject extends BasicProject<NoteProjectModel> {
     required final super.id,
     required final super.createdAt,
     this.note = '',
-    this.isToDelete = defaultProjectIsDeleted,
     this.folder,
     this.charactersLimit,
     final super.isCompleted = defaultProjectIsCompleted,
+    final bool? isToDelete,
     final DateTime? updatedAt,
-  }) : super(
+  })  : isToDelete = isToDelete ?? defaultProjectIsDeleted,
+        super(
           updatedAt: updatedAt ?? createdAt,
           title: '',
           folder: folder,

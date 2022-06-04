@@ -165,10 +165,11 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
 
     // TODO(arenukvern): keep it in case of future migrations - how to automate it?
-    // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
-    // if (!settings.migrated) {
-    //   await settings.setMigrated();
-    // }
+    settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
+    if (!settings.migrated) {
+      await migrateIdeas_v4(ideas);
+      await settings.setMigrated();
+    }
     settings.loadingStatus = AppStateLoadingStatuses.settings;
 
     await notificationController.onLoad(context: context);

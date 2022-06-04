@@ -31,6 +31,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     final question = questionsNotifier.state[model.newQuestionId];
 
     return create(
+      context: context,
       title: model.title,
       folder: folder,
       createdAt: model.createdAt,
@@ -46,6 +47,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   static Future<IdeaProject> create({
     required final String title,
     required final ProjectFolder folder,
+    required final BuildContext context,
     final DateTime? createdAt,
     final DateTime? updatedAt,
     final String? id,
@@ -66,16 +68,14 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     );
     final ideaBox =
         await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
-    final ideaAnswersBox = await Hive.openBox<IdeaProjectAnswer>(
-      HiveBoxesIds.ideaProjectAnswerKey,
-    );
     await ideaBox.put(idea.id, idea);
-    idea.answers = HiveList<IdeaProjectAnswer>(ideaAnswersBox);
+    context.read<IdeaProjectsNotifier>().put(key: idea.id, value: idea);
     folder.addProject(idea);
 
     return idea;
   }
 
+  @Deprecated('Answers should be accessed on db manner')
   @HiveField(projectLatestFieldHiveId + 1)
   HiveList<IdeaProjectAnswer>? answers;
 
@@ -94,13 +94,18 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   @override
   @HiveField(projectLatestFieldHiveId + 5)
   bool isToDelete;
+  Iterable<IdeaProjectAnswer> getAnswers(final BuildContext context) {
+    final answersNotifier = context.read<IdeaProjectAnswersNotifier>();
+
+    return answersNotifier.getAllByIdea(ideaId: id);
+  }
 
   @override
-  String toShareString() {
+  String toShareString(final BuildContext context) {
     final buffer = StringBuffer('$title \n');
-    final List<IdeaProjectAnswer> resolvedAnswers = answers ?? [];
-    for (final answer in resolvedAnswers) {
-      buffer.writeln(answer.toShareString());
+    final answers = getAnswers(context);
+    for (final answer in answers) {
+      buffer.writeln(answer.toShareString(context));
     }
 
     return buffer.toString();
@@ -133,21 +138,15 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     required final BuildContext context,
   }) async {
     context.read<IdeaProjectsNotifier>().remove(key: key);
-    final deleteAnswerFutures = answers?.map(
+    final answers = getAnswers(context);
+    final deleteAnswerFutures = answers.map(
       (final answer) => answer.deleteWithRelatives(
         context: context,
-        idea: this,
       ),
     );
-    if (deleteAnswerFutures != null) {
-      await Future.wait(deleteAnswerFutures);
-    }
+    await Future.wait(deleteAnswerFutures);
     folder?.removeProject(this);
     await delete();
-  }
-
-  void addAnswer(final IdeaProjectAnswer answer) {
-    answers?.add(answer);
   }
 
   Future<void> removeAnswer({
@@ -161,3 +160,24 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
 /// To create use `final mockIdeaProject = MockIdeaProject();`
 // ignore: avoid_implementing_value_types
 // class MockIdeaProject extends Mock implements IdeaProject {}
+
+// ignore: camel_case_extensions
+extension IdeaProjectMigration_v4 on IdeaProject {
+  // ignore: non_constant_identifier_names
+  Future<void> migrate_v4() async {
+    await Future.wait(
+      (answers ?? <IdeaProjectAnswer>[]).map((final answer) {
+        answer.projectId = answer.id;
+
+        return answer.save();
+      }),
+    );
+  }
+}
+
+// ignore: non_constant_identifier_names
+Future<void> migrateIdeas_v4(final Box<IdeaProject> ideas) async {
+  for (final idea in ideas.values) {
+    await idea.migrate_v4();
+  }
+}

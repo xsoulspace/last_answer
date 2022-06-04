@@ -28,6 +28,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
     final folder = foldersNotifier.state[model.folderId]!;
 
     return create(
+      context: context,
       note: model.note,
       folder: folder,
       charactersLimit: model.charactersLimit,
@@ -41,6 +42,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
   // ignore: long-parameter-list
   static Future<NoteProject> create({
     required final ProjectFolder folder,
+    required final BuildContext context,
     final int? charactersLimit,
     final String? id,
     final DateTime? updatedAt,
@@ -62,6 +64,9 @@ class NoteProject extends BasicProject<NoteProjectModel> {
 
     final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
     await box.put(noteProject.id, noteProject);
+    context
+        .read<NoteProjectsNotifier>()
+        .put(key: noteProject.id, value: noteProject);
     folder.addProject(noteProject);
 
     return noteProject;
@@ -98,7 +103,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
   set title(final String _) => throw UnimplementedError();
 
   @override
-  String toShareString() => note;
+  String toShareString(final BuildContext context) => note;
 
   @override
   NoteProjectModel toModel({required final UserModel user}) {

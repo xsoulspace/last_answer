@@ -39,7 +39,8 @@ class IdeaProjectQuestion extends HiveObjectWithId
   bool get stringify => true;
 
   @override
-  String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+  String toShareString(final BuildContext context) =>
+      title.getByLanguage(Intl.getCurrentLocale());
 
   @override
   IdeaProjectQuestionModel toModel({required final UserModel user}) {

@@ -44,8 +44,8 @@ class AppNavigatorController {
       final newNote = await NoteProject.create(
         folder: currentFolder,
         charactersLimit: settingsNotifier.charactersLimitForNewNotes,
+        context: context,
       );
-      context.read<NoteProjectsNotifier>().put(key: newNote.id, value: newNote);
       folderNotifier.notify();
       resolvedNoteId = newNote.id;
     }
@@ -68,8 +68,8 @@ class AppNavigatorController {
     final idea = await IdeaProject.create(
       title: title,
       folder: currentFolder,
+      context: context,
     );
-    context.read<IdeaProjectsNotifier>().put(key: idea.id, value: idea);
     folderNotifier.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
   }

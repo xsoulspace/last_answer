@@ -10,7 +10,7 @@ class IdeaProjectAnswer extends HiveObjectWithId
     required this.text,
     required this.question,
     required this.createdAt,
-    required this.projectId,
+    this.projectId = '',
     this.isToDelete = false,
     final DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
@@ -25,6 +25,7 @@ class IdeaProjectAnswer extends HiveObjectWithId
 
     return create(
       idea: idea!,
+      context: context,
       question: question,
       text: model.text,
       createdAt: model.createdAt,
@@ -33,7 +34,9 @@ class IdeaProjectAnswer extends HiveObjectWithId
     );
   }
 
+  // ignore: long-parameter-list
   static Future<IdeaProjectAnswer> create({
+    required final BuildContext context,
     required final String text,
     required final IdeaProjectQuestion question,
     required final IdeaProject idea,
@@ -53,7 +56,10 @@ class IdeaProjectAnswer extends HiveObjectWithId
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
-    idea.addAnswer(answer);
+
+    context
+        .read<IdeaProjectAnswersNotifier>()
+        .put(key: answer.id, value: answer);
 
     return answer;
   }
@@ -79,11 +85,13 @@ class IdeaProjectAnswer extends HiveObjectWithId
   bool isToDelete;
 
   @HiveField(6)
-  final ProjectId projectId;
+  // TODO(arenukvern): after v4 migration replace late with final
+  ProjectId projectId;
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
-  String toShareString() => '${question.toShareString()} \n $text';
+  String toShareString(final BuildContext context) =>
+      '${question.toShareString(context)} \n $text';
 
   @override
   List get props => [id];
@@ -106,16 +114,8 @@ class IdeaProjectAnswer extends HiveObjectWithId
   @override
   Future<void> deleteWithRelatives({
     required final BuildContext context,
-    final IdeaProject? idea,
   }) async {
-    final effectiveIdea = () {
-      if (idea != null) return idea;
-      final ideasNotifier = context.read<IdeaProjectsNotifier>();
-
-      return ideasNotifier.state[projectId];
-    }();
-
-    effectiveIdea?.answers?.remove(this);
+    context.read<IdeaProjectAnswersNotifier>().remove(key: id);
     await delete();
   }
 }

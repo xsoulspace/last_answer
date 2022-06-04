@@ -60,7 +60,7 @@ abstract class BasicProject<TModel extends HasId> extends HiveObjectWithId
 
   /// Always override it in extended projects
   @override
-  String toShareString() => '';
+  String toShareString(final BuildContext context) => '';
 
   @override
   List<Object?> get props => [id];

@@ -9,6 +9,7 @@ class _AnswerCreator extends HookWidget {
     required final this.onFocus,
     required final this.questionsOpened,
     required final this.onChanged,
+    required final this.answersIsEmpty,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectQuestion defaultQuestion;
@@ -18,6 +19,7 @@ class _AnswerCreator extends HookWidget {
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
   final VoidCallback onChanged;
+  final bool answersIsEmpty;
   static Color getBackgroundByTheme(final ThemeData theme) =>
       theme.brightness == Brightness.light
           ? AppColors.grey4.withOpacity(0.15)
@@ -101,7 +103,7 @@ class _AnswerCreator extends HookWidget {
                 Expanded(
                   child: FlatTextField(
                     hintText: S.current.writeAnAnswer,
-                    focusOnInit: idea.answers?.isEmpty == true,
+                    focusOnInit: answersIsEmpty,
                     controller: state.answerController,
                     onSubmit: state.onCreate,
                     focusNode: state.answerFocusNode,

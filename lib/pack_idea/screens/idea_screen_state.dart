@@ -91,8 +91,8 @@ class IdeaScreenState extends ContextfulLifeState {
   }
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
-    unawaited(idea.removeAnswer(answer: answer, context: context));
-    answers.value = [...idea.answers?.reversed ?? []];
+    await idea.removeAnswer(answer: answer, context: context);
+    answers.value = [...answers.value]..remove(answer);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }
@@ -103,8 +103,7 @@ class IdeaScreenState extends ContextfulLifeState {
   }
 
   Future<void> onAnswerCreated(final IdeaProjectAnswer answer) async {
-    idea.addAnswer(answer);
-    answers.value = [...idea.answers?.reversed ?? []];
+    answers.value = [...answers.value, answer];
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }

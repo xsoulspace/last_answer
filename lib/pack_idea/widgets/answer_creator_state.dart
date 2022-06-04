@@ -11,7 +11,7 @@ AnswerCreatorState useAnswerCreatorState({
   required final VoidCallback onChanged,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useAnswerCreatorState',
         state: AnswerCreatorState(
           idea: idea,
@@ -25,7 +25,7 @@ AnswerCreatorState useAnswerCreatorState({
       ),
     );
 
-class AnswerCreatorState extends LifeState {
+class AnswerCreatorState extends ContextfulLifeState {
   AnswerCreatorState({
     required this.defaultQuestion,
     required this.onCreated,
@@ -93,6 +93,7 @@ class AnswerCreatorState extends LifeState {
       text: text,
       question: question,
       idea: idea,
+      context: context,
     );
 
     onCreated(answer);

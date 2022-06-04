@@ -26,7 +26,7 @@ class UserModel with _$UserModel implements HasId {
   }) = _UserModel;
   factory UserModel.fromJson(final Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
-  UserModel._();
+  const UserModel._();
   static Map<String, dynamic> modelToJson(final UserModel model) =>
       model.toJson();
   static const UserModel zero = UserModel(

@@ -1,7 +1,7 @@
 part of pack_settings;
 
-class IdeaAnswerUpdater
-    extends InstanceUpdater<IdeaProjectAnswer, IdeaProjectAnswerModel> {
+class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
+    IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
   IdeaAnswerUpdater.of({
     required final super.clientSyncService,
     required final super.serverSyncService,

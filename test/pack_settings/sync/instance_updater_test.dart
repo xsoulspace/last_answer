@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 class DeletableTestItem extends HiveObjectWithId with EquatableMixin {
@@ -60,11 +61,11 @@ void main() {
       ];
 
       final otherList = List.generate(20, (final index) => TestItem('$index'));
-      final diff = InstanceUpdater<DeletableTestItem, TestItem>(
-        list: originalList,
+      final diff = InstanceUpdater<DeletableTestItem, TestItem,
+          MapState<DeletableTestItem>>(
         clientSyncService: ClientInstancesSyncServiceI(),
         serverSyncService: ServerInstancesSyncServiceI(),
-      ).compareConsistency(otherList);
+      ).compareConsistency(otherList: otherList, list: originalList);
       final otherUpdates = diff.otherUpdates;
       final originalUpdates = diff.originalUpdates;
 

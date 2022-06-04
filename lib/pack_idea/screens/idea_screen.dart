@@ -21,15 +21,15 @@ class IdeaProjectScreen extends HookWidget {
     final ideaQuestionsProvider = context.watch<IdeaProjectQuestionsNotifier>();
     final idea = ideasProvider.state[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
-    final answers =
-        useState<List<IdeaProjectAnswer>>([...?idea.answers?.reversed]);
+    final answers = idea.getAnswers(context);
+    final answersNotifier = useState<List<IdeaProjectAnswer>>([...answers]);
     final scrollController = useScrollController();
     final questions = ideaQuestionsProvider.state;
     final questionsOpened = useIsBool();
 
     final state = useIdeaScreenState(
       onScreenBack: onBack,
-      answers: answers,
+      answers: answersNotifier,
       ideaUpdatesStream: ideaUpdatesStream,
       idea: idea,
       questionsOpened: questionsOpened,
@@ -67,14 +67,14 @@ class IdeaProjectScreen extends HookWidget {
                 separatorBuilder: (final _, final __) =>
                     const SizedBox(height: 26),
                 padding: const EdgeInsets.all(10).copyWith(bottom: 24, top: 0),
-                itemCount: answers.value.length,
+                itemCount: answersNotifier.value.length,
                 reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (final context, final index) {
-                  if (index > answers.value.length - 1 || index < 0) {
+                  if (index > answersNotifier.value.length - 1 || index < 0) {
                     return Container();
                   }
-                  final answer = answers.value[index];
+                  final answer = answersNotifier.value[index];
 
                   return _AnswerTile(
                     onFocus: state.closeQuestions,
@@ -97,14 +97,15 @@ class IdeaProjectScreen extends HookWidget {
             ),
           ),
           _AnswerCreator(
+            answersIsEmpty: answers.isEmpty,
             onShareTap: () async {
               await ProjectSharer.of(context).share(project: idea);
             },
             questionsOpened: questionsOpened,
             onFocus: state.openQuestions,
             idea: idea,
-            defaultQuestion: answers.value.isNotEmpty
-                ? answers.value.first.question
+            defaultQuestion: answersNotifier.value.isNotEmpty
+                ? answersNotifier.value.first.question
                 : questions.values.first,
             onChanged: state.onAnswersChange,
             onCreated: state.onAnswerCreated,

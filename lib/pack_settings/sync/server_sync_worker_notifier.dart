@@ -15,6 +15,7 @@ ServerSyncWorkerNotifier createServerSyncWorkerNotifier(
       ideaQuestionSubscriber: context.read(),
       ideaAnswerSubscriber: context.read(),
       serverProjectsSyncService: context.read(),
+      usersNotifier: context.read(),
     );
 
 ///
@@ -44,12 +45,14 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
     required this.ideaQuestionSubscriber,
     required this.ideaAnswerSubscriber,
     required this.serverProjectsSyncService,
+    required this.usersNotifier,
   });
 
   @override
   Future<void> onLoad({required final BuildContext context}) async {
     await _onConnectionChange();
     connectivityService.addListener(_onConnectionChange);
+    usersNotifier.authenticated.addListener(_onAuthChange);
   }
 
   final ConnectivityNotifier connectivityService;
@@ -65,6 +68,8 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
   final ServerIdeaAnswerSubscriber ideaAnswerSubscriber;
   final ServerIdeaQuestionSubscriber ideaQuestionSubscriber;
   final ServerProjectsSubscriber projectsSubscriber;
+  final UsersNotifier usersNotifier;
+
   bool inRealTime = false;
 
   Future<void> goOnline() async {
@@ -81,7 +86,17 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
   Future<void> _onConnectionChange() async {
     final isConnected = connectivityService.isConnected;
     if (isConnected) {
+      if (!usersNotifier.authenticated.value) return;
+
       await goOnline();
+    } else {
+      goOffline();
+    }
+  }
+
+  Future<void> _onAuthChange() async {
+    if (usersNotifier.authenticated.value) {
+      await _onConnectionChange();
     } else {
       goOffline();
     }
@@ -109,6 +124,7 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
 
   @override
   void dispose() {
+    usersNotifier.authenticated.removeListener(_onAuthChange);
     connectivityService.removeListener(_onConnectionChange);
     _unsubscribe();
     super.dispose();

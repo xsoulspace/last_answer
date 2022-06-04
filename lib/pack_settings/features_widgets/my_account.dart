@@ -19,7 +19,7 @@ class MyAccount extends HookWidget {
     );
 
     return ValueListenableBuilder<bool>(
-      valueListenable: authState.authenticated,
+      valueListenable: authState.usersNotifier.authenticated,
       builder: (final context, final authenticated, final child) {
         if (!authenticated) {
           return const GlobalSignInScreen();

@@ -7,6 +7,7 @@ UsersNotifier createUsersNotifier(
 
 class UsersNotifier extends ChangeNotifier implements Loadable {
   final currentUser = ValueNotifier(UserModel.zero);
+  final authenticated = ValueNotifier(false);
   @override
   Future<void> onLoad({required final BuildContext context}) {
     // TODO: implement onLoad
@@ -16,6 +17,7 @@ class UsersNotifier extends ChangeNotifier implements Loadable {
   @override
   void dispose() {
     currentUser.dispose();
+    authenticated.dispose();
     super.dispose();
   }
 }

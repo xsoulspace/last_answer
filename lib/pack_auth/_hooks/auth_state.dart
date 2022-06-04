@@ -2,12 +2,14 @@ part of pack_auth;
 
 AuthState useAppAuthState({
   required final SupabaseClient supabaseClient,
+  required final UsersNotifier usersNotifier,
 }) =>
     use(
       LifeHook(
         debugLabel: 'AuthState',
         state: AuthState(
           supabaseClient: supabaseClient,
+          usersNotifier: usersNotifier,
         ),
       ),
     );
@@ -15,19 +17,14 @@ AuthState useAppAuthState({
 class AuthState extends SupabaseAuthLifeState {
   AuthState({
     required this.supabaseClient,
+    required this.usersNotifier,
   });
   final SupabaseClient supabaseClient;
+  final UsersNotifier usersNotifier;
   GoTrueClient get supabaseAuth => supabaseClient.auth;
-  final authenticated = ValueNotifier(false);
   bool get discordSignInAvailable =>
       kIsWeb || Platform.isAndroid || Platform.isIOS;
   bool get magicLinkSignInAvailable => discordSignInAvailable;
-
-  @override
-  void dispose() {
-    super.dispose();
-    authenticated.dispose();
-  }
 
   /// iOS, Android and web only
   Future<GotrueSessionResponse> signInWithMagicLink({
@@ -118,12 +115,14 @@ class AuthState extends SupabaseAuthLifeState {
 
   @override
   void onUnauthenticated() {
-    authenticated.value = false;
+    usersNotifier.authenticated.value = false;
+    usersNotifier.currentUser.value = UserModel.zero;
   }
 
   @override
   void onAuthenticated(final Session session) {
-    authenticated.value = true;
+    usersNotifier.authenticated.value = true;
+    // TODO(arenukvern): fetch user
   }
 
   @override
@@ -131,6 +130,7 @@ class AuthState extends SupabaseAuthLifeState {
 
   @override
   void onErrorAuthenticating(final String message) {
-    authenticated.value = false;
+    usersNotifier.authenticated.value = false;
+    usersNotifier.currentUser.value = UserModel.zero;
   }
 }

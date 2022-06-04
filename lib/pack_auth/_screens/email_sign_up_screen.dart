@@ -124,7 +124,7 @@ class EmailSignUpScreen extends HookWidget {
                     children: [
                       Text(
                         'Verification link sent to e-mail: ${state.emailController.text} address.'
-                        '\n\nIf you cannot find it check spam folder.',
+                        '\n\nIf you cannot find it, check spam folder.',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 48),

@@ -22,8 +22,7 @@ class MyAccountState extends LifeState {
       message: 'Your account will be deleted permanently. \n'
           'All server data will be lost. \n'
           'All locally saved data will be accessable. \n'
-          'In case if not all data was synchronized, '
-          'you will lost not synchronized data.',
+          'You will lose not synchronized data.',
     );
     if (response == AlertButton.yesButton) {
       await authState.deleteUser();

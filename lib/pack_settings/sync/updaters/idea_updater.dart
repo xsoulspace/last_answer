@@ -6,7 +6,7 @@ IdeaUpdater createIdeaUpdater(
     IdeaUpdater.of(
       clientSyncService: context.read<ClientIdeaSyncService>(),
       foldersNotifier: context.read(),
-      serverSyncService: context.read<ServerIdeaSyncService>(),
+      serverSyncService: context.read<ServerProjectsSyncService>(),
       questionsNotifier: context.read(),
     );
 
@@ -14,12 +14,25 @@ class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
     IdeaProjectModel, IdeaProjectsNotifier> {
   IdeaUpdater.of({
     required final super.clientSyncService,
-    required final super.serverSyncService,
+    required final ServerProjectsSyncService serverSyncService,
     required final super.foldersNotifier,
     required this.questionsNotifier,
-  });
-  final IdeaProjectQuestionsNotifier questionsNotifier;
+  }) : super(
+          serverSyncService: serverSyncService
+              as ServerInstancesSyncServiceI<IdeaProject, IdeaProjectModel>,
+        );
+  @override
+  Future<void> getAndUpdateByOther([final List<IdeaProjectModel>? other]) {
+    throw ArgumentError('Do not use this method. Use [updateByUnion] instead.');
+  }
 
+  Future<void> updateByUnion(final Iterable<BasicProjectModel> unions) async {
+    final list = await clientSyncService.getAll();
+    final other = unions.whereType<IdeaProjectModel>();
+    await updateByOther(otherList: other, list: list);
+  }
+
+  final IdeaProjectQuestionsNotifier questionsNotifier;
   @override
   // ignore: long-method
   Future<InstanceUpdaterDto<IdeaProject, IdeaProjectModel>> compareContent({

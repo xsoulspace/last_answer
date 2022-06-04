@@ -14,6 +14,7 @@ ServerSyncWorkerNotifier createServerSyncWorkerNotifier(
       projectsSubscriber: context.read(),
       ideaQuestionSubscriber: context.read(),
       ideaAnswerSubscriber: context.read(),
+      serverProjectsSyncService: context.read(),
     );
 
 ///
@@ -42,6 +43,7 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
     required this.projectsSubscriber,
     required this.ideaQuestionSubscriber,
     required this.ideaAnswerSubscriber,
+    required this.serverProjectsSyncService,
   });
 
   @override
@@ -51,6 +53,8 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
   }
 
   final ConnectivityNotifier connectivityService;
+
+  final ServerProjectsSyncService serverProjectsSyncService;
 
   final FolderUpdater folderUpdater;
   final IdeaAnswerUpdater ideaAnswerUpdater;
@@ -66,10 +70,11 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
   Future<void> goOnline() async {
     if (inRealTime) return;
     await folderUpdater.getAndUpdateByOther();
-    await ideaAnswerUpdater.getAndUpdateByOther();
+    final projects = await serverProjectsSyncService.getAll();
+    await ideaUpdater.updateByUnion(projects);
     await ideaQuestionUpdater.getAndUpdateByOther();
-    await ideaUpdater.getAndUpdateByOther();
-    await noteUpdater.getAndUpdateByOther();
+    await ideaAnswerUpdater.getAndUpdateByOther();
+    await noteUpdater.updateByUnion(projects);
     _subscribe();
   }
 

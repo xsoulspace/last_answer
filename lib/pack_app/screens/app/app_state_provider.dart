@@ -83,10 +83,9 @@ class AppStateProvider extends StatelessWidget {
         /// *      SYNC SERVICES - SERVER
         /// ********************************************
         Provider(create: createServerFolderSyncService),
-        Provider(create: createServerIdeaSyncService),
+        Provider(create: createServerProjectsSyncService),
         Provider(create: createServerIdeaAnswerSyncService),
         Provider(create: createServerIdeaQuestionSyncService),
-        Provider(create: createServerNoteSyncService),
 
         /// ********************************************
         /// *      UPDATERS

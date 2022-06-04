@@ -1,7 +1,8 @@
 part of pack_settings;
 
 ServerProjectsSubscriber createProjectsSubscriberNotifier(
-        final BuildContext context) =>
+  final BuildContext context,
+) =>
     ServerProjectsSubscriber(
       api: context.read<ProjectsApi>(),
       ideaUpdater: context.read<IdeaUpdater>(),

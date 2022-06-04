@@ -6,16 +6,29 @@ NoteUpdater createNoteUpdater(
     NoteUpdater.of(
       clientSyncService: context.read<ClientNoteSyncService>(),
       foldersNotifier: context.read(),
-      serverSyncService: context.read<ServerNoteSyncService>(),
+      serverSyncService: context.read<ServerProjectsSyncService>(),
     );
 
 class NoteUpdater extends BasicProjectInstanceUpdater<NoteProject,
     NoteProjectModel, NoteProjectsNotifier> {
   NoteUpdater.of({
     required final super.clientSyncService,
-    required final super.serverSyncService,
+    required final ServerProjectsSyncService serverSyncService,
     required final super.foldersNotifier,
-  });
+  }) : super(
+          serverSyncService: serverSyncService
+              as ServerInstancesSyncServiceI<NoteProject, NoteProjectModel>,
+        );
+  @override
+  Future<void> getAndUpdateByOther([final List<NoteProjectModel>? other]) {
+    throw ArgumentError('Do not use this method. Use [updateByUnion] instead.');
+  }
+
+  Future<void> updateByUnion(final Iterable<BasicProjectModel> unions) async {
+    final list = await clientSyncService.getAll();
+    final other = unions.whereType<NoteProjectModel>();
+    await updateByOther(otherList: other, list: list);
+  }
 
   // ignore: long-method
   @override

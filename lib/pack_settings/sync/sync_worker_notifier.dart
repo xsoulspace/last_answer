@@ -21,18 +21,15 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     required this.ideaAnswerUpdater,
     required this.noteUpdater,
     required this.ideaQuestionUpdater,
-    required this.context,
+    required this.connectivityService,
   });
 
   @override
-  Future<void> onLoad({required final BuildContext context}) {
-    // TODO: implement onLoad
-    throw UnimplementedError();
+  Future<void> onLoad({required final BuildContext context}) async {
+    await _onConnectionChange();
   }
 
-  final _subscriptions = [];
-
-  final BuildContext context;
+  final ConnectivityService connectivityService;
 
   final FolderUpdater folderUpdater;
   final IdeaAnswerUpdater ideaAnswerUpdater;
@@ -40,19 +37,35 @@ class SyncWorker extends ChangeNotifier implements Loadable {
   final IdeaUpdater ideaUpdater;
   final NoteUpdater noteUpdater;
 
-  Future<void> onOnline() async {
+  Future<void> goOnline() async {
     await folderUpdater.getAndUpdateByOther();
     await ideaAnswerUpdater.getAndUpdateByOther();
     await ideaQuestionUpdater.getAndUpdateByOther();
     await ideaUpdater.getAndUpdateByOther();
     await noteUpdater.getAndUpdateByOther();
+    connectivityService.addListener(_onConnectionChange);
     _subscribe();
   }
 
-  void onOffline() {
+  Future<void> _onConnectionChange() async {
+    final isConnected = connectivityService.isConnected;
+    if (isConnected) {
+      await goOnline();
+    } else {
+      goOffline();
+    }
+  }
+
+  void goOffline() {
     _unsubscribe();
   }
 
   void _subscribe() {}
   void _unsubscribe() {}
+
+  @override
+  void dispose() {
+    _unsubscribe();
+    super.dispose();
+  }
 }

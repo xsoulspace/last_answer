@@ -14,9 +14,9 @@ class InstanceUpdater<TMutable extends HiveObjectWithId,
   final ServerInstancesSyncServiceI<TMutable, TImmutableOther>
       serverSyncService;
 
-  Future<void> getAndUpdateByOther() async {
+  Future<void> getAndUpdateByOther([final List<TImmutableOther>? other]) async {
     final list = await clientSyncService.getAll();
-    final otherList = await serverSyncService.getAll();
+    final otherList = other ?? await serverSyncService.getAll();
     await updateByOther(otherList: otherList, list: list);
   }
 

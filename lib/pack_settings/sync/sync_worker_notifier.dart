@@ -8,11 +8,11 @@ part of pack_settings;
 /// [x] - Get Idea's questions
 /// [x] - Get Ideas
 /// [x] - Get Answers
-/// [] - Start subscriptions
+/// [x] - Start subscriptions
 ///
 /// Online -> Offline strategy
 ///
-/// [] - Disable subscriptions
+/// [x] - Disable subscriptions
 ///
 class SyncWorker extends ChangeNotifier implements Loadable {
   SyncWorker({
@@ -22,11 +22,17 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     required this.noteUpdater,
     required this.ideaQuestionUpdater,
     required this.connectivityService,
+    required this.folderSubscriber,
+    required this.ideaAnswerSubscriber,
+    required this.ideaQuestionSubscriber,
+    required this.ideaSubscriber,
+    required this.noteSubscriber,
   });
 
   @override
   Future<void> onLoad({required final BuildContext context}) async {
     await _onConnectionChange();
+    connectivityService.addListener(_onConnectionChange);
   }
 
   final ConnectivityService connectivityService;
@@ -36,14 +42,20 @@ class SyncWorker extends ChangeNotifier implements Loadable {
   final IdeaQuestionUpdater ideaQuestionUpdater;
   final IdeaUpdater ideaUpdater;
   final NoteUpdater noteUpdater;
+  final FolderSubscriber folderSubscriber;
+  final IdeaAnswerSubscriber ideaAnswerSubscriber;
+  final IdeaQuestionSubscriber ideaQuestionSubscriber;
+  final IdeaSubscriber ideaSubscriber;
+  final NoteSubscriber noteSubscriber;
+  bool inRealTime = false;
 
   Future<void> goOnline() async {
+    if (inRealTime) return;
     await folderUpdater.getAndUpdateByOther();
     await ideaAnswerUpdater.getAndUpdateByOther();
     await ideaQuestionUpdater.getAndUpdateByOther();
     await ideaUpdater.getAndUpdateByOther();
     await noteUpdater.getAndUpdateByOther();
-    connectivityService.addListener(_onConnectionChange);
     _subscribe();
   }
 
@@ -60,8 +72,23 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     _unsubscribe();
   }
 
-  void _subscribe() {}
-  void _unsubscribe() {}
+  void _subscribe() {
+    folderSubscriber.subscribe();
+    ideaAnswerSubscriber.subscribe();
+    ideaQuestionSubscriber.subscribe();
+    ideaSubscriber.subscribe();
+    noteSubscriber.subscribe();
+    inRealTime = true;
+  }
+
+  void _unsubscribe() {
+    inRealTime = false;
+    folderSubscriber.unsubscribe();
+    ideaAnswerSubscriber.unsubscribe();
+    ideaQuestionSubscriber.unsubscribe();
+    ideaSubscriber.unsubscribe();
+    noteSubscriber.unsubscribe();
+  }
 
   @override
   void dispose() {

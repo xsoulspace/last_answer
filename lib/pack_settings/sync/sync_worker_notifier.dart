@@ -23,10 +23,9 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     required this.ideaQuestionUpdater,
     required this.connectivityService,
     required this.folderSubscriber,
-    required this.ideaAnswerSubscriber,
+    required this.projectsSubscriber,
     required this.ideaQuestionSubscriber,
-    required this.ideaSubscriber,
-    required this.noteSubscriber,
+    required this.ideaAnswerSubscriber,
   });
 
   @override
@@ -45,8 +44,7 @@ class SyncWorker extends ChangeNotifier implements Loadable {
   final FolderSubscriber folderSubscriber;
   final IdeaAnswerSubscriber ideaAnswerSubscriber;
   final IdeaQuestionSubscriber ideaQuestionSubscriber;
-  final IdeaSubscriber ideaSubscriber;
-  final NoteSubscriber noteSubscriber;
+  final ProjectsSubscriber projectsSubscriber;
   bool inRealTime = false;
 
   Future<void> goOnline() async {
@@ -76,8 +74,7 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     folderSubscriber.subscribe();
     ideaAnswerSubscriber.subscribe();
     ideaQuestionSubscriber.subscribe();
-    ideaSubscriber.subscribe();
-    noteSubscriber.subscribe();
+    projectsSubscriber.subscribe();
     inRealTime = true;
   }
 
@@ -86,12 +83,12 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     folderSubscriber.unsubscribe();
     ideaAnswerSubscriber.unsubscribe();
     ideaQuestionSubscriber.unsubscribe();
-    ideaSubscriber.unsubscribe();
-    noteSubscriber.unsubscribe();
+    projectsSubscriber.unsubscribe();
   }
 
   @override
   void dispose() {
+    connectivityService.removeListener(_onConnectionChange);
     _unsubscribe();
     super.dispose();
   }

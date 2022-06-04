@@ -11,5 +11,5 @@ part 'current_folder_notifier.dart';
 part 'emoji_provider.dart';
 part 'map_state.dart';
 part 'project_folders_notifier.dart';
+part 'projects_dto.dart';
 part 'projects_notifiers.dart';
-part 'projects_services.dart';

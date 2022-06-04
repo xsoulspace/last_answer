@@ -1,8 +1,8 @@
 part of pack_settings;
 
-class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel> {
+class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
+    ProjectFoldersNotifier> {
   FolderUpdater.of({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required this.foldersNotifier,

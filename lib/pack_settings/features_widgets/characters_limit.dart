@@ -7,7 +7,7 @@ class CharactersLimitSetting extends HookWidget {
     final Key? key,
   }) : super(key: key);
   final NoteProject? note;
-  final StreamController<NoteProjectNotifier>? updatesStream;
+  final StreamController<NoteProjectUpdate>? updatesStream;
 
   String getInitialLimit({required final GeneralSettingsController settings}) {
     int limit;

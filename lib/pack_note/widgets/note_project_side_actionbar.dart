@@ -15,7 +15,7 @@ class NoteProjectSideActionBar extends HookWidget {
 
   final ValueNotifier<NoteProject> note;
   final FutureVoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final StreamController<NoteProjectUpdate> updatesStream;
   final TextEditingController noteController;
   final VoidCallback showEmojiKeyboard;
   final VoidCallback closeEmojiKeyboard;

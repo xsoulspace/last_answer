@@ -1,27 +1,32 @@
 part of pack_settings;
 
 class InstanceUpdater<TMutable extends HiveObjectWithId,
-        TImmutableOther extends HasId>
+        TImmutableOther extends HasId, TNotifier extends MapState<TMutable>>
     implements RemotelyUpdatable<TMutable, TImmutableOther> {
   InstanceUpdater({
-    required this.list,
     required this.clientSyncService,
     required this.serverSyncService,
     this.defaultPolicy = InstanceUpdatePolicy.useClientVersion,
   });
-  final Iterable<TMutable> list;
   final InstanceUpdatePolicy defaultPolicy;
-  final ClientInstancesSyncServiceI<TMutable, TImmutableOther>
+  final ClientInstancesSyncServiceI<TMutable, TImmutableOther, TNotifier>
       clientSyncService;
   final ServerInstancesSyncServiceI<TMutable, TImmutableOther>
       serverSyncService;
 
+  Future<void> getAndUpdateByOther() async {
+    final list = await clientSyncService.getAll();
+    final otherList = await serverSyncService.getAll();
+    await updateByOther(otherList: otherList, list: list);
+  }
+
   @mustCallSuper
-  Future<void> updateByOther(
-    final Iterable<TImmutableOther> otherList,
-  ) async {
+  Future<void> updateByOther({
+    required final Iterable<TImmutableOther> otherList,
+    required final Iterable<TMutable> list,
+  }) async {
     InstanceUpdaterDto<TMutable, TImmutableOther> dto =
-        compareConsistency(otherList);
+        compareConsistency(otherList: otherList, list: list);
 
     dto = await compareContent(dto: dto);
 
@@ -31,9 +36,10 @@ class InstanceUpdater<TMutable extends HiveObjectWithId,
   /// Compares the elements of the lists, returns
   /// the new ones with deleted
   @mustCallSuper
-  InstanceUpdaterDto<TMutable, TImmutableOther> compareConsistency(
-    final Iterable<TImmutableOther> otherList,
-  ) {
+  InstanceUpdaterDto<TMutable, TImmutableOther> compareConsistency({
+    required final Iterable<TImmutableOther> otherList,
+    required final Iterable<TMutable> list,
+  }) {
     /// Generate other Map
     final otherMap = listWithIdToMap(otherList);
 
@@ -151,8 +157,10 @@ class InstanceUpdater<TMutable extends HiveObjectWithId,
   Future<void> saveChanges({
     required final InstanceUpdaterDto<TMutable, TImmutableOther> dto,
   }) async {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
+    await Future.wait([
+      serverSyncService.applyUpdaterDto(dto: dto),
+      clientSyncService.applyUpdaterDto(dto: dto),
+    ]);
   }
 
   InstanceUpdatePolicy getPolicyForDiff(
@@ -168,11 +176,12 @@ typedef OnCheckUpdater<T extends HasId, TOther extends HasId>
   UpdatableInstanceDiff<T, TOther> updatableDiff,
 );
 
-abstract class BasicProjectInstanceUpdater<TMutable extends BasicProject,
-        TImmutableOther extends BasicProjectModel>
-    extends InstanceUpdater<TMutable, TImmutableOther> {
+abstract class BasicProjectInstanceUpdater<
+        TMutable extends BasicProject,
+        TImmutableOther extends BasicProjectModel,
+        TNotifier extends MapState<TMutable>>
+    extends InstanceUpdater<TMutable, TImmutableOther, TNotifier> {
   BasicProjectInstanceUpdater({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required this.foldersNotifier,

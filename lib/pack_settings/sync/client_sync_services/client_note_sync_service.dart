@@ -1,7 +1,7 @@
 part of pack_settings;
 
-class ClientNoteSyncService
-    extends HiveClientSyncServiceImpl<NoteProject, NoteProjectModel> {
+class ClientNoteSyncService extends HiveClientSyncServiceImpl<NoteProject,
+    NoteProjectModel, NoteProjectsNotifier> {
   ClientNoteSyncService({required final super.context});
   @override
   Future<void> onCreateFromOther(

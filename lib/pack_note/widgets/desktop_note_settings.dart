@@ -10,7 +10,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
   static const borderPadding = 8.0;
   final NoteProject note;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final StreamController<NoteProjectUpdate> updatesStream;
 
   @override
   Widget build(final BuildContext context) {

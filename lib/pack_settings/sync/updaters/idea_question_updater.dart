@@ -1,9 +1,8 @@
 part of pack_settings;
 
-class IdeaQuestionUpdater
-    extends InstanceUpdater<IdeaProjectQuestion, IdeaProjectQuestionModel> {
+class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
+    IdeaProjectQuestionModel, IdeaProjectQuestionsNotifier> {
   IdeaQuestionUpdater.of({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required this.foldersNotifier,
@@ -48,15 +47,5 @@ class IdeaQuestionUpdater
         );
       },
     );
-  }
-
-  @override
-  Future<void> saveChanges({
-    required final InstanceUpdaterDto<IdeaProjectQuestion,
-            IdeaProjectQuestionModel>
-        dto,
-  }) {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
   }
 }

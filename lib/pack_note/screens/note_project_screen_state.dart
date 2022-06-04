@@ -3,7 +3,7 @@ part of pack_note;
 NoteProjectScreenState useNoteProjectScreenState({
   required final TextEditingController noteController,
   required final NoteProject note,
-  required final StreamController<NoteProjectNotifier> updatesStream,
+  required final StreamController<NoteProjectUpdate> updatesStream,
   required final BuildContext context,
   required final ValueChanged<NoteProject> onScreenBack,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
@@ -31,7 +31,7 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     required final this.checkIsProjectActive,
     required final this.onGoHome,
     required final NoteProject note,
-    required final StreamController<NoteProjectNotifier> updatesStream,
+    required final StreamController<NoteProjectUpdate> updatesStream,
     required final BuildContext context,
   }) : super(context: context, note: note, updatesStream: updatesStream);
 
@@ -74,7 +74,7 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     note
       ..note = noteController.text
       ..updatedAt = DateTime.now();
-    updatesStream.add(NoteProjectNotifier(positionChanged: positionChanged));
+    updatesStream.add(NoteProjectUpdate(positionChanged: positionChanged));
   }
 
   void onBack() {

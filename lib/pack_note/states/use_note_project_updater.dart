@@ -1,8 +1,8 @@
 part of pack_note;
 
 @immutable
-class NoteProjectNotifier {
-  const NoteProjectNotifier({
+class NoteProjectUpdate {
+  const NoteProjectUpdate({
     this.charactersLimitChanged = false,
     this.positionChanged = false,
   });
@@ -12,7 +12,7 @@ class NoteProjectNotifier {
 
 NoteProjectUpdaterState useNoteProjectUpdaterState({
   required final NoteProject note,
-  required final StreamController<NoteProjectNotifier> updatesStream,
+  required final StreamController<NoteProjectUpdate> updatesStream,
   required final BuildContext context,
 }) =>
     use(
@@ -35,7 +35,7 @@ class NoteProjectUpdaterState extends LifeState {
 
   final BuildContext context;
   final NoteProject note;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final StreamController<NoteProjectUpdate> updatesStream;
   late NoteProjectsNotifier notesProvider;
   late CurrentFolderNotifier folderProvider;
 
@@ -55,7 +55,7 @@ class NoteProjectUpdaterState extends LifeState {
 
   @mustCallSuper
   // ignore: avoid_positional_boolean_parameters
-  Future<void> onUpdateFolder(final NoteProjectNotifier notifier) async {
+  Future<void> onUpdateFolder(final NoteProjectUpdate notifier) async {
     notesProvider.put(key: note.id, value: note);
 
     if (notifier.positionChanged) {

@@ -1,9 +1,8 @@
 part of pack_settings;
 
-class IdeaUpdater
-    extends BasicProjectInstanceUpdater<IdeaProject, IdeaProjectModel> {
+class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
+    IdeaProjectModel, IdeaProjectsNotifier> {
   IdeaUpdater.of({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required final super.foldersNotifier,
@@ -83,13 +82,5 @@ class IdeaUpdater
         );
       },
     );
-  }
-
-  @override
-  Future<void> saveChanges({
-    required final InstanceUpdaterDto<IdeaProject, IdeaProjectModel> dto,
-  }) async {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
   }
 }

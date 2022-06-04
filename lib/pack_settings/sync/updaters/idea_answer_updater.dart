@@ -3,7 +3,6 @@ part of pack_settings;
 class IdeaAnswerUpdater
     extends InstanceUpdater<IdeaProjectAnswer, IdeaProjectAnswerModel> {
   IdeaAnswerUpdater.of({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required this.questionsNotifier,
@@ -74,14 +73,5 @@ class IdeaAnswerUpdater
         );
       },
     );
-  }
-
-  @override
-  Future<void> saveChanges({
-    required final InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>
-        dto,
-  }) {
-    // TODO: implement saveChanges
-    throw UnimplementedError();
   }
 }

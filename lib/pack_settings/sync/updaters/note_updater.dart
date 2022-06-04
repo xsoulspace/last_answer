@@ -1,9 +1,8 @@
 part of pack_settings;
 
-class NoteUpdater
-    extends BasicProjectInstanceUpdater<NoteProject, NoteProjectModel> {
+class NoteUpdater extends BasicProjectInstanceUpdater<NoteProject,
+    NoteProjectModel, NoteProjectsNotifier> {
   NoteUpdater.of({
-    required final super.list,
     required final super.clientSyncService,
     required final super.serverSyncService,
     required final super.foldersNotifier,
@@ -65,15 +64,5 @@ class NoteUpdater
         );
       },
     );
-  }
-
-  @override
-  Future<void> saveChanges({
-    required final InstanceUpdaterDto<NoteProject, NoteProjectModel> dto,
-  }) async {
-    await Future.wait([
-      super.serverSyncService.applyUpdaterDto(dto: dto),
-      super.clientSyncService.applyUpdaterDto(dto: dto),
-    ]);
   }
 }

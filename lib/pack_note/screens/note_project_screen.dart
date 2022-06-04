@@ -28,7 +28,7 @@ class NoteProjectScreen extends HookWidget {
     final noteController = useTextEditingController(text: maybeNote.note);
 
     // ignore: close_sinks
-    final updatesStream = useStreamController<NoteProjectNotifier>();
+    final updatesStream = useStreamController<NoteProjectUpdate>();
 
     final state = useNoteProjectScreenState(
       context: context,

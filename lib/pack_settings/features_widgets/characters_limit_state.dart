@@ -2,7 +2,7 @@ part of pack_settings;
 
 CharactersLimitSettingState useCharactersLimitSettingStateState({
   required final NoteProject? note,
-  required final StreamController<NoteProjectNotifier>? updatesStream,
+  required final StreamController<NoteProjectUpdate>? updatesStream,
   required final BuildContext context,
   required final TextEditingController controller,
 }) =>
@@ -28,7 +28,7 @@ class CharactersLimitSettingState extends LifeState {
 
   final BuildContext context;
   final NoteProject? note;
-  final StreamController<NoteProjectNotifier>? updatesStream;
+  final StreamController<NoteProjectUpdate>? updatesStream;
   late GeneralSettingsController settings;
   final TextEditingController controller;
   @override
@@ -49,8 +49,7 @@ class CharactersLimitSettingState extends LifeState {
     setLimit(limit);
   }
 
-  static const limitNotifier =
-      NoteProjectNotifier(charactersLimitChanged: true);
+  static const limitNotifier = NoteProjectUpdate(charactersLimitChanged: true);
 
   void setLimit(
     final int newLimit, {

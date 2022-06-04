@@ -4,7 +4,9 @@ class ServerInstancesSyncServiceI<T extends HiveObjectWithId,
         TOther extends HasId> extends InstancesSyncServiceI<TOther, T>
     with
         // ignore: prefer_mixin
-        InstancesSyncServiceApplier<T, TOther> {}
+        InstancesSyncServiceApplier<T, TOther> {
+  Future<Iterable<TOther>> getAll() async => throw UnimplementedError();
+}
 
 class ServerSyncServiceImpl<T extends HiveObjectWithId, TOther extends HasId>
     extends ServerInstancesSyncServiceI<T, TOther> {
@@ -12,6 +14,9 @@ class ServerSyncServiceImpl<T extends HiveObjectWithId, TOther extends HasId>
     required this.api,
   });
   final AbstractApi<TOther> api;
+
+  @override
+  Future<Iterable<TOther>> getAll() async => api.getAll();
 
   @override
   Future<void> onUpdate(

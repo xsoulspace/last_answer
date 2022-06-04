@@ -1,17 +1,26 @@
 part of pack_settings;
 
-class ClientInstancesSyncServiceI<T extends HiveObjectWithId,
-        TOther extends HasId> extends InstancesSyncServiceI<T, TOther>
+class ClientInstancesSyncServiceI<
+        T extends HiveObjectWithId,
+        TOther extends HasId,
+        TNotifier extends MapState<T>> extends InstancesSyncServiceI<T, TOther>
     with
         // ignore: prefer_mixin
-        InstancesSyncServiceApplier<T, TOther> {}
+        InstancesSyncServiceApplier<T, TOther> {
+  Future<Iterable<T>> getAll() async => throw UnimplementedError();
+}
 
 class HiveClientSyncServiceImpl<T extends HiveObjectWithId,
-    TOther extends HasId> extends ClientInstancesSyncServiceI<T, TOther> {
+        TOther extends HasId, TNotifier extends MapState<T>>
+    extends ClientInstancesSyncServiceI<T, TOther, TNotifier> {
   HiveClientSyncServiceImpl({
     required this.context,
   });
   final BuildContext context;
+
+  @override
+  Future<Iterable<T>> getAll() async => context.read<TNotifier>().values;
+
   @override
   Future<void> onUpdate(
     final Iterable<T> elements,

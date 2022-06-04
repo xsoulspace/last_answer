@@ -1,7 +1,7 @@
 part of pack_settings;
 
-class ClientFolderSyncService
-    extends HiveClientSyncServiceImpl<ProjectFolder, ProjectFolderModel> {
+class ClientFolderSyncService extends HiveClientSyncServiceImpl<ProjectFolder,
+    ProjectFolderModel, ProjectFoldersNotifier> {
   ClientFolderSyncService({required final super.context});
   @override
   Future<void> onCreateFromOther(

@@ -9,7 +9,7 @@ class NoteSettingsButton extends StatelessWidget {
   }) : super(key: key);
   final NoteProject note;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final StreamController<NoteProjectUpdate> updatesStream;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);

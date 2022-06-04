@@ -12,6 +12,9 @@ class AppStateProvider extends StatelessWidget {
   Widget build(final BuildContext context) {
     final child = MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: createConnectivityNotifier),
+        ChangeNotifierProvider(create: createUsersNotifier),
+
         /// ********************************************
         /// *      API START
         /// ********************************************
@@ -54,9 +57,59 @@ class AppStateProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createIdeaProjectQuestionsProvider),
         ChangeNotifierProvider(create: createNoteProjectsNotifier),
         ChangeNotifierProvider(create: createNotificationController),
+
         ChangeNotifierProvider<PaymentsControllerI>(
           create: (final context) => createMockPaymentsController(),
         ),
+
+        /// ********************************************
+        /// *      IN MEMORY NOTIFIERS END
+        /// ********************************************
+        ///
+        /// ********************************************
+        /// *      SERVER NOTIFIERS START
+        /// ********************************************
+        ///
+        /// ********************************************
+        /// *      SYNC SERVICES - CLIENT
+        /// ********************************************
+        Provider(create: ClientFolderSyncService.of),
+        Provider(create: ClientIdeaSyncService.of),
+        Provider(create: ClientIdeaAnswerSyncService.of),
+        Provider(create: ClientIdeaQuestionSyncService.of),
+        Provider(create: ClientNoteSyncService.of),
+
+        /// ********************************************
+        /// *      SYNC SERVICES - SERVER
+        /// ********************************************
+        Provider(create: createServerFolderSyncService),
+        Provider(create: createServerIdeaSyncService),
+        Provider(create: createServerIdeaAnswerSyncService),
+        Provider(create: createServerIdeaQuestionSyncService),
+        Provider(create: createServerNoteSyncService),
+
+        /// ********************************************
+        /// *      UPDATERS
+        /// ********************************************
+        Provider(create: createFolderUpdater),
+        Provider(create: createIdeaUpdater),
+        Provider(create: createIdeaAnswerUpdater),
+        Provider(create: createIdeaQuestionUpdater),
+        Provider(create: createNoteUpdater),
+
+        /// ********************************************
+        /// *      SUBSCRIBERS
+        /// ********************************************
+
+        ChangeNotifierProvider(create: createFolderSubscriberNotifier),
+        ChangeNotifierProvider(create: createProjectsSubscriberNotifier),
+        ChangeNotifierProvider(create: createIdeaAnswerSubscriberNotifier),
+        ChangeNotifierProvider(create: createIdeaQuestionSubscriberNotifier),
+
+        /// ********************************************
+        /// *      WORKER
+        /// ********************************************
+        ChangeNotifierProvider(create: createServerSyncWorkerNotifier)
       ],
       child: Portal(
         child: _AppStateInitializer(builder: builder),

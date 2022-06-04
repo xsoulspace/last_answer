@@ -1,5 +1,15 @@
 part of pack_settings;
 
+IdeaUpdater createIdeaUpdater(
+  final BuildContext context,
+) =>
+    IdeaUpdater.of(
+      clientSyncService: context.read<ClientIdeaSyncService>(),
+      foldersNotifier: context.read(),
+      serverSyncService: context.read<ServerIdeaSyncService>(),
+      questionsNotifier: context.read(),
+    );
+
 class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
     IdeaProjectModel, IdeaProjectsNotifier> {
   IdeaUpdater.of({

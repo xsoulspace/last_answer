@@ -1,5 +1,21 @@
 part of pack_settings;
 
+ServerSyncWorkerNotifier createServerSyncWorkerNotifier(
+  final BuildContext context,
+) =>
+    ServerSyncWorkerNotifier(
+      ideaUpdater: context.read(),
+      folderUpdater: context.read(),
+      ideaAnswerUpdater: context.read(),
+      noteUpdater: context.read(),
+      ideaQuestionUpdater: context.read(),
+      connectivityService: context.read(),
+      folderSubscriber: context.read(),
+      projectsSubscriber: context.read(),
+      ideaQuestionSubscriber: context.read(),
+      ideaAnswerSubscriber: context.read(),
+    );
+
 ///
 /// Offline -> Online strategy
 ///
@@ -14,8 +30,8 @@ part of pack_settings;
 ///
 /// [x] - Disable subscriptions
 ///
-class SyncWorker extends ChangeNotifier implements Loadable {
-  SyncWorker({
+class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
+  ServerSyncWorkerNotifier({
     required this.ideaUpdater,
     required this.folderUpdater,
     required this.ideaAnswerUpdater,
@@ -34,17 +50,17 @@ class SyncWorker extends ChangeNotifier implements Loadable {
     connectivityService.addListener(_onConnectionChange);
   }
 
-  final ConnectivityService connectivityService;
+  final ConnectivityNotifier connectivityService;
 
   final FolderUpdater folderUpdater;
   final IdeaAnswerUpdater ideaAnswerUpdater;
   final IdeaQuestionUpdater ideaQuestionUpdater;
   final IdeaUpdater ideaUpdater;
   final NoteUpdater noteUpdater;
-  final FolderSubscriber folderSubscriber;
-  final IdeaAnswerSubscriber ideaAnswerSubscriber;
-  final IdeaQuestionSubscriber ideaQuestionSubscriber;
-  final ProjectsSubscriber projectsSubscriber;
+  final ServerFolderSubscriber folderSubscriber;
+  final ServerIdeaAnswerSubscriber ideaAnswerSubscriber;
+  final ServerIdeaQuestionSubscriber ideaQuestionSubscriber;
+  final ServerProjectsSubscriber projectsSubscriber;
   bool inRealTime = false;
 
   Future<void> goOnline() async {

@@ -3,6 +3,10 @@ part of pack_settings;
 class ClientNoteSyncService extends HiveClientSyncServiceImpl<NoteProject,
     NoteProjectModel, NoteProjectsNotifier> {
   ClientNoteSyncService({required final super.context});
+
+  factory ClientNoteSyncService.of(final BuildContext context) =>
+      ClientNoteSyncService(context: context);
+
   @override
   Future<void> onCreateFromOther(
     final Iterable<NoteProjectModel> elements,

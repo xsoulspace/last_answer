@@ -1,5 +1,10 @@
 part of pack_auth;
 
+UsersNotifier createUsersNotifier(
+  final BuildContext context,
+) =>
+    UsersNotifier();
+
 class UsersNotifier extends ChangeNotifier implements Loadable {
   final currentUser = ValueNotifier(UserModel.zero);
   @override

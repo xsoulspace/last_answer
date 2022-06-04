@@ -1,5 +1,14 @@
 part of pack_settings;
 
+IdeaAnswerUpdater createIdeaAnswerUpdater(
+  final BuildContext context,
+) =>
+    IdeaAnswerUpdater.of(
+      clientSyncService: context.read<ClientIdeaAnswerSyncService>(),
+      questionsNotifier: context.read(),
+      serverSyncService: context.read<ServerIdeaAnswerSyncService>(),
+    );
+
 class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
     IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
   IdeaAnswerUpdater.of({

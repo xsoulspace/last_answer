@@ -1,5 +1,14 @@
 part of pack_settings;
 
+NoteUpdater createNoteUpdater(
+  final BuildContext context,
+) =>
+    NoteUpdater.of(
+      clientSyncService: context.read<ClientNoteSyncService>(),
+      foldersNotifier: context.read(),
+      serverSyncService: context.read<ServerNoteSyncService>(),
+    );
+
 class NoteUpdater extends BasicProjectInstanceUpdater<NoteProject,
     NoteProjectModel, NoteProjectsNotifier> {
   NoteUpdater.of({

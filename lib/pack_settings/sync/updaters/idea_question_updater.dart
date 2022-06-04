@@ -1,5 +1,14 @@
 part of pack_settings;
 
+IdeaQuestionUpdater createIdeaQuestionUpdater(
+  final BuildContext context,
+) =>
+    IdeaQuestionUpdater.of(
+      clientSyncService: context.read<ClientIdeaQuestionSyncService>(),
+      foldersNotifier: context.read(),
+      serverSyncService: context.read<ServerIdeaQuestionSyncService>(),
+    );
+
 class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
     IdeaProjectQuestionModel, IdeaProjectQuestionsNotifier> {
   IdeaQuestionUpdater.of({

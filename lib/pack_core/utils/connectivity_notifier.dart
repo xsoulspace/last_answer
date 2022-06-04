@@ -1,6 +1,11 @@
 part of pack_core;
 
-class ConnectivityService extends ChangeNotifier implements Loadable {
+ConnectivityNotifier createConnectivityNotifier(
+  final BuildContext context,
+) =>
+    ConnectivityNotifier();
+
+class ConnectivityNotifier extends ChangeNotifier implements Loadable {
   StreamSubscription<ConnectivityResult>? connectionSubscription;
   final _connectivity = Connectivity();
 

@@ -1,14 +1,15 @@
 part of pack_settings;
 
-ProjectsSubscriber createProjectsSubscriber(final BuildContext context) =>
-    ProjectsSubscriber(
+ServerProjectsSubscriber createProjectsSubscriberNotifier(
+        final BuildContext context) =>
+    ServerProjectsSubscriber(
       api: context.read<ProjectsApi>(),
       ideaUpdater: context.read<IdeaUpdater>(),
       noteUpdater: context.read<NoteUpdater>(),
     );
 
-class ProjectsSubscriber extends InstanceSubscriberI<BasicProjectModel> {
-  ProjectsSubscriber({
+class ServerProjectsSubscriber extends InstanceSubscriberI<BasicProjectModel> {
+  ServerProjectsSubscriber({
     required final this.ideaUpdater,
     required final this.noteUpdater,
     required final super.api,
@@ -41,33 +42,35 @@ class ProjectsSubscriber extends InstanceSubscriberI<BasicProjectModel> {
   }
 }
 
-IdeaAnswerSubscriber createIdeaAnswerSubscriber(final BuildContext context) =>
-    IdeaAnswerSubscriber(
+ServerIdeaAnswerSubscriber createIdeaAnswerSubscriberNotifier(
+  final BuildContext context,
+) =>
+    ServerIdeaAnswerSubscriber(
       api: context.read<IdeaProjectAnswersApi>(),
       updater: context.read<IdeaAnswerUpdater>(),
     );
 
-class IdeaAnswerSubscriber extends SingleInstanceSubscriber<IdeaProjectAnswer,
-    IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
-  IdeaAnswerSubscriber({
+class ServerIdeaAnswerSubscriber extends SingleInstanceSubscriber<
+    IdeaProjectAnswer, IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
+  ServerIdeaAnswerSubscriber({
     required final super.updater,
     required final super.api,
   });
 }
 
-IdeaQuestionSubscriber createIdeaQuestionSubscriber(
+ServerIdeaQuestionSubscriber createIdeaQuestionSubscriberNotifier(
   final BuildContext context,
 ) =>
-    IdeaQuestionSubscriber(
+    ServerIdeaQuestionSubscriber(
       api: context.read<IdeaProjectQuestionApi>(),
       updater: context.read<IdeaQuestionUpdater>(),
     );
 
-class IdeaQuestionSubscriber extends SingleInstanceSubscriber<
+class ServerIdeaQuestionSubscriber extends SingleInstanceSubscriber<
     IdeaProjectQuestion,
     IdeaProjectQuestionModel,
     IdeaProjectQuestionsNotifier> {
-  IdeaQuestionSubscriber({
+  ServerIdeaQuestionSubscriber({
     required final super.updater,
     required final super.api,
   });

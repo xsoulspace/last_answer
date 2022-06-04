@@ -1,5 +1,14 @@
 part of pack_settings;
 
+FolderUpdater createFolderUpdater(
+  final BuildContext context,
+) =>
+    FolderUpdater.of(
+      clientSyncService: context.read<ClientFolderSyncService>(),
+      foldersNotifier: context.read(),
+      serverSyncService: context.read<ServerFolderSyncService>(),
+    );
+
 class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
     ProjectFoldersNotifier> {
   FolderUpdater.of({

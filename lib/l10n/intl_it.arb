@@ -23,9 +23,9 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
-  "changeLog": "Change Log",
+  "changeLog": "Cosa c'è di nuovo?",
   "@changeLog": {
-    "description": "changeLog"
+    "description": "What's new?"
   },
   "username": "Nome utente",
   "@username": {

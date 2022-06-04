@@ -8,6 +8,7 @@ Map<InstanceId, T> listWithIdToMap<T extends HasId>(
   if (where != null) {
     newList = newList.where(where);
   }
+
   return Map.fromEntries(
     newList.map((final e) => MapEntry(e.id, e)),
   );

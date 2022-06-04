@@ -67,7 +67,7 @@ part 'sync/server_sync_services/server_idea_question_sync_service.dart';
 part 'sync/server_sync_services/server_idea_sync_service.dart';
 part 'sync/server_sync_services/server_note_sync_service.dart';
 part 'sync/server_sync_services/server_story_sync_service.dart';
-part 'sync/sync_worker.dart';
+part 'sync/sync_worker_notifier.dart';
 part 'sync/updaters/folder_updater.dart';
 part 'sync/updaters/idea_answer_updater.dart';
 part 'sync/updaters/idea_question_updater.dart';

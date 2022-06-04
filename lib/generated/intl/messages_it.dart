@@ -41,7 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Sei sicuro?"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancella"),
-        "changeLog": MessageLookupByLibrary.simpleMessage("Change Log"),
+        "changeLog":
+            MessageLookupByLibrary.simpleMessage("Cosa c\'è di nuovo?"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Limite di caratteri"),
         "charactersLimitForNewNotesDesription":

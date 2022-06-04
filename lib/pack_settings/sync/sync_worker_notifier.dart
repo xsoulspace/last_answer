@@ -3,18 +3,18 @@ part of pack_settings;
 ///
 /// Offline -> Online strategy
 ///
-/// [] - Get Folders
-/// [] - Get Notes
-/// [] - Get Idea's questions
-/// [] - Get Ideas
-/// [] - Get Answers
+/// [x] - Get Folders
+/// [x] - Get Notes
+/// [x] - Get Idea's questions
+/// [x] - Get Ideas
+/// [x] - Get Answers
 /// [] - Start subscriptions
 ///
 /// Online -> Offline strategy
 ///
 /// [] - Disable subscriptions
 ///
-class SyncWorker {
+class SyncWorker extends ChangeNotifier implements Loadable {
   SyncWorker({
     required this.ideaUpdater,
     required this.folderUpdater,
@@ -23,6 +23,12 @@ class SyncWorker {
     required this.ideaQuestionUpdater,
     required this.context,
   });
+
+  @override
+  Future<void> onLoad({required final BuildContext context}) {
+    // TODO: implement onLoad
+    throw UnimplementedError();
+  }
 
   final _subscriptions = [];
 
@@ -40,7 +46,13 @@ class SyncWorker {
     await ideaQuestionUpdater.getAndUpdateByOther();
     await ideaUpdater.getAndUpdateByOther();
     await noteUpdater.getAndUpdateByOther();
+    _subscribe();
   }
 
-  void onOffline() {}
+  void onOffline() {
+    _unsubscribe();
+  }
+
+  void _subscribe() {}
+  void _unsubscribe() {}
 }

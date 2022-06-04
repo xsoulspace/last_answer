@@ -140,12 +140,12 @@ class S {
     );
   }
 
-  /// `Change Log`
+  /// `What's new?`
   String get changeLog {
     return Intl.message(
-      'Change Log',
+      'What\'s new?',
       name: 'changeLog',
-      desc: 'changeLog',
+      desc: 'What\'s new?',
       args: [],
     );
   }

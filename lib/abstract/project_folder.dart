@@ -178,8 +178,9 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
           projects = service.ideas;
           break;
         case ProjectType.story:
-          projects = service.stories;
-          break;
+          throw UnimplementedError();
+        // projects = service.stories;
+        // break;
         default:
           throw UnimplementedError();
       }

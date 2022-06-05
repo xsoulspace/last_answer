@@ -5,29 +5,38 @@ class ServerInstancesSyncServiceI<T extends RemoteHiveObjectWithId<TOther>,
     with
         // ignore: prefer_mixin
         InstancesSyncServiceApplier<T, TOther> {
-  Future<Iterable<TOther>> getAll() async => throw UnimplementedError();
-  Future<void> upsert(final Iterable<T> list) => throw UnimplementedError();
-}
-
-class ServerSyncServiceImpl<T extends RemoteHiveObjectWithId<TOther>,
-    TOther extends HasId> extends ServerInstancesSyncServiceI<T, TOther> {
-  ServerSyncServiceImpl({
+  ServerInstancesSyncServiceI({
     required this.api,
     required this.usersNotifier,
   });
   final AbstractApi<TOther> api;
   final UsersNotifier usersNotifier;
 
-  @override
   Future<Iterable<TOther>> getAll() async => api.getAll();
 
-  @override
   Future<void> upsert(final Iterable<T> list) async {
     final user = usersNotifier.currentUser.value;
     for (final el in list) {
       await api.upsert(el.toModel(user: user));
     }
   }
+
+  Future<void> delete(
+    final Iterable<T> list,
+  ) async {
+    final user = usersNotifier.currentUser.value;
+    for (final el in list) {
+      await api.delete(el.toModel(user: user));
+    }
+  }
+}
+
+class ServerSyncServiceImpl<T extends RemoteHiveObjectWithId<TOther>,
+    TOther extends HasId> extends ServerInstancesSyncServiceI<T, TOther> {
+  ServerSyncServiceImpl({
+    required final super.api,
+    required final super.usersNotifier,
+  });
 
   @override
   Future<void> onUpdate(

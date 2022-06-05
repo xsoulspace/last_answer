@@ -2,10 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:realtime_client/src/realtime_subscription.dart';
+import 'package:supabase/src/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeletableTestItem extends RemoteHiveObjectWithId<TestItem>
     with EquatableMixin {
@@ -43,10 +48,71 @@ class TestItem with EquatableMixin implements HasId {
   List<Object?> get props => [id];
 }
 
+class TestItemApi extends AbstractApi<TestItem> {
+  @override
+  SupabaseClient get client => throw UnimplementedError();
+
+  @override
+  Future<TestItem?> delete(final TestItem model) {
+    throw UnimplementedError();
+  }
+
+  @override
+  TestItem Function(Map<String, dynamic> json) get fromJson =>
+      throw UnimplementedError();
+
+  @override
+  Future<Iterable<TestItem>> getAll() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<TestItem?> getById(final String id) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> Function(TestItem model) get modelToJson =>
+      throw UnimplementedError();
+
+  @override
+  RealtimeSubscription subscribeToDeletes(
+    final ValueChanged<TestItem> onDelete,
+  ) {
+    throw UnimplementedError();
+  }
+
+  @override
+  RealtimeSubscription subscribeToNew(final ValueChanged<TestItem> onNew) {
+    throw UnimplementedError();
+  }
+
+  @override
+  RealtimeSubscription subscribeToUpdates(
+    final ValueChanged<TestItem> onUpdate,
+  ) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String get tableName => throw UnimplementedError();
+
+  @override
+  Future<TestItem> upsert(final TestItem model) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Iterable<TestItem>> upsertElements(final Iterable<TestItem> models) {
+    throw UnimplementedError();
+  }
+}
+
 void main() {
   group('InstanceUpdater', () {
     test('compareConsistency - original creates,deletes, other creates,remains',
         () {
+      final supabaseClient = SupabaseClient('', '');
       final originalListToCreate = List.generate(
         5,
         (final index) => DeletableTestItem(
@@ -71,7 +137,13 @@ void main() {
       final diff = InstanceUpdater<DeletableTestItem, TestItem,
           MapState<DeletableTestItem>>(
         clientSyncService: ClientInstancesSyncServiceI(),
-        serverSyncService: ServerInstancesSyncServiceI(),
+        serverSyncService: ServerInstancesSyncServiceI(
+          api: TestItemApi(),
+          usersNotifier: UsersNotifier(
+            usersApi: UsersApi(client: supabaseClient),
+            supabaseClient: supabaseClient,
+          ),
+        ),
       ).compareConsistency(otherList: otherList, list: originalList);
       final otherUpdates = diff.otherUpdates;
       final originalUpdates = diff.originalUpdates;

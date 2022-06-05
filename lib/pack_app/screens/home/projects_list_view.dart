@@ -96,6 +96,8 @@ Future<void> removeProject({
 }) async {
   await project.deleteWithRelatives(context: context);
   context.read<CurrentFolderNotifier>().notify();
+  await context.read<ServerProjectsSyncService>().delete([project]);
+
   if (checkIsProjectActive(project)) {
     onGoHome();
   }

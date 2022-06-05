@@ -8,39 +8,22 @@ ServerProjectsSyncService createServerProjectsSyncService(
       usersNotifier: context.read(),
     );
 
-class ServerProjectsSyncService extends ServerInstancesSyncServiceI<
-    BasicProject<BasicProjectModel>, BasicProjectModel> {
+class ServerProjectsSyncService
+    extends ServerInstancesSyncServiceI<BasicProject, BasicProjectModel> {
   ServerProjectsSyncService({
-    required this.api,
-    required this.usersNotifier,
+    required final super.api,
+    required final super.usersNotifier,
   });
-  final UsersNotifier usersNotifier;
-
-  @override
-  Future<void> upsert(
-    final Iterable<BasicProject<BasicProjectModel>> list,
-  ) async {
-    final user = usersNotifier.currentUser.value;
-    for (final el in list) {
-      await api.upsert(el.toModel(user: user));
-    }
-  }
 
   @override
   Future<void> onCreateFromOther(
     final Iterable<BasicProject> elements,
   ) async {
     final models = elements.map(
-      (final e) =>
-          e.toModel(user: usersNotifier.currentUser.value) as BasicProjectModel,
+      (final e) => e.toModel(user: usersNotifier.currentUser.value),
     );
     await onUpdate(models);
   }
-
-  final AbstractApi<BasicProjectModel> api;
-
-  @override
-  Future<Iterable<BasicProjectModel>> getAll() async => api.getAll();
 
   @override
   Future<void> onUpdate(

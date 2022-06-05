@@ -97,6 +97,9 @@ class EmojiGrid extends HookWidget {
       );
     }
 
+    final verticalEmojiGridController = useScrollController();
+    final lastEmojiScrollController = useScrollController();
+
     return ButtonPopup(
       children: [
         Expanded(
@@ -105,6 +108,7 @@ class EmojiGrid extends HookWidget {
               final emojis = provider.filteredValues;
 
               return GridView.count(
+                controller: verticalEmojiGridController,
                 restorationId: 'emojis-grid',
                 shrinkWrap: true,
                 crossAxisCount: maxItemsInRow,
@@ -132,6 +136,7 @@ class EmojiGrid extends HookWidget {
           ),
         ),
         GridView.count(
+          controller: lastEmojiScrollController,
           restorationId: 'last-emojis-grid',
           shrinkWrap: true,
           crossAxisCount: maxItemsInRow,

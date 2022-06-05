@@ -28,7 +28,7 @@ class StoryProject extends BasicProject {
   bool isToDelete;
 
   @override
-  HasId toModel({required final UserModel user}) {
+  BasicProjectModel toModel({required final UserModel user}) {
     // TODO(arenukvern): implement toModel
     throw UnimplementedError();
   }

@@ -18,7 +18,7 @@ class BasicProjectIndexes {
 
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-abstract class BasicProject<TModel extends HasId>
+abstract class BasicProject<TModel extends BasicProjectModel>
     extends RemoteHiveObjectWithId<TModel>
     with EquatableMixin
     implements Sharable, BasicProjectFields {

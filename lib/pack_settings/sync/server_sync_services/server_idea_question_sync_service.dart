@@ -14,4 +14,12 @@ class ServerIdeaQuestionSyncService extends ServerSyncServiceImpl<
     required final super.api,
     required final super.usersNotifier,
   });
+  @override
+  Future<void> onCreateFromOther(
+    final Iterable<IdeaProjectQuestion> elements,
+  ) async {
+    final models = elements
+        .map((final e) => e.toModel(user: usersNotifier.currentUser.value));
+    await onUpdate(models);
+  }
 }

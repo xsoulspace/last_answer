@@ -77,10 +77,10 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
     await folderUpdater
         .getAndUpdateByOther(await folderUpdater.serverSyncService.getAll());
     final projects = await serverProjectsSyncService.getAll();
-    await ideaUpdater.updateByUnion(projects);
     await ideaQuestionUpdater.getAndUpdateByOther(
       await ideaQuestionUpdater.serverSyncService.getAll(),
     );
+    await ideaUpdater.updateByUnion(projects);
     await ideaAnswerUpdater.getAndUpdateByOther(
       await ideaAnswerUpdater.serverSyncService.getAll(),
     );

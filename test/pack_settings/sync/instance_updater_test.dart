@@ -3,13 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/api/api.dart';
-import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
-import 'package:realtime_client/src/realtime_subscription.dart';
-import 'package:supabase/src/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeletableTestItem extends RemoteHiveObjectWithId<TestItem>
@@ -137,13 +134,6 @@ void main() {
       final diff = InstanceUpdater<DeletableTestItem, TestItem,
           MapState<DeletableTestItem>>(
         clientSyncService: ClientInstancesSyncServiceI(),
-        serverSyncService: ServerInstancesSyncServiceI(
-          api: TestItemApi(),
-          usersNotifier: UsersNotifier(
-            usersApi: UsersApi(client: supabaseClient),
-            supabaseClient: supabaseClient,
-          ),
-        ),
       ).compareConsistency(otherList: otherList, list: originalList);
       final otherUpdates = diff.otherUpdates;
       final originalUpdates = diff.originalUpdates;

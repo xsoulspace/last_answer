@@ -74,12 +74,17 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
 
   Future<void> goOnline() async {
     if (inRealTime) return;
-    await folderUpdater.getAndUpdateByOther();
-    final projects = await serverProjectsSyncService.getAll();
-    await ideaUpdater.updateByUnion(projects);
-    await ideaQuestionUpdater.getAndUpdateByOther();
-    await ideaAnswerUpdater.getAndUpdateByOther();
-    await noteUpdater.updateByUnion(projects);
+    await folderUpdater
+        .getAndUpdateByOther(await folderUpdater.serverSyncService.getAll());
+    // final projects = await serverProjectsSyncService.getAll();
+    // await ideaUpdater.updateByUnion(projects);
+    // await ideaQuestionUpdater.getAndUpdateByOther(
+    //   await ideaQuestionUpdater.serverSyncService.getAll(),
+    // );
+    // await ideaAnswerUpdater.getAndUpdateByOther(
+    //   await ideaAnswerUpdater.serverSyncService.getAll(),
+    // );
+    // await noteUpdater.updateByUnion(projects);
     _subscribe();
   }
 

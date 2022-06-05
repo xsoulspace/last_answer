@@ -29,6 +29,7 @@ class LargeHomeScreen extends StatelessWidget {
     final rightColumn = ScreenLayout.of(context).large ? leftColumn : 0.0;
     final centerPart =
         size.width - leftColumn - rightColumn - centerRightBorder;
+    final theme = Theme.of(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -51,13 +52,13 @@ class LargeHomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               right: BorderSide(
-                color: Theme.of(context).brightness == Brightness.dark
+                color: theme.brightness == Brightness.dark
                     ? AppColors.cleanBlack
                     : AppColors.grey4,
                 width: centerRightBorder,
               ),
             ),
-            color: Theme.of(context).canvasColor,
+            color: theme.canvasColor,
           ),
           child: SizedBox(
             width: centerPart,
@@ -67,8 +68,8 @@ class LargeHomeScreen extends StatelessWidget {
         if (rightColumn > 0)
           Container(
             color: isNativeDesktop
-                ? Theme.of(context).canvasColor.withOpacity(0.9)
-                : Theme.of(context).canvasColor,
+                ? theme.canvasColor.withOpacity(0.9)
+                : theme.canvasColor,
             width: rightColumn,
           ),
       ],

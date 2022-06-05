@@ -13,10 +13,10 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
     ProjectFoldersNotifier> {
   FolderUpdater.of({
     required final super.clientSyncService,
-    required final super.serverSyncService,
+    required final this.serverSyncService,
     required this.foldersNotifier,
   });
-
+  final ServerFolderSyncService serverSyncService;
   final ProjectFoldersNotifier foldersNotifier;
 
   @override
@@ -58,5 +58,15 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
         );
       },
     );
+  }
+
+  @override
+  Future<void> saveChanges({
+    required final InstanceUpdaterDto<ProjectFolder, ProjectFolderModel> dto,
+  }) async {
+    await Future.wait([
+      super.saveChanges(dto: dto),
+      serverSyncService.applyUpdaterDto(dto: dto),
+    ]);
   }
 }

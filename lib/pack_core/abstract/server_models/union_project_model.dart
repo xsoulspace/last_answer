@@ -10,6 +10,7 @@ part of pack_core;
   addImplicitFinal: true,
   copyWith: true,
   unionValueCase: FreezedUnionCase.pascal,
+  unionKey: 'runtime_type',
 )
 class BasicProjectModel with _$BasicProjectModel implements HasId {
   @JsonSerializable(
@@ -32,6 +33,7 @@ class BasicProjectModel with _$BasicProjectModel implements HasId {
   )
   const factory BasicProjectModel.ideaProjectModel({
     required final ProjectFolderId id,
+    required final String title,
     @JsonKey(name: 'created_at') required final DateTime createdAt,
     @JsonKey(name: 'updated_at') required final DateTime updatedAt,
     @JsonKey(name: 'is_completed') required final bool isCompleted,
@@ -40,13 +42,10 @@ class BasicProjectModel with _$BasicProjectModel implements HasId {
     @JsonKey(name: 'folder_id') required final ProjectFolderId folderId,
     @JsonKey(name: 'new_answer_text') required final String newAnswerText,
     @JsonKey(name: 'new_question_id')
-        required final IdeaProjectQuestionId newQuestionId,
-    required final String title,
+        final IdeaProjectQuestionId? newQuestionId,
   }) = IdeaProjectModel;
   factory BasicProjectModel.fromJson(final Map<String, dynamic> json) =>
       _$BasicProjectModelFromJson(json);
-  static Map<String, dynamic> modelToJson(
-    final BasicProjectModel model,
-  ) =>
+  static Map<String, dynamic> modelToJson(final BasicProjectModel model) =>
       model.toJson();
 }

@@ -35,6 +35,7 @@ class GlobalStateInitializer implements StateInitializer {
     final notificationController = context.read<NotificationController>();
     final paymentsController = context.read<PaymentsControllerI>();
     final usersNotifier = context.read<UsersNotifier>();
+    final syncWorker = context.read<ServerSyncWorkerNotifier>();
 
     /// ********************************************
     /// *      CONTEXT RELATED READINGS END
@@ -191,5 +192,10 @@ class GlobalStateInitializer implements StateInitializer {
     /// *      AUTH START
     /// ********************************************
     await authState.recoverSupabaseSession();
+
+    /// ********************************************
+    /// *      SYNCHRONIZATION!
+    /// ********************************************
+    await syncWorker.onLoad(context: context);
   }
 }

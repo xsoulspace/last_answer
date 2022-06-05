@@ -7,8 +7,7 @@ part of pack_core;
 // **************************************************************************
 
 _$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     _$_IdeaProjectAnswerModel(
       id: json['id'] as String,
       text: json['text'] as String,
@@ -19,8 +18,7 @@ _$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
     );
 
 Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
-  final _$_IdeaProjectAnswerModel instance,
-) =>
+        _$_IdeaProjectAnswerModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'text': instance.text,
@@ -31,24 +29,21 @@ Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
     };
 
 _$_IdeaProjectQuestionModel _$$_IdeaProjectQuestionModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     _$_IdeaProjectQuestionModel(
       id: json['id'] as String,
       title: json['title'] as String,
     );
 
 Map<String, dynamic> _$$_IdeaProjectQuestionModelToJson(
-  final _$_IdeaProjectQuestionModel instance,
-) =>
+        _$_IdeaProjectQuestionModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
     };
 
 _$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     _$_ProjectFolderModel(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -58,8 +53,7 @@ _$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
     );
 
 Map<String, dynamic> _$$_ProjectFolderModelToJson(
-  final _$_ProjectFolderModel instance,
-) =>
+        _$_ProjectFolderModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -68,9 +62,7 @@ Map<String, dynamic> _$$_ProjectFolderModelToJson(
       'owner_id': instance.ownerId,
     };
 
-_$NoteProjectModel _$$NoteProjectModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+_$NoteProjectModel _$$NoteProjectModelFromJson(Map<String, dynamic> json) =>
     _$NoteProjectModel(
       id: json['id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
@@ -81,12 +73,10 @@ _$NoteProjectModel _$$NoteProjectModelFromJson(
       folderId: json['folder_id'] as String,
       charactersLimit: json['characters_limit'] as int?,
       note: json['note'] as String,
-      $type: json['runtimeType'] as String?,
+      $type: json['runtime_type'] as String?,
     );
 
-Map<String, dynamic> _$$NoteProjectModelToJson(
-  final _$NoteProjectModel instance,
-) =>
+Map<String, dynamic> _$$NoteProjectModelToJson(_$NoteProjectModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'created_at': instance.createdAt.toIso8601String(),
@@ -97,7 +87,7 @@ Map<String, dynamic> _$$NoteProjectModelToJson(
       'folder_id': instance.folderId,
       'characters_limit': instance.charactersLimit,
       'note': instance.note,
-      'runtimeType': instance.$type,
+      'runtime_type': instance.$type,
     };
 
 const _$ProjectTypeEnumMap = {
@@ -106,11 +96,10 @@ const _$ProjectTypeEnumMap = {
   ProjectType.story: 'story',
 };
 
-_$IdeaProjectModel _$$IdeaProjectModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+_$IdeaProjectModel _$$IdeaProjectModelFromJson(Map<String, dynamic> json) =>
     _$IdeaProjectModel(
       id: json['id'] as String,
+      title: json['title'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isCompleted: json['is_completed'] as bool,
@@ -118,16 +107,14 @@ _$IdeaProjectModel _$$IdeaProjectModelFromJson(
       userId: json['user_id'] as String,
       folderId: json['folder_id'] as String,
       newAnswerText: json['new_answer_text'] as String,
-      newQuestionId: json['new_question_id'] as String,
-      title: json['title'] as String,
-      $type: json['runtimeType'] as String?,
+      newQuestionId: json['new_question_id'] as String?,
+      $type: json['runtime_type'] as String?,
     );
 
-Map<String, dynamic> _$$IdeaProjectModelToJson(
-  final _$IdeaProjectModel instance,
-) =>
+Map<String, dynamic> _$$IdeaProjectModelToJson(_$IdeaProjectModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'title': instance.title,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'is_completed': instance.isCompleted,
@@ -136,18 +123,16 @@ Map<String, dynamic> _$$IdeaProjectModelToJson(
       'folder_id': instance.folderId,
       'new_answer_text': instance.newAnswerText,
       'new_question_id': instance.newQuestionId,
-      'title': instance.title,
-      'runtimeType': instance.$type,
+      'runtime_type': instance.$type,
     };
 
-_$_UserModel _$$_UserModelFromJson(final Map<String, dynamic> json) =>
-    _$_UserModel(
+_$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       id: json['id'] as String,
       status: $enumDecode(_$UserStatusEnumMap, json['status']),
       username: json['username'] as String,
     );
 
-Map<String, dynamic> _$$_UserModelToJson(final _$_UserModel instance) =>
+Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'status': _$UserStatusEnumMap[instance.status],

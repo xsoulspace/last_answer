@@ -13,10 +13,10 @@ class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
     IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
   IdeaAnswerUpdater.of({
     required final super.clientSyncService,
-    required final super.serverSyncService,
+    required final this.serverSyncService,
     required this.questionsNotifier,
   });
-
+  final ServerIdeaAnswerSyncService serverSyncService;
   final IdeaProjectQuestionsNotifier questionsNotifier;
   @override
   InstanceUpdatePolicy getPolicyForDiff(
@@ -82,5 +82,16 @@ class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
         );
       },
     );
+  }
+
+  @override
+  Future<void> saveChanges({
+    required final InstanceUpdaterDto<IdeaProjectAnswer, IdeaProjectAnswerModel>
+        dto,
+  }) async {
+    await Future.wait([
+      super.saveChanges(dto: dto),
+      serverSyncService.applyUpdaterDto(dto: dto),
+    ]);
   }
 }

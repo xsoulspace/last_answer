@@ -13,10 +13,10 @@ class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
     IdeaProjectQuestionModel, IdeaProjectQuestionsNotifier> {
   IdeaQuestionUpdater.of({
     required final super.clientSyncService,
-    required final super.serverSyncService,
+    required final this.serverSyncService,
     required this.foldersNotifier,
   });
-
+  final ServerIdeaQuestionSyncService serverSyncService;
   final ProjectFoldersNotifier foldersNotifier;
 
   @override
@@ -56,5 +56,17 @@ class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
         );
       },
     );
+  }
+
+  @override
+  Future<void> saveChanges({
+    required final InstanceUpdaterDto<IdeaProjectQuestion,
+            IdeaProjectQuestionModel>
+        dto,
+  }) async {
+    await Future.wait([
+      super.saveChanges(dto: dto),
+      serverSyncService.applyUpdaterDto(dto: dto),
+    ]);
   }
 }

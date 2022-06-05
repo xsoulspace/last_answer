@@ -5,20 +5,16 @@ class InstanceUpdater<TMutable extends RemoteHiveObjectWithId<TImmutableOther>,
     implements RemotelyUpdatable<TMutable, TImmutableOther> {
   InstanceUpdater({
     required this.clientSyncService,
-    required this.serverSyncService,
     this.defaultPolicy = InstanceUpdatePolicy.useClientVersion,
   });
   final InstanceUpdatePolicy defaultPolicy;
   final ClientInstancesSyncServiceI<TMutable, TImmutableOther, TNotifier>
       clientSyncService;
-  final ServerInstancesSyncServiceI<TMutable, TImmutableOther>
-      serverSyncService;
 
-  Future<void> getAndUpdateByOther([final List<TImmutableOther>? other]) async {
+  Future<void> getAndUpdateByOther(
+      final Iterable<TImmutableOther> other) async {
     final list = await clientSyncService.getAll();
-    final otherList = other ?? await serverSyncService.getAll();
-
-    await updateByOther(otherList: otherList, list: list);
+    await updateByOther(otherList: other, list: list);
   }
 
   @mustCallSuper
@@ -155,13 +151,11 @@ class InstanceUpdater<TMutable extends RemoteHiveObjectWithId<TImmutableOther>,
   }
 
   @override
+  @mustCallSuper
   Future<void> saveChanges({
     required final InstanceUpdaterDto<TMutable, TImmutableOther> dto,
   }) async {
-    await Future.wait([
-      serverSyncService.applyUpdaterDto(dto: dto),
-      clientSyncService.applyUpdaterDto(dto: dto),
-    ]);
+    await clientSyncService.applyUpdaterDto(dto: dto);
   }
 
   InstanceUpdatePolicy getPolicyForDiff(
@@ -184,7 +178,6 @@ abstract class BasicProjectInstanceUpdater<
     extends InstanceUpdater<TMutable, TImmutableOther, TNotifier> {
   BasicProjectInstanceUpdater({
     required final super.clientSyncService,
-    required final super.serverSyncService,
     required this.foldersNotifier,
   });
 

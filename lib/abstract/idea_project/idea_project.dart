@@ -129,7 +129,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
       isCompleted: isCompleted,
       folderId: folder!.id,
       newAnswerText: newAnswerText,
-      newQuestionId: newQuestion!.id,
+      newQuestionId: newQuestion?.id,
       title: title,
     );
   }

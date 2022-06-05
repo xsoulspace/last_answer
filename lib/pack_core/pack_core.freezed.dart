@@ -31,6 +31,8 @@ mixin _$IdeaProjectAnswerModel {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +51,8 @@ abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
       @JsonKey(name: 'question_id') String questionId,
       @JsonKey(name: 'project_id') String projectId,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      @JsonKey(name: 'user_id') String userId});
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
     Object? projectId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -95,6 +99,10 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -112,7 +120,8 @@ abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
       @JsonKey(name: 'question_id') String questionId,
       @JsonKey(name: 'project_id') String projectId,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      @JsonKey(name: 'user_id') String userId});
 }
 
 /// @nodoc
@@ -135,6 +144,7 @@ class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
     Object? projectId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_IdeaProjectAnswerModel(
       id: id == freezed
@@ -161,6 +171,10 @@ class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -175,7 +189,8 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
       @JsonKey(name: 'question_id') required this.questionId,
       @JsonKey(name: 'project_id') required this.projectId,
       @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt})
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      @JsonKey(name: 'user_id') required this.userId})
       : super._();
 
   factory _$_IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =>
@@ -197,10 +212,13 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
   @override
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
+  @override
+  @JsonKey(name: 'user_id')
+  final String userId;
 
   @override
   String toString() {
-    return 'IdeaProjectAnswerModel(id: $id, text: $text, questionId: $questionId, projectId: $projectId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'IdeaProjectAnswerModel(id: $id, text: $text, questionId: $questionId, projectId: $projectId, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId)';
   }
 
   @override
@@ -214,7 +232,8 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
                 .equals(other.questionId, questionId) &&
             const DeepCollectionEquality().equals(other.projectId, projectId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -226,7 +245,8 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
       const DeepCollectionEquality().hash(questionId),
       const DeepCollectionEquality().hash(projectId),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt));
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -247,7 +267,8 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
           @JsonKey(name: 'question_id') required final String questionId,
           @JsonKey(name: 'project_id') required final String projectId,
           @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
+          @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+          @JsonKey(name: 'user_id') required final String userId}) =
       _$_IdeaProjectAnswerModel;
   const _IdeaProjectAnswerModel._() : super._();
 
@@ -270,6 +291,9 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
   @override
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'user_id')
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>

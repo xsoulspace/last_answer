@@ -15,6 +15,7 @@ _$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
       projectId: json['project_id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      userId: json['user_id'] as String,
     );
 
 Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
       'project_id': instance.projectId,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      'user_id': instance.userId,
     };
 
 _$_IdeaProjectQuestionModel _$$_IdeaProjectQuestionModelFromJson(

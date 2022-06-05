@@ -67,6 +67,18 @@ create policy "Allow individual delete access" on public.projects
 create policy "Allow authorized delete access" on public.projects
   for delete using (authorize('projects.delete', auth.uid()));
 
+-- PROJECT.IDEA ANSWERS
+create policy "Allow individual read access" on public.idea_project_answers
+  for select using (auth.uid() = user_id);
+create policy "Allow individual insert access" on public.idea_project_answers
+  for insert with check (auth.uid() = user_id);
+create policy "Allow individual update access" on public.idea_project_answers
+  for update using (auth.uid() = user_id);
+create policy "Allow individual delete access" on public.idea_project_answers
+  for delete using (auth.uid() = user_id);
+create policy "Allow authorized delete access" on public.idea_project_answers
+  for delete using (authorize('idea_project_answers.delete', auth.uid()));
+
 -- USER ROLES
 create policy "Allow individual read access" on public.user_roles
   for select using (auth.uid() = user_id);

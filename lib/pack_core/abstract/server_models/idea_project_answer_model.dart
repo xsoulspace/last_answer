@@ -26,6 +26,7 @@ class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel implements HasId {
     @JsonKey(name: 'project_id') required final ProjectId projectId,
     @JsonKey(name: 'created_at') required final DateTime createdAt,
     @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+    @JsonKey(name: 'user_id') required final UserModelId userId,
   }) = _IdeaProjectAnswerModel;
   factory IdeaProjectAnswerModel.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectAnswerModelFromJson(json);

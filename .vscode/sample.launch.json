@@ -1,7 +1,6 @@
 {
   "configurations": [
     {
-      "name": "Flutter",
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",
@@ -13,7 +12,8 @@
         "--dart-define",
         "supabase-anon=VALUE",
         "--dart-define",
-        "supabase-url=VALUE"
+        "supabase-url=VALUE",
+        "--web-port=3000"
       ]
     }
   ]

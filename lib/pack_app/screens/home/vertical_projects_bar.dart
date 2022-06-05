@@ -4,13 +4,16 @@ class _VerticalProjectsBar extends StatelessWidget {
   const _VerticalProjectsBar({
     required final this.onIdeaTap,
     required final this.onNoteTap,
+    required final this.onFolderTap,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
+  final ValueChanged<ProjectFolder> onFolderTap;
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
+    final foldersNotifier = context.watch<ProjectFoldersNotifier>();
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -34,6 +37,21 @@ class _VerticalProjectsBar extends StatelessWidget {
           direction: Axis.vertical,
           spacing: 16,
           children: [
+            ...foldersNotifier.state.values.map(
+              (final folder) => BarItem(
+                label: folder.title,
+                child: InkWell(
+                  onTap: () => onFolderTap(folder),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent.withOpacity(0.2),
+                      borderRadius: defaultBorderRadius,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
             BarItem(
               onTap: onIdeaTap,
               label: S.current.idea,
@@ -58,25 +76,30 @@ class _VerticalProjectsBar extends StatelessWidget {
 
 class BarItem extends StatelessWidget {
   const BarItem({
-    required final this.onTap,
     required final this.child,
     required final this.label,
+    final this.onTap,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Widget child;
   final String label;
   @override
   Widget build(final BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        height: 56,
+      child: SizedBox.square(
+        dimension: 56,
         child: Stack(
           children: [
-            SizedBox(
-              height: 50,
-              child: child,
+            Positioned.fill(
+              child: Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: child,
+                ),
+              ),
             ),
             Positioned(
               bottom: 0,

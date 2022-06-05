@@ -16,6 +16,7 @@ class AppNavigatorLayoutBuilder {
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
+              onFolderTap: pageBuilder.onChangeFolder,
               checkIsProjectActive: pageBuilder.checkIsProjectActive,
               onGoHome: popper.navigatorController.goHome,
               onInfoTap: popper.navigatorController.goAppInfo,
@@ -58,6 +59,7 @@ class AppNavigatorLayoutBuilder {
         child: AppNavigatorPopScope(
           popper: popper,
           child: SmallHomeScreen(
+            onFolderTap: pageBuilder.onChangeFolder,
             checkIsProjectActive: pageBuilder.checkIsProjectActive,
             onInfoTap: popper.navigatorController.goAppInfo,
             onCreateIdeaTap: popper.navigatorController.goCreateIdea,

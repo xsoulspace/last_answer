@@ -13,6 +13,10 @@ class AppNavigatorPageBuilder {
   RouteState get routeState => popper.routeState;
   AppRouteParameters get params => popper.params;
   String get pathTemplate => popper.pathTemplate;
+  void onChangeFolder(final ProjectFolder folder) {
+    context.read<CurrentFolderNotifier>().setState(folder);
+  }
+
   bool checkIsProjectActive(final BasicProject project) {
     if (project.id == params.noteId) return true;
     if (project.id == params.ideaId) return true;

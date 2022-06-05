@@ -9,6 +9,7 @@ class SmallHomeScreen extends StatefulHookWidget {
     required this.onCreateNoteTap,
     required this.onGoHome,
     required this.checkIsProjectActive,
+    required this.onFolderTap,
     final this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
   }) : super(key: key);
@@ -17,6 +18,7 @@ class SmallHomeScreen extends StatefulHookWidget {
   final VoidCallback onInfoTap;
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
+  final ValueChanged<ProjectFolder> onFolderTap;
   final Alignment verticalMenuAlignment;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
   final VoidCallback onGoHome;
@@ -34,6 +36,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
     final verticalMenu = HomeVerticalMenu(
       onCreateIdeaTap: widget.onCreateIdeaTap,
       onCreateNoteTap: widget.onCreateNoteTap,
+      onFolderTap: widget.onFolderTap,
     );
 
     final projectsList = ProjectsListView(
@@ -82,10 +85,12 @@ class HomeVerticalMenu extends StatelessWidget {
   const HomeVerticalMenu({
     required this.onCreateIdeaTap,
     required this.onCreateNoteTap,
+    required this.onFolderTap,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
+  final ValueChanged<ProjectFolder> onFolderTap;
 
   @override
   Widget build(final BuildContext context) {
@@ -100,6 +105,7 @@ class HomeVerticalMenu extends StatelessWidget {
         child: _VerticalProjectsBar(
           onIdeaTap: onCreateIdeaTap,
           onNoteTap: onCreateNoteTap,
+          onFolderTap: onFolderTap,
         ),
       ),
     );

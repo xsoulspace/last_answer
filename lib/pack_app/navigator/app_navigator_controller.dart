@@ -41,6 +41,7 @@ class AppNavigatorController {
       final folderNotifier = context.read<CurrentFolderNotifier>();
       final settingsNotifier = context.read<GeneralSettingsController>();
       final currentFolder = folderNotifier.state;
+      final projectsSyncService = context.read<ServerProjectsSyncService>();
       final newNote = await NoteProject.create(
         folder: currentFolder,
         charactersLimit: settingsNotifier.charactersLimitForNewNotes,
@@ -48,6 +49,7 @@ class AppNavigatorController {
       );
       folderNotifier.notify();
       resolvedNoteId = newNote.id;
+      unawaited(projectsSyncService.upsert([newNote]));
     }
 
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
@@ -63,6 +65,7 @@ class AppNavigatorController {
 
   Future<void> onCreateIdea(final String title) async {
     final folderNotifier = context.read<CurrentFolderNotifier>();
+    final projectsSyncService = context.read<ServerProjectsSyncService>();
     final currentFolder = folderNotifier.state;
 
     final idea = await IdeaProject.create(
@@ -72,6 +75,7 @@ class AppNavigatorController {
     );
     folderNotifier.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
+    unawaited(projectsSyncService.upsert([idea]));
   }
 
   Future<void> onIdeaAnswerExpand(

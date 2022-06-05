@@ -61,6 +61,17 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
   }
 
   @override
+  InstanceUpdatePolicy getPolicyForDiff(
+    final UpdatableInstanceDiff<ProjectFolder, ProjectFolderModel> diff,
+  ) {
+    final useOriginalPolicy =
+        diff.original.updatedAt.isAfter(diff.other.updatedAt);
+    if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;
+
+    return InstanceUpdatePolicy.useServerVersion;
+  }
+
+  @override
   Future<void> saveChanges({
     required final InstanceUpdaterDto<ProjectFolder, ProjectFolderModel> dto,
   }) async {

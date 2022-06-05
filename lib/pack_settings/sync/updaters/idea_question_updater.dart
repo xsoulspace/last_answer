@@ -59,6 +59,14 @@ class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
   }
 
   @override
+  InstanceUpdatePolicy getPolicyForDiff(
+    final UpdatableInstanceDiff<IdeaProjectQuestion, IdeaProjectQuestionModel>
+        diff,
+  ) {
+    return InstanceUpdatePolicy.useServerVersion;
+  }
+
+  @override
   Future<void> saveChanges({
     required final InstanceUpdaterDto<IdeaProjectQuestion,
             IdeaProjectQuestionModel>

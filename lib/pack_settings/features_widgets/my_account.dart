@@ -14,7 +14,7 @@ class MyAccount extends HookWidget {
     final theme = Theme.of(context);
     final settings = context.watch<GeneralSettingsController>();
     final authState = context.watch<AuthState>();
-    final supabaseClient = context.watch<SupabaseClient>();
+    final usersNotifier = context.watch<UsersNotifier>();
     final state = useMyAccountState(
       authState: authState,
     );
@@ -33,7 +33,7 @@ class MyAccount extends HookWidget {
             SettingsListTile(
               title: S.current.email,
               leftColumnWidth: leftColumnWidth,
-              child: Text(supabaseClient.auth.currentUser?.email ?? ''),
+              child: Text(usersNotifier.currentUser.value.username),
             ),
             // TODO(arenukvern): add linked accounts
             const SizedBox(height: 24),

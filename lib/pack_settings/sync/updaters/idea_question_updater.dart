@@ -33,10 +33,11 @@ class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
         IdeaProjectQuestionModel other = updatableDiff.other;
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         final bool originalWasUpdated = updatableDiff.originalWasUpdated;
+        final policy = getPolicyForDiff(updatableDiff);
 
         /// check title
         if (original.title != other.localizedTitle) {
-          switch (defaultPolicy) {
+          switch (policy) {
             case InstanceUpdatePolicy.useServerVersion:
               other =
                   other.copyWith(title: jsonEncode(original.title.toJson()));

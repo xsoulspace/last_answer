@@ -108,7 +108,7 @@ class IdeaProjectAnswer extends RemoteHiveObjectWithId<IdeaProjectAnswerModel>
       questionId: question.id,
       text: text,
       updatedAt: updatedAt,
-      userId: user.id,
+      ownerId: user.id,
     );
   }
 

@@ -248,7 +248,7 @@ void main() {
         projectId: 'p',
         createdAt: createdAt,
         updatedAt: updatedAt,
-        userId: 'user',
+        ownerId: 'user',
       );
       final existedProjects = [ideaProjectAnswer];
       final serverProjects = [ideaProjectAnswerModel];

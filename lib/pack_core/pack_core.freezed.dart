@@ -23,7 +23,8 @@ IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(
 mixin _$IdeaProjectAnswerModel {
   String get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  @JsonKey(name: 'question_id')
+  @JsonKey(
+      name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
   String get questionId => throw _privateConstructorUsedError;
   @JsonKey(name: 'project_id')
   String get projectId => throw _privateConstructorUsedError;
@@ -31,8 +32,8 @@ mixin _$IdeaProjectAnswerModel {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_id')
-  String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'owner_id')
+  String get ownerId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,11 +49,16 @@ abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
   $Res call(
       {String id,
       String text,
-      @JsonKey(name: 'question_id') String questionId,
-      @JsonKey(name: 'project_id') String projectId,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'user_id') String userId});
+      @JsonKey(name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
+          String questionId,
+      @JsonKey(name: 'project_id')
+          String projectId,
+      @JsonKey(name: 'created_at')
+          DateTime createdAt,
+      @JsonKey(name: 'updated_at')
+          DateTime updatedAt,
+      @JsonKey(name: 'owner_id')
+          String ownerId});
 }
 
 /// @nodoc
@@ -72,7 +78,7 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
     Object? projectId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userId = freezed,
+    Object? ownerId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -99,9 +105,9 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      ownerId: ownerId == freezed
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -117,11 +123,16 @@ abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
   $Res call(
       {String id,
       String text,
-      @JsonKey(name: 'question_id') String questionId,
-      @JsonKey(name: 'project_id') String projectId,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'user_id') String userId});
+      @JsonKey(name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
+          String questionId,
+      @JsonKey(name: 'project_id')
+          String projectId,
+      @JsonKey(name: 'created_at')
+          DateTime createdAt,
+      @JsonKey(name: 'updated_at')
+          DateTime updatedAt,
+      @JsonKey(name: 'owner_id')
+          String ownerId});
 }
 
 /// @nodoc
@@ -144,7 +155,7 @@ class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
     Object? projectId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userId = freezed,
+    Object? ownerId = freezed,
   }) {
     return _then(_$_IdeaProjectAnswerModel(
       id: id == freezed
@@ -171,9 +182,9 @@ class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      ownerId: ownerId == freezed
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -186,11 +197,16 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
   const _$_IdeaProjectAnswerModel(
       {required this.id,
       required this.text,
-      @JsonKey(name: 'question_id') required this.questionId,
-      @JsonKey(name: 'project_id') required this.projectId,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      @JsonKey(name: 'user_id') required this.userId})
+      @JsonKey(name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
+          required this.questionId,
+      @JsonKey(name: 'project_id')
+          required this.projectId,
+      @JsonKey(name: 'created_at')
+          required this.createdAt,
+      @JsonKey(name: 'updated_at')
+          required this.updatedAt,
+      @JsonKey(name: 'owner_id')
+          required this.ownerId})
       : super._();
 
   factory _$_IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =>
@@ -201,7 +217,8 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
   @override
   final String text;
   @override
-  @JsonKey(name: 'question_id')
+  @JsonKey(
+      name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
   final String questionId;
   @override
   @JsonKey(name: 'project_id')
@@ -213,12 +230,12 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
   @override
-  @JsonKey(name: 'user_id')
-  final String userId;
+  @JsonKey(name: 'owner_id')
+  final String ownerId;
 
   @override
   String toString() {
-    return 'IdeaProjectAnswerModel(id: $id, text: $text, questionId: $questionId, projectId: $projectId, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId)';
+    return 'IdeaProjectAnswerModel(id: $id, text: $text, questionId: $questionId, projectId: $projectId, createdAt: $createdAt, updatedAt: $updatedAt, ownerId: $ownerId)';
   }
 
   @override
@@ -233,7 +250,7 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
             const DeepCollectionEquality().equals(other.projectId, projectId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality().equals(other.userId, userId));
+            const DeepCollectionEquality().equals(other.ownerId, ownerId));
   }
 
   @JsonKey(ignore: true)
@@ -246,7 +263,7 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
       const DeepCollectionEquality().hash(projectId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(userId));
+      const DeepCollectionEquality().hash(ownerId));
 
   @JsonKey(ignore: true)
   @override
@@ -262,14 +279,18 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
 
 abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
   const factory _IdeaProjectAnswerModel(
-          {required final String id,
-          required final String text,
-          @JsonKey(name: 'question_id') required final String questionId,
-          @JsonKey(name: 'project_id') required final String projectId,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-          @JsonKey(name: 'user_id') required final String userId}) =
-      _$_IdeaProjectAnswerModel;
+      {required final String id,
+      required final String text,
+      @JsonKey(name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
+          required final String questionId,
+      @JsonKey(name: 'project_id')
+          required final String projectId,
+      @JsonKey(name: 'created_at')
+          required final DateTime createdAt,
+      @JsonKey(name: 'updated_at')
+          required final DateTime updatedAt,
+      @JsonKey(name: 'owner_id')
+          required final String ownerId}) = _$_IdeaProjectAnswerModel;
   const _IdeaProjectAnswerModel._() : super._();
 
   factory _IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =
@@ -280,7 +301,8 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
   @override
   String get text => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'question_id')
+  @JsonKey(
+      name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
   String get questionId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'project_id')
@@ -292,8 +314,8 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'user_id')
-  String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'owner_id')
+  String get ownerId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>

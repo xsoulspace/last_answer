@@ -17,7 +17,11 @@ class IdeaProjectQuestionModel
     explicitToJson: true,
   )
   const factory IdeaProjectQuestionModel({
-    required final IdeaProjectQuestionId id,
+    @JsonKey(
+      fromJson: fromIntToString,
+      toJson: fromStringToInt,
+    )
+        required final IdeaProjectQuestionId id,
     required final String title,
   }) = _IdeaProjectQuestionModel;
   const IdeaProjectQuestionModel._();
@@ -29,3 +33,6 @@ class IdeaProjectQuestionModel
       model.toJson();
   LocalizedText get localizedTitle => LocalizedText.fromJson(jsonDecode(title));
 }
+
+int fromStringToInt(final String value) => int.parse(value);
+String fromIntToString(final int value) => '$value';

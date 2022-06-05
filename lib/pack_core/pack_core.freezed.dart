@@ -283,6 +283,7 @@ IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
 
 /// @nodoc
 mixin _$IdeaProjectQuestionModel {
+  @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
@@ -297,7 +298,9 @@ abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
   factory $IdeaProjectQuestionModelCopyWith(IdeaProjectQuestionModel value,
           $Res Function(IdeaProjectQuestionModel) then) =
       _$IdeaProjectQuestionModelCopyWithImpl<$Res>;
-  $Res call({String id, String title});
+  $Res call(
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
+      String title});
 }
 
 /// @nodoc
@@ -335,7 +338,9 @@ abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
           $Res Function(_$_IdeaProjectQuestionModel) then) =
       __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String title});
+  $Res call(
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
+      String title});
 }
 
 /// @nodoc
@@ -372,13 +377,17 @@ class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
-  const _$_IdeaProjectQuestionModel({required this.id, required this.title})
+  const _$_IdeaProjectQuestionModel(
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
+          required this.id,
+      required this.title})
       : super._();
 
   factory _$_IdeaProjectQuestionModel.fromJson(Map<String, dynamic> json) =>
       _$$_IdeaProjectQuestionModelFromJson(json);
 
   @override
+  @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
   final String id;
   @override
   final String title;
@@ -418,7 +427,8 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
 
 abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
   const factory _IdeaProjectQuestionModel(
-      {required final String id,
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
+          required final String id,
       required final String title}) = _$_IdeaProjectQuestionModel;
   const _IdeaProjectQuestionModel._() : super._();
 
@@ -426,6 +436,7 @@ abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
       _$_IdeaProjectQuestionModel.fromJson;
 
   @override
+  @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
   String get id => throw _privateConstructorUsedError;
   @override
   String get title => throw _privateConstructorUsedError;

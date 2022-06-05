@@ -31,14 +31,14 @@ Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
 _$_IdeaProjectQuestionModel _$$_IdeaProjectQuestionModelFromJson(
         Map<String, dynamic> json) =>
     _$_IdeaProjectQuestionModel(
-      id: json['id'] as String,
+      id: fromIntToString(json['id'] as int),
       title: json['title'] as String,
     );
 
 Map<String, dynamic> _$$_IdeaProjectQuestionModelToJson(
         _$_IdeaProjectQuestionModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'id': fromStringToInt(instance.id),
       'title': instance.title,
     };
 

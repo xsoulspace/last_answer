@@ -9,6 +9,7 @@ AnswerCreatorState useAnswerCreatorState({
   required final VoidCallback onFocus,
   required final ValueNotifier<bool> questionsOpened,
   required final VoidCallback onChanged,
+  required final ServerProjectsSyncService ideaSyncService,
 }) =>
     use(
       ContextfulLifeHook(
@@ -21,6 +22,7 @@ AnswerCreatorState useAnswerCreatorState({
           onFocus: onFocus,
           onShareTap: onShareTap,
           questionsOpened: questionsOpened,
+          ideaSyncService: ideaSyncService,
         ),
       ),
     );
@@ -34,6 +36,7 @@ class AnswerCreatorState extends ContextfulLifeState {
     required this.questionsOpened,
     required this.onChanged,
     required this.idea,
+    required this.ideaSyncService,
   });
 
   final IdeaProject idea;
@@ -43,6 +46,7 @@ class AnswerCreatorState extends ContextfulLifeState {
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
   final VoidCallback onChanged;
+  final ServerProjectsSyncService ideaSyncService;
 
   final answerFocusNode = FocusNode();
   late final selectedQuestion =
@@ -75,13 +79,17 @@ class AnswerCreatorState extends ContextfulLifeState {
     idea.newAnswerText = answerController.text;
     answer.value = answerController.text;
     onChanged();
-    unawaited(idea.save());
+    await idea.save();
+    await ideaSyncService.upsert([idea]);
   }
 
   Future<void> onSelectedQuestionChanged() async {
     if (selectedQuestion.value == idea.newQuestion) return;
-    idea.newQuestion = selectedQuestion.value;
-    unawaited(idea.save());
+    idea
+      ..newQuestion = selectedQuestion.value
+      ..updatedAt = dateTimeNowUtc();
+    await idea.save();
+    await ideaSyncService.upsert([idea]);
   }
 
   Future<void> onCreate() async {

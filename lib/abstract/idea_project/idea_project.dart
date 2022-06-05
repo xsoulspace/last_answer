@@ -29,7 +29,8 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     final foldersNotifier = context.read<ProjectFoldersNotifier>();
     final folder = foldersNotifier.state[model.folderId]!;
     final questionsNotifier = context.read<IdeaProjectQuestionsNotifier>();
-    final question = questionsNotifier.state[model.newQuestionId];
+    final question = questionsNotifier.state[model.newQuestionId] ??
+        questionsNotifier.state.values.first;
 
     return create(
       context: context,
@@ -49,12 +50,12 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     required final String title,
     required final ProjectFolder folder,
     required final BuildContext context,
+    required final IdeaProjectQuestion newQuestion,
     final DateTime? createdAt,
     final DateTime? updatedAt,
     final String? id,
     final bool isCompleted = defaultProjectIsCompleted,
     final String newAnswerText = '',
-    final IdeaProjectQuestion? newQuestion,
   }) async {
     final created = dateTimeNowUtc();
     final idea = IdeaProject(
@@ -125,11 +126,11 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
       createdAt: createdAt,
       updatedAt: updatedAt,
       projectType: type,
-      userId: user.id,
+      ownerId: user.id,
       isCompleted: isCompleted,
       folderId: folder!.id,
       newAnswerText: newAnswerText,
-      newQuestionId: newQuestion?.id,
+      newQuestionId: newQuestion!.id,
       title: title,
     );
   }

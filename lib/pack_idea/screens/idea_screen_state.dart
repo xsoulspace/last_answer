@@ -9,6 +9,8 @@ IdeaScreenState useIdeaScreenState({
   required final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier,
   required final CurrentFolderNotifier folderNotifier,
   required final IdeaProjectsNotifier ideasNotifier,
+  required final ServerIdeaAnswerSyncService ideaAnswerSyncService,
+  required final ServerProjectsSyncService ideaSyncService,
 }) =>
     use(
       ContextfulLifeHook(
@@ -21,6 +23,8 @@ IdeaScreenState useIdeaScreenState({
           ideaUpdatesStream: ideaUpdatesStream,
           questionsOpened: questionsOpened,
           answersNotifier: answersNotifier,
+          ideaSyncService: ideaSyncService,
+          ideaAnswerSyncService: ideaAnswerSyncService,
         ),
       ),
     );
@@ -34,11 +38,15 @@ class IdeaScreenState extends ContextfulLifeState {
     required this.answersNotifier,
     required this.folderNotifier,
     required this.ideasNotifier,
+    required this.ideaAnswerSyncService,
+    required this.ideaSyncService,
   });
   final VoidCallback onScreenBack;
   final IdeaProject idea;
   final ValueNotifier<bool> questionsOpened;
   final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier;
+  final ServerIdeaAnswerSyncService ideaAnswerSyncService;
+  final ServerProjectsSyncService ideaSyncService;
 
   final StreamController<bool> ideaUpdatesStream;
 
@@ -66,6 +74,7 @@ class IdeaScreenState extends ContextfulLifeState {
       folderNotifier.notify();
     }
     await idea.save();
+    await ideaSyncService.upsert([idea]);
   }
 
   void closeQuestions() {
@@ -100,6 +109,7 @@ class IdeaScreenState extends ContextfulLifeState {
     answersNotifier.value = [...answersNotifier.value]..remove(answer);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
+    await ideaAnswerSyncService.delete([answer]);
   }
 
   Future<void> onAnswersChange() async {
@@ -108,7 +118,8 @@ class IdeaScreenState extends ContextfulLifeState {
   }
 
   Future<void> onAnswerCreated(final IdeaProjectAnswer answer) async {
-    answersNotifier.value = [...answersNotifier.value, answer];
+    answersNotifier.value = [answer, ...answersNotifier.value];
+    await ideaAnswerSyncService.upsert([answer]);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }

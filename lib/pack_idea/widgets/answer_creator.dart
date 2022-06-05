@@ -27,6 +27,7 @@ class _AnswerCreator extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final state = useAnswerCreatorState(
+      ideaSyncService: context.watch(),
       defaultQuestion: defaultQuestion,
       idea: idea,
       onChanged: onChanged,

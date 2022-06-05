@@ -43,11 +43,13 @@ class IdeaAnswerScreen extends HookWidget {
 
     final state = useIdeaAnswerScreenState(
       ideasNotifier: ideasNotifier,
-      answer: answer,
+      answerNotifier: answer,
       idea: maybeIdea,
       onScreenBack: onBack,
       textController: textController,
       updatesStream: updatesStream,
+      ideaAnswerSyncService: context.watch(),
+      ideaSyncService: context.watch(),
     );
 
     return Scaffold(

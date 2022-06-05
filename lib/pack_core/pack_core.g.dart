@@ -71,7 +71,7 @@ _$NoteProjectModel _$$NoteProjectModelFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isCompleted: json['is_completed'] as bool,
       projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
-      userId: json['user_id'] as String,
+      ownerId: json['owner_id'] as String,
       folderId: json['folder_id'] as String,
       charactersLimit: json['characters_limit'] as int?,
       note: json['note'] as String,
@@ -85,7 +85,7 @@ Map<String, dynamic> _$$NoteProjectModelToJson(_$NoteProjectModel instance) =>
       'updated_at': instance.updatedAt.toIso8601String(),
       'is_completed': instance.isCompleted,
       'project_type': _$ProjectTypeEnumMap[instance.projectType],
-      'user_id': instance.userId,
+      'owner_id': instance.ownerId,
       'folder_id': instance.folderId,
       'characters_limit': instance.charactersLimit,
       'note': instance.note,
@@ -106,10 +106,10 @@ _$IdeaProjectModel _$$IdeaProjectModelFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isCompleted: json['is_completed'] as bool,
       projectType: $enumDecode(_$ProjectTypeEnumMap, json['project_type']),
-      userId: json['user_id'] as String,
+      ownerId: json['owner_id'] as String,
       folderId: json['folder_id'] as String,
       newAnswerText: json['new_answer_text'] as String,
-      newQuestionId: json['new_question_id'] as String?,
+      newQuestionId: fromIntToString(json['new_question_id'] as int),
       $type: json['runtime_type'] as String?,
     );
 
@@ -121,10 +121,10 @@ Map<String, dynamic> _$$IdeaProjectModelToJson(_$IdeaProjectModel instance) =>
       'updated_at': instance.updatedAt.toIso8601String(),
       'is_completed': instance.isCompleted,
       'project_type': _$ProjectTypeEnumMap[instance.projectType],
-      'user_id': instance.userId,
+      'owner_id': instance.ownerId,
       'folder_id': instance.folderId,
       'new_answer_text': instance.newAnswerText,
-      'new_question_id': instance.newQuestionId,
+      'new_question_id': fromStringToInt(instance.newQuestionId),
       'runtime_type': instance.$type,
     };
 

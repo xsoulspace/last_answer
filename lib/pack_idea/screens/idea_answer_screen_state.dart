@@ -4,10 +4,12 @@ part of pack_idea;
 IdeaAnswerScreenState useIdeaAnswerScreenState({
   required final TextEditingController textController,
   required final StreamController<bool> updatesStream,
-  required final ValueNotifier<IdeaProjectAnswer> answer,
+  required final ValueNotifier<IdeaProjectAnswer> answerNotifier,
   required final IdeaProject idea,
   required final ValueChanged<IdeaProject> onScreenBack,
   required final IdeaProjectsNotifier ideasNotifier,
+  required final ServerIdeaAnswerSyncService ideaAnswerSyncService,
+  required final ServerProjectsSyncService ideaSyncService,
 }) =>
     use(
       ContextfulLifeHook(
@@ -16,9 +18,11 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
           ideasNotifier: ideasNotifier,
           textController: textController,
           updatesStream: updatesStream,
-          answer: answer,
+          answerNotifier: answerNotifier,
           idea: idea,
           onScreenBack: onScreenBack,
+          ideaAnswerSyncService: ideaAnswerSyncService,
+          ideaSyncService: ideaSyncService,
         ),
       ),
     );
@@ -28,15 +32,19 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
     required this.textController,
     required this.ideasNotifier,
     required this.updatesStream,
-    required this.answer,
+    required this.answerNotifier,
     required this.idea,
     required this.onScreenBack,
+    required this.ideaAnswerSyncService,
+    required this.ideaSyncService,
   });
   final TextEditingController textController;
   final StreamController<bool> updatesStream;
-  final ValueNotifier<IdeaProjectAnswer> answer;
+  final ValueNotifier<IdeaProjectAnswer> answerNotifier;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
+  final ServerIdeaAnswerSyncService ideaAnswerSyncService;
+  final ServerProjectsSyncService ideaSyncService;
 
   final IdeaProjectsNotifier ideasNotifier;
   @override
@@ -54,9 +62,11 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
   // ignore: avoid_positional_boolean_parameters
   Future<void> onAnswerUpdate(final bool update) async {
     idea.folder?.sortProjectsByDate(project: idea);
-    await answer.value.save();
+    await answerNotifier.value.save();
     ideasNotifier.notify();
     await idea.save();
+    await ideaAnswerSyncService.upsert([answerNotifier.value]);
+    await ideaSyncService.upsert([idea]);
   }
 
   @override
@@ -66,8 +76,8 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
   }
 
   void onTextChanged() {
-    if (answer.value.text == textController.text) return;
-    answer.value.text = textController.text;
+    if (answerNotifier.value.text == textController.text) return;
+    answerNotifier.value.text = textController.text;
     idea.updatedAt = dateTimeNowUtc();
     updatesStream.add(true);
   }

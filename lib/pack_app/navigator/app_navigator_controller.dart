@@ -67,11 +67,13 @@ class AppNavigatorController {
     final folderNotifier = context.read<CurrentFolderNotifier>();
     final projectsSyncService = context.read<ServerProjectsSyncService>();
     final currentFolder = folderNotifier.state;
+    final questionsNotifier = context.read<IdeaProjectQuestionsNotifier>();
 
     final idea = await IdeaProject.create(
       title: title,
       folder: currentFolder,
       context: context,
+      newQuestion: questionsNotifier.state.values.first,
     );
     folderNotifier.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));

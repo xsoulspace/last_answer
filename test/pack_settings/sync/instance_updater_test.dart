@@ -207,7 +207,7 @@ void main() {
         updatedAt: updatedAt,
         isCompleted: false,
         projectType: ProjectType.note,
-        userId: '',
+        ownerId: '',
         folderId: '',
         charactersLimit: null,
         note: 'note',

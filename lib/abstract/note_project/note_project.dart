@@ -117,7 +117,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
       note: note,
       projectType: type,
       updatedAt: updatedAt,
-      userId: user.id,
+      ownerId: user.id,
     );
   }
 

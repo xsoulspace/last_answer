@@ -30,6 +30,8 @@ class IdeaProjectScreen extends HookWidget {
     final questionsOpened = useIsBool();
 
     final state = useIdeaScreenState(
+      ideaAnswerSyncService: context.watch(),
+      ideaSyncService: context.watch(),
       onScreenBack: onBack,
       folderNotifier: context.watch(),
       ideasNotifier: ideasNotifier,

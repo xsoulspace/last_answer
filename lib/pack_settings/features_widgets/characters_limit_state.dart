@@ -1,8 +1,8 @@
 part of pack_settings;
 
 CharactersLimitSettingState useCharactersLimitSettingStateState({
-  required final NoteProject? note,
-  required final StreamController<NoteProjectUpdate>? updatesStream,
+  required final ValueNotifier<NoteProject>? noteNotifier,
+  required final StreamController<NoteProjectUpdateDto>? updatesStream,
   required final BuildContext context,
   required final TextEditingController controller,
 }) =>
@@ -10,7 +10,7 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
       LifeHook(
         debugLabel: 'useCharactersLimitSettingStateState',
         state: CharactersLimitSettingState(
-          note: note,
+          noteNotifier: noteNotifier,
           updatesStream: updatesStream,
           context: context,
           controller: controller,
@@ -20,15 +20,15 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
 
 class CharactersLimitSettingState extends LifeState {
   CharactersLimitSettingState({
-    required this.note,
+    required this.noteNotifier,
     required this.updatesStream,
     required this.context,
     required this.controller,
   });
 
   final BuildContext context;
-  final NoteProject? note;
-  final StreamController<NoteProjectUpdate>? updatesStream;
+  final ValueNotifier<NoteProject>? noteNotifier;
+  final StreamController<NoteProjectUpdateDto>? updatesStream;
   late GeneralSettingsController settings;
   final TextEditingController controller;
   @override
@@ -49,17 +49,18 @@ class CharactersLimitSettingState extends LifeState {
     setLimit(limit);
   }
 
-  static const limitNotifier = NoteProjectUpdate(charactersLimitChanged: true);
+  static const limitNotifier =
+      NoteProjectUpdateDto(charactersLimitChanged: true);
 
   void setLimit(
     final int newLimit, {
     final bool updateController = false,
     final bool zeroEqualNull = true,
   }) {
-    if (note == null) {
+    if (noteNotifier == null) {
       settings.charactersLimitForNewNotes = newLimit;
     } else {
-      note?.charactersLimit = newLimit;
+      noteNotifier?.value.charactersLimit = newLimit;
       updatesStream?.add(limitNotifier);
     }
     if (updateController) {

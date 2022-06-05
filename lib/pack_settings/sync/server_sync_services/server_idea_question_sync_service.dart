@@ -5,9 +5,13 @@ ServerIdeaQuestionSyncService createServerIdeaQuestionSyncService(
 ) =>
     ServerIdeaQuestionSyncService(
       api: context.read<IdeaProjectQuestionApi>(),
+      usersNotifier: context.read(),
     );
 
 class ServerIdeaQuestionSyncService extends ServerSyncServiceImpl<
     IdeaProjectQuestion, IdeaProjectQuestionModel> {
-  ServerIdeaQuestionSyncService({required final super.api});
+  ServerIdeaQuestionSyncService({
+    required final super.api,
+    required final super.usersNotifier,
+  });
 }

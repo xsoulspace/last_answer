@@ -16,3 +16,6 @@ abstract class Deletable {
 
 abstract class HiveObjectWithId extends HiveObject implements Deletable, HasId {
 }
+
+abstract class RemoteHiveObjectWithId<TModel extends HasId> extends HiveObject
+    implements Deletable, HasId, RemotelyAvailable<TModel> {}

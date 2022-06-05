@@ -12,9 +12,8 @@ class ServerFolderSyncService
     extends ServerSyncServiceImpl<ProjectFolder, ProjectFolderModel> {
   ServerFolderSyncService({
     required final super.api,
-    required this.usersNotifier,
+    required final super.usersNotifier,
   });
-  final UsersNotifier usersNotifier;
   @override
   Future<void> onCreateFromOther(
     final Iterable<ProjectFolder> elements,

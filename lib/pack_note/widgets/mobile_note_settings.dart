@@ -2,20 +2,21 @@ part of pack_note;
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({
-    required final this.note,
+    required this.noteNotifier,
     required this.onRemove,
     required this.updatesStream,
     final Key? key,
   }) : super(key: key);
   static const borderPadding = 8.0;
-  final NoteProject note;
+  final ValueNotifier<NoteProject> noteNotifier;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectUpdate> updatesStream;
+  final StreamController<NoteProjectUpdateDto> updatesStream;
 
   @override
   Widget build(final BuildContext context) {
     useNoteProjectUpdaterState(
-      note: note,
+      projectsSyncService: context.read(),
+      noteNotifier: noteNotifier,
       updatesStream: updatesStream,
       folderNotifier: context.watch(),
       notesNotifier: context.watch(),
@@ -43,7 +44,7 @@ class MobileNoteSettingsMenu extends HookWidget {
               const SizedBox(width: 5),
               Expanded(
                 child: CharactersLimitSetting(
-                  note: note,
+                  noteNotifier: noteNotifier,
                   updatesStream: updatesStream,
                 ),
               ),

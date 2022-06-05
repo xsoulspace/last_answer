@@ -2,22 +2,23 @@ part of pack_note;
 
 class DesktopNoteSettingsMenu extends HookWidget {
   const DesktopNoteSettingsMenu({
-    required final this.note,
+    required this.noteNotifier,
     required this.onRemove,
     required this.updatesStream,
     final Key? key,
   }) : super(key: key);
   static const borderPadding = 8.0;
-  final NoteProject note;
+  final ValueNotifier<NoteProject> noteNotifier;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectUpdate> updatesStream;
+  final StreamController<NoteProjectUpdateDto> updatesStream;
 
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
 
     useNoteProjectUpdaterState(
-      note: note,
+      projectsSyncService: context.read(),
+      noteNotifier: noteNotifier,
       updatesStream: updatesStream,
       folderNotifier: context.watch(),
       notesNotifier: context.watch(),
@@ -76,7 +77,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
                       const Divider(),
                       Expanded(
                         child: CharactersLimitSetting(
-                          note: note,
+                          noteNotifier: noteNotifier,
                           updatesStream: updatesStream,
                         ),
                       ),

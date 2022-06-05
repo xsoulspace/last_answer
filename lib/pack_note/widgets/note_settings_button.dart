@@ -2,14 +2,14 @@ part of pack_note;
 
 class NoteSettingsButton extends StatelessWidget {
   const NoteSettingsButton({
-    required final this.note,
+    required final this.noteNotifier,
     required this.onRemove,
     required this.updatesStream,
     final Key? key,
   }) : super(key: key);
-  final NoteProject note;
+  final ValueNotifier<NoteProject> noteNotifier;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectUpdate> updatesStream;
+  final StreamController<NoteProjectUpdateDto> updatesStream;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -24,7 +24,7 @@ class NoteSettingsButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width - 50,
           height: 150,
           child: MobileNoteSettingsMenu(
-            note: note,
+            noteNotifier: noteNotifier,
             onRemove: onRemove,
             updatesStream: updatesStream,
           ),
@@ -35,7 +35,7 @@ class NoteSettingsButton extends StatelessWidget {
         return ButtonPopup(
           height: 230,
           child: DesktopNoteSettingsMenu(
-            note: note,
+            noteNotifier: noteNotifier,
             onRemove: onRemove,
             updatesStream: updatesStream,
           ),

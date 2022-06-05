@@ -2,7 +2,7 @@ part of pack_note;
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({
-    required this.note,
+    required this.noteNotifier,
     required this.onRemove,
     required this.updatesStream,
     required this.noteController,
@@ -13,9 +13,9 @@ class NoteProjectSideActionBar extends HookWidget {
     final Key? key,
   }) : super(key: key);
 
-  final ValueNotifier<NoteProject> note;
+  final ValueNotifier<NoteProject> noteNotifier;
   final FutureVoidCallback onRemove;
-  final StreamController<NoteProjectUpdate> updatesStream;
+  final StreamController<NoteProjectUpdateDto> updatesStream;
   final TextEditingController noteController;
   final VoidCallback showEmojiKeyboard;
   final VoidCallback closeEmojiKeyboard;
@@ -55,7 +55,7 @@ class NoteProjectSideActionBar extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         NoteSettingsButton(
-          note: note.value,
+          noteNotifier: noteNotifier,
           onRemove: onRemove,
           updatesStream: updatesStream,
         ),
@@ -69,7 +69,7 @@ class NoteProjectSideActionBar extends HookWidget {
           width: 48,
           child: IconShareButton(
             onTap: () {
-              ProjectSharer.of(context).share(project: note.value);
+              ProjectSharer.of(context).share(project: noteNotifier.value);
             },
           ),
         ),

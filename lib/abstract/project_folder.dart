@@ -1,14 +1,13 @@
 part of abstract;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObjectWithId
-    with EquatableMixin
-    implements RemotelyAvailable<ProjectFolderModel> {
+class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
+    with EquatableMixin {
   ProjectFolder({
     required this.id,
     required this.title,
     this.projectsIdsString = '',
-    bool? isToDelete,
+    final bool? isToDelete,
     final DateTime? updatedAt,
     final DateTime? createdAt,
   })  : _projects = createHashSet(),

@@ -34,7 +34,7 @@ abstract class InstanceSubscriberI<TImmutable extends HasId>
   }
 }
 
-class SingleInstanceSubscriber<TMutable extends HiveObjectWithId,
+class SingleInstanceSubscriber<TMutable extends RemoteHiveObjectWithId<TImmutable>,
         TImmutable extends HasId, TMapState extends MapState<TMutable>>
     extends InstanceSubscriberI<TImmutable> {
   SingleInstanceSubscriber({

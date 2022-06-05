@@ -7,7 +7,8 @@ import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 
-class DeletableTestItem extends HiveObjectWithId with EquatableMixin {
+class DeletableTestItem extends RemoteHiveObjectWithId<TestItem>
+    with EquatableMixin {
   DeletableTestItem({
     required this.id,
     this.isToDelete = false,
@@ -24,6 +25,12 @@ class DeletableTestItem extends HiveObjectWithId with EquatableMixin {
   @override
   Future<void> deleteWithRelatives({required final BuildContext context}) {
     // TODO: implement deleteWithRelatives
+    throw UnimplementedError();
+  }
+
+  @override
+  TestItem toModel({required final UserModel user}) {
+    // TODO: implement toModel
     throw UnimplementedError();
   }
 }

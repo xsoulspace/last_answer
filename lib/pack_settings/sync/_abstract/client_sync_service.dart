@@ -1,7 +1,7 @@
 part of pack_settings;
 
 class ClientInstancesSyncServiceI<
-        T extends HiveObjectWithId,
+        T extends RemoteHiveObjectWithId<TOther>,
         TOther extends HasId,
         TNotifier extends MapState<T>> extends InstancesSyncServiceI<T, TOther>
     with
@@ -10,7 +10,7 @@ class ClientInstancesSyncServiceI<
   Future<Iterable<T>> getAll() async => throw UnimplementedError();
 }
 
-class HiveClientSyncServiceImpl<T extends HiveObjectWithId,
+class HiveClientSyncServiceImpl<T extends RemoteHiveObjectWithId<TOther>,
         TOther extends HasId, TNotifier extends MapState<T>>
     extends ClientInstancesSyncServiceI<T, TOther, TNotifier> {
   HiveClientSyncServiceImpl({

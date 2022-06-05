@@ -1,6 +1,6 @@
 part of pack_settings;
 
-class InstanceUpdater<TMutable extends HiveObjectWithId,
+class InstanceUpdater<TMutable extends RemoteHiveObjectWithId<TImmutableOther>,
         TImmutableOther extends HasId, TNotifier extends MapState<TMutable>>
     implements RemotelyUpdatable<TMutable, TImmutableOther> {
   InstanceUpdater({
@@ -178,7 +178,7 @@ typedef OnCheckUpdater<T extends HasId, TOther extends HasId>
 );
 
 abstract class BasicProjectInstanceUpdater<
-        TMutable extends BasicProject,
+        TMutable extends BasicProject<TImmutableOther>,
         TImmutableOther extends BasicProjectModel,
         TNotifier extends MapState<TMutable>>
     extends InstanceUpdater<TMutable, TImmutableOther, TNotifier> {

@@ -5,9 +5,10 @@ part of abstract;
 /// will not broke immutabilty
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
-class IdeaProjectQuestion extends HiveObjectWithId
+class IdeaProjectQuestion
+    extends RemoteHiveObjectWithId<IdeaProjectQuestionModel>
     with EquatableMixin
-    implements Sharable, RemotelyAvailable<IdeaProjectQuestionModel> {
+    implements Sharable {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({

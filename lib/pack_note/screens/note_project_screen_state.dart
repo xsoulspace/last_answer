@@ -2,14 +2,14 @@ part of pack_note;
 
 // ignore: long-parameter-list
 NoteProjectScreenState useNoteProjectScreenState({
-  required final TextEditingController noteController,
   required final NoteProjectsNotifier notesNotifier,
   required final CurrentFolderNotifier folderNotifier,
-  required final NoteProject note,
-  required final StreamController<NoteProjectUpdate> updatesStream,
+  required final ValueNotifier<NoteProject> noteNotifier,
+  required final StreamController<NoteProjectUpdateDto> updatesStream,
   required final ValueChanged<NoteProject> onScreenBack,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
+  required final ServerProjectsSyncService projectsSyncService,
 }) =>
     use(
       LifeHook(
@@ -17,27 +17,27 @@ NoteProjectScreenState useNoteProjectScreenState({
         state: NoteProjectScreenState(
           checkIsProjectActive: checkIsProjectActive,
           onGoHome: onGoHome,
-          note: note,
-          noteController: noteController,
+          noteNotifier: noteNotifier,
           updatesStream: updatesStream,
           onScreenBack: onScreenBack,
           folderNotifier: folderNotifier,
           notesNotifier: notesNotifier,
+          projectsSyncService: projectsSyncService,
         ),
       ),
     );
 
 class NoteProjectScreenState extends NoteProjectUpdaterState {
   NoteProjectScreenState({
-    required this.noteController,
     required this.onScreenBack,
     required final this.checkIsProjectActive,
     required final this.onGoHome,
     required final super.folderNotifier,
     required final super.notesNotifier,
-    required final super.note,
+    required final super.noteNotifier,
     required final super.updatesStream,
-  });
+    required final super.projectsSyncService,
+  }) : noteController = TextEditingController(text: noteNotifier.value.note);
 
   final TextEditingController noteController;
   final ValueChanged<NoteProject> onScreenBack;
@@ -76,7 +76,7 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     note
       ..note = noteController.text
       ..updatedAt = DateTime.now();
-    updatesStream.add(NoteProjectUpdate(positionChanged: positionChanged));
+    updatesStream.add(NoteProjectUpdateDto(positionChanged: positionChanged));
   }
 
   void onBack() {
@@ -86,7 +86,9 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
 
   @override
   void dispose() {
-    noteController.removeListener(onNoteChange);
+    noteController
+      ..removeListener(onNoteChange)
+      ..dispose();
     super.dispose();
   }
 }

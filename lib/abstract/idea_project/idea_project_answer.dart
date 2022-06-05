@@ -13,7 +13,7 @@ class IdeaProjectAnswer extends RemoteHiveObjectWithId<IdeaProjectAnswerModel>
     this.projectId = '',
     this.isToDelete = false,
     final DateTime? updatedAt,
-  }) : updatedAt = updatedAt ?? DateTime.now();
+  }) : updatedAt = updatedAt ?? dateTimeNowUtc();
   static Future<IdeaProjectAnswer> fromModel({
     required final IdeaProjectAnswerModel model,
     required final BuildContext context,
@@ -48,7 +48,7 @@ class IdeaProjectAnswer extends RemoteHiveObjectWithId<IdeaProjectAnswerModel>
       text: text,
       question: question,
       id: id ?? createId(),
-      createdAt: createdAt ?? DateTime.now(),
+      createdAt: createdAt ?? dateTimeNowUtc(),
       projectId: idea.id,
       updatedAt: updatedAt,
     );

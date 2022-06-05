@@ -36,6 +36,9 @@ class NoteUpdater extends BasicProjectInstanceUpdater<NoteProject,
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
         final policy = getPolicyForDiff(updatableDiff);
+        if (policy == InstanceUpdatePolicy.noUpdateRequired) {
+          return updatableDiff;
+        }
 
         /// check note
         if (original.note != other.note) {

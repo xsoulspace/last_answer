@@ -11,7 +11,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   final int typeId = 3;
 
   @override
-  IdeaProject read(BinaryReader reader) {
+  IdeaProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -31,7 +31,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProject obj) {
+  void write(final BinaryWriter writer, final IdeaProject obj) {
     writer
       ..writeByte(10)
       ..writeByte(5)
@@ -60,7 +60,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -72,7 +72,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   final int typeId = 4;
 
   @override
-  IdeaProjectAnswer read(BinaryReader reader) {
+  IdeaProjectAnswer read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -89,7 +89,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProjectAnswer obj) {
+  void write(final BinaryWriter writer, final IdeaProjectAnswer obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -112,7 +112,7 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectAnswerAdapter &&
           runtimeType == other.runtimeType &&
@@ -124,7 +124,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   final int typeId = 5;
 
   @override
-  IdeaProjectQuestion read(BinaryReader reader) {
+  IdeaProjectQuestion read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -136,7 +136,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   }
 
   @override
-  void write(BinaryWriter writer, IdeaProjectQuestion obj) {
+  void write(final BinaryWriter writer, final IdeaProjectQuestion obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -149,7 +149,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is IdeaProjectQuestionAdapter &&
           runtimeType == other.runtimeType &&
@@ -161,7 +161,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   final int typeId = 8;
 
   @override
-  LocalizedText read(BinaryReader reader) {
+  LocalizedText read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -175,7 +175,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   }
 
   @override
-  void write(BinaryWriter writer, LocalizedText obj) {
+  void write(final BinaryWriter writer, final LocalizedText obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -192,7 +192,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is LocalizedTextAdapter &&
           runtimeType == other.runtimeType &&
@@ -204,7 +204,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   final int typeId = 6;
 
   @override
-  NoteProject read(BinaryReader reader) {
+  NoteProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -222,7 +222,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   }
 
   @override
-  void write(BinaryWriter writer, NoteProject obj) {
+  void write(final BinaryWriter writer, final NoteProject obj) {
     writer
       ..writeByte(8)
       ..writeByte(5)
@@ -247,7 +247,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is NoteProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -259,7 +259,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   final int typeId = 9;
 
   @override
-  ProjectFolder read(BinaryReader reader) {
+  ProjectFolder read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -275,7 +275,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   }
 
   @override
-  void write(BinaryWriter writer, ProjectFolder obj) {
+  void write(final BinaryWriter writer, final ProjectFolder obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -296,7 +296,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is ProjectFolderAdapter &&
           runtimeType == other.runtimeType &&
@@ -308,7 +308,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   final int typeId = 7;
 
   @override
-  StoryProject read(BinaryReader reader) {
+  StoryProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -325,7 +325,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   }
 
   @override
-  void write(BinaryWriter writer, StoryProject obj) {
+  void write(final BinaryWriter writer, final StoryProject obj) {
     writer
       ..writeByte(7)
       ..writeByte(5)
@@ -348,7 +348,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is StoryProjectAdapter &&
           runtimeType == other.runtimeType &&
@@ -359,19 +359,20 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Emoji _$EmojiFromJson(Map<String, dynamic> json) => Emoji(
+Emoji _$EmojiFromJson(final Map<String, dynamic> json) => Emoji(
       category: json['category'] as String,
       emoji: json['emoji'] as String,
       keywords: json['keywords'] as String,
     );
 
-Map<String, dynamic> _$EmojiToJson(Emoji instance) => <String, dynamic>{
+Map<String, dynamic> _$EmojiToJson(final Emoji instance) => <String, dynamic>{
       'category': instance.category,
       'emoji': instance.emoji,
       'keywords': instance.keywords,
     };
 
-IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
+IdeaProjectQuestion _$IdeaProjectQuestionFromJson(
+        final Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
@@ -379,14 +380,15 @@ IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
-        IdeaProjectQuestion instance) =>
+  final IdeaProjectQuestion instance,
+) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'isToDelete': instance.isToDelete,
     };
 
-LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
+LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
@@ -394,7 +396,7 @@ LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
       ga: json['ga'] as String?,
     );
 
-Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
+Map<String, dynamic> _$LocalizedTextToJson(final LocalizedText instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,
@@ -403,14 +405,16 @@ Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
     };
 
 SerializableProjectId _$SerializableProjectIdFromJson(
-        Map<String, dynamic> json) =>
+  final Map<String, dynamic> json,
+) =>
     SerializableProjectId(
       id: json['id'] as String,
       type: $enumDecode(_$ProjectTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$SerializableProjectIdToJson(
-        SerializableProjectId instance) =>
+  final SerializableProjectId instance,
+) =>
     <String, dynamic>{
       'type': _$ProjectTypeEnumMap[instance.type],
       'id': instance.id,
@@ -422,13 +426,13 @@ const _$ProjectTypeEnumMap = {
   ProjectType.story: 'story',
 };
 
-SupabaseError _$SupabaseErrorFromJson(Map<String, dynamic> json) =>
+SupabaseError _$SupabaseErrorFromJson(final Map<String, dynamic> json) =>
     SupabaseError(
       error: json['error'] as String,
       errorDescription: json['error_description'] as String,
     );
 
-Map<String, dynamic> _$SupabaseErrorToJson(SupabaseError instance) =>
+Map<String, dynamic> _$SupabaseErrorToJson(final SupabaseError instance) =>
     <String, dynamic>{
       'error': instance.error,
       'error_description': instance.errorDescription,

@@ -68,7 +68,7 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
   void onTextChanged() {
     if (answer.value.text == textController.text) return;
     answer.value.text = textController.text;
-    idea.updatedAt = DateTime.now();
+    idea.updatedAt = dateTimeNowUtc();
     updatesStream.add(true);
   }
 

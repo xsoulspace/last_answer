@@ -12,7 +12,8 @@ class InstanceUpdater<TMutable extends RemoteHiveObjectWithId<TImmutableOther>,
       clientSyncService;
 
   Future<void> getAndUpdateByOther(
-      final Iterable<TImmutableOther> other) async {
+    final Iterable<TImmutableOther> other,
+  ) async {
     final list = await clientSyncService.getAll();
     await updateByOther(otherList: other, list: list);
   }
@@ -207,6 +208,8 @@ abstract class BasicProjectInstanceUpdater<
           folder?.addProject(original);
           originalWasUpdated = true;
           break;
+        case InstanceUpdatePolicy.noUpdateRequired:
+          break;
       }
     }
 
@@ -227,7 +230,7 @@ abstract class BasicProjectInstanceUpdater<
         diff: diff,
         updatables: [updateFolder, onCheck],
         onUpdated: (final original, final other) {
-          other.copyWith(updatedAt: DateTime.now()) as TImmutableOther;
+          other.copyWith(updatedAt: dateTimeNowUtc()) as TImmutableOther;
           original.updatedAt = other.updatedAt;
 
           return other;
@@ -238,6 +241,9 @@ abstract class BasicProjectInstanceUpdater<
   InstanceUpdatePolicy getPolicyForDiff(
     final UpdatableInstanceDiff<TMutable, TImmutableOther> diff,
   ) {
+    if (diff.original.updatedAt == diff.other.updatedAt) {
+      return InstanceUpdatePolicy.noUpdateRequired;
+    }
     final useOriginalPolicy =
         diff.original.updatedAt.isAfter(diff.other.updatedAt);
     if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;

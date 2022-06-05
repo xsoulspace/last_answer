@@ -39,6 +39,9 @@ class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
         final policy = getPolicyForDiff(updatableDiff);
+        if (policy == InstanceUpdatePolicy.noUpdateRequired) {
+          return updatableDiff;
+        }
 
         /// check newAnswerText
         if (original.title != other.title) {
@@ -64,6 +67,10 @@ class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
               other = other.copyWith(newAnswerText: original.newAnswerText);
               otherWasUpdated = true;
               break;
+            case InstanceUpdatePolicy.useServerVersion:
+              original.newAnswerText = other.newAnswerText;
+              originalWasUpdated = true;
+              break;
             default:
               // TODO(arenukvern): description
               throw UnimplementedError();
@@ -87,6 +94,9 @@ class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
               original.newQuestion = question;
               originalWasUpdated = true;
               break;
+            default:
+              // TODO(arenukvern): description
+              throw UnimplementedError();
           }
         }
 

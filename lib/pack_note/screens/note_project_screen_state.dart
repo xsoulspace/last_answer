@@ -75,7 +75,7 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     }
     note
       ..note = noteController.text
-      ..updatedAt = DateTime.now();
+      ..updatedAt = dateTimeNowUtc();
     updatesStream.add(NoteProjectUpdateDto(positionChanged: positionChanged));
   }
 

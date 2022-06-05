@@ -56,7 +56,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
     final String newAnswerText = '',
     final IdeaProjectQuestion? newQuestion,
   }) async {
-    final created = DateTime.now();
+    final created = dateTimeNowUtc();
     final idea = IdeaProject(
       updatedAt: updatedAt ?? created,
       createdAt: createdAt ?? created,

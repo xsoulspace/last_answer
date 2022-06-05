@@ -9,11 +9,11 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
     this.projectsIdsString = '',
     final bool? isToDelete,
     final DateTime? updatedAt,
-    final DateTime? createdAt,
+    DateTime? createdAt,
   })  : _projects = createHashSet(),
         isToDelete = isToDelete ?? false,
-        createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+        createdAt = createdAt ??= dateTimeNowUtc(),
+        updatedAt = updatedAt ?? createdAt;
 
   ProjectFolder.zero({
     this.id = '',
@@ -21,8 +21,8 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
     this.title = '',
     this.isToDelete = false,
   })  : _projects = createHashSet(),
-        updatedAt = DateTime.now(),
-        createdAt = DateTime.now();
+        updatedAt = dateTimeNowUtc(),
+        createdAt = dateTimeNowUtc();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
       LinkedHashSet<BasicProject>(

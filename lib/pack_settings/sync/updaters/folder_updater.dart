@@ -31,6 +31,9 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
         final policy = getPolicyForDiff(updatableDiff);
+        if (policy == InstanceUpdatePolicy.noUpdateRequired) {
+          return updatableDiff;
+        }
 
         /// check title
         if (original.title != other.title) {
@@ -64,6 +67,9 @@ class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
   InstanceUpdatePolicy getPolicyForDiff(
     final UpdatableInstanceDiff<ProjectFolder, ProjectFolderModel> diff,
   ) {
+    if (diff.original.updatedAt == diff.other.updatedAt) {
+      return InstanceUpdatePolicy.noUpdateRequired;
+    }
     final useOriginalPolicy =
         diff.original.updatedAt.isAfter(diff.other.updatedAt);
     if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;

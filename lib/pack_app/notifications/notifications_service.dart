@@ -14,7 +14,7 @@ class NotificationService with SharedPreferencesUtil {
   Future<void> readUpdates() async {
     await setString(
       SharedPreferencesKeys.notificationUpdatesReadDateTime.name,
-      DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+      dateTimeNowUtc().millisecondsSinceEpoch.toString(),
     );
   }
 

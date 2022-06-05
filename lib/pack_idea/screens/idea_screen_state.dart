@@ -58,7 +58,7 @@ class IdeaScreenState extends ContextfulLifeState {
   Future<void> onIdeaUpdate(final bool updateFolder) async {
     ideasNotifier.put(
       key: idea.id,
-      value: idea..updatedAt = DateTime.now(),
+      value: idea..updatedAt = dateTimeNowUtc(),
     );
 
     if (updateFolder) {

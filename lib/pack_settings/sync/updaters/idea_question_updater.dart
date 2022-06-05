@@ -37,10 +37,12 @@ class IdeaQuestionUpdater extends InstanceUpdater<IdeaProjectQuestion,
         /// check title
         if (original.title != other.localizedTitle) {
           switch (defaultPolicy) {
-            case InstanceUpdatePolicy.useClientVersion:
+            case InstanceUpdatePolicy.useServerVersion:
               other =
                   other.copyWith(title: jsonEncode(original.title.toJson()));
               otherWasUpdated = true;
+              break;
+            case InstanceUpdatePolicy.noUpdateRequired:
               break;
             default:
               // TODO(arenukvern): description

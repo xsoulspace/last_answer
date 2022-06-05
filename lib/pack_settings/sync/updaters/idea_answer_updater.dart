@@ -22,6 +22,9 @@ class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
   InstanceUpdatePolicy getPolicyForDiff(
     final UpdatableInstanceDiff<IdeaProjectAnswer, IdeaProjectAnswerModel> diff,
   ) {
+    if (diff.original.updatedAt == diff.other.updatedAt) {
+      return InstanceUpdatePolicy.noUpdateRequired;
+    }
     final useOriginalPolicy =
         diff.original.updatedAt.isAfter(diff.other.updatedAt);
     if (useOriginalPolicy) return InstanceUpdatePolicy.useClientVersion;
@@ -43,6 +46,9 @@ class IdeaAnswerUpdater extends InstanceUpdater<IdeaProjectAnswer,
         bool otherWasUpdated = updatableDiff.otherWasUpdated;
         bool originalWasUpdated = updatableDiff.originalWasUpdated;
         final policy = getPolicyForDiff(updatableDiff);
+        if (policy == InstanceUpdatePolicy.noUpdateRequired) {
+          return updatableDiff;
+        }
 
         /// check text
         if (original.text != other.text) {

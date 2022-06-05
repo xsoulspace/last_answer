@@ -51,7 +51,7 @@ class NoteProject extends BasicProject<NoteProjectModel> {
     final String note = '',
     final bool isCompleted = defaultProjectIsCompleted,
   }) async {
-    final created = DateTime.now();
+    final created = dateTimeNowUtc();
 
     final noteProject = NoteProject(
       updatedAt: updatedAt ?? created,

@@ -79,8 +79,7 @@ class ProjectTile extends StatelessWidget {
                 borderRadius: defaultBorderRadius,
               ),
               contentPadding: project is IdeaProject
-                  ? const EdgeInsets.symmetric(horizontal: 16)
-                      .copyWith(left: 15)
+                  ? const EdgeInsets.only(left: 15, right: 16)
                   : null,
               minLeadingWidth: project is IdeaProject ? 0 : null,
               minVerticalPadding: project is NoteProject ? 12 : null,

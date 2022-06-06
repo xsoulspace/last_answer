@@ -7,6 +7,10 @@
   "@search": {
     "description": "Search"
   },
+  "signOut": "Выйти",
+  "@signOut": {
+    "description": "signOut"
+  },
   "frequentlyUsed": "Часто используемые",
   "@frequentlyUsed": {
     "description": "frequentlyUsed"
@@ -23,9 +27,9 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
-  "changeLog": "Change Log",
+  "changeLog": "Что нового?",
   "@changeLog": {
-    "description": "changeLog"
+    "description": "What's new?"
   },
   "username": "Имя пользователя",
   "@username": {

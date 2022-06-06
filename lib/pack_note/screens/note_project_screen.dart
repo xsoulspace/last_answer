@@ -20,24 +20,26 @@ class NoteProjectScreen extends HookWidget {
 
     final noteFocusNode = useFocusNode();
 
-    final noteProvider = context.read<NoteProjectsProvider>();
+    final noteProvider = context.watch<NoteProjectsNotifier>();
     final maybeNote = noteProvider.state[noteId];
+
+    /// This case may appear only when the note gets deleted
     if (maybeNote == null) return const SizedBox();
 
     final note = useState<NoteProject>(maybeNote);
-    final noteController = useTextEditingController(text: maybeNote.note);
 
     // ignore: close_sinks
-    final updatesStream = useStreamController<NoteProjectNotifier>();
+    final updatesStream = useStreamController<NoteProjectUpdateDto>();
 
     final state = useNoteProjectScreenState(
-      context: context,
-      note: note.value,
+      projectsSyncService: context.read(),
+      noteNotifier: note,
       onScreenBack: onBack,
-      noteController: noteController,
       updatesStream: updatesStream,
       onGoHome: onGoHome,
       checkIsProjectActive: checkIsProjectActive,
+      folderNotifier: context.watch(),
+      notesNotifier: context.watch(),
     );
 
     double? appBarHeight;
@@ -65,7 +67,7 @@ class NoteProjectScreen extends HookWidget {
           ),
           child: SpecialEmojisKeyboardActions(
             focusNode: noteFocusNode,
-            controller: noteController,
+            controller: state.noteController,
             builder: (
               final context,
               final showEmojiKeyboard,
@@ -83,7 +85,7 @@ class NoteProjectScreen extends HookWidget {
                       children: [
                         const SizedBox(width: 20),
                         Expanded(
-                          child: ProjectTextField(
+                          child: FlatTextField(
                             hintText: S.current.writeANote,
                             fillColor: Colors.transparent,
                             filled: false,
@@ -92,14 +94,14 @@ class NoteProjectScreen extends HookWidget {
                             endlessLines: true,
                             focusOnInit: note.value.note.isEmpty,
                             onSubmit: state.onBack,
-                            controller: noteController,
+                            controller: state.noteController,
                           ),
                         ),
                         NoteProjectSideActionBar(
                           closeEmojiKeyboard: closeEmojiKeyboard,
                           isEmojiKeyboardOpen: isEmojiKeyboardOpen,
-                          note: note,
-                          noteController: noteController,
+                          noteNotifier: note,
+                          noteController: state.noteController,
                           noteFocusNode: noteFocusNode,
                           onRemove: state.onRemove,
                           showEmojiKeyboard: showEmojiKeyboard,

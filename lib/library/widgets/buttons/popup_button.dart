@@ -61,7 +61,7 @@ class PopupButton extends HookWidget {
       (final _, final __) {
         if (!popupVisible.value) return;
 
-        WidgetsBinding.instance?.addPostFrameCallback((final _) {
+        WidgetsBinding.instance.addPostFrameCallback((final _) {
           onOpenPopup(
             context: context,
             onClose: () => popupVisible.value = false,
@@ -86,12 +86,14 @@ class PopupButton extends HookWidget {
       return const SizedBox();
     }
 
-    return PortalEntry(
+    return PortalTarget(
       visible: popupVisible.value,
-      portalAnchor:
-          screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
-      childAnchor: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
-      portal: MouseRegion(
+      anchor: Aligned(
+        follower:
+            screenLayout.large ? Alignment.bottomLeft : Alignment.bottomRight,
+        target: screenLayout.large ? Alignment.topRight : Alignment.topLeft,
+      ),
+      portalFollower: MouseRegion(
         onExit: (final _) async {
           popupHovered.value = false;
           await onClose();
@@ -169,8 +171,8 @@ class MobilePopupButtonDialog extends StatelessWidget {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedPrimaryButton(
-                    onClose: () => close(context),
+                  child: OutlinedPrimaryCloseButton(
+                    onPressed: () => close(context),
                   ),
                 ),
               ],
@@ -197,76 +199,29 @@ class RemoveActionButton extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    if (filled) {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          padding: const EdgeInsets.all(14),
-          shape: RoundedRectangleBorder(
-            borderRadius: defaultBorderRadius,
-          ),
-          primary: AppColors.accent3,
-        ),
-        onPressed: onTap,
-        child: Text(
-          text ?? S.current.delete.sentenceCase,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      );
-    }
-
-    return TextButton(
+    return DecoratedActionButton(
       onPressed: onTap,
-      style: TextButton.styleFrom(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: defaultBorderRadius,
-        ),
-        primary: AppColors.accent3,
-      ),
-      child: useIcon
-          ? const Icon(Icons.delete_forever_rounded)
-          : Text(
-              text ?? S.current.delete.sentenceCase,
-              style: Theme.of(context).textTheme.headline6,
-              // ?.copyWith(color: AppColors.accent3),
-            ),
+      filled: filled,
+      iconData: useIcon ? Icons.delete_forever_rounded : null,
+      text: text,
     );
   }
 }
 
-class OutlinedPrimaryButton extends StatelessWidget {
-  const OutlinedPrimaryButton({
-    required this.onClose,
+class OutlinedPrimaryCloseButton extends StatelessWidget {
+  const OutlinedPrimaryCloseButton({
+    required this.onPressed,
     this.useIcon = false,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback? onClose;
+  final VoidCallback? onPressed;
   final bool useIcon;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
-
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        side: BorderSide(color: primaryColor),
-        primary: primaryColor,
-      ),
-      onPressed: onClose,
-      child: useIcon
-          ? const Icon(Icons.check)
-          : Text(
-              S.current.close.sentenceCase,
-              style: theme.textTheme.headline6?.copyWith(
-                color: primaryColor,
-              ),
-            ),
+    return OutlinedActionButton(
+      onPressed: onPressed,
+      iconData: useIcon ? Icons.check : null,
+      text: S.current.close.sentenceCase,
     );
   }
 }

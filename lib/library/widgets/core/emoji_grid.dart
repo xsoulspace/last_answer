@@ -43,12 +43,12 @@ class EmojiGrid extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final silentEmojiProider = context.read<EmojiProvider>();
+    final silentEmojiProvider = context.read<EmojiProvider>();
     final lastEmojisState = context.read<LastEmojiProvider>().values;
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>(
       onCancel: () {
-        silentEmojiProider.filterKeyword = '';
+        silentEmojiProvider.filterKeyword = '';
       },
     );
 
@@ -58,7 +58,7 @@ class EmojiGrid extends HookWidget {
     )
         .forEach(
       (final keyword) async {
-        silentEmojiProider.filterKeyword = keyword;
+        silentEmojiProvider.filterKeyword = keyword;
       },
     );
     final lastEmojis = useState(lastEmojisState.toSet());
@@ -97,6 +97,9 @@ class EmojiGrid extends HookWidget {
       );
     }
 
+    final verticalEmojiGridController = useScrollController();
+    final lastEmojiScrollController = useScrollController();
+
     return ButtonPopup(
       children: [
         Expanded(
@@ -105,6 +108,7 @@ class EmojiGrid extends HookWidget {
               final emojis = provider.filteredValues;
 
               return GridView.count(
+                controller: verticalEmojiGridController,
                 restorationId: 'emojis-grid',
                 shrinkWrap: true,
                 crossAxisCount: maxItemsInRow,
@@ -132,6 +136,7 @@ class EmojiGrid extends HookWidget {
           ),
         ),
         GridView.count(
+          controller: lastEmojiScrollController,
           restorationId: 'last-emojis-grid',
           shrinkWrap: true,
           crossAxisCount: maxItemsInRow,

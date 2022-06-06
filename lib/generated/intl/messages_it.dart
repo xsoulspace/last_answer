@@ -41,7 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": m0,
         "areYouSure": MessageLookupByLibrary.simpleMessage("Sei sicuro?"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancella"),
-        "changeLog": MessageLookupByLibrary.simpleMessage("Change Log"),
+        "changeLog":
+            MessageLookupByLibrary.simpleMessage("Cosa c\'è di nuovo?"),
         "charactersLimit":
             MessageLookupByLibrary.simpleMessage("Limite di caratteri"),
         "charactersLimitForNewNotesDesription":
@@ -108,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Note direzione"),
         "search": MessageLookupByLibrary.simpleMessage("Кicerca"),
         "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+        "signOut": MessageLookupByLibrary.simpleMessage("Сantare"),
         "subscription": MessageLookupByLibrary.simpleMessage("Abbonamento"),
         "termsAndConditions":
             MessageLookupByLibrary.simpleMessage("Termini & Condizioni"),

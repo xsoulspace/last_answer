@@ -18,10 +18,10 @@ class ProjectsListView extends HookWidget {
     final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;
-    final settings = context.read<GeneralSettingsController>();
+    final settings = context.watch<GeneralSettingsController>();
     final reversed = settings.projectsListReversed;
 
-    return Consumer<FolderStateProvider>(
+    return Consumer<CurrentFolderNotifier>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
 
@@ -44,6 +44,7 @@ class ProjectsListView extends HookWidget {
             child: RightScrollbar(
               controller: scrollController,
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 reverse: reversed,
                 key: const PageStorageKey('projects_scroll_view'),
                 controller: scrollController,
@@ -65,7 +66,6 @@ class ProjectsListView extends HookWidget {
                       onRemove: (final _) async => removeProject(
                         checkIsProjectActive: checkIsProjectActive,
                         context: context,
-                        folderProvider: folderState,
                         onGoHome: onGoHome,
                         project: project,
                       ),
@@ -91,27 +91,13 @@ class ProjectsListView extends HookWidget {
 Future<void> removeProject({
   required final BuildContext context,
   required final BasicProject project,
-  required final FolderStateProvider folderProvider,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
 }) async {
-  if (project is IdeaProject) {
-    final deleteAnswerFutures = project.answers?.map(
-      (final answer) => answer.delete(),
-    );
-    if (deleteAnswerFutures != null) {
-      await Future.wait(deleteAnswerFutures);
-    }
+  await project.deleteWithRelatives(context: context);
+  context.read<CurrentFolderNotifier>().notify();
+  await context.read<ServerProjectsSyncService>().delete([project]);
 
-    context.read<IdeaProjectsProvider>().remove(key: project.id);
-  } else if (project is NoteProject) {
-    context.read<NoteProjectsProvider>().remove(key: project.id);
-  } else if (project is StoryProject) {
-    // TODO(arenukvern): implement Story removal
-  }
-  project.folder?.removeProject(project);
-  folderProvider.notify();
-  await project.delete();
   if (checkIsProjectActive(project)) {
     onGoHome();
   }

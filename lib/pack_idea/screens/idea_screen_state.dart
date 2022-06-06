@@ -1,73 +1,80 @@
 part of pack_idea;
 
+// ignore: long-parameter-list
 IdeaScreenState useIdeaScreenState({
-  required final BuildContext context,
   required final VoidCallback onScreenBack,
   required final StreamController<bool> ideaUpdatesStream,
   required final IdeaProject idea,
   required final ValueNotifier<bool> questionsOpened,
-  required final ValueNotifier<List<IdeaProjectAnswer>> answers,
+  required final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier,
+  required final CurrentFolderNotifier folderNotifier,
+  required final IdeaProjectsNotifier ideasNotifier,
+  required final ServerIdeaAnswerSyncService ideaAnswerSyncService,
+  required final ServerProjectsSyncService ideaSyncService,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useIdeaScreenState',
         state: IdeaScreenState(
-          context: context,
+          folderNotifier: folderNotifier,
+          ideasNotifier: ideasNotifier,
           onScreenBack: onScreenBack,
           idea: idea,
           ideaUpdatesStream: ideaUpdatesStream,
           questionsOpened: questionsOpened,
-          answers: answers,
+          answersNotifier: answersNotifier,
+          ideaSyncService: ideaSyncService,
+          ideaAnswerSyncService: ideaAnswerSyncService,
         ),
       ),
     );
 
-class IdeaScreenState implements LifeState {
+class IdeaScreenState extends ContextfulLifeState {
   IdeaScreenState({
-    required final this.context,
     required this.onScreenBack,
     required this.ideaUpdatesStream,
     required this.idea,
     required this.questionsOpened,
-    required this.answers,
+    required this.answersNotifier,
+    required this.folderNotifier,
+    required this.ideasNotifier,
+    required this.ideaAnswerSyncService,
+    required this.ideaSyncService,
   });
-  final BuildContext context;
   final VoidCallback onScreenBack;
   final IdeaProject idea;
   final ValueNotifier<bool> questionsOpened;
-  final ValueNotifier<List<IdeaProjectAnswer>> answers;
+  final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier;
+  final ServerIdeaAnswerSyncService ideaAnswerSyncService;
+  final ServerProjectsSyncService ideaSyncService;
 
   final StreamController<bool> ideaUpdatesStream;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late FolderStateProvider folderProvider;
-  late IdeaProjectsProvider ideasProvider;
+
+  final CurrentFolderNotifier folderNotifier;
+  final IdeaProjectsNotifier ideasNotifier;
   @override
   void initState() {
-    folderProvider = context.read<FolderStateProvider>();
-    ideasProvider = context.read<IdeaProjectsProvider>();
     ideaUpdatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
         )
         .forEach(onIdeaUpdate);
+    super.initState();
   }
-
-  @override
-  void dispose() {}
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    ideasProvider.put(
+    ideasNotifier.put(
       key: idea.id,
-      value: idea..updated = DateTime.now(),
+      value: idea..updatedAt = dateTimeNowUtc(),
     );
 
     if (updateFolder) {
       idea.folder?.sortProjectsByDate(project: idea);
-      folderProvider.notify();
+      folderNotifier.notify();
     }
     await idea.save();
+    await ideaSyncService.upsert([idea]);
   }
 
   void closeQuestions() {
@@ -98,10 +105,11 @@ class IdeaScreenState implements LifeState {
   }
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
-    idea.answers?.remove(answer);
-    answers.value = [...idea.answers?.reversed ?? []];
+    await idea.removeAnswer(answer: answer, context: context);
+    answersNotifier.value = [...answersNotifier.value]..remove(answer);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
+    await ideaAnswerSyncService.delete([answer]);
   }
 
   Future<void> onAnswersChange() async {
@@ -110,8 +118,8 @@ class IdeaScreenState implements LifeState {
   }
 
   Future<void> onAnswerCreated(final IdeaProjectAnswer answer) async {
-    idea.answers?.add(answer);
-    answers.value = [...idea.answers?.reversed ?? []];
+    answersNotifier.value = [answer, ...answersNotifier.value];
+    await ideaAnswerSyncService.upsert([answer]);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);
   }

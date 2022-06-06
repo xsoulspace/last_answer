@@ -10,12 +10,17 @@ class AppNavigatorController {
   final RouteState routeState;
   final BuildContext context;
   final ScreenLayout screenLayout;
-
+  ParsedRoute get route => routeState.route;
   void go(final AppRouteName routeName) => routeState.go(routeName);
   void goHome() => routeState.go(AppRoutesName.home);
+
+  void pop() {
+    final path = route.pathWithoutLastSegment;
+    go(path);
+  }
+
   void goBackFromSettings() {
-    if (routeState.route.pathTemplate == AppRoutesName.settings ||
-        screenLayout.notSmall) {
+    if (route.pathTemplate == AppRoutesName.settings || screenLayout.notSmall) {
       goHome();
     } else {
       goSettings();
@@ -26,21 +31,25 @@ class AppNavigatorController {
 
   void goAppInfo() => routeState.go(AppRoutesName.appInfo);
 
+  void goSignIn() {
+    routeState.go(AppRoutesName.profileSignIn);
+  }
+
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
     if (resolvedNoteId.isEmpty) {
-      final folder = context.read<FolderStateProvider>();
-      final settings = context.read<GeneralSettingsController>();
-      final currentFolder = folder.state;
+      final folderNotifier = context.read<CurrentFolderNotifier>();
+      final settingsNotifier = context.read<GeneralSettingsController>();
+      final currentFolder = folderNotifier.state;
+      final projectsSyncService = context.read<ServerProjectsSyncService>();
       final newNote = await NoteProject.create(
-        title: '',
         folder: currentFolder,
-        charactersLimit: settings.charactersLimitForNewNotes,
+        charactersLimit: settingsNotifier.charactersLimitForNewNotes,
+        context: context,
       );
-      currentFolder.addProject(newNote);
-      context.read<NoteProjectsProvider>().put(key: newNote.id, value: newNote);
-      folder.notify();
+      folderNotifier.notify();
       resolvedNoteId = newNote.id;
+      unawaited(projectsSyncService.upsert([newNote]));
     }
 
     return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
@@ -55,17 +64,20 @@ class AppNavigatorController {
       routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
-    final folder = context.read<FolderStateProvider>();
-    final currentFolder = folder.state;
+    final folderNotifier = context.read<CurrentFolderNotifier>();
+    final projectsSyncService = context.read<ServerProjectsSyncService>();
+    final currentFolder = folderNotifier.state;
+    final questionsNotifier = context.read<IdeaProjectQuestionsNotifier>();
 
     final idea = await IdeaProject.create(
       title: title,
       folder: currentFolder,
+      context: context,
+      newQuestion: questionsNotifier.state.values.first,
     );
-    currentFolder.addProject(idea);
-    context.read<IdeaProjectsProvider>().put(key: idea.id, value: idea);
-    folder.notify();
+    folderNotifier.notify();
     await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
+    unawaited(projectsSyncService.upsert([idea]));
   }
 
   Future<void> onIdeaAnswerExpand(

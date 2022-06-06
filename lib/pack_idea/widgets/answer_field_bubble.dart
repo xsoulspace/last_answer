@@ -15,6 +15,7 @@ class AnswerFieldBubble extends HookWidget {
     final controller = useTextEditingController(
       text: answer.text,
     );
+    final ideaAnswerSyncService = context.watch<ServerIdeaAnswerSyncService>();
 
     useEffect(
       () {
@@ -27,9 +28,12 @@ class AnswerFieldBubble extends HookWidget {
     final consts = FocusBubbleContainerConsts.of(context);
     void _updateAnswer() {
       if (answer.text == controller.text) return;
+      // TODO(arenukvern): refactor answers updates to single stream
       answer
         ..text = controller.text
+        ..updatedAt = dateTimeNowUtc()
         ..save();
+      ideaAnswerSyncService.upsert([answer]);
       onChange();
     }
 

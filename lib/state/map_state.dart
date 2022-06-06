@@ -1,4 +1,4 @@
-part of providers;
+part of notifiers;
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
@@ -61,6 +61,14 @@ class MapState<TValue> extends ChangeNotifier {
 
   void remove({required final String key}) {
     state.remove(key);
+    notifyListeners();
+    _save();
+  }
+
+  void removeByKeys({required final Iterable<String> keys}) {
+    for (final key in keys) {
+      state.remove(key);
+    }
     notifyListeners();
     _save();
   }

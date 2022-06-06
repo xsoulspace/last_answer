@@ -17,14 +17,23 @@ class AppLoadingScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(AppColors.primary2),
-            ),
+            const CircularProgress(),
             const SizedBox(height: 5),
             Text(statusText),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CircularProgress extends StatelessWidget {
+  const CircularProgress({final Key? key}) : super(key: key);
+
+  @override
+  Widget build(final BuildContext context) {
+    return const CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation(AppColors.primary2),
     );
   }
 }

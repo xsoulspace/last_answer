@@ -5,7 +5,7 @@ class SubscriptionInfo extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.watch<PaymentsControllerI>();
 
     return SettingsListContainer(
       builder: paymentsController.isPatronSubscription
@@ -20,7 +20,7 @@ class SubscriptionInfo extends StatelessWidget {
     final BuildContext context,
     final double leftColumnWidth,
   ) {
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.read<PaymentsControllerI>();
     final theme = Theme.of(context);
     final screenLayout = ScreenLayout.of(context);
 
@@ -134,15 +134,18 @@ class FeatureCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.icon,
+    this.onTap,
     final Key? key,
   }) : super(key: key);
   final String title;
   final String description;
   final Widget icon;
+  final VoidCallback? onTap;
   @override
   Widget build(final BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
           horizontal: 10,

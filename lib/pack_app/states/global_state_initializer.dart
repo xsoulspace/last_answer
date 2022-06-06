@@ -16,8 +16,10 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
     required final this.settings,
+    required final this.authState,
   });
   final GeneralSettingsController settings;
+  final AuthState authState;
 
   @override
   // ignore: long-method
@@ -26,12 +28,15 @@ class GlobalStateInitializer implements StateInitializer {
     /// *      CONTEXT RELATED READINGS START
     /// ********************************************
 
-    final lastEmojiProvider = context.read<LastEmojiProvider>();
-    final specialEmojiProvider = context.read<SpecialEmojiProvider>();
-    final emojiProvider = context.read<EmojiProvider>();
-    final currentFolderProvider = context.read<FolderStateProvider>();
+    final lastEmojiNotifier = context.read<LastEmojiProvider>();
+    final specialEmojiNotifier = context.read<SpecialEmojiProvider>();
+    final emojiNotifier = context.read<EmojiProvider>();
+    final currentFolderNotifier = context.read<CurrentFolderNotifier>();
     final notificationController = context.read<NotificationController>();
-    final paymentsController = context.read<PaymentsController>();
+    final paymentsController = context.read<PaymentsControllerI>();
+    final usersNotifier = context.read<UsersNotifier>();
+    final syncWorker = context.read<ServerSyncWorkerNotifier>();
+    final connectivity = context.read<ConnectivityNotifier>();
 
     /// ********************************************
     /// *      CONTEXT RELATED READINGS END
@@ -45,6 +50,7 @@ class GlobalStateInitializer implements StateInitializer {
     final loadableControllers = <Loadable>[
       settings,
       paymentsController,
+      usersNotifier,
     ];
     await Future.forEach<Loadable>(
       loadableControllers,
@@ -55,19 +61,19 @@ class GlobalStateInitializer implements StateInitializer {
     // ignore: use_build_context_synchronously
     final emojis = await EmojiUtil.getList(context);
 
-    emojiProvider.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+    emojiNotifier.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
 
     // ignore: use_build_context_synchronously
     final specialEmojis = await EmojiUtil.getSpecialList(context);
-    specialEmojiProvider
+    specialEmojiNotifier
         .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
 
     final lastUsedEmojis = await EmojiUtil().load();
-    lastEmojiProvider.putAll(lastUsedEmojis);
+    lastEmojiNotifier.putAll(lastUsedEmojis);
 
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
-    await Hive.openBox<IdeaProjectAnswer>(
+    final answers = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
 
@@ -82,24 +88,26 @@ class GlobalStateInitializer implements StateInitializer {
     // TODO(arenukvern): comment if questions changed
     if (questions.isEmpty) {
       await questions.putAll(
-        Map.fromEntries(
-          initialQuestions.map((final e) => MapEntry(e.id, e)),
-        ),
+        listWithIdToMap(initialQuestions),
       );
     }
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-    MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsProvider>(
+    MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsNotifier>(
       context: context,
       box: questions,
     );
 
-    settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
-
-    final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsProvider>(
+    final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsNotifier>(
       context: context,
       box: ideas,
+    );
+
+    final ideaProjectAnswersState =
+        MapState.load<IdeaProjectAnswer, IdeaProjectAnswersNotifier>(
+      context: context,
+      box: answers,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.notes;
@@ -108,7 +116,7 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.noteProjectKey,
     );
 
-    final notesProjectsState = MapState.load<NoteProject, NoteProjectsProvider>(
+    final notesProjectsState = MapState.load<NoteProject, NoteProjectsNotifier>(
       context: context,
       box: notes,
     );
@@ -121,10 +129,10 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.projectFolderKey,
     );
 
-    final projectsService = BasicProjectsService(
+    final projectsDto = BasicProjectsDto(
       ideas: ideaProjectsState.state,
       notes: notesProjectsState.state,
-      // TODO(arenukvern): add stories in v4
+      // TODO(arenukvern): add stories in future
       stories: const {},
     );
 
@@ -138,7 +146,7 @@ class GlobalStateInitializer implements StateInitializer {
           ...notesProjectsState.state.values,
         ]);
     } else {
-      MapState.load<ProjectFolder, ProjectsFolderProvider>(
+      MapState.load<ProjectFolder, ProjectFoldersNotifier>(
         context: context,
         box: projectsFolders,
       );
@@ -146,7 +154,7 @@ class GlobalStateInitializer implements StateInitializer {
       for (final projectsFolder in projectsFolders.values) {
         final projects = ProjectFolder.loadProjectsFromService(
           folder: projectsFolder,
-          service: projectsService,
+          service: projectsDto,
         );
         projectsFolder.setExistedProjects(projects);
       }
@@ -154,7 +162,7 @@ class GlobalStateInitializer implements StateInitializer {
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-    currentFolderProvider.setState(currentFolder);
+    currentFolderNotifier.setState(currentFolder);
 
     /// ********************************************
     /// *      CONTENT LOADING END
@@ -165,10 +173,11 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
 
     // TODO(arenukvern): keep it in case of future migrations - how to automate it?
-    // settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
-    // if (!settings.migrated) {
-    //   await settings.setMigrated();
-    // }
+    settings.loadingStatus = AppStateLoadingStatuses.migratingOldData;
+    if (!settings.migrated) {
+      await migrateIdeas_v4(ideas);
+      await settings.setMigrated();
+    }
     settings.loadingStatus = AppStateLoadingStatuses.settings;
 
     await notificationController.onLoad(context: context);
@@ -176,8 +185,19 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      MIGRATIONS END
     /// ********************************************
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       settings.notify();
     });
+
+    /// ********************************************
+    /// *      AUTH START
+    /// ********************************************
+    await connectivity.onLoad(context: context);
+    await authState.recoverSupabaseSession();
+
+    /// ********************************************
+    /// *      SYNCHRONIZATION!
+    /// ********************************************
+    await syncWorker.onLoad(context: context);
   }
 }

@@ -1,74 +1,84 @@
 part of pack_idea;
 
+// ignore: long-parameter-list
 IdeaAnswerScreenState useIdeaAnswerScreenState({
-  required final BuildContext context,
   required final TextEditingController textController,
   required final StreamController<bool> updatesStream,
-  required final ValueNotifier<IdeaProjectAnswer> answer,
+  required final ValueNotifier<IdeaProjectAnswer> answerNotifier,
   required final IdeaProject idea,
   required final ValueChanged<IdeaProject> onScreenBack,
+  required final IdeaProjectsNotifier ideasNotifier,
+  required final ServerIdeaAnswerSyncService ideaAnswerSyncService,
+  required final ServerProjectsSyncService ideaSyncService,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useIdeaAnswerScreenState',
         state: IdeaAnswerScreenState(
-          context: context,
+          ideasNotifier: ideasNotifier,
           textController: textController,
           updatesStream: updatesStream,
-          answer: answer,
+          answerNotifier: answerNotifier,
           idea: idea,
           onScreenBack: onScreenBack,
+          ideaAnswerSyncService: ideaAnswerSyncService,
+          ideaSyncService: ideaSyncService,
         ),
       ),
     );
 
-class IdeaAnswerScreenState implements LifeState {
+class IdeaAnswerScreenState extends ContextfulLifeState {
   IdeaAnswerScreenState({
-    required final this.context,
     required this.textController,
+    required this.ideasNotifier,
     required this.updatesStream,
-    required this.answer,
+    required this.answerNotifier,
     required this.idea,
     required this.onScreenBack,
+    required this.ideaAnswerSyncService,
+    required this.ideaSyncService,
   });
-  final BuildContext context;
   final TextEditingController textController;
   final StreamController<bool> updatesStream;
-  final ValueNotifier<IdeaProjectAnswer> answer;
+  final ValueNotifier<IdeaProjectAnswer> answerNotifier;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late IdeaProjectsProvider ideasProvider;
+  final ServerIdeaAnswerSyncService ideaAnswerSyncService;
+  final ServerProjectsSyncService ideaSyncService;
+
+  final IdeaProjectsNotifier ideasNotifier;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsProvider>();
 
     updatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
         )
         .forEach(onAnswerUpdate);
+    super.initState();
   }
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onAnswerUpdate(final bool update) async {
     idea.folder?.sortProjectsByDate(project: idea);
-    await answer.value.save();
-    ideasProvider.notify();
+    await answerNotifier.value.save();
+    ideasNotifier.notify();
     await idea.save();
+    await ideaAnswerSyncService.upsert([answerNotifier.value]);
+    await ideaSyncService.upsert([idea]);
   }
 
   @override
   void dispose() {
+    super.dispose();
     textController.removeListener(onTextChanged);
   }
 
   void onTextChanged() {
-    if (answer.value.text == textController.text) return;
-    answer.value.text = textController.text;
-    idea.updated = DateTime.now();
+    if (answerNotifier.value.text == textController.text) return;
+    answerNotifier.value.text = textController.text;
+    idea.updatedAt = dateTimeNowUtc();
     updatesStream.add(true);
   }
 

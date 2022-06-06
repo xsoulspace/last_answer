@@ -55,7 +55,7 @@ class AppInfoScreen extends StatelessWidget {
                     Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        const DiscordButton(),
+                        const JoinDiscordButton(),
                         SelectableText(
                           S.current.feedbackTextWithEmail,
                         ),

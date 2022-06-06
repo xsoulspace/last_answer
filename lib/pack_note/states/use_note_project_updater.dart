@@ -1,8 +1,8 @@
 part of pack_note;
 
 @immutable
-class NoteProjectNotifier {
-  const NoteProjectNotifier({
+class NoteProjectUpdateDto {
+  const NoteProjectUpdateDto({
     this.charactersLimitChanged = false,
     this.positionChanged = false,
   });
@@ -11,64 +11,63 @@ class NoteProjectNotifier {
 }
 
 NoteProjectUpdaterState useNoteProjectUpdaterState({
-  required final NoteProject note,
-  required final StreamController<NoteProjectNotifier> updatesStream,
-  required final BuildContext context,
+  required final ValueNotifier<NoteProject> noteNotifier,
+  required final StreamController<NoteProjectUpdateDto> updatesStream,
+  required final NoteProjectsNotifier notesNotifier,
+  required final CurrentFolderNotifier folderNotifier,
+  required final ServerProjectsSyncService projectsSyncService,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useNoteProjectUpdaterState',
         state: NoteProjectUpdaterState(
-          note: note,
+          noteNotifier: noteNotifier,
+          projectsSyncService: projectsSyncService,
           updatesStream: updatesStream,
-          context: context,
+          folderNotifier: folderNotifier,
+          notesNotifier: notesNotifier,
         ),
       ),
     );
 
-class NoteProjectUpdaterState implements LifeState {
+class NoteProjectUpdaterState extends ContextfulLifeState {
   NoteProjectUpdaterState({
-    required this.note,
+    required this.folderNotifier,
+    required this.notesNotifier,
+    required this.noteNotifier,
     required this.updatesStream,
-    required this.context,
+    required this.projectsSyncService,
   });
-
-  @override
-  ValueChanged<VoidCallback>? setState;
-  final BuildContext context;
-  final NoteProject note;
-  final StreamController<NoteProjectNotifier> updatesStream;
-  late NoteProjectsProvider notesProvider;
-  late FolderStateProvider folderProvider;
+  final ServerProjectsSyncService projectsSyncService;
+  final ValueNotifier<NoteProject> noteNotifier;
+  final StreamController<NoteProjectUpdateDto> updatesStream;
+  final NoteProjectsNotifier notesNotifier;
+  final CurrentFolderNotifier folderNotifier;
 
   @override
   @mustCallSuper
   void initState() {
-    notesProvider = context.read<NoteProjectsProvider>();
-    folderProvider = context.read<FolderStateProvider>();
-
     updatesStream.stream
         .sampleTime(
           const Duration(milliseconds: 700),
         )
-        .forEach(onUpdateFolder);
+        .forEach(onUpdateByDto);
+    super.initState();
   }
 
-  @override
-  @mustCallSuper
-  void dispose() {}
-
+  NoteProject get note => noteNotifier.value;
   @mustCallSuper
   // ignore: avoid_positional_boolean_parameters
-  Future<void> onUpdateFolder(final NoteProjectNotifier notifier) async {
-    notesProvider.put(key: note.id, value: note);
+  Future<void> onUpdateByDto(final NoteProjectUpdateDto dto) async {
+    notesNotifier.put(key: note.id, value: note);
 
-    if (notifier.positionChanged) {
+    if (dto.positionChanged) {
       note.folder?.sortProjectsByDate(project: note);
-      folderProvider.notify();
+      folderNotifier.notify();
     }
 
     await note.save();
-    if (notifier.charactersLimitChanged) setState?.call(() {});
+    if (dto.charactersLimitChanged) setState();
+    await projectsSyncService.upsert([note]);
   }
 }

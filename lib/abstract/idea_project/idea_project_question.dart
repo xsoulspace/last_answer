@@ -1,20 +1,20 @@
 part of abstract;
 
-typedef IdeaProjectQuestionId = String;
-
 /// Use [IdeaProjectQuestion.fromTitle] to create class
 /// This class immutable so in case of adding new properties make sure that it
 /// will not broke immutabilty
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.ideaProjectQuestion)
-class IdeaProjectQuestion extends HiveObject
+class IdeaProjectQuestion
+    extends RemoteHiveObjectWithId<IdeaProjectQuestionModel>
     with EquatableMixin
-    implements Sharable, HasId {
+    implements Sharable {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
     required final this.id,
     required final this.title,
+    this.isToDelete = false,
   });
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionFromJson(json);
@@ -24,9 +24,12 @@ class IdeaProjectQuestion extends HiveObject
       IdeaProjectQuestion(id: createId(), title: title);
   @override
   @HiveField(0)
-  final String id;
+  final IdeaProjectQuestionId id;
   @HiveField(1)
   final LocalizedText title;
+
+  @override
+  bool isToDelete;
 
   Map<String, dynamic> toJson() => _$IdeaProjectQuestionToJson(this);
 
@@ -37,10 +40,26 @@ class IdeaProjectQuestion extends HiveObject
   bool get stringify => true;
 
   @override
-  String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+  String toShareString(final BuildContext context) =>
+      title.getByLanguage(Intl.getCurrentLocale());
+
+  @override
+  IdeaProjectQuestionModel toModel({required final UserModel user}) {
+    return IdeaProjectQuestionModel(
+      id: id,
+      title: jsonEncode(title.toJson()),
+    );
+  }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    await delete();
+  }
 }
 
 /// A mock for [IdeaProjectQuestion].
 /// To create use `final mockIdeaProjectQuestion = MockIdeaProjectQuestion();`
 // ignore: avoid_implementing_value_types
-class MockIdeaProjectQuestion extends Mock implements IdeaProjectQuestion {}
+// class MockIdeaProjectQuestion extends Mock implements IdeaProjectQuestion {}

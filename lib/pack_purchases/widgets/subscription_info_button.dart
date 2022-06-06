@@ -6,7 +6,7 @@ class SubscriptionInfoButton extends StatelessWidget {
     final Key? key,
   }) : super(key: key);
 
-  final PaymentsController paymentsController;
+  final PaymentsControllerI paymentsController;
 
   void openSubscriptionPopup({required final BuildContext context}) {}
 

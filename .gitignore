@@ -16,6 +16,7 @@ android/key.properties
 *.ipr
 *.iws
 .idea/
+.vscode/launch.json
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -51,4 +52,3 @@ app.*.map.json
 # Monarch related
 .monarch/
 .fvm/flutter_sdk
-.vscode/launch.json

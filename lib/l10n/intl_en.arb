@@ -11,6 +11,10 @@
   "@writeAnAnswer": {
     "description": "writeAnAnswer"
   },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "signOut"
+  },
   "writeANote": "Write a note",
   "@writeANote": {
     "description": "writeANote"
@@ -31,9 +35,9 @@
   "@myAccount": {
     "description": "myAccount"
   },
-  "changeLog": "Change Log",
+  "changeLog": "What's new?",
   "@changeLog": {
-    "description": "changeLog"
+    "description": "What's new?"
   },
   "username": "Username",
   "@username": {

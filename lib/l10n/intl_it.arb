@@ -7,6 +7,10 @@
   "@frequentlyUsed": {
     "description": "frequentlyUsed"
   },
+  "signOut": "Сantare",
+  "@signOut": {
+    "description": "signOut"
+  },
   "search": "Кicerca",
   "@search": {
     "description": "Search"
@@ -19,9 +23,9 @@
   "@charactersLimit": {
     "description": "charactersLimit"
   },
-  "changeLog": "Change Log",
+  "changeLog": "Cosa c'è di nuovo?",
   "@changeLog": {
-    "description": "changeLog"
+    "description": "What's new?"
   },
   "username": "Nome utente",
   "@username": {

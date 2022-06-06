@@ -1,8 +1,8 @@
 part of pack_settings;
 
 CharactersLimitSettingState useCharactersLimitSettingStateState({
-  required final NoteProject? note,
-  required final StreamController<NoteProjectNotifier>? updatesStream,
+  required final ValueNotifier<NoteProject>? noteNotifier,
+  required final StreamController<NoteProjectUpdateDto>? updatesStream,
   required final BuildContext context,
   required final TextEditingController controller,
 }) =>
@@ -10,7 +10,7 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
       LifeHook(
         debugLabel: 'useCharactersLimitSettingStateState',
         state: CharactersLimitSettingState(
-          note: note,
+          noteNotifier: noteNotifier,
           updatesStream: updatesStream,
           context: context,
           controller: controller,
@@ -18,30 +18,29 @@ CharactersLimitSettingState useCharactersLimitSettingStateState({
       ),
     );
 
-class CharactersLimitSettingState implements LifeState {
+class CharactersLimitSettingState extends LifeState {
   CharactersLimitSettingState({
-    required this.note,
+    required this.noteNotifier,
     required this.updatesStream,
     required this.context,
     required this.controller,
   });
 
-  @override
-  ValueChanged<VoidCallback>? setState;
-
   final BuildContext context;
-  final NoteProject? note;
-  final StreamController<NoteProjectNotifier>? updatesStream;
+  final ValueNotifier<NoteProject>? noteNotifier;
+  final StreamController<NoteProjectUpdateDto>? updatesStream;
   late GeneralSettingsController settings;
   final TextEditingController controller;
   @override
   void initState() {
     settings = context.read<GeneralSettingsController>();
     controller.addListener(onLimitChanged);
+    super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     controller.removeListener(onLimitChanged);
   }
 
@@ -51,17 +50,17 @@ class CharactersLimitSettingState implements LifeState {
   }
 
   static const limitNotifier =
-      NoteProjectNotifier(charactersLimitChanged: true);
+      NoteProjectUpdateDto(charactersLimitChanged: true);
 
   void setLimit(
     final int newLimit, {
     final bool updateController = false,
     final bool zeroEqualNull = true,
   }) {
-    if (note == null) {
+    if (noteNotifier == null) {
       settings.charactersLimitForNewNotes = newLimit;
     } else {
-      note?.charactersLimit = newLimit;
+      noteNotifier?.value.charactersLimit = newLimit;
       updatesStream?.add(limitNotifier);
     }
     if (updateController) {
@@ -71,7 +70,7 @@ class CharactersLimitSettingState implements LifeState {
       }
       controller.text = effectiveLimit;
     }
-    setState?.call(() {});
+    setState();
   }
 
   static const int instagramLimit = 2200;

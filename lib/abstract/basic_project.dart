@@ -2,6 +2,7 @@ part of abstract;
 
 /// Use this for constructor default value in other projects
 const defaultProjectIsCompleted = false;
+const defaultProjectIsDeleted = false;
 
 /// Use this field to count fields in other projects like
 /// `@HiveField(projectLatestFieldHiveId+1)`
@@ -15,24 +16,24 @@ class BasicProjectIndexes {
   static const title = 2;
 }
 
-typedef ProjectId = String;
-
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
-class BasicProject extends HiveObject
+abstract class BasicProject<TModel extends BasicProjectModel>
+    extends RemoteHiveObjectWithId<TModel>
     with EquatableMixin
-    implements Sharable, BasicProjectFields, HasId {
+    implements Sharable, BasicProjectFields {
   BasicProject({
-    required final this.id,
-    required final this.title,
-    required final this.created,
-    required final this.updated,
-    required final this.folder,
-    required final this.type,
-    final this.isCompleted = defaultProjectIsCompleted,
+    required this.id,
+    required this.title,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.folder,
+    required this.type,
+    this.isToDelete = defaultProjectIsDeleted,
+    this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(BasicProjectIndexes.created)
-  DateTime created;
+  DateTime createdAt;
 
   /// Always override it in extended projects
   /// to assign correct [HiveField] id
@@ -50,14 +51,17 @@ class BasicProject extends HiveObject
   String title;
 
   @override
-  final ProjectTypes type;
+  final ProjectType type;
 
   @HiveField(projectLatestFieldHiveId)
-  DateTime updated;
+  DateTime updatedAt;
+
+  @override
+  bool isToDelete;
 
   /// Always override it in extended projects
   @override
-  String toShareString() => '';
+  String toShareString(final BuildContext context) => '';
 
   @override
   List<Object?> get props => [id];

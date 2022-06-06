@@ -5,8 +5,7 @@ part of pack_settings;
 ///
 /// Controllers glue Data Services to Flutter Widgets. The SettingsController
 /// uses the SettingsService to store and retrieve user settings.
-// ignore: prefer_mixin
-class GeneralSettingsController with ChangeNotifier implements Loadable {
+class GeneralSettingsController extends ChangeNotifier implements Loadable {
   GeneralSettingsController({required final this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.

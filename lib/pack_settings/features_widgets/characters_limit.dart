@@ -2,18 +2,18 @@ part of pack_settings;
 
 class CharactersLimitSetting extends HookWidget {
   const CharactersLimitSetting({
-    this.note,
+    this.noteNotifier,
     this.updatesStream,
     final Key? key,
   }) : super(key: key);
-  final NoteProject? note;
-  final StreamController<NoteProjectNotifier>? updatesStream;
+  final ValueNotifier<NoteProject>? noteNotifier;
+  final StreamController<NoteProjectUpdateDto>? updatesStream;
 
   String getInitialLimit({required final GeneralSettingsController settings}) {
     int limit;
 
-    if (note != null) {
-      limit = note?.charactersLimit ?? 0;
+    if (noteNotifier != null) {
+      limit = noteNotifier?.value.charactersLimit ?? 0;
     } else {
       limit = settings.charactersLimitForNewNotes;
     }
@@ -31,7 +31,7 @@ class CharactersLimitSetting extends HookWidget {
 
     final state = useCharactersLimitSettingStateState(
       context: context,
-      note: note,
+      noteNotifier: noteNotifier,
       updatesStream: updatesStream,
       controller: controller,
     );

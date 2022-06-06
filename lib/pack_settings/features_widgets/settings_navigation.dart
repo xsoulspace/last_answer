@@ -11,13 +11,12 @@ class SettingsNavigation extends StatelessWidget {
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
-    final paymentsService = context.read<PaymentsController>();
+    final paymentsService = context.watch<PaymentsControllerI>();
 
     BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
     if (screenLayout.notSmall) {
       effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
     }
-    final notificationController = context.read<NotificationController>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -34,31 +33,28 @@ class SettingsNavigation extends StatelessWidget {
           text: screenLayout.small
               ? S.current.generalSettingsFullTitle
               : S.current.generalSettingsShortTitle,
-          // TODO(arenukvern): add avatar
+          // TODO(arenukvern): add icon
         ),
-        if (paymentsService.paymentsAccessable)
-          SettingsButton(
-            routeName: AppRoutesName.profile,
-            onSelected: onSelectRoute,
-            checkSelected: routeState.checkIsCurrentRoute,
-            text: S.current.myAccount,
-            // TODO(arenukvern): add avatar
-          ),
+        // if (paymentsService.paymentsAccessable)
+        SettingsButton(
+          routeName: AppRoutesName.profile,
+          onSelected: onSelectRoute,
+          checkSelected: routeState.checkIsCurrentRoute,
+          text: S.current.myAccount,
+          // TODO(arenukvern): add icon
+        ),
         if (paymentsService.paymentsAccessable)
           SettingsButton(
             routeName: AppRoutesName.subscription,
             onSelected: onSelectRoute,
             checkSelected: routeState.checkIsCurrentRoute,
             text: S.current.subscription,
-            // TODO(arenukvern): add avatar
+            // TODO(arenukvern): add icon
           ),
         SettingsButton(
           routeName: AppRoutesName.changelog,
           onSelected: (final _) {
-            showNotificationPopup(
-              context: context,
-              notificationController: notificationController,
-            );
+            showNotificationDialog(context: context);
           },
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.changeLog,

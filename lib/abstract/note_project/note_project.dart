@@ -2,46 +2,75 @@
 
 part of abstract;
 
-typedef NoteProjectId = String;
-
 @HiveType(typeId: HiveBoxesIds.noteProject)
-class NoteProject extends BasicProject {
+class NoteProject extends BasicProject<NoteProjectModel> {
   NoteProject({
-    required final String id,
-    required final DateTime created,
-    required final DateTime updated,
-    final this.folder,
-    final this.note = '',
-    final bool isCompleted = defaultProjectIsCompleted,
-    final this.charactersLimit,
-  }) : super(
-          created: created,
-          id: id,
-          isCompleted: isCompleted,
-          updated: updated,
+    required final super.id,
+    required final super.createdAt,
+    this.note = '',
+    this.folder,
+    this.charactersLimit,
+    final super.isCompleted = defaultProjectIsCompleted,
+    final bool? isToDelete,
+    final DateTime? updatedAt,
+  })  : isToDelete = isToDelete ?? defaultProjectIsDeleted,
+        super(
+          updatedAt: updatedAt ?? createdAt,
           title: '',
           folder: folder,
-          type: ProjectTypes.note,
+          type: ProjectType.note,
         );
-  static Future<NoteProject> create({
-    required final String title,
-    required final ProjectFolder folder,
-    required final int charactersLimit,
-  }) async {
-    final created = DateTime.now();
 
-    final note = NoteProject(
-      updated: created,
-      created: created,
+  static Future<NoteProject> fromModel({
+    required final NoteProjectModel model,
+    required final BuildContext context,
+  }) async {
+    final foldersNotifier = context.read<ProjectFoldersNotifier>();
+    final folder = foldersNotifier.state[model.folderId]!;
+
+    return create(
+      context: context,
+      note: model.note,
       folder: folder,
-      id: createId(),
+      charactersLimit: model.charactersLimit,
+      createdAt: model.createdAt,
+      id: model.id,
+      isCompleted: model.isCompleted,
+      updatedAt: model.updatedAt,
+    );
+  }
+
+  // ignore: long-parameter-list
+  static Future<NoteProject> create({
+    required final ProjectFolder folder,
+    required final BuildContext context,
+    final int? charactersLimit,
+    final String? id,
+    final DateTime? updatedAt,
+    final DateTime? createdAt,
+    final String note = '',
+    final bool isCompleted = defaultProjectIsCompleted,
+  }) async {
+    final created = dateTimeNowUtc();
+
+    final noteProject = NoteProject(
+      updatedAt: updatedAt ?? created,
+      createdAt: createdAt ?? created,
+      folder: folder,
+      id: id ?? createId(),
+      isCompleted: isCompleted,
+      note: note,
       charactersLimit: charactersLimit,
     );
 
     final box = await Hive.openBox<NoteProject>(HiveBoxesIds.noteProjectKey);
-    await box.put(note.id, note);
+    await box.put(noteProject.id, noteProject);
+    context
+        .read<NoteProjectsNotifier>()
+        .put(key: noteProject.id, value: noteProject);
+    folder.addProject(noteProject);
 
-    return note;
+    return noteProject;
   }
 
   @HiveField(projectLatestFieldHiveId + 1)
@@ -54,6 +83,10 @@ class NoteProject extends BasicProject {
   /// can be set via [CharactersLimitSetting]
   @HiveField(projectLatestFieldHiveId + 3)
   int? charactersLimit;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 4)
+  bool isToDelete;
 
   static const titleLimit = 90;
   @override
@@ -71,10 +104,34 @@ class NoteProject extends BasicProject {
   set title(final String _) => throw UnimplementedError();
 
   @override
-  String toShareString() => note;
+  String toShareString(final BuildContext context) => note;
+
+  @override
+  NoteProjectModel toModel({required final UserModel user}) {
+    return NoteProjectModel(
+      charactersLimit: charactersLimit,
+      createdAt: createdAt,
+      folderId: folder!.id,
+      id: id,
+      isCompleted: isCompleted,
+      note: note,
+      projectType: type,
+      updatedAt: updatedAt,
+      ownerId: user.id,
+    );
+  }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<NoteProjectsNotifier>().remove(key: key);
+    folder?.removeProject(this);
+    await delete();
+  }
 }
 
 /// A mock for [NoteProject].
 /// To create use `final mockNoteProject = MockNoteProject();`
 // ignore: avoid_implementing_value_types
-class MockNoteProject extends Mock implements NoteProject {}
+// class MockNoteProject extends Mock implements NoteProject {}

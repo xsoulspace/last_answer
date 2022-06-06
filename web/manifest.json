@@ -2,12 +2,15 @@
   "name": "Last Answer",
   "short_name": "Last Answer",
   "description": "Fast ideas brainstroming tool",
+  "version": "0.1.0",
   "start_url": ".",
   "display": "standalone",
+  "manifest_version": 3,
+  "permissions": ["storage", "scripting"],
   "background_color": "#FFF",
   "theme_color": "#4CAF50",
   "orientation": "portrait-primary",
-  "prefer_related_applications": false,
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "icons/icon-16.png",

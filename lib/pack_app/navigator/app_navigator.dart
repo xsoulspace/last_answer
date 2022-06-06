@@ -4,6 +4,7 @@ class NavigatorValueKeys {
   NavigatorValueKeys._();
   static const _home = ValueKey<String>('home');
   static const _settings = ValueKey<String>('settings');
+  static const _signIn = ValueKey<String>('sign-in');
 
   static const _info = ValueKey<String>('info');
 
@@ -36,10 +37,9 @@ class _AppNavigatorState extends State<AppNavigator> {
     super.initState();
     final notificationController = context.read<NotificationController>();
     if (notificationController.hasUnreadUpdates) {
-      WidgetsBinding.instance?.addPostFrameCallback((final _) {
-        showNotificationPopup(
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
+        showNotificationDialog(
           context: widget.navigatorKey.currentContext!,
-          notificationController: notificationController,
         );
       });
     }

@@ -16,6 +16,7 @@ class AppNavigatorLayoutBuilder {
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
+              onFolderTap: pageBuilder.onChangeFolder,
               checkIsProjectActive: pageBuilder.checkIsProjectActive,
               onGoHome: popper.navigatorController.goHome,
               onInfoTap: popper.navigatorController.goAppInfo,
@@ -43,9 +44,9 @@ class AppNavigatorLayoutBuilder {
           pageBuilder.createIdeaPage()
         else if (pathTemplate == AppRoutesName.ideaAnswer)
           pageBuilder.ideaAnswerPage()
-        else if (pathTemplate.startsWith(AppRoutesName.settings))
-          pageBuilder.settingsPage()
-        else if (pathTemplate == AppRoutesName.appInfo)
+        else if (pathTemplate.startsWith(AppRoutesName.settings)) ...[
+          pageBuilder.settingsPage(),
+        ] else if (pathTemplate == AppRoutesName.appInfo)
           pageBuilder.appInfoPage(),
       ],
     ];
@@ -58,6 +59,7 @@ class AppNavigatorLayoutBuilder {
         child: AppNavigatorPopScope(
           popper: popper,
           child: SmallHomeScreen(
+            onFolderTap: pageBuilder.onChangeFolder,
             checkIsProjectActive: pageBuilder.checkIsProjectActive,
             onInfoTap: popper.navigatorController.goAppInfo,
             onCreateIdeaTap: popper.navigatorController.goCreateIdea,
@@ -68,9 +70,9 @@ class AppNavigatorLayoutBuilder {
           ),
         ),
       ),
-      if (pathTemplate.startsWith(AppRoutesName.settings))
-        pageBuilder.settingsPage()
-      else if (pathTemplate == AppRoutesName.appInfo)
+      if (pathTemplate.startsWith(AppRoutesName.settings)) ...[
+        pageBuilder.settingsPage(),
+      ] else if (pathTemplate == AppRoutesName.appInfo)
         pageBuilder.appInfoPage()
       else if (pathTemplate == AppRoutesName.createIdea)
         pageBuilder.createIdeaPage()

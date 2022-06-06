@@ -13,6 +13,10 @@ class AppNavigatorPageBuilder {
   RouteState get routeState => popper.routeState;
   AppRouteParameters get params => popper.params;
   String get pathTemplate => popper.pathTemplate;
+  void onChangeFolder(final ProjectFolder folder) {
+    context.read<CurrentFolderNotifier>().setState(folder);
+  }
+
   bool checkIsProjectActive(final BasicProject project) {
     if (project.id == params.noteId) return true;
     if (project.id == params.ideaId) return true;
@@ -68,9 +72,8 @@ class AppNavigatorPageBuilder {
           onGoHome: popper.navigatorController.goHome,
           onBack: (final note) async {
             if (note.note.replaceAll(' ', '').isEmpty) {
-              context.read<NoteProjectsProvider>().remove(key: note.id);
-              note.folder?.removeProject(note);
-              await note.delete();
+              context.read<NoteProjectsNotifier>().remove(key: note.id);
+              await note.deleteWithRelatives(context: context);
             }
             navigatorController.goHome();
           },
@@ -129,6 +132,17 @@ class AppNavigatorPageBuilder {
           onBack: navigatorController.goHome,
           onCreate: navigatorController.onCreateIdea,
         ),
+      ),
+    );
+  }
+
+  Page signInPage() {
+    return MaterialPage<void>(
+      key: NavigatorValueKeys._signIn,
+      fullscreenDialog: true,
+      child: AppNavigatorPopScope(
+        popper: popper,
+        child: const GlobalSignInScreen(),
       ),
     );
   }

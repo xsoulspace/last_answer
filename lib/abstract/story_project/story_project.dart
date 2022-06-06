@@ -2,33 +2,45 @@
 
 part of abstract;
 
-typedef StoryProjectId = String;
-
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
 class StoryProject extends BasicProject {
   StoryProject({
-    required final String id,
-    required final String title,
-    required final DateTime created,
+    required final super.id,
+    required final super.title,
+    required final super.createdAt,
     required final this.folder,
-    final bool isCompleted = defaultProjectIsCompleted,
+    this.isToDelete = defaultProjectIsDeleted,
+    final DateTime? updatedAt,
+    final super.isCompleted = defaultProjectIsCompleted,
   }) : super(
-          created: created,
-          id: id,
-          title: title,
-          isCompleted: isCompleted,
-          updated: created,
+          updatedAt: updatedAt ?? createdAt,
           folder: folder,
-          type: ProjectTypes.story,
+          type: ProjectType.story,
         );
 
   @override
   @HiveField(projectLatestFieldHiveId + 1)
   ProjectFolder? folder;
+
+  @override
+  @HiveField(projectLatestFieldHiveId + 2)
+  bool isToDelete;
+
+  @override
+  BasicProjectModel toModel({required final UserModel user}) {
+    // TODO(arenukvern): implement toModel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteWithRelatives({required final BuildContext context}) {
+    // TODO: implement deleteWithRelatives
+    throw UnimplementedError();
+  }
 }
 
 /// A mock for [StoryProject].
 /// To create use `final mockNoteProject = MockStoryProject();`
 // ignore: avoid_implementing_value_types
-class MockStoryProject extends Mock implements StoryProject {}
+// class MockStoryProject extends Mock implements StoryProject {}

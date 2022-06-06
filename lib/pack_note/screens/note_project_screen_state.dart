@@ -1,13 +1,15 @@
 part of pack_note;
 
+// ignore: long-parameter-list
 NoteProjectScreenState useNoteProjectScreenState({
-  required final TextEditingController noteController,
-  required final NoteProject note,
-  required final StreamController<NoteProjectNotifier> updatesStream,
-  required final BuildContext context,
+  required final NoteProjectsNotifier notesNotifier,
+  required final CurrentFolderNotifier folderNotifier,
+  required final ValueNotifier<NoteProject> noteNotifier,
+  required final StreamController<NoteProjectUpdateDto> updatesStream,
   required final ValueChanged<NoteProject> onScreenBack,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
+  required final ServerProjectsSyncService projectsSyncService,
 }) =>
     use(
       LifeHook(
@@ -15,25 +17,27 @@ NoteProjectScreenState useNoteProjectScreenState({
         state: NoteProjectScreenState(
           checkIsProjectActive: checkIsProjectActive,
           onGoHome: onGoHome,
-          note: note,
-          noteController: noteController,
+          noteNotifier: noteNotifier,
           updatesStream: updatesStream,
-          context: context,
           onScreenBack: onScreenBack,
+          folderNotifier: folderNotifier,
+          notesNotifier: notesNotifier,
+          projectsSyncService: projectsSyncService,
         ),
       ),
     );
 
 class NoteProjectScreenState extends NoteProjectUpdaterState {
   NoteProjectScreenState({
-    required this.noteController,
     required this.onScreenBack,
     required final this.checkIsProjectActive,
     required final this.onGoHome,
-    required final NoteProject note,
-    required final StreamController<NoteProjectNotifier> updatesStream,
-    required final BuildContext context,
-  }) : super(context: context, note: note, updatesStream: updatesStream);
+    required final super.folderNotifier,
+    required final super.notesNotifier,
+    required final super.noteNotifier,
+    required final super.updatesStream,
+    required final super.projectsSyncService,
+  }) : noteController = TextEditingController(text: noteNotifier.value.note);
 
   final TextEditingController noteController;
   final ValueChanged<NoteProject> onScreenBack;
@@ -43,8 +47,6 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   @override
   void initState() {
     noteController.addListener(onNoteChange);
-    notesProvider = context.read<NoteProjectsProvider>();
-    folderProvider = context.read<FolderStateProvider>();
     super.initState();
   }
 
@@ -57,7 +59,6 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
       await removeProject(
         context: context,
         project: note,
-        folderProvider: folderProvider,
         checkIsProjectActive: checkIsProjectActive,
         onGoHome: onGoHome,
       );
@@ -74,8 +75,8 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     }
     note
       ..note = noteController.text
-      ..updated = DateTime.now();
-    updatesStream.add(NoteProjectNotifier(positionChanged: positionChanged));
+      ..updatedAt = dateTimeNowUtc();
+    updatesStream.add(NoteProjectUpdateDto(positionChanged: positionChanged));
   }
 
   void onBack() {
@@ -85,7 +86,9 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
 
   @override
   void dispose() {
-    noteController.removeListener(onNoteChange);
+    noteController
+      ..removeListener(onNoteChange)
+      ..dispose();
     super.dispose();
   }
 }

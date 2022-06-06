@@ -6,4 +6,7 @@ class GlobalStateNotifiers {
   // Flutter Widgets.
   static final settings =
       GeneralSettingsController(settingsService: SettingsService());
+
+  static final supabase_lib.SupabaseClient supabase =
+      supabase_lib.Supabase.instance.client;
 }

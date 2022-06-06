@@ -1,41 +1,73 @@
 part of abstract;
 
-typedef ProjectFolderId = String;
-
 @HiveType(typeId: HiveBoxesIds.projectFolder)
-class ProjectFolder extends HiveObject with EquatableMixin, HasId {
+class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
+    with EquatableMixin {
   ProjectFolder({
-    required final this.id,
-    required final this.title,
-    final this.projectsService,
-    final this.projectsIdsString = '',
-  }) : _projects = createHashSet();
+    required this.id,
+    required this.title,
+    this.projectsIdsString = '',
+    final bool? isToDelete,
+    final DateTime? updatedAt,
+    DateTime? createdAt,
+  })  : _projects = createHashSet(),
+        isToDelete = isToDelete ?? false,
+        createdAt = createdAt ??= dateTimeNowUtc(),
+        updatedAt = updatedAt ?? createdAt;
 
   ProjectFolder.zero({
-    final this.id = '',
-    final this.projectsIdsString = '',
-    final this.title = '',
-    final this.projectsService,
-  }) : _projects = createHashSet();
+    this.id = '',
+    this.projectsIdsString = '',
+    this.title = '',
+    this.isToDelete = false,
+  })  : _projects = createHashSet(),
+        updatedAt = dateTimeNowUtc(),
+        createdAt = dateTimeNowUtc();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
       LinkedHashSet<BasicProject>(
         equals: (final a, final b) => a.hashCode == b.hashCode,
         hashCode: (final a) => a.hashCode,
       );
+  static Future<ProjectFolder> fromModel(final ProjectFolderModel model) async {
+    return create(
+      id: model.id,
+      title: model.title,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
+    );
+  }
 
-  static Future<ProjectFolder> create() async {
+  static Future<ProjectFolder> create({
+    final String? id,
+    final String? title,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
+  }) async {
     final box =
         await Hive.openBox<ProjectFolder>(HiveBoxesIds.projectFolderKey);
 
     final folder = ProjectFolder(
-      id: createId(),
-      title: 'New',
+      id: id ?? createId(),
+      title: title ?? 'New',
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
 
     await box.put(folder.id, folder);
 
     return folder;
+  }
+
+  @override
+  ProjectFolderModel toModel({required final UserModel user}) {
+    return ProjectFolderModel(
+      id: id,
+      title: title,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      ownerId: user.id,
+    );
   }
 
   @override
@@ -48,6 +80,16 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   /// Used to keep [SerializableProjectId] as json
   @HiveField(2)
   String projectsIdsString;
+
+  @override
+  @HiveField(3)
+  bool isToDelete;
+
+  @HiveField(4)
+  DateTime updatedAt;
+
+  @HiveField(5)
+  DateTime createdAt;
 
   LinkedHashSet<BasicProject> _projects;
 
@@ -115,13 +157,10 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
 
   bool get isZero => id.isEmpty;
 
-  /// Optional dependency to load [projects]
-  final BasicProjectsService? projectsService;
-
   /// Run once when box is uploading to provider
   static Iterable<BasicProject> loadProjectsFromService({
     required final ProjectFolder folder,
-    required final BasicProjectsService service,
+    required final BasicProjectsDto service,
   }) {
     final Iterable<SerializableProjectId> ids = folder.projectsIdsString.isEmpty
         ? []
@@ -132,15 +171,16 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
     BasicProject? getProjectById(final SerializableProjectId id) {
       Map<ProjectId, BasicProject?> projects;
       switch (id.type) {
-        case ProjectTypes.note:
+        case ProjectType.note:
           projects = service.notes;
           break;
-        case ProjectTypes.idea:
+        case ProjectType.idea:
           projects = service.ideas;
           break;
-        case ProjectTypes.story:
-          projects = service.stories;
-          break;
+        case ProjectType.story:
+          throw UnimplementedError();
+        // projects = service.stories;
+        // break;
         default:
           throw UnimplementedError();
       }
@@ -164,4 +204,19 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
 
   @override
   bool? get stringify => true;
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<ProjectFoldersNotifier>().remove(key: key);
+    await Future.wait(
+      _projects.map(
+        (final project) async {
+          await project.deleteWithRelatives(context: context);
+        },
+      ),
+    );
+    await delete();
+  }
 }

@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Sign out`
+  String get signOut {
+    return Intl.message(
+      'Sign out',
+      name: 'signOut',
+      desc: 'signOut',
+      args: [],
+    );
+  }
+
   /// `Write a note`
   String get writeANote {
     return Intl.message(
@@ -130,12 +140,12 @@ class S {
     );
   }
 
-  /// `Change Log`
+  /// `What's new?`
   String get changeLog {
     return Intl.message(
-      'Change Log',
+      'What\'s new?',
       name: 'changeLog',
-      desc: 'changeLog',
+      desc: 'What\'s new?',
       args: [],
     );
   }

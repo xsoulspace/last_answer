@@ -1,33 +1,66 @@
 part of abstract;
 
-typedef IdeaProjectAnswerId = String;
-
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
-class IdeaProjectAnswer extends HiveObject
+class IdeaProjectAnswer extends RemoteHiveObjectWithId<IdeaProjectAnswerModel>
     with EquatableMixin
-    implements Sharable, HasId {
+    implements Sharable {
   IdeaProjectAnswer({
-    required final this.text,
-    required final this.question,
-    required final this.id,
-    required final this.created,
-  });
+    required this.id,
+    required this.text,
+    required this.question,
+    required this.createdAt,
+    this.projectId = '',
+    this.isToDelete = false,
+    final DateTime? updatedAt,
+  }) : updatedAt = updatedAt ?? dateTimeNowUtc();
+  static Future<IdeaProjectAnswer> fromModel({
+    required final IdeaProjectAnswerModel model,
+    required final BuildContext context,
+  }) async {
+    final questions = context.read<IdeaProjectQuestionsNotifier>();
+    final question = questions.state[model.questionId]!;
+    final ideas = context.read<IdeaProjectsNotifier>();
+    final idea = ideas.state[model.projectId];
+
+    return create(
+      idea: idea!,
+      context: context,
+      question: question,
+      text: model.text,
+      createdAt: model.createdAt,
+      id: model.id,
+      updatedAt: model.updatedAt,
+    );
+  }
+
+  // ignore: long-parameter-list
   static Future<IdeaProjectAnswer> create({
+    required final BuildContext context,
     required final String text,
     required final IdeaProjectQuestion question,
+    required final IdeaProject idea,
+    final String? id,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
   }) async {
     final answer = IdeaProjectAnswer(
       text: text,
       question: question,
-      id: createId(),
-      created: DateTime.now(),
+      id: id ?? createId(),
+      createdAt: createdAt ?? dateTimeNowUtc(),
+      projectId: idea.id,
+      updatedAt: updatedAt,
     );
     final box = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
-    
+
+    context
+        .read<IdeaProjectAnswersNotifier>()
+        .put(key: answer.id, value: answer);
+
     return answer;
   }
 
@@ -42,20 +75,53 @@ class IdeaProjectAnswer extends HiveObject
   final IdeaProjectAnswerId id;
 
   @HiveField(3)
-  final DateTime created;
+  final DateTime createdAt;
+
+  @HiveField(4)
+  DateTime updatedAt;
+
+  @override
+  @HiveField(5)
+  bool isToDelete;
+
+  @HiveField(6)
+  // TODO(arenukvern): after v4 migration replace late with final
+  ProjectId projectId;
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
-  String toShareString() => '${question.toShareString()} \n $text';
+  String toShareString(final BuildContext context) =>
+      '${question.toShareString(context)} \n $text';
 
   @override
   List get props => [id];
 
   @override
   bool? get stringify => true;
+
+  @override
+  IdeaProjectAnswerModel toModel({required final UserModel user}) {
+    return IdeaProjectAnswerModel(
+      createdAt: createdAt,
+      id: id,
+      projectId: projectId,
+      questionId: question.id,
+      text: text,
+      updatedAt: updatedAt,
+      ownerId: user.id,
+    );
+  }
+
+  @override
+  Future<void> deleteWithRelatives({
+    required final BuildContext context,
+  }) async {
+    context.read<IdeaProjectAnswersNotifier>().remove(key: id);
+    await delete();
+  }
 }
 
 /// A mock for [IdeaProjectAnswer].
 /// To create use `final mockIdeaProjectAnswer = MockIdeaProjectAnswer();`
 // ignore: avoid_implementing_value_types
-class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}
+// class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}

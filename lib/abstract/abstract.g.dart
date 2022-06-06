@@ -19,20 +19,21 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
     return IdeaProject(
       id: fields[0] as String,
       title: fields[2] as String,
-      created: fields[3] as DateTime,
-      updated: fields[4] as DateTime,
-      folder: fields[8] as ProjectFolder?,
-      isCompleted: fields[1] as bool,
+      createdAt: fields[3] as DateTime,
       newAnswerText: fields[6] as String,
+      folder: fields[8] as ProjectFolder?,
       newQuestion: fields[7] as IdeaProjectQuestion?,
       answers: (fields[5] as HiveList?)?.castHiveList(),
+      isToDelete: fields[9] as bool?,
+      updatedAt: fields[4] as DateTime?,
+      isCompleted: fields[1] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, IdeaProject obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(5)
       ..write(obj.answers)
       ..writeByte(6)
@@ -41,8 +42,10 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..write(obj.newQuestion)
       ..writeByte(8)
       ..write(obj.folder)
+      ..writeByte(9)
+      ..write(obj.isToDelete)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +53,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       ..writeByte(2)
       ..write(obj.title)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -75,17 +78,20 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
+      id: fields[2] as String,
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
-      id: fields[2] as String,
-      created: fields[3] as DateTime,
+      createdAt: fields[3] as DateTime,
+      projectId: fields[6] as String,
+      isToDelete: fields[5] as bool,
+      updatedAt: fields[4] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, IdeaProjectAnswer obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.text)
       ..writeByte(1)
@@ -93,7 +99,13 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       ..writeByte(2)
       ..write(obj.id)
       ..writeByte(3)
-      ..write(obj.created);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.updatedAt)
+      ..writeByte(5)
+      ..write(obj.isToDelete)
+      ..writeByte(6)
+      ..write(obj.projectId);
   }
 
   @override
@@ -199,33 +211,36 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
     };
     return NoteProject(
       id: fields[0] as String,
-      created: fields[3] as DateTime,
-      updated: fields[4] as DateTime,
-      folder: fields[6] as ProjectFolder?,
+      createdAt: fields[3] as DateTime,
       note: fields[5] as String,
-      isCompleted: fields[1] as bool,
+      folder: fields[6] as ProjectFolder?,
       charactersLimit: fields[7] as int?,
+      isCompleted: fields[1] as bool,
+      isToDelete: fields[8] as bool?,
+      updatedAt: fields[4] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NoteProject obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(5)
       ..write(obj.note)
       ..writeByte(6)
       ..write(obj.folder)
       ..writeByte(7)
       ..write(obj.charactersLimit)
+      ..writeByte(8)
+      ..write(obj.isToDelete)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isCompleted)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -253,19 +268,28 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       id: fields[0] as String,
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
+      isToDelete: fields[3] as bool?,
+      updatedAt: fields[4] as DateTime?,
+      createdAt: fields[5] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectFolder obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.projectsIdsString);
+      ..write(obj.projectsIdsString)
+      ..writeByte(3)
+      ..write(obj.isToDelete)
+      ..writeByte(4)
+      ..write(obj.updatedAt)
+      ..writeByte(5)
+      ..write(obj.createdAt);
   }
 
   @override
@@ -292,20 +316,24 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
     return StoryProject(
       id: fields[0] as String,
       title: fields[2] as String,
-      created: fields[3] as DateTime,
+      createdAt: fields[3] as DateTime,
       folder: fields[5] as ProjectFolder?,
+      isToDelete: fields[6] as bool,
+      updatedAt: fields[4] as DateTime?,
       isCompleted: fields[1] as bool,
-    )..updated = fields[4] as DateTime;
+    );
   }
 
   @override
   void write(BinaryWriter writer, StoryProject obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(5)
       ..write(obj.folder)
+      ..writeByte(6)
+      ..write(obj.isToDelete)
       ..writeByte(3)
-      ..write(obj.created)
+      ..write(obj.createdAt)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -313,7 +341,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       ..writeByte(2)
       ..write(obj.title)
       ..writeByte(4)
-      ..write(obj.updated);
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -347,6 +375,7 @@ IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
       id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
+      isToDelete: json['isToDelete'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
@@ -354,6 +383,7 @@ Map<String, dynamic> _$IdeaProjectQuestionToJson(
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'isToDelete': instance.isToDelete,
     };
 
 LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
@@ -376,18 +406,30 @@ SerializableProjectId _$SerializableProjectIdFromJson(
         Map<String, dynamic> json) =>
     SerializableProjectId(
       id: json['id'] as String,
-      type: $enumDecode(_$ProjectTypesEnumMap, json['type']),
+      type: $enumDecode(_$ProjectTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$SerializableProjectIdToJson(
         SerializableProjectId instance) =>
     <String, dynamic>{
-      'type': _$ProjectTypesEnumMap[instance.type],
+      'type': _$ProjectTypeEnumMap[instance.type],
       'id': instance.id,
     };
 
-const _$ProjectTypesEnumMap = {
-  ProjectTypes.idea: 'idea',
-  ProjectTypes.note: 'note',
-  ProjectTypes.story: 'story',
+const _$ProjectTypeEnumMap = {
+  ProjectType.idea: 'idea',
+  ProjectType.note: 'note',
+  ProjectType.story: 'story',
 };
+
+SupabaseError _$SupabaseErrorFromJson(Map<String, dynamic> json) =>
+    SupabaseError(
+      error: json['error'] as String,
+      errorDescription: json['error_description'] as String,
+    );
+
+Map<String, dynamic> _$SupabaseErrorToJson(SupabaseError instance) =>
+    <String, dynamic>{
+      'error': instance.error,
+      'error_description': instance.errorDescription,
+    };

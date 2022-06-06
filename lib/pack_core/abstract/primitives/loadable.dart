@@ -1,0 +1,9 @@
+part of pack_core;
+
+abstract class Loadable {
+  Loadable();
+
+  /// Use this function to load something on
+  /// instance initialization
+  Future<void> onLoad({required final BuildContext context});
+}

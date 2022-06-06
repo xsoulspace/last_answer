@@ -6,5 +6,5 @@ abstract class BasicProjectFields {
     required final this.type,
   });
   ProjectFolder? folder;
-  final ProjectTypes type;
+  final ProjectType type;
 }

@@ -17,9 +17,9 @@ class IdeaAnswerScreen extends HookWidget {
 
   IdeaProjectAnswer? getInitialAnswer({
     required final IdeaProject idea,
+    required final IdeaProjectAnswersNotifier ideaAnswersNotifier,
   }) {
-    final answer =
-        idea.answers?.firstWhereOrNull((final a) => a.id == answerId);
+    final answer = ideaAnswersNotifier.state[answerId];
     if (answer != null) return answer;
     onUnknown(answerId, idea);
 
@@ -28,9 +28,13 @@ class IdeaAnswerScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final ideasProvider = context.read<IdeaProjectsProvider>();
-    final maybeIdea = ideasProvider.state[ideaId]!;
-    final maybeAnswer = getInitialAnswer(idea: maybeIdea);
+    final ideasNotifier = context.watch<IdeaProjectsNotifier>();
+    final ideaAnswersNotifier = context.watch<IdeaProjectAnswersNotifier>();
+    final maybeIdea = ideasNotifier.state[ideaId]!;
+    final maybeAnswer = getInitialAnswer(
+      idea: maybeIdea,
+      ideaAnswersNotifier: ideaAnswersNotifier,
+    );
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);
     final textController = useTextEditingController(text: answer.value.text);
@@ -38,12 +42,14 @@ class IdeaAnswerScreen extends HookWidget {
     final updatesStream = useStreamController<bool>();
 
     final state = useIdeaAnswerScreenState(
-      answer: answer,
-      context: context,
+      ideasNotifier: ideasNotifier,
+      answerNotifier: answer,
       idea: maybeIdea,
       onScreenBack: onBack,
       textController: textController,
       updatesStream: updatesStream,
+      ideaAnswerSyncService: context.watch(),
+      ideaSyncService: context.watch(),
     );
 
     return Scaffold(
@@ -78,7 +84,7 @@ class IdeaAnswerScreen extends HookWidget {
                   child: HeroId(
                     id: answerId,
                     type: HeroIdTypes.projectIdeaAnswerText,
-                    child: ProjectTextField(
+                    child: FlatTextField(
                       hintText: S.current.answer,
                       fillColor: Colors.transparent,
                       filled: false,

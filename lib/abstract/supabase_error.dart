@@ -1,4 +1,6 @@
-part of abstract;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'supabase_error.g.dart';
 
 @immutable
 @JsonSerializable()

@@ -1,5 +1,3 @@
-part of abstract;
-
 /// all keys(ids) for [HiveBox.typeIds]
 ///
 /// Important! Do not change order of items and incase of increase

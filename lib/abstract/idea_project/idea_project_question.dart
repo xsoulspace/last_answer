@@ -1,4 +1,16 @@
-part of abstract;
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
+import 'package:lastanswer/abstract/hive_boxes_ids.dart';
+import 'package:lastanswer/abstract/localization/localized_text.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/utils/utils.dart';
+
+part 'idea_project_question.g.dart';
 
 /// Use [IdeaProjectQuestion.fromTitle] to create class
 /// This class immutable so in case of adding new properties make sure that it

@@ -1,4 +1,5 @@
-part of abstract;
+import 'package:flutter/widgets.dart';
+import 'package:lastanswer/abstract/localization/named_locale.dart';
 
 class Locales {
   Locales._();

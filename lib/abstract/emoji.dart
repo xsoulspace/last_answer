@@ -1,4 +1,6 @@
-part of abstract;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'emoji.g.dart';
 
 @immutable
 @JsonSerializable()

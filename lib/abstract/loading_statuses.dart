@@ -1,4 +1,4 @@
-part of abstract;
+import 'package:lastanswer/abstract/localization/localized_text.dart';
 
 enum AppStateLoadingStatuses {
   settings,
@@ -9,6 +9,7 @@ enum AppStateLoadingStatuses {
   notes,
   migratingOldData,
 }
+
 const appLoadingStatusesTitles = <AppStateLoadingStatuses, LocalizedText>{
   AppStateLoadingStatuses.answersForIdeas: LocalizedText(
     en: '✨ Loading answers for ideas..',

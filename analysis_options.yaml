@@ -14,7 +14,7 @@ analyzer:
     - old/
     - lib/generated_plugin_registrant.dart
   plugins:
-    - dart_code_metrics
+    # - dart_code_metrics
   errors:
     avoid_void_async: error
     sort_constructors_first: error

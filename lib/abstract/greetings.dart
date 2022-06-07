@@ -1,4 +1,6 @@
-part of abstract;
+import 'dart:math';
+
+import 'package:lastanswer/abstract/localization/localized_text.dart';
 
 class Greeting {
   Greeting() : _random = Random();

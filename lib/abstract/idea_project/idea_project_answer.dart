@@ -1,4 +1,16 @@
-part of abstract;
+import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
+import 'package:lastanswer/abstract/hive_boxes_ids.dart';
+import 'package:lastanswer/abstract/idea_project/idea_project.dart';
+import 'package:lastanswer/abstract/idea_project/idea_project_question.dart';
+import 'package:lastanswer/library/extensions/extensions.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
+
+part 'idea_project_answer.g.dart';
 
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)

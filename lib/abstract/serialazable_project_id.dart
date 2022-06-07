@@ -1,4 +1,7 @@
-part of abstract;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+
+part 'serialazable_project_id.g.dart';
 
 @immutable
 @JsonSerializable()

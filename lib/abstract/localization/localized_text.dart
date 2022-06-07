@@ -1,4 +1,10 @@
-part of abstract;
+import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
+import 'package:lastanswer/abstract/hive_boxes_ids.dart';
+import 'package:lastanswer/abstract/localization/language.dart';
+
+part 'localized_text.g.dart';
 
 /// Any text, that should be shown to user in different [Languages]
 /// should use this class to keep values

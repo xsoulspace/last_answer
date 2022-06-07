@@ -1,4 +1,4 @@
-part of abstract;
+import 'package:flutter/widgets.dart';
 
 /// Use this class to show user a list of supported [Languages]
 /// and let him to choose one of them

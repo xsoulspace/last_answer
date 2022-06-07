@@ -61,6 +61,10 @@ dependencies:
   universal_io: ^2.0.4
   url_launcher: ^6.1.2
   uuid: ^3.0.6
+  la_design_core:
+    path: packages/la_design_core
+  la_utils_core:
+    path: packages/la_utils_core
 
 dev_dependencies:
   build_runner: ^2.1.10
@@ -110,7 +114,7 @@ flutter_gen:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
-  generate: true
+  # generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

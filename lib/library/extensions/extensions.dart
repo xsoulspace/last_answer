@@ -1,3 +1,3 @@
 library extensions;
 
-part 'date_time.dart';
+export 'date_time.dart';

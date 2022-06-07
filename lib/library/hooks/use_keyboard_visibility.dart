@@ -1,4 +1,9 @@
-part of hooks;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 ValueNotifier<bool> useKeyboardVisibility() {
   return use(const _KeyboardVisiblityHook());

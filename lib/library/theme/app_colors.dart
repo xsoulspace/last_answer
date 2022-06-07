@@ -1,4 +1,4 @@
-part of theme;
+import 'package:flutter/material.dart';
 
 /// This class is responsible for all colours in the application
 /// If there is a need to add new one—open an issue to add to figma.

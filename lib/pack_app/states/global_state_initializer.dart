@@ -9,7 +9,7 @@ import 'package:lastanswer/pack_app/notifications/notifications_controller.dart'
 import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
-import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';

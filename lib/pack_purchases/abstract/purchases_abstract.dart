@@ -1,4 +1,4 @@
-library pack_purchases_i;
+library purchases_abstract;
 
 export 'src/mock_payments_controller.dart';
 export 'src/payments_controller_i.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:universal_io/io.dart';
 

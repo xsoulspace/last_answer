@@ -1,4 +1,9 @@
-part of pack_core;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
+import 'package:lastanswer/pack_core/abstract/primitives/remotely_available.dart';
 
 abstract class Deletable {
   /// This property is used to mark instance

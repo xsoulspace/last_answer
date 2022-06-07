@@ -1,4 +1,9 @@
-part of pack_core;
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:lastanswer/pack_core/abstract/primitives/loadable.dart';
 
 ConnectivityNotifier createConnectivityNotifier(
   final BuildContext context,

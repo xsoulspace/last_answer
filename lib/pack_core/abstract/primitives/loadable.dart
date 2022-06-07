@@ -1,4 +1,6 @@
-part of pack_core;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 
 abstract class Loadable {
   Loadable();

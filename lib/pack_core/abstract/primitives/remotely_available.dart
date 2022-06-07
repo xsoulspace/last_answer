@@ -1,4 +1,5 @@
-part of pack_core;
+import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/user_model.dart';
 
 abstract class RemotelyAvailable<T extends HasId> {
   RemotelyAvailable._();

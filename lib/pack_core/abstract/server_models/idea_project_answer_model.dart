@@ -1,6 +1,12 @@
 // ignore_for_file: invalid_annotation_target
 
-part of pack_core;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/idea_project_question_model.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/user_model.dart';
+
+part 'idea_project_answer_model.freezed.dart';
+part 'idea_project_answer_model.g.dart';
 
 typedef IdeaProjectAnswerId = String;
 typedef IdeaProjectQuestionId = String;

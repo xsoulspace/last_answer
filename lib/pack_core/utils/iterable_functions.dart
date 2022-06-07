@@ -1,4 +1,4 @@
-part of pack_core;
+import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
 
 Map<InstanceId, T> listWithIdToMap<T extends HasId>(
   final Iterable<T> list, {

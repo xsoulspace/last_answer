@@ -1,4 +1,7 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_text.dart';
 
 class ThemeSwitcherButton extends StatelessWidget {
   const ThemeSwitcherButton({

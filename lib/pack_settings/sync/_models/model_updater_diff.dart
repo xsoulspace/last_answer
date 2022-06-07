@@ -1,4 +1,8 @@
-part of pack_settings;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
+
+part 'model_updater_diff.freezed.dart';
 
 @immutable
 @Freezed(

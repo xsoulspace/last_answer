@@ -1,4 +1,17 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_abstract/instance_updater.dart';
+import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
+import 'package:lastanswer/pack_settings/sync/_models/instance_update_policy.dart';
+import 'package:lastanswer/pack_settings/sync/_models/model_updater_diff.dart';
+import 'package:lastanswer/pack_settings/sync/client_sync_services/client_note_sync_service.dart';
+import 'package:lastanswer/pack_settings/sync/server_sync_services/server_projects_sync_service.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
 NoteUpdater createNoteUpdater(
   final BuildContext context,

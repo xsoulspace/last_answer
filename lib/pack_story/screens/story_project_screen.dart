@@ -1,4 +1,5 @@
-part of pack_story;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
 
 class StoryProjectScreen extends StatelessWidget {
   const StoryProjectScreen({

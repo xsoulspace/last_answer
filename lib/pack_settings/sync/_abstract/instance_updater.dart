@@ -1,4 +1,17 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/extensions/extensions.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_abstract/client_sync_service.dart';
+import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
+import 'package:lastanswer/pack_settings/sync/_models/instance_update_policy.dart';
+import 'package:lastanswer/pack_settings/sync/_models/model_updater_diff.dart';
+import 'package:lastanswer/pack_settings/sync/_models/remotely_updatable.dart';
+import 'package:lastanswer/state/state.dart';
 
 class InstanceUpdater<TMutable extends RemoteHiveObjectWithId<TImmutableOther>,
         TImmutableOther extends HasId, TNotifier extends MapState<TMutable>>

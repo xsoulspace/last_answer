@@ -1,4 +1,13 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
+import 'package:lastanswer/pack_settings/features_widgets/locale_switcher_button.dart';
+import 'package:lastanswer/pack_settings/features_widgets/theme_switcher_button.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_container.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class GeneralSettings extends StatelessWidget {
   const GeneralSettings({

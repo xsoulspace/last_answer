@@ -1,4 +1,10 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_platform_alert/flutter_platform_alert.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 MyAccountState useMyAccountState({
   required final AuthState authState,

@@ -1,4 +1,7 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({

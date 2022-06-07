@@ -1,4 +1,8 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_text.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({

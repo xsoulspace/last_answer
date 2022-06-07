@@ -1,4 +1,17 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_abstract/instance_subscriber.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_answer_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_question_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/note_updater.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
 ServerProjectsSubscriber createProjectsSubscriberNotifier(
   final BuildContext context,

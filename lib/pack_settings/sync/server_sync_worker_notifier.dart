@@ -1,4 +1,18 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/server_sync_services/server_projects_sync_service.dart';
+import 'package:lastanswer/pack_settings/sync/subscribers/server_folder_subscriber.dart';
+import 'package:lastanswer/pack_settings/sync/subscribers/server_projects_subscribers.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/folder_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_answer_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_question_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/idea_updater.dart';
+import 'package:lastanswer/pack_settings/sync/updaters/note_updater.dart';
+import 'package:provider/provider.dart';
 
 ServerSyncWorkerNotifier createServerSyncWorkerNotifier(
   final BuildContext context,

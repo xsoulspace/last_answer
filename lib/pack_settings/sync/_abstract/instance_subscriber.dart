@@ -1,4 +1,12 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_abstract/instance_updater.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class InstanceSubscriberI<TImmutable extends HasId>
     extends ChangeNotifier {
@@ -34,8 +42,10 @@ abstract class InstanceSubscriberI<TImmutable extends HasId>
   }
 }
 
-class SingleInstanceSubscriber<TMutable extends RemoteHiveObjectWithId<TImmutable>,
-        TImmutable extends HasId, TMapState extends MapState<TMutable>>
+class SingleInstanceSubscriber<
+        TMutable extends RemoteHiveObjectWithId<TImmutable>,
+        TImmutable extends HasId,
+        TMapState extends MapState<TMutable>>
     extends InstanceSubscriberI<TImmutable> {
   SingleInstanceSubscriber({
     required this.updater,

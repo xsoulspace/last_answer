@@ -1,4 +1,6 @@
-part of pack_settings;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 class SettingsListContainer extends StatelessWidget {
   const SettingsListContainer({

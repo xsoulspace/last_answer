@@ -1,4 +1,12 @@
-part of pack_settings;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_button.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({

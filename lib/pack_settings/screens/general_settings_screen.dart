@@ -1,4 +1,7 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen({

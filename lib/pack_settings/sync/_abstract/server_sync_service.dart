@@ -1,4 +1,10 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_abstract/instances_sync_service.dart';
+import 'package:lastanswer/pack_settings/sync/_models/model_updater_diff.dart';
 
 class ServerInstancesSyncServiceI<T extends RemoteHiveObjectWithId<TOther>,
         TOther extends HasId> extends InstancesSyncServiceI<TOther, T>

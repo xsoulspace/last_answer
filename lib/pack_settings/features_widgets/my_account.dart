@@ -1,4 +1,13 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
+import 'package:lastanswer/pack_settings/features_widgets/my_account_state.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_container.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class MyAccount extends HookWidget {
   const MyAccount({

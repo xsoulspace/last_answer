@@ -1,4 +1,4 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({

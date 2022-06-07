@@ -1,4 +1,11 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_service.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.

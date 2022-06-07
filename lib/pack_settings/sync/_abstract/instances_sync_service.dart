@@ -1,4 +1,7 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_settings/sync/_models/model_updater_diff.dart';
 
 abstract class InstancesSyncServiceApplier<T extends HasId,
     TOther extends HasId> {

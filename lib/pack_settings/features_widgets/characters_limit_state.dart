@@ -1,4 +1,13 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
+import 'package:life_hooks/life_hooks.dart';
+import 'package:provider/provider.dart';
 
 CharactersLimitSettingState useCharactersLimitSettingStateState({
   required final ValueNotifier<NoteProject>? noteNotifier,

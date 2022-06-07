@@ -1,4 +1,7 @@
-part of notifiers;
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/state/map_state.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class EmojiProvider extends MapState<Emoji> {
   EmojiProvider({

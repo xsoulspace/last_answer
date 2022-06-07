@@ -1,4 +1,6 @@
-part of notifiers;
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
 
 @immutable
 class BasicProjectsDto {

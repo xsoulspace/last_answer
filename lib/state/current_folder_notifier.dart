@@ -1,4 +1,5 @@
-part of notifiers;
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/abstract/abstract.dart';
 
 CurrentFolderNotifier createCurrentFoldersNotifier(
   final BuildContext context,

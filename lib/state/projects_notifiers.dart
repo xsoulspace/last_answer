@@ -1,4 +1,7 @@
-part of notifiers;
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/state/map_state.dart';
 
 class IdeaProjectsNotifier extends MapState<IdeaProject> {}
 

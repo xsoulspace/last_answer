@@ -1,4 +1,7 @@
-part of api;
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AbstractApiProps<TModel extends HasId> {
   String get tableName;

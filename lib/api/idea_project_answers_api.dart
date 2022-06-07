@@ -1,4 +1,6 @@
-part of api;
+import 'package:lastanswer/api/abstract_api.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IdeaProjectAnswersApi extends AbstractApiProps<IdeaProjectAnswerModel>
     with AbstractApiMixin<IdeaProjectAnswerModel>

@@ -1,4 +1,8 @@
-part of api;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/api/abstract_api.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FoldersApi extends AbstractApiProps<ProjectFolderModel>
     with AbstractApiMixin<ProjectFolderModel>

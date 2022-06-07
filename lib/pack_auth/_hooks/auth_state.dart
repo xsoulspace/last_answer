@@ -1,4 +1,13 @@
-part of pack_auth;
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/pack_auth/_notifiers/users_notifier.dart';
+import 'package:life_hooks/life_hooks.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_hooks/supabase_hooks.dart';
+import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 AuthState useAppAuthState({
   required final SupabaseClient supabaseClient,

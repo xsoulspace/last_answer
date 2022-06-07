@@ -1,4 +1,11 @@
-part of pack_auth;
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:provider/provider.dart' as provider_lib;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 UsersNotifier createUsersNotifier(final BuildContext context) => UsersNotifier(
       supabaseClient: context.read(),

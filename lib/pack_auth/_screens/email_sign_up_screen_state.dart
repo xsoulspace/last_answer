@@ -1,4 +1,12 @@
-part of pack_auth;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_auth/_hooks/auth_state.dart';
+import 'package:life_hooks/life_hooks.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 EmailSignUpScreenState useSignUpScreenState({
   required final FormHelperState formHelper,

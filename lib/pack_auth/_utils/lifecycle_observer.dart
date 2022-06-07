@@ -1,4 +1,5 @@
-part of pack_auth;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class AppLifecycleObserver extends WidgetsBindingObserver {
   AppLifecycleObserver({

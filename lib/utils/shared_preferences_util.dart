@@ -1,4 +1,6 @@
-part of utils;
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// This service purpose to manage shared preferences only
 mixin SharedPreferencesUtil {

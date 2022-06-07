@@ -1,4 +1,11 @@
-part of utils;
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
+import 'package:lastanswer/utils/abstract_util.dart';
+import 'package:lastanswer/utils/shared_preferences_keys.dart';
+import 'package:lastanswer/utils/shared_preferences_util.dart';
 
 class EmojiUtil
     with SharedPreferencesUtil

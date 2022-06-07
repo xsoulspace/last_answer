@@ -1,4 +1,5 @@
-part of 'utils.dart';
+import 'package:flutter/foundation.dart';
+import 'package:universal_io/io.dart';
 
 /// Returns what version of layout needs to use
 /// May return true for both native and web

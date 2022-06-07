@@ -1,4 +1,6 @@
-part of utils;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/utils/routing/parsed_route.dart';
+import 'package:path_to_regexp/path_to_regexp.dart';
 
 /// Used by [TemplateRouteParser] to guard access to routes.
 ///

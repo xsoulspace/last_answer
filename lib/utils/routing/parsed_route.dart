@@ -1,4 +1,7 @@
-part of utils;
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:quiver/core.dart';
 
 /// A route path that has been parsed by [TemplateRouteParser].
 @immutable

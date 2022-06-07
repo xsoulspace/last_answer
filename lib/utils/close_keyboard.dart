@@ -1,4 +1,5 @@
-part of utils;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void closeKeyboard({required final BuildContext context}) {
   final FocusScopeNode currentFocus = FocusScope.of(context);

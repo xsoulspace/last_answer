@@ -1,4 +1,7 @@
-part of utils;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/utils/routing/parsed_route.dart';
+import 'package:lastanswer/utils/routing/route_state.dart';
 
 class SimpleRouterDelegate extends RouterDelegate<ParsedRoute>
     with

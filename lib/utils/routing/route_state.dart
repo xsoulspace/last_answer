@@ -1,4 +1,6 @@
-part of utils;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/utils/routing/parsed_route.dart';
+import 'package:lastanswer/utils/routing/parser.dart';
 
 /// The current route state. To change the current route, call obtain the state
 /// using `RouteStateScope.of(context)` and call `go()`:

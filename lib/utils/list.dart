@@ -1,4 +1,4 @@
-part of utils;
+import 'package:lastanswer/abstract/abstract.dart';
 
 extension ListExtension on List<BasicProject> {
   void sortByDate() => sort(

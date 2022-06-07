@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
-import 'package:lastanswer/pack_purchases/phone_purchases/src/revenue_cat_payment_service.dart';
+import 'package:lastanswer/pack_purchases/mobile_purchases/src/revenue_cat_payment_service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 PaymentsControllerI createPaymentsController({

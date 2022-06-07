@@ -1,4 +1,10 @@
-part of pack_app;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
+import 'package:lastanswer/pack_app/widgets/project_tile.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({

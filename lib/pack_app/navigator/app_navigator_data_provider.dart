@@ -1,4 +1,9 @@
-part of pack_app;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_controller.dart';
+import 'package:lastanswer/pack_app/navigator/route_parameters.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class AppNavigatorDataProvider {
   AppNavigatorDataProvider({

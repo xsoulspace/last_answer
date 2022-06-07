@@ -7,19 +7,17 @@ part of 'project_folder_model.dart';
 // **************************************************************************
 
 _$_ProjectFolderModel _$$_ProjectFolderModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     _$_ProjectFolderModel(
       id: json['id'] as String,
       title: json['title'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      ownerId: json['owner_id'],
+      ownerId: json['owner_id'] as String,
     );
 
 Map<String, dynamic> _$$_ProjectFolderModelToJson(
-  final _$_ProjectFolderModel instance,
-) =>
+        _$_ProjectFolderModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

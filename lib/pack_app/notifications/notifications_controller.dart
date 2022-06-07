@@ -1,4 +1,10 @@
-part of pack_app;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/pack_app/notifications/notification_message.dart';
+import 'package:lastanswer/pack_app/notifications/notifications_service.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
 
 class NotificationController extends ChangeNotifier implements Loadable {
   NotificationController({

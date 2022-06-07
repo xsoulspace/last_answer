@@ -1,4 +1,22 @@
-part of pack_app;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import 'package:lastanswer/api/api.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
+import 'package:lastanswer/pack_app/screens/app_loading/app_loading_screen.dart';
+import 'package:lastanswer/pack_app/states/global_state_initializer.dart';
+import 'package:lastanswer/pack_app/states/global_state_notifiers.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase_lib;
 
 class AppStateProvider extends StatelessWidget {
   const AppStateProvider({

@@ -1,7 +1,14 @@
-part of pack_app;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
-class _VerticalProjectsBar extends StatelessWidget {
-  const _VerticalProjectsBar({
+class VerticalProjectsBar extends StatelessWidget {
+  const VerticalProjectsBar({
     required final this.onIdeaTap,
     required final this.onNoteTap,
     required final this.onFolderTap,

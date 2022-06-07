@@ -1,4 +1,8 @@
-part of pack_app;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'route_parameters.g.dart';
 
 @immutable
 @JsonSerializable()

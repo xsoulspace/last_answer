@@ -33,7 +33,7 @@ mixin _$IdeaProjectAnswerModel {
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -58,7 +58,7 @@ abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
       @JsonKey(name: 'updated_at')
           DateTime updatedAt,
       @JsonKey(name: 'owner_id')
-          UserModelId ownerId});
+          String ownerId});
 }
 
 /// @nodoc
@@ -108,7 +108,7 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
     ));
   }
 }
@@ -132,7 +132,7 @@ abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
       @JsonKey(name: 'updated_at')
           DateTime updatedAt,
       @JsonKey(name: 'owner_id')
-          UserModelId ownerId});
+          String ownerId});
 }
 
 /// @nodoc
@@ -185,7 +185,7 @@ class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
     ));
   }
 }
@@ -231,7 +231,7 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
   final DateTime updatedAt;
   @override
   @JsonKey(name: 'owner_id')
-  final UserModelId ownerId;
+  final String ownerId;
 
   @override
   String toString() {
@@ -290,7 +290,7 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
       @JsonKey(name: 'updated_at')
           required final DateTime updatedAt,
       @JsonKey(name: 'owner_id')
-          required final UserModelId ownerId}) = _$_IdeaProjectAnswerModel;
+          required final String ownerId}) = _$_IdeaProjectAnswerModel;
   const _IdeaProjectAnswerModel._() : super._();
 
   factory _IdeaProjectAnswerModel.fromJson(Map<String, dynamic> json) =
@@ -315,7 +315,7 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>

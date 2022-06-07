@@ -1,4 +1,12 @@
-part of pack_app;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_pop_scope.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
+import 'package:lastanswer/pack_app/navigator/app_routes.dart';
+import 'package:lastanswer/pack_app/screens/home/large_home_screen.dart';
+import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
 
 class AppNavigatorLayoutBuilder {
   AppNavigatorLayoutBuilder({
@@ -12,7 +20,7 @@ class AppNavigatorLayoutBuilder {
     return [
       if (pageBuilder.pathTemplate.startsWith(AppRoutesName.home)) ...[
         MaterialPage<void>(
-          key: NavigatorValueKeys._home,
+          key: NavigatorValueKeys.home,
           child: AppNavigatorPopScope(
             popper: popper,
             child: LargeHomeScreen(
@@ -25,7 +33,7 @@ class AppNavigatorLayoutBuilder {
               onProjectTap: popper.navigatorController.onProjectTap,
               onSettingsTap: popper.navigatorController.goSettings,
               mainScreenNavigator: Navigator(
-                key: NavigatorValueKeys._largeScreenHomeNavigator,
+                key: NavigatorValueKeys.largeScreenHomeNavigator,
                 onGenerateRoute: (final _) => null,
                 pages: [
                   if (pathTemplate == AppRoutesName.note)
@@ -55,7 +63,7 @@ class AppNavigatorLayoutBuilder {
   List<Page> getSmallScreenPages() {
     return [
       FadedRailPage<void>(
-        key: NavigatorValueKeys._home,
+        key: NavigatorValueKeys.home,
         child: AppNavigatorPopScope(
           popper: popper,
           child: SmallHomeScreen(

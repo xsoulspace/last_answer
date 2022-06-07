@@ -1,4 +1,19 @@
-part of pack_app;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_idea/pack_idea.dart';
+import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 /// use for data migrations only
 // ignore: unused_element

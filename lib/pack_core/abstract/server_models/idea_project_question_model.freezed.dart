@@ -22,7 +22,7 @@ IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
 /// @nodoc
 mixin _$IdeaProjectQuestionModel {
   @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-  IdeaProjectQuestionId get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,8 +37,7 @@ abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
           $Res Function(IdeaProjectQuestionModel) then) =
       _$IdeaProjectQuestionModelCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-          IdeaProjectQuestionId id,
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
       String title});
 }
 
@@ -60,7 +59,7 @@ class _$IdeaProjectQuestionModelCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as IdeaProjectQuestionId,
+              as String,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -78,8 +77,7 @@ abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
       __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-          IdeaProjectQuestionId id,
+      {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
       String title});
 }
 
@@ -104,7 +102,7 @@ class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as IdeaProjectQuestionId,
+              as String,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -128,7 +126,7 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
 
   @override
   @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-  final IdeaProjectQuestionId id;
+  final String id;
   @override
   final String title;
 
@@ -168,7 +166,7 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
 abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
   const factory _IdeaProjectQuestionModel(
       {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-          required final IdeaProjectQuestionId id,
+          required final String id,
       required final String title}) = _$_IdeaProjectQuestionModel;
   const _IdeaProjectQuestionModel._() : super._();
 
@@ -177,7 +175,7 @@ abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
 
   @override
   @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-  IdeaProjectQuestionId get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @override
   String get title => throw _privateConstructorUsedError;
   @override

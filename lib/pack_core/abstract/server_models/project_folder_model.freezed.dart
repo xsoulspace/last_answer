@@ -27,7 +27,7 @@ mixin _$ProjectFolderModel {
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +45,7 @@ abstract class $ProjectFolderModelCopyWith<$Res> {
       String title,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'owner_id') UserModelId ownerId});
+      @JsonKey(name: 'owner_id') String ownerId});
 }
 
 /// @nodoc
@@ -85,7 +85,7 @@ class _$ProjectFolderModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
     ));
   }
 }
@@ -102,7 +102,7 @@ abstract class _$$_ProjectFolderModelCopyWith<$Res>
       String title,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'owner_id') UserModelId ownerId});
+      @JsonKey(name: 'owner_id') String ownerId});
 }
 
 /// @nodoc
@@ -144,7 +144,7 @@ class __$$_ProjectFolderModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
     ));
   }
 }
@@ -176,7 +176,7 @@ class _$_ProjectFolderModel extends _ProjectFolderModel {
   final DateTime updatedAt;
   @override
   @JsonKey(name: 'owner_id')
-  final UserModelId ownerId;
+  final String ownerId;
 
   @override
   String toString() {
@@ -223,7 +223,7 @@ abstract class _ProjectFolderModel extends ProjectFolderModel {
           required final String title,
           @JsonKey(name: 'created_at') required final DateTime createdAt,
           @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-          @JsonKey(name: 'owner_id') required final UserModelId ownerId}) =
+          @JsonKey(name: 'owner_id') required final String ownerId}) =
       _$_ProjectFolderModel;
   const _ProjectFolderModel._() : super._();
 
@@ -242,7 +242,7 @@ abstract class _ProjectFolderModel extends ProjectFolderModel {
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectFolderModelCopyWith<_$_ProjectFolderModel> get copyWith =>

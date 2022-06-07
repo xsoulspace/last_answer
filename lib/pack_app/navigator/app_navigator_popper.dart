@@ -1,4 +1,11 @@
-part of pack_app;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_data_provider.dart';
+import 'package:lastanswer/pack_app/navigator/app_routes.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class AppNavigatorPopper extends AppNavigatorDataProvider {
   AppNavigatorPopper({

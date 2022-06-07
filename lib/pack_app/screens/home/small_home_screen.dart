@@ -1,4 +1,13 @@
-part of pack_app;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/screens/home/projects_list_view.dart';
+import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
+import 'package:lastanswer/pack_app/widgets/project_tile.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 class SmallHomeScreen extends StatefulHookWidget {
   const SmallHomeScreen({
@@ -102,7 +111,7 @@ class HomeVerticalMenu extends StatelessWidget {
           : Colors.transparent,
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: _VerticalProjectsBar(
+        child: VerticalProjectsBar(
           onIdeaTap: onCreateIdeaTap,
           onNoteTap: onCreateNoteTap,
           onFolderTap: onFolderTap,

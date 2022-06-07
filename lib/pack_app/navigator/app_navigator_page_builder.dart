@@ -1,4 +1,19 @@
-part of pack_app;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_controller.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_pop_scope.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
+import 'package:lastanswer/pack_app/navigator/route_parameters.dart';
+import 'package:lastanswer/pack_app/screens/info/app_info.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
+import 'package:lastanswer/pack_idea/pack_idea.dart';
+import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class AppNavigatorPageBuilder {
   AppNavigatorPageBuilder({
@@ -26,7 +41,7 @@ class AppNavigatorPageBuilder {
 
   Page appInfoPage() {
     return MaterialPage(
-      key: NavigatorValueKeys._info,
+      key: NavigatorValueKeys.info,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
@@ -43,7 +58,7 @@ class AppNavigatorPageBuilder {
 
   Page settingsPage() {
     return FadedRailPage<void>(
-      key: NavigatorValueKeys._settings,
+      key: NavigatorValueKeys.settings,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
@@ -61,7 +76,7 @@ class AppNavigatorPageBuilder {
 
   Page notePage() {
     return MaterialPage<void>(
-      key: NavigatorValueKeys._notesNote,
+      key: NavigatorValueKeys.notesNote,
       restorationId: routeState.route.path,
       fullscreenDialog: isNativeDesktop,
       name: routeState.route.path,
@@ -86,7 +101,7 @@ class AppNavigatorPageBuilder {
 
   Page ideaPage() {
     return MaterialPage<void>(
-      key: NavigatorValueKeys._ideasIdea,
+      key: NavigatorValueKeys.ideasIdea,
       fullscreenDialog: isNativeDesktop,
       restorationId: routeState.route.path,
       name: routeState.route.path,
@@ -105,7 +120,7 @@ class AppNavigatorPageBuilder {
   Page ideaAnswerPage() {
     return MaterialPage<void>(
       fullscreenDialog: true,
-      key: NavigatorValueKeys._ideasIdeaAnswer,
+      key: NavigatorValueKeys.ideasIdeaAnswer,
       restorationId: routeState.route.path,
       name: routeState.route.path,
       child: AppNavigatorPopScope(
@@ -124,7 +139,7 @@ class AppNavigatorPageBuilder {
 
   Page createIdeaPage() {
     return MaterialPage<void>(
-      key: NavigatorValueKeys._createIdea,
+      key: NavigatorValueKeys.createIdea,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,
@@ -138,7 +153,7 @@ class AppNavigatorPageBuilder {
 
   Page signInPage() {
     return MaterialPage<void>(
-      key: NavigatorValueKeys._signIn,
+      key: NavigatorValueKeys.signIn,
       fullscreenDialog: true,
       child: AppNavigatorPopScope(
         popper: popper,

@@ -7,25 +7,23 @@ part of 'idea_project_answer_model.dart';
 // **************************************************************************
 
 _$_IdeaProjectAnswerModel _$$_IdeaProjectAnswerModelFromJson(
-  final Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     _$_IdeaProjectAnswerModel(
       id: json['id'] as String,
       text: json['text'] as String,
-      questionId: json['question_id'] as String,
+      questionId: fromIntToString(json['question_id'] as int),
       projectId: json['project_id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      ownerId: json['owner_id'],
+      ownerId: json['owner_id'] as String,
     );
 
 Map<String, dynamic> _$$_IdeaProjectAnswerModelToJson(
-  final _$_IdeaProjectAnswerModel instance,
-) =>
+        _$_IdeaProjectAnswerModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'text': instance.text,
-      'question_id': instance.questionId,
+      'question_id': fromStringToInt(instance.questionId),
       'project_id': instance.projectId,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),

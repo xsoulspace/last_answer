@@ -1,4 +1,7 @@
-part of pack_app;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
   const ProjectsDirectionSwitch({

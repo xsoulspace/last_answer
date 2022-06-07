@@ -29,7 +29,7 @@ BasicProjectModel _$BasicProjectModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BasicProjectModel {
-  ProjectFolderId get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
@@ -39,24 +39,24 @@ mixin _$BasicProjectModel {
   @JsonKey(name: 'project_type')
   ProjectType get projectType => throw _privateConstructorUsedError;
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   @JsonKey(name: 'folder_id')
-  ProjectFolderId get folderId => throw _privateConstructorUsedError;
+  String get folderId => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)
         noteProjectModel,
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -67,31 +67,31 @@ mixin _$BasicProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)
+                String newQuestionId)
         ideaProjectModel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -102,31 +102,31 @@ mixin _$BasicProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -137,13 +137,13 @@ mixin _$BasicProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
     required TResult orElse(),
   }) =>
@@ -179,13 +179,13 @@ abstract class $BasicProjectModelCopyWith<$Res> {
           BasicProjectModel value, $Res Function(BasicProjectModel) then) =
       _$BasicProjectModelCopyWithImpl<$Res>;
   $Res call(
-      {ProjectFolderId id,
+      {String id,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'is_completed') bool isCompleted,
       @JsonKey(name: 'project_type') ProjectType projectType,
-      @JsonKey(name: 'owner_id') UserModelId ownerId,
-      @JsonKey(name: 'folder_id') ProjectFolderId folderId});
+      @JsonKey(name: 'owner_id') String ownerId,
+      @JsonKey(name: 'folder_id') String folderId});
 }
 
 /// @nodoc
@@ -211,7 +211,7 @@ class _$BasicProjectModelCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -231,11 +231,11 @@ class _$BasicProjectModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
       folderId: folderId == freezed
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
     ));
   }
 }
@@ -248,13 +248,13 @@ abstract class _$$NoteProjectModelCopyWith<$Res>
       __$$NoteProjectModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {ProjectFolderId id,
+      {String id,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'is_completed') bool isCompleted,
       @JsonKey(name: 'project_type') ProjectType projectType,
-      @JsonKey(name: 'owner_id') UserModelId ownerId,
-      @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+      @JsonKey(name: 'owner_id') String ownerId,
+      @JsonKey(name: 'folder_id') String folderId,
       @JsonKey(name: 'characters_limit') int? charactersLimit,
       String note});
 }
@@ -286,7 +286,7 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -306,11 +306,11 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
       folderId: folderId == freezed
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
       charactersLimit: charactersLimit == freezed
           ? _value.charactersLimit
           : charactersLimit // ignore: cast_nullable_to_non_nullable
@@ -344,7 +344,7 @@ class _$NoteProjectModel implements NoteProjectModel {
       _$$NoteProjectModelFromJson(json);
 
   @override
-  final ProjectFolderId id;
+  final String id;
   @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
@@ -359,10 +359,10 @@ class _$NoteProjectModel implements NoteProjectModel {
   final ProjectType projectType;
   @override
   @JsonKey(name: 'owner_id')
-  final UserModelId ownerId;
+  final String ownerId;
   @override
   @JsonKey(name: 'folder_id')
-  final ProjectFolderId folderId;
+  final String folderId;
   @override
   @JsonKey(name: 'characters_limit')
   final int? charactersLimit;
@@ -419,18 +419,18 @@ class _$NoteProjectModel implements NoteProjectModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)
         noteProjectModel,
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -441,13 +441,13 @@ class _$NoteProjectModel implements NoteProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)
+                String newQuestionId)
         ideaProjectModel,
   }) {
     return noteProjectModel(id, createdAt, updatedAt, isCompleted, projectType,
@@ -458,18 +458,18 @@ class _$NoteProjectModel implements NoteProjectModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -480,13 +480,13 @@ class _$NoteProjectModel implements NoteProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
   }) {
     return noteProjectModel?.call(id, createdAt, updatedAt, isCompleted,
@@ -497,18 +497,18 @@ class _$NoteProjectModel implements NoteProjectModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -519,13 +519,13 @@ class _$NoteProjectModel implements NoteProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
     required TResult orElse(),
   }) {
@@ -575,13 +575,13 @@ class _$NoteProjectModel implements NoteProjectModel {
 
 abstract class NoteProjectModel implements BasicProjectModel {
   const factory NoteProjectModel(
-      {required final ProjectFolderId id,
+      {required final String id,
       @JsonKey(name: 'created_at') required final DateTime createdAt,
       @JsonKey(name: 'updated_at') required final DateTime updatedAt,
       @JsonKey(name: 'is_completed') required final bool isCompleted,
       @JsonKey(name: 'project_type') required final ProjectType projectType,
-      @JsonKey(name: 'owner_id') required final UserModelId ownerId,
-      @JsonKey(name: 'folder_id') required final ProjectFolderId folderId,
+      @JsonKey(name: 'owner_id') required final String ownerId,
+      @JsonKey(name: 'folder_id') required final String folderId,
       @JsonKey(name: 'characters_limit') required final int? charactersLimit,
       required final String note}) = _$NoteProjectModel;
 
@@ -589,7 +589,7 @@ abstract class NoteProjectModel implements BasicProjectModel {
       _$NoteProjectModel.fromJson;
 
   @override
-  ProjectFolderId get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -604,10 +604,10 @@ abstract class NoteProjectModel implements BasicProjectModel {
   ProjectType get projectType => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'folder_id')
-  ProjectFolderId get folderId => throw _privateConstructorUsedError;
+  String get folderId => throw _privateConstructorUsedError;
   @JsonKey(name: 'characters_limit')
   int? get charactersLimit => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
@@ -625,7 +625,7 @@ abstract class _$$IdeaProjectModelCopyWith<$Res>
       __$$IdeaProjectModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {ProjectFolderId id,
+      {String id,
       String title,
       @JsonKey(name: 'created_at')
           DateTime createdAt,
@@ -636,13 +636,13 @@ abstract class _$$IdeaProjectModelCopyWith<$Res>
       @JsonKey(name: 'project_type')
           ProjectType projectType,
       @JsonKey(name: 'owner_id')
-          UserModelId ownerId,
+          String ownerId,
       @JsonKey(name: 'folder_id')
-          ProjectFolderId folderId,
+          String folderId,
       @JsonKey(name: 'new_answer_text')
           String newAnswerText,
       @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-          IdeaProjectQuestionId newQuestionId});
+          String newQuestionId});
 }
 
 /// @nodoc
@@ -673,7 +673,7 @@ class __$$IdeaProjectModelCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -697,11 +697,11 @@ class __$$IdeaProjectModelCopyWithImpl<$Res>
       ownerId: ownerId == freezed
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as String,
       folderId: folderId == freezed
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
-              as ProjectFolderId,
+              as String,
       newAnswerText: newAnswerText == freezed
           ? _value.newAnswerText
           : newAnswerText // ignore: cast_nullable_to_non_nullable
@@ -709,7 +709,7 @@ class __$$IdeaProjectModelCopyWithImpl<$Res>
       newQuestionId: newQuestionId == freezed
           ? _value.newQuestionId
           : newQuestionId // ignore: cast_nullable_to_non_nullable
-              as IdeaProjectQuestionId,
+              as String,
     ));
   }
 }
@@ -744,7 +744,7 @@ class _$IdeaProjectModel implements IdeaProjectModel {
       _$$IdeaProjectModelFromJson(json);
 
   @override
-  final ProjectFolderId id;
+  final String id;
   @override
   final String title;
   @override
@@ -761,10 +761,10 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   final ProjectType projectType;
   @override
   @JsonKey(name: 'owner_id')
-  final UserModelId ownerId;
+  final String ownerId;
   @override
   @JsonKey(name: 'folder_id')
-  final ProjectFolderId folderId;
+  final String folderId;
   @override
   @JsonKey(name: 'new_answer_text')
   final String newAnswerText;
@@ -773,7 +773,7 @@ class _$IdeaProjectModel implements IdeaProjectModel {
       name: 'new_question_id',
       fromJson: fromIntToString,
       toJson: fromStringToInt)
-  final IdeaProjectQuestionId newQuestionId;
+  final String newQuestionId;
 
   @JsonKey(name: 'runtime_type')
   final String $type;
@@ -828,18 +828,18 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)
         noteProjectModel,
     required TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -850,13 +850,13 @@ class _$IdeaProjectModel implements IdeaProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)
+                String newQuestionId)
         ideaProjectModel,
   }) {
     return ideaProjectModel(id, title, createdAt, updatedAt, isCompleted,
@@ -867,18 +867,18 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -889,13 +889,13 @@ class _$IdeaProjectModel implements IdeaProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
   }) {
     return ideaProjectModel?.call(id, title, createdAt, updatedAt, isCompleted,
@@ -906,18 +906,18 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            ProjectFolderId id,
+            String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
             @JsonKey(name: 'is_completed') bool isCompleted,
             @JsonKey(name: 'project_type') ProjectType projectType,
-            @JsonKey(name: 'owner_id') UserModelId ownerId,
-            @JsonKey(name: 'folder_id') ProjectFolderId folderId,
+            @JsonKey(name: 'owner_id') String ownerId,
+            @JsonKey(name: 'folder_id') String folderId,
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
     TResult Function(
-            ProjectFolderId id,
+            String id,
             String title,
             @JsonKey(name: 'created_at')
                 DateTime createdAt,
@@ -928,13 +928,13 @@ class _$IdeaProjectModel implements IdeaProjectModel {
             @JsonKey(name: 'project_type')
                 ProjectType projectType,
             @JsonKey(name: 'owner_id')
-                UserModelId ownerId,
+                String ownerId,
             @JsonKey(name: 'folder_id')
-                ProjectFolderId folderId,
+                String folderId,
             @JsonKey(name: 'new_answer_text')
                 String newAnswerText,
             @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-                IdeaProjectQuestionId newQuestionId)?
+                String newQuestionId)?
         ideaProjectModel,
     required TResult orElse(),
   }) {
@@ -984,7 +984,7 @@ class _$IdeaProjectModel implements IdeaProjectModel {
 
 abstract class IdeaProjectModel implements BasicProjectModel {
   const factory IdeaProjectModel(
-      {required final ProjectFolderId id,
+      {required final String id,
       required final String title,
       @JsonKey(name: 'created_at')
           required final DateTime createdAt,
@@ -995,19 +995,19 @@ abstract class IdeaProjectModel implements BasicProjectModel {
       @JsonKey(name: 'project_type')
           required final ProjectType projectType,
       @JsonKey(name: 'owner_id')
-          required final UserModelId ownerId,
+          required final String ownerId,
       @JsonKey(name: 'folder_id')
-          required final ProjectFolderId folderId,
+          required final String folderId,
       @JsonKey(name: 'new_answer_text')
           required final String newAnswerText,
       @JsonKey(name: 'new_question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-          required final IdeaProjectQuestionId newQuestionId}) = _$IdeaProjectModel;
+          required final String newQuestionId}) = _$IdeaProjectModel;
 
   factory IdeaProjectModel.fromJson(Map<String, dynamic> json) =
       _$IdeaProjectModel.fromJson;
 
   @override
-  ProjectFolderId get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'created_at')
@@ -1023,17 +1023,17 @@ abstract class IdeaProjectModel implements BasicProjectModel {
   ProjectType get projectType => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'owner_id')
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'folder_id')
-  ProjectFolderId get folderId => throw _privateConstructorUsedError;
+  String get folderId => throw _privateConstructorUsedError;
   @JsonKey(name: 'new_answer_text')
   String get newAnswerText => throw _privateConstructorUsedError;
   @JsonKey(
       name: 'new_question_id',
       fromJson: fromIntToString,
       toJson: fromStringToInt)
-  IdeaProjectQuestionId get newQuestionId => throw _privateConstructorUsedError;
+  String get newQuestionId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$IdeaProjectModelCopyWith<_$IdeaProjectModel> get copyWith =>

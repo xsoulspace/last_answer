@@ -1,4 +1,5 @@
-part of pack_app;
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase_lib;
 
 class GlobalStateNotifiers {
   GlobalStateNotifiers._();

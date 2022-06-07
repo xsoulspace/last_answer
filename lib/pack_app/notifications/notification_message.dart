@@ -1,4 +1,10 @@
-part of pack_app;
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+
+part 'notification_message.g.dart';
 
 @immutable
 @JsonSerializable(createToJson: false, explicitToJson: true)

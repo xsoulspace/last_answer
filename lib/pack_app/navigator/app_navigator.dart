@@ -1,20 +1,29 @@
-part of pack_app;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_layout_builder.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
+import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
+import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
+import 'package:lastanswer/pack_app/notifications/update_notification_dialog.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class NavigatorValueKeys {
   NavigatorValueKeys._();
-  static const _home = ValueKey<String>('home');
-  static const _settings = ValueKey<String>('settings');
-  static const _signIn = ValueKey<String>('sign-in');
+  static const home = ValueKey<String>('home');
+  static const settings = ValueKey<String>('settings');
+  static const signIn = ValueKey<String>('sign-in');
 
-  static const _info = ValueKey<String>('info');
+  static const info = ValueKey<String>('info');
 
-  static const _notes = ValueKey<String>('notes');
-  static const _notesNote = ValueKey<String>('notes/note');
-  static const _createIdea = ValueKey<String>('createIdea');
-  static const _ideas = ValueKey<String>('ideas');
-  static const _ideasIdea = ValueKey<String>('ideas/idea');
-  static const _ideasIdeaAnswer = ValueKey<String>('ideas/idea/answer');
-  static final _largeScreenHomeNavigator = GlobalKey();
+  static const notes = ValueKey<String>('notes');
+  static const notesNote = ValueKey<String>('notes/note');
+  static const createIdea = ValueKey<String>('createIdea');
+  static const ideas = ValueKey<String>('ideas');
+  static const ideasIdea = ValueKey<String>('ideas/idea');
+  static const ideasIdeaAnswer = ValueKey<String>('ideas/idea/answer');
+  static final largeScreenHomeNavigator = GlobalKey();
 }
 
 /// Builds the top-level navigator for the app. The pages to display are based

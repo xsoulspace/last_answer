@@ -1,5 +1,3 @@
-part of pack_app;
-
 /// Choose name from [AppRoutesName]
 typedef AppRouteName = String;
 

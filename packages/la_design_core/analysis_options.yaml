@@ -14,10 +14,10 @@ analyzer:
     - old/
     - lib/generated_plugin_registrant.dart
   plugins:
-    - dart_code_metrics
+    # - dart_code_metrics
   errors:
     avoid_void_async: error
-    sort_constructors_first: error
+    sort_constructors_first: info
     always_declare_return_types: error
     unrelated_type_equality_checks: error
     avoid_type_to_string: error
@@ -54,7 +54,8 @@ linter:
     avoid_slow_async_io: true
     avoid_returning_null_for_future: true
     avoid_dynamic_calls: true
-    always_use_package_imports: true
+    always_use_package_imports: false
+    prefer_relative_imports: true
     # Style
     unnecessary_late: true
     conditional_uri_does_not_exist: true

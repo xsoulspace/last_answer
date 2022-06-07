@@ -1,4 +1,4 @@
-part of pack_purchases_i;
+import 'package:flutter/foundation.dart';
 
 // TODO(antmalofeev): enable  when purchases will be released
 const kPaymentsAccessable = kDebugMode;

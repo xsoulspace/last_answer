@@ -1,4 +1,5 @@
-part of pack_purchases_i;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
 
 enum SubscriptionTypes {
   free,

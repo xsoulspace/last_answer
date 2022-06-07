@@ -1,4 +1,4 @@
-part of pack_purchases_i;
+import 'package:lastanswer/pack_purchases_i/src/payments_controller_i.dart';
 
 PaymentsControllerI createMockPaymentsController() => MockPaymentsController();
 

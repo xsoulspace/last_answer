@@ -1,4 +1,11 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/extensions/extensions.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:provider/provider.dart';
 
 class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({

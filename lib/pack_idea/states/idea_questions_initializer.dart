@@ -1,4 +1,4 @@
-part of pack_idea;
+import 'package:lastanswer/abstract/abstract.dart';
 
 // TODO(arenukvern): make it json
 final initialQuestions = <IdeaProjectQuestion>[

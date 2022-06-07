@@ -1,4 +1,6 @@
-part of pack_purchases;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/pack_purchases_i/pack_purchases_i.dart';
 
 class SubscriptionInfoButton extends StatelessWidget {
   const SubscriptionInfoButton({

@@ -1,7 +1,13 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/intl.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
-class _QuestionDropdown extends HookWidget {
-  const _QuestionDropdown({
+class QuestionDropdown extends HookWidget {
+  const QuestionDropdown({
     required final this.answer,
     final this.onChange,
     final this.alignment = Alignment.centerLeft,

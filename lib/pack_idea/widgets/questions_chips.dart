@@ -1,7 +1,13 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
-class _QuestionsChips extends StatelessWidget {
-  const _QuestionsChips({
+class QuestionsChips extends StatelessWidget {
+  const QuestionsChips({
     required final this.value,
     required final this.onChange,
     final Key? key,
@@ -57,7 +63,7 @@ class QuestionChip extends StatelessWidget {
         label: Text(text),
         labelStyle: theme.textTheme.bodyText2,
         shape: shape,
-        backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
+        backgroundColor: AnswerCreator.getBackgroundByTheme(theme),
         selectedColor: AppColors.primary2.withOpacity(0.2),
         selected: selected,
         onSelected: onSelected,

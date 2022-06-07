@@ -28,8 +28,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-  assets:
-    - assets/images/
+  # assets:
+  #   - assets/images/
   fonts:
     - family: asgard_icons
       fonts:

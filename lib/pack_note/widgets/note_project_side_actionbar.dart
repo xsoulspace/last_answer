@@ -1,4 +1,15 @@
-part of pack_note;
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_note/states/use_note_project_updater.dart';
+import 'package:lastanswer/pack_note/widgets/note_settings_button.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({

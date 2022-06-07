@@ -1,4 +1,7 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 class CreateIdeaProjectScreen extends StatefulHookWidget {
   const CreateIdeaProjectScreen({

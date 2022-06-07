@@ -1,7 +1,16 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_creator_state.dart';
+import 'package:lastanswer/pack_idea/widgets/questions_chips.dart';
+import 'package:provider/provider.dart';
 
-class _AnswerCreator extends HookWidget {
-  const _AnswerCreator({
+class AnswerCreator extends HookWidget {
+  const AnswerCreator({
     required final this.onCreated,
     required final this.defaultQuestion,
     required final this.idea,
@@ -73,7 +82,7 @@ class _AnswerCreator extends HookWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: _QuestionsChips(
+                    child: QuestionsChips(
                       onChange: (final question) =>
                           state.selectedQuestion.value = question,
                       value: state.selectedQuestion.value,

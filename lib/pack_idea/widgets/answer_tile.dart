@@ -1,7 +1,13 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_field_bubble.dart';
+import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
 
-class _AnswerTile extends StatelessWidget {
-  const _AnswerTile({
+class AnswerTile extends StatelessWidget {
+  const AnswerTile({
     required final this.answer,
     required final this.confirmDelete,
     required final this.onReadyToDelete,
@@ -80,7 +86,7 @@ class _AnswerTile extends StatelessWidget {
                 },
                 id: '${answer.id}-question${answer.question.id}',
                 type: HeroIdTypes.projectIdeaQuestionTitle,
-                child: _QuestionDropdown(
+                child: QuestionDropdown(
                   answer: answer,
                   onChange: onChange,
                 ),

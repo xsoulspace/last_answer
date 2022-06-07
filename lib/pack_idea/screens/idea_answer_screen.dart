@@ -1,4 +1,15 @@
-part of pack_idea;
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_idea/screens/idea_answer_screen_state.dart';
+import 'package:lastanswer/pack_idea/screens/idea_screen.dart';
+import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
 class IdeaAnswerScreen extends HookWidget {
   const IdeaAnswerScreen({
@@ -62,7 +73,7 @@ class IdeaAnswerScreen extends HookWidget {
           child: HeroId(
             id: '$answerId-question${maybeAnswer.question.id}',
             type: HeroIdTypes.projectIdeaQuestionTitle,
-            child: _QuestionDropdown(
+            child: QuestionDropdown(
               answer: answer.value,
               alignment: Alignment.center,
             ),

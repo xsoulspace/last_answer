@@ -1,4 +1,13 @@
-part of pack_idea;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/extensions/extensions.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:life_hooks/life_hooks.dart';
+import 'package:rxdart/rxdart.dart';
 
 // ignore: long-parameter-list
 IdeaScreenState useIdeaScreenState({

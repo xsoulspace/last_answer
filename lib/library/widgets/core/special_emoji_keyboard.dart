@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/widgets/buttons/emoji_button.dart';
 import 'package:lastanswer/library/widgets/core/emoji_grid.dart';
 import 'package:lastanswer/library/widgets/core/safe_areas.dart';
@@ -32,7 +32,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
   Widget build(final BuildContext context) {
     final isEmojiKeyboardOpen = useIsBool();
     final isEmojiKeyboardOpening = useIsBool();
-    if (isNativeDesktop || kIsWeb) {
+    if (DeviceRuntimeType.isNativeDesktop || kIsWeb) {
       return builder(context, () {}, () {}, isEmojiKeyboardOpen);
     }
 

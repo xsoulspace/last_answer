@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class FlatTextField extends StatefulHookWidget {
   const FlatTextField({
@@ -138,7 +138,7 @@ class _ProjectTextFieldState extends State<FlatTextField> {
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(
                   contentPadding: widget.contentPadding ??
-                      (isNativeDesktop
+                      (DeviceRuntimeType.isNativeDesktop
                           ? const EdgeInsets.all(6)
                           : const EdgeInsets.only(top: 6, bottom: 4)),
                   filled: widget.filled,

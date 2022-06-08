@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/theme/theme.dart';
-import 'package:lastanswer/utils/is_desktop.dart';
 import 'package:share_plus/share_plus.dart';
 
 @immutable
@@ -19,8 +19,7 @@ class ProjectSharer {
   }) async {
     final RenderBox? box = context.findRenderObject() as RenderBox?;
     if (box == null) return;
-    final desktop = isDesktop;
-    if (desktop) {
+    if (DeviceRuntimeType.isDesktop) {
       final messenger = ScaffoldMessenger.of(context);
       final data = ClipboardData(text: project.toShareString(context));
       await Clipboard.setData(data);

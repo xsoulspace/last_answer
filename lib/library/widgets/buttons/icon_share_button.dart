@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/utils/utils.dart';
+import 'package:la_core/la_core.dart';
 
 class IconShareButton extends StatefulWidget {
   const IconShareButton({
@@ -23,10 +23,10 @@ class _IconShareButtonState extends State<IconShareButton> {
   void initState() {
     super.initState();
     IconData iconData;
-    if (isDesktop) {
+    if (DeviceRuntimeType.isDesktop) {
       iconData = Icons.copy;
     } else {
-      iconData = isAppleDevice ? CupertinoIcons.share : Icons.share;
+      iconData = DeviceRuntimeType.isApple ? CupertinoIcons.share : Icons.share;
     }
     defaultIcon = Icon(iconData);
 

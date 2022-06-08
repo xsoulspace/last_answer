@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/utils/is_desktop.dart';
 
@@ -23,7 +24,8 @@ class ThemeDefiner {
   }
 
   ThemeToUse get themeToUse {
-    if (isNativeDesktop && nativeTransparentBackgroundSupported) {
+    if (DeviceRuntimeType.isNativeDesktop &&
+        nativeTransparentBackgroundSupported) {
       final platformBrightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
       switch (platformBrightness) {

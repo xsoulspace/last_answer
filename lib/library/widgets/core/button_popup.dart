@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/core/background_frost_box.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
@@ -50,7 +50,7 @@ class ButtonPopup extends StatelessWidget {
       ),
       child: SizedBox(
         height: height,
-        width: !isNativeDesktop && !kIsWeb
+        width: !DeviceRuntimeType.isNativeDesktop && !kIsWeb
             ? MediaQuery.of(context).size.width - 50
             : 250,
         child: Stack(

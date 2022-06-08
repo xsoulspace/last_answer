@@ -10,17 +10,20 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
+  flutter_hooks: ^0.18.4
+  flutter_keyboard_visibility: ^5.2.0
+  life_hooks: ^0.0.7
+  universal_io: ^2.0.4
 
 dev_dependencies:
-  la_test_utils:
-    path: ../la_test_utils
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  la_test_utils:
+    path: ../la_test_utils
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # assets:

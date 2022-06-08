@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/abstract/general_settings_service.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.
@@ -89,7 +89,7 @@ class GeneralSettingsController extends ChangeNotifier implements Loadable {
     return settingsService.setMigrated();
   }
 
-  bool _projectsListReversed = isDesktop;
+  bool _projectsListReversed = DeviceRuntimeType.isDesktop;
 
   bool get projectsListReversed => _projectsListReversed;
 

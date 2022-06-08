@@ -18,4 +18,3 @@ export 'project_folder.dart';
 export 'serialazable_project_id.dart';
 export 'story_project/story_project.dart';
 export 'supabase_error.dart';
-export 'typedefs.dart';

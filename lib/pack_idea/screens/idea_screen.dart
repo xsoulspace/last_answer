@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
@@ -11,8 +11,6 @@ import 'package:lastanswer/pack_idea/widgets/answer_tile.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
-
-typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
 
 class IdeaProjectScreen extends HookWidget {
   const IdeaProjectScreen({
@@ -108,7 +106,7 @@ class IdeaProjectScreen extends HookWidget {
                     },
                     onReadyToDelete: state.onReadyToDeleteAnswer,
                     onChange: state.onAnswersChange,
-                    deleteIconVisible: isDesktop,
+                    deleteIconVisible: DeviceRuntimeType.isDesktop,
                   );
                 },
               ),

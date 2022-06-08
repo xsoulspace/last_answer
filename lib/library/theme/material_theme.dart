@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/app_colors.dart';
 import 'package:lastanswer/library/theme/app_text_styles.dart';
 import 'package:lastanswer/library/theme/color_scheme.dart';
@@ -34,7 +35,7 @@ final lightThemeData = _lightBase.copyWith(
   ),
   // scaffoldBackgroundColor: Colors.transparent,
   scaffoldBackgroundColor:
-      isNativeDesktop && nativeTransparentBackgroundSupported
+      DeviceRuntimeType.isNativeDesktop && nativeTransparentBackgroundSupported
           ? Colors.transparent
           : _lightBase.scaffoldBackgroundColor,
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
@@ -70,7 +71,7 @@ final darkThemeData = _darkBase.copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   // scaffoldBackgroundColor: Colors.transparent,
   scaffoldBackgroundColor:
-      isNativeDesktop && nativeTransparentBackgroundSupported
+      DeviceRuntimeType.isNativeDesktop && nativeTransparentBackgroundSupported
           ? Colors.transparent
           : _darkBase.scaffoldBackgroundColor,
   cardColor: AppColors.grey1.withOpacity(0.5),

@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:lastanswer/utils/utils.dart';
+
+import '../utils/device_runtime_type.dart';
 
 ValueNotifier<bool> useKeyboardVisibility() {
   return use(const _KeyboardVisiblityHook());
@@ -22,7 +23,7 @@ class _KeyboardVisiblityHookState
   StreamSubscription<bool>? keyboardSubscription;
   @override
   void initHook() {
-    if (isNativeDesktop) return;
+    if (DeviceRuntimeType.isNativeDesktop) return;
 
     final keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
 import 'package:lastanswer/pack_app/widgets/project_tile.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({
@@ -76,7 +76,7 @@ class LargeHomeScreen extends StatelessWidget {
         ),
         if (rightColumn > 0)
           Container(
-            color: isNativeDesktop
+            color: DeviceRuntimeType.isNativeDesktop
                 ? theme.canvasColor.withOpacity(0.9)
                 : theme.canvasColor,
             width: rightColumn,

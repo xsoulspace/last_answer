@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:recase/recase.dart';
 
 Future<bool> showRemoveTitleDialog({
   required final String title,
   required final BuildContext context,
 }) async {
-  if (isAppleDevice) {
+  if (DeviceRuntimeType.isApple) {
     return await showCupertinoDialog(
       context: context,
       builder: (final context) {

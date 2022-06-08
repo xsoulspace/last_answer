@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator.dart';
@@ -78,7 +79,7 @@ class AppNavigatorPageBuilder {
     return MaterialPage<void>(
       key: NavigatorValueKeys.notesNote,
       restorationId: routeState.route.path,
-      fullscreenDialog: isNativeDesktop,
+      fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
       name: routeState.route.path,
       child: AppNavigatorPopScope(
         popper: popper,
@@ -102,7 +103,7 @@ class AppNavigatorPageBuilder {
   Page ideaPage() {
     return MaterialPage<void>(
       key: NavigatorValueKeys.ideasIdea,
-      fullscreenDialog: isNativeDesktop,
+      fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
       restorationId: routeState.route.path,
       name: routeState.route.path,
       child: AppNavigatorPopScope(

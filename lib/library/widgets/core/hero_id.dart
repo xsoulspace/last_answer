@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lastanswer/utils/utils.dart';
+import 'package:la_core/la_core.dart';
 
 enum HeroIdTypes {
   projectTitle,
@@ -25,7 +23,7 @@ class HeroId extends StatelessWidget {
   final HeroPlaceholderBuilder? placeholderBuilder;
   @override
   Widget build(final BuildContext context) {
-    if (isDesktop) return child;
+    if (DeviceRuntimeType.isDesktop) return child;
 
     return Hero(
       tag: '${type.toString()}$id',

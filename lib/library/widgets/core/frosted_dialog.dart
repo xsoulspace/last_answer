@@ -1,4 +1,17 @@
-part of widgets;
+import 'dart:async';
+import 'dart:math' as math;
+import 'dart:ui';
+
+import 'package:blur/blur.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/core/responsive_widget.dart';
+import 'package:lastanswer/library/widgets/core/safe_areas.dart';
+import 'package:recase/recase.dart';
 
 Future<void> showFrostedDialog({
   required final BuildContext context,

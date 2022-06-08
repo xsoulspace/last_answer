@@ -1,4 +1,8 @@
-part of widgets;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/core/background_frost_box.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({

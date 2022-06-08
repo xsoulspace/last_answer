@@ -1,4 +1,9 @@
-part of widgets;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/widgets/buttons/adaptive_back_button.dart';
+import 'package:lastanswer/library/widgets/core/responsive_widget.dart';
+import 'package:lastanswer/library/widgets/core/safe_areas.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 class LeftPanelMacosAppBar extends AppBar {
   LeftPanelMacosAppBar({

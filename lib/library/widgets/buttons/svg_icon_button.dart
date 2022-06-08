@@ -1,6 +1,11 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-part of widgets;
+import 'dart:math' as math;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
 
 // Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be

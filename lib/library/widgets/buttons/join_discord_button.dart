@@ -1,4 +1,13 @@
-part of widgets;
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/widgets/buttons/cupertino_icon_button.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class JoinDiscordButton extends StatelessWidget {
   const JoinDiscordButton({final this.text, final Key? key}) : super(key: key);

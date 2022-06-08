@@ -1,4 +1,8 @@
-part of widgets;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 /// A widget that listens for [ScrollNotification]s bubbling up the tree
 /// and close the keyboard on user scroll.

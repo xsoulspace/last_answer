@@ -1,4 +1,12 @@
-part of widgets;
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/generated/l10n.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/library/widgets/buttons/popup_button.dart';
 
 class DangerZone extends StatelessWidget {
   const DangerZone({

@@ -1,4 +1,6 @@
-part of widgets;
+import 'package:blur/blur.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/theme/theme.dart';
 
 class BackgroundFrostBox extends StatelessWidget {
   const BackgroundFrostBox({

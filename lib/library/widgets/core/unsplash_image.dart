@@ -1,4 +1,6 @@
-part of widgets;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class UnsplashImage extends StatelessWidget {
   const UnsplashImage({final Key? key}) : super(key: key);

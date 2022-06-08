@@ -1,4 +1,6 @@
-part of widgets;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
 
 class EmojiButton extends StatelessWidget {
   const EmojiButton({

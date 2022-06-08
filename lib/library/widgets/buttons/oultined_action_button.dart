@@ -1,4 +1,6 @@
-part of widgets;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/library/theme/theme.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 
 class OutlinedActionButton extends StatelessWidget {
   const OutlinedActionButton({

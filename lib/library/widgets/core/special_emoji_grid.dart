@@ -1,4 +1,9 @@
-part of widgets;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/buttons/emoji_button.dart';
+import 'package:lastanswer/library/widgets/core/button_popup.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:provider/provider.dart';
 
 class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({

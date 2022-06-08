@@ -1,4 +1,17 @@
-part of widgets;
+import 'dart:async';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:lastanswer/library/widgets/buttons/emoji_button.dart';
+import 'package:lastanswer/library/widgets/core/emoji_grid.dart';
+import 'package:lastanswer/library/widgets/core/safe_areas.dart';
+import 'package:lastanswer/state/state.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class SpecialEmojisKeyboardActions extends HookWidget {
   const SpecialEmojisKeyboardActions({

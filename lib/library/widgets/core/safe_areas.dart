@@ -1,4 +1,6 @@
-part of widgets;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class BottomSafeArea extends StatelessWidget {
   const BottomSafeArea({final Key? key}) : super(key: key);

@@ -18,7 +18,7 @@ class AppNavigatorLayoutBuilder {
 
   List<Page> getLargeScreenPages() {
     return [
-      if (pageBuilder.pathTemplate.startsWith(AppRoutesName.home)) ...[
+      if (pathTemplate.startsWith(AppRoutesName.home)) ...[
         MaterialPage<void>(
           key: NavigatorValueKeys.home,
           child: AppNavigatorPopScope(

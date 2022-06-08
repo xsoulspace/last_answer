@@ -1,4 +1,11 @@
-part of widgets;
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lastanswer/generated/assets.gen.dart';
+import 'package:lastanswer/library/widgets/buttons/svg_icon_button.dart';
 
 class IconIdeaButton extends StatelessWidget {
   const IconIdeaButton({

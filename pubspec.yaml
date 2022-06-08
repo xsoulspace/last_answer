@@ -63,8 +63,8 @@ dependencies:
   uuid: ^3.0.6
   la_design_core:
     path: packages/la_design_core
-  la_utils_core:
-    path: packages/la_utils_core
+  la_core:
+    path: packages/la_core
 
 dev_dependencies:
   build_runner: ^2.1.10

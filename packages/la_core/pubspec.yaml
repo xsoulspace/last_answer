@@ -1,5 +1,5 @@
-name: la_utils_core
-description: core utils to use inside app
+name: la_core
+description: core to use inside app
 version: 0.0.1
 publish_to: none
 

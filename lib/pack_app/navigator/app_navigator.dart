@@ -6,7 +6,6 @@ import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
 import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
 import 'package:lastanswer/pack_app/notifications/update_notification_dialog.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class NavigatorValueKeys {
@@ -14,9 +13,7 @@ class NavigatorValueKeys {
   static const home = ValueKey<String>('home');
   static const settings = ValueKey<String>('settings');
   static const signIn = ValueKey<String>('sign-in');
-
   static const info = ValueKey<String>('info');
-
   static const notes = ValueKey<String>('notes');
   static const notesNote = ValueKey<String>('notes/note');
   static const createIdea = ValueKey<String>('createIdea');

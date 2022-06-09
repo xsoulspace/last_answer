@@ -18,11 +18,12 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.15.1+30
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.1 <3.0.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
   animations: ^2.0.2
+  beamer: ^1.4.1+1
   blur: ^3.1.0
   collection: ^1.15.0
   connectivity_plus: ^2.3.2
@@ -114,7 +115,7 @@ flutter_gen:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
-  # generate: true
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

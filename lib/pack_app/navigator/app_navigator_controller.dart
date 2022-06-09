@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
@@ -7,22 +8,20 @@ import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigator/app_routes.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 @immutable
 class AppNavigatorController {
   const AppNavigatorController.use({
-    required final this.routeState,
     required final this.context,
     required this.screenLayout,
   });
-  final RouteState routeState;
   final BuildContext context;
   final ScreenLayout screenLayout;
-  ParsedRoute get route => routeState.route;
-  void go(final AppRouteName routeName) => routeState.go(routeName);
-  void goHome() => routeState.go(AppRoutesName.home);
+  BeamState get route =>
+      Beamer.of(context).currentBeamLocation.state as BeamState;
+  void go(final AppRouteName routeName) => context.beamToNamed(routeName);
+  void goHome() => go(AppRoutesName.home);
 
   void pop() {
     final path = route.pathWithoutLastSegment;
@@ -37,13 +36,9 @@ class AppNavigatorController {
     }
   }
 
-  void goSettings() => routeState.go(AppRoutesName.settings);
-
-  void goAppInfo() => routeState.go(AppRoutesName.appInfo);
-
-  void goSignIn() {
-    routeState.go(AppRoutesName.profileSignIn);
-  }
+  void goSettings() => go(AppRoutesName.settings);
+  void goAppInfo() => go(AppRoutesName.appInfo);
+  void goSignIn() => go(AppRoutesName.profileSignIn);
 
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';
@@ -62,16 +57,16 @@ class AppNavigatorController {
       unawaited(projectsSyncService.upsert([newNote]));
     }
 
-    return routeState.go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
+    return go(AppRoutesName.getNotePath(noteId: resolvedNoteId));
   }
 
   /// ******************************
   ///         IDEAS
   /// ******************************
 
-  void goCreateIdea() => routeState.go(AppRoutesName.createIdea);
+  void goCreateIdea() => go(AppRoutesName.createIdea);
   void goIdeaScreen({required final String ideaId}) =>
-      routeState.go(AppRoutesName.getIdeaPath(ideaId: ideaId));
+      go(AppRoutesName.getIdeaPath(ideaId: ideaId));
 
   Future<void> onCreateIdea(final String title) async {
     final folderNotifier = context.read<CurrentFolderNotifier>();
@@ -86,21 +81,20 @@ class AppNavigatorController {
       newQuestion: questionsNotifier.state.values.first,
     );
     folderNotifier.notify();
-    await routeState.go(AppRoutesName.getIdeaPath(ideaId: idea.id));
+    go(AppRoutesName.getIdeaPath(ideaId: idea.id));
     unawaited(projectsSyncService.upsert([idea]));
   }
 
   Future<void> onIdeaAnswerExpand(
     final IdeaProjectAnswer answer,
     final IdeaProject idea,
-  ) async {
-    await routeState.go(
-      AppRoutesName.getIdeaAnswerPath(
-        ideaId: idea.id,
-        answerId: answer.id,
-      ),
-    );
-  }
+  ) async =>
+      go(
+        AppRoutesName.getIdeaAnswerPath(
+          ideaId: idea.id,
+          answerId: answer.id,
+        ),
+      );
 
   Future<void> onUnknownIdeaAnswer(
     final String answerId,

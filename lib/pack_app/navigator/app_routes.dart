@@ -31,25 +31,4 @@ class AppRoutesName {
   static const subscription = '$settings/subscription';
   static const changelog = '$settings/changelog';
   static const appInfo = '/app-info';
-
-  /// !In case of new routes all routes should be added to values!
-  static const values = [
-    home,
-    createIdea,
-    idea,
-    ideaAnswer,
-    ideas,
-    note,
-    notes,
-    story,
-    stories,
-    unknown404,
-    settings,
-    appInfo,
-    generalSettings,
-    profile,
-    profileSignIn,
-    subscription,
-    changelog,
-  ];
 }

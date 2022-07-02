@@ -38,7 +38,7 @@ mixin AbstractApiMixin<TModel extends HasId> on AbstractApiProps<TModel> {
 
   @override
   RealtimeSubscription subscribeToUpdates(final ValueChanged<TModel> onUpdate) {
-    return _getBuilder().on(SupabaseEventTypes.insert, (final payload) {
+    return _getBuilder().on(SupabaseEventTypes.update, (final payload) {
       final newRecord = payload.newRecord;
       if (newRecord == null) return;
       onUpdate(fromJson(newRecord));
@@ -47,7 +47,7 @@ mixin AbstractApiMixin<TModel extends HasId> on AbstractApiProps<TModel> {
 
   @override
   RealtimeSubscription subscribeToDeletes(final ValueChanged<TModel> onDelete) {
-    return _getBuilder().on(SupabaseEventTypes.insert, (final payload) {
+    return _getBuilder().on(SupabaseEventTypes.delete, (final payload) {
       final newRecord = payload.newRecord;
       if (newRecord == null) return;
       onDelete(fromJson(newRecord));

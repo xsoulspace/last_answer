@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'colors.dart';
 import 'durations.dart';
 import 'form_factor.dart';
 import 'icons.dart';
@@ -33,7 +32,7 @@ class AppThemeData extends Equatable {
         formFactor: AppFormFactor.medium,
         icons: AppIconsData.regular(),
         typography: AppTypographyData.regular(),
-        colors: AppColorsData.light(),
+        colors: AppColors.light(),
         radius: const AppRadiusData.regular(),
         spacing: AppSpacingData.regular(),
         shadow: AppShadowsData.regular(),
@@ -44,7 +43,7 @@ class AppThemeData extends Equatable {
       );
 
   final AppIconsData icons;
-  final AppColorsData colors;
+  final AppColors colors;
   final AppTypographyData typography;
   final AppRadiusData radius;
   final AppSpacingData spacing;
@@ -68,7 +67,7 @@ class AppThemeData extends Equatable {
         images,
       ];
 
-  AppThemeData withColors(final AppColorsData colors) {
+  AppThemeData withColors(final AppColors colors) {
     return AppThemeData(
       platform: platform,
       formFactor: formFactor,

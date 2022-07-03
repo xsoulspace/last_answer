@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'data/data.dart';
 
+export 'app/colors.dart';
 export 'data/data.dart';
-export 'data/colors.dart';
 export 'data/icons.dart';
 export 'data/radius.dart';
-export 'data/spacing.dart';
 export 'data/shadows.dart';
+export 'data/spacing.dart';
 
 class AppTheme extends InheritedWidget {
   const AppTheme({
-    Key? key,
+    final Key? key,
     required this.data,
-    required Widget child,
+    required final Widget child,
   }) : super(
           key: key,
           child: child,
@@ -21,13 +21,13 @@ class AppTheme extends InheritedWidget {
 
   final AppThemeData data;
 
-  static AppThemeData of(BuildContext context) {
+  static AppThemeData of(final BuildContext context) {
     final widget = context.dependOnInheritedWidgetOfExactType<AppTheme>();
     return widget!.data;
   }
 
   @override
-  bool updateShouldNotify(covariant AppTheme oldWidget) {
+  bool updateShouldNotify(covariant final AppTheme oldWidget) {
     return data != oldWidget.data;
   }
 }

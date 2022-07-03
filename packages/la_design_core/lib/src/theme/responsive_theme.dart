@@ -64,7 +64,7 @@ class AppResponsiveTheme extends StatelessWidget {
     final colorMode = this.colorMode ?? colorModeOf(context);
     switch (colorMode) {
       case AppThemeColorMode.dark:
-        theme = theme.withColors(AppColorsData.dark());
+        theme = theme.withColors(AppColors.dark());
 
         final darkAppLogo = this.darkAppLogo;
         if (darkAppLogo != null) {
@@ -72,7 +72,7 @@ class AppResponsiveTheme extends StatelessWidget {
         }
         break;
       case AppThemeColorMode.highContrast:
-        theme = theme.withColors(AppColorsData.highContrast());
+        theme = theme.withColors(AppColors.highContrast());
         theme = theme.withImages(
           AppImagesData.highContrast(appLogo: theme.images.appLogo),
         );

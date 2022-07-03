@@ -4,7 +4,7 @@ version: 0.0.1
 publish_to: none
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.5 <3.0.0"
 
 dependencies:
   equatable: ^2.0.3
@@ -66,10 +66,28 @@ flutter:
           weight: 700
 
     # NotoColorEmoji and NotoSans are fallback fonts used to display emojis
-    - family: NotoColorEmoji
-      fonts:
-        - asset: packages/la_design_core/fonts/NotoColorEmoji.ttf
 
     - family: NotoSans
       fonts:
+        - asset: packages/la_design_core/fonts/NotoSans-Thin.ttf
+          weight: 100
+        - asset: packages/la_design_core/fonts/NotoSans-ExtraLight.ttf
+          weight: 200
+        - asset: packages/la_design_core/fonts/NotoSans-Light.ttf
+          weight: 300
         - asset: packages/la_design_core/fonts/NotoSans-Regular.ttf
+          weight: 400
+        - asset: packages/la_design_core/fonts/NotoSans-Medium.ttf
+          weight: 500
+        - asset: packages/la_design_core/fonts/NotoSans-SemiBold.ttf
+          weight: 600
+        - asset: packages/la_design_core/fonts/NotoSans-Bold.ttf
+          weight: 700
+        - asset: packages/la_design_core/fonts/NotoSans-ExtraBold.ttf
+          weight: 800
+        - asset: packages/la_design_core/fonts/NotoSans-Black.ttf
+          weight: 900
+
+    - family: NotoColorEmoji
+      fonts:
+        - asset: packages/la_design_core/fonts/NotoColorEmoji.ttf

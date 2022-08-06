@@ -11,6 +11,7 @@ import 'package:lastanswer/library/widgets/core/emoji_grid.dart';
 import 'package:lastanswer/library/widgets/core/safe_areas.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
 class SpecialEmojisKeyboardActions extends HookWidget {

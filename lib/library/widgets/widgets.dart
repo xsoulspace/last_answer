@@ -33,6 +33,5 @@ export 'core/safe_areas.dart';
 export 'core/scroll_keyboard_closer.dart';
 export 'core/special_emoji_grid.dart';
 export 'core/special_emoji_keyboard.dart';
-export 'core/state_loader.dart';
 export 'core/unspash_service.dart';
 export 'core/unsplash_image.dart';

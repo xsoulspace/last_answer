@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 class CupertinoCloseButton extends HookWidget {
   const CupertinoCloseButton({

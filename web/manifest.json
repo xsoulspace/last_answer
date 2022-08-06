@@ -6,7 +6,7 @@
   "start_url": ".",
   "display": "standalone",
   "manifest_version": 3,
-  "permissions": ["storage", "scripting"],
+  "permissions": [],
   "background_color": "#FFF",
   "theme_color": "#4CAF50",
   "orientation": "portrait-primary",

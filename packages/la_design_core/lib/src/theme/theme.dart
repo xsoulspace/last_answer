@@ -1,33 +1,58 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'data/data.dart';
+part 'app/colors.dart';
+part 'app/typography.dart';
+part 'brand/color_schemes.dart';
+part 'brand/typography.dart';
+part 'data/ui_layout.dart';
+part 'data/ui_text_theme.dart';
+part 'theme.freezed.dart';
 
-export 'app/colors.dart';
-export 'data/data.dart';
-export 'data/icons.dart';
-export 'data/radius.dart';
-export 'data/shadows.dart';
-export 'data/spacing.dart';
+@immutable
+@Freezed(
+  equal: true,
+  addImplicitFinal: true,
+  copyWith: true,
+)
+class UiThemeScheme with _$UiThemeScheme {
+  const factory UiThemeScheme({
+    required final UiSpacing spacing,
+    required final UiBoxSpacing horizontalBoxes,
+    required final UiBoxSpacing verticalBoxes,
+    required final UiRadius circularRadius,
+    required final UiTextTheme text,
+  }) = _UiThemeScheme;
+  const UiThemeScheme._();
+  factory UiThemeScheme.m3(final BuildContext context) {
+    const spacing = UiSpacing.m3;
+    return UiThemeScheme(
+      text: UiTextTheme.of(context),
+      circularRadius: UiRadius.circularBySpacing(spacing: spacing),
+      spacing: spacing,
+      horizontalBoxes: UiBoxSpacing.horizontal(spacing: spacing),
+      verticalBoxes: UiBoxSpacing.vertical(spacing: spacing),
+    );
+  }
+}
 
-class AppTheme extends InheritedWidget {
-  const AppTheme({
-    final Key? key,
-    required this.data,
-    required final Widget child,
-  }) : super(
-          key: key,
-          child: child,
-        );
+class UiTheme extends InheritedWidget {
+  const UiTheme({
+    required this.scheme,
+    required final super.child,
+    final super.key,
+  });
 
-  final AppThemeData data;
+  final UiThemeScheme scheme;
 
-  static AppThemeData of(final BuildContext context) {
-    final widget = context.dependOnInheritedWidgetOfExactType<AppTheme>();
-    return widget!.data;
+  static UiThemeScheme of(final BuildContext context) {
+    final widget = context.dependOnInheritedWidgetOfExactType<UiTheme>();
+    return widget!.scheme;
   }
 
   @override
-  bool updateShouldNotify(covariant final AppTheme oldWidget) {
-    return data != oldWidget.data;
+  bool updateShouldNotify(covariant final UiTheme oldWidget) {
+    return scheme != oldWidget.scheme;
   }
 }

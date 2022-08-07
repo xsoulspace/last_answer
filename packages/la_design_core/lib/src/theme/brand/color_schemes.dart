@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../theme.dart';
 
 class BrandColorSchemes {
   static const light = ColorScheme(

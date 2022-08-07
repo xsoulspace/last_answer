@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../brand/color_schemes.dart';
+part of '../theme.dart';
 
 class AppColorSchemes {
   AppColorSchemes._({

@@ -6,6 +6,7 @@ part 'app/colors.dart';
 part 'app/typography.dart';
 part 'brand/color_schemes.dart';
 part 'brand/typography.dart';
+part 'data/ui_form_factor.dart';
 part 'data/ui_layout.dart';
 part 'data/ui_text_theme.dart';
 part 'theme.freezed.dart';
@@ -23,12 +24,16 @@ class UiThemeScheme with _$UiThemeScheme {
     required final UiBoxSpacing verticalBoxes,
     required final UiRadius circularRadius,
     required final UiTextTheme text,
+    required final UiPersistentFormFactors persistentFormFactors,
+    required final UiCustomizableFormFactors customizableFormFactors,
   }) = _UiThemeScheme;
   const UiThemeScheme._();
   factory UiThemeScheme.m3(final BuildContext context) {
     const spacing = UiSpacing.m3;
     return UiThemeScheme(
       text: UiTextTheme.of(context),
+      customizableFormFactors: UiCustomizableFormFactors.ofTargetPlatform(),
+      persistentFormFactors: UiPersistentFormFactors.of(context),
       circularRadius: UiRadius.circularBySpacing(spacing: spacing),
       spacing: spacing,
       horizontalBoxes: UiBoxSpacing.horizontal(spacing: spacing),

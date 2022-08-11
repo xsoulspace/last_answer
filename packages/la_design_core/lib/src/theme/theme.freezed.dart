@@ -21,6 +21,10 @@ mixin _$UiThemeScheme {
   UiBoxSpacing get verticalBoxes => throw _privateConstructorUsedError;
   UiRadius get circularRadius => throw _privateConstructorUsedError;
   UiTextTheme get text => throw _privateConstructorUsedError;
+  UiPersistentFormFactors get persistentFormFactors =>
+      throw _privateConstructorUsedError;
+  UiCustomizableFormFactors get customizableFormFactors =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UiThemeSchemeCopyWith<UiThemeScheme> get copyWith =>
@@ -37,13 +41,17 @@ abstract class $UiThemeSchemeCopyWith<$Res> {
       UiBoxSpacing horizontalBoxes,
       UiBoxSpacing verticalBoxes,
       UiRadius circularRadius,
-      UiTextTheme text});
+      UiTextTheme text,
+      UiPersistentFormFactors persistentFormFactors,
+      UiCustomizableFormFactors customizableFormFactors});
 
   $UiSpacingCopyWith<$Res> get spacing;
   $UiBoxSpacingCopyWith<$Res> get horizontalBoxes;
   $UiBoxSpacingCopyWith<$Res> get verticalBoxes;
   $UiRadiusCopyWith<$Res> get circularRadius;
   $UiTextThemeCopyWith<$Res> get text;
+  $UiPersistentFormFactorsCopyWith<$Res> get persistentFormFactors;
+  $UiCustomizableFormFactorsCopyWith<$Res> get customizableFormFactors;
 }
 
 /// @nodoc
@@ -62,6 +70,8 @@ class _$UiThemeSchemeCopyWithImpl<$Res>
     Object? verticalBoxes = freezed,
     Object? circularRadius = freezed,
     Object? text = freezed,
+    Object? persistentFormFactors = freezed,
+    Object? customizableFormFactors = freezed,
   }) {
     return _then(_value.copyWith(
       spacing: spacing == freezed
@@ -84,6 +94,14 @@ class _$UiThemeSchemeCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as UiTextTheme,
+      persistentFormFactors: persistentFormFactors == freezed
+          ? _value.persistentFormFactors
+          : persistentFormFactors // ignore: cast_nullable_to_non_nullable
+              as UiPersistentFormFactors,
+      customizableFormFactors: customizableFormFactors == freezed
+          ? _value.customizableFormFactors
+          : customizableFormFactors // ignore: cast_nullable_to_non_nullable
+              as UiCustomizableFormFactors,
     ));
   }
 
@@ -121,6 +139,22 @@ class _$UiThemeSchemeCopyWithImpl<$Res>
       return _then(_value.copyWith(text: value));
     });
   }
+
+  @override
+  $UiPersistentFormFactorsCopyWith<$Res> get persistentFormFactors {
+    return $UiPersistentFormFactorsCopyWith<$Res>(_value.persistentFormFactors,
+        (value) {
+      return _then(_value.copyWith(persistentFormFactors: value));
+    });
+  }
+
+  @override
+  $UiCustomizableFormFactorsCopyWith<$Res> get customizableFormFactors {
+    return $UiCustomizableFormFactorsCopyWith<$Res>(
+        _value.customizableFormFactors, (value) {
+      return _then(_value.copyWith(customizableFormFactors: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -135,7 +169,9 @@ abstract class _$$_UiThemeSchemeCopyWith<$Res>
       UiBoxSpacing horizontalBoxes,
       UiBoxSpacing verticalBoxes,
       UiRadius circularRadius,
-      UiTextTheme text});
+      UiTextTheme text,
+      UiPersistentFormFactors persistentFormFactors,
+      UiCustomizableFormFactors customizableFormFactors});
 
   @override
   $UiSpacingCopyWith<$Res> get spacing;
@@ -147,6 +183,10 @@ abstract class _$$_UiThemeSchemeCopyWith<$Res>
   $UiRadiusCopyWith<$Res> get circularRadius;
   @override
   $UiTextThemeCopyWith<$Res> get text;
+  @override
+  $UiPersistentFormFactorsCopyWith<$Res> get persistentFormFactors;
+  @override
+  $UiCustomizableFormFactorsCopyWith<$Res> get customizableFormFactors;
 }
 
 /// @nodoc
@@ -167,6 +207,8 @@ class __$$_UiThemeSchemeCopyWithImpl<$Res>
     Object? verticalBoxes = freezed,
     Object? circularRadius = freezed,
     Object? text = freezed,
+    Object? persistentFormFactors = freezed,
+    Object? customizableFormFactors = freezed,
   }) {
     return _then(_$_UiThemeScheme(
       spacing: spacing == freezed
@@ -189,19 +231,29 @@ class __$$_UiThemeSchemeCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as UiTextTheme,
+      persistentFormFactors: persistentFormFactors == freezed
+          ? _value.persistentFormFactors
+          : persistentFormFactors // ignore: cast_nullable_to_non_nullable
+              as UiPersistentFormFactors,
+      customizableFormFactors: customizableFormFactors == freezed
+          ? _value.customizableFormFactors
+          : customizableFormFactors // ignore: cast_nullable_to_non_nullable
+              as UiCustomizableFormFactors,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_UiThemeScheme extends _UiThemeScheme {
+class _$_UiThemeScheme extends _UiThemeScheme with DiagnosticableTreeMixin {
   const _$_UiThemeScheme(
       {required this.spacing,
       required this.horizontalBoxes,
       required this.verticalBoxes,
       required this.circularRadius,
-      required this.text})
+      required this.text,
+      required this.persistentFormFactors,
+      required this.customizableFormFactors})
       : super._();
 
   @override
@@ -214,10 +266,29 @@ class _$_UiThemeScheme extends _UiThemeScheme {
   final UiRadius circularRadius;
   @override
   final UiTextTheme text;
+  @override
+  final UiPersistentFormFactors persistentFormFactors;
+  @override
+  final UiCustomizableFormFactors customizableFormFactors;
 
   @override
-  String toString() {
-    return 'UiThemeScheme(spacing: $spacing, horizontalBoxes: $horizontalBoxes, verticalBoxes: $verticalBoxes, circularRadius: $circularRadius, text: $text)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'UiThemeScheme(spacing: $spacing, horizontalBoxes: $horizontalBoxes, verticalBoxes: $verticalBoxes, circularRadius: $circularRadius, text: $text, persistentFormFactors: $persistentFormFactors, customizableFormFactors: $customizableFormFactors)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiThemeScheme'))
+      ..add(DiagnosticsProperty('spacing', spacing))
+      ..add(DiagnosticsProperty('horizontalBoxes', horizontalBoxes))
+      ..add(DiagnosticsProperty('verticalBoxes', verticalBoxes))
+      ..add(DiagnosticsProperty('circularRadius', circularRadius))
+      ..add(DiagnosticsProperty('text', text))
+      ..add(DiagnosticsProperty('persistentFormFactors', persistentFormFactors))
+      ..add(DiagnosticsProperty(
+          'customizableFormFactors', customizableFormFactors));
   }
 
   @override
@@ -232,7 +303,11 @@ class _$_UiThemeScheme extends _UiThemeScheme {
                 .equals(other.verticalBoxes, verticalBoxes) &&
             const DeepCollectionEquality()
                 .equals(other.circularRadius, circularRadius) &&
-            const DeepCollectionEquality().equals(other.text, text));
+            const DeepCollectionEquality().equals(other.text, text) &&
+            const DeepCollectionEquality()
+                .equals(other.persistentFormFactors, persistentFormFactors) &&
+            const DeepCollectionEquality().equals(
+                other.customizableFormFactors, customizableFormFactors));
   }
 
   @override
@@ -242,7 +317,9 @@ class _$_UiThemeScheme extends _UiThemeScheme {
       const DeepCollectionEquality().hash(horizontalBoxes),
       const DeepCollectionEquality().hash(verticalBoxes),
       const DeepCollectionEquality().hash(circularRadius),
-      const DeepCollectionEquality().hash(text));
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(persistentFormFactors),
+      const DeepCollectionEquality().hash(customizableFormFactors));
 
   @JsonKey(ignore: true)
   @override
@@ -252,11 +329,14 @@ class _$_UiThemeScheme extends _UiThemeScheme {
 
 abstract class _UiThemeScheme extends UiThemeScheme {
   const factory _UiThemeScheme(
-      {required final UiSpacing spacing,
-      required final UiBoxSpacing horizontalBoxes,
-      required final UiBoxSpacing verticalBoxes,
-      required final UiRadius circularRadius,
-      required final UiTextTheme text}) = _$_UiThemeScheme;
+          {required final UiSpacing spacing,
+          required final UiBoxSpacing horizontalBoxes,
+          required final UiBoxSpacing verticalBoxes,
+          required final UiRadius circularRadius,
+          required final UiTextTheme text,
+          required final UiPersistentFormFactors persistentFormFactors,
+          required final UiCustomizableFormFactors customizableFormFactors}) =
+      _$_UiThemeScheme;
   const _UiThemeScheme._() : super._();
 
   @override
@@ -270,9 +350,320 @@ abstract class _UiThemeScheme extends UiThemeScheme {
   @override
   UiTextTheme get text;
   @override
+  UiPersistentFormFactors get persistentFormFactors;
+  @override
+  UiCustomizableFormFactors get customizableFormFactors;
+  @override
   @JsonKey(ignore: true)
   _$$_UiThemeSchemeCopyWith<_$_UiThemeScheme> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$UiPersistentFormFactors {
+  WidthFormFactor get width => throw _privateConstructorUsedError;
+  DeviceWindowFormFactor get deviceWindow => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $UiPersistentFormFactorsCopyWith<UiPersistentFormFactors> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UiPersistentFormFactorsCopyWith<$Res> {
+  factory $UiPersistentFormFactorsCopyWith(UiPersistentFormFactors value,
+          $Res Function(UiPersistentFormFactors) then) =
+      _$UiPersistentFormFactorsCopyWithImpl<$Res>;
+  $Res call({WidthFormFactor width, DeviceWindowFormFactor deviceWindow});
+}
+
+/// @nodoc
+class _$UiPersistentFormFactorsCopyWithImpl<$Res>
+    implements $UiPersistentFormFactorsCopyWith<$Res> {
+  _$UiPersistentFormFactorsCopyWithImpl(this._value, this._then);
+
+  final UiPersistentFormFactors _value;
+  // ignore: unused_field
+  final $Res Function(UiPersistentFormFactors) _then;
+
+  @override
+  $Res call({
+    Object? width = freezed,
+    Object? deviceWindow = freezed,
+  }) {
+    return _then(_value.copyWith(
+      width: width == freezed
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as WidthFormFactor,
+      deviceWindow: deviceWindow == freezed
+          ? _value.deviceWindow
+          : deviceWindow // ignore: cast_nullable_to_non_nullable
+              as DeviceWindowFormFactor,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_UiPersistentFormFactorsCopyWith<$Res>
+    implements $UiPersistentFormFactorsCopyWith<$Res> {
+  factory _$$_UiPersistentFormFactorsCopyWith(_$_UiPersistentFormFactors value,
+          $Res Function(_$_UiPersistentFormFactors) then) =
+      __$$_UiPersistentFormFactorsCopyWithImpl<$Res>;
+  @override
+  $Res call({WidthFormFactor width, DeviceWindowFormFactor deviceWindow});
+}
+
+/// @nodoc
+class __$$_UiPersistentFormFactorsCopyWithImpl<$Res>
+    extends _$UiPersistentFormFactorsCopyWithImpl<$Res>
+    implements _$$_UiPersistentFormFactorsCopyWith<$Res> {
+  __$$_UiPersistentFormFactorsCopyWithImpl(_$_UiPersistentFormFactors _value,
+      $Res Function(_$_UiPersistentFormFactors) _then)
+      : super(_value, (v) => _then(v as _$_UiPersistentFormFactors));
+
+  @override
+  _$_UiPersistentFormFactors get _value =>
+      super._value as _$_UiPersistentFormFactors;
+
+  @override
+  $Res call({
+    Object? width = freezed,
+    Object? deviceWindow = freezed,
+  }) {
+    return _then(_$_UiPersistentFormFactors(
+      width: width == freezed
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as WidthFormFactor,
+      deviceWindow: deviceWindow == freezed
+          ? _value.deviceWindow
+          : deviceWindow // ignore: cast_nullable_to_non_nullable
+              as DeviceWindowFormFactor,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_UiPersistentFormFactors extends _UiPersistentFormFactors
+    with DiagnosticableTreeMixin {
+  const _$_UiPersistentFormFactors(
+      {required this.width, required this.deviceWindow})
+      : super._();
+
+  @override
+  final WidthFormFactor width;
+  @override
+  final DeviceWindowFormFactor deviceWindow;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'UiPersistentFormFactors(width: $width, deviceWindow: $deviceWindow)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiPersistentFormFactors'))
+      ..add(DiagnosticsProperty('width', width))
+      ..add(DiagnosticsProperty('deviceWindow', deviceWindow));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_UiPersistentFormFactors &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality()
+                .equals(other.deviceWindow, deviceWindow));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(deviceWindow));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_UiPersistentFormFactorsCopyWith<_$_UiPersistentFormFactors>
+      get copyWith =>
+          __$$_UiPersistentFormFactorsCopyWithImpl<_$_UiPersistentFormFactors>(
+              this, _$identity);
+}
+
+abstract class _UiPersistentFormFactors extends UiPersistentFormFactors {
+  const factory _UiPersistentFormFactors(
+          {required final WidthFormFactor width,
+          required final DeviceWindowFormFactor deviceWindow}) =
+      _$_UiPersistentFormFactors;
+  const _UiPersistentFormFactors._() : super._();
+
+  @override
+  WidthFormFactor get width;
+  @override
+  DeviceWindowFormFactor get deviceWindow;
+  @override
+  @JsonKey(ignore: true)
+  _$$_UiPersistentFormFactorsCopyWith<_$_UiPersistentFormFactors>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$UiCustomizableFormFactors {
+  PerformanceFormFactor get performance => throw _privateConstructorUsedError;
+  ControlsFormFactor get controls => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $UiCustomizableFormFactorsCopyWith<UiCustomizableFormFactors> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UiCustomizableFormFactorsCopyWith<$Res> {
+  factory $UiCustomizableFormFactorsCopyWith(UiCustomizableFormFactors value,
+          $Res Function(UiCustomizableFormFactors) then) =
+      _$UiCustomizableFormFactorsCopyWithImpl<$Res>;
+  $Res call({PerformanceFormFactor performance, ControlsFormFactor controls});
+}
+
+/// @nodoc
+class _$UiCustomizableFormFactorsCopyWithImpl<$Res>
+    implements $UiCustomizableFormFactorsCopyWith<$Res> {
+  _$UiCustomizableFormFactorsCopyWithImpl(this._value, this._then);
+
+  final UiCustomizableFormFactors _value;
+  // ignore: unused_field
+  final $Res Function(UiCustomizableFormFactors) _then;
+
+  @override
+  $Res call({
+    Object? performance = freezed,
+    Object? controls = freezed,
+  }) {
+    return _then(_value.copyWith(
+      performance: performance == freezed
+          ? _value.performance
+          : performance // ignore: cast_nullable_to_non_nullable
+              as PerformanceFormFactor,
+      controls: controls == freezed
+          ? _value.controls
+          : controls // ignore: cast_nullable_to_non_nullable
+              as ControlsFormFactor,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_UiCustomizableFormFactorsCopyWith<$Res>
+    implements $UiCustomizableFormFactorsCopyWith<$Res> {
+  factory _$$_UiCustomizableFormFactorsCopyWith(
+          _$_UiCustomizableFormFactors value,
+          $Res Function(_$_UiCustomizableFormFactors) then) =
+      __$$_UiCustomizableFormFactorsCopyWithImpl<$Res>;
+  @override
+  $Res call({PerformanceFormFactor performance, ControlsFormFactor controls});
+}
+
+/// @nodoc
+class __$$_UiCustomizableFormFactorsCopyWithImpl<$Res>
+    extends _$UiCustomizableFormFactorsCopyWithImpl<$Res>
+    implements _$$_UiCustomizableFormFactorsCopyWith<$Res> {
+  __$$_UiCustomizableFormFactorsCopyWithImpl(
+      _$_UiCustomizableFormFactors _value,
+      $Res Function(_$_UiCustomizableFormFactors) _then)
+      : super(_value, (v) => _then(v as _$_UiCustomizableFormFactors));
+
+  @override
+  _$_UiCustomizableFormFactors get _value =>
+      super._value as _$_UiCustomizableFormFactors;
+
+  @override
+  $Res call({
+    Object? performance = freezed,
+    Object? controls = freezed,
+  }) {
+    return _then(_$_UiCustomizableFormFactors(
+      performance: performance == freezed
+          ? _value.performance
+          : performance // ignore: cast_nullable_to_non_nullable
+              as PerformanceFormFactor,
+      controls: controls == freezed
+          ? _value.controls
+          : controls // ignore: cast_nullable_to_non_nullable
+              as ControlsFormFactor,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_UiCustomizableFormFactors extends _UiCustomizableFormFactors
+    with DiagnosticableTreeMixin {
+  const _$_UiCustomizableFormFactors(
+      {required this.performance, required this.controls})
+      : super._();
+
+  @override
+  final PerformanceFormFactor performance;
+  @override
+  final ControlsFormFactor controls;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'UiCustomizableFormFactors(performance: $performance, controls: $controls)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiCustomizableFormFactors'))
+      ..add(DiagnosticsProperty('performance', performance))
+      ..add(DiagnosticsProperty('controls', controls));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_UiCustomizableFormFactors &&
+            const DeepCollectionEquality()
+                .equals(other.performance, performance) &&
+            const DeepCollectionEquality().equals(other.controls, controls));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(performance),
+      const DeepCollectionEquality().hash(controls));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_UiCustomizableFormFactorsCopyWith<_$_UiCustomizableFormFactors>
+      get copyWith => __$$_UiCustomizableFormFactorsCopyWithImpl<
+          _$_UiCustomizableFormFactors>(this, _$identity);
+}
+
+abstract class _UiCustomizableFormFactors extends UiCustomizableFormFactors {
+  const factory _UiCustomizableFormFactors(
+          {required final PerformanceFormFactor performance,
+          required final ControlsFormFactor controls}) =
+      _$_UiCustomizableFormFactors;
+  const _UiCustomizableFormFactors._() : super._();
+
+  @override
+  PerformanceFormFactor get performance;
+  @override
+  ControlsFormFactor get controls;
+  @override
+  @JsonKey(ignore: true)
+  _$$_UiCustomizableFormFactorsCopyWith<_$_UiCustomizableFormFactors>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -426,7 +817,7 @@ class __$$_UiSpacingCopyWithImpl<$Res> extends _$UiSpacingCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiSpacing extends _UiSpacing {
+class _$_UiSpacing extends _UiSpacing with DiagnosticableTreeMixin {
   const _$_UiSpacing(
       {required this.none,
       required this.extraSmall,
@@ -453,8 +844,22 @@ class _$_UiSpacing extends _UiSpacing {
   final double full;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UiSpacing(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiSpacing'))
+      ..add(DiagnosticsProperty('none', none))
+      ..add(DiagnosticsProperty('extraSmall', extraSmall))
+      ..add(DiagnosticsProperty('small', small))
+      ..add(DiagnosticsProperty('medium', medium))
+      ..add(DiagnosticsProperty('large', large))
+      ..add(DiagnosticsProperty('extraLarge', extraLarge))
+      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -672,7 +1077,7 @@ class __$$_UiRadiusCopyWithImpl<$Res> extends _$UiRadiusCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiRadius extends _UiRadius {
+class _$_UiRadius extends _UiRadius with DiagnosticableTreeMixin {
   const _$_UiRadius(
       {required this.none,
       required this.extraSmall,
@@ -699,8 +1104,22 @@ class _$_UiRadius extends _UiRadius {
   final Radius full;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UiRadius(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiRadius'))
+      ..add(DiagnosticsProperty('none', none))
+      ..add(DiagnosticsProperty('extraSmall', extraSmall))
+      ..add(DiagnosticsProperty('small', small))
+      ..add(DiagnosticsProperty('medium', medium))
+      ..add(DiagnosticsProperty('large', large))
+      ..add(DiagnosticsProperty('extraLarge', extraLarge))
+      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -921,7 +1340,7 @@ class __$$_UiBoxSpacingCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiBoxSpacing extends _UiBoxSpacing {
+class _$_UiBoxSpacing extends _UiBoxSpacing with DiagnosticableTreeMixin {
   const _$_UiBoxSpacing(
       {required this.none,
       required this.extraSmall,
@@ -948,8 +1367,22 @@ class _$_UiBoxSpacing extends _UiBoxSpacing {
   final SizedBox full;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UiBoxSpacing(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiBoxSpacing'))
+      ..add(DiagnosticsProperty('none', none))
+      ..add(DiagnosticsProperty('extraSmall', extraSmall))
+      ..add(DiagnosticsProperty('small', small))
+      ..add(DiagnosticsProperty('medium', medium))
+      ..add(DiagnosticsProperty('large', large))
+      ..add(DiagnosticsProperty('extraLarge', extraLarge))
+      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -1089,15 +1522,23 @@ class __$$_UiTextThemeCopyWithImpl<$Res> extends _$UiTextThemeCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiTextTheme extends _UiTextTheme {
+class _$_UiTextTheme extends _UiTextTheme with DiagnosticableTreeMixin {
   const _$_UiTextTheme({required this.error}) : super._();
 
   @override
   final TextTheme error;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UiTextTheme(error: $error)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UiTextTheme'))
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override

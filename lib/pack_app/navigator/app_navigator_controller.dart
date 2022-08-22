@@ -38,7 +38,7 @@ class AppNavigatorController {
 
   void goSettings() => go(AppRoutesName.settings);
   void goAppInfo() => go(AppRoutesName.appInfo);
-  void goSignIn() => go(AppRoutesName.profileSignIn);
+  void goSignIn() => go(AppRoutesName.signUp);
 
   Future<void> goNoteScreen({final String? noteId}) async {
     String resolvedNoteId = noteId ?? '';

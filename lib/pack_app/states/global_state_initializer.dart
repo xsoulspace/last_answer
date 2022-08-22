@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
 import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
@@ -13,6 +12,7 @@ import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
 /// use for data migrations only
@@ -38,7 +38,7 @@ class GlobalStateInitializer implements StateInitializer {
 
   @override
   // ignore: long-method
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad(final BuildContext context) async {
     /// ********************************************
     /// *      CONTEXT RELATED READINGS START
     /// ********************************************

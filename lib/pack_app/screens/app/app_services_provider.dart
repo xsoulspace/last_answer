@@ -1,23 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/api/api.dart';
 import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
-import 'package:lastanswer/pack_app/screens/app_loading/app_loading_screen.dart';
-import 'package:lastanswer/pack_app/states/global_state_initializer.dart';
 import 'package:lastanswer/pack_app/states/global_state_notifiers.dart';
 import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_purchases/abstract/purchases_abstract.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
-import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase_lib;
 
 class AppServicesProvider extends StatelessWidget {
   const AppServicesProvider({
-    required final this.child,
+    required this.child,
     final Key? key,
   }) : super(key: key);
   final Widget child;
@@ -125,35 +121,6 @@ class AppServicesProvider extends StatelessWidget {
         ChangeNotifierProvider(create: createServerSyncWorkerNotifier)
       ],
       child: child,
-    );
-  }
-}
-
-// TODO(arenukvern): refactor it to independent notifier
-class _AppStateInitializer extends HookWidget {
-  const _AppStateInitializer({
-    required final this.builder,
-    final Key? key,
-  }) : super(key: key);
-  final WidgetBuilder builder;
-
-  @override
-  Widget build(final BuildContext context) {
-    final authState = useAppAuthState(
-      supabaseClient: context.read(),
-      usersNotifier: context.read(),
-    );
-
-    return Provider(
-      create: (final context) => authState,
-      child: StateLoader(
-        initializer: GlobalStateInitializer(
-          settings: context.read(),
-          authState: authState,
-        ),
-        loader: const AppLoadingScreen(),
-        child: builder(context),
-      ),
     );
   }
 }

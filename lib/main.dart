@@ -22,5 +22,5 @@ Future<void> main() async {
     ..registerAdapter(NoteProjectAdapter())
     ..registerAdapter(ProjectFolderAdapter())
     ..registerAdapter(StoryProjectAdapter());
-  runApp(const LastAnswerApp());
+  runApp(const AppScaffold());
 }

@@ -29,12 +29,7 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 }
 
 class GlobalStateInitializer implements StateInitializer {
-  GlobalStateInitializer({
-    required this.settings,
-    required this.authState,
-  });
-  final GeneralSettingsController settings;
-  final AuthState authState;
+  GlobalStateInitializer();
 
   @override
   // ignore: long-method
@@ -42,16 +37,19 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      CONTEXT RELATED READINGS START
     /// ********************************************
+    final read = context.read;
 
-    final lastEmojiNotifier = context.read<LastEmojiProvider>();
-    final specialEmojiNotifier = context.read<SpecialEmojiProvider>();
-    final emojiNotifier = context.read<EmojiProvider>();
-    final currentFolderNotifier = context.read<CurrentFolderNotifier>();
-    final notificationController = context.read<NotificationController>();
-    final paymentsController = context.read<PaymentsControllerI>();
-    final usersNotifier = context.read<UsersNotifier>();
-    final syncWorker = context.read<ServerSyncWorkerNotifier>();
-    final connectivity = context.read<ConnectivityNotifier>();
+    final authState = read<AuthState>();
+    final settings = read<GeneralSettingsController>();
+    final lastEmojiNotifier = read<LastEmojiProvider>();
+    final specialEmojiNotifier = read<SpecialEmojiProvider>();
+    final emojiNotifier = read<EmojiProvider>();
+    final currentFolderNotifier = read<CurrentFolderNotifier>();
+    final notificationController = read<NotificationController>();
+    final paymentsController = read<PaymentsControllerI>();
+    final usersNotifier = read<UsersNotifier>();
+    final syncWorker = read<ServerSyncWorkerNotifier>();
+    final connectivity = read<ConnectivityNotifier>();
 
     /// ********************************************
     /// *      CONTEXT RELATED READINGS END

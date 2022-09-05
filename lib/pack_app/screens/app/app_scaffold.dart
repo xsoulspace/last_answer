@@ -13,11 +13,12 @@ import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_app/screens/app/app_services_provider.dart';
 import 'package:lastanswer/pack_app/states/global_state_initializer.dart';
+import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
-part 'app_scaffold_state.dart';
+part 'app_scaffold_states.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({final Key? key}) : super(key: key);
@@ -26,8 +27,8 @@ class AppScaffold extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Portal(
       child: AppServicesProvider(
-        child: RouterScaffold(
-          builder: (final context, final parser) => AppScaffoldBuilder(
+        child: _ExternalProvidersScaffold(
+          builder: (final context, final parser) => _AppScaffoldBuilder(
             routeParser: parser,
           ),
         ),
@@ -36,8 +37,8 @@ class AppScaffold extends StatelessWidget {
   }
 }
 
-class RouterScaffold extends HookWidget {
-  const RouterScaffold({
+class _ExternalProvidersScaffold extends HookWidget {
+  const _ExternalProvidersScaffold({
     required this.builder,
     final Key? key,
   }) : super(key: key);
@@ -45,13 +46,17 @@ class RouterScaffold extends HookWidget {
       builder;
   @override
   Widget build(final BuildContext context) {
-    final state = useAppScaffoldState();
-
+    final state = _useExternalProvidersScaffoldState();
+    final authState = useAppAuthState(
+      supabaseClient: context.read(),
+      usersNotifier: context.read(),
+    );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<RouteState>(
           create: (final context) => state.routeState,
         ),
+        Provider(create: (final context) => authState),
         Provider<AppRouterController>(
           create: (final context) => AppRouterController.use(context.read),
         ),
@@ -62,13 +67,14 @@ class RouterScaffold extends HookWidget {
   }
 }
 
-class AppScaffoldBuilder extends HookWidget {
-  const AppScaffoldBuilder({required this.routeParser, final Key? key})
+class _AppScaffoldBuilder extends HookWidget {
+  const _AppScaffoldBuilder({required this.routeParser, final Key? key})
       : super(key: key);
   final TemplateRouteParser routeParser;
   @override
   Widget build(final BuildContext context) {
-    final state = useAppScaffoldBodyState(context.read);
+    final state = _useAppScaffoldBodyState(context.read);
+
     final settings = context.watch<GeneralSettingsController>();
 
     return AnimatedBuilder(

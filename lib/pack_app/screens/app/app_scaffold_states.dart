@@ -1,14 +1,14 @@
 part of 'app_scaffold.dart';
 
-AppScaffoldState useAppScaffoldState() => use(
+_ExternalProvidersScaffoldState _useExternalProvidersScaffoldState() => use(
       ContextfulLifeHook(
-        debugLabel: 'AppScaffoldState',
-        state: AppScaffoldState(),
+        debugLabel: 'useExternalProvidersScaffoldState',
+        state: _ExternalProvidersScaffoldState(),
       ),
     );
 
-class AppScaffoldState extends ContextfulLifeState {
-  AppScaffoldState();
+class _ExternalProvidersScaffoldState extends ContextfulLifeState {
+  _ExternalProvidersScaffoldState();
   late final RouteState routeState;
   late final TemplateRouteParser routeParser;
   @override
@@ -28,17 +28,17 @@ class AppScaffoldState extends ContextfulLifeState {
   }
 }
 
-AppScaffoldBodyState useAppScaffoldBodyState(final Locator read) => use(
+_AppScaffoldBodyState _useAppScaffoldBodyState(final Locator read) => use(
       ContextfulLifeHook(
         debugLabel: 'AppScaffoldBodyState',
-        state: AppScaffoldBodyState(
+        state: _AppScaffoldBodyState(
           routeState: read<RouteState>(),
         ),
       ),
     );
 
-class AppScaffoldBodyState extends ContextfulLifeState {
-  AppScaffoldBodyState({
+class _AppScaffoldBodyState extends ContextfulLifeState {
+  _AppScaffoldBodyState({
     required this.routeState,
   });
   final RouteState routeState;

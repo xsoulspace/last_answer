@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
@@ -7,10 +6,8 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class AppInfoScreen extends StatelessWidget {
   const AppInfoScreen({
-    required final this.onBack,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onBack;
   static const privacyPolicyLink =
       'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
   static const termsAndConditions =

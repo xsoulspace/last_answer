@@ -1,7 +1,10 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
 import 'package:la_design_core/la_design_core.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
+import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_app/screens/home/home_layout_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -62,5 +65,62 @@ class _AppLayoutBuilder
       pageBuilder.home(),
     ];
     return pages;
+  }
+
+  List<Page> getLargeScreenPages() {
+    return [
+      if (pathTemplate.startsWith(NavigationRoutes.home)) ...[
+        NavigatorPage(
+          key: NavigatorValueKeys.home,
+          child: LargeHomeScreen(
+            mainScreenNavigator: Navigator(
+              key: NavigatorValueKeys.largeScreenHomeNavigator,
+              onGenerateRoute: (final _) => null,
+              pages: [
+                if (pathTemplate == NavigationRoutes.note)
+                  pageBuilder.notePage()
+                else if (pathTemplate.contains(NavigationRoutes.idea))
+                  pageBuilder.ideaPage()
+                else
+                  AppNavigatorPageBuilder.emptyPage,
+              ],
+              onPopPage: (final route, final result) => route.didPop(result),
+            ),
+          ),
+        ),
+        if (pathTemplate == NavigationRoutes.createIdea)
+          pageBuilder.createIdeaPage()
+        else if (pathTemplate == NavigationRoutes.ideaAnswer)
+          pageBuilder.ideaAnswerPage()
+        else if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
+          pageBuilder.settingsPage(),
+        ] else if (pathTemplate == NavigationRoutes.appInfo)
+          pageBuilder.appInfoPage(),
+      ],
+    ];
+  }
+
+  List<Page> getSmallScreenPages() {
+    return [
+      const FadedRailPage<void>(
+        key: NavigatorValueKeys.home,
+        child: RouterPopScope(
+          child: SmallHomeScreen(),
+        ),
+      ),
+      if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
+        pageBuilder.settingsPage(),
+      ] else if (pathTemplate == NavigationRoutes.appInfo)
+        pageBuilder.appInfoPage()
+      else if (pathTemplate == NavigationRoutes.createIdea)
+        pageBuilder.createIdeaPage()
+      else if (pathTemplate == NavigationRoutes.note)
+        pageBuilder.notePage()
+      else if (pathTemplate.contains(NavigationRoutes.idea)) ...[
+        pageBuilder.ideaPage(),
+        if (pathTemplate == NavigationRoutes.ideaAnswer)
+          pageBuilder.ideaAnswerPage(),
+      ]
+    ];
   }
 }

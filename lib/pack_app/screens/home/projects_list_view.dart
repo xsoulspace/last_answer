@@ -13,19 +13,11 @@ import 'package:provider/provider.dart';
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({
-    required this.themeDefiner,
-    required this.onGoHome,
-    required this.onProjectTap,
-    required this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onGoHome;
-  final ValueChanged<BasicProject> onProjectTap;
-  final ThemeDefiner themeDefiner;
-  final BoolValueChanged<BasicProject> checkIsProjectActive;
-
   @override
   Widget build(final BuildContext context) {
+    final themeDefiner = ThemeDefiner.of(context);
     final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;

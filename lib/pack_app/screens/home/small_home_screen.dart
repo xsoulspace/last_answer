@@ -3,34 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/screens/home/projects_list_view.dart';
 import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
-import 'package:lastanswer/pack_app/widgets/project_tile.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
 class SmallHomeScreen extends StatefulHookWidget {
   const SmallHomeScreen({
-    required this.onProjectTap,
-    required this.onSettingsTap,
-    required this.onInfoTap,
-    required this.onCreateIdeaTap,
-    required this.onCreateNoteTap,
-    required this.onGoHome,
-    required this.checkIsProjectActive,
-    required this.onFolderTap,
     this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
   }) : super(key: key);
-  final ValueChanged<BasicProject> onProjectTap;
-  final VoidCallback onSettingsTap;
-  final VoidCallback onInfoTap;
-  final VoidCallback onCreateIdeaTap;
-  final VoidCallback onCreateNoteTap;
-  final ValueChanged<ProjectFolder> onFolderTap;
   final Alignment verticalMenuAlignment;
-  final BoolValueChanged<BasicProject> checkIsProjectActive;
-  final VoidCallback onGoHome;
 
   @override
   _SmallHomeScreenState createState() => _SmallHomeScreenState();
@@ -42,18 +27,9 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
     final themeDefiner = ThemeDefiner.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
 
-    final verticalMenu = HomeVerticalMenu(
-      onCreateIdeaTap: widget.onCreateIdeaTap,
-      onCreateNoteTap: widget.onCreateNoteTap,
-      onFolderTap: widget.onFolderTap,
-    );
+    const verticalMenu = HomeVerticalMenu();
 
-    final projectsList = ProjectsListView(
-      checkIsProjectActive: widget.checkIsProjectActive,
-      onGoHome: widget.onGoHome,
-      onProjectTap: widget.onProjectTap,
-      themeDefiner: themeDefiner,
-    );
+    const projectsList = ProjectsListView();
 
     final body = Scaffold(
       appBar: HomeAppBar.build(
@@ -69,7 +45,7 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
                 const SizedBox(height: 2),
                 if (widget.verticalMenuAlignment == Alignment.bottomLeft)
                   verticalMenu,
-                Expanded(
+                const Expanded(
                   child: projectsList,
                 ),
                 if (widget.verticalMenuAlignment == Alignment.bottomRight)
@@ -92,18 +68,13 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
 
 class HomeVerticalMenu extends StatelessWidget {
   const HomeVerticalMenu({
-    required this.onCreateIdeaTap,
-    required this.onCreateNoteTap,
-    required this.onFolderTap,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onCreateIdeaTap;
-  final VoidCallback onCreateNoteTap;
-  final ValueChanged<ProjectFolder> onFolderTap;
 
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
+    final appRouterController = context.read<AppRouterController>();
 
     return ColoredBox(
       color: themeDefiner.useContextTheme

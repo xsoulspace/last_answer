@@ -1,33 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:la_core/la_core.dart';
-import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
-import 'package:lastanswer/pack_app/widgets/project_tile.dart';
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({
-    required this.onProjectTap,
-    required this.onSettingsTap,
-    required this.onInfoTap,
-    required this.onCreateIdeaTap,
-    required this.onCreateNoteTap,
     required this.mainScreenNavigator,
-    required this.onGoHome,
-    required this.checkIsProjectActive,
-    required this.onFolderTap,
     final Key? key,
   }) : super(key: key);
-  final ValueChanged<BasicProject> onProjectTap;
-  final BoolValueChanged<BasicProject> checkIsProjectActive;
-  final VoidCallback onSettingsTap;
-  final VoidCallback onInfoTap;
-  final VoidCallback onCreateIdeaTap;
-  final VoidCallback onCreateNoteTap;
   final Widget mainScreenNavigator;
-  final ValueChanged<ProjectFolder> onFolderTap;
-  final VoidCallback onGoHome;
 
   @override
   Widget build(final BuildContext context) {
@@ -44,16 +26,8 @@ class LargeHomeScreen extends StatelessWidget {
       children: [
         SizedBox(
           width: leftColumn,
-          child: SmallHomeScreen(
-            onFolderTap: onFolderTap,
+          child: const SmallHomeScreen(
             verticalMenuAlignment: Alignment.bottomRight,
-            onGoHome: onGoHome,
-            checkIsProjectActive: checkIsProjectActive,
-            onCreateIdeaTap: onCreateIdeaTap,
-            onCreateNoteTap: onCreateNoteTap,
-            onInfoTap: onInfoTap,
-            onProjectTap: onProjectTap,
-            onSettingsTap: onSettingsTap,
           ),
         ),
         Container(

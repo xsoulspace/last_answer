@@ -8,15 +8,15 @@ import 'package:lastanswer/pack_app/widgets/project_tile.dart';
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({
-    required final this.onProjectTap,
-    required final this.onSettingsTap,
-    required final this.onInfoTap,
-    required final this.onCreateIdeaTap,
-    required final this.onCreateNoteTap,
-    required final this.mainScreenNavigator,
-    required final this.onGoHome,
-    required final this.checkIsProjectActive,
-    required final this.onFolderTap,
+    required this.onProjectTap,
+    required this.onSettingsTap,
+    required this.onInfoTap,
+    required this.onCreateIdeaTap,
+    required this.onCreateNoteTap,
+    required this.mainScreenNavigator,
+    required this.onGoHome,
+    required this.checkIsProjectActive,
+    required this.onFolderTap,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<BasicProject> onProjectTap;

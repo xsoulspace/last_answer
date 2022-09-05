@@ -159,7 +159,9 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_IdeaProjectQuestionModelToJson(this);
+    return _$$_IdeaProjectQuestionModelToJson(
+      this,
+    );
   }
 }
 
@@ -175,9 +177,9 @@ abstract class _IdeaProjectQuestionModel extends IdeaProjectQuestionModel {
 
   @override
   @JsonKey(fromJson: fromIntToString, toJson: fromStringToInt)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectQuestionModelCopyWith<_$_IdeaProjectQuestionModel>

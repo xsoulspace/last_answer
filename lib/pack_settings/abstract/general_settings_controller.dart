@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/abstract/general_settings_service.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.
@@ -13,7 +13,7 @@ import 'package:lastanswer/pack_settings/abstract/general_settings_service.dart'
 /// Controllers glue Data Services to Flutter Widgets. The SettingsController
 /// uses the SettingsService to store and retrieve user settings.
 class GeneralSettingsController extends ChangeNotifier implements Loadable {
-  GeneralSettingsController({required final this.settingsService});
+  GeneralSettingsController({required this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService settingsService;
@@ -61,7 +61,7 @@ class GeneralSettingsController extends ChangeNotifier implements Loadable {
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     _themeMode = await settingsService.themeMode();
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();

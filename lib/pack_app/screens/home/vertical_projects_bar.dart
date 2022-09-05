@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({
-    required final this.onIdeaTap,
-    required final this.onNoteTap,
-    required final this.onFolderTap,
+    required this.onIdeaTap,
+    required this.onNoteTap,
+    required this.onFolderTap,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onIdeaTap;
@@ -83,9 +83,9 @@ class VerticalProjectsBar extends StatelessWidget {
 
 class BarItem extends StatelessWidget {
   const BarItem({
-    required final this.child,
-    required final this.label,
-    final this.onTap,
+    required this.child,
+    required this.label,
+    this.onTap,
     final Key? key,
   }) : super(key: key);
   final VoidCallback? onTap;

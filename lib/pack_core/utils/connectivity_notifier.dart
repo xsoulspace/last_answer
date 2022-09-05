@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lastanswer/pack_core/abstract/primitives/loadable.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 ConnectivityNotifier createConnectivityNotifier(
   final BuildContext context,
@@ -27,7 +27,7 @@ class ConnectivityNotifier extends ChangeNotifier implements Loadable {
   bool get isNotConnected => !isConnected;
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     await checkConnectivity();
     connectionSubscription = _listenConnectivityChanges(_onConnectivityChange);
   }

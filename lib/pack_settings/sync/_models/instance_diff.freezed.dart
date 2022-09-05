@@ -148,9 +148,9 @@ abstract class _InstanceDiff<T extends HasId, TOther extends HasId>
   const _InstanceDiff._() : super._();
 
   @override
-  T get original => throw _privateConstructorUsedError;
+  T get original;
   @override
-  TOther get other => throw _privateConstructorUsedError;
+  TOther get other;
   @override
   @JsonKey(ignore: true)
   _$$_InstanceDiffCopyWith<T, TOther, _$_InstanceDiff<T, TOther>>
@@ -342,13 +342,13 @@ abstract class _UpdatableInstanceDiff<T extends HasId, TOther extends HasId>
       _$_UpdatableInstanceDiff<T, TOther>;
 
   @override
-  T get original => throw _privateConstructorUsedError;
+  T get original;
   @override
-  TOther get other => throw _privateConstructorUsedError;
+  TOther get other;
   @override
-  bool get originalWasUpdated => throw _privateConstructorUsedError;
+  bool get originalWasUpdated;
   @override
-  bool get otherWasUpdated => throw _privateConstructorUsedError;
+  bool get otherWasUpdated;
   @override
   @JsonKey(ignore: true)
   _$$_UpdatableInstanceDiffCopyWith<T, TOther,

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
+import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
+import 'package:lastanswer/pack_app/screens/home/home_layout_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppNavigator extends HookWidget {
@@ -15,7 +16,7 @@ class AppNavigator extends HookWidget {
   Widget build(final BuildContext context) {
     context.watch<RouteState>();
 
-    final keys = useState(AppPageBuilderKeys());
+    final keys = useState(const AppPageBuilderKeys());
     final pageBuilder =
         AppPageBuilder.use(keys: keys.value, read: context.read);
     final layoutBuilder = AppLayoutBuilder(pageBuilder: pageBuilder);
@@ -28,16 +29,18 @@ class AppNavigator extends HookWidget {
   }
 }
 
+@immutable
 class AppPageBuilderKeys {
-  final signIn = const ValueKey('Sign in');
-  final signUp = const ValueKey('Sign up');
-  final home = const ValueKey('home');
+  const AppPageBuilderKeys();
+  ValueKey get signIn => const ValueKey('Sign in');
+  ValueKey get signUp => const ValueKey('Sign up');
+  ValueKey get home => const ValueKey('home');
 }
 
 class AppPageBuilder extends RouterPageBuilder<AppRouterController> {
   AppPageBuilder.use({
     required this.keys,
-    required final super.read,
+    required super.read,
   }) : super.use();
   static final emptyPage = NavigatorPage(
     child: const EmptyScreen(),
@@ -47,7 +50,7 @@ class AppPageBuilder extends RouterPageBuilder<AppRouterController> {
   final AppPageBuilderKeys keys;
 
   Page home() => NavigatorPage(
-        child: const DashboardScreen(),
+        child: const HomeLayoutScreen(),
         key: keys.home,
       );
   Page signIn() => NavigatorPage(
@@ -62,14 +65,14 @@ class AppPageBuilder extends RouterPageBuilder<AppRouterController> {
 
 class AppLayoutBuilder
     extends RouterLayoutBuilder<AppRouterController, AppPageBuilder> {
-  AppLayoutBuilder({required final super.pageBuilder});
+  AppLayoutBuilder({required super.pageBuilder});
   @override
   List<Page> buildPages() {
     final pages = <Page>[
       AppPageBuilder.emptyPage,
       pageBuilder.home(),
     ];
-    if (pathTemplate == NavigationRoutes.signUp) {
+    if (pathTemplate == NavigationRoutes.signIn) {
       pages.add(pageBuilder.signIn());
     } else if (pathTemplate == NavigationRoutes.signUp) {
       pages.add(pageBuilder.signUp());

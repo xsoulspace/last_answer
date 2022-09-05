@@ -273,7 +273,9 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_IdeaProjectAnswerModelToJson(this);
+    return _$$_IdeaProjectAnswerModelToJson(
+      this,
+    );
   }
 }
 
@@ -297,25 +299,25 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
       _$_IdeaProjectAnswerModel.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get text => throw _privateConstructorUsedError;
+  String get text;
   @override
   @JsonKey(
       name: 'question_id', fromJson: fromIntToString, toJson: fromStringToInt)
-  String get questionId => throw _privateConstructorUsedError;
+  String get questionId;
   @override
   @JsonKey(name: 'project_id')
-  String get projectId => throw _privateConstructorUsedError;
+  String get projectId;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @JsonKey(name: 'owner_id')
-  String get ownerId => throw _privateConstructorUsedError;
+  String get ownerId;
   @override
   @JsonKey(ignore: true)
   _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>

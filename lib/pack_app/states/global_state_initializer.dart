@@ -30,8 +30,8 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
-    required final this.settings,
-    required final this.authState,
+    required this.settings,
+    required this.authState,
   });
   final GeneralSettingsController settings;
   final AuthState authState;
@@ -69,7 +69,7 @@ class GlobalStateInitializer implements StateInitializer {
     ];
     await Future.forEach<Loadable>(
       loadableControllers,
-      (final loadable) => loadable.onLoad(context: context),
+      (final loadable) => loadable.onLoad(),
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.emoji;
@@ -207,7 +207,7 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      AUTH START
     /// ********************************************
-    await connectivity.onLoad(context: context);
+    await connectivity.onLoad();
     await authState.recoverSupabaseSession();
 
     /// ********************************************

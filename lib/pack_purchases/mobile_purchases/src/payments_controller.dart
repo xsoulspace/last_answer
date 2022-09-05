@@ -52,7 +52,7 @@ class PaymentsController extends PaymentsControllerI {
   bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     if (paymentsService.paymentsNotAccessable) return;
     final key = paymentsService.paymentInitialKey;
     if (key.isEmpty) throw ArgumentError.value('key is not provided');

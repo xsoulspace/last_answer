@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/api/api.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart' as provider_lib;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,7 +22,7 @@ class UsersNotifier extends ChangeNotifier implements Loadable {
   final currentUser = ValueNotifier(UserModel.zero);
   final authenticated = ValueNotifier(false);
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     await onAuthChange();
     authenticated.addListener(onAuthChange);
   }

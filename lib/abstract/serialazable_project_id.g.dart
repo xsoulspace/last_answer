@@ -16,7 +16,7 @@ SerializableProjectId _$SerializableProjectIdFromJson(
 Map<String, dynamic> _$SerializableProjectIdToJson(
         SerializableProjectId instance) =>
     <String, dynamic>{
-      'type': _$ProjectTypeEnumMap[instance.type],
+      'type': _$ProjectTypeEnumMap[instance.type]!,
       'id': instance.id,
     };
 

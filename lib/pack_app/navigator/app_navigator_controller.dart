@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/navigator/app_routes.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +11,7 @@ import 'package:provider/provider.dart';
 @immutable
 class AppNavigatorController {
   const AppNavigatorController.use({
-    required final this.context,
+    required this.context,
     required this.screenLayout,
   });
   final BuildContext context;

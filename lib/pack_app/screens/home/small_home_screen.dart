@@ -19,7 +19,7 @@ class SmallHomeScreen extends StatefulHookWidget {
     required this.onGoHome,
     required this.checkIsProjectActive,
     required this.onFolderTap,
-    final this.verticalMenuAlignment = Alignment.bottomLeft,
+    this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
   }) : super(key: key);
   final ValueChanged<BasicProject> onProjectTap;

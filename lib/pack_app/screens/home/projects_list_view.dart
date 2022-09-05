@@ -13,10 +13,10 @@ import 'package:provider/provider.dart';
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({
-    required final this.themeDefiner,
-    required final this.onGoHome,
-    required final this.onProjectTap,
-    required final this.checkIsProjectActive,
+    required this.themeDefiner,
+    required this.onGoHome,
+    required this.onProjectTap,
+    required this.checkIsProjectActive,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onGoHome;

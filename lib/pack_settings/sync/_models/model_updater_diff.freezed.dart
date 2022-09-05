@@ -211,14 +211,11 @@ abstract class _InstanceUpdaterDto<T extends HasId, TOther extends HasId>
   const _InstanceUpdaterDto._() : super._();
 
   @override
-  InstancesUpdatesDto<T, TOther> get originalUpdates =>
-      throw _privateConstructorUsedError;
+  InstancesUpdatesDto<T, TOther> get originalUpdates;
   @override
-  InstancesUpdatesDto<TOther, T> get otherUpdates =>
-      throw _privateConstructorUsedError;
+  InstancesUpdatesDto<TOther, T> get otherUpdates;
   @override
-  Map<String, InstanceDiff<T, TOther>> get instancesToCheck =>
-      throw _privateConstructorUsedError;
+  Map<String, InstanceDiff<T, TOther>> get instancesToCheck;
   @override
   @JsonKey(ignore: true)
   _$$_InstanceUpdaterDtoCopyWith<T, TOther, _$_InstanceUpdaterDto<T, TOther>>
@@ -392,11 +389,11 @@ abstract class _InstancesUpdatesDto<T extends HasId, TOther extends HasId>
   const _InstancesUpdatesDto._() : super._();
 
   @override
-  Iterable<TOther> get toCreateFromOther => throw _privateConstructorUsedError;
+  Iterable<TOther> get toCreateFromOther;
   @override
-  Iterable<T> get toUpdate => throw _privateConstructorUsedError;
+  Iterable<T> get toUpdate;
   @override
-  Iterable<T> get toDelete => throw _privateConstructorUsedError;
+  Iterable<T> get toDelete;
   @override
   @JsonKey(ignore: true)
   _$$_InstancesUpdatesDtoCopyWith<T, TOther, _$_InstancesUpdatesDto<T, TOther>>

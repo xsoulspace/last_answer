@@ -4,13 +4,12 @@ import 'package:lastanswer/pack_app/navigator/app_navigator.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_pop_scope.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
-import 'package:lastanswer/pack_app/navigator/app_routes.dart';
 import 'package:lastanswer/pack_app/screens/home/large_home_screen.dart';
 import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
 
 class AppNavigatorLayoutBuilder {
   AppNavigatorLayoutBuilder({
-    required final this.pageBuilder,
+    required this.pageBuilder,
   }) : popper = pageBuilder.popper;
   final AppNavigatorPageBuilder pageBuilder;
   final AppNavigatorPopper popper;

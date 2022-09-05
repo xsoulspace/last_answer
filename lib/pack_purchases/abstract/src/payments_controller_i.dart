@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 enum SubscriptionTypes {
   free,
@@ -22,5 +22,5 @@ abstract class PaymentsControllerI extends ChangeNotifier implements Loadable {
   String get monthlySubscriptionTitle;
   bool get paymentsAccessable;
   @override
-  Future<void> onLoad({required final BuildContext context}) async {}
+  Future<void> onLoad() async {}
 }

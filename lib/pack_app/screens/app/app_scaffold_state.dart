@@ -20,6 +20,12 @@ class AppScaffoldState extends ContextfulLifeState {
     routeState = RouteState(routeParser);
     super.initState();
   }
+
+  @override
+  void dispose() {
+    routeState.dispose();
+    super.dispose();
+  }
 }
 
 AppScaffoldBodyState useAppScaffoldBodyState(final Locator read) => use(

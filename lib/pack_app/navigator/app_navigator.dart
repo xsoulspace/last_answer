@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_layout_builder.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
@@ -27,8 +28,8 @@ class NavigatorValueKeys {
 /// on the `routeState` that was parsed by the TemplateRouteParser.
 class AppNavigator extends StatefulWidget {
   const AppNavigator({
-    required final this.navigatorKey,
-    required final this.routeState,
+    required this.navigatorKey,
+    required this.routeState,
     final Key? key,
   }) : super(key: key);
   final GlobalKey<NavigatorState> navigatorKey;

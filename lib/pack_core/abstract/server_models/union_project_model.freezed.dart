@@ -569,7 +569,9 @@ class _$NoteProjectModel implements NoteProjectModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NoteProjectModelToJson(this);
+    return _$$NoteProjectModelToJson(
+      this,
+    );
   }
 }
 
@@ -589,28 +591,28 @@ abstract class NoteProjectModel implements BasicProjectModel {
       _$NoteProjectModel.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @JsonKey(name: 'is_completed')
-  bool get isCompleted => throw _privateConstructorUsedError;
+  bool get isCompleted;
   @override
   @JsonKey(name: 'project_type')
-  ProjectType get projectType => throw _privateConstructorUsedError;
+  ProjectType get projectType;
   @override
   @JsonKey(name: 'owner_id')
-  String get ownerId => throw _privateConstructorUsedError;
+  String get ownerId;
   @override
   @JsonKey(name: 'folder_id')
-  String get folderId => throw _privateConstructorUsedError;
+  String get folderId;
   @JsonKey(name: 'characters_limit')
-  int? get charactersLimit => throw _privateConstructorUsedError;
-  String get note => throw _privateConstructorUsedError;
+  int? get charactersLimit;
+  String get note;
   @override
   @JsonKey(ignore: true)
   _$$NoteProjectModelCopyWith<_$NoteProjectModel> get copyWith =>
@@ -978,7 +980,9 @@ class _$IdeaProjectModel implements IdeaProjectModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IdeaProjectModelToJson(this);
+    return _$$IdeaProjectModelToJson(
+      this,
+    );
   }
 }
 
@@ -1007,33 +1011,33 @@ abstract class IdeaProjectModel implements BasicProjectModel {
       _$IdeaProjectModel.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String get id;
+  String get title;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @JsonKey(name: 'is_completed')
-  bool get isCompleted => throw _privateConstructorUsedError;
+  bool get isCompleted;
   @override
   @JsonKey(name: 'project_type')
-  ProjectType get projectType => throw _privateConstructorUsedError;
+  ProjectType get projectType;
   @override
   @JsonKey(name: 'owner_id')
-  String get ownerId => throw _privateConstructorUsedError;
+  String get ownerId;
   @override
   @JsonKey(name: 'folder_id')
-  String get folderId => throw _privateConstructorUsedError;
+  String get folderId;
   @JsonKey(name: 'new_answer_text')
-  String get newAnswerText => throw _privateConstructorUsedError;
+  String get newAnswerText;
   @JsonKey(
       name: 'new_question_id',
       fromJson: fromIntToString,
       toJson: fromStringToInt)
-  String get newQuestionId => throw _privateConstructorUsedError;
+  String get newQuestionId;
   @override
   @JsonKey(ignore: true)
   _$$IdeaProjectModelCopyWith<_$IdeaProjectModel> get copyWith =>

@@ -213,7 +213,9 @@ class _$_ProjectFolderModel extends _ProjectFolderModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProjectFolderModelToJson(this);
+    return _$$_ProjectFolderModelToJson(
+      this,
+    );
   }
 }
 
@@ -231,18 +233,18 @@ abstract class _ProjectFolderModel extends ProjectFolderModel {
       _$_ProjectFolderModel.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @JsonKey(name: 'owner_id')
-  String get ownerId => throw _privateConstructorUsedError;
+  String get ownerId;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectFolderModelCopyWith<_$_ProjectFolderModel> get copyWith =>

@@ -17,7 +17,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectQuestion(
-      id: fields[0] as String,
+      id: fields[0] as dynamic,
       title: fields[1] as LocalizedText,
     );
   }
@@ -49,7 +49,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
 
 IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
-      id: json['id'] as String,
+      id: json['id'],
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
       isToDelete: json['isToDelete'] as bool? ?? false,
     );

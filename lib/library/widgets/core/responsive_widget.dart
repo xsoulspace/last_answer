@@ -1,19 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 typedef PagesCallback = List<Page<dynamic>> Function();
 
 class ResponsiveNavigator extends StatelessWidget {
   const ResponsiveNavigator({
-    required final this.navigatorKey,
-    required final this.onLargeScreen,
-    required final this.onPopPage,
-    final this.onMediumScreen,
-    final this.onSmallScreen,
+    required this.navigatorKey,
+    required this.onLargeScreen,
+    required this.onPopPage,
+    this.onMediumScreen,
+    this.onSmallScreen,
     final Key? key,
   }) : super(key: key);
   final PagesCallback onLargeScreen;
@@ -53,9 +49,9 @@ class ResponsiveNavigator extends StatelessWidget {
 
 class ResponsiveWidget extends StatelessWidget {
   const ResponsiveWidget({
-    required final this.largeScreen,
-    final this.mediumScreen,
-    final this.smallScreen,
+    required this.largeScreen,
+    this.mediumScreen,
+    this.smallScreen,
     final Key? key,
   }) : super(key: key);
   final Widget largeScreen;
@@ -84,7 +80,7 @@ class ResponsiveWidget extends StatelessWidget {
 }
 
 class ScreenLayout {
-  ScreenLayout._({final this.context, final this.constraints})
+  ScreenLayout._({this.context, this.constraints})
       : assert(
           context != null || constraints != null,
           'context or constraints should be filled',

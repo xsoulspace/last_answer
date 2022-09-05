@@ -17,7 +17,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProjectFolder(
-      id: fields[0] as String,
+      id: fields[0] as dynamic,
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
       isToDelete: fields[3] as bool?,

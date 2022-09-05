@@ -17,7 +17,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NoteProject(
-      id: fields[0] as String,
+      id: fields[0] as dynamic,
       createdAt: fields[3] as DateTime,
       note: fields[5] as String,
       folder: fields[6] as ProjectFolder?,

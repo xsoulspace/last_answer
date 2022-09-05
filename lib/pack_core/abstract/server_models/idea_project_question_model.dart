@@ -1,14 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'dart:convert';
-
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
-import 'package:lastanswer/pack_core/abstract/server_models/idea_project_answer_model.dart';
-
-part 'idea_project_question_model.freezed.dart';
-part 'idea_project_question_model.g.dart';
+part of 'server_models.dart';
 
 @immutable
 @Freezed(

@@ -9,7 +9,6 @@ import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 import 'package:lastanswer/pack_settings/features_widgets/my_account.dart';
 import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
@@ -92,7 +91,7 @@ class DesktopSettingsNavigator extends HookWidget {
         break;
       case AppRoutesName.profile:
         child = previousChild.value = MyAccount(
-          onSignIn: navigatorController.goSignIn,
+          onSignIn: navigatorController.toSignIn,
         );
         break;
       case AppRoutesName.settings:

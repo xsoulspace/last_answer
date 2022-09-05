@@ -17,7 +17,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProject(
-      id: fields[0] as String,
+      id: fields[0] as dynamic,
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
       newAnswerText: fields[6] as String,

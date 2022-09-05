@@ -17,7 +17,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return StoryProject(
-      id: fields[0] as String,
+      id: fields[0] as dynamic,
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
       folder: fields[5] as ProjectFolder?,

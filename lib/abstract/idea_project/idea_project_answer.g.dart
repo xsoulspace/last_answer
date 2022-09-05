@@ -17,11 +17,11 @@ class IdeaProjectAnswerAdapter extends TypeAdapter<IdeaProjectAnswer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectAnswer(
-      id: fields[2] as String,
+      id: fields[2] as dynamic,
       text: fields[0] as String,
       question: fields[1] as IdeaProjectQuestion,
       createdAt: fields[3] as DateTime,
-      projectId: fields[6] as String,
+      projectId: fields[6] as dynamic,
       isToDelete: fields[5] as bool,
       updatedAt: fields[4] as DateTime?,
     );

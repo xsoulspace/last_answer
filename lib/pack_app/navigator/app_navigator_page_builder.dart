@@ -13,13 +13,12 @@ import 'package:lastanswer/pack_idea/pack_idea.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class AppNavigatorPageBuilder {
   AppNavigatorPageBuilder({
-    required final this.popper,
-    required final this.context,
+    required this.popper,
+    required this.context,
   });
   final AppNavigatorPopper popper;
   final BuildContext context;
@@ -47,7 +46,7 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: AppInfoScreen(
-          onBack: navigatorController.goHome,
+          onBack: navigatorController.toHome,
         ),
       ),
     );
@@ -64,8 +63,8 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: SettingsScreen(
-          onSelectRoute: navigatorController.go,
-          onBack: navigatorController.goBackFromSettings,
+          onSelectRoute: navigatorController.to,
+          onBack: navigatorController.toBackFromSettings,
         ),
       ),
     );
@@ -85,13 +84,13 @@ class AppNavigatorPageBuilder {
         popper: popper,
         child: NoteProjectScreen(
           checkIsProjectActive: checkIsProjectActive,
-          onGoHome: popper.navigatorController.goHome,
+          onGoHome: popper.navigatorController.toHome,
           onBack: (final note) async {
             if (note.note.replaceAll(' ', '').isEmpty) {
               context.read<NoteProjectsNotifier>().remove(key: note.id);
               await note.deleteWithRelatives(context: context);
             }
-            navigatorController.goHome();
+            navigatorController.toHome();
           },
           noteId: params.noteId!,
           key: ValueKey(params.noteId),
@@ -109,7 +108,7 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: IdeaProjectScreen(
-          onBack: navigatorController.goHome,
+          onBack: navigatorController.toHome,
           onAnswerExpand: navigatorController.onIdeaAnswerExpand,
           ideaId: params.ideaId!,
           key: ValueKey(params.ideaId),
@@ -129,7 +128,7 @@ class AppNavigatorPageBuilder {
         child: IdeaAnswerScreen(
           onUnknown: navigatorController.onUnknownIdeaAnswer,
           onBack: (final idea) =>
-              navigatorController.goIdeaScreen(ideaId: idea.id),
+              navigatorController.toIdeaScreen(ideaId: idea.id),
           answerId: params.answerId!,
           ideaId: params.ideaId!,
           key: ValueKey('${params.ideaId}-${params.answerId}'),
@@ -145,7 +144,7 @@ class AppNavigatorPageBuilder {
       child: AppNavigatorPopScope(
         popper: popper,
         child: CreateIdeaProjectScreen(
-          onBack: navigatorController.goHome,
+          onBack: navigatorController.toHome,
           onCreate: navigatorController.onCreateIdea,
         ),
       ),

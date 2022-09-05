@@ -1,8 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lastanswer/pack_core/abstract/primitives/has_id.dart';
-
-part 'user_model.freezed.dart';
-part 'user_model.g.dart';
+part of 'server_models.dart';
 
 typedef UserModelId = String;
 

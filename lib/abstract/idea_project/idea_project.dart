@@ -9,6 +9,7 @@ import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/idea_project/idea_project_answer.dart';
 import 'package:lastanswer/abstract/idea_project/idea_project_question.dart';
 import 'package:lastanswer/abstract/project_folder.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
@@ -19,16 +20,16 @@ part 'idea_project.g.dart';
 @HiveType(typeId: HiveBoxesIds.ideaProject)
 class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   IdeaProject({
-    required final super.id,
-    required final super.title,
-    required final super.createdAt,
+    required super.id,
+    required super.title,
+    required super.createdAt,
     this.newAnswerText = '',
     this.folder,
     this.newQuestion,
     @Deprecated('use getAnswers instead') this.answers,
     final bool? isToDelete,
     final DateTime? updatedAt,
-    final super.isCompleted = defaultProjectIsCompleted,
+    super.isCompleted = defaultProjectIsCompleted,
   })  : isToDelete = isToDelete ?? defaultProjectIsDeleted,
         super(
           updatedAt: updatedAt ?? createdAt,

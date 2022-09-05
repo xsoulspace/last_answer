@@ -4,7 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:universal_io/io.dart';
 
 class RevenueCatPaymentsService
-    implements PaymentsServiceI<PurchaserInfo, Offerings> {
+    implements PaymentsServiceI<CustomerInfo, Offerings> {
   RevenueCatPaymentsService({
     required this.appleKey,
     required this.googleKey,
@@ -41,8 +41,8 @@ class RevenueCatPaymentsService
   bool get paymentsNotAccessable => !paymentsAccessable;
 
   @override
-  Future<PurchaserInfo> getPurchaserInfo() async {
-    final purchaserInfo = await Purchases.getPurchaserInfo();
+  Future<CustomerInfo> getPurchaserInfo() async {
+    final purchaserInfo = await Purchases.getCustomerInfo();
     print('${{"!!! purchaserInfo": purchaserInfo.toJson().toString()}}');
 
     return purchaserInfo;

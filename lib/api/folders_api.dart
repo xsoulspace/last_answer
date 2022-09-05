@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lastanswer/api/abstract_api.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -1,4 +1,4 @@
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 
 /// !If you want to add new route, please add the route to the [routes]
 class NavigationRoutes {

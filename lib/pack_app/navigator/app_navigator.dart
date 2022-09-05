@@ -4,7 +4,6 @@ import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_layout_builder.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
-import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
 import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
 import 'package:lastanswer/pack_app/notifications/update_notification_dialog.dart';
 import 'package:provider/provider.dart';

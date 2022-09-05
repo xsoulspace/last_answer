@@ -193,7 +193,7 @@ class GlobalStateInitializer implements StateInitializer {
     }
     settings.loadingStatus = AppStateLoadingStatuses.settings;
 
-    await notificationController.onLoad(context: context);
+    await notificationController.onLoad(context);
 
     /// ********************************************
     /// *      MIGRATIONS END
@@ -211,6 +211,6 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      SYNCHRONIZATION!
     /// ********************************************
-    await syncWorker.onLoad(context: context);
+    await syncWorker.onLoad();
   }
 }

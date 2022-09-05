@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/widgets/settings_button.dart';
-import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class SettingsNavigation extends StatelessWidget {
@@ -17,7 +18,7 @@ class SettingsNavigation extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final routeState = RouteStateScope.of(context);
+    final routeState = context.watch<RouteState>();
     final screenLayout = ScreenLayout.of(context);
     final paymentsService = context.watch<PaymentsControllerI>();
 
@@ -34,8 +35,8 @@ class SettingsNavigation extends StatelessWidget {
       mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
       children: [
         SettingsButton(
-          routeName: AppRoutesName.generalSettings,
-          fallbackRouteName: AppRoutesName.settings,
+          routeName: NavigationRoutes.generalSettings,
+          fallbackRouteName: NavigationRoutes.settings,
           onSelected: onSelectRoute,
           checkSelected: effectiveSelectedRouteCheck,
           text: screenLayout.small
@@ -45,7 +46,7 @@ class SettingsNavigation extends StatelessWidget {
         ),
         // if (paymentsService.paymentsAccessable)
         SettingsButton(
-          routeName: AppRoutesName.profile,
+          routeName: NavigationRoutes.profile,
           onSelected: onSelectRoute,
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.myAccount,
@@ -53,14 +54,14 @@ class SettingsNavigation extends StatelessWidget {
         ),
         if (paymentsService.paymentsAccessable)
           SettingsButton(
-            routeName: AppRoutesName.subscription,
+            routeName: NavigationRoutes.subscription,
             onSelected: onSelectRoute,
             checkSelected: routeState.checkIsCurrentRoute,
             text: S.current.subscription,
             // TODO(arenukvern): add icon
           ),
         SettingsButton(
-          routeName: AppRoutesName.changelog,
+          routeName: NavigationRoutes.changelog,
           onSelected: (final _) {
             showNotificationDialog(context: context);
           },

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_settings/screens/settings_navigation_screen.dart';
 import 'package:lastanswer/pack_settings/screens/small_settings_screen_state.dart';
 

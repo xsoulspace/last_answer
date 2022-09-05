@@ -5,7 +5,7 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_idea/screens/idea_answer_screen_state.dart';
 import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
 import 'package:lastanswer/state/state.dart';
@@ -13,10 +13,10 @@ import 'package:provider/provider.dart';
 
 class IdeaAnswerScreen extends HookWidget {
   const IdeaAnswerScreen({
-    required final this.ideaId,
-    required final this.answerId,
-    required final this.onBack,
-    required final this.onUnknown,
+    required this.ideaId,
+    required this.answerId,
+    required this.onBack,
+    required this.onUnknown,
     final Key? key,
   }) : super(key: key);
   final String ideaId;

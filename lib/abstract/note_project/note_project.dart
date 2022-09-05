@@ -5,6 +5,7 @@ import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/basic_project.dart';
 import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/project_folder.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
@@ -15,12 +16,12 @@ part 'note_project.g.dart';
 @HiveType(typeId: HiveBoxesIds.noteProject)
 class NoteProject extends BasicProject<NoteProjectModel> {
   NoteProject({
-    required final super.id,
-    required final super.createdAt,
+    required super.id,
+    required super.createdAt,
     this.note = '',
     this.folder,
     this.charactersLimit,
-    final super.isCompleted = defaultProjectIsCompleted,
+    super.isCompleted = defaultProjectIsCompleted,
     final bool? isToDelete,
     final DateTime? updatedAt,
   })  : isToDelete = isToDelete ?? defaultProjectIsDeleted,

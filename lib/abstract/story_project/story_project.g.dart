@@ -11,7 +11,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   final int typeId = 7;
 
   @override
-  StoryProject read(BinaryReader reader) {
+  StoryProject read(final BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -28,7 +28,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   }
 
   @override
-  void write(BinaryWriter writer, StoryProject obj) {
+  void write(final BinaryWriter writer, final StoryProject obj) {
     writer
       ..writeByte(7)
       ..writeByte(5)
@@ -51,7 +51,7 @@ class StoryProjectAdapter extends TypeAdapter<StoryProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is StoryProjectAdapter &&
           runtimeType == other.runtimeType &&

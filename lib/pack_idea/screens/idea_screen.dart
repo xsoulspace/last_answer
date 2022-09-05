@@ -4,7 +4,7 @@ import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_idea/screens/idea_screen_state.dart';
 import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
 import 'package:lastanswer/pack_idea/widgets/answer_tile.dart';
@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 
 class IdeaProjectScreen extends HookWidget {
   const IdeaProjectScreen({
-    required final this.onBack,
-    required final this.ideaId,
-    required final this.onAnswerExpand,
+    required this.onBack,
+    required this.ideaId,
+    required this.onAnswerExpand,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onBack;

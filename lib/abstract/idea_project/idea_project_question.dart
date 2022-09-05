@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/localization/localized_text.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/utils/utils.dart';
 
@@ -24,8 +25,8 @@ class IdeaProjectQuestion
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
-    required final this.id,
-    required final this.title,
+    required this.id,
+    required this.title,
     this.isToDelete = false,
   });
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>

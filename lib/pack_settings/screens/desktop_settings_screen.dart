@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 import 'package:lastanswer/pack_settings/features_widgets/my_account.dart';

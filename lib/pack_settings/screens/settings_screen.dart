@@ -7,7 +7,7 @@ import 'package:lastanswer/pack_settings/screens/small_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
-    required final this.onBack,
+    required this.onBack,
     required this.onSelectRoute,
     final Key? key,
   }) : super(key: key);

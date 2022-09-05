@@ -21,7 +21,7 @@ class PaymentsController extends PaymentsControllerI {
   PaymentsController({
     required this.paymentsService,
   });
-  final PaymentsServiceI<PurchaserInfo, Offerings> paymentsService;
+  final PaymentsServiceI<CustomerInfo, Offerings> paymentsService;
   @override
   bool get isPatronSubscription {
     switch (subscriptionType) {
@@ -32,7 +32,7 @@ class PaymentsController extends PaymentsControllerI {
     }
   }
 
-  PurchaserInfo? purchaserInfo;
+  CustomerInfo? customerInfo;
   Offerings? offerings;
 
   Package? get _annualSubscription => offerings?.current?.annual;
@@ -60,10 +60,10 @@ class PaymentsController extends PaymentsControllerI {
     try {
       await Purchases.setup(key);
       await Purchases.setDebugLogsEnabled(false);
-      final effectivePurchaserInfo =
-          purchaserInfo = await paymentsService.getPurchaserInfo();
+      final effectiveCustomerInfo =
+          customerInfo = await paymentsService.getPurchaserInfo();
       final allFeaturesEntitlment =
-          effectivePurchaserInfo.entitlements.all['pro'];
+          effectiveCustomerInfo.entitlements.all['pro'];
       if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
         subscriptionType = SubscriptionTypes.paidPatron;
       }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 
 class StoryProjectScreen extends StatelessWidget {
   const StoryProjectScreen({
-    required final this.projectId,
+    required this.projectId,
     final Key? key,
   }) : super(key: key);
   final ProjectId projectId;

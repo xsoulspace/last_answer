@@ -147,9 +147,7 @@ class CharactersLimitSetting extends HookWidget {
         CharactersLimitButton(
           onTap: state.onSetInstagramLimit,
           child: Image.asset(
-            instagramIcon.assetName,
-            bundle: instagramIcon.bundle,
-            package: instagramIcon.package,
+            instagramIcon.path,
             cacheHeight: 36,
             cacheWidth: 36,
             width: 18,
@@ -172,9 +170,7 @@ class CharactersLimitSetting extends HookWidget {
         CharactersLimitButton(
           onTap: state.onSetFacebookLimit,
           child: Image.asset(
-            facebookIcon.assetName,
-            bundle: facebookIcon.bundle,
-            package: facebookIcon.package,
+            facebookIcon.path,
             cacheHeight: 36,
             cacheWidth: 36,
             width: 18,

@@ -6,7 +6,7 @@ import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.da
 
 class SettingsNavigationScreen extends StatelessWidget {
   const SettingsNavigationScreen({
-    required final this.onBack,
+    required this.onBack,
     required this.onSelectRoute,
     final Key? key,
   }) : super(key: key);

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator.dart';
 import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
-import 'package:lastanswer/pack_app/navigator/app_navigator_pop_scope.dart';
-import 'package:lastanswer/pack_app/navigator/app_navigator_popper.dart';
 import 'package:lastanswer/pack_app/screens/home/large_home_screen.dart';
 import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
 

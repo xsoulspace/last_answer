@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/pack_app/notifications/notification_message.dart';
 import 'package:lastanswer/pack_app/notifications/notifications_service.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:life_hooks/life_hooks.dart';
 
-class NotificationController extends ChangeNotifier implements Loadable {
+class NotificationController extends ChangeNotifier
+    implements ContextfulLoadable {
   NotificationController({
     required this.notificationService,
   });
@@ -41,7 +42,7 @@ class NotificationController extends ChangeNotifier implements Loadable {
   final List<NotificationMessage> updates = [];
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad(final BuildContext context) async {
     final notifications = await notificationService.getUpdatesNotifications(
       context: context,
     );

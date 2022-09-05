@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 
 @immutable
 class BasicProjectsDto {
   const BasicProjectsDto({
-    required final this.ideas,
-    required final this.notes,
-    required final this.stories,
+    required this.ideas,
+    required this.notes,
+    required this.stories,
   });
   final Map<ProjectId, IdeaProject> ideas;
   final Map<ProjectId, NoteProject> notes;

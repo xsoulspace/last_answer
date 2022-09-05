@@ -12,6 +12,7 @@ import 'package:lastanswer/pack_settings/sync/updaters/idea_answer_updater.dart'
 import 'package:lastanswer/pack_settings/sync/updaters/idea_question_updater.dart';
 import 'package:lastanswer/pack_settings/sync/updaters/idea_updater.dart';
 import 'package:lastanswer/pack_settings/sync/updaters/note_updater.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
 ServerSyncWorkerNotifier createServerSyncWorkerNotifier(
@@ -63,7 +64,7 @@ class ServerSyncWorkerNotifier extends ChangeNotifier implements Loadable {
   });
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     await _onConnectionChange();
     connectivityService.addListener(_onConnectionChange);
     usersNotifier.authenticated.addListener(_onAuthChange);

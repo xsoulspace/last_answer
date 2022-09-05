@@ -1,5 +1,5 @@
 import 'package:lastanswer/api/abstract_api.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IdeaProjectAnswersApi extends AbstractApiProps<IdeaProjectAnswerModel>

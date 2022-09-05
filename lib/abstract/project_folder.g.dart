@@ -11,13 +11,13 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   final int typeId = 9;
 
   @override
-  ProjectFolder read(final BinaryReader reader) {
+  ProjectFolder read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProjectFolder(
-      id: fields[0] as dynamic,
+      id: fields[0] as String,
       title: fields[1] as String,
       projectsIdsString: fields[2] as String,
       isToDelete: fields[3] as bool?,
@@ -27,7 +27,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   }
 
   @override
-  void write(final BinaryWriter writer, final ProjectFolder obj) {
+  void write(BinaryWriter writer, ProjectFolder obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -48,7 +48,7 @@ class ProjectFolderAdapter extends TypeAdapter<ProjectFolder> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is ProjectFolderAdapter &&
           runtimeType == other.runtimeType &&

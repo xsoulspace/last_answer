@@ -2,11 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/navigator/app_navigator_layout_builder.dart';
-import 'package:lastanswer/pack_app/navigator/app_navigator_page_builder.dart';
-import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
-import 'package:lastanswer/pack_app/notifications/update_notification_dialog.dart';
-import 'package:provider/provider.dart';
 
 class NavigatorValueKeys {
   NavigatorValueKeys._();
@@ -41,32 +36,11 @@ class _AppNavigatorState extends State<AppNavigator> {
   @override
   void initState() {
     super.initState();
-    final notificationController = context.read<NotificationController>();
-    if (notificationController.hasUnreadUpdates) {
-      WidgetsBinding.instance.addPostFrameCallback((final _) {
-        showNotificationDialog(
-          context: widget.navigatorKey.currentContext!,
-        );
-      });
-    }
   }
 
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-
-    final popper = AppNavigatorPopper(
-      routeState: widget.routeState,
-      screenLayout: screenLayout,
-      context: context,
-    );
-    final pageBuilder = AppNavigatorPageBuilder(
-      popper: popper,
-      context: context,
-    );
-    final layoutBuilder = AppNavigatorLayoutBuilder(
-      pageBuilder: pageBuilder,
-    );
 
     return ResponsiveNavigator(
       navigatorKey: widget.navigatorKey,

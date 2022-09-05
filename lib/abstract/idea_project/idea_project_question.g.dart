@@ -11,19 +11,19 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   final int typeId = 5;
 
   @override
-  IdeaProjectQuestion read(final BinaryReader reader) {
+  IdeaProjectQuestion read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProjectQuestion(
-      id: fields[0] as dynamic,
+      id: fields[0] as String,
       title: fields[1] as LocalizedText,
     );
   }
 
   @override
-  void write(final BinaryWriter writer, final IdeaProjectQuestion obj) {
+  void write(BinaryWriter writer, IdeaProjectQuestion obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -36,7 +36,7 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectQuestionAdapter &&
           runtimeType == other.runtimeType &&
@@ -47,17 +47,15 @@ class IdeaProjectQuestionAdapter extends TypeAdapter<IdeaProjectQuestion> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-IdeaProjectQuestion _$IdeaProjectQuestionFromJson(
-        final Map<String, dynamic> json) =>
+IdeaProjectQuestion _$IdeaProjectQuestionFromJson(Map<String, dynamic> json) =>
     IdeaProjectQuestion(
-      id: json['id'],
+      id: json['id'] as String,
       title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
       isToDelete: json['isToDelete'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$IdeaProjectQuestionToJson(
-  final IdeaProjectQuestion instance,
-) =>
+        IdeaProjectQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

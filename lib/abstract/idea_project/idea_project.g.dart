@@ -11,13 +11,13 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   final int typeId = 3;
 
   @override
-  IdeaProject read(final BinaryReader reader) {
+  IdeaProject read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IdeaProject(
-      id: fields[0] as dynamic,
+      id: fields[0] as String,
       title: fields[2] as String,
       createdAt: fields[3] as DateTime,
       newAnswerText: fields[6] as String,
@@ -31,7 +31,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   }
 
   @override
-  void write(final BinaryWriter writer, final IdeaProject obj) {
+  void write(BinaryWriter writer, IdeaProject obj) {
     writer
       ..writeByte(10)
       ..writeByte(5)
@@ -60,7 +60,7 @@ class IdeaProjectAdapter extends TypeAdapter<IdeaProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is IdeaProjectAdapter &&
           runtimeType == other.runtimeType &&

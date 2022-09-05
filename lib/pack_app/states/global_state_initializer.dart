@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_app/notifications/notifications_controller.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
@@ -212,5 +212,15 @@ class GlobalStateInitializer implements StateInitializer {
     /// *      SYNCHRONIZATION!
     /// ********************************************
     await syncWorker.onLoad();
+
+    /// ********************************************
+    /// *      SHOW SYSTEM NOTIFICATIONS
+    /// ********************************************
+
+    if (notificationController.hasUnreadUpdates) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
+        showNotificationDialog(context: context);
+      });
+    }
   }
 }

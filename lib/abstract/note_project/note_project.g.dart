@@ -11,13 +11,13 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   final int typeId = 6;
 
   @override
-  NoteProject read(final BinaryReader reader) {
+  NoteProject read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NoteProject(
-      id: fields[0] as dynamic,
+      id: fields[0] as String,
       createdAt: fields[3] as DateTime,
       note: fields[5] as String,
       folder: fields[6] as ProjectFolder?,
@@ -29,7 +29,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   }
 
   @override
-  void write(final BinaryWriter writer, final NoteProject obj) {
+  void write(BinaryWriter writer, NoteProject obj) {
     writer
       ..writeByte(8)
       ..writeByte(5)
@@ -54,7 +54,7 @@ class NoteProjectAdapter extends TypeAdapter<NoteProject> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is NoteProjectAdapter &&
           runtimeType == other.runtimeType &&

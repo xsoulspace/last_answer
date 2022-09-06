@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:life_hooks/life_hooks.dart';
+import 'package:provider/provider.dart';
 
 part 'home_mouse_tablet_state.dart';
 
@@ -13,7 +15,7 @@ class HomeMouseTabletScreen extends HookWidget {
   static const double appBarHeight = 56.0;
   @override
   Widget build(final BuildContext context) {
-    final state = _useScreenState();
+    final state = _useScreenState(read: context.read);
     final theme = Theme.of(context);
     final uiTheme = UiTheme.of(context);
 
@@ -32,8 +34,12 @@ class HomeMouseTabletScreen extends HookWidget {
               ),
             ),
             child: Column(
-              children: const [
-                SizedBox(height: appBarHeight),
+              children: [
+                MacosBackgroundAppBar(
+                  height: appBarHeight,
+                  onShowInfo: state.onShowInfo,
+                  onShowSettings: state.onShowSettings,
+                ),
               ],
             ),
           ),
@@ -77,7 +83,9 @@ class HomeMouseTabletScreen extends HookWidget {
             ],
           ),
           Positioned(
-            child: MacosAppBar(
+            width: state.leftWidth,
+            child: MacosForegroundAppBar(
+              leftPaneOpen: state.leftPaneOpen,
               height: appBarHeight,
               onSwitchLeftPane: state.onSwitchLeftPane,
             ),
@@ -88,16 +96,19 @@ class HomeMouseTabletScreen extends HookWidget {
   }
 }
 
-class MacosAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MacosAppBar({
+class MacosForegroundAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const MacosForegroundAppBar({
     required this.onSwitchLeftPane,
     required this.height,
+    required this.leftPaneOpen,
     super.key,
   });
   final double height;
   @override
   Size get preferredSize => Size.fromHeight(height);
   final VoidCallback onSwitchLeftPane;
+  final bool leftPaneOpen;
   @override
   Widget build(final BuildContext context) {
     final uiTheme = UiTheme.of(context);
@@ -114,7 +125,48 @@ class MacosAppBar extends StatelessWidget implements PreferredSizeWidget {
             CupertinoActionIconButton(
               onPressed: onSwitchLeftPane,
               icon: CupertinoIcons.sidebar_left,
-            )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MacosBackgroundAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const MacosBackgroundAppBar({
+    required this.height,
+    required this.onShowInfo,
+    required this.onShowSettings,
+    super.key,
+  });
+  final double height;
+  @override
+  Size get preferredSize => Size.fromHeight(height);
+  final VoidCallback onShowInfo;
+  final VoidCallback onShowSettings;
+  @override
+  Widget build(final BuildContext context) {
+    final uiTheme = UiTheme.of(context);
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: preferredSize.height),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: uiTheme.spacing.medium,
+          vertical: 1,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            CupertinoActionIconButton(
+              onPressed: onShowInfo,
+              icon: CupertinoIcons.info,
+            ),
+            CupertinoActionIconButton(
+              onPressed: onShowSettings,
+              icon: CupertinoIcons.gear,
+            ),
           ],
         ),
       ),

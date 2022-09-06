@@ -74,8 +74,12 @@ class CupertinoActionIconButton extends HookWidget {
         onPressed: onPressed,
         color: theme.colorScheme.onSecondaryContainer,
         size: size ?? 18,
-        padding:
-            padding ?? const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+        backgroundColor: hovered.value ? theme.hoverColor : null,
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              vertical: 4,
+              horizontal: 10,
+            ),
         icon: icon,
       ),
     );

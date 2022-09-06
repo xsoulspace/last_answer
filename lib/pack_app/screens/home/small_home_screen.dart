@@ -10,7 +10,7 @@ import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
-class SmallHomeScreen extends StatefulHookWidget {
+class SmallHomeScreen extends HookWidget {
   const SmallHomeScreen({
     this.verticalMenuAlignment = Alignment.bottomLeft,
     final Key? key,
@@ -18,24 +18,18 @@ class SmallHomeScreen extends StatefulHookWidget {
   final Alignment verticalMenuAlignment;
 
   @override
-  _SmallHomeScreenState createState() => _SmallHomeScreenState();
-}
-
-class _SmallHomeScreenState extends State<SmallHomeScreen> {
-  @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
 
     const verticalMenu = HomeVerticalMenu();
-
     const projectsList = ProjectsListView();
 
     final body = Scaffold(
       appBar: HomeAppBar.build(
         context: context,
-        onInfoTap: widget.onInfoTap,
-        onSettingsTap: widget.onSettingsTap,
+        onInfoTap: () => context.read<AppRouterController>().toAppInfo(),
+        onSettingsTap: () => context.read<AppRouterController>().toSettings(),
       ),
       body: Column(
         children: [
@@ -43,12 +37,11 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
             child: Row(
               children: [
                 const SizedBox(height: 2),
-                if (widget.verticalMenuAlignment == Alignment.bottomLeft)
-                  verticalMenu,
+                if (verticalMenuAlignment == Alignment.bottomLeft) verticalMenu,
                 const Expanded(
                   child: projectsList,
                 ),
-                if (widget.verticalMenuAlignment == Alignment.bottomRight)
+                if (verticalMenuAlignment == Alignment.bottomRight)
                   verticalMenu,
               ],
             ),
@@ -74,7 +67,6 @@ class HomeVerticalMenu extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
-    final appRouterController = context.read<AppRouterController>();
 
     return ColoredBox(
       color: themeDefiner.useContextTheme
@@ -83,9 +75,13 @@ class HomeVerticalMenu extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: VerticalProjectsBar(
-          onIdeaTap: onCreateIdeaTap,
-          onNoteTap: onCreateNoteTap,
-          onFolderTap: onFolderTap,
+          onIdeaTap: () => context.read<AppRouterController>().toCreateIdea(),
+          onNoteTap: () => context
+              .read<AppRouterController>()
+              .toNoteScreen(context: context),
+          onFolderTap: (final folder) => context
+              .read<AppRouterController>()
+              .toFolder(folder: folder, read: context.read),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
 
 class OutlinedActionButton extends StatelessWidget {
   const OutlinedActionButton({
@@ -36,6 +36,7 @@ class OutlinedActionButton extends StatelessWidget {
 
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
+        foregroundColor: primaryColor,
         elevation: 0,
         padding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -44,7 +45,6 @@ class OutlinedActionButton extends StatelessWidget {
           borderRadius: defaultPopupBorderRadius,
         ),
         side: BorderSide(color: primaryColor),
-        primary: primaryColor,
       ),
       onPressed: onPressed,
       child: child,

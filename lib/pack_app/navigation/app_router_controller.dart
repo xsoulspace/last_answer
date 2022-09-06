@@ -99,10 +99,16 @@ class AppRouterController extends RouterController {
       );
 
   Future<void> onUnknownIdeaAnswer(
-    final String answerId,
     final IdeaProject idea,
   ) async =>
       toIdeaScreen(ideaId: idea.id);
+
+  void toFolder({
+    required final ProjectFolder folder,
+    required final Locator read,
+  }) {
+    read<CurrentFolderNotifier>().setState(folder);
+  }
 
   /// ******************************
   ///         Handlers

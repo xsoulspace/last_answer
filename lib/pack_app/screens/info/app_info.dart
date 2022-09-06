@@ -20,7 +20,7 @@ class AppInfoScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: S.current.appInfo,
-        onBack: onBack,
+        onBack: () => Navigator.pop(context),
       ),
       body: Align(
         alignment: Alignment.topCenter,

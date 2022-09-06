@@ -5,11 +5,42 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/widgets/project_tile.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
+
+_ProjectsListViewState _useProjectsListViewState() => use(
+      ContextfulLifeHook(
+        debugLabel: 'ProjectsListViewState',
+        state: _ProjectsListViewState(),
+      ),
+    );
+
+class _ProjectsListViewState extends ContextfulLifeState {
+  _ProjectsListViewState();
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void onProjectTap(final BasicProject<BasicProjectModel> project) => context
+      .read<AppRouterController>()
+      .onProjectTap(project: project, context: context);
+  bool checkIsProjectActive(final BasicProject<BasicProjectModel> project) =>
+      context.read<AppRouterController>().checkIsProjectActive(
+            project: project,
+            read: context.read,
+          );
+  void onGoHome() => context.read<AppRouterController>().toHome();
+}
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({
@@ -17,8 +48,8 @@ class ProjectsListView extends HookWidget {
   }) : super(key: key);
   @override
   Widget build(final BuildContext context) {
+    final state = _useProjectsListViewState();
     final themeDefiner = ThemeDefiner.of(context);
-    final scrollController = useScrollController();
     final screenLayout = ScreenLayout.of(context);
     final textTheme = themeDefiner.effectiveTheme.textTheme;
     final settings = context.watch<GeneralSettingsController>();
@@ -45,12 +76,12 @@ class ProjectsListView extends HookWidget {
                 ? null
                 : textTheme.subtitle2?.color?.withOpacity(0.7),
             child: RightScrollbar(
-              controller: scrollController,
+              controller: state._scrollController,
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 reverse: reversed,
                 key: const PageStorageKey('projects_scroll_view'),
-                controller: scrollController,
+                controller: state._scrollController,
                 padding: const EdgeInsets.all(5),
                 // shrinkWrap: true,
                 restorationId: 'projects',
@@ -64,12 +95,12 @@ class ProjectsListView extends HookWidget {
                     child: ProjectTile(
                       project: project,
                       themeDefiner: themeDefiner,
-                      onTap: onProjectTap,
-                      isProjectActive: checkIsProjectActive(project),
+                      onTap: state.onProjectTap,
+                      isProjectActive: state.checkIsProjectActive(project),
                       onRemove: (final _) async => removeProject(
-                        checkIsProjectActive: checkIsProjectActive,
+                        checkIsProjectActive: state.checkIsProjectActive,
                         context: context,
-                        onGoHome: onGoHome,
+                        onGoHome: state.onGoHome,
                         project: project,
                       ),
                       onRemoveConfirm: (final _) async {

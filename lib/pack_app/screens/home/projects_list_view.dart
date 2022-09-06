@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
@@ -54,6 +55,7 @@ class ProjectsListView extends HookWidget {
     final textTheme = themeDefiner.effectiveTheme.textTheme;
     final settings = context.watch<GeneralSettingsController>();
     final reversed = settings.projectsListReversed;
+    context.watch<RouteState>();
 
     return Consumer<CurrentFolderNotifier>(
       builder: (final context, final folderState, final __) {

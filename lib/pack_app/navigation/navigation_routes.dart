@@ -1,5 +1,8 @@
 import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 
+/// Choose name from [AppRoutesName]
+typedef AppRouteName = String;
+
 /// !If you want to add new route, please add the route to the [routes]
 class NavigationRoutes {
   NavigationRoutes._();

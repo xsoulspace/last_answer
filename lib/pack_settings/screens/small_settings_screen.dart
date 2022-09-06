@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
+import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_settings/screens/settings_navigation_screen.dart';
 import 'package:lastanswer/pack_settings/screens/small_settings_screen_state.dart';
+import 'package:provider/provider.dart';
 
 class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
@@ -16,15 +20,11 @@ class SmallSettingsScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final routeState = RouteStateScope.of(context);
+    final routeState = context.watch<RouteState>();
     final screenLayout = ScreenLayout.of(context);
-    final navigatorController = AppNavigatorController.use(
-      routeState: routeState,
-      context: context,
-      screenLayout: screenLayout,
-    );
+
     final state = useSmallSettingsScreenStateState(
-      onSignIn: navigatorController.toSignIn,
+      onSignIn: () => context.read<AppRouterController>().toSignIn(),
       onBack: onBack,
       onSelectRoute: onSelectRoute,
       routeState: routeState,

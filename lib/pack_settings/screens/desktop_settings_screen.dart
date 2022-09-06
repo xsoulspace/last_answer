@@ -2,12 +2,16 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
+import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 import 'package:lastanswer/pack_settings/features_widgets/my_account.dart';
 import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.dart';
+import 'package:provider/provider.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
@@ -76,25 +80,20 @@ class DesktopSettingsNavigator extends HookWidget {
     final screenLayout = ScreenLayout.of(context);
     final previousChild = useState<Widget>(const SizedBox());
     Widget child;
-    final routeState = RouteStateScope.of(context);
+    final routeState = context.watch<RouteState>();
     final pathTemplate = routeState.route.pathTemplate;
 
-    final navigatorController = AppNavigatorController.use(
-      routeState: routeState,
-      context: context,
-      screenLayout: screenLayout,
-    );
     switch (pathTemplate) {
-      case AppRoutesName.subscription:
+      case NavigationRoutes.subscription:
         child = previousChild.value = const SubscriptionInfo();
         break;
-      case AppRoutesName.profile:
+      case NavigationRoutes.profile:
         child = previousChild.value = MyAccount(
-          onSignIn: navigatorController.toSignIn,
+          onSignIn: () => context.read<AppRouterController>().toSignIn(),
         );
         break;
-      case AppRoutesName.settings:
-      case AppRoutesName.generalSettings:
+      case NavigationRoutes.settings:
+      case NavigationRoutes.generalSettings:
         child = previousChild.value = const GeneralSettings(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_settings/screens/general_settings_screen.dart';
 import 'package:lastanswer/pack_settings/screens/my_account_screen.dart';
 import 'package:lastanswer/pack_settings/screens/subscription_screen.dart';
@@ -67,7 +69,7 @@ class SmallSettingsScreenState extends LifeState {
     if (!pageController.hasClients) return;
     final controllerPage = pageController.page?.ceil();
     if (chosenPage.value == controllerPage) return;
-    onSelectRoute(AppRoutesName.settings);
+    onSelectRoute(NavigationRoutes.settings);
   }
 
   Future<void> toPage({final int page = 1}) async {
@@ -84,18 +86,18 @@ class SmallSettingsScreenState extends LifeState {
 
   Future<void> switchToPage() async {
     switch (routeState.route.pathTemplate) {
-      case AppRoutesName.profile:
+      case NavigationRoutes.profile:
         subSettingsPage.value = MyAccountScreen(
           onBack: onBack,
           onSignIn: onSignIn,
         );
         await toPage();
         break;
-      case AppRoutesName.generalSettings:
+      case NavigationRoutes.generalSettings:
         subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
         await toPage();
         break;
-      case AppRoutesName.subscription:
+      case NavigationRoutes.subscription:
         subSettingsPage.value = SubscriptionScreen(onBack: onBack);
         await toPage();
         break;

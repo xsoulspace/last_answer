@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/generated/assets.gen.dart';
 import 'package:lastanswer/library/theme/theme.dart';
@@ -65,12 +66,13 @@ class CupertinoActionIconButton extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final hovered = useIsBool();
-
+    final theme = Theme.of(context);
     return FocusableActionDetector(
       mouseCursor: SystemMouseCursors.click,
       onShowHoverHighlight: (final value) => hovered.value = value,
       child: CupertinoIconButton(
         onPressed: onPressed,
+        color: theme.colorScheme.onSecondaryContainer,
         size: size ?? 18,
         padding:
             padding ?? const EdgeInsets.symmetric(vertical: 4, horizontal: 10),

@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/client_sync_service.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:provider/provider.dart';
 
 class ClientNoteSyncService extends HiveClientSyncServiceImpl<NoteProject,
     NoteProjectModel, NoteProjectsNotifier> {
-  ClientNoteSyncService({required final super.context});
+  ClientNoteSyncService({required super.context});
 
   factory ClientNoteSyncService.of(final BuildContext context) =>
       ClientNoteSyncService(context: context);

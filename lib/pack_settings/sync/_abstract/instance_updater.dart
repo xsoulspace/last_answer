@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/client_sync_service.dart';
 import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
@@ -191,7 +192,7 @@ abstract class BasicProjectInstanceUpdater<
         TNotifier extends MapState<TMutable>>
     extends InstanceUpdater<TMutable, TImmutableOther, TNotifier> {
   BasicProjectInstanceUpdater({
-    required final super.clientSyncService,
+    required super.clientSyncService,
     required this.foldersNotifier,
   });
 

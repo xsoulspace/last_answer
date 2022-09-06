@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/instance_updater.dart';
 import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
 import 'package:lastanswer/pack_settings/sync/_models/instance_update_policy.dart';
@@ -26,9 +26,9 @@ IdeaUpdater createIdeaUpdater(
 class IdeaUpdater extends BasicProjectInstanceUpdater<IdeaProject,
     IdeaProjectModel, IdeaProjectsNotifier> {
   IdeaUpdater.of({
-    required final super.clientSyncService,
-    required final this.serverSyncService,
-    required final super.foldersNotifier,
+    required super.clientSyncService,
+    required this.serverSyncService,
+    required super.foldersNotifier,
     required this.questionsNotifier,
   });
   final ServerProjectsSyncService serverSyncService;

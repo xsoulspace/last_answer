@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/api/api.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/instance_subscriber.dart';
 import 'package:lastanswer/pack_settings/sync/updaters/idea_answer_updater.dart';
 import 'package:lastanswer/pack_settings/sync/updaters/idea_question_updater.dart';
@@ -24,9 +24,9 @@ ServerProjectsSubscriber createProjectsSubscriberNotifier(
 
 class ServerProjectsSubscriber extends InstanceSubscriberI<BasicProjectModel> {
   ServerProjectsSubscriber({
-    required final this.ideaUpdater,
-    required final this.noteUpdater,
-    required final super.api,
+    required this.ideaUpdater,
+    required this.noteUpdater,
+    required super.api,
   });
   final IdeaUpdater ideaUpdater;
   final NoteUpdater noteUpdater;
@@ -67,8 +67,8 @@ ServerIdeaAnswerSubscriber createIdeaAnswerSubscriberNotifier(
 class ServerIdeaAnswerSubscriber extends SingleInstanceSubscriber<
     IdeaProjectAnswer, IdeaProjectAnswerModel, IdeaProjectAnswersNotifier> {
   ServerIdeaAnswerSubscriber({
-    required final super.updater,
-    required final super.api,
+    required super.updater,
+    required super.api,
   });
 }
 
@@ -85,7 +85,7 @@ class ServerIdeaQuestionSubscriber extends SingleInstanceSubscriber<
     IdeaProjectQuestionModel,
     IdeaProjectQuestionsNotifier> {
   ServerIdeaQuestionSubscriber({
-    required final super.updater,
-    required final super.api,
+    required super.updater,
+    required super.api,
   });
 }

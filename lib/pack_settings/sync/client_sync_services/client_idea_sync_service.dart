@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/client_sync_service.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:provider/provider.dart';
 
 class ClientIdeaSyncService extends HiveClientSyncServiceImpl<IdeaProject,
     IdeaProjectModel, IdeaProjectsNotifier> {
-  ClientIdeaSyncService({required final super.context});
+  ClientIdeaSyncService({required super.context});
   factory ClientIdeaSyncService.of(final BuildContext context) =>
       ClientIdeaSyncService(context: context);
   @override

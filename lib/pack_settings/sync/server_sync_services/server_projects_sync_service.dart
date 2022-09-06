@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/api/api.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/server_sync_service.dart';
 import 'package:lastanswer/pack_settings/sync/_models/model_updater_diff.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +20,8 @@ ServerProjectsSyncService createServerProjectsSyncService(
 class ServerProjectsSyncService
     extends ServerInstancesSyncServiceI<BasicProject, BasicProjectModel> {
   ServerProjectsSyncService({
-    required final super.api,
-    required final super.usersNotifier,
+    required super.api,
+    required super.usersNotifier,
   });
 
   @override

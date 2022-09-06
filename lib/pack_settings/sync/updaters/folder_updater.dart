@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_core/pack_core.dart';
+import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_settings/sync/_abstract/instance_updater.dart';
 import 'package:lastanswer/pack_settings/sync/_models/instance_diff.dart';
 import 'package:lastanswer/pack_settings/sync/_models/instance_update_policy.dart';
@@ -25,8 +25,8 @@ FolderUpdater createFolderUpdater(
 class FolderUpdater extends InstanceUpdater<ProjectFolder, ProjectFolderModel,
     ProjectFoldersNotifier> {
   FolderUpdater.of({
-    required final super.clientSyncService,
-    required final this.serverSyncService,
+    required super.clientSyncService,
+    required this.serverSyncService,
     required this.foldersNotifier,
   });
   final ServerFolderSyncService serverSyncService;

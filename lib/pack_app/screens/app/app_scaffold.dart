@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,6 +18,7 @@ import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 part 'app_scaffold_states.dart';
 
@@ -122,10 +124,15 @@ class _AppScaffoldBuilder extends HookWidget {
           // directory.
           onGenerateTitle: (final context) => S.of(context).lastAnswer,
           builder: (final context, final child) {
+            final isDesktop = !(kIsWeb || Platform.isAndroid || Platform.isIOS);
             return UiTheme(
               scheme: UiThemeScheme.m3(context),
               child: StateLoader(
+                backgroundIsTransparent: isDesktop,
                 initializer: GlobalStateInitializer(),
+                background: isDesktop
+                    ? Colors.transparent
+                    : Theme.of(context).backgroundColor,
                 loader: const LoadingScreen(),
                 child: child!,
               ),

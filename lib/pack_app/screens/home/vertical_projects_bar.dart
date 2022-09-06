@@ -21,7 +21,7 @@ class VerticalProjectsBar extends StatelessWidget {
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
     final foldersNotifier = context.watch<ProjectFoldersNotifier>();
-
+    final folders = foldersNotifier.state.values.toList();
     return Padding(
       padding: const EdgeInsets.only(
         left: 6,
@@ -33,47 +33,63 @@ class VerticalProjectsBar extends StatelessWidget {
           vertical: 16,
           horizontal: 6,
         ),
-        // TODO(arenukvern): add gradient
         decoration: BoxDecoration(
           borderRadius: defaultBorderRadius,
           color: themeDefiner.themeToUse == ThemeToUse.fromContext
               ? Theme.of(context).splashColor.withOpacity(0.05)
               : null,
         ),
-        child: Wrap(
-          direction: Axis.vertical,
-          spacing: 16,
-          children: [
-            ...foldersNotifier.state.values.map(
-              (final folder) => BarItem(
-                label: folder.title,
-                child: InkWell(
-                  onTap: () => onFolderTap(folder),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent.withOpacity(0.2),
-                      borderRadius: defaultBorderRadius,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: ListView.separated(
+                itemBuilder: (final context, final index) {
+                  final folder = folders[index];
+                  return BarItem(
+                    label: folder.title,
+                    key: ValueKey(folder),
+                    child: InkWell(
+                      onTap: () => onFolderTap(folder),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.2),
+                          borderRadius: defaultBorderRadius,
+                        ),
+                      ),
                     ),
-                  ),
+                  );
+                },
+                separatorBuilder: (final context, final index) {
+                  return const SizedBox(height: 16);
+                },
+                itemCount: folders.length,
+              ),
+            ),
+            ...[
+              const Divider(),
+              BarItem(
+                onTap: onIdeaTap,
+                label: S.current.idea,
+                child: IconIdeaButton(
+                  onTap: onIdeaTap,
                 ),
               ),
-            ),
-            const Divider(),
-            BarItem(
-              onTap: onIdeaTap,
-              label: S.current.idea,
-              child: IconIdeaButton(
-                onTap: onIdeaTap,
+              BarItem(
+                onTap: onNoteTap,
+                label: S.current.note,
+                child: IconButton(
+                  onPressed: onNoteTap,
+                  icon: const Icon(Icons.book),
+                ),
               ),
-            ),
-            BarItem(
-              onTap: onNoteTap,
-              label: S.current.note,
-              child: IconButton(
-                onPressed: onNoteTap,
-                icon: const Icon(Icons.book),
+            ].map(
+              (final e) => SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: e,
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),

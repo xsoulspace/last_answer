@@ -22,9 +22,6 @@ class SmallHomeScreen extends HookWidget {
     final themeDefiner = ThemeDefiner.of(context);
     final effectiveTheme = themeDefiner.effectiveTheme;
 
-    const verticalMenu = HomeVerticalMenu();
-    const projectsList = ProjectsListView();
-
     final body = Scaffold(
       appBar: HomeAppBar.build(
         context: context,
@@ -37,12 +34,13 @@ class SmallHomeScreen extends HookWidget {
             child: Row(
               children: [
                 const SizedBox(height: 2),
-                if (verticalMenuAlignment == Alignment.bottomLeft) verticalMenu,
+                if (verticalMenuAlignment == Alignment.bottomLeft)
+                  const HomeVerticalMenu(),
                 const Expanded(
-                  child: projectsList,
+                  child: ProjectsListView(),
                 ),
                 if (verticalMenuAlignment == Alignment.bottomRight)
-                  verticalMenu,
+                  const HomeVerticalMenu(),
               ],
             ),
           ),

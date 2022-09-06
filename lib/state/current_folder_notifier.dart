@@ -7,17 +7,18 @@ CurrentFolderNotifier createCurrentFoldersNotifier(
     CurrentFolderNotifier(ProjectFolder.zero());
 
 class CurrentFolderNotifier extends ChangeNotifier {
-  CurrentFolderNotifier(final this.state);
-  ProjectFolder state;
+  CurrentFolderNotifier(this._state);
+  ProjectFolder get state => _state;
+  ProjectFolder _state;
   void setState(final ProjectFolder folder) {
-    state = folder;
+    _state = folder;
     notifyListeners();
   }
 
   void notify() => notifyListeners();
 
   void setExistedProjects(final Iterable<BasicProject> projects) {
-    state.setExistedProjects(projects);
+    _state.setExistedProjects(projects);
     notifyListeners();
   }
 }

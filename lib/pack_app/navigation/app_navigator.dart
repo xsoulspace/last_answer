@@ -8,6 +8,8 @@ import 'package:lastanswer/pack_app/models/models.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_app/screens/home_mouse/home_mouse_mobile_screen.dart';
+import 'package:lastanswer/pack_app/screens/home_mouse/home_mouse_tablet_screen.dart';
 import 'package:lastanswer/pack_auth/pack_auth.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
@@ -35,22 +37,22 @@ class AppNavigator extends HookWidget {
       case WidthFormFactor.tablet:
         switch (uiTheme.customizableFormFactors.controls) {
           case ControlsFormFactor.mouse:
-            layoutBuilder = _MouseLargeLayoutBuilder(pageBuilder: pageBuilder);
+            layoutBuilder = _MouseTabletLayoutBuilder(pageBuilder: pageBuilder);
             break;
           case ControlsFormFactor.touch:
             // TODO(arenukvern): replace with _AppTouchLayoutBuilder
-            layoutBuilder = _MouseLargeLayoutBuilder(pageBuilder: pageBuilder);
+            layoutBuilder = _MouseTabletLayoutBuilder(pageBuilder: pageBuilder);
             break;
         }
         break;
       case WidthFormFactor.mobile:
         switch (uiTheme.customizableFormFactors.controls) {
           case ControlsFormFactor.mouse:
-            layoutBuilder = _MouseSmallLayoutBuilder(pageBuilder: pageBuilder);
+            layoutBuilder = _MouseMobileLayoutBuilder(pageBuilder: pageBuilder);
             break;
           case ControlsFormFactor.touch:
             // TODO(arenukvern): replace with _AppTouchLayoutBuilder
-            layoutBuilder = _MouseSmallLayoutBuilder(pageBuilder: pageBuilder);
+            layoutBuilder = _MouseMobileLayoutBuilder(pageBuilder: pageBuilder);
             break;
         }
         break;
@@ -209,17 +211,16 @@ class _PageBuilder extends RouterPageBuilder<AppRouterController> {
   }
 }
 
-class _MouseSmallLayoutBuilder
+class _MouseMobileLayoutBuilder
     extends RouterLayoutBuilder<AppRouterController, _PageBuilder> {
-  _MouseSmallLayoutBuilder({required super.pageBuilder});
+  _MouseMobileLayoutBuilder({required super.pageBuilder});
   @override
   List<Page> buildPages() {
     final pages = <Page>[
-      _PageBuilder.emptyPage,
       FadedRailPage<void>(
         key: pageBuilder.keys.projectsSmall,
         child: const RouterPopScope(
-          child: SmallHomeScreen(),
+          child: HomeMouseMobileScreen(),
         ),
       ),
       if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
@@ -240,41 +241,41 @@ class _MouseSmallLayoutBuilder
   }
 }
 
-class _MouseLargeLayoutBuilder
+class _MouseTabletLayoutBuilder
     extends RouterLayoutBuilder<AppRouterController, _PageBuilder> {
-  _MouseLargeLayoutBuilder({required super.pageBuilder});
+  _MouseTabletLayoutBuilder({required super.pageBuilder});
   @override
   List<Page> buildPages() {
     final pages = <Page>[
-      _PageBuilder.emptyPage,
-      if (pathTemplate.startsWith(NavigationRoutes.home)) ...[
+      if (pathTemplate.startsWith(NavigationRoutes.home))
         NavigatorPage(
           key: pageBuilder.keys.projectsSmall,
-          child: LargeHomeScreen(
-            mainScreenNavigator: Navigator(
-              key: pageBuilder.keys.projectsLarge,
-              onGenerateRoute: (final _) => null,
-              pages: [
-                if (pathTemplate == NavigationRoutes.note)
-                  pageBuilder.notePage()
-                else if (pathTemplate.contains(NavigationRoutes.idea))
-                  pageBuilder.ideaPage()
-                else
-                  _PageBuilder.emptyPage,
-              ],
-              onPopPage: (final route, final result) => route.didPop(result),
-            ),
-          ),
-        ),
-        if (pathTemplate == NavigationRoutes.createIdea)
-          pageBuilder.createIdeaPage()
-        else if (pathTemplate == NavigationRoutes.ideaAnswer)
-          pageBuilder.ideaAnswerPage()
-        else if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
-          pageBuilder.settingsPage(),
-        ] else if (pathTemplate == NavigationRoutes.appInfo)
-          pageBuilder.appInfoPage(),
-      ],
+          child: const HomeMouseTabletScreen(
+              // mainScreenNavigator: Navigator(
+              //   key: pageBuilder.keys.projectsLarge,
+              //   onGenerateRoute: (final _) => null,
+              //   pages: [
+              //     if (pathTemplate == NavigationRoutes.note)
+              //       pageBuilder.notePage()
+              //     else if (pathTemplate.contains(NavigationRoutes.idea))
+              //       pageBuilder.ideaPage()
+              //     else
+              //       _PageBuilder.emptyPage,
+              //   ],
+              //   onPopPage: (final route, final result) => route.didPop(result),
+              // ),
+              ),
+        )
+      else
+        _PageBuilder.emptyPage,
+      if (pathTemplate == NavigationRoutes.createIdea)
+        pageBuilder.createIdeaPage()
+      else if (pathTemplate == NavigationRoutes.ideaAnswer)
+        pageBuilder.ideaAnswerPage()
+      else if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
+        pageBuilder.settingsPage(),
+      ] else if (pathTemplate == NavigationRoutes.appInfo)
+        pageBuilder.appInfoPage(),
     ];
     return pages;
   }

@@ -9,15 +9,13 @@ PODS:
     - FlutterMacOS
   - path_provider_macos (0.0.1):
     - FlutterMacOS
-  - Purchases (3.13.2):
-    - PurchasesCoreSwift (= 3.13.2)
-  - purchases_flutter (3.10.0):
+  - purchases_flutter (4.0.0):
     - FlutterMacOS
-    - PurchasesHybridCommon (= 1.11.2)
-  - PurchasesCoreSwift (3.13.2)
-  - PurchasesHybridCommon (1.11.2):
-    - Purchases (= 3.13.2)
+    - PurchasesHybridCommon (= 3.3.0)
+  - PurchasesHybridCommon (3.3.0):
+    - RevenueCat (= 4.9.0)
   - ReachabilitySwift (5.0.0)
+  - RevenueCat (4.9.0)
   - share_plus_macos (0.0.1):
     - FlutterMacOS
   - shared_preferences_macos (0.0.1):
@@ -38,10 +36,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Purchases
-    - PurchasesCoreSwift
     - PurchasesHybridCommon
     - ReachabilitySwift
+    - RevenueCat
 
 EXTERNAL SOURCES:
   connectivity_plus_macos:
@@ -66,14 +63,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity_plus_macos: f6e86fd000e971d361e54b5afcadc8c8fa773308
   flutter_platform_alert: b21b2b7d801e71c12ce9ffab618ff114ca9fc903
-  FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
+  FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
-  Purchases: 03200de9288724e77de435000d1828601e6b8e00
-  purchases_flutter: ec56bb806ae9076a2edced385860f1fea4b30639
-  PurchasesCoreSwift: 2ea4b33e5cece5c8a0751594ef7c6cbfcbd747a9
-  PurchasesHybridCommon: 56ef42d85c3e930d49aff4ac5fa027373d2e1bb8
+  purchases_flutter: a9edc9b7120b00d769ff4d81a1c3d7f2ade49164
+  PurchasesHybridCommon: 5c3e18d6813dc1c256d2fb9f295d73d2230d46d1
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  RevenueCat: d5ec5e2944eedce83497218f0dc01eda546dd7a7
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
   shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
   url_launcher_macos: 597e05b8e514239626bcf4a850fcf9ef5c856ec3

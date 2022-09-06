@@ -70,8 +70,10 @@ class AppNavigator extends HookWidget {
 class _PageBuilderKeys {
   const _PageBuilderKeys();
   ValueKey get home => const ValueKey('home');
-  ValueKey get projectsSmall => const ValueKey('projectsSmall');
-  ValueKey get projectsLarge => const ValueKey('projectsLarge');
+  ValueKey get projectsMobile => const ValueKey('projectsSmall');
+  ValueKey get projectsTabletPage => const ValueKey('projectsTabletPage');
+  ValueKey get projectsTabletNavigator =>
+      const ValueKey('projectsTabletNavigator');
   ValueKey get info => const ValueKey('info');
   ValueKey get settings => const ValueKey('settings');
   ValueKey get notesNote => const ValueKey('notesNote');
@@ -217,11 +219,9 @@ class _MouseMobileLayoutBuilder
   @override
   List<Page> buildPages() {
     final pages = <Page>[
-      FadedRailPage<void>(
-        key: pageBuilder.keys.projectsSmall,
-        child: const RouterPopScope(
-          child: HomeMouseMobileScreen(),
-        ),
+      NavigatorPage(
+        key: pageBuilder.keys.projectsMobile,
+        child: const HomeMouseMobileScreen(),
       ),
       if (pathTemplate.startsWith(NavigationRoutes.settings)) ...[
         pageBuilder.settingsPage(),
@@ -249,22 +249,22 @@ class _MouseTabletLayoutBuilder
     final pages = <Page>[
       if (pathTemplate.startsWith(NavigationRoutes.home))
         NavigatorPage(
-          key: pageBuilder.keys.projectsSmall,
-          child: const HomeMouseTabletScreen(
-              // mainScreenNavigator: Navigator(
-              //   key: pageBuilder.keys.projectsLarge,
-              //   onGenerateRoute: (final _) => null,
-              //   pages: [
-              //     if (pathTemplate == NavigationRoutes.note)
-              //       pageBuilder.notePage()
-              //     else if (pathTemplate.contains(NavigationRoutes.idea))
-              //       pageBuilder.ideaPage()
-              //     else
-              //       _PageBuilder.emptyPage,
-              //   ],
-              //   onPopPage: (final route, final result) => route.didPop(result),
-              // ),
-              ),
+          key: pageBuilder.keys.projectsTabletPage,
+          child: HomeMouseTabletScreen(
+            contentBuilder: (final context) => Navigator(
+              key: pageBuilder.keys.projectsTabletNavigator,
+              onGenerateRoute: (final _) => null,
+              pages: [
+                if (pathTemplate == NavigationRoutes.note)
+                  pageBuilder.notePage()
+                else if (pathTemplate.contains(NavigationRoutes.idea))
+                  pageBuilder.ideaPage()
+                else
+                  _PageBuilder.emptyPage,
+              ],
+              onPopPage: (final route, final result) => route.didPop(result),
+            ),
+          ),
         )
       else
         _PageBuilder.emptyPage,

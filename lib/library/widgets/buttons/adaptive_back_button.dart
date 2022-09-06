@@ -6,7 +6,7 @@ import 'package:life_hooks/life_hooks.dart';
 
 class AdaptiveBackButton extends HookWidget {
   const AdaptiveBackButton({
-    required final this.onPressed,
+    required this.onPressed,
     final Key? key,
   }) : super(key: key);
   final VoidCallback onPressed;
@@ -16,10 +16,9 @@ class AdaptiveBackButton extends HookWidget {
     if (DeviceRuntimeType.isDesktop) {
       final theme = Theme.of(context);
 
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => hovered.value = true,
-        onExit: (final _) => hovered.value = false,
+      return FocusableActionDetector(
+        mouseCursor: SystemMouseCursors.click,
+        onShowHoverHighlight: (final value) => hovered.value = value,
         child: CupertinoIconButton(
           onPressed: onPressed,
           size: 18,

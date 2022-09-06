@@ -1,16 +1,15 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/envs.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb && !Platform.isIOS && !Platform.isAndroid) {
+  if (DeviceRuntimeType.isNativeDesktop) {
     await windowManager.ensureInitialized();
 
     const windowOptions = WindowOptions(

@@ -245,7 +245,7 @@ class __$$_UiThemeSchemeCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiThemeScheme extends _UiThemeScheme with DiagnosticableTreeMixin {
+class _$_UiThemeScheme extends _UiThemeScheme {
   const _$_UiThemeScheme(
       {required this.spacing,
       required this.horizontalBoxes,
@@ -272,23 +272,8 @@ class _$_UiThemeScheme extends _UiThemeScheme with DiagnosticableTreeMixin {
   final UiCustomizableFormFactors customizableFormFactors;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiThemeScheme(spacing: $spacing, horizontalBoxes: $horizontalBoxes, verticalBoxes: $verticalBoxes, circularRadius: $circularRadius, text: $text, persistentFormFactors: $persistentFormFactors, customizableFormFactors: $customizableFormFactors)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiThemeScheme'))
-      ..add(DiagnosticsProperty('spacing', spacing))
-      ..add(DiagnosticsProperty('horizontalBoxes', horizontalBoxes))
-      ..add(DiagnosticsProperty('verticalBoxes', verticalBoxes))
-      ..add(DiagnosticsProperty('circularRadius', circularRadius))
-      ..add(DiagnosticsProperty('text', text))
-      ..add(DiagnosticsProperty('persistentFormFactors', persistentFormFactors))
-      ..add(DiagnosticsProperty(
-          'customizableFormFactors', customizableFormFactors));
   }
 
   @override
@@ -446,8 +431,7 @@ class __$$_UiPersistentFormFactorsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiPersistentFormFactors extends _UiPersistentFormFactors
-    with DiagnosticableTreeMixin {
+class _$_UiPersistentFormFactors extends _UiPersistentFormFactors {
   const _$_UiPersistentFormFactors(
       {required this.width, required this.deviceWindow})
       : super._();
@@ -458,17 +442,8 @@ class _$_UiPersistentFormFactors extends _UiPersistentFormFactors
   final DeviceWindowFormFactor deviceWindow;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiPersistentFormFactors(width: $width, deviceWindow: $deviceWindow)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiPersistentFormFactors'))
-      ..add(DiagnosticsProperty('width', width))
-      ..add(DiagnosticsProperty('deviceWindow', deviceWindow));
   }
 
   @override
@@ -601,8 +576,7 @@ class __$$_UiCustomizableFormFactorsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiCustomizableFormFactors extends _UiCustomizableFormFactors
-    with DiagnosticableTreeMixin {
+class _$_UiCustomizableFormFactors extends _UiCustomizableFormFactors {
   const _$_UiCustomizableFormFactors(
       {required this.performance, required this.controls})
       : super._();
@@ -613,17 +587,8 @@ class _$_UiCustomizableFormFactors extends _UiCustomizableFormFactors
   final ControlsFormFactor controls;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiCustomizableFormFactors(performance: $performance, controls: $controls)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiCustomizableFormFactors'))
-      ..add(DiagnosticsProperty('performance', performance))
-      ..add(DiagnosticsProperty('controls', controls));
   }
 
   @override
@@ -817,7 +782,7 @@ class __$$_UiSpacingCopyWithImpl<$Res> extends _$UiSpacingCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiSpacing extends _UiSpacing with DiagnosticableTreeMixin {
+class _$_UiSpacing extends _UiSpacing {
   const _$_UiSpacing(
       {required this.none,
       required this.extraSmall,
@@ -844,22 +809,8 @@ class _$_UiSpacing extends _UiSpacing with DiagnosticableTreeMixin {
   final double full;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiSpacing(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiSpacing'))
-      ..add(DiagnosticsProperty('none', none))
-      ..add(DiagnosticsProperty('extraSmall', extraSmall))
-      ..add(DiagnosticsProperty('small', small))
-      ..add(DiagnosticsProperty('medium', medium))
-      ..add(DiagnosticsProperty('large', large))
-      ..add(DiagnosticsProperty('extraLarge', extraLarge))
-      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -1077,7 +1028,7 @@ class __$$_UiRadiusCopyWithImpl<$Res> extends _$UiRadiusCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiRadius extends _UiRadius with DiagnosticableTreeMixin {
+class _$_UiRadius extends _UiRadius {
   const _$_UiRadius(
       {required this.none,
       required this.extraSmall,
@@ -1104,22 +1055,8 @@ class _$_UiRadius extends _UiRadius with DiagnosticableTreeMixin {
   final Radius full;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiRadius(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiRadius'))
-      ..add(DiagnosticsProperty('none', none))
-      ..add(DiagnosticsProperty('extraSmall', extraSmall))
-      ..add(DiagnosticsProperty('small', small))
-      ..add(DiagnosticsProperty('medium', medium))
-      ..add(DiagnosticsProperty('large', large))
-      ..add(DiagnosticsProperty('extraLarge', extraLarge))
-      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -1340,7 +1277,7 @@ class __$$_UiBoxSpacingCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiBoxSpacing extends _UiBoxSpacing with DiagnosticableTreeMixin {
+class _$_UiBoxSpacing extends _UiBoxSpacing {
   const _$_UiBoxSpacing(
       {required this.none,
       required this.extraSmall,
@@ -1367,22 +1304,8 @@ class _$_UiBoxSpacing extends _UiBoxSpacing with DiagnosticableTreeMixin {
   final SizedBox full;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiBoxSpacing(none: $none, extraSmall: $extraSmall, small: $small, medium: $medium, large: $large, extraLarge: $extraLarge, full: $full)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiBoxSpacing'))
-      ..add(DiagnosticsProperty('none', none))
-      ..add(DiagnosticsProperty('extraSmall', extraSmall))
-      ..add(DiagnosticsProperty('small', small))
-      ..add(DiagnosticsProperty('medium', medium))
-      ..add(DiagnosticsProperty('large', large))
-      ..add(DiagnosticsProperty('extraLarge', extraLarge))
-      ..add(DiagnosticsProperty('full', full));
   }
 
   @override
@@ -1522,23 +1445,15 @@ class __$$_UiTextThemeCopyWithImpl<$Res> extends _$UiTextThemeCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UiTextTheme extends _UiTextTheme with DiagnosticableTreeMixin {
+class _$_UiTextTheme extends _UiTextTheme {
   const _$_UiTextTheme({required this.error}) : super._();
 
   @override
   final TextTheme error;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UiTextTheme(error: $error)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UiTextTheme'))
-      ..add(DiagnosticsProperty('error', error));
   }
 
   @override

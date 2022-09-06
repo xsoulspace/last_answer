@@ -40,13 +40,13 @@ class PaymentsController extends PaymentsControllerI {
   @override
   String get annualSubscriptionTitle =>
       //TODO(arenukvern): translate
-      'Subscribe - ${_annualSubscription?.product.priceString} / year';
+      'Subscribe - ${_annualSubscription?.storeProduct.priceString} / year';
 
   Package? get _monthlySubscription => offerings?.current?.monthly;
   //TODO(arenukvern): translate
   @override
   String get monthlySubscriptionTitle =>
-      'Subscribe - ${_monthlySubscription?.product.priceString} / month';
+      'Subscribe - ${_monthlySubscription?.storeProduct.priceString} / month';
 
   @override
   bool get paymentsAccessable => paymentsService.paymentsAccessable;

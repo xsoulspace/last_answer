@@ -11,14 +11,14 @@ import 'package:provider/provider.dart';
 
 class AnswerCreator extends HookWidget {
   const AnswerCreator({
-    required final this.onCreated,
-    required final this.defaultQuestion,
-    required final this.idea,
-    required final this.onShareTap,
-    required final this.onFocus,
-    required final this.questionsOpened,
-    required final this.onChanged,
-    required final this.answersIsEmpty,
+    required this.onCreated,
+    required this.defaultQuestion,
+    required this.idea,
+    required this.onShareTap,
+    required this.onFocus,
+    required this.questionsOpened,
+    required this.onChanged,
+    required this.answersIsEmpty,
     final Key? key,
   }) : super(key: key);
   final IdeaProjectQuestion defaultQuestion;
@@ -82,10 +82,19 @@ class AnswerCreator extends HookWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: QuestionsChips(
-                      onChange: (final question) =>
-                          state.selectedQuestion.value = question,
-                      value: state.selectedQuestion.value,
+                    child: ValueListenableBuilder<IdeaProjectQuestion?>(
+                      valueListenable: state.selectedQuestion,
+                      builder: (
+                        final context,
+                        final selectedQuestion,
+                        final child,
+                      ) {
+                        return QuestionsChips(
+                          onChange: (final question) =>
+                              state.selectedQuestion.value = question,
+                          value: selectedQuestion,
+                        );
+                      },
                     ),
                   ),
                   Padding(

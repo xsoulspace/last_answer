@@ -2,40 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
+import 'package:life_hooks/life_hooks.dart';
+import 'package:provider/provider.dart';
 
-class CreateIdeaProjectScreen extends StatefulHookWidget {
+part 'create_idea_screen_state.dart';
+
+class CreateIdeaProjectScreen extends HookWidget {
   const CreateIdeaProjectScreen({
-    required final this.onBack,
-    required final this.onCreate,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onBack;
-  final ValueChanged<String> onCreate;
-
-  @override
-  State<CreateIdeaProjectScreen> createState() =>
-      _CreateIdeaProjectScreenState();
-}
-
-class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
-  final _textFieldFocusNode = FocusNode();
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((final _) {
-      FocusScope.of(context).requestFocus(_textFieldFocusNode);
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textFieldFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(final BuildContext context) {
-    final textController = useTextEditingController();
     final effectiveInputDecoration = const InputDecoration()
         .applyDefaults(
           Theme.of(context).inputDecorationTheme,
@@ -45,11 +24,13 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
           border: const UnderlineInputBorder(),
         );
 
+    final state = _useCreateIdeaScreenState();
+
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: '',
-        onBack: widget.onBack,
+        onBack: state.onBack,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 8),
@@ -75,10 +56,9 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                     children: [
                       Expanded(
                         child: TextField(
-                          onSubmitted: (final _) =>
-                              widget.onCreate(textController.text),
-                          focusNode: _textFieldFocusNode,
-                          controller: textController,
+                          onSubmitted: (final _) => state.onCreate(),
+                          focusNode: state._textFieldFocusNode,
+                          controller: state.textController,
                           maxLength: 90,
                           style: Theme.of(context).textTheme.headline1,
                           decoration: effectiveInputDecoration,
@@ -86,7 +66,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                       ),
                       const SizedBox(width: 6),
                       IconButton(
-                        onPressed: () => widget.onCreate(textController.text),
+                        onPressed: state.onCreate,
                         icon: const Icon(Icons.send),
                       ),
                     ],

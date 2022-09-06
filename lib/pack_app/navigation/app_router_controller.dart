@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_app/models/models.dart';
 import 'package:lastanswer/pack_app/navigation/navigation_routes.dart';
 import 'package:lastanswer/pack_settings/abstract/general_settings_controller.dart';
 import 'package:lastanswer/pack_settings/sync/server_sync_services/server_projects_sync_service.dart';
@@ -12,6 +13,17 @@ import 'package:provider/provider.dart';
 
 class AppRouterController extends RouterController {
   AppRouterController.use(super.read) : super.use();
+
+  bool checkIsProjectActive({
+    required final BasicProject project,
+    required final Locator read,
+  }) {
+    final routeParams =
+        AppRouteParameters.fromJson(read<RouteState>().route.parameters);
+    if (project.id == routeParams.noteId) return true;
+    if (project.id == routeParams.ideaId) return true;
+    return false;
+  }
 
   void toHome() => NavigationRoutes.home;
   void toSignIn() => to(NavigationRoutes.signIn);
@@ -75,7 +87,7 @@ class AppRouterController extends RouterController {
     unawaited(projectsSyncService.upsert([idea]));
   }
 
-  Future<void> onIdeaAnswerExpand(
+  Future<void> onExpandIdeaAnswer(
     final IdeaProjectAnswer answer,
     final IdeaProject idea,
   ) async =>

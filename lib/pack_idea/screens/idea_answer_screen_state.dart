@@ -16,7 +16,6 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
   required final StreamController<bool> updatesStream,
   required final ValueNotifier<IdeaProjectAnswer> answerNotifier,
   required final IdeaProject idea,
-  required final ValueChanged<IdeaProject> onScreenBack,
   required final IdeaProjectsNotifier ideasNotifier,
   required final ServerIdeaAnswerSyncService ideaAnswerSyncService,
   required final ServerProjectsSyncService ideaSyncService,
@@ -30,7 +29,6 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
           updatesStream: updatesStream,
           answerNotifier: answerNotifier,
           idea: idea,
-          onScreenBack: onScreenBack,
           ideaAnswerSyncService: ideaAnswerSyncService,
           ideaSyncService: ideaSyncService,
         ),
@@ -44,7 +42,6 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
     required this.updatesStream,
     required this.answerNotifier,
     required this.idea,
-    required this.onScreenBack,
     required this.ideaAnswerSyncService,
     required this.ideaSyncService,
   });
@@ -52,7 +49,6 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
   final StreamController<bool> updatesStream;
   final ValueNotifier<IdeaProjectAnswer> answerNotifier;
   final IdeaProject idea;
-  final ValueChanged<IdeaProject> onScreenBack;
   final ServerIdeaAnswerSyncService ideaAnswerSyncService;
   final ServerProjectsSyncService ideaSyncService;
 
@@ -94,6 +90,6 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
 
   void onBack() {
     closeKeyboard(context: context);
-    onScreenBack(idea);
+    Navigator.pop(context);
   }
 }

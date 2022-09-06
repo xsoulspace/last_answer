@@ -15,16 +15,10 @@ import 'package:universal_io/io.dart';
 
 class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
-    required final this.noteId,
-    required final this.onBack,
-    required this.onGoHome,
-    required this.checkIsProjectActive,
+    required this.noteId,
     final Key? key,
   }) : super(key: key);
   final String noteId;
-  final ValueChanged<NoteProject> onBack;
-  final BoolValueChanged<BasicProject> checkIsProjectActive;
-  final VoidCallback onGoHome;
 
   @override
   Widget build(final BuildContext context) {
@@ -47,10 +41,7 @@ class NoteProjectScreen extends HookWidget {
     final state = useNoteProjectScreenState(
       projectsSyncService: context.read(),
       noteNotifier: note,
-      onScreenBack: onBack,
       updatesStream: updatesStream,
-      onGoHome: onGoHome,
-      checkIsProjectActive: checkIsProjectActive,
       folderNotifier: context.watch(),
       notesNotifier: context.watch(),
     );

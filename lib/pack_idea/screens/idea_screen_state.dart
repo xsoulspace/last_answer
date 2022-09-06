@@ -11,7 +11,6 @@ import 'package:rxdart/rxdart.dart';
 
 // ignore: long-parameter-list
 IdeaScreenState useIdeaScreenState({
-  required final VoidCallback onScreenBack,
   required final StreamController<bool> ideaUpdatesStream,
   required final IdeaProject idea,
   required final ValueNotifier<bool> questionsOpened,
@@ -27,7 +26,6 @@ IdeaScreenState useIdeaScreenState({
         state: IdeaScreenState(
           folderNotifier: folderNotifier,
           ideasNotifier: ideasNotifier,
-          onScreenBack: onScreenBack,
           idea: idea,
           ideaUpdatesStream: ideaUpdatesStream,
           questionsOpened: questionsOpened,
@@ -40,7 +38,6 @@ IdeaScreenState useIdeaScreenState({
 
 class IdeaScreenState extends ContextfulLifeState {
   IdeaScreenState({
-    required this.onScreenBack,
     required this.ideaUpdatesStream,
     required this.idea,
     required this.questionsOpened,
@@ -50,7 +47,6 @@ class IdeaScreenState extends ContextfulLifeState {
     required this.ideaAnswerSyncService,
     required this.ideaSyncService,
   });
-  final VoidCallback onScreenBack;
   final IdeaProject idea;
   final ValueNotifier<bool> questionsOpened;
   final ValueNotifier<List<IdeaProjectAnswer>> answersNotifier;

@@ -6,12 +6,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/states/use_note_project_updater.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:life_hooks/life_hooks.dart';
+import 'package:provider/provider.dart';
 
 // ignore: long-parameter-list
 NoteProjectScreenState useNoteProjectScreenState({
@@ -19,20 +21,14 @@ NoteProjectScreenState useNoteProjectScreenState({
   required final CurrentFolderNotifier folderNotifier,
   required final ValueNotifier<NoteProject> noteNotifier,
   required final StreamController<NoteProjectUpdateDto> updatesStream,
-  required final ValueChanged<NoteProject> onScreenBack,
-  required final BoolValueChanged<BasicProject> checkIsProjectActive,
-  required final VoidCallback onGoHome,
   required final ServerProjectsSyncService projectsSyncService,
 }) =>
     use(
       LifeHook(
         debugLabel: 'useNoteProjectScreenState',
         state: NoteProjectScreenState(
-          checkIsProjectActive: checkIsProjectActive,
-          onGoHome: onGoHome,
           noteNotifier: noteNotifier,
           updatesStream: updatesStream,
-          onScreenBack: onScreenBack,
           folderNotifier: folderNotifier,
           notesNotifier: notesNotifier,
           projectsSyncService: projectsSyncService,
@@ -42,20 +38,14 @@ NoteProjectScreenState useNoteProjectScreenState({
 
 class NoteProjectScreenState extends NoteProjectUpdaterState {
   NoteProjectScreenState({
-    required this.onScreenBack,
-    required final this.checkIsProjectActive,
-    required final this.onGoHome,
-    required final super.folderNotifier,
-    required final super.notesNotifier,
-    required final super.noteNotifier,
-    required final super.updatesStream,
-    required final super.projectsSyncService,
+    required super.folderNotifier,
+    required super.notesNotifier,
+    required super.noteNotifier,
+    required super.updatesStream,
+    required super.projectsSyncService,
   }) : noteController = TextEditingController(text: noteNotifier.value.note);
 
   final TextEditingController noteController;
-  final ValueChanged<NoteProject> onScreenBack;
-  final BoolValueChanged<BasicProject> checkIsProjectActive;
-  final VoidCallback onGoHome;
 
   @override
   void initState() {
@@ -72,7 +62,9 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
       await removeProject(
         context: context,
         project: note,
-        checkIsProjectActive: checkIsProjectActive,
+        checkIsProjectActive: (final project) => context
+            .read<AppRouterController>()
+            .checkIsProjectActive(project: project, read: context.read),
         onGoHome: onGoHome,
       );
     }
@@ -92,10 +84,16 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
     updatesStream.add(NoteProjectUpdateDto(positionChanged: positionChanged));
   }
 
-  void onBack() {
+  Future<void> onBack() async {
     closeKeyboard(context: context);
-    onScreenBack(note);
+    if (note.note.replaceAll(' ', '').isEmpty) {
+      context.read<NoteProjectsNotifier>().remove(key: note.id);
+      await note.deleteWithRelatives(context: context);
+    }
+    onGoHome();
   }
+
+  void onGoHome() => context.read<AppRouterController>().toHome();
 
   @override
   void dispose() {

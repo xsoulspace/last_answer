@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_idea/screens/idea_screen_state.dart';
@@ -15,13 +16,9 @@ import 'package:provider/provider.dart';
 
 class IdeaProjectScreen extends HookWidget {
   const IdeaProjectScreen({
-    required this.onBack,
     required this.ideaId,
-    required this.onAnswerExpand,
     final Key? key,
   }) : super(key: key);
-  final VoidCallback onBack;
-  final TwoValuesChanged<IdeaProjectAnswer, IdeaProject> onAnswerExpand;
   final ProjectId ideaId;
 
   @override
@@ -43,7 +40,6 @@ class IdeaProjectScreen extends HookWidget {
     final state = useIdeaScreenState(
       ideaAnswerSyncService: context.watch(),
       ideaSyncService: context.watch(),
-      onScreenBack: onBack,
       folderNotifier: context.watch(),
       ideasNotifier: ideasNotifier,
       answersNotifier: answersNotifier,
@@ -64,7 +60,7 @@ class IdeaProjectScreen extends HookWidget {
           heroId: idea.id,
           onChanged: state.onIdeaTitleChange,
         ),
-        onBack: onBack,
+        onBack: () => Navigator.pop(context),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -103,7 +99,9 @@ class IdeaProjectScreen extends HookWidget {
                     ),
                     onExpand: (final _) {
                       closeKeyboard(context: context);
-                      onAnswerExpand(answer, idea);
+                      context
+                          .read<AppRouterController>()
+                          .onExpandIdeaAnswer(answer, idea);
                     },
                     onReadyToDelete: state.onReadyToDeleteAnswer,
                     onChange: state.onAnswersChange,

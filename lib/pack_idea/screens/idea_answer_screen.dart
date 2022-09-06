@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
-import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_idea/screens/idea_answer_screen_state.dart';
 import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
 import 'package:lastanswer/state/state.dart';
@@ -15,30 +14,25 @@ class IdeaAnswerScreen extends HookWidget {
   const IdeaAnswerScreen({
     required this.ideaId,
     required this.answerId,
-    required this.onBack,
-    required this.onUnknown,
     final Key? key,
   }) : super(key: key);
   final String ideaId;
   final String answerId;
-  final ValueChanged<IdeaProject> onBack;
-
-  /// callback to redirect if answerId is not found
-  final TwoValuesChanged<IdeaProjectAnswerId, IdeaProject> onUnknown;
-
-  IdeaProjectAnswer? getInitialAnswer({
-    required final IdeaProject idea,
-    required final IdeaProjectAnswersNotifier ideaAnswersNotifier,
-  }) {
-    final answer = ideaAnswersNotifier.state[answerId];
-    if (answer != null) return answer;
-    onUnknown(answerId, idea);
-
-    return null;
-  }
 
   @override
   Widget build(final BuildContext context) {
+    IdeaProjectAnswer? getInitialAnswer({
+      required final IdeaProject idea,
+      required final IdeaProjectAnswersNotifier ideaAnswersNotifier,
+    }) {
+      final answer = ideaAnswersNotifier.state[answerId];
+      if (answer != null) return answer;
+
+      /// if the answer is not identified then return to the idea
+      context.read<AppRouterController>().toIdeaScreen(ideaId: ideaId);
+      return null;
+    }
+
     final ideasNotifier = context.watch<IdeaProjectsNotifier>();
     final ideaAnswersNotifier = context.watch<IdeaProjectAnswersNotifier>();
     final maybeIdea = ideasNotifier.state[ideaId]!;
@@ -56,7 +50,6 @@ class IdeaAnswerScreen extends HookWidget {
       ideasNotifier: ideasNotifier,
       answerNotifier: answer,
       idea: maybeIdea,
-      onScreenBack: onBack,
       textController: textController,
       updatesStream: updatesStream,
       ideaAnswerSyncService: context.watch(),

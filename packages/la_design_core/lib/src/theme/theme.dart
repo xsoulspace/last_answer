@@ -45,8 +45,8 @@ class UiThemeScheme with _$UiThemeScheme {
 class UiTheme extends InheritedWidget {
   const UiTheme({
     required this.scheme,
-    required final super.child,
-    final super.key,
+    required super.child,
+    super.key,
   });
 
   final UiThemeScheme scheme;

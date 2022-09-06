@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class AppInfoScreen extends StatelessWidget {
@@ -20,7 +22,7 @@ class AppInfoScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: S.current.appInfo,
-        onBack: () => Navigator.pop(context),
+        onBack: () => context.read<AppRouterController>().toHome(),
       ),
       body: Align(
         alignment: Alignment.topCenter,

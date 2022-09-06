@@ -35,6 +35,6 @@ class _CreateIdeaScreenState extends ContextfulLifeState {
   }
 
   void onBack() {
-    Navigator.pop(context);
+    context.read<AppRouterController>().toHome();
   }
 }

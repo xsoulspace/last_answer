@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class EmptyScreen extends StatelessWidget {
-  const EmptyScreen({final Key? key}) : super(key: key);
-
+  const EmptyScreen({
+    this.isEmpty = false,
+    final Key? key,
+  }) : super(key: key);
+  final bool isEmpty;
   @override
   Widget build(final BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: const [Text(r'At least it works ¯\_(ツ)_/¯')],
+        children: [
+          if (!isEmpty) const Text(r'At least it works ¯\_(ツ)_/¯'),
+        ],
       ),
     );
   }

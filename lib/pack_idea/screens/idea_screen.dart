@@ -60,7 +60,7 @@ class IdeaProjectScreen extends HookWidget {
           heroId: idea.id,
           onChanged: state.onIdeaTitleChange,
         ),
-        onBack: () => Navigator.pop(context),
+        onBack: () => context.read<AppRouterController>().toHome(),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,

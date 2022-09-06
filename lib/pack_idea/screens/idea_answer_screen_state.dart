@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:life_hooks/life_hooks.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 // ignore: long-parameter-list
@@ -90,6 +92,6 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
 
   void onBack() {
     closeKeyboard(context: context);
-    Navigator.pop(context);
+    context.read<AppRouterController>().toIdeaScreen(ideaId: idea.id);
   }
 }

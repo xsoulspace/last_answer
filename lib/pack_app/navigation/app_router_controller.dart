@@ -25,7 +25,7 @@ class AppRouterController extends RouterController {
     return false;
   }
 
-  void toHome() => NavigationRoutes.home;
+  void toHome() => to(NavigationRoutes.home);
   void toSignIn() => to(NavigationRoutes.signIn);
   void toSignUp() => to(NavigationRoutes.signUp);
 

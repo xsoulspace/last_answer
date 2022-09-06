@@ -15,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-    void onBack() => Navigator.pop(context);
+    void onBack() => context.read<AppRouterController>().toHome();
     void onSelectRoute(final AppRouteName route) =>
         context.read<AppRouterController>().to(route);
     final child = screenLayout.small

@@ -24,7 +24,7 @@ NoteProjectScreenState useNoteProjectScreenState({
   required final ServerProjectsSyncService projectsSyncService,
 }) =>
     use(
-      LifeHook(
+      ContextfulLifeHook(
         debugLabel: 'useNoteProjectScreenState',
         state: NoteProjectScreenState(
           noteNotifier: noteNotifier,

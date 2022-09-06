@@ -94,7 +94,7 @@ class _PageBuilder extends RouterPageBuilder<AppRouterController> {
   }
 
   static final emptyPage = NavigatorPage(
-    child: const EmptyScreen(),
+    child: const EmptyScreen(isEmpty: true),
     key: const ValueKey('loading-screen'),
   );
 
@@ -249,7 +249,7 @@ class _MouseLargeLayoutBuilder
       _PageBuilder.emptyPage,
       if (pathTemplate.startsWith(NavigationRoutes.home)) ...[
         NavigatorPage(
-          key: pageBuilder.keys.home,
+          key: pageBuilder.keys.projectsSmall,
           child: LargeHomeScreen(
             mainScreenNavigator: Navigator(
               key: pageBuilder.keys.projectsLarge,

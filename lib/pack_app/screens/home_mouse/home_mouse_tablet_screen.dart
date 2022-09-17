@@ -20,7 +20,12 @@ class HomeMouseTabletScreen extends HookWidget {
     final uiTheme = UiTheme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      // TODO(arenukvern):
+      /// Currently the system theme is not defining correctly if user
+      /// OS has an auto theme. Need to investigate the reason via
+      /// OS native code and if the problem will be fixed, consider
+      /// to uncomment the following line.
+      // backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           AnimatedContainer(

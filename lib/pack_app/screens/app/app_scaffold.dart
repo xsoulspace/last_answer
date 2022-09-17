@@ -73,7 +73,6 @@ class _AppScaffoldBuilder extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final state = _useAppScaffoldBodyState(context.read);
-
     final settings = context.watch<GeneralSettingsController>();
 
     return AnimatedBuilder(
@@ -81,8 +80,14 @@ class _AppScaffoldBuilder extends HookWidget {
       builder: (final context, final child) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData.from(colorScheme: AppColorSchemes.brand().light),
-          darkTheme: ThemeData.from(colorScheme: AppColorSchemes.brand().dark),
+          theme: ThemeData.from(
+            colorScheme: AppColorSchemes.brand().light,
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData.from(
+            colorScheme: AppColorSchemes.brand().dark,
+            useMaterial3: true,
+          ),
           themeMode: settings.themeMode,
           routeInformationParser: routeParser,
           routerDelegate: state.routerDelegate,
@@ -91,7 +96,7 @@ class _AppScaffoldBuilder extends HookWidget {
           /// the MaterialApp to restore the navigation stack when a user
           /// leaves and returns to the app after it has been killed while
           /// running in the background.
-          restorationScopeId: 'app',
+          // restorationScopeId: 'app',
 
           // Provide the generated AppLocalizations to the MaterialApp. This
           // allows descendant Widgets to display the correct translations

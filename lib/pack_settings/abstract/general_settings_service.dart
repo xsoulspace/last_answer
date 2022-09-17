@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/utils/utils.dart';
@@ -12,7 +11,7 @@ import 'package:lastanswer/utils/utils.dart';
 /// you'd like to store settings on a web server, use the http package.
 class SettingsService with SharedPreferencesUtil {
   /// Loads the User's preferred ThemeMode from local or remote storage.
-  Future<ThemeMode> themeMode() async {
+  Future<ThemeMode> getThemeMode() async {
     final theme = await getString(SharedPreferencesKeys.theme.name);
     final index = int.tryParse(theme);
     if (index == null) return ThemeMode.system;

@@ -62,14 +62,14 @@ class GeneralSettingsController extends ChangeNotifier implements Loadable {
   /// settings from the service.
   @override
   Future<void> onLoad() async {
-    _themeMode = await settingsService.themeMode();
+    _themeMode = await settingsService.getThemeMode();
+
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();
     _projectsListReversed = await settingsService.projectsReversed();
     _charactersLimitForNewNotes =
         await settingsService.charactersLimitForNewNotes();
 
-    // Important! Inform listeners a change has occurred.
     notify();
   }
 

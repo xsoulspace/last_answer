@@ -72,7 +72,7 @@ class CupertinoActionIconButton extends HookWidget {
       onShowHoverHighlight: (final value) => hovered.value = value,
       child: CupertinoIconButton(
         onPressed: onPressed,
-        color: theme.colorScheme.onSecondaryContainer,
+        color: theme.colorScheme.onPrimary,
         size: size ?? 18,
         backgroundColor: hovered.value ? theme.hoverColor : null,
         padding: padding ??

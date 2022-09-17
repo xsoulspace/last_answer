@@ -5,7 +5,7 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/screens/home/projects_list_view.dart';
-import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
+import 'package:lastanswer/pack_app/screens/home_mouse/widgets/vertical_projects_bar.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';

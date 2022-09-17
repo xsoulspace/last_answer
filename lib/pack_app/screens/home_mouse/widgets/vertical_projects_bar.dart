@@ -22,76 +22,74 @@ class VerticalProjectsBar extends StatelessWidget {
     final themeDefiner = ThemeDefiner.of(context);
     final foldersNotifier = context.watch<ProjectFoldersNotifier>();
     final folders = foldersNotifier.state.values.toList();
-    return Padding(
-      padding: const EdgeInsets.only(
+
+    return Container(
+      margin: const EdgeInsets.only(
         left: 6,
         right: 6,
         bottom: 22,
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 6,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: defaultBorderRadius,
-          color: themeDefiner.themeToUse == ThemeToUse.fromContext
-              ? Theme.of(context).splashColor.withOpacity(0.05)
-              : null,
-        ),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: ListView.separated(
-                itemBuilder: (final context, final index) {
-                  final folder = folders[index];
-                  return BarItem(
-                    label: folder.title,
-                    key: ValueKey(folder),
-                    child: InkWell(
-                      onTap: () => onFolderTap(folder),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.2),
-                          borderRadius: defaultBorderRadius,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (final context, final index) {
-                  return const SizedBox(height: 16);
-                },
-                itemCount: folders.length,
+      decoration: BoxDecoration(
+        borderRadius: defaultBorderRadius,
+        color: themeDefiner.themeToUse == ThemeToUse.fromContext
+            ? Theme.of(context).splashColor.withOpacity(0.05)
+            : null,
+      ),
+      child: CustomScrollView(
+        reverse: true,
+        slivers: [
+          ...[
+            BarItem(
+              onTap: onIdeaTap,
+              label: S.current.idea,
+              child: IconIdeaButton(
+                onTap: onIdeaTap,
               ),
             ),
-            ...[
-              const Divider(),
-              BarItem(
-                onTap: onIdeaTap,
-                label: S.current.idea,
-                child: IconIdeaButton(
-                  onTap: onIdeaTap,
-                ),
+            BarItem(
+              onTap: onNoteTap,
+              label: S.current.note,
+              child: IconButton(
+                onPressed: onNoteTap,
+                icon: const Icon(Icons.book_outlined),
               ),
-              BarItem(
-                onTap: onNoteTap,
-                label: S.current.note,
-                child: IconButton(
-                  onPressed: onNoteTap,
-                  icon: const Icon(Icons.book),
-                ),
+            ),
+            const Divider(),
+          ].map(
+            (final e) => SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: e,
               ),
-            ].map(
-              (final e) => SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: e,
-                ),
-              ),
-            )
-          ],
-        ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: ListView.separated(
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (final context, final index) {
+                final folder = folders[index];
+                return BarItem(
+                  label: folder.title,
+                  key: ValueKey(folder),
+                  child: InkWell(
+                    onTap: () => onFolderTap(folder),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(0.2),
+                        borderRadius: defaultBorderRadius,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (final context, final index) {
+                return const SizedBox(height: 16);
+              },
+              itemCount: folders.length,
+            ),
+          ),
+        ],
       ),
     );
   }

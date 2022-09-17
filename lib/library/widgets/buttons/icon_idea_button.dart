@@ -9,8 +9,8 @@ import 'package:lastanswer/library/widgets/buttons/svg_icon_button.dart';
 
 class IconIdeaButton extends StatelessWidget {
   const IconIdeaButton({
-    final this.onTap,
-    final this.size = 24.0,
+    this.onTap,
+    this.size = 24.0,
     final Key? key,
   }) : super(key: key);
   final VoidCallback? onTap;
@@ -27,7 +27,7 @@ class IconIdeaButton extends StatelessWidget {
 
 class IconIdea extends StatelessWidget {
   const IconIdea({
-    final this.size = 24.0,
+    this.size = 24.0,
     final Key? key,
   }) : super(key: key);
   final double size;

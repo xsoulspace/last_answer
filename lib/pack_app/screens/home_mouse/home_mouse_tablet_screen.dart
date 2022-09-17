@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
+import 'package:lastanswer/pack_app/screens/home_mouse/widgets/widgets.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class HomeMouseTabletScreen extends HookWidget {
     final state = _useScreenState(read: context.read);
     final theme = Theme.of(context);
     final uiTheme = UiTheme.of(context);
-
+    final heigth = MediaQuery.of(context).size.height;
     return Scaffold(
       // TODO(arenukvern):
       /// Currently the system theme is not defining correctly if user
@@ -26,26 +27,48 @@ class HomeMouseTabletScreen extends HookWidget {
       /// OS native code and if the problem will be fixed, consider
       /// to uncomment the following line.
       // backgroundColor: Colors.transparent,
+      backgroundColor: theme.scaffoldBackgroundColor.withOpacity(0.8),
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          Positioned(
             width: state.leftWidth,
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  color: theme.colorScheme.shadow,
+            left: 0,
+            bottom: 0,
+            top: 0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(
+                    color: theme.colorScheme.shadow,
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              children: [
-                MacosBackgroundAppBar(
-                  height: appBarHeight,
-                  onShowInfo: state.onShowInfo,
-                  onShowSettings: state.onShowSettings,
-                ),
-              ],
+              child: Column(
+                children: [
+                  MacosBackgroundAppBar(
+                    height: appBarHeight,
+                    onShowInfo: state.onShowInfo,
+                    onShowSettings: state.onShowSettings,
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Expanded(child: ProjectsList()),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 100),
+                          child: VerticalProjectsBar(
+                            onFolderTap: (final value) {},
+                            onIdeaTap: () {},
+                            onNoteTap: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Row(

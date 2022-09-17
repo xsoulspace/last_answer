@@ -58,11 +58,7 @@ class HomeMouseTabletScreen extends HookWidget {
                         const Expanded(child: ProjectsList()),
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 100),
-                          child: VerticalProjectsBar(
-                            onFolderTap: (final value) {},
-                            onIdeaTap: () {},
-                            onNoteTap: () {},
-                          ),
+                          child: const HomeVerticalMenu(),
                         ),
                       ],
                     ),

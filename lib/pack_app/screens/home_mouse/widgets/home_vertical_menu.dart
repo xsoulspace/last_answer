@@ -3,12 +3,42 @@ import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-class VerticalProjectsBar extends StatelessWidget {
-  const VerticalProjectsBar({
+class HomeVerticalMenu extends StatelessWidget {
+  const HomeVerticalMenu({
+    final Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(final BuildContext context) {
+    final themeDefiner = ThemeDefiner.of(context);
+
+    return ColoredBox(
+      color: themeDefiner.useContextTheme
+          ? themeDefiner.effectiveTheme.primaryColor.withOpacity(.03)
+          : Colors.transparent,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: _VerticalBar(
+          onIdeaTap: () => context.read<AppRouterController>().toCreateIdea(),
+          onNoteTap: () => context
+              .read<AppRouterController>()
+              .toNoteScreen(context: context),
+          onFolderTap: (final folder) => context
+              .read<AppRouterController>()
+              .toFolder(folder: folder, read: context.read),
+        ),
+      ),
+    );
+  }
+}
+
+class _VerticalBar extends StatelessWidget {
+  const _VerticalBar({
     required this.onIdeaTap,
     required this.onNoteTap,
     required this.onFolderTap,

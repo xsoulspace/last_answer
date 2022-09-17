@@ -1,2 +1,2 @@
-export './projects_list.dart';
-export './vertical_projects_bar.dart';
+export 'home_vertical_menu.dart';
+export 'projects_list.dart';

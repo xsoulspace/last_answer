@@ -9,7 +9,7 @@ export 'screens/app/app_services_provider.dart';
 export 'screens/home/large_home_screen.dart';
 export 'screens/home/projects_list_view.dart';
 export 'screens/home/small_home_screen.dart';
-export 'screens/home_mouse/widgets/vertical_projects_bar.dart';
+export 'screens/home_mouse/widgets/home_vertical_menu.dart';
 export 'screens/info/app_info.dart';
 export 'screens/unknown/unknown_screen.dart';
 export 'states/global_state_initializer.dart';

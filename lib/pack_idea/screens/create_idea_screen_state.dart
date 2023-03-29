@@ -16,7 +16,7 @@ class _CreateIdeaScreenState extends ContextfulLifeState {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((final _) {
-      FocusScope.of(context).requestFocus(_textFieldFocusNode);
+      FocusScope.of(getContext()).requestFocus(_textFieldFocusNode);
     });
   }
 
@@ -28,13 +28,13 @@ class _CreateIdeaScreenState extends ContextfulLifeState {
   }
 
   void onCreate() {
-    context.read<AppRouterController>().onCreateIdea(
+    getContext().read<AppRouterController>().onCreateIdea(
           title: textController.text,
-          context: context,
+          context: getContext(),
         );
   }
 
   void onBack() {
-    context.read<AppRouterController>().toHome();
+    getContext().read<AppRouterController>().toHome();
   }
 }

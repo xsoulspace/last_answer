@@ -1,0 +1,6 @@
+# fvm flutter pub global run melos bootstrap
+name: lastanswer
+
+packages:
+  - ./*
+  - packages/*

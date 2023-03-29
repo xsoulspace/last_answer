@@ -110,7 +110,7 @@ class IdeaScreenState extends ContextfulLifeState {
   }
 
   Future<void> onReadyToDeleteAnswer(final IdeaProjectAnswer answer) async {
-    await idea.removeAnswer(answer: answer, context: context);
+    await idea.removeAnswer(answer: answer, context: getContext());
     answersNotifier.value = [...answersNotifier.value]..remove(answer);
     final updateFolder = checkToUpdateFolder(answersUpdated: true);
     ideaUpdatesStream.add(updateFolder);

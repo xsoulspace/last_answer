@@ -17,13 +17,14 @@ class _ProjectsListViewState extends ContextfulLifeState {
     super.dispose();
   }
 
-  void onProjectTap(final BasicProject<BasicProjectModel> project) => context
-      .read<AppRouterController>()
-      .onProjectTap(project: project, context: context);
+  void onProjectTap(final BasicProject<BasicProjectModel> project) =>
+      getContext()
+          .read<AppRouterController>()
+          .onProjectTap(project: project, context: getContext());
   bool checkIsProjectActive(final BasicProject<BasicProjectModel> project) =>
-      context.read<AppRouterController>().checkIsProjectActive(
+      getContext().read<AppRouterController>().checkIsProjectActive(
             project: project,
-            read: context.read,
+            read: getContext().read,
           );
-  void onGoHome() => context.read<AppRouterController>().toHome();
+  void onGoHome() => getContext().read<AppRouterController>().toHome();
 }

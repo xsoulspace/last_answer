@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_auth/_hooks/auth_state.dart';
 import 'package:life_hooks/life_hooks.dart';
@@ -39,7 +38,7 @@ class MagicLinkSignInScreenState extends ContextfulLifeState {
         final error = response.error;
         if (!mounted) return;
         if (error == null) {
-          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(getContext(), rootNavigator: true).pop();
         } else {
           await AlertHelper.onResponseError(error: error);
         }

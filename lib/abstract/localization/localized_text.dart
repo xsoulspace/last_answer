@@ -12,10 +12,10 @@ part 'localized_text.g.dart';
 @HiveType(typeId: HiveBoxesIds.localizedText)
 class LocalizedText with EquatableMixin {
   const LocalizedText({
-    required final this.en,
-    required final this.ru,
-    final this.it,
-    final this.ga,
+    required this.en,
+    required this.ru,
+    this.it,
+    this.ga,
   });
   factory LocalizedText.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextFromJson(json);

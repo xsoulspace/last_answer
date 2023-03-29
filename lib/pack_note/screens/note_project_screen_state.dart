@@ -56,15 +56,15 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   Future<void> onRemove() async {
     final remove = await showRemoveTitleDialog(
       title: note.title,
-      context: context,
+      context: getContext(),
     );
     if (remove) {
       await removeProject(
-        context: context,
+        context: getContext(),
         project: note,
-        checkIsProjectActive: (final project) => context
+        checkIsProjectActive: (final project) => getContext()
             .read<AppRouterController>()
-            .checkIsProjectActive(project: project, read: context.read),
+            .checkIsProjectActive(project: project, read: getContext().read),
         onGoHome: onGoHome,
       );
     }
@@ -85,15 +85,15 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   }
 
   Future<void> onBack() async {
-    closeKeyboard(context: context);
+    closeKeyboard(context: getContext());
     if (note.note.replaceAll(' ', '').isEmpty) {
-      context.read<NoteProjectsNotifier>().remove(key: note.id);
-      await note.deleteWithRelatives(context: context);
+      getContext().read<NoteProjectsNotifier>().remove(key: note.id);
+      await note.deleteWithRelatives(context: getContext());
     }
     onGoHome();
   }
 
-  void onGoHome() => context.read<AppRouterController>().toHome();
+  void onGoHome() => getContext().read<AppRouterController>().toHome();
 
   @override
   void dispose() {

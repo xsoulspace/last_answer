@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 @immutable
 class NamedLocale {
   const NamedLocale({
-    required final this.name,
-    required final this.locale,
+    required this.name,
+    required this.locale,
   });
 
   /// this field will be shown to user

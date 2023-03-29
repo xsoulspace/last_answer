@@ -91,7 +91,7 @@ class IdeaAnswerScreenState extends ContextfulLifeState {
   }
 
   void onBack() {
-    closeKeyboard(context: context);
-    context.read<AppRouterController>().toIdeaScreen(ideaId: idea.id);
+    closeKeyboard(context: getContext());
+    getContext().read<AppRouterController>().toIdeaScreen(ideaId: idea.id);
   }
 }

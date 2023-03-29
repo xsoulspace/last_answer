@@ -108,7 +108,7 @@ class AnswerCreatorState extends ContextfulLifeState {
       text: text,
       question: question,
       idea: idea,
-      context: context,
+      context: getContext(),
     );
 
     onCreated(answer);

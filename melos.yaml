@@ -4,3 +4,6 @@ name: lastanswer
 packages:
   - ./*
   - packages/*
+
+scripts:
+  get: fvm flutter pub get && fvm flutter pub run melos bootstrap

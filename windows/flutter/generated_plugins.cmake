@@ -3,9 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  connectivity_plus_windows
+  app_links
+  connectivity_plus
   flutter_platform_alert
   screen_retriever
+  share_plus
   url_launcher_windows
   window_manager
 )

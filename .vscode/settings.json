@@ -19,5 +19,6 @@
   // Remove from file watching
   "files.watcherExclude": {
     "**/.fvm": true
-  }
+  },
+  "dart.runPubGetOnPubspecChanges": "never"
 }

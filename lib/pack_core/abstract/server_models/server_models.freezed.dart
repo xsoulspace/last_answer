@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'server_models.dart';
 
@@ -45,7 +45,8 @@ mixin _$IdeaProjectAnswerModel {
 abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
   factory $IdeaProjectAnswerModelCopyWith(IdeaProjectAnswerModel value,
           $Res Function(IdeaProjectAnswerModel) then) =
-      _$IdeaProjectAnswerModelCopyWithImpl<$Res>;
+      _$IdeaProjectAnswerModelCopyWithImpl<$Res, IdeaProjectAnswerModel>;
+  @useResult
   $Res call(
       {String id,
       String text,
@@ -62,54 +63,57 @@ abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$IdeaProjectAnswerModelCopyWithImpl<$Res>
+class _$IdeaProjectAnswerModelCopyWithImpl<$Res,
+        $Val extends IdeaProjectAnswerModel>
     implements $IdeaProjectAnswerModelCopyWith<$Res> {
   _$IdeaProjectAnswerModelCopyWithImpl(this._value, this._then);
 
-  final IdeaProjectAnswerModel _value;
   // ignore: unused_field
-  final $Res Function(IdeaProjectAnswerModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? text = freezed,
-    Object? questionId = freezed,
-    Object? projectId = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? ownerId = freezed,
+    Object? id = null,
+    Object? text = null,
+    Object? questionId = null,
+    Object? projectId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? ownerId = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      text: text == freezed
+      text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      questionId: questionId == freezed
+      questionId: null == questionId
           ? _value.questionId
           : questionId // ignore: cast_nullable_to_non_nullable
               as String,
-      projectId: projectId == freezed
+      projectId: null == projectId
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -120,6 +124,7 @@ abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
           $Res Function(_$_IdeaProjectAnswerModel) then) =
       __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String text,
@@ -137,52 +142,50 @@ abstract class _$$_IdeaProjectAnswerModelCopyWith<$Res>
 
 /// @nodoc
 class __$$_IdeaProjectAnswerModelCopyWithImpl<$Res>
-    extends _$IdeaProjectAnswerModelCopyWithImpl<$Res>
+    extends _$IdeaProjectAnswerModelCopyWithImpl<$Res,
+        _$_IdeaProjectAnswerModel>
     implements _$$_IdeaProjectAnswerModelCopyWith<$Res> {
   __$$_IdeaProjectAnswerModelCopyWithImpl(_$_IdeaProjectAnswerModel _value,
       $Res Function(_$_IdeaProjectAnswerModel) _then)
-      : super(_value, (v) => _then(v as _$_IdeaProjectAnswerModel));
+      : super(_value, _then);
 
-  @override
-  _$_IdeaProjectAnswerModel get _value =>
-      super._value as _$_IdeaProjectAnswerModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? text = freezed,
-    Object? questionId = freezed,
-    Object? projectId = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? ownerId = freezed,
+    Object? id = null,
+    Object? text = null,
+    Object? questionId = null,
+    Object? projectId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? ownerId = null,
   }) {
     return _then(_$_IdeaProjectAnswerModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      text: text == freezed
+      text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      questionId: questionId == freezed
+      questionId: null == questionId
           ? _value.questionId
           : questionId // ignore: cast_nullable_to_non_nullable
               as String,
-      projectId: projectId == freezed
+      projectId: null == projectId
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
@@ -243,30 +246,27 @@ class _$_IdeaProjectAnswerModel extends _IdeaProjectAnswerModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_IdeaProjectAnswerModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.text, text) &&
-            const DeepCollectionEquality()
-                .equals(other.questionId, questionId) &&
-            const DeepCollectionEquality().equals(other.projectId, projectId) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality().equals(other.ownerId, ownerId));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.questionId, questionId) ||
+                other.questionId == questionId) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(text),
-      const DeepCollectionEquality().hash(questionId),
-      const DeepCollectionEquality().hash(projectId),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(ownerId));
+  int get hashCode => Object.hash(runtimeType, id, text, questionId, projectId,
+      createdAt, updatedAt, ownerId);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_IdeaProjectAnswerModelCopyWith<_$_IdeaProjectAnswerModel> get copyWith =>
       __$$_IdeaProjectAnswerModelCopyWithImpl<_$_IdeaProjectAnswerModel>(
           this, _$identity);
@@ -345,36 +345,40 @@ mixin _$IdeaProjectQuestionModel {
 abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
   factory $IdeaProjectQuestionModelCopyWith(IdeaProjectQuestionModel value,
           $Res Function(IdeaProjectQuestionModel) then) =
-      _$IdeaProjectQuestionModelCopyWithImpl<$Res>;
+      _$IdeaProjectQuestionModelCopyWithImpl<$Res, IdeaProjectQuestionModel>;
+  @useResult
   $Res call(
       {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
       String title});
 }
 
 /// @nodoc
-class _$IdeaProjectQuestionModelCopyWithImpl<$Res>
+class _$IdeaProjectQuestionModelCopyWithImpl<$Res,
+        $Val extends IdeaProjectQuestionModel>
     implements $IdeaProjectQuestionModelCopyWith<$Res> {
   _$IdeaProjectQuestionModelCopyWithImpl(this._value, this._then);
 
-  final IdeaProjectQuestionModel _value;
   // ignore: unused_field
-  final $Res Function(IdeaProjectQuestionModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
+    Object? id = null,
+    Object? title = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -386,6 +390,7 @@ abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
           $Res Function(_$_IdeaProjectQuestionModel) then) =
       __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(fromJson: fromIntToString, toJson: fromStringToInt) String id,
       String title});
@@ -393,27 +398,25 @@ abstract class _$$_IdeaProjectQuestionModelCopyWith<$Res>
 
 /// @nodoc
 class __$$_IdeaProjectQuestionModelCopyWithImpl<$Res>
-    extends _$IdeaProjectQuestionModelCopyWithImpl<$Res>
+    extends _$IdeaProjectQuestionModelCopyWithImpl<$Res,
+        _$_IdeaProjectQuestionModel>
     implements _$$_IdeaProjectQuestionModelCopyWith<$Res> {
   __$$_IdeaProjectQuestionModelCopyWithImpl(_$_IdeaProjectQuestionModel _value,
       $Res Function(_$_IdeaProjectQuestionModel) _then)
-      : super(_value, (v) => _then(v as _$_IdeaProjectQuestionModel));
+      : super(_value, _then);
 
-  @override
-  _$_IdeaProjectQuestionModel get _value =>
-      super._value as _$_IdeaProjectQuestionModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
+    Object? id = null,
+    Object? title = null,
   }) {
     return _then(_$_IdeaProjectQuestionModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
@@ -450,19 +453,17 @@ class _$_IdeaProjectQuestionModel extends _IdeaProjectQuestionModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_IdeaProjectQuestionModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title));
+  int get hashCode => Object.hash(runtimeType, id, title);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_IdeaProjectQuestionModelCopyWith<_$_IdeaProjectQuestionModel>
       get copyWith => __$$_IdeaProjectQuestionModelCopyWithImpl<
           _$_IdeaProjectQuestionModel>(this, _$identity);
@@ -521,7 +522,8 @@ mixin _$ProjectFolderModel {
 abstract class $ProjectFolderModelCopyWith<$Res> {
   factory $ProjectFolderModelCopyWith(
           ProjectFolderModel value, $Res Function(ProjectFolderModel) then) =
-      _$ProjectFolderModelCopyWithImpl<$Res>;
+      _$ProjectFolderModelCopyWithImpl<$Res, ProjectFolderModel>;
+  @useResult
   $Res call(
       {String id,
       String title,
@@ -531,44 +533,46 @@ abstract class $ProjectFolderModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProjectFolderModelCopyWithImpl<$Res>
+class _$ProjectFolderModelCopyWithImpl<$Res, $Val extends ProjectFolderModel>
     implements $ProjectFolderModelCopyWith<$Res> {
   _$ProjectFolderModelCopyWithImpl(this._value, this._then);
 
-  final ProjectFolderModel _value;
   // ignore: unused_field
-  final $Res Function(ProjectFolderModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? ownerId = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? ownerId = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -579,6 +583,7 @@ abstract class _$$_ProjectFolderModelCopyWith<$Res>
           $Res Function(_$_ProjectFolderModel) then) =
       __$$_ProjectFolderModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String title,
@@ -589,41 +594,39 @@ abstract class _$$_ProjectFolderModelCopyWith<$Res>
 
 /// @nodoc
 class __$$_ProjectFolderModelCopyWithImpl<$Res>
-    extends _$ProjectFolderModelCopyWithImpl<$Res>
+    extends _$ProjectFolderModelCopyWithImpl<$Res, _$_ProjectFolderModel>
     implements _$$_ProjectFolderModelCopyWith<$Res> {
   __$$_ProjectFolderModelCopyWithImpl(
       _$_ProjectFolderModel _value, $Res Function(_$_ProjectFolderModel) _then)
-      : super(_value, (v) => _then(v as _$_ProjectFolderModel));
+      : super(_value, _then);
 
-  @override
-  _$_ProjectFolderModel get _value => super._value as _$_ProjectFolderModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? ownerId = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? ownerId = null,
   }) {
     return _then(_$_ProjectFolderModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
@@ -670,25 +673,23 @@ class _$_ProjectFolderModel extends _ProjectFolderModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectFolderModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality().equals(other.ownerId, ownerId));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(ownerId));
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, createdAt, updatedAt, ownerId);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProjectFolderModelCopyWith<_$_ProjectFolderModel> get copyWith =>
       __$$_ProjectFolderModelCopyWithImpl<_$_ProjectFolderModel>(
           this, _$identity);
@@ -798,7 +799,7 @@ mixin _$BasicProjectModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
+    TResult? Function(
             String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
@@ -809,7 +810,7 @@ mixin _$BasicProjectModel {
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
-    TResult Function(
+    TResult? Function(
             String id,
             String title,
             @JsonKey(name: 'created_at')
@@ -875,8 +876,8 @@ mixin _$BasicProjectModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(NoteProjectModel value)? noteProjectModel,
-    TResult Function(IdeaProjectModel value)? ideaProjectModel,
+    TResult? Function(NoteProjectModel value)? noteProjectModel,
+    TResult? Function(IdeaProjectModel value)? ideaProjectModel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -896,7 +897,8 @@ mixin _$BasicProjectModel {
 abstract class $BasicProjectModelCopyWith<$Res> {
   factory $BasicProjectModelCopyWith(
           BasicProjectModel value, $Res Function(BasicProjectModel) then) =
-      _$BasicProjectModelCopyWithImpl<$Res>;
+      _$BasicProjectModelCopyWithImpl<$Res, BasicProjectModel>;
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -908,54 +910,56 @@ abstract class $BasicProjectModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$BasicProjectModelCopyWithImpl<$Res>
+class _$BasicProjectModelCopyWithImpl<$Res, $Val extends BasicProjectModel>
     implements $BasicProjectModelCopyWith<$Res> {
   _$BasicProjectModelCopyWithImpl(this._value, this._then);
 
-  final BasicProjectModel _value;
   // ignore: unused_field
-  final $Res Function(BasicProjectModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? isCompleted = freezed,
-    Object? projectType = freezed,
-    Object? ownerId = freezed,
-    Object? folderId = freezed,
+    Object? id = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? isCompleted = null,
+    Object? projectType = null,
+    Object? ownerId = null,
+    Object? folderId = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      isCompleted: isCompleted == freezed
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      projectType: projectType == freezed
+      projectType: null == projectType
           ? _value.projectType
           : projectType // ignore: cast_nullable_to_non_nullable
               as ProjectType,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
-      folderId: folderId == freezed
+      folderId: null == folderId
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -966,6 +970,7 @@ abstract class _$$NoteProjectModelCopyWith<$Res>
           _$NoteProjectModel value, $Res Function(_$NoteProjectModel) then) =
       __$$NoteProjectModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -980,61 +985,59 @@ abstract class _$$NoteProjectModelCopyWith<$Res>
 
 /// @nodoc
 class __$$NoteProjectModelCopyWithImpl<$Res>
-    extends _$BasicProjectModelCopyWithImpl<$Res>
+    extends _$BasicProjectModelCopyWithImpl<$Res, _$NoteProjectModel>
     implements _$$NoteProjectModelCopyWith<$Res> {
   __$$NoteProjectModelCopyWithImpl(
       _$NoteProjectModel _value, $Res Function(_$NoteProjectModel) _then)
-      : super(_value, (v) => _then(v as _$NoteProjectModel));
+      : super(_value, _then);
 
-  @override
-  _$NoteProjectModel get _value => super._value as _$NoteProjectModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? isCompleted = freezed,
-    Object? projectType = freezed,
-    Object? ownerId = freezed,
-    Object? folderId = freezed,
+    Object? id = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? isCompleted = null,
+    Object? projectType = null,
+    Object? ownerId = null,
+    Object? folderId = null,
     Object? charactersLimit = freezed,
-    Object? note = freezed,
+    Object? note = null,
   }) {
     return _then(_$NoteProjectModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      isCompleted: isCompleted == freezed
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      projectType: projectType == freezed
+      projectType: null == projectType
           ? _value.projectType
           : projectType // ignore: cast_nullable_to_non_nullable
               as ProjectType,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
-      folderId: folderId == freezed
+      folderId: null == folderId
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
               as String,
-      charactersLimit: charactersLimit == freezed
+      charactersLimit: freezed == charactersLimit
           ? _value.charactersLimit
           : charactersLimit // ignore: cast_nullable_to_non_nullable
               as int?,
-      note: note == freezed
+      note: null == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String,
@@ -1101,36 +1104,31 @@ class _$NoteProjectModel implements NoteProjectModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NoteProjectModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality()
-                .equals(other.isCompleted, isCompleted) &&
-            const DeepCollectionEquality()
-                .equals(other.projectType, projectType) &&
-            const DeepCollectionEquality().equals(other.ownerId, ownerId) &&
-            const DeepCollectionEquality().equals(other.folderId, folderId) &&
-            const DeepCollectionEquality()
-                .equals(other.charactersLimit, charactersLimit) &&
-            const DeepCollectionEquality().equals(other.note, note));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.isCompleted, isCompleted) ||
+                other.isCompleted == isCompleted) &&
+            (identical(other.projectType, projectType) ||
+                other.projectType == projectType) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.folderId, folderId) ||
+                other.folderId == folderId) &&
+            (identical(other.charactersLimit, charactersLimit) ||
+                other.charactersLimit == charactersLimit) &&
+            (identical(other.note, note) || other.note == note));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(isCompleted),
-      const DeepCollectionEquality().hash(projectType),
-      const DeepCollectionEquality().hash(ownerId),
-      const DeepCollectionEquality().hash(folderId),
-      const DeepCollectionEquality().hash(charactersLimit),
-      const DeepCollectionEquality().hash(note));
+  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt,
+      isCompleted, projectType, ownerId, folderId, charactersLimit, note);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$NoteProjectModelCopyWith<_$NoteProjectModel> get copyWith =>
       __$$NoteProjectModelCopyWithImpl<_$NoteProjectModel>(this, _$identity);
 
@@ -1176,7 +1174,7 @@ class _$NoteProjectModel implements NoteProjectModel {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
+    TResult? Function(
             String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
@@ -1187,7 +1185,7 @@ class _$NoteProjectModel implements NoteProjectModel {
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
-    TResult Function(
+    TResult? Function(
             String id,
             String title,
             @JsonKey(name: 'created_at')
@@ -1267,8 +1265,8 @@ class _$NoteProjectModel implements NoteProjectModel {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(NoteProjectModel value)? noteProjectModel,
-    TResult Function(IdeaProjectModel value)? ideaProjectModel,
+    TResult? Function(NoteProjectModel value)? noteProjectModel,
+    TResult? Function(IdeaProjectModel value)? ideaProjectModel,
   }) {
     return noteProjectModel?.call(this);
   }
@@ -1345,6 +1343,7 @@ abstract class _$$IdeaProjectModelCopyWith<$Res>
           _$IdeaProjectModel value, $Res Function(_$IdeaProjectModel) then) =
       __$$IdeaProjectModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String title,
@@ -1368,66 +1367,64 @@ abstract class _$$IdeaProjectModelCopyWith<$Res>
 
 /// @nodoc
 class __$$IdeaProjectModelCopyWithImpl<$Res>
-    extends _$BasicProjectModelCopyWithImpl<$Res>
+    extends _$BasicProjectModelCopyWithImpl<$Res, _$IdeaProjectModel>
     implements _$$IdeaProjectModelCopyWith<$Res> {
   __$$IdeaProjectModelCopyWithImpl(
       _$IdeaProjectModel _value, $Res Function(_$IdeaProjectModel) _then)
-      : super(_value, (v) => _then(v as _$IdeaProjectModel));
+      : super(_value, _then);
 
-  @override
-  _$IdeaProjectModel get _value => super._value as _$IdeaProjectModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? isCompleted = freezed,
-    Object? projectType = freezed,
-    Object? ownerId = freezed,
-    Object? folderId = freezed,
-    Object? newAnswerText = freezed,
-    Object? newQuestionId = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? isCompleted = null,
+    Object? projectType = null,
+    Object? ownerId = null,
+    Object? folderId = null,
+    Object? newAnswerText = null,
+    Object? newQuestionId = null,
   }) {
     return _then(_$IdeaProjectModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: updatedAt == freezed
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      isCompleted: isCompleted == freezed
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      projectType: projectType == freezed
+      projectType: null == projectType
           ? _value.projectType
           : projectType // ignore: cast_nullable_to_non_nullable
               as ProjectType,
-      ownerId: ownerId == freezed
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
-      folderId: folderId == freezed
+      folderId: null == folderId
           ? _value.folderId
           : folderId // ignore: cast_nullable_to_non_nullable
               as String,
-      newAnswerText: newAnswerText == freezed
+      newAnswerText: null == newAnswerText
           ? _value.newAnswerText
           : newAnswerText // ignore: cast_nullable_to_non_nullable
               as String,
-      newQuestionId: newQuestionId == freezed
+      newQuestionId: null == newQuestionId
           ? _value.newQuestionId
           : newQuestionId // ignore: cast_nullable_to_non_nullable
               as String,
@@ -1509,39 +1506,43 @@ class _$IdeaProjectModel implements IdeaProjectModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$IdeaProjectModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality()
-                .equals(other.isCompleted, isCompleted) &&
-            const DeepCollectionEquality()
-                .equals(other.projectType, projectType) &&
-            const DeepCollectionEquality().equals(other.ownerId, ownerId) &&
-            const DeepCollectionEquality().equals(other.folderId, folderId) &&
-            const DeepCollectionEquality()
-                .equals(other.newAnswerText, newAnswerText) &&
-            const DeepCollectionEquality()
-                .equals(other.newQuestionId, newQuestionId));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.isCompleted, isCompleted) ||
+                other.isCompleted == isCompleted) &&
+            (identical(other.projectType, projectType) ||
+                other.projectType == projectType) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.folderId, folderId) ||
+                other.folderId == folderId) &&
+            (identical(other.newAnswerText, newAnswerText) ||
+                other.newAnswerText == newAnswerText) &&
+            (identical(other.newQuestionId, newQuestionId) ||
+                other.newQuestionId == newQuestionId));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(isCompleted),
-      const DeepCollectionEquality().hash(projectType),
-      const DeepCollectionEquality().hash(ownerId),
-      const DeepCollectionEquality().hash(folderId),
-      const DeepCollectionEquality().hash(newAnswerText),
-      const DeepCollectionEquality().hash(newQuestionId));
+      id,
+      title,
+      createdAt,
+      updatedAt,
+      isCompleted,
+      projectType,
+      ownerId,
+      folderId,
+      newAnswerText,
+      newQuestionId);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$IdeaProjectModelCopyWith<_$IdeaProjectModel> get copyWith =>
       __$$IdeaProjectModelCopyWithImpl<_$IdeaProjectModel>(this, _$identity);
 
@@ -1587,7 +1588,7 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
+    TResult? Function(
             String id,
             @JsonKey(name: 'created_at') DateTime createdAt,
             @JsonKey(name: 'updated_at') DateTime updatedAt,
@@ -1598,7 +1599,7 @@ class _$IdeaProjectModel implements IdeaProjectModel {
             @JsonKey(name: 'characters_limit') int? charactersLimit,
             String note)?
         noteProjectModel,
-    TResult Function(
+    TResult? Function(
             String id,
             String title,
             @JsonKey(name: 'created_at')
@@ -1678,8 +1679,8 @@ class _$IdeaProjectModel implements IdeaProjectModel {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(NoteProjectModel value)? noteProjectModel,
-    TResult Function(IdeaProjectModel value)? ideaProjectModel,
+    TResult? Function(NoteProjectModel value)? noteProjectModel,
+    TResult? Function(IdeaProjectModel value)? ideaProjectModel,
   }) {
     return ideaProjectModel?.call(this);
   }
@@ -1782,38 +1783,42 @@ mixin _$UserModel {
 /// @nodoc
 abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
-      _$UserModelCopyWithImpl<$Res>;
+      _$UserModelCopyWithImpl<$Res, UserModel>;
+  @useResult
   $Res call({String id, UserStatus status, String username});
 }
 
 /// @nodoc
-class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
+class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
+    implements $UserModelCopyWith<$Res> {
   _$UserModelCopyWithImpl(this._value, this._then);
 
-  final UserModel _value;
   // ignore: unused_field
-  final $Res Function(UserModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? status = freezed,
-    Object? username = freezed,
+    Object? id = null,
+    Object? status = null,
+    Object? username = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      status: status == freezed
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as UserStatus,
-      username: username == freezed
+      username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -1823,35 +1828,35 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           _$_UserModel value, $Res Function(_$_UserModel) then) =
       __$$_UserModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String id, UserStatus status, String username});
 }
 
 /// @nodoc
-class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
+class __$$_UserModelCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$_UserModel>
     implements _$$_UserModelCopyWith<$Res> {
   __$$_UserModelCopyWithImpl(
       _$_UserModel _value, $Res Function(_$_UserModel) _then)
-      : super(_value, (v) => _then(v as _$_UserModel));
+      : super(_value, _then);
 
-  @override
-  _$_UserModel get _value => super._value as _$_UserModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? status = freezed,
-    Object? username = freezed,
+    Object? id = null,
+    Object? status = null,
+    Object? username = null,
   }) {
     return _then(_$_UserModel(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      status: status == freezed
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as UserStatus,
-      username: username == freezed
+      username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
@@ -1887,21 +1892,19 @@ class _$_UserModel extends _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.status, status) &&
-            const DeepCollectionEquality().equals(other.username, username));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.username, username) ||
+                other.username == username));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(username));
+  int get hashCode => Object.hash(runtimeType, id, status, username);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
       __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
 

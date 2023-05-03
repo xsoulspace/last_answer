@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'model_updater_diff.dart';
 
@@ -33,7 +33,9 @@ abstract class $InstanceUpdaterDtoCopyWith<T extends HasId,
     TOther extends HasId, $Res> {
   factory $InstanceUpdaterDtoCopyWith(InstanceUpdaterDto<T, TOther> value,
           $Res Function(InstanceUpdaterDto<T, TOther>) then) =
-      _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>;
+      _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res,
+          InstanceUpdaterDto<T, TOther>>;
+  @useResult
   $Res call(
       {InstancesUpdatesDto<T, TOther> originalUpdates,
       InstancesUpdatesDto<TOther, T> otherUpdates,
@@ -45,48 +47,53 @@ abstract class $InstanceUpdaterDtoCopyWith<T extends HasId,
 
 /// @nodoc
 class _$InstanceUpdaterDtoCopyWithImpl<T extends HasId, TOther extends HasId,
-    $Res> implements $InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
+        $Res, $Val extends InstanceUpdaterDto<T, TOther>>
+    implements $InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
   _$InstanceUpdaterDtoCopyWithImpl(this._value, this._then);
 
-  final InstanceUpdaterDto<T, TOther> _value;
   // ignore: unused_field
-  final $Res Function(InstanceUpdaterDto<T, TOther>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? originalUpdates = freezed,
-    Object? otherUpdates = freezed,
-    Object? instancesToCheck = freezed,
+    Object? originalUpdates = null,
+    Object? otherUpdates = null,
+    Object? instancesToCheck = null,
   }) {
     return _then(_value.copyWith(
-      originalUpdates: originalUpdates == freezed
+      originalUpdates: null == originalUpdates
           ? _value.originalUpdates
           : originalUpdates // ignore: cast_nullable_to_non_nullable
               as InstancesUpdatesDto<T, TOther>,
-      otherUpdates: otherUpdates == freezed
+      otherUpdates: null == otherUpdates
           ? _value.otherUpdates
           : otherUpdates // ignore: cast_nullable_to_non_nullable
               as InstancesUpdatesDto<TOther, T>,
-      instancesToCheck: instancesToCheck == freezed
+      instancesToCheck: null == instancesToCheck
           ? _value.instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $InstancesUpdatesDtoCopyWith<T, TOther, $Res> get originalUpdates {
     return $InstancesUpdatesDtoCopyWith<T, TOther, $Res>(_value.originalUpdates,
         (value) {
-      return _then(_value.copyWith(originalUpdates: value));
+      return _then(_value.copyWith(originalUpdates: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $InstancesUpdatesDtoCopyWith<TOther, T, $Res> get otherUpdates {
     return $InstancesUpdatesDtoCopyWith<TOther, T, $Res>(_value.otherUpdates,
         (value) {
-      return _then(_value.copyWith(otherUpdates: value));
+      return _then(_value.copyWith(otherUpdates: value) as $Val);
     });
   }
 }
@@ -100,6 +107,7 @@ abstract class _$$_InstanceUpdaterDtoCopyWith<
           $Res Function(_$_InstanceUpdaterDto<T, TOther>) then) =
       __$$_InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>;
   @override
+  @useResult
   $Res call(
       {InstancesUpdatesDto<T, TOther> originalUpdates,
       InstancesUpdatesDto<TOther, T> otherUpdates,
@@ -113,32 +121,31 @@ abstract class _$$_InstanceUpdaterDtoCopyWith<
 
 /// @nodoc
 class __$$_InstanceUpdaterDtoCopyWithImpl<T extends HasId, TOther extends HasId,
-        $Res> extends _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res>
+        $Res>
+    extends _$InstanceUpdaterDtoCopyWithImpl<T, TOther, $Res,
+        _$_InstanceUpdaterDto<T, TOther>>
     implements _$$_InstanceUpdaterDtoCopyWith<T, TOther, $Res> {
   __$$_InstanceUpdaterDtoCopyWithImpl(_$_InstanceUpdaterDto<T, TOther> _value,
       $Res Function(_$_InstanceUpdaterDto<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_InstanceUpdaterDto<T, TOther>));
+      : super(_value, _then);
 
-  @override
-  _$_InstanceUpdaterDto<T, TOther> get _value =>
-      super._value as _$_InstanceUpdaterDto<T, TOther>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? originalUpdates = freezed,
-    Object? otherUpdates = freezed,
-    Object? instancesToCheck = freezed,
+    Object? originalUpdates = null,
+    Object? otherUpdates = null,
+    Object? instancesToCheck = null,
   }) {
     return _then(_$_InstanceUpdaterDto<T, TOther>(
-      originalUpdates: originalUpdates == freezed
+      originalUpdates: null == originalUpdates
           ? _value.originalUpdates
           : originalUpdates // ignore: cast_nullable_to_non_nullable
               as InstancesUpdatesDto<T, TOther>,
-      otherUpdates: otherUpdates == freezed
+      otherUpdates: null == otherUpdates
           ? _value.otherUpdates
           : otherUpdates // ignore: cast_nullable_to_non_nullable
               as InstancesUpdatesDto<TOther, T>,
-      instancesToCheck: instancesToCheck == freezed
+      instancesToCheck: null == instancesToCheck
           ? _value._instancesToCheck
           : instancesToCheck // ignore: cast_nullable_to_non_nullable
               as Map<String, InstanceDiff<T, TOther>>,
@@ -165,6 +172,7 @@ class _$_InstanceUpdaterDto<T extends HasId, TOther extends HasId>
   @override
   @JsonKey()
   Map<String, InstanceDiff<T, TOther>> get instancesToCheck {
+    if (_instancesToCheck is EqualUnmodifiableMapView) return _instancesToCheck;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_instancesToCheck);
   }
@@ -179,23 +187,21 @@ class _$_InstanceUpdaterDto<T extends HasId, TOther extends HasId>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_InstanceUpdaterDto<T, TOther> &&
-            const DeepCollectionEquality()
-                .equals(other.originalUpdates, originalUpdates) &&
-            const DeepCollectionEquality()
-                .equals(other.otherUpdates, otherUpdates) &&
+            (identical(other.originalUpdates, originalUpdates) ||
+                other.originalUpdates == originalUpdates) &&
+            (identical(other.otherUpdates, otherUpdates) ||
+                other.otherUpdates == otherUpdates) &&
             const DeepCollectionEquality()
                 .equals(other._instancesToCheck, _instancesToCheck));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(originalUpdates),
-      const DeepCollectionEquality().hash(otherUpdates),
+  int get hashCode => Object.hash(runtimeType, originalUpdates, otherUpdates,
       const DeepCollectionEquality().hash(_instancesToCheck));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InstanceUpdaterDtoCopyWith<T, TOther, _$_InstanceUpdaterDto<T, TOther>>
       get copyWith => __$$_InstanceUpdaterDtoCopyWithImpl<T, TOther,
           _$_InstanceUpdaterDto<T, TOther>>(this, _$identity);
@@ -238,7 +244,9 @@ abstract class $InstancesUpdatesDtoCopyWith<T extends HasId,
     TOther extends HasId, $Res> {
   factory $InstancesUpdatesDtoCopyWith(InstancesUpdatesDto<T, TOther> value,
           $Res Function(InstancesUpdatesDto<T, TOther>) then) =
-      _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>;
+      _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res,
+          InstancesUpdatesDto<T, TOther>>;
+  @useResult
   $Res call(
       {Iterable<TOther> toCreateFromOther,
       Iterable<T> toUpdate,
@@ -247,33 +255,36 @@ abstract class $InstancesUpdatesDtoCopyWith<T extends HasId,
 
 /// @nodoc
 class _$InstancesUpdatesDtoCopyWithImpl<T extends HasId, TOther extends HasId,
-    $Res> implements $InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
+        $Res, $Val extends InstancesUpdatesDto<T, TOther>>
+    implements $InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
   _$InstancesUpdatesDtoCopyWithImpl(this._value, this._then);
 
-  final InstancesUpdatesDto<T, TOther> _value;
   // ignore: unused_field
-  final $Res Function(InstancesUpdatesDto<T, TOther>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? toCreateFromOther = freezed,
-    Object? toUpdate = freezed,
-    Object? toDelete = freezed,
+    Object? toCreateFromOther = null,
+    Object? toUpdate = null,
+    Object? toDelete = null,
   }) {
     return _then(_value.copyWith(
-      toCreateFromOther: toCreateFromOther == freezed
+      toCreateFromOther: null == toCreateFromOther
           ? _value.toCreateFromOther
           : toCreateFromOther // ignore: cast_nullable_to_non_nullable
               as Iterable<TOther>,
-      toUpdate: toUpdate == freezed
+      toUpdate: null == toUpdate
           ? _value.toUpdate
           : toUpdate // ignore: cast_nullable_to_non_nullable
               as Iterable<T>,
-      toDelete: toDelete == freezed
+      toDelete: null == toDelete
           ? _value.toDelete
           : toDelete // ignore: cast_nullable_to_non_nullable
               as Iterable<T>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -287,6 +298,7 @@ abstract class _$$_InstancesUpdatesDtoCopyWith<
           $Res Function(_$_InstancesUpdatesDto<T, TOther>) then) =
       __$$_InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>;
   @override
+  @useResult
   $Res call(
       {Iterable<TOther> toCreateFromOther,
       Iterable<T> toUpdate,
@@ -294,35 +306,32 @@ abstract class _$$_InstancesUpdatesDtoCopyWith<
 }
 
 /// @nodoc
-class __$$_InstancesUpdatesDtoCopyWithImpl<
-        T extends HasId,
-        TOther extends HasId,
-        $Res> extends _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res>
+class __$$_InstancesUpdatesDtoCopyWithImpl<T extends HasId,
+        TOther extends HasId, $Res>
+    extends _$InstancesUpdatesDtoCopyWithImpl<T, TOther, $Res,
+        _$_InstancesUpdatesDto<T, TOther>>
     implements _$$_InstancesUpdatesDtoCopyWith<T, TOther, $Res> {
   __$$_InstancesUpdatesDtoCopyWithImpl(_$_InstancesUpdatesDto<T, TOther> _value,
       $Res Function(_$_InstancesUpdatesDto<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_InstancesUpdatesDto<T, TOther>));
+      : super(_value, _then);
 
-  @override
-  _$_InstancesUpdatesDto<T, TOther> get _value =>
-      super._value as _$_InstancesUpdatesDto<T, TOther>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? toCreateFromOther = freezed,
-    Object? toUpdate = freezed,
-    Object? toDelete = freezed,
+    Object? toCreateFromOther = null,
+    Object? toUpdate = null,
+    Object? toDelete = null,
   }) {
     return _then(_$_InstancesUpdatesDto<T, TOther>(
-      toCreateFromOther: toCreateFromOther == freezed
+      toCreateFromOther: null == toCreateFromOther
           ? _value.toCreateFromOther
           : toCreateFromOther // ignore: cast_nullable_to_non_nullable
               as Iterable<TOther>,
-      toUpdate: toUpdate == freezed
+      toUpdate: null == toUpdate
           ? _value.toUpdate
           : toUpdate // ignore: cast_nullable_to_non_nullable
               as Iterable<T>,
-      toDelete: toDelete == freezed
+      toDelete: null == toDelete
           ? _value.toDelete
           : toDelete // ignore: cast_nullable_to_non_nullable
               as Iterable<T>,
@@ -375,6 +384,7 @@ class _$_InstancesUpdatesDto<T extends HasId, TOther extends HasId>
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InstancesUpdatesDtoCopyWith<T, TOther, _$_InstancesUpdatesDto<T, TOther>>
       get copyWith => __$$_InstancesUpdatesDtoCopyWithImpl<T, TOther,
           _$_InstancesUpdatesDto<T, TOther>>(this, _$identity);

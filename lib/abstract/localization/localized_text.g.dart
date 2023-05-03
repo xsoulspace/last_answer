@@ -11,7 +11,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   final int typeId = 8;
 
   @override
-  LocalizedText read(final BinaryReader reader) {
+  LocalizedText read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -25,7 +25,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   }
 
   @override
-  void write(final BinaryWriter writer, final LocalizedText obj) {
+  void write(BinaryWriter writer, LocalizedText obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -42,7 +42,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(final Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       other is LocalizedTextAdapter &&
           runtimeType == other.runtimeType &&
@@ -53,7 +53,7 @@ class LocalizedTextAdapter extends TypeAdapter<LocalizedText> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
+LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
     LocalizedText(
       en: json['en'] as String,
       ru: json['ru'] as String,
@@ -61,7 +61,7 @@ LocalizedText _$LocalizedTextFromJson(final Map<String, dynamic> json) =>
       ga: json['ga'] as String?,
     );
 
-Map<String, dynamic> _$LocalizedTextToJson(final LocalizedText instance) =>
+Map<String, dynamic> _$LocalizedTextToJson(LocalizedText instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,

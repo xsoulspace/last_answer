@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'router.dart';
 
@@ -42,7 +42,8 @@ mixin _$ParsedRoute {
 abstract class $ParsedRouteCopyWith<$Res> {
   factory $ParsedRouteCopyWith(
           ParsedRoute value, $Res Function(ParsedRoute) then) =
-      _$ParsedRouteCopyWithImpl<$Res>;
+      _$ParsedRouteCopyWithImpl<$Res, ParsedRoute>;
+  @useResult
   $Res call(
       {String path,
       String pathTemplate,
@@ -51,38 +52,41 @@ abstract class $ParsedRouteCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ParsedRouteCopyWithImpl<$Res> implements $ParsedRouteCopyWith<$Res> {
+class _$ParsedRouteCopyWithImpl<$Res, $Val extends ParsedRoute>
+    implements $ParsedRouteCopyWith<$Res> {
   _$ParsedRouteCopyWithImpl(this._value, this._then);
 
-  final ParsedRoute _value;
   // ignore: unused_field
-  final $Res Function(ParsedRoute) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? path = freezed,
-    Object? pathTemplate = freezed,
-    Object? parameters = freezed,
-    Object? queryParameters = freezed,
+    Object? path = null,
+    Object? pathTemplate = null,
+    Object? parameters = null,
+    Object? queryParameters = null,
   }) {
     return _then(_value.copyWith(
-      path: path == freezed
+      path: null == path
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
-      pathTemplate: pathTemplate == freezed
+      pathTemplate: null == pathTemplate
           ? _value.pathTemplate
           : pathTemplate // ignore: cast_nullable_to_non_nullable
               as String,
-      parameters: parameters == freezed
+      parameters: null == parameters
           ? _value.parameters
           : parameters // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      queryParameters: queryParameters == freezed
+      queryParameters: null == queryParameters
           ? _value.queryParameters
           : queryParameters // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -93,6 +97,7 @@ abstract class _$$_ParsedRouteCopyWith<$Res>
           _$_ParsedRoute value, $Res Function(_$_ParsedRoute) then) =
       __$$_ParsedRouteCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String path,
       String pathTemplate,
@@ -101,36 +106,35 @@ abstract class _$$_ParsedRouteCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ParsedRouteCopyWithImpl<$Res> extends _$ParsedRouteCopyWithImpl<$Res>
+class __$$_ParsedRouteCopyWithImpl<$Res>
+    extends _$ParsedRouteCopyWithImpl<$Res, _$_ParsedRoute>
     implements _$$_ParsedRouteCopyWith<$Res> {
   __$$_ParsedRouteCopyWithImpl(
       _$_ParsedRoute _value, $Res Function(_$_ParsedRoute) _then)
-      : super(_value, (v) => _then(v as _$_ParsedRoute));
+      : super(_value, _then);
 
-  @override
-  _$_ParsedRoute get _value => super._value as _$_ParsedRoute;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? path = freezed,
-    Object? pathTemplate = freezed,
-    Object? parameters = freezed,
-    Object? queryParameters = freezed,
+    Object? path = null,
+    Object? pathTemplate = null,
+    Object? parameters = null,
+    Object? queryParameters = null,
   }) {
     return _then(_$_ParsedRoute(
-      path: path == freezed
+      path: null == path
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
-      pathTemplate: pathTemplate == freezed
+      pathTemplate: null == pathTemplate
           ? _value.pathTemplate
           : pathTemplate // ignore: cast_nullable_to_non_nullable
               as String,
-      parameters: parameters == freezed
+      parameters: null == parameters
           ? _value._parameters
           : parameters // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      queryParameters: queryParameters == freezed
+      queryParameters: null == queryParameters
           ? _value._queryParameters
           : queryParameters // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
@@ -168,6 +172,7 @@ class _$_ParsedRoute extends _ParsedRoute with DiagnosticableTreeMixin {
   /// The path parameters ({id: 123})
   @override
   Map<String, String> get parameters {
+    if (_parameters is EqualUnmodifiableMapView) return _parameters;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_parameters);
   }
@@ -178,6 +183,7 @@ class _$_ParsedRoute extends _ParsedRoute with DiagnosticableTreeMixin {
   /// The query parameters ({search: abc})
   @override
   Map<String, String> get queryParameters {
+    if (_queryParameters is EqualUnmodifiableMapView) return _queryParameters;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_queryParameters);
   }
@@ -203,9 +209,9 @@ class _$_ParsedRoute extends _ParsedRoute with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ParsedRoute &&
-            const DeepCollectionEquality().equals(other.path, path) &&
-            const DeepCollectionEquality()
-                .equals(other.pathTemplate, pathTemplate) &&
+            (identical(other.path, path) || other.path == path) &&
+            (identical(other.pathTemplate, pathTemplate) ||
+                other.pathTemplate == pathTemplate) &&
             const DeepCollectionEquality()
                 .equals(other._parameters, _parameters) &&
             const DeepCollectionEquality()
@@ -216,13 +222,14 @@ class _$_ParsedRoute extends _ParsedRoute with DiagnosticableTreeMixin {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(path),
-      const DeepCollectionEquality().hash(pathTemplate),
+      path,
+      pathTemplate,
       const DeepCollectionEquality().hash(_parameters),
       const DeepCollectionEquality().hash(_queryParameters));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ParsedRouteCopyWith<_$_ParsedRoute> get copyWith =>
       __$$_ParsedRouteCopyWithImpl<_$_ParsedRoute>(this, _$identity);
 

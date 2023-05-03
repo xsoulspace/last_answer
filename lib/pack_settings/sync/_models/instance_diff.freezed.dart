@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'instance_diff.dart';
 
@@ -29,34 +29,38 @@ abstract class $InstanceDiffCopyWith<T extends HasId, TOther extends HasId,
     $Res> {
   factory $InstanceDiffCopyWith(InstanceDiff<T, TOther> value,
           $Res Function(InstanceDiff<T, TOther>) then) =
-      _$InstanceDiffCopyWithImpl<T, TOther, $Res>;
+      _$InstanceDiffCopyWithImpl<T, TOther, $Res, InstanceDiff<T, TOther>>;
+  @useResult
   $Res call({T original, TOther other});
 }
 
 /// @nodoc
-class _$InstanceDiffCopyWithImpl<T extends HasId, TOther extends HasId, $Res>
+class _$InstanceDiffCopyWithImpl<T extends HasId, TOther extends HasId, $Res,
+        $Val extends InstanceDiff<T, TOther>>
     implements $InstanceDiffCopyWith<T, TOther, $Res> {
   _$InstanceDiffCopyWithImpl(this._value, this._then);
 
-  final InstanceDiff<T, TOther> _value;
   // ignore: unused_field
-  final $Res Function(InstanceDiff<T, TOther>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
+    Object? original = null,
+    Object? other = null,
   }) {
     return _then(_value.copyWith(
-      original: original == freezed
+      original: null == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
               as T,
-      other: other == freezed
+      other: null == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as TOther,
-    ));
+    ) as $Val);
   }
 }
 
@@ -67,32 +71,31 @@ abstract class _$$_InstanceDiffCopyWith<T extends HasId, TOther extends HasId,
           $Res Function(_$_InstanceDiff<T, TOther>) then) =
       __$$_InstanceDiffCopyWithImpl<T, TOther, $Res>;
   @override
+  @useResult
   $Res call({T original, TOther other});
 }
 
 /// @nodoc
 class __$$_InstanceDiffCopyWithImpl<T extends HasId, TOther extends HasId, $Res>
-    extends _$InstanceDiffCopyWithImpl<T, TOther, $Res>
+    extends _$InstanceDiffCopyWithImpl<T, TOther, $Res,
+        _$_InstanceDiff<T, TOther>>
     implements _$$_InstanceDiffCopyWith<T, TOther, $Res> {
   __$$_InstanceDiffCopyWithImpl(_$_InstanceDiff<T, TOther> _value,
       $Res Function(_$_InstanceDiff<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_InstanceDiff<T, TOther>));
+      : super(_value, _then);
 
-  @override
-  _$_InstanceDiff<T, TOther> get _value =>
-      super._value as _$_InstanceDiff<T, TOther>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
+    Object? original = null,
+    Object? other = null,
   }) {
     return _then(_$_InstanceDiff<T, TOther>(
-      original: original == freezed
+      original: null == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
               as T,
-      other: other == freezed
+      other: null == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as TOther,
@@ -134,6 +137,7 @@ class _$_InstanceDiff<T extends HasId, TOther extends HasId>
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InstanceDiffCopyWith<T, TOther, _$_InstanceDiff<T, TOther>>
       get copyWith =>
           __$$_InstanceDiffCopyWithImpl<T, TOther, _$_InstanceDiff<T, TOther>>(
@@ -174,7 +178,9 @@ abstract class $UpdatableInstanceDiffCopyWith<T extends HasId,
     TOther extends HasId, $Res> {
   factory $UpdatableInstanceDiffCopyWith(UpdatableInstanceDiff<T, TOther> value,
           $Res Function(UpdatableInstanceDiff<T, TOther>) then) =
-      _$UpdatableInstanceDiffCopyWithImpl<T, TOther, $Res>;
+      _$UpdatableInstanceDiffCopyWithImpl<T, TOther, $Res,
+          UpdatableInstanceDiff<T, TOther>>;
+  @useResult
   $Res call(
       {T original,
       TOther other,
@@ -184,38 +190,41 @@ abstract class $UpdatableInstanceDiffCopyWith<T extends HasId,
 
 /// @nodoc
 class _$UpdatableInstanceDiffCopyWithImpl<T extends HasId, TOther extends HasId,
-    $Res> implements $UpdatableInstanceDiffCopyWith<T, TOther, $Res> {
+        $Res, $Val extends UpdatableInstanceDiff<T, TOther>>
+    implements $UpdatableInstanceDiffCopyWith<T, TOther, $Res> {
   _$UpdatableInstanceDiffCopyWithImpl(this._value, this._then);
 
-  final UpdatableInstanceDiff<T, TOther> _value;
   // ignore: unused_field
-  final $Res Function(UpdatableInstanceDiff<T, TOther>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
-    Object? originalWasUpdated = freezed,
-    Object? otherWasUpdated = freezed,
+    Object? original = null,
+    Object? other = null,
+    Object? originalWasUpdated = null,
+    Object? otherWasUpdated = null,
   }) {
     return _then(_value.copyWith(
-      original: original == freezed
+      original: null == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
               as T,
-      other: other == freezed
+      other: null == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as TOther,
-      originalWasUpdated: originalWasUpdated == freezed
+      originalWasUpdated: null == originalWasUpdated
           ? _value.originalWasUpdated
           : originalWasUpdated // ignore: cast_nullable_to_non_nullable
               as bool,
-      otherWasUpdated: otherWasUpdated == freezed
+      otherWasUpdated: null == otherWasUpdated
           ? _value.otherWasUpdated
           : otherWasUpdated // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -229,6 +238,7 @@ abstract class _$$_UpdatableInstanceDiffCopyWith<
           $Res Function(_$_UpdatableInstanceDiff<T, TOther>) then) =
       __$$_UpdatableInstanceDiffCopyWithImpl<T, TOther, $Res>;
   @override
+  @useResult
   $Res call(
       {T original,
       TOther other,
@@ -237,41 +247,38 @@ abstract class _$$_UpdatableInstanceDiffCopyWith<
 }
 
 /// @nodoc
-class __$$_UpdatableInstanceDiffCopyWithImpl<
-        T extends HasId,
-        TOther extends HasId,
-        $Res> extends _$UpdatableInstanceDiffCopyWithImpl<T, TOther, $Res>
+class __$$_UpdatableInstanceDiffCopyWithImpl<T extends HasId,
+        TOther extends HasId, $Res>
+    extends _$UpdatableInstanceDiffCopyWithImpl<T, TOther, $Res,
+        _$_UpdatableInstanceDiff<T, TOther>>
     implements _$$_UpdatableInstanceDiffCopyWith<T, TOther, $Res> {
   __$$_UpdatableInstanceDiffCopyWithImpl(
       _$_UpdatableInstanceDiff<T, TOther> _value,
       $Res Function(_$_UpdatableInstanceDiff<T, TOther>) _then)
-      : super(_value, (v) => _then(v as _$_UpdatableInstanceDiff<T, TOther>));
+      : super(_value, _then);
 
-  @override
-  _$_UpdatableInstanceDiff<T, TOther> get _value =>
-      super._value as _$_UpdatableInstanceDiff<T, TOther>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? original = freezed,
-    Object? other = freezed,
-    Object? originalWasUpdated = freezed,
-    Object? otherWasUpdated = freezed,
+    Object? original = null,
+    Object? other = null,
+    Object? originalWasUpdated = null,
+    Object? otherWasUpdated = null,
   }) {
     return _then(_$_UpdatableInstanceDiff<T, TOther>(
-      original: original == freezed
+      original: null == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
               as T,
-      other: other == freezed
+      other: null == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as TOther,
-      originalWasUpdated: originalWasUpdated == freezed
+      originalWasUpdated: null == originalWasUpdated
           ? _value.originalWasUpdated
           : originalWasUpdated // ignore: cast_nullable_to_non_nullable
               as bool,
-      otherWasUpdated: otherWasUpdated == freezed
+      otherWasUpdated: null == otherWasUpdated
           ? _value.otherWasUpdated
           : otherWasUpdated // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -310,10 +317,10 @@ class _$_UpdatableInstanceDiff<T extends HasId, TOther extends HasId>
             other is _$_UpdatableInstanceDiff<T, TOther> &&
             const DeepCollectionEquality().equals(other.original, original) &&
             const DeepCollectionEquality().equals(other.other, this.other) &&
-            const DeepCollectionEquality()
-                .equals(other.originalWasUpdated, originalWasUpdated) &&
-            const DeepCollectionEquality()
-                .equals(other.otherWasUpdated, otherWasUpdated));
+            (identical(other.originalWasUpdated, originalWasUpdated) ||
+                other.originalWasUpdated == originalWasUpdated) &&
+            (identical(other.otherWasUpdated, otherWasUpdated) ||
+                other.otherWasUpdated == otherWasUpdated));
   }
 
   @override
@@ -321,11 +328,12 @@ class _$_UpdatableInstanceDiff<T extends HasId, TOther extends HasId>
       runtimeType,
       const DeepCollectionEquality().hash(original),
       const DeepCollectionEquality().hash(other),
-      const DeepCollectionEquality().hash(originalWasUpdated),
-      const DeepCollectionEquality().hash(otherWasUpdated));
+      originalWasUpdated,
+      otherWasUpdated);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_UpdatableInstanceDiffCopyWith<T, TOther,
           _$_UpdatableInstanceDiff<T, TOther>>
       get copyWith => __$$_UpdatableInstanceDiffCopyWithImpl<T, TOther,

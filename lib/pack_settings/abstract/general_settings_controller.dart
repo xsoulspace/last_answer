@@ -96,7 +96,7 @@ class GeneralSettingsController extends ChangeNotifier implements Loadable {
   set projectsListReversed(final bool projectsReversed) {
     _projectsListReversed = projectsReversed;
     notify();
-    settingsService.setProjectsReversed(reversed: projectsReversed);
+    unawaited(settingsService.setProjectsReversed(reversed: projectsReversed));
   }
 
   int _charactersLimitForNewNotes = 0;
@@ -105,7 +105,7 @@ class GeneralSettingsController extends ChangeNotifier implements Loadable {
   set charactersLimitForNewNotes(final int limit) {
     _charactersLimitForNewNotes = limit;
     notify();
-    settingsService.setCharactersLimitForNewNotes(limit: limit);
+    unawaited(settingsService.setCharactersLimitForNewNotes(limit: limit));
   }
 
   void notify() => notifyListeners();

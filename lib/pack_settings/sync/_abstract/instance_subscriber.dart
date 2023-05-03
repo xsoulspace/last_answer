@@ -49,7 +49,7 @@ class SingleInstanceSubscriber<
     extends InstanceSubscriberI<TImmutable> {
   SingleInstanceSubscriber({
     required this.updater,
-    required final super.api,
+    required super.api,
   });
   final InstanceUpdater<TMutable, TImmutable, TMapState> updater;
 

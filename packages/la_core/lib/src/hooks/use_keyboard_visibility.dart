@@ -6,9 +6,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../utils/device_runtime_type.dart';
 
-ValueNotifier<bool> useKeyboardVisibility() {
-  return use(const _KeyboardVisiblityHook());
-}
+ValueNotifier<bool> useKeyboardVisibility() =>
+    use(const _KeyboardVisiblityHook());
 
 class _KeyboardVisiblityHook extends Hook<ValueNotifier<bool>> {
   const _KeyboardVisiblityHook();
@@ -34,7 +33,7 @@ class _KeyboardVisiblityHookState
 
   @override
   void dispose() {
-    keyboardSubscription?.cancel();
+    unawaited(keyboardSubscription?.cancel());
     _state.dispose();
   }
 

@@ -5,7 +5,7 @@ class RouterController {
   final RouteState routeState;
 
   void to(final String routeName) {
-    routeState.go(routeName);
+    unawaited(routeState.go(routeName));
   }
 }
 

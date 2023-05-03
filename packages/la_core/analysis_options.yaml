@@ -8,3 +8,7 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 include: package:xsoulspace_lints/library.yaml
+
+analyzer:
+  errors:
+    unused_local_variable: info

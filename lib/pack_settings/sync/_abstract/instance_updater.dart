@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/pack_core/abstract/server_models/server_models.dart';
 import 'package:lastanswer/pack_core/pack_core.dart';
@@ -216,12 +215,10 @@ abstract class BasicProjectInstanceUpdater<
             folderId: original.folder!.id,
           ) as TImmutableOther;
           otherWasUpdated = true;
-          break;
         case InstanceUpdatePolicy.useServerVersion:
           final folder = foldersNotifier.state[other.folderId];
           folder?.addProject(original);
           originalWasUpdated = true;
-          break;
         case InstanceUpdatePolicy.noUpdateRequired:
           break;
       }
@@ -244,7 +241,7 @@ abstract class BasicProjectInstanceUpdater<
         diff: diff,
         updatables: [updateFolder, onCheck],
         onUpdated: (final original, final other) {
-          other.copyWith(updatedAt: dateTimeNowUtc()) as TImmutableOther;
+          // other.copyWith(updatedAt: dateTimeNowUtc()) as TImmutableOther;
           original.updatedAt = other.updatedAt;
 
           return other;

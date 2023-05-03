@@ -13,8 +13,8 @@ class MyAccount extends HookWidget {
   const MyAccount({
     required this.onSignIn,
     this.padding,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final EdgeInsets? padding;
   final VoidCallback onSignIn;
 

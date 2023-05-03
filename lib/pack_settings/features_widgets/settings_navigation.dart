@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({
     required this.onSelectRoute,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final ValueChanged<AppRouteName> onSelectRoute;
 
   @override
@@ -62,8 +62,8 @@ class SettingsNavigation extends StatelessWidget {
           ),
         SettingsButton(
           routeName: NavigationRoutes.changelog,
-          onSelected: (final _) {
-            showNotificationDialog(context: context);
+          onSelected: (final _) async {
+            await showNotificationDialog(context: context);
           },
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.changeLog,

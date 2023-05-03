@@ -12,9 +12,7 @@ class ClientInstancesSyncServiceI<
         T extends RemoteHiveObjectWithId<TOther>,
         TOther extends HasId,
         TNotifier extends MapState<T>> extends InstancesSyncServiceI<T, TOther>
-    with
-        // ignore: prefer_mixin
-        InstancesSyncServiceApplier<T, TOther> {
+    with InstancesSyncServiceApplier<T, TOther> {
   Future<Iterable<T>> getAll() async => throw UnimplementedError();
 }
 

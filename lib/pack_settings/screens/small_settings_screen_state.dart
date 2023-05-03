@@ -92,15 +92,12 @@ class SmallSettingsScreenState extends LifeState {
           onSignIn: onSignIn,
         );
         await toPage();
-        break;
       case NavigationRoutes.generalSettings:
         subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
         await toPage();
-        break;
       case NavigationRoutes.subscription:
         subSettingsPage.value = SubscriptionScreen(onBack: onBack);
         await toPage();
-        break;
       default:
         await toNavigation();
     }
@@ -112,7 +109,7 @@ void useSmallSettingsScreenEffects({
 }) {
   useEffect(
     () {
-      state.switchToPage();
+      unawaited(state.switchToPage());
 
       return null;
     },
@@ -122,7 +119,7 @@ void useSmallSettingsScreenEffects({
   useEffect(
     () {
       WidgetsBinding.instance.addPostFrameCallback((final _) {
-        state.switchToPage();
+        unawaited(state.switchToPage());
       });
 
       return null;

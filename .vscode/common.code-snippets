@@ -15,33 +15,18 @@
   // 	],
   // 	"description": "Log output to console"
   // }
-  "utils": {
-    "prefix": "utils",
-    "body": "import 'package:lastanswer/utils/utils.dart';"
-  },
-  "theme": {
-    "prefix": "theme",
-    "body": "import 'package:lastanswer/library/theme/theme.dart';"
-  },
-  "widgets": {
-    "prefix": "widgets",
-    "body": "import 'package:lastanswer/library/widgets/widgets.dart';"
-  },
-  "assets": {
-    "prefix": "assets",
-    "body": "import 'package:lastanswer/generated/assets.gen.dart';"
-  },
+
   "add-todo-arenukvern": {
     "prefix": "tdar",
     "body": "// TODO(arenukvern): "
   },
   "use-life-hook": {
     "prefix": "uselifehook",
-    "body": "${1}State use${1}State() => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends LifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
+    "body": "import 'package:provider/provider.dart';\nclass ${1}DiDto{\n  ${1}DiDto.use(final Locator read);\n} \n ${1}State use${1}State({\nrequired final Locator read\n}) => use(\n      LifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(diDto: ${1}DiDto.use(read)),\n      ),\n    );\n\nclass ${1}State extends LifeState {\n  ${1}State({\nrequired this.diDto,\n}\n);\n\n final ${1}DiDto diDto;\n\n@override\n void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
   },
   "use-contextlife-hook": {
     "prefix": "usectxlifehook",
-    "body": "${1}State use${1}State() => use(\n      ContextfulLifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(),\n      ),\n    );\n\nclass ${1}State extends ContextfulLifeState {\n  ${1}State();\n\n  @override\n  void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
+    "body": "import 'package:provider/provider.dart';\nclass ${1}DiDto{\n  ${1}DiDto.use(final Locator read);\n} \n ${1}State use${1}State({\nrequired final Locator read\n}) => use(\n      ContextfulLifeHook(\n        debugLabel: '${1}State',\n        state: ${1}State(diDto: ${1}DiDto.use(read)),\n      ),\n    );\n\nclass ${1}State extends ContextfulLifeState {\n  ${1}State({\nrequired this.diDto,\n}\n);\nfinal ${1}DiDto diDto;\n\n  @override\n  void initState() {\n    // TODO: implement initState\n    super.initState();\n  }\n\n  @override\n  void dispose() {\n    // TODO: implement dispose\n    super.dispose();\n  }\n}"
   },
   "hook-widget": {
     "prefix": "hookwidget",
@@ -58,5 +43,9 @@
   "section-end": {
     "prefix": "section end",
     "body": "/// ********************************************\n/// *      ${1:TITLE} END\n/// ********************************************"
+  },
+  "main-test": {
+    "prefix": "mtest",
+    "body": "import 'package:flutter_test/flutter_test.dart';\n\nvoid main() {\n  group('${1}', () {});\n}"
   }
 }

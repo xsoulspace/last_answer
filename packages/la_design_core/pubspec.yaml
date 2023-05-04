@@ -46,6 +46,15 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/json/
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
+
   fonts:
     # - family: la_icons
     #   fonts:
@@ -92,3 +101,13 @@ flutter:
     - family: NotoColorEmoji
       fonts:
         - asset: packages/la_design_core/fonts/NotoColorEmoji.ttf
+
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+flutter_gen:
+  output: lib/generated/ # Optional (default: lib/gen/)
+  # line_length: 80 # Optional (default: 80)
+  # Optional
+  integrations:
+    flutter_svg: true
+    flare_flutter: true

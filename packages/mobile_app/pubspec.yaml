@@ -47,9 +47,9 @@ dependencies:
   hive_flutter: ^1.1.0
   json_annotation: ^4.8.1
   la_core:
-    path: packages/la_core
+    path: ../la_core
   la_design_core:
-    path: packages/la_design_core
+    path: ../la_design_core
   life_hooks: ^0.0.18
   package_info_plus: ^3.1.2
   path_to_regexp: ^0.4.0
@@ -82,8 +82,8 @@ dev_dependencies:
 
 dependency_overrides:
   cli_util: ^0.4.0
-  intl: 0.18.0
   melos: ^3.0.1
+  intl: 0.18.0
 
 msix_config:
   display_name: "Last Answer: Ideas and Notes"
@@ -101,6 +101,16 @@ flutter_icons:
   ios: true
   android: true
   remove_alpha_ios: true
+
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+flutter_gen:
+  output: lib/generated/ # Optional (default: lib/gen/)
+  # line_length: 80 # Optional (default: 80)
+  # Optional
+  integrations:
+    flutter_svg: true
+    flare_flutter: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

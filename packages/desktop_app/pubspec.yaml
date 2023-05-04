@@ -1,4 +1,4 @@
-name: lastanswer
+name: la_desktop
 description: Fast ideas brainstorming tool and quick notes
 
 # The following line prevents the package from being accidentally published to
@@ -47,9 +47,9 @@ dependencies:
   hive_flutter: ^1.1.0
   json_annotation: ^4.8.1
   la_core:
-    path: packages/la_core
+    path: ../la_core
   la_design_core:
-    path: packages/la_design_core
+    path: ../la_design_core
   life_hooks: ^0.0.18
   package_info_plus: ^3.1.2
   path_to_regexp: ^0.4.0
@@ -82,8 +82,8 @@ dev_dependencies:
 
 dependency_overrides:
   cli_util: ^0.4.0
-  intl: 0.18.0
   melos: ^3.0.1
+  intl: 0.18.0
 
 msix_config:
   display_name: "Last Answer: Ideas and Notes"
@@ -102,15 +102,8 @@ flutter_icons:
   android: true
   remove_alpha_ios: true
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-# The following section is specific to Flutter.
-flutter:
-  generate: false
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
-  uses-material-design: true
+flutter_intl:
+  enabled: true
 
 # https://pub.dev/packages/flutter_native_splash
 flutter_native_splash:

@@ -1,0 +1,9 @@
+# melos_managed_dependency_overrides: la_core,la_design_core,cli_util,melos,intl
+dependency_overrides:
+  la_core:
+    path: ../la_core
+  la_design_core:
+    path: ../la_design_core
+  cli_util: ^0.4.0
+  melos: ^3.0.1
+  intl: 0.18.0

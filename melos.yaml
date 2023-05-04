@@ -2,7 +2,6 @@
 name: lastanswer
 
 packages:
-  - ./*
   - packages/*
 
 scripts:

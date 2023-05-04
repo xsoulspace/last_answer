@@ -8,16 +8,24 @@ environment:
 
 dependencies:
   equatable: ^2.0.5
+  firebase_analytics: ^10.0.6
+  firebase_analytics_web: ^0.5.1+5
+  firebase_core: ^2.3.0
+  firebase_core_web: ^2.0.1
+  firebase_crashlytics: ^3.0.6
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.6
   flutter_keyboard_visibility: ^5.4.0
   freezed_annotation: ^2.2.0
+  intl: ^0.18.0
   json_annotation: ^4.8.0
   life_hooks: ^0.0.18
+  logger: ^1.3.0
   path_to_regexp: ^0.4.0
   provider: ^6.0.5
   quiver: ^3.2.1
+  shared_preferences: ^2.1.0
   universal_io: ^2.2.0
 
 dev_dependencies:
@@ -34,16 +42,16 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
-flutter:
-  # assets:
-  #   - assets/images/
-  # fonts:
-  # - family: asgard_icons
-  #   fonts:
-  #     - asset: packages/la_design_core/fonts/asgard_icons.ttf
-  # - family: Poppins
-  #   fonts:
-  #     - asset: packages/la_design_core/fonts/Poppins-Regular.ttf
-  #       weight: 400
-  #     - asset: packages/la_design_core/fonts/Poppins-Bold.ttf
-  #       weight: 700
+flutter: null
+# assets:
+#   - assets/images/
+# fonts:
+# - family: asgard_icons
+#   fonts:
+#     - asset: packages/la_design_core/fonts/asgard_icons.ttf
+# - family: Poppins
+#   fonts:
+#     - asset: packages/la_design_core/fonts/Poppins-Regular.ttf
+#       weight: 400
+#     - asset: packages/la_design_core/fonts/Poppins-Bold.ttf
+#       weight: 700

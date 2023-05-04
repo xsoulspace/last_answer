@@ -52,3 +52,7 @@ app.*.map.json
 # Monarch related
 .monarch/
 .fvm/flutter_sdk
+packages/mobile_app/android/app/google-services.json
+packages/mobile_app/ios/firebase_app_id_file.json
+packages/mobile_app/ios/Runner/GoogleService-Info.plist
+packages/mobile_app/lib/firebase_options.dart

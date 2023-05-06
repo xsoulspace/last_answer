@@ -16,9 +16,7 @@ enum UserStatus {
   copyWith: true,
 )
 class UserModel with _$UserModel implements HasId {
-  @JsonSerializable(
-    explicitToJson: true,
-  )
+  @JsonSerializable(explicitToJson: true)
   const factory UserModel({
     required final UserModelId id,
     required final UserStatus status,

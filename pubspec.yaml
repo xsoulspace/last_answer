@@ -82,7 +82,7 @@ dev_dependencies:
 
 dependency_overrides:
   cli_util: ^0.4.0
-  intl: 0.18.0
+  intl: ^0.18.0
   melos: ^3.0.1
 
 msix_config:

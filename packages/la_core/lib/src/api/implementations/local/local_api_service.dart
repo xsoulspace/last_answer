@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class LocalDataService {
+abstract interface class LocalApiService {
   Future<void> setMap(
     final String key,
     final Map<String, dynamic> value,
@@ -29,7 +29,7 @@ abstract class LocalDataService {
 }
 
 /// This service purpose to manage shared preferences only
-class SharedPreferencesDataService implements LocalDataService {
+class LocalApiServiceSharedPreferencesImpl implements LocalApiService {
   // cached SharedPreferences instance
   SharedPreferences? _sharedPreferences;
   Future<SharedPreferences> get sharedPreferences async =>

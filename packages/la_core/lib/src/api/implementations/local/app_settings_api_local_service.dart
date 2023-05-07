@@ -1,22 +1,22 @@
-import '../models/models.dart';
-import 'local_data_service.dart';
+import '../../../models/models.dart';
+import 'local_api_service.dart';
 
 /// The purpose of the service is to get | set information about
 /// application wide user settings like locale, etc
-class AppSettingsPersistenceService {
-  AppSettingsPersistenceService({
-    required this.localDataService,
+class AppSettingsApiLocalService {
+  AppSettingsApiLocalService({
+    required this.localApiService,
   });
-  final LocalDataService localDataService;
+  final LocalApiService localApiService;
   static const _persistenceKey = 'settings';
   Future<void> saveSettings({
     required final AppSettingsModel settings,
   }) async {
-    await localDataService.setMap(_persistenceKey, settings.toJson());
+    await localApiService.setMap(_persistenceKey, settings.toJson());
   }
 
   Future<AppSettingsModel> loadSettings() async {
-    final jsonMap = await localDataService.getMap(_persistenceKey);
+    final jsonMap = await localApiService.getMap(_persistenceKey);
     if (jsonMap.isEmpty) return AppSettingsModel.empty;
     try {
       return AppSettingsModel.fromJson(jsonMap);

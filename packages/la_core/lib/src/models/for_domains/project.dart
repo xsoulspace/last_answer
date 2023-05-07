@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_annotation_target
+// ignore_for_file: invalid_annotation_target, prefer_constructors_over_static_methods
 
 part of '../models.dart';
 
@@ -14,12 +14,24 @@ enum ProjectType {
 
 @freezed
 class ProjectModelId with _$ProjectModelId {
-  const factory ProjectModelId({
+  const factory ProjectModelId.local({
     required final String value,
-  }) = _ProjectModelId;
-  factory ProjectModelId.fromJson(final String value) =>
-      ProjectModelId(value: value);
+  }) = ProjectModelLocalId;
+  const factory ProjectModelId.remote({
+    required final String value,
+  }) = ProjectModelRemoteId;
+  const ProjectModelId._();
+  static ProjectModelLocalId createLocal() =>
+      ProjectModelLocalId(value: IdCreator.create());
+  static ProjectModelLocalId localFromJson(final String value) =>
+      ProjectModelLocalId(value: value);
+  static ProjectModelRemoteId remoteFromJson(final String value) =>
+      ProjectModelRemoteId(value: value);
   static String toStringJson(final ProjectModelId obj) => obj.value;
+  static const remoteEmpty = UserModelRemoteId(value: '');
+  static const localEmpty = UserModelLocalId(value: '');
+  bool get isEmpty => value.isEmpty;
+  bool get isNotEmpty => value.isNotEmpty;
 }
 
 @immutable
@@ -31,20 +43,50 @@ class ProjectModel with _$ProjectModel {
   @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
   const factory ProjectModel.note({
     @JsonKey(
-      fromJson: ProjectModelId.fromJson,
+      fromJson: ProjectModelId.remoteFromJson,
       toJson: ProjectModelId.toStringJson,
     )
-        required final ProjectModelId id,
+        required final ProjectModelRemoteId remoteId,
+    @JsonKey(
+      fromJson: ProjectModelId.localFromJson,
+      toJson: ProjectModelId.toStringJson,
+    )
+        required final ProjectModelLocalId localId,
     required final DateTime createdAt,
     required final DateTime updatedAt,
     required final bool isArchived,
     required final ProjectType type,
-    required final UserModelId ownerId,
+    @JsonKey(
+      fromJson: UserModelId.remoteFromJson,
+      toJson: UserModelId.toStringJson,
+    )
+        required final UserModelRemoteId ownerId,
     required final int? charactersLimit,
     required final DeltaModel note,
+
+    /// after the note is deleted, and after
+    /// [daysBeforeDeletion] have passed
+    /// the note should be deleted.
+    @Default(false)
+        final bool isDeleted,
+    @Default(30)
+        final int daysBeforeDeletion,
   }) = NoteProjectModel;
   factory ProjectModel.fromJson(final Map<String, dynamic> json) =>
       _$ProjectModelFromJson(json);
+  factory ProjectModel.fromFirestore(
+    final DocumentSnapshot<Map<String, dynamic>> snapshot,
+    // ignore: avoid_unused_constructor_parameters
+    final SnapshotOptions? options,
+  ) {
+    final json = snapshot.data()!;
+    return ProjectModel.fromJson(json);
+  }
+  static Map<String, Object?> toFirestore(
+    final ProjectModel value,
+    final SetOptions? options,
+  ) =>
+      value.toJson();
 }
 
 @immutable

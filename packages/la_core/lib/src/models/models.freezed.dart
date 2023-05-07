@@ -164,15 +164,48 @@ abstract class _AppSettingsModel extends AppSettingsModel {
       throw _privateConstructorUsedError;
 }
 
-ProjectModelId _$ProjectModelIdFromJson(Map<String, dynamic> json) {
-  return _ProjectModelId.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ProjectModelId {
   String get value => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ProjectModelLocalId value) local,
+    required TResult Function(ProjectModelRemoteId value) remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ProjectModelLocalId value)? local,
+    TResult? Function(ProjectModelRemoteId value)? remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ProjectModelLocalId value)? local,
+    TResult Function(ProjectModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ProjectModelIdCopyWith<ProjectModelId> get copyWith =>
       throw _privateConstructorUsedError;
@@ -212,22 +245,22 @@ class _$ProjectModelIdCopyWithImpl<$Res, $Val extends ProjectModelId>
 }
 
 /// @nodoc
-abstract class _$$_ProjectModelIdCopyWith<$Res>
+abstract class _$$ProjectModelLocalIdCopyWith<$Res>
     implements $ProjectModelIdCopyWith<$Res> {
-  factory _$$_ProjectModelIdCopyWith(
-          _$_ProjectModelId value, $Res Function(_$_ProjectModelId) then) =
-      __$$_ProjectModelIdCopyWithImpl<$Res>;
+  factory _$$ProjectModelLocalIdCopyWith(_$ProjectModelLocalId value,
+          $Res Function(_$ProjectModelLocalId) then) =
+      __$$ProjectModelLocalIdCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$_ProjectModelIdCopyWithImpl<$Res>
-    extends _$ProjectModelIdCopyWithImpl<$Res, _$_ProjectModelId>
-    implements _$$_ProjectModelIdCopyWith<$Res> {
-  __$$_ProjectModelIdCopyWithImpl(
-      _$_ProjectModelId _value, $Res Function(_$_ProjectModelId) _then)
+class __$$ProjectModelLocalIdCopyWithImpl<$Res>
+    extends _$ProjectModelIdCopyWithImpl<$Res, _$ProjectModelLocalId>
+    implements _$$ProjectModelLocalIdCopyWith<$Res> {
+  __$$ProjectModelLocalIdCopyWithImpl(
+      _$ProjectModelLocalId _value, $Res Function(_$ProjectModelLocalId) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -235,7 +268,7 @@ class __$$_ProjectModelIdCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$_ProjectModelId(
+    return _then(_$ProjectModelLocalId(
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -245,59 +278,249 @@ class __$$_ProjectModelIdCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$_ProjectModelId implements _ProjectModelId {
-  const _$_ProjectModelId({required this.value});
 
-  factory _$_ProjectModelId.fromJson(Map<String, dynamic> json) =>
-      _$$_ProjectModelIdFromJson(json);
+class _$ProjectModelLocalId extends ProjectModelLocalId {
+  const _$ProjectModelLocalId({required this.value}) : super._();
 
   @override
   final String value;
 
   @override
   String toString() {
-    return 'ProjectModelId(value: $value)';
+    return 'ProjectModelId.local(value: $value)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProjectModelId &&
+            other is _$ProjectModelLocalId &&
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProjectModelIdCopyWith<_$_ProjectModelId> get copyWith =>
-      __$$_ProjectModelIdCopyWithImpl<_$_ProjectModelId>(this, _$identity);
+  _$$ProjectModelLocalIdCopyWith<_$ProjectModelLocalId> get copyWith =>
+      __$$ProjectModelLocalIdCopyWithImpl<_$ProjectModelLocalId>(
+          this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$_ProjectModelIdToJson(
-      this,
-    );
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) {
+    return local(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) {
+    return local?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) {
+    if (local != null) {
+      return local(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ProjectModelLocalId value) local,
+    required TResult Function(ProjectModelRemoteId value) remote,
+  }) {
+    return local(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ProjectModelLocalId value)? local,
+    TResult? Function(ProjectModelRemoteId value)? remote,
+  }) {
+    return local?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ProjectModelLocalId value)? local,
+    TResult Function(ProjectModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) {
+    if (local != null) {
+      return local(this);
+    }
+    return orElse();
   }
 }
 
-abstract class _ProjectModelId implements ProjectModelId {
-  const factory _ProjectModelId({required final String value}) =
-      _$_ProjectModelId;
-
-  factory _ProjectModelId.fromJson(Map<String, dynamic> json) =
-      _$_ProjectModelId.fromJson;
+abstract class ProjectModelLocalId extends ProjectModelId {
+  const factory ProjectModelLocalId({required final String value}) =
+      _$ProjectModelLocalId;
+  const ProjectModelLocalId._() : super._();
 
   @override
   String get value;
   @override
   @JsonKey(ignore: true)
-  _$$_ProjectModelIdCopyWith<_$_ProjectModelId> get copyWith =>
+  _$$ProjectModelLocalIdCopyWith<_$ProjectModelLocalId> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ProjectModelRemoteIdCopyWith<$Res>
+    implements $ProjectModelIdCopyWith<$Res> {
+  factory _$$ProjectModelRemoteIdCopyWith(_$ProjectModelRemoteId value,
+          $Res Function(_$ProjectModelRemoteId) then) =
+      __$$ProjectModelRemoteIdCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$$ProjectModelRemoteIdCopyWithImpl<$Res>
+    extends _$ProjectModelIdCopyWithImpl<$Res, _$ProjectModelRemoteId>
+    implements _$$ProjectModelRemoteIdCopyWith<$Res> {
+  __$$ProjectModelRemoteIdCopyWithImpl(_$ProjectModelRemoteId _value,
+      $Res Function(_$ProjectModelRemoteId) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_$ProjectModelRemoteId(
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ProjectModelRemoteId extends ProjectModelRemoteId {
+  const _$ProjectModelRemoteId({required this.value}) : super._();
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'ProjectModelId.remote(value: $value)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProjectModelRemoteId &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProjectModelRemoteIdCopyWith<_$ProjectModelRemoteId> get copyWith =>
+      __$$ProjectModelRemoteIdCopyWithImpl<_$ProjectModelRemoteId>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) {
+    return remote(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) {
+    return remote?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) {
+    if (remote != null) {
+      return remote(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ProjectModelLocalId value) local,
+    required TResult Function(ProjectModelRemoteId value) remote,
+  }) {
+    return remote(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ProjectModelLocalId value)? local,
+    TResult? Function(ProjectModelRemoteId value)? remote,
+  }) {
+    return remote?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ProjectModelLocalId value)? local,
+    TResult Function(ProjectModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) {
+    if (remote != null) {
+      return remote(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ProjectModelRemoteId extends ProjectModelId {
+  const factory ProjectModelRemoteId({required final String value}) =
+      _$ProjectModelRemoteId;
+  const ProjectModelRemoteId._() : super._();
+
+  @override
+  String get value;
+  @override
+  @JsonKey(ignore: true)
+  _$$ProjectModelRemoteIdCopyWith<_$ProjectModelRemoteId> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -308,57 +531,85 @@ ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProjectModel {
   @JsonKey(
-      fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-  ProjectModelId get id => throw _privateConstructorUsedError;
+      fromJson: ProjectModelId.remoteFromJson,
+      toJson: ProjectModelId.toStringJson)
+  ProjectModelRemoteId get remoteId => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: ProjectModelId.localFromJson,
+      toJson: ProjectModelId.toStringJson)
+  ProjectModelLocalId get localId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   bool get isArchived => throw _privateConstructorUsedError;
   ProjectType get type => throw _privateConstructorUsedError;
-  UserModelId get ownerId => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  UserModelRemoteId get ownerId => throw _privateConstructorUsedError;
   int? get charactersLimit => throw _privateConstructorUsedError;
   DeltaModel get note => throw _privateConstructorUsedError;
+
+  /// after the note is deleted, and after
+  /// [daysBeforeDeletion] have passed
+  /// the note should be deleted.
+  bool get isDeleted => throw _privateConstructorUsedError;
+  int get daysBeforeDeletion => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)
         note,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)?
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)?
         note,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)?
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)?
         note,
     required TResult orElse(),
   }) =>
@@ -392,18 +643,21 @@ abstract class $ProjectModelCopyWith<$Res> {
       _$ProjectModelCopyWithImpl<$Res, ProjectModel>;
   @useResult
   $Res call(
-      {@JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-          ProjectModelId id,
+      {@JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+          ProjectModelRemoteId remoteId,
+      @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+          ProjectModelLocalId localId,
       DateTime createdAt,
       DateTime updatedAt,
       bool isArchived,
       ProjectType type,
-      UserModelId ownerId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          UserModelRemoteId ownerId,
       int? charactersLimit,
-      DeltaModel note});
+      DeltaModel note,
+      bool isDeleted,
+      int daysBeforeDeletion});
 
-  $ProjectModelIdCopyWith<$Res> get id;
-  $UserModelIdCopyWith<$Res> get ownerId;
   $DeltaModelCopyWith<$Res> get note;
 }
 
@@ -420,20 +674,27 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? remoteId = freezed,
+    Object? localId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isArchived = null,
     Object? type = null,
-    Object? ownerId = null,
+    Object? ownerId = freezed,
     Object? charactersLimit = freezed,
     Object? note = null,
+    Object? isDeleted = null,
+    Object? daysBeforeDeletion = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as ProjectModelId,
+      remoteId: freezed == remoteId
+          ? _value.remoteId
+          : remoteId // ignore: cast_nullable_to_non_nullable
+              as ProjectModelRemoteId,
+      localId: freezed == localId
+          ? _value.localId
+          : localId // ignore: cast_nullable_to_non_nullable
+              as ProjectModelLocalId,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -450,10 +711,10 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ProjectType,
-      ownerId: null == ownerId
+      ownerId: freezed == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as UserModelRemoteId,
       charactersLimit: freezed == charactersLimit
           ? _value.charactersLimit
           : charactersLimit // ignore: cast_nullable_to_non_nullable
@@ -462,23 +723,15 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as DeltaModel,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      daysBeforeDeletion: null == daysBeforeDeletion
+          ? _value.daysBeforeDeletion
+          : daysBeforeDeletion // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProjectModelIdCopyWith<$Res> get id {
-    return $ProjectModelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserModelIdCopyWith<$Res> get ownerId {
-    return $UserModelIdCopyWith<$Res>(_value.ownerId, (value) {
-      return _then(_value.copyWith(ownerId: value) as $Val);
-    });
   }
 
   @override
@@ -499,20 +752,21 @@ abstract class _$$NoteProjectModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-          ProjectModelId id,
+      {@JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+          ProjectModelRemoteId remoteId,
+      @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+          ProjectModelLocalId localId,
       DateTime createdAt,
       DateTime updatedAt,
       bool isArchived,
       ProjectType type,
-      UserModelId ownerId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          UserModelRemoteId ownerId,
       int? charactersLimit,
-      DeltaModel note});
+      DeltaModel note,
+      bool isDeleted,
+      int daysBeforeDeletion});
 
-  @override
-  $ProjectModelIdCopyWith<$Res> get id;
-  @override
-  $UserModelIdCopyWith<$Res> get ownerId;
   @override
   $DeltaModelCopyWith<$Res> get note;
 }
@@ -528,20 +782,27 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? remoteId = freezed,
+    Object? localId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isArchived = null,
     Object? type = null,
-    Object? ownerId = null,
+    Object? ownerId = freezed,
     Object? charactersLimit = freezed,
     Object? note = null,
+    Object? isDeleted = null,
+    Object? daysBeforeDeletion = null,
   }) {
     return _then(_$NoteProjectModel(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as ProjectModelId,
+      remoteId: freezed == remoteId
+          ? _value.remoteId
+          : remoteId // ignore: cast_nullable_to_non_nullable
+              as ProjectModelRemoteId,
+      localId: freezed == localId
+          ? _value.localId
+          : localId // ignore: cast_nullable_to_non_nullable
+              as ProjectModelLocalId,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -558,10 +819,10 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ProjectType,
-      ownerId: null == ownerId
+      ownerId: freezed == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+              as UserModelRemoteId,
       charactersLimit: freezed == charactersLimit
           ? _value.charactersLimit
           : charactersLimit // ignore: cast_nullable_to_non_nullable
@@ -570,6 +831,14 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as DeltaModel,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      daysBeforeDeletion: null == daysBeforeDeletion
+          ? _value.daysBeforeDeletion
+          : daysBeforeDeletion // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -579,23 +848,34 @@ class __$$NoteProjectModelCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class _$NoteProjectModel implements NoteProjectModel {
   const _$NoteProjectModel(
-      {@JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-          required this.id,
+      {@JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+          required this.remoteId,
+      @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+          required this.localId,
       required this.createdAt,
       required this.updatedAt,
       required this.isArchived,
       required this.type,
-      required this.ownerId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          required this.ownerId,
       required this.charactersLimit,
-      required this.note});
+      required this.note,
+      this.isDeleted = false,
+      this.daysBeforeDeletion = 30});
 
   factory _$NoteProjectModel.fromJson(Map<String, dynamic> json) =>
       _$$NoteProjectModelFromJson(json);
 
   @override
   @JsonKey(
-      fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-  final ProjectModelId id;
+      fromJson: ProjectModelId.remoteFromJson,
+      toJson: ProjectModelId.toStringJson)
+  final ProjectModelRemoteId remoteId;
+  @override
+  @JsonKey(
+      fromJson: ProjectModelId.localFromJson,
+      toJson: ProjectModelId.toStringJson)
+  final ProjectModelLocalId localId;
   @override
   final DateTime createdAt;
   @override
@@ -605,15 +885,27 @@ class _$NoteProjectModel implements NoteProjectModel {
   @override
   final ProjectType type;
   @override
-  final UserModelId ownerId;
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  final UserModelRemoteId ownerId;
   @override
   final int? charactersLimit;
   @override
   final DeltaModel note;
 
+  /// after the note is deleted, and after
+  /// [daysBeforeDeletion] have passed
+  /// the note should be deleted.
+  @override
+  @JsonKey()
+  final bool isDeleted;
+  @override
+  @JsonKey()
+  final int daysBeforeDeletion;
+
   @override
   String toString() {
-    return 'ProjectModel.note(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, isArchived: $isArchived, type: $type, ownerId: $ownerId, charactersLimit: $charactersLimit, note: $note)';
+    return 'ProjectModel.note(remoteId: $remoteId, localId: $localId, createdAt: $createdAt, updatedAt: $updatedAt, isArchived: $isArchived, type: $type, ownerId: $ownerId, charactersLimit: $charactersLimit, note: $note, isDeleted: $isDeleted, daysBeforeDeletion: $daysBeforeDeletion)';
   }
 
   @override
@@ -621,7 +913,8 @@ class _$NoteProjectModel implements NoteProjectModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NoteProjectModel &&
-            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(other.remoteId, remoteId) &&
+            const DeepCollectionEquality().equals(other.localId, localId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -629,16 +922,31 @@ class _$NoteProjectModel implements NoteProjectModel {
             (identical(other.isArchived, isArchived) ||
                 other.isArchived == isArchived) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            const DeepCollectionEquality().equals(other.ownerId, ownerId) &&
             (identical(other.charactersLimit, charactersLimit) ||
                 other.charactersLimit == charactersLimit) &&
-            (identical(other.note, note) || other.note == note));
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.isDeleted, isDeleted) ||
+                other.isDeleted == isDeleted) &&
+            (identical(other.daysBeforeDeletion, daysBeforeDeletion) ||
+                other.daysBeforeDeletion == daysBeforeDeletion));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt,
-      isArchived, type, ownerId, charactersLimit, note);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(remoteId),
+      const DeepCollectionEquality().hash(localId),
+      createdAt,
+      updatedAt,
+      isArchived,
+      type,
+      const DeepCollectionEquality().hash(ownerId),
+      charactersLimit,
+      note,
+      isDeleted,
+      daysBeforeDeletion);
 
   @JsonKey(ignore: true)
   @override
@@ -650,59 +958,74 @@ class _$NoteProjectModel implements NoteProjectModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)
         note,
   }) {
-    return note(id, createdAt, updatedAt, isArchived, type, ownerId,
-        charactersLimit, this.note);
+    return note(remoteId, localId, createdAt, updatedAt, isArchived, type,
+        ownerId, charactersLimit, this.note, isDeleted, daysBeforeDeletion);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)?
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)?
         note,
   }) {
-    return note?.call(id, createdAt, updatedAt, isArchived, type, ownerId,
-        charactersLimit, this.note);
+    return note?.call(remoteId, localId, createdAt, updatedAt, isArchived, type,
+        ownerId, charactersLimit, this.note, isDeleted, daysBeforeDeletion);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            @JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-                ProjectModelId id,
+            @JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelRemoteId remoteId,
+            @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+                ProjectModelLocalId localId,
             DateTime createdAt,
             DateTime updatedAt,
             bool isArchived,
             ProjectType type,
-            UserModelId ownerId,
+            @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+                UserModelRemoteId ownerId,
             int? charactersLimit,
-            DeltaModel note)?
+            DeltaModel note,
+            bool isDeleted,
+            int daysBeforeDeletion)?
         note,
     required TResult orElse(),
   }) {
     if (note != null) {
-      return note(id, createdAt, updatedAt, isArchived, type, ownerId,
-          charactersLimit, this.note);
+      return note(remoteId, localId, createdAt, updatedAt, isArchived, type,
+          ownerId, charactersLimit, this.note, isDeleted, daysBeforeDeletion);
     }
     return orElse();
   }
@@ -745,23 +1068,34 @@ class _$NoteProjectModel implements NoteProjectModel {
 
 abstract class NoteProjectModel implements ProjectModel {
   const factory NoteProjectModel(
-      {@JsonKey(fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-          required final ProjectModelId id,
+      {@JsonKey(fromJson: ProjectModelId.remoteFromJson, toJson: ProjectModelId.toStringJson)
+          required final ProjectModelRemoteId remoteId,
+      @JsonKey(fromJson: ProjectModelId.localFromJson, toJson: ProjectModelId.toStringJson)
+          required final ProjectModelLocalId localId,
       required final DateTime createdAt,
       required final DateTime updatedAt,
       required final bool isArchived,
       required final ProjectType type,
-      required final UserModelId ownerId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          required final UserModelRemoteId ownerId,
       required final int? charactersLimit,
-      required final DeltaModel note}) = _$NoteProjectModel;
+      required final DeltaModel note,
+      final bool isDeleted,
+      final int daysBeforeDeletion}) = _$NoteProjectModel;
 
   factory NoteProjectModel.fromJson(Map<String, dynamic> json) =
       _$NoteProjectModel.fromJson;
 
   @override
   @JsonKey(
-      fromJson: ProjectModelId.fromJson, toJson: ProjectModelId.toStringJson)
-  ProjectModelId get id;
+      fromJson: ProjectModelId.remoteFromJson,
+      toJson: ProjectModelId.toStringJson)
+  ProjectModelRemoteId get remoteId;
+  @override
+  @JsonKey(
+      fromJson: ProjectModelId.localFromJson,
+      toJson: ProjectModelId.toStringJson)
+  ProjectModelLocalId get localId;
   @override
   DateTime get createdAt;
   @override
@@ -771,11 +1105,21 @@ abstract class NoteProjectModel implements ProjectModel {
   @override
   ProjectType get type;
   @override
-  UserModelId get ownerId;
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  UserModelRemoteId get ownerId;
   @override
   int? get charactersLimit;
   @override
   DeltaModel get note;
+  @override
+
+  /// after the note is deleted, and after
+  /// [daysBeforeDeletion] have passed
+  /// the note should be deleted.
+  bool get isDeleted;
+  @override
+  int get daysBeforeDeletion;
   @override
   @JsonKey(ignore: true)
   _$$NoteProjectModelCopyWith<_$NoteProjectModel> get copyWith =>
@@ -932,15 +1276,48 @@ abstract class _DeltaModel extends DeltaModel {
       throw _privateConstructorUsedError;
 }
 
-UserModelId _$UserModelIdFromJson(Map<String, dynamic> json) {
-  return _UserModelId.fromJson(json);
-}
-
 /// @nodoc
 mixin _$UserModelId {
   String get value => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserModelLocalId value) local,
+    required TResult Function(UserModelRemoteId value) remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UserModelLocalId value)? local,
+    TResult? Function(UserModelRemoteId value)? remote,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserModelLocalId value)? local,
+    TResult Function(UserModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserModelIdCopyWith<UserModelId> get copyWith =>
       throw _privateConstructorUsedError;
@@ -980,22 +1357,22 @@ class _$UserModelIdCopyWithImpl<$Res, $Val extends UserModelId>
 }
 
 /// @nodoc
-abstract class _$$_UserModelIdCopyWith<$Res>
+abstract class _$$UserModelLocalIdCopyWith<$Res>
     implements $UserModelIdCopyWith<$Res> {
-  factory _$$_UserModelIdCopyWith(
-          _$_UserModelId value, $Res Function(_$_UserModelId) then) =
-      __$$_UserModelIdCopyWithImpl<$Res>;
+  factory _$$UserModelLocalIdCopyWith(
+          _$UserModelLocalId value, $Res Function(_$UserModelLocalId) then) =
+      __$$UserModelLocalIdCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$_UserModelIdCopyWithImpl<$Res>
-    extends _$UserModelIdCopyWithImpl<$Res, _$_UserModelId>
-    implements _$$_UserModelIdCopyWith<$Res> {
-  __$$_UserModelIdCopyWithImpl(
-      _$_UserModelId _value, $Res Function(_$_UserModelId) _then)
+class __$$UserModelLocalIdCopyWithImpl<$Res>
+    extends _$UserModelIdCopyWithImpl<$Res, _$UserModelLocalId>
+    implements _$$UserModelLocalIdCopyWith<$Res> {
+  __$$UserModelLocalIdCopyWithImpl(
+      _$UserModelLocalId _value, $Res Function(_$UserModelLocalId) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1003,7 +1380,7 @@ class __$$_UserModelIdCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$_UserModelId(
+    return _then(_$UserModelLocalId(
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -1013,58 +1390,247 @@ class __$$_UserModelIdCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$_UserModelId implements _UserModelId {
-  const _$_UserModelId({required this.value});
 
-  factory _$_UserModelId.fromJson(Map<String, dynamic> json) =>
-      _$$_UserModelIdFromJson(json);
+class _$UserModelLocalId extends UserModelLocalId {
+  const _$UserModelLocalId({required this.value}) : super._();
 
   @override
   final String value;
 
   @override
   String toString() {
-    return 'UserModelId(value: $value)';
+    return 'UserModelId.local(value: $value)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserModelId &&
+            other is _$UserModelLocalId &&
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserModelIdCopyWith<_$_UserModelId> get copyWith =>
-      __$$_UserModelIdCopyWithImpl<_$_UserModelId>(this, _$identity);
+  _$$UserModelLocalIdCopyWith<_$UserModelLocalId> get copyWith =>
+      __$$UserModelLocalIdCopyWithImpl<_$UserModelLocalId>(this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$_UserModelIdToJson(
-      this,
-    );
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) {
+    return local(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) {
+    return local?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) {
+    if (local != null) {
+      return local(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserModelLocalId value) local,
+    required TResult Function(UserModelRemoteId value) remote,
+  }) {
+    return local(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UserModelLocalId value)? local,
+    TResult? Function(UserModelRemoteId value)? remote,
+  }) {
+    return local?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserModelLocalId value)? local,
+    TResult Function(UserModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) {
+    if (local != null) {
+      return local(this);
+    }
+    return orElse();
   }
 }
 
-abstract class _UserModelId implements UserModelId {
-  const factory _UserModelId({required final String value}) = _$_UserModelId;
-
-  factory _UserModelId.fromJson(Map<String, dynamic> json) =
-      _$_UserModelId.fromJson;
+abstract class UserModelLocalId extends UserModelId {
+  const factory UserModelLocalId({required final String value}) =
+      _$UserModelLocalId;
+  const UserModelLocalId._() : super._();
 
   @override
   String get value;
   @override
   @JsonKey(ignore: true)
-  _$$_UserModelIdCopyWith<_$_UserModelId> get copyWith =>
+  _$$UserModelLocalIdCopyWith<_$UserModelLocalId> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UserModelRemoteIdCopyWith<$Res>
+    implements $UserModelIdCopyWith<$Res> {
+  factory _$$UserModelRemoteIdCopyWith(
+          _$UserModelRemoteId value, $Res Function(_$UserModelRemoteId) then) =
+      __$$UserModelRemoteIdCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$$UserModelRemoteIdCopyWithImpl<$Res>
+    extends _$UserModelIdCopyWithImpl<$Res, _$UserModelRemoteId>
+    implements _$$UserModelRemoteIdCopyWith<$Res> {
+  __$$UserModelRemoteIdCopyWithImpl(
+      _$UserModelRemoteId _value, $Res Function(_$UserModelRemoteId) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_$UserModelRemoteId(
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UserModelRemoteId extends UserModelRemoteId {
+  const _$UserModelRemoteId({required this.value}) : super._();
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'UserModelId.remote(value: $value)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserModelRemoteId &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserModelRemoteIdCopyWith<_$UserModelRemoteId> get copyWith =>
+      __$$UserModelRemoteIdCopyWithImpl<_$UserModelRemoteId>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String value) local,
+    required TResult Function(String value) remote,
+  }) {
+    return remote(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String value)? local,
+    TResult? Function(String value)? remote,
+  }) {
+    return remote?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String value)? local,
+    TResult Function(String value)? remote,
+    required TResult orElse(),
+  }) {
+    if (remote != null) {
+      return remote(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserModelLocalId value) local,
+    required TResult Function(UserModelRemoteId value) remote,
+  }) {
+    return remote(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UserModelLocalId value)? local,
+    TResult? Function(UserModelRemoteId value)? remote,
+  }) {
+    return remote?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserModelLocalId value)? local,
+    TResult Function(UserModelRemoteId value)? remote,
+    required TResult orElse(),
+  }) {
+    if (remote != null) {
+      return remote(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserModelRemoteId extends UserModelId {
+  const factory UserModelRemoteId({required final String value}) =
+      _$UserModelRemoteId;
+  const UserModelRemoteId._() : super._();
+
+  @override
+  String get value;
+  @override
+  @JsonKey(ignore: true)
+  _$$UserModelRemoteIdCopyWith<_$UserModelRemoteId> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1074,8 +1640,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  @JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-  UserModelId get id => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+  UserModelLocalId get localId => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  UserModelRemoteId get remoteId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   SubscriptionModel get subscription => throw _privateConstructorUsedError;
@@ -1092,13 +1662,14 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {@JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-          UserModelId id,
+      {@JsonKey(fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+          UserModelLocalId localId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          UserModelRemoteId remoteId,
       DateTime createdAt,
       DateTime updatedAt,
       SubscriptionModel subscription});
 
-  $UserModelIdCopyWith<$Res> get id;
   $SubscriptionModelCopyWith<$Res> get subscription;
 }
 
@@ -1115,16 +1686,21 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? localId = freezed,
+    Object? remoteId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? subscription = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+      localId: freezed == localId
+          ? _value.localId
+          : localId // ignore: cast_nullable_to_non_nullable
+              as UserModelLocalId,
+      remoteId: freezed == remoteId
+          ? _value.remoteId
+          : remoteId // ignore: cast_nullable_to_non_nullable
+              as UserModelRemoteId,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1138,14 +1714,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           : subscription // ignore: cast_nullable_to_non_nullable
               as SubscriptionModel,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserModelIdCopyWith<$Res> get id {
-    return $UserModelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
   }
 
   @override
@@ -1165,14 +1733,14 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-          UserModelId id,
+      {@JsonKey(fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+          UserModelLocalId localId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          UserModelRemoteId remoteId,
       DateTime createdAt,
       DateTime updatedAt,
       SubscriptionModel subscription});
 
-  @override
-  $UserModelIdCopyWith<$Res> get id;
   @override
   $SubscriptionModelCopyWith<$Res> get subscription;
 }
@@ -1188,16 +1756,21 @@ class __$$_UserModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? localId = freezed,
+    Object? remoteId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? subscription = null,
   }) {
     return _then(_$_UserModel(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
+      localId: freezed == localId
+          ? _value.localId
+          : localId // ignore: cast_nullable_to_non_nullable
+              as UserModelLocalId,
+      remoteId: freezed == remoteId
+          ? _value.remoteId
+          : remoteId // ignore: cast_nullable_to_non_nullable
+              as UserModelRemoteId,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1219,8 +1792,10 @@ class __$$_UserModelCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class _$_UserModel extends _UserModel {
   const _$_UserModel(
-      {@JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-          required this.id,
+      {@JsonKey(fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+          required this.localId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          required this.remoteId,
       required this.createdAt,
       required this.updatedAt,
       required this.subscription})
@@ -1230,8 +1805,13 @@ class _$_UserModel extends _UserModel {
       _$$_UserModelFromJson(json);
 
   @override
-  @JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-  final UserModelId id;
+  @JsonKey(
+      fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+  final UserModelLocalId localId;
+  @override
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  final UserModelRemoteId remoteId;
   @override
   final DateTime createdAt;
   @override
@@ -1241,7 +1821,7 @@ class _$_UserModel extends _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, subscription: $subscription)';
+    return 'UserModel(localId: $localId, remoteId: $remoteId, createdAt: $createdAt, updatedAt: $updatedAt, subscription: $subscription)';
   }
 
   @override
@@ -1249,7 +1829,8 @@ class _$_UserModel extends _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
-            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(other.localId, localId) &&
+            const DeepCollectionEquality().equals(other.remoteId, remoteId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1260,8 +1841,13 @@ class _$_UserModel extends _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, createdAt, updatedAt, subscription);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(localId),
+      const DeepCollectionEquality().hash(remoteId),
+      createdAt,
+      updatedAt,
+      subscription);
 
   @JsonKey(ignore: true)
   @override
@@ -1279,8 +1865,10 @@ class _$_UserModel extends _UserModel {
 
 abstract class _UserModel extends UserModel {
   const factory _UserModel(
-      {@JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-          required final UserModelId id,
+      {@JsonKey(fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+          required final UserModelLocalId localId,
+      @JsonKey(fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+          required final UserModelRemoteId remoteId,
       required final DateTime createdAt,
       required final DateTime updatedAt,
       required final SubscriptionModel subscription}) = _$_UserModel;
@@ -1290,8 +1878,13 @@ abstract class _UserModel extends UserModel {
       _$_UserModel.fromJson;
 
   @override
-  @JsonKey(fromJson: UserModelId.fromJson, toJson: UserModelId.toStringJson)
-  UserModelId get id;
+  @JsonKey(
+      fromJson: UserModelId.localFromJson, toJson: UserModelId.toStringJson)
+  UserModelLocalId get localId;
+  @override
+  @JsonKey(
+      fromJson: UserModelId.remoteFromJson, toJson: UserModelId.toStringJson)
+  UserModelRemoteId get remoteId;
   @override
   DateTime get createdAt;
   @override
@@ -1311,6 +1904,7 @@ SubscriptionModel _$SubscriptionModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SubscriptionModel {
   int get paidDaysLeft => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1324,7 +1918,7 @@ abstract class $SubscriptionModelCopyWith<$Res> {
           SubscriptionModel value, $Res Function(SubscriptionModel) then) =
       _$SubscriptionModelCopyWithImpl<$Res, SubscriptionModel>;
   @useResult
-  $Res call({int paidDaysLeft});
+  $Res call({int paidDaysLeft, DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -1341,12 +1935,17 @@ class _$SubscriptionModelCopyWithImpl<$Res, $Val extends SubscriptionModel>
   @override
   $Res call({
     Object? paidDaysLeft = null,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       paidDaysLeft: null == paidDaysLeft
           ? _value.paidDaysLeft
           : paidDaysLeft // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -1359,7 +1958,7 @@ abstract class _$$_SubscriptionModelCopyWith<$Res>
       __$$_SubscriptionModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int paidDaysLeft});
+  $Res call({int paidDaysLeft, DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -1374,12 +1973,17 @@ class __$$_SubscriptionModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? paidDaysLeft = null,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$_SubscriptionModel(
       paidDaysLeft: null == paidDaysLeft
           ? _value.paidDaysLeft
           : paidDaysLeft // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -1388,7 +1992,7 @@ class __$$_SubscriptionModelCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class _$_SubscriptionModel implements _SubscriptionModel {
-  const _$_SubscriptionModel({this.paidDaysLeft = 0});
+  const _$_SubscriptionModel({this.paidDaysLeft = 0, this.updatedAt});
 
   factory _$_SubscriptionModel.fromJson(Map<String, dynamic> json) =>
       _$$_SubscriptionModelFromJson(json);
@@ -1396,10 +2000,12 @@ class _$_SubscriptionModel implements _SubscriptionModel {
   @override
   @JsonKey()
   final int paidDaysLeft;
+  @override
+  final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'SubscriptionModel(paidDaysLeft: $paidDaysLeft)';
+    return 'SubscriptionModel(paidDaysLeft: $paidDaysLeft, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1408,12 +2014,14 @@ class _$_SubscriptionModel implements _SubscriptionModel {
         (other.runtimeType == runtimeType &&
             other is _$_SubscriptionModel &&
             (identical(other.paidDaysLeft, paidDaysLeft) ||
-                other.paidDaysLeft == paidDaysLeft));
+                other.paidDaysLeft == paidDaysLeft) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, paidDaysLeft);
+  int get hashCode => Object.hash(runtimeType, paidDaysLeft, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -1431,14 +2039,17 @@ class _$_SubscriptionModel implements _SubscriptionModel {
 }
 
 abstract class _SubscriptionModel implements SubscriptionModel {
-  const factory _SubscriptionModel({final int paidDaysLeft}) =
-      _$_SubscriptionModel;
+  const factory _SubscriptionModel(
+      {final int paidDaysLeft,
+      final DateTime? updatedAt}) = _$_SubscriptionModel;
 
   factory _SubscriptionModel.fromJson(Map<String, dynamic> json) =
       _$_SubscriptionModel.fromJson;
 
   @override
   int get paidDaysLeft;
+  @override
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_SubscriptionModelCopyWith<_$_SubscriptionModel> get copyWith =>

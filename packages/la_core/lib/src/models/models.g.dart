@@ -16,38 +16,34 @@ Map<String, dynamic> _$$_AppSettingsModelToJson(_$_AppSettingsModel instance) =>
       'locale': localeToString(instance.locale),
     };
 
-_$_ProjectModelId _$$_ProjectModelIdFromJson(Map<String, dynamic> json) =>
-    _$_ProjectModelId(
-      value: json['value'] as String,
-    );
-
-Map<String, dynamic> _$$_ProjectModelIdToJson(_$_ProjectModelId instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-    };
-
 _$NoteProjectModel _$$NoteProjectModelFromJson(Map<String, dynamic> json) =>
     _$NoteProjectModel(
-      id: ProjectModelId.fromJson(json['id'] as String),
+      remoteId: ProjectModelId.remoteFromJson(json['remote_id'] as String),
+      localId: ProjectModelId.localFromJson(json['local_id'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isArchived: json['is_archived'] as bool,
       type: $enumDecode(_$ProjectTypeEnumMap, json['type']),
-      ownerId: UserModelId.fromJson(json['owner_id'] as String),
+      ownerId: UserModelId.remoteFromJson(json['owner_id'] as String),
       charactersLimit: json['characters_limit'] as int?,
       note: DeltaModel.fromJson(json['note'] as Map<String, dynamic>),
+      isDeleted: json['is_deleted'] as bool? ?? false,
+      daysBeforeDeletion: json['days_before_deletion'] as int? ?? 30,
     );
 
 Map<String, dynamic> _$$NoteProjectModelToJson(_$NoteProjectModel instance) =>
     <String, dynamic>{
-      'id': ProjectModelId.toStringJson(instance.id),
+      'remote_id': ProjectModelId.toStringJson(instance.remoteId),
+      'local_id': ProjectModelId.toStringJson(instance.localId),
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'is_archived': instance.isArchived,
       'type': _$ProjectTypeEnumMap[instance.type]!,
-      'owner_id': instance.ownerId.toJson(),
+      'owner_id': UserModelId.toStringJson(instance.ownerId),
       'characters_limit': instance.charactersLimit,
       'note': instance.note.toJson(),
+      'is_deleted': instance.isDeleted,
+      'days_before_deletion': instance.daysBeforeDeletion,
     };
 
 const _$ProjectTypeEnumMap = {
@@ -66,18 +62,9 @@ Map<String, dynamic> _$$_DeltaModelToJson(_$_DeltaModel instance) =>
       'value': DeltaModel._deltaToJson(instance.value),
     };
 
-_$_UserModelId _$$_UserModelIdFromJson(Map<String, dynamic> json) =>
-    _$_UserModelId(
-      value: json['value'] as String,
-    );
-
-Map<String, dynamic> _$$_UserModelIdToJson(_$_UserModelId instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-    };
-
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
-      id: UserModelId.fromJson(json['id'] as String),
+      localId: UserModelId.localFromJson(json['local_id'] as String),
+      remoteId: UserModelId.remoteFromJson(json['remote_id'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       subscription: SubscriptionModel.fromJson(
@@ -86,7 +73,8 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
-      'id': UserModelId.toStringJson(instance.id),
+      'local_id': UserModelId.toStringJson(instance.localId),
+      'remote_id': UserModelId.toStringJson(instance.remoteId),
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'subscription': instance.subscription.toJson(),
@@ -95,12 +83,16 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
 _$_SubscriptionModel _$$_SubscriptionModelFromJson(Map<String, dynamic> json) =>
     _$_SubscriptionModel(
       paidDaysLeft: json['paid_days_left'] as int? ?? 0,
+      updatedAt: json['updated_at'] == null
+          ? null
+          : DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$$_SubscriptionModelToJson(
         _$_SubscriptionModel instance) =>
     <String, dynamic>{
       'paid_days_left': instance.paidDaysLeft,
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };
 
 _$_UserPermissionsModel _$$_UserPermissionsModelFromJson(

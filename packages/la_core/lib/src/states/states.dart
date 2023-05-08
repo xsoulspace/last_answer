@@ -1,1 +1,1 @@
-export 'global_initializer.dart';
+export 'global/global.dart';

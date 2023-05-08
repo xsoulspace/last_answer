@@ -17,6 +17,7 @@ dependencies:
   firebase_crashlytics: ^3.0.6
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.2
   flutter_hooks: ^0.18.6
   flutter_keyboard_visibility: ^5.4.0
   flutter_quill: ^7.1.14

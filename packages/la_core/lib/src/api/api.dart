@@ -21,7 +21,7 @@ class RemoteApiServices {
   }
 
   final ProjectsApiService projects;
-  final UserApiService user;
+  final UserApiRemoteService user;
 }
 
 class LocalApiServices {

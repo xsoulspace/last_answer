@@ -1,20 +1,23 @@
 import '../../../models/models.dart';
+import '../../interfaces/interfaces.dart';
 import 'local_api_service.dart';
 
 /// The purpose of the service is to get | set information about
 /// application wide user settings like locale, etc
-class UserApiLocalService {
-  UserApiLocalService({
+class UserApiLocalServiceImpl implements UserApiLocalService {
+  UserApiLocalServiceImpl({
     required this.localApiService,
   });
   final LocalApiService localApiService;
   static const _persistenceKey = 'user';
+  @override
   Future<void> saveUser({
     required final UserModel user,
   }) async {
     await localApiService.setMap(_persistenceKey, user.toJson());
   }
 
+  @override
   Future<UserModel> loadUser() async {
     final jsonMap = await localApiService.getMap(_persistenceKey);
     if (jsonMap.isEmpty) return UserModel.empty;

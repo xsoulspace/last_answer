@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../models/models.dart';
 import '../../interfaces/interfaces.dart';
 
-class UserApiRemoteServiceFirebaseImpl implements UserApiService {
+class UserApiRemoteServiceFirebaseImpl implements UserApiRemoteService {
   FirebaseFirestore get _store => FirebaseFirestore.instance;
   CollectionReference<Map<String, dynamic>> get _collection =>
       _store.collection('users');

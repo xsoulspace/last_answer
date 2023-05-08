@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 Future<void> loadTestFonts() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await _loadFamily(
-    'la_design_core',
+    'ui_kit',
     'last_answer_icons',
     [
       'fonts/last_answer_icons.ttf',
@@ -13,7 +13,7 @@ Future<void> loadTestFonts() async {
     ],
   );
   await _loadFamily(
-    'la_design_core',
+    'ui_kit',
     'IBMPlexSans',
     [
       'google_fonts/IBMPlexSans-Bold.ttf',

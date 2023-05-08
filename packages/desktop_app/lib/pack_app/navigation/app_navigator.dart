@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_core/la_core.dart';
-import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/models/models.dart';
@@ -16,12 +15,13 @@ import 'package:lastanswer/pack_note/pack_note.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/state/state.dart';
 import 'package:provider/provider.dart';
+import 'package:ui_kit/ui_kit.dart';
 
 class AppNavigator extends HookWidget {
   const AppNavigator({
     required this.navigatorKey,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final GlobalKey<NavigatorState> navigatorKey;
   @override
   Widget build(final BuildContext context) {
@@ -38,24 +38,18 @@ class AppNavigator extends HookWidget {
         switch (uiTheme.customizableFormFactors.controls) {
           case ControlsFormFactor.mouse:
             layoutBuilder = _MouseTabletLayoutBuilder(pageBuilder: pageBuilder);
-            break;
           case ControlsFormFactor.touch:
             // TODO(arenukvern): replace with _AppTouchLayoutBuilder
             layoutBuilder = _MouseTabletLayoutBuilder(pageBuilder: pageBuilder);
-            break;
         }
-        break;
       case WidthFormFactor.mobile:
         switch (uiTheme.customizableFormFactors.controls) {
           case ControlsFormFactor.mouse:
             layoutBuilder = _MouseMobileLayoutBuilder(pageBuilder: pageBuilder);
-            break;
           case ControlsFormFactor.touch:
             // TODO(arenukvern): replace with _AppTouchLayoutBuilder
             layoutBuilder = _MouseMobileLayoutBuilder(pageBuilder: pageBuilder);
-            break;
         }
-        break;
     }
 
     return Navigator(
@@ -102,115 +96,101 @@ class _PageBuilder extends RouterPageBuilder<AppRouterController> {
     key: const ValueKey('loading-screen'),
   );
 
-  Page appInfoPage() {
-    return NavigatorPage(
-      key: keys.info,
-      fullscreenDialog: true,
-      child: const AppInfoScreen(),
-    );
-  }
+  Page appInfoPage() => NavigatorPage(
+        key: keys.info,
+        fullscreenDialog: true,
+        child: const AppInfoScreen(),
+      );
 
   /// ********************************************
   /// *      SETTINGS START
   /// ********************************************
 
-  Page settingsPage() {
-    return FadedRailPage<void>(
-      key: keys.settings,
-      fullscreenDialog: true,
-      child: const RouterPopScope(
-        child: SettingsScreen(),
-      ),
-    );
-  }
+  Page settingsPage() => FadedRailPage<void>(
+        key: keys.settings,
+        fullscreenDialog: true,
+        child: const RouterPopScope(
+          child: SettingsScreen(),
+        ),
+      );
 
   /// ********************************************
   /// *      SETTINGS END
   /// ********************************************
 
-  Page notePage() {
-    return MaterialPage<void>(
-      key: keys.notesNote,
-      restorationId: routeState.route.path,
-      fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
-      name: routeState.route.path,
-      child: RouterPopScope(
-        child: Builder(
-          builder: (final context) {
-            final params =
-                AppRouteParameters.fromJson(routeState.route.parameters);
-            return NoteProjectScreen(
-              noteId: params.noteId,
-              key: ValueKey(params.noteId),
-            );
-          },
+  Page notePage() => MaterialPage<void>(
+        key: keys.notesNote,
+        restorationId: routeState.route.path,
+        fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
+        name: routeState.route.path,
+        child: RouterPopScope(
+          child: Builder(
+            builder: (final context) {
+              final params =
+                  AppRouteParameters.fromJson(routeState.route.parameters);
+              return NoteProjectScreen(
+                noteId: params.noteId,
+                key: ValueKey(params.noteId),
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
-  Page ideaPage() {
-    return MaterialPage<void>(
-      key: keys.ideasIdea,
-      fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
-      restorationId: routeState.route.path,
-      name: routeState.route.path,
-      child: RouterPopScope(
-        child: Builder(
-          builder: (final context) {
-            final params =
-                AppRouteParameters.fromJson(routeState.route.parameters);
-            return IdeaProjectScreen(
-              ideaId: params.ideaId,
-              key: ValueKey(params.ideaId),
-            );
-          },
+  Page ideaPage() => MaterialPage<void>(
+        key: keys.ideasIdea,
+        fullscreenDialog: DeviceRuntimeType.isNativeDesktop,
+        restorationId: routeState.route.path,
+        name: routeState.route.path,
+        child: RouterPopScope(
+          child: Builder(
+            builder: (final context) {
+              final params =
+                  AppRouteParameters.fromJson(routeState.route.parameters);
+              return IdeaProjectScreen(
+                ideaId: params.ideaId,
+                key: ValueKey(params.ideaId),
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
-  Page ideaAnswerPage() {
-    return MaterialPage<void>(
-      fullscreenDialog: true,
-      key: keys.ideasIdeaAnswer,
-      restorationId: routeState.route.path,
-      name: routeState.route.path,
-      child: RouterPopScope(
-        child: Builder(
-          builder: (final context) {
-            final params =
-                AppRouteParameters.fromJson(routeState.route.parameters);
-            return IdeaAnswerScreen(
-              answerId: params.answerId,
-              ideaId: params.ideaId,
-              key: ValueKey('${params.ideaId}-${params.answerId}'),
-            );
-          },
+  Page ideaAnswerPage() => MaterialPage<void>(
+        fullscreenDialog: true,
+        key: keys.ideasIdeaAnswer,
+        restorationId: routeState.route.path,
+        name: routeState.route.path,
+        child: RouterPopScope(
+          child: Builder(
+            builder: (final context) {
+              final params =
+                  AppRouteParameters.fromJson(routeState.route.parameters);
+              return IdeaAnswerScreen(
+                answerId: params.answerId,
+                ideaId: params.ideaId,
+                key: ValueKey('${params.ideaId}-${params.answerId}'),
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
-  Page createIdeaPage() {
-    return MaterialPage<void>(
-      key: keys.createIdea,
-      fullscreenDialog: true,
-      child: const RouterPopScope(
-        child: CreateIdeaProjectScreen(),
-      ),
-    );
-  }
+  Page createIdeaPage() => MaterialPage<void>(
+        key: keys.createIdea,
+        fullscreenDialog: true,
+        child: const RouterPopScope(
+          child: CreateIdeaProjectScreen(),
+        ),
+      );
 
-  Page signInPage() {
-    return MaterialPage<void>(
-      key: keys.signIn,
-      fullscreenDialog: true,
-      child: const RouterPopScope(
-        child: GlobalSignInScreen(),
-      ),
-    );
-  }
+  Page signInPage() => MaterialPage<void>(
+        key: keys.signIn,
+        fullscreenDialog: true,
+        child: const RouterPopScope(
+          child: GlobalSignInScreen(),
+        ),
+      );
 }
 
 class _MouseMobileLayoutBuilder

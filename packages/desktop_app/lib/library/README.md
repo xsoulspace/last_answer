@@ -1,1 +1,1 @@
-migrate to `la_design_core`
+migrate to `ui_kit`

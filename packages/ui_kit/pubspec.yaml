@@ -1,4 +1,4 @@
-name: la_design_core
+name: ui_kit
 description: design ui kit
 version: 0.0.1
 publish_to: none
@@ -58,49 +58,49 @@ flutter:
   fonts:
     # - family: la_icons
     #   fonts:
-    #     - asset: packages/la_design_core/fonts/la_icons.ttf
+    #     - asset: packages/ui_kit/fonts/la_icons.ttf
     - family: IBMPlexSans
       fonts:
-        - asset: packages/la_design_core/fonts/IBMPlexSans-Thin.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-Thin.ttf
           weight: 100
-        - asset: packages/la_design_core/fonts/IBMPlexSans-ExtraLight.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-ExtraLight.ttf
           weight: 200
-        - asset: packages/la_design_core/fonts/IBMPlexSans-Light.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-Light.ttf
           weight: 300
-        - asset: packages/la_design_core/fonts/IBMPlexSans-Regular.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-Regular.ttf
           weight: 400
-        - asset: packages/la_design_core/fonts/IBMPlexSans-Medium.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-Medium.ttf
           weight: 500
-        - asset: packages/la_design_core/fonts/IBMPlexSans-SemiBold.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-SemiBold.ttf
           weight: 600
-        - asset: packages/la_design_core/fonts/IBMPlexSans-Bold.ttf
+        - asset: packages/ui_kit/fonts/IBMPlexSans-Bold.ttf
           weight: 700
 
     # NotoColorEmoji and NotoSans are fallback fonts used to display emojis
     - family: NotoSans
       fonts:
-        - asset: packages/la_design_core/fonts/NotoSans-Thin.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Thin.ttf
           weight: 100
-        - asset: packages/la_design_core/fonts/NotoSans-ExtraLight.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-ExtraLight.ttf
           weight: 200
-        - asset: packages/la_design_core/fonts/NotoSans-Light.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Light.ttf
           weight: 300
-        - asset: packages/la_design_core/fonts/NotoSans-Regular.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Regular.ttf
           weight: 400
-        - asset: packages/la_design_core/fonts/NotoSans-Medium.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Medium.ttf
           weight: 500
-        - asset: packages/la_design_core/fonts/NotoSans-SemiBold.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-SemiBold.ttf
           weight: 600
-        - asset: packages/la_design_core/fonts/NotoSans-Bold.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Bold.ttf
           weight: 700
-        - asset: packages/la_design_core/fonts/NotoSans-ExtraBold.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-ExtraBold.ttf
           weight: 800
-        - asset: packages/la_design_core/fonts/NotoSans-Black.ttf
+        - asset: packages/ui_kit/fonts/NotoSans-Black.ttf
           weight: 900
 
     - family: NotoColorEmoji
       fonts:
-        - asset: packages/la_design_core/fonts/NotoColorEmoji.ttf
+        - asset: packages/ui_kit/fonts/NotoColorEmoji.ttf
 
 # For information see the following page:
 # https://pub.dev/packages/flutter_gen

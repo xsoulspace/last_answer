@@ -55,10 +55,10 @@ flutter: null
 # fonts:
 # - family: asgard_icons
 #   fonts:
-#     - asset: packages/la_design_core/fonts/asgard_icons.ttf
+#     - asset: packages/ui_kit/fonts/asgard_icons.ttf
 # - family: Poppins
 #   fonts:
-#     - asset: packages/la_design_core/fonts/Poppins-Regular.ttf
+#     - asset: packages/ui_kit/fonts/Poppins-Regular.ttf
 #       weight: 400
-#     - asset: packages/la_design_core/fonts/Poppins-Bold.ttf
+#     - asset: packages/ui_kit/fonts/Poppins-Bold.ttf
 #       weight: 700

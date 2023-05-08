@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_auth/_screens/global_sign_in_screen_state.dart';
 import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:provider/provider.dart' as provider_lib;
+import 'package:ui_kit/ui_kit.dart';
 
 class GlobalSignInScreen extends HookWidget {
   const GlobalSignInScreen({
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(final BuildContext context) {
     final state = useGlobalSignInScreenState(
@@ -64,13 +64,11 @@ class GlobalSignInScreen extends HookWidget {
             const SizedBox(height: 18),
             ValueListenableBuilder<bool>(
               valueListenable: state.isLoading,
-              builder: (final context, final loading, final child) {
-                return loading
-                    ? const CircularProgress()
-                    : SignInDiscordButton(
-                        onPressed: () => state.signInWithDiscord,
-                      );
-              },
+              builder: (final context, final loading, final child) => loading
+                  ? const CircularProgress()
+                  : SignInDiscordButton(
+                      onPressed: () => state.signInWithDiscord,
+                    ),
             ),
             const SizedBox(height: 18),
             const BottomSafeArea()
@@ -86,27 +84,25 @@ class SignInUpFilledButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     required this.hero,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onPressed;
   final String text;
   final String hero;
   @override
-  Widget build(final BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: Hero(
-        tag: hero,
-        child: DecoratedActionButton(
-          surfaceColor: AppColors.primary2,
-          textColor: Theme.of(context).backgroundColor,
-          filled: true,
-          onPressed: onPressed,
-          text: text,
+  Widget build(final BuildContext context) => FractionallySizedBox(
+        widthFactor: 1,
+        child: Hero(
+          tag: hero,
+          child: DecoratedActionButton(
+            surfaceColor: AppColors.primary2,
+            textColor: Theme.of(context).backgroundColor,
+            filled: true,
+            onPressed: onPressed,
+            text: text,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class SignInUpOutlinedButton extends StatelessWidget {
@@ -114,22 +110,20 @@ class SignInUpOutlinedButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     required this.hero,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onPressed;
   final String text;
   final String hero;
   @override
-  Widget build(final BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: Hero(
-        tag: hero,
-        child: OutlinedActionButton(
-          onPressed: onPressed,
-          text: text,
+  Widget build(final BuildContext context) => FractionallySizedBox(
+        widthFactor: 1,
+        child: Hero(
+          tag: hero,
+          child: OutlinedActionButton(
+            onPressed: onPressed,
+            text: text,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

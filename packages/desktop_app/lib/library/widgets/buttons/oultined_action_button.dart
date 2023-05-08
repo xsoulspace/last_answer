@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
+import 'package:ui_kit/ui_kit.dart';
 
 class OutlinedActionButton extends StatelessWidget {
   const OutlinedActionButton({
@@ -8,8 +8,8 @@ class OutlinedActionButton extends StatelessWidget {
     this.text,
     this.iconData,
     this.loading = false,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback? onPressed;
   final IconData? iconData;
   final String? text;
@@ -28,7 +28,7 @@ class OutlinedActionButton extends StatelessWidget {
     } else {
       child = Text(
         text ?? '',
-        style: theme.textTheme.headline6?.copyWith(
+        style: theme.textTheme.titleLarge?.copyWith(
           color: primaryColor,
         ),
       );

@@ -6,7 +6,7 @@ import '../../states/states.dart';
 
 part 'app_di_services_dto.dart';
 
-typedef AppWidgetBuilder = Widget Function(BuildContext, AppRouter);
+typedef AppWidgetBuilder = Widget Function(BuildContext);
 
 class AppDiProviders extends StatelessWidget {
   const AppDiProviders._({

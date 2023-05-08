@@ -724,10 +724,10 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
-  la_design_core:
+  ui_kit:
     dependency: "direct main"
     description:
-      path: "packages/la_design_core"
+      path: "packages/ui_kit"
       relative: true
     source: path
     version: "0.0.1"

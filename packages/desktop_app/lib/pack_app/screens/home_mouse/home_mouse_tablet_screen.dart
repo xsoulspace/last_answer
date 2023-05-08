@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_design_core/la_design_core.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/navigation/app_router_controller.dart';
 import 'package:lastanswer/pack_app/screens/home_mouse/widgets/widgets.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
+import 'package:ui_kit/ui_kit.dart';
 
 part 'home_mouse_tablet_state.dart';
 
 class HomeMouseTabletScreen extends HookWidget {
   const HomeMouseTabletScreen({required this.contentBuilder, super.key});
   final WidgetBuilder contentBuilder;
-  static const double appBarHeight = 56.0;
+  static const double appBarHeight = 56;
   @override
   Widget build(final BuildContext context) {
     final state = _useScreenState(read: context.read);

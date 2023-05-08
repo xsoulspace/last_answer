@@ -1,17 +1,12 @@
-import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
-import 'package:ui_kit/ui_kit.dart';
+
+import '../../states/states.dart';
 
 class AppDiLoaderDto {
-  AppDiLoaderDto.of(final Locator read)
-      : authFlowBloc = read(),
-        dictionariesBloc = read(),
-        appSettingsBloc = read();
-  final AuthFlowBloc authFlowBloc;
-  final DictionariesBloc dictionariesBloc;
-  final AppSettingsBloc appSettingsBloc;
+  AppDiLoaderDto.of(final Locator read) : authCubit = read();
+  final AuthCubit authCubit;
 }
 
 class AppDiLoader extends StatefulWidget {
@@ -49,9 +44,8 @@ class _AppDiLoaderState extends State<AppDiLoader> {
 
                   return _initalizer.onLoad(context);
                 }(),
-                builder: (final context, final snapshot) {
-                  return const LoaderScreen();
-                },
+                builder: (final context, final snapshot) =>
+                    const LoaderScreen(),
               ),
           ],
         ),

@@ -36,5 +36,5 @@ class _ScreenState extends LifeState {
   }
 
   bool leftPaneOpen = true;
-  double leftWidth = 280.0;
+  double leftWidth = 280;
 }

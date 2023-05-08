@@ -4,17 +4,7 @@
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",
-      "toolArgs": [
-        "--dart-define",
-        "revenue-cat-api-key-apple=VALUE",
-        "--dart-define",
-        "revenue-cat-api-key-google=VALUE",
-        "--dart-define",
-        "supabase-anon=VALUE",
-        "--dart-define",
-        "supabase-url=VALUE",
-        "--web-port=3000"
-      ]
+      "toolArgs": ["--web-port=3000"]
     }
   ]
 }

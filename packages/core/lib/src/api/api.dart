@@ -1,5 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../../core.dart';
 
 export 'clients/clients.dart';
@@ -11,13 +9,16 @@ class RemoteApiServices {
     required this.projects,
     required this.user,
   });
-  @useResult
-  static Future<RemoteApiServices> get v1 async {
+  factory RemoteApiServices.buildAppRuntime() {
     final userApi = UserApiRemoteServiceFirebaseImpl();
     return RemoteApiServices._(
       projects: ProjectsApiRemoteServiceFirebaseImpl(),
       user: userApi,
     );
+  }
+  factory RemoteApiServices.buildMockRuntime() {
+    // TODO(arenukvern): description
+    throw UnimplementedError('reason');
   }
 
   final ProjectsApiService projects;
@@ -30,8 +31,7 @@ class LocalApiServices {
     required this.appSettings,
   });
 
-  @useResult
-  static Future<LocalApiServices> get v1 async {
+  factory LocalApiServices.buildAppRuntime() {
     final localApi = LocalApiServiceSharedPreferencesImpl();
     return LocalApiServices._(
       localApi: localApi,
@@ -39,6 +39,10 @@ class LocalApiServices {
         localApiService: localApi,
       ),
     );
+  }
+  factory LocalApiServices.buildMockRuntime() {
+    // TODO(arenukvern): description
+    throw UnimplementedError('reason');
   }
 
   final LocalApiService localApi;

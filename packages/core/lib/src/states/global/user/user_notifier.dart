@@ -4,10 +4,10 @@ import '../../../../core.dart';
 
 final class UserNotifier extends ValueNotifier<UserModel> {
   UserNotifier({
-    required this.repositoriesCollection,
+    required this.repositories,
   }) : super(UserModel.empty);
-  final RepositoriesCollection repositoriesCollection;
-  UserRepository get _userRepository => repositoriesCollection.user;
+  final RepositoriesCollection repositories;
+  UserRepository get _userRepository => repositories.user;
   void loadProfile() {}
   void reset() {
     value = UserModel.empty;

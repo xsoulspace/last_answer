@@ -3,43 +3,38 @@ import 'package:flutter/material.dart';
 class EmptyScreen extends StatelessWidget {
   const EmptyScreen({
     this.isEmpty = false,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final bool isEmpty;
   @override
-  Widget build(final BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!isEmpty) const Text(r'At least it works ¯\_(ツ)_/¯'),
-        ],
-      ),
-    );
-  }
+  Widget build(final BuildContext context) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (!isEmpty) const Text(r'At least it works ¯\_(ツ)_/¯'),
+          ],
+        ),
+      );
 }
 
 class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({final Key? key}) : super(key: key);
+  const LoadingScreen({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          CircularProgress(),
-        ],
-      ),
-    );
-  }
+  Widget build(final BuildContext context) => const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgress(),
+          ],
+        ),
+      );
 }
 
 class CircularProgress extends StatelessWidget {
-  const CircularProgress({final Key? key}) : super(key: key);
+  const CircularProgress({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    return const CircularProgressIndicator.adaptive();
-  }
+  Widget build(final BuildContext context) =>
+      const CircularProgressIndicator.adaptive();
 }

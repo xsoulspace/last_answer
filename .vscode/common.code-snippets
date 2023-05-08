@@ -16,9 +16,13 @@
   // 	"description": "Log output to console"
   // }
 
+  "unimplemented-arenukvern": {
+    "prefix": "unarenukvern",
+    "body": "// TODO(${arenukvern}): ${1:implement}\nthrow UnimplementedError('${2:unimplimented}');"
+  },
   "add-todo-arenukvern": {
     "prefix": "tdar",
-    "body": "// TODO(arenukvern): "
+    "body": "// TODO(arenukvern): ${1:description}"
   },
   "use-life-hook": {
     "prefix": "uselifehook",

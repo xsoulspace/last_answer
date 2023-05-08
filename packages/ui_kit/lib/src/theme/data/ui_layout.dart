@@ -18,12 +18,12 @@ class UiSpacing with _$UiSpacing {
   }) = _UiSpacing;
   const UiSpacing._();
   static const m3 = UiSpacing(
-    none: 0.0,
-    extraSmall: 2.0,
-    small: 4.0,
-    medium: 12.0,
-    large: 24.0,
-    extraLarge: 36.0,
+    none: 0,
+    extraSmall: 2,
+    small: 4,
+    medium: 12,
+    large: 24,
+    extraLarge: 36,
     full: double.infinity,
   );
 }
@@ -49,17 +49,16 @@ class UiRadius with _$UiRadius {
   // ignore: prefer_constructors_over_static_methods
   static UiRadius circularBySpacing({
     required final UiSpacing spacing,
-  }) {
-    return UiRadius(
-      extraLarge: Radius.circular(spacing.extraLarge),
-      extraSmall: Radius.circular(spacing.extraSmall),
-      full: Radius.circular(spacing.full),
-      large: Radius.circular(spacing.large),
-      medium: Radius.circular(spacing.medium),
-      none: Radius.circular(spacing.none),
-      small: Radius.circular(spacing.small),
-    );
-  }
+  }) =>
+      UiRadius(
+        extraLarge: Radius.circular(spacing.extraLarge),
+        extraSmall: Radius.circular(spacing.extraSmall),
+        full: Radius.circular(spacing.full),
+        large: Radius.circular(spacing.large),
+        medium: Radius.circular(spacing.medium),
+        none: Radius.circular(spacing.none),
+        small: Radius.circular(spacing.small),
+      );
 }
 
 @immutable
@@ -70,47 +69,29 @@ class UiRadius with _$UiRadius {
 )
 class UiBoxSpacing with _$UiBoxSpacing {
   const factory UiBoxSpacing({
-    required final SizedBox none,
-    required final SizedBox extraSmall,
-    required final SizedBox small,
-    required final SizedBox medium,
-    required final SizedBox large,
-    required final SizedBox extraLarge,
-    required final SizedBox full,
+    required final Widget none,
+    required final Widget extraSmall,
+    required final Widget small,
+    required final Widget medium,
+    required final Widget large,
+    required final Widget extraLarge,
+    required final Widget full,
   }) = _UiBoxSpacing;
   const UiBoxSpacing._();
-  @factory
-  // ignore: prefer_constructors_over_static_methods
-  static UiBoxSpacing vertical({
+  factory UiBoxSpacing.fromSpacing({
     required final UiSpacing spacing,
   }) =>
       UiBoxSpacing(
-        none: spacing.none.toHeightBox,
-        extraSmall: spacing.extraSmall.toHeightBox,
-        small: spacing.small.toHeightBox,
-        medium: spacing.medium.toHeightBox,
-        large: spacing.large.toHeightBox,
-        extraLarge: spacing.extraLarge.toHeightBox,
-        full: spacing.full.toHeightBox,
-      );
-
-  @factory
-  // ignore: prefer_constructors_over_static_methods
-  static UiBoxSpacing horizontal({
-    required final UiSpacing spacing,
-  }) =>
-      UiBoxSpacing(
-        none: spacing.none.toWidthBox,
-        extraSmall: spacing.extraSmall.toWidthBox,
-        small: spacing.small.toWidthBox,
-        medium: spacing.medium.toWidthBox,
-        large: spacing.large.toWidthBox,
-        extraLarge: spacing.extraLarge.toWidthBox,
-        full: spacing.full.toWidthBox,
+        none: const SizedBox(),
+        extraSmall: spacing.extraSmall.toGap,
+        small: spacing.small.toGap,
+        medium: spacing.medium.toGap,
+        large: spacing.large.toGap,
+        extraLarge: spacing.extraLarge.toGap,
+        full: spacing.full.toGap,
       );
 }
 
 extension DoubleExt on double {
-  SizedBox get toHeightBox => SizedBox(height: this);
-  SizedBox get toWidthBox => SizedBox(width: this);
+  Gap get toGap => Gap(this);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gap/gap.dart';
 
 part 'app/colors.dart';
 part 'app/typography.dart';
@@ -20,8 +21,7 @@ part 'theme.freezed.dart';
 class UiThemeScheme with _$UiThemeScheme {
   const factory UiThemeScheme({
     required final UiSpacing spacing,
-    required final UiBoxSpacing horizontalBoxes,
-    required final UiBoxSpacing verticalBoxes,
+    required final UiBoxSpacing gaps,
     required final UiRadius circularRadius,
     required final UiTextTheme text,
     required final UiPersistentFormFactors persistentFormFactors,
@@ -36,10 +36,13 @@ class UiThemeScheme with _$UiThemeScheme {
       persistentFormFactors: UiPersistentFormFactors.of(context),
       circularRadius: UiRadius.circularBySpacing(spacing: spacing),
       spacing: spacing,
-      horizontalBoxes: UiBoxSpacing.horizontal(spacing: spacing),
-      verticalBoxes: UiBoxSpacing.vertical(spacing: spacing),
+      gaps: UiBoxSpacing.fromSpacing(spacing: spacing),
     );
   }
+}
+
+extension UiThemeBuildContextExtension on BuildContext {
+  UiThemeScheme get uiTheme => UiTheme.of(this);
 }
 
 class UiTheme extends InheritedWidget {
@@ -57,7 +60,6 @@ class UiTheme extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(covariant final UiTheme oldWidget) {
-    return scheme != oldWidget.scheme;
-  }
+  bool updateShouldNotify(covariant final UiTheme oldWidget) =>
+      scheme != oldWidget.scheme;
 }

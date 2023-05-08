@@ -103,22 +103,21 @@ const maxMediumWidth = 1000.0;
 
 enum DeviceWindowFormFactor {
   android(
-    hasTransparencySupport: false,
     hasWindowClose: false,
     hasWindowExpand: false,
     hasWindowHide: false,
   ),
   iOS(
-    hasTransparencySupport: false,
     hasWindowClose: false,
     hasWindowExpand: false,
     hasWindowHide: false,
   ),
-  macOS(),
+  macOS(
+    hasTransparencySupport: true,
+  ),
   windows(),
   linux(),
   web(
-    hasTransparencySupport: false,
     hasWindowClose: false,
     hasWindowExpand: false,
     hasWindowHide: false,
@@ -155,12 +154,11 @@ class UiCustomizableFormFactors with _$UiCustomizableFormFactors {
     required final ControlsFormFactor controls,
   }) = _UiCustomizableFormFactors;
   const UiCustomizableFormFactors._();
-  factory UiCustomizableFormFactors.ofTargetPlatform() {
-    return UiCustomizableFormFactors(
-      performance: PerformanceFormFactor.regular,
-      controls: _getControlsByTargetPlatform(),
-    );
-  }
+  factory UiCustomizableFormFactors.ofTargetPlatform() =>
+      UiCustomizableFormFactors(
+        performance: PerformanceFormFactor.regular,
+        controls: _getControlsByTargetPlatform(),
+      );
 
   static ControlsFormFactor _getControlsByTargetPlatform() {
     switch (defaultTargetPlatform) {

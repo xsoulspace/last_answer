@@ -22,7 +22,9 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.0
   flutter_native_splash: ^2.2.8
   flutter_quill: ^7.1.14
+  form_builder_validators: ^8.6.1
   freezed_annotation: ^2.2.0
+  go_router: ^7.0.0
   json_annotation: ^4.8.0
   life_hooks: ^0.0.18
   logger: ^1.3.0
@@ -32,6 +34,8 @@ dependencies:
   shared_preferences: ^2.1.0
   ui_kit:
     path: ../ui_kit
+  ui_locale:
+    path: ../ui_locale
   universal_io: ^2.2.0
   uuid: ^3.0.7
 
@@ -45,8 +49,6 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.1.0+1
   json_serializable: ^6.6.1
-  la_test_utils:
-    path: ../la_test_utils
   xsoulspace_lints: ^0.0.8
 
 # For information on the generic Dart part of this file, see the

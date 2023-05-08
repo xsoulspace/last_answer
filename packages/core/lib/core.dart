@@ -5,6 +5,7 @@ export 'src/hooks/hooks.dart';
 export 'src/localization/localization.dart';
 export 'src/models/models.dart';
 export 'src/repositories/repositories.dart';
+export 'src/root/root.dart';
 export 'src/router/router.dart';
 export 'src/states/states.dart';
 export 'src/utils/utils.dart';

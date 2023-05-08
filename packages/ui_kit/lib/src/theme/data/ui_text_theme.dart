@@ -16,7 +16,7 @@ class UiTextTheme with _$UiTextTheme {
     final theme = Theme.of(context);
     final defaultTextTheme = theme.textTheme;
 
-    final errorColor = theme.errorColor;
+    final errorColor = theme.colorScheme.error;
     final errorTheme = defaultTextTheme.copyWith(
       displayLarge: defaultTextTheme.displayLarge?.copyWith(
         color: errorColor,

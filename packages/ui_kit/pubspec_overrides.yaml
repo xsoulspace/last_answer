@@ -1,4 +1,4 @@
-# melos_managed_dependency_overrides: la_test_utils
+# melos_managed_dependency_overrides: ui_locale
 dependency_overrides:
-  la_test_utils:
-    path: ../la_test_utils
+  ui_locale:
+    path: ../ui_locale

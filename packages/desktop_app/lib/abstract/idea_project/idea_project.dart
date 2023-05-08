@@ -3,7 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:la_core/la_core.dart';
+import 'package:core/core.dart';
 import 'package:lastanswer/abstract/basic_project.dart';
 import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/idea_project/idea_project_answer.dart';
@@ -119,7 +119,7 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
 
   @override
   String toShareString(final BuildContext context) {
-    final buffer = StringBuffer('$title \n');
+    final buffer = StringBuffer('$label \n');
     final answers = getAnswers(context);
     for (final answer in answers) {
       buffer.writeln(answer.toShareString(context));
@@ -135,20 +135,18 @@ class IdeaProject extends BasicProject<IdeaProjectModel> with EquatableMixin {
   bool? get stringify => true;
 
   @override
-  IdeaProjectModel toModel({required final UserModel user}) {
-    return IdeaProjectModel(
-      id: id,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      projectType: type,
-      ownerId: user.id,
-      isCompleted: isCompleted,
-      folderId: folder!.id,
-      newAnswerText: newAnswerText,
-      newQuestionId: newQuestion!.id,
-      title: title,
-    );
-  }
+  IdeaProjectModel toModel({required final UserModel user}) => IdeaProjectModel(
+        id: id,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        projectType: type,
+        ownerId: user.id,
+        isCompleted: isCompleted,
+        folderId: folder!.id,
+        newAnswerText: newAnswerText,
+        newQuestionId: newQuestion!.id,
+        title: title,
+      );
 
   @override
   Future<void> deleteWithRelatives({

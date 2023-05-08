@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../la_core.dart';
+import '../../core.dart';
 
 export 'clients/clients.dart';
 export 'implementations/implementations.dart';

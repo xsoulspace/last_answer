@@ -46,8 +46,8 @@ dependencies:
   hive: ^2.1.0
   hive_flutter: ^1.1.0
   json_annotation: ^4.8.1
-  la_core:
-    path: packages/la_core
+  core:
+    path: packages/core
   ui_kit:
     path: packages/ui_kit
   life_hooks: ^0.0.18

@@ -1,5 +1,5 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:la_core/la_core.dart';
 
 enum HeroIdTypes {
   projectTitle,

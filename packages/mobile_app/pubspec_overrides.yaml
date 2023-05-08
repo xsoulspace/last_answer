@@ -1,7 +1,7 @@
-# melos_managed_dependency_overrides: la_core,ui_kit,cli_util,melos,intl
+# melos_managed_dependency_overrides: core,ui_kit,cli_util,melos,intl
 dependency_overrides:
-  la_core:
-    path: ../la_core
+  core:
+    path: ../core
   ui_kit:
     path: ../ui_kit
   cli_util: ^0.4.0

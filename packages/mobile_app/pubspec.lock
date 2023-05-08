@@ -789,10 +789,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
-  la_core:
+  core:
     dependency: "direct main"
     description:
-      path: "../la_core"
+      path: "../core"
       relative: true
     source: path
     version: "0.0.1"

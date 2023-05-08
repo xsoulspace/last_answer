@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/widgets/buttons/decorated_action_button.dart';
 import 'package:lastanswer/library/widgets/buttons/oultined_action_button.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:la_core/la_core.dart';
 
 class IconShareButton extends StatefulWidget {
   const IconShareButton({

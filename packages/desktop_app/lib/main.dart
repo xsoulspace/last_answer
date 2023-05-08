@@ -1,6 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/envs.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';

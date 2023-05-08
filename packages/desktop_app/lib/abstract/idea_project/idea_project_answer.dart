@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:la_core/la_core.dart';
+import 'package:core/core.dart';
 import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/idea_project/idea_project.dart';
 import 'package:lastanswer/abstract/idea_project/idea_project_question.dart';
@@ -113,17 +113,16 @@ class IdeaProjectAnswer extends RemoteHiveObjectWithId<IdeaProjectAnswerModel>
   bool? get stringify => true;
 
   @override
-  IdeaProjectAnswerModel toModel({required final UserModel user}) {
-    return IdeaProjectAnswerModel(
-      createdAt: createdAt,
-      id: id,
-      projectId: projectId,
-      questionId: question.id,
-      text: text,
-      updatedAt: updatedAt,
-      ownerId: user.id,
-    );
-  }
+  IdeaProjectAnswerModel toModel({required final UserModel user}) =>
+      IdeaProjectAnswerModel(
+        createdAt: createdAt,
+        id: id,
+        projectId: projectId,
+        questionId: question.id,
+        text: text,
+        updatedAt: updatedAt,
+        ownerId: user.id,
+      );
 
   @override
   Future<void> deleteWithRelatives({

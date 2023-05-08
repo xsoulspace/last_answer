@@ -1,6 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:share_plus/share_plus.dart';

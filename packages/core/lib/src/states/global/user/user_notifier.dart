@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../../la_core.dart';
+import '../../../../core.dart';
 
 final class UserNotifier extends ValueNotifier<UserModel> {
   UserNotifier({

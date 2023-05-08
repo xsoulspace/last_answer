@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:la_core/la_core.dart';
+import 'package:core/core.dart';
 import 'package:lastanswer/abstract/basic_project.dart';
 import 'package:lastanswer/abstract/hive_boxes_ids.dart';
 import 'package:lastanswer/abstract/serialazable_project_id.dart';
@@ -45,14 +45,14 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
         equals: (final a, final b) => a.hashCode == b.hashCode,
         hashCode: (final a) => a.hashCode,
       );
-  static Future<ProjectFolder> fromModel(final ProjectFolderModel model) async {
-    return create(
-      id: model.id,
-      title: model.title,
-      createdAt: model.createdAt,
-      updatedAt: model.updatedAt,
-    );
-  }
+  static Future<ProjectFolder> fromModel(
+          final ProjectFolderModel model) async =>
+      create(
+        id: model.id,
+        title: model.title,
+        createdAt: model.createdAt,
+        updatedAt: model.updatedAt,
+      );
 
   static Future<ProjectFolder> create({
     final String? id,
@@ -76,15 +76,14 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
   }
 
   @override
-  ProjectFolderModel toModel({required final UserModel user}) {
-    return ProjectFolderModel(
-      id: id,
-      title: title,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      ownerId: user.id,
-    );
-  }
+  ProjectFolderModel toModel({required final UserModel user}) =>
+      ProjectFolderModel(
+        id: id,
+        title: title,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        ownerId: user.id,
+      );
 
   @override
   @HiveField(0)
@@ -189,10 +188,8 @@ class ProjectFolder extends RemoteHiveObjectWithId<ProjectFolderModel>
       switch (id.type) {
         case ProjectType.note:
           projects = service.notes;
-          break;
         case ProjectType.idea:
           projects = service.ideas;
-          break;
         case ProjectType.story:
           throw UnimplementedError();
         // projects = service.stories;

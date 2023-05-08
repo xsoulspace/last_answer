@@ -1,6 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:lastanswer/library/widgets/core/background_frost_box.dart';
 

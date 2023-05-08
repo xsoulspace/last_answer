@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:la_core/la_core.dart';
 import 'package:lastanswer/generated/l10n.dart';
 import 'package:lastanswer/library/theme/theme.dart';
 import 'package:recase/recase.dart';

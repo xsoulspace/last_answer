@@ -7,7 +7,7 @@ const kTestingCrashlytics = false;
 /// Toggle this for testing Analytics in your app locally.
 const kTestingAnalytics = false;
 
-abstract class FirebaseInitializer implements Loadable {
+abstract interface class FirebaseInitializer implements Loadable {
   FirebaseInitializer({
     required this.firebaseOptions,
   });

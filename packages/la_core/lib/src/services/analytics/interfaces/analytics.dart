@@ -9,7 +9,12 @@ enum AnalyticEvents {
   usedInWeb,
 }
 
-abstract class AnalyticsService implements Loadable, Disposable {
+abstract interface class AnalyticsService extends AnalyticsServicePlugin {
+  void upsertPlugin<T extends AnalyticsServicePlugin>(final T plugin);
+}
+
+abstract interface class AnalyticsServicePlugin
+    implements Loadable, Disposable {
   Future<void> logAnalyticEvent(final AnalyticEvents event);
   // ignore: long-parameter-list
   Future<void> recordError(
@@ -20,15 +25,40 @@ abstract class AnalyticsService implements Loadable, Disposable {
     final bool fatal = false,
     final bool? printDetails,
   });
+
   Future<void> recordFlutterError(
     final FlutterErrorDetails flutterErrorDetails, {
     final bool fatal = false,
   });
-  void log(final String value) {}
-  void dynamicLog(final dynamic value) {}
-  void dynamicInfoLog(final dynamic value) {}
-  void dynamicErrorLog(final dynamic value) {}
-  @override
-  Future<void> onLoad();
+
   Future<void> onDelayedLoad();
+
+  /// noop implementation
+  void dynamicLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+    // ignore: no-empty-block
+  }) {}
+  void dynamicWarningLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  /// noop implementation
+  void dynamicInfoLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+    // ignore: no-empty-block
+  }) {}
+
+  /// noop implementation
+  void dynamicErrorLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+// ignore: no-empty-block
+  }) {}
 }

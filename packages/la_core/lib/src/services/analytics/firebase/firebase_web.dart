@@ -26,7 +26,7 @@ class FirebaseInitializerImpl implements FirebaseInitializer {
   }
 }
 
-class FirebaseAnalyticsPlugin extends AnalyticsService {
+class FirebaseAnalyticsPlugin implements AnalyticsServicePlugin {
   FirebaseAnalyticsWeb analytics = FirebaseAnalyticsWeb();
   bool _isEnabled = false;
   bool _shouldRecordErrors = false;
@@ -95,9 +95,37 @@ class FirebaseAnalyticsPlugin extends AnalyticsService {
 
   @override
   void dispose() {}
+
+  @override
+  void dynamicErrorLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicInfoLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicWarningLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
 }
 
-class FirebaseCrashlyticsPlugin extends AnalyticsService {
+class FirebaseCrashlyticsPlugin implements AnalyticsServicePlugin {
   @override
   Future<void> logAnalyticEvent(final AnalyticEvents event) async {}
 
@@ -125,4 +153,32 @@ class FirebaseCrashlyticsPlugin extends AnalyticsService {
 
   @override
   void dispose() {}
+
+  @override
+  void dynamicErrorLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicInfoLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void dynamicWarningLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {}
 }

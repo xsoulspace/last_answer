@@ -21,6 +21,6 @@ class UserApiRemoteServiceFirebaseImpl implements UserApiService {
 
   @override
   Future<void> upsertUser(final UserModel model) async {
-    await _docCollection.doc(model.id.value).set(model);
+    await _docCollection.doc(model.remoteId.value).set(model);
   }
 }

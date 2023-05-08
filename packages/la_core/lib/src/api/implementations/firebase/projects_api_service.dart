@@ -41,7 +41,8 @@ class ProjectsApiRemoteServiceFirebaseImpl implements ProjectsApiService {
       // create
       final docRef = await _docCollection.add(model);
       final newRemoteId = docRef.id;
-      project = model.copyWith(remoteId: ProjectModelId(value: newRemoteId));
+      project =
+          model.copyWith(remoteId: ProjectModelRemoteId(value: newRemoteId));
       await _docCollection.doc(newRemoteId).set(project);
     }
 

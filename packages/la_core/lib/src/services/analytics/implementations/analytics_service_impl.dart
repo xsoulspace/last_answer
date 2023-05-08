@@ -1,19 +1,40 @@
 // ignore_for_file: avoid_annotating_with_dynamic
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../interfaces/interfaces.dart';
 import '../utils/utils.dart';
 
-class AnalyticsServiceImpl extends AnalyticsService {
+class AnalyticsServiceImpl implements AnalyticsService {
   AnalyticsServiceImpl({
-    required this.plugins,
-  });
+    final Map<Type, AnalyticsServicePlugin>? plugins,
+    this.isTerminalUseAnsiEscapeSequences = false,
+  }) : plugins = plugins ?? {};
   final logsNotifier = ValueNotifier<List<String>>([]);
-  final List<AnalyticsService> plugins;
-  final logger =
-      Logger(filter: kDebugMode ? DevelopmentFilter() : ProductionFilter());
+  final Map<Type, AnalyticsServicePlugin> plugins;
+  @override
+  void upsertPlugin<T extends AnalyticsServicePlugin>(final T plugin) {
+    plugins[T] = plugin;
+  }
+
+  /// Please note that all IDEs (VSCode, XCode, Android Studio, IntelliJ)
+  /// do not support ANSI escape sequences in their terminal outputs.
+  /// These escape sequences are used to color output.
+  /// If using such an IDE do not configure colored output
+  ///
+  /// https://pub.dev/packages/logger#colors
+  final bool isTerminalUseAnsiEscapeSequences;
+
+  late final logger = Logger(
+    filter: kDebugMode ? DevelopmentFilter() : ProductionFilter(),
+    printer: PrettyPrinter(
+      printTime: true,
+      colors: isTerminalUseAnsiEscapeSequences,
+    ),
+  );
 
   @override
   void dispose() {
@@ -22,14 +43,14 @@ class AnalyticsServiceImpl extends AnalyticsService {
 
   @override
   Future<void> logAnalyticEvent(final AnalyticEvents event) async {
-    for (final plugin in plugins) {
+    for (final plugin in plugins.values) {
       await plugin.logAnalyticEvent(event);
     }
   }
 
   List<String> get logs => logsNotifier.value;
-  @override
-  void log(final String value) {
+
+  void logString(final String value) {
     if (!kDebugMode) return;
     if (logs.length == 15) {
       logs.removeLast();
@@ -38,21 +59,43 @@ class AnalyticsServiceImpl extends AnalyticsService {
   }
 
   @override
-  void dynamicLog(final dynamic value) {
-    logger.d(value);
-    log(value.toString());
+  void dynamicLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {
+    logger.d(message, value, stackTrace);
+    logString('$message $value $stackTrace');
   }
 
   @override
-  void dynamicInfoLog(final dynamic value) {
-    logger.i(value);
-    log(value.toString());
+  void dynamicInfoLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {
+    logger.i(message, value, stackTrace);
+    logString('$message $value $stackTrace');
   }
 
   @override
-  void dynamicErrorLog(final dynamic value) {
-    logger.e(value);
-    log(value.toString());
+  void dynamicWarningLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {
+    logger.w(message, value, stackTrace);
+    logString('$message $value $stackTrace');
+  }
+
+  @override
+  void dynamicErrorLog(
+    final dynamic value, {
+    final String message = '',
+    final StackTrace? stackTrace,
+  }) {
+    logger.e(value, message, stackTrace);
+    logString('$message $value $stackTrace');
   }
 
   void clearLogs() {
@@ -79,18 +122,19 @@ class AnalyticsServiceImpl extends AnalyticsService {
       fatal: fatal,
       printDetails: printDetails,
     );
-    // ignore: avoid_print
-    if (printDetails) print(errorDetailsStr);
+    if (printDetails) debugPrint(errorDetailsStr);
 
-    log(errorDetailsStr);
-    for (final plugin in plugins) {
-      await plugin.recordError(
-        exception,
-        stack,
-        reason: reason,
-        information: information,
-        fatal: fatal,
-        printDetails: printDetails,
+    logString(errorDetailsStr);
+    for (final plugin in plugins.values) {
+      unawaited(
+        plugin.recordError(
+          exception,
+          stack,
+          reason: reason,
+          information: information,
+          fatal: fatal,
+          printDetails: printDetails,
+        ),
       );
     }
   }
@@ -102,7 +146,7 @@ class AnalyticsServiceImpl extends AnalyticsService {
     final bool fatal = false,
   }) async {
     FlutterError.presentError(flutterErrorDetails);
-    for (final plugin in plugins) {
+    for (final plugin in plugins.values) {
       await plugin.recordFlutterError(flutterErrorDetails, fatal: fatal);
     }
     // ignore: newline-before-return
@@ -121,19 +165,20 @@ class AnalyticsServiceImpl extends AnalyticsService {
   @override
   Future<void> onLoad() async {
     final originalOnError = FlutterError.onError;
-    FlutterError.onError = (final errorDetails) async {
-      await recordFlutterError(errorDetails);
+    FlutterError.onError = (final errorDetails) {
+      recordFlutterError(errorDetails);
       // Forward to original handler.
       originalOnError?.call(errorDetails);
     };
-    for (final plugin in plugins) {
+
+    for (final plugin in plugins.values) {
       await plugin.onLoad();
     }
   }
 
   @override
   Future<void> onDelayedLoad() async {
-    for (final plugin in plugins) {
+    for (final plugin in plugins.values) {
       await plugin.onDelayedLoad();
     }
   }

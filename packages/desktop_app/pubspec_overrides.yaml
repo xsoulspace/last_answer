@@ -1,4 +1,4 @@
-# melos_managed_dependency_overrides: core,ui_kit,cli_util,melos,intl
+# melos_managed_dependency_overrides: core,ui_kit,cli_util,melos,intl,ui_locale
 dependency_overrides:
   core:
     path: ../core
@@ -6,4 +6,6 @@ dependency_overrides:
     path: ../ui_kit
   cli_util: ^0.4.0
   melos: ^3.0.1
-  intl: 0.18.0
+  intl: ^0.18.0
+  ui_locale:
+    path: ../ui_locale

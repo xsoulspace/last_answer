@@ -1,4 +1,3 @@
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:life_hooks/life_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:ui_kit/ui_kit.dart';
@@ -67,7 +66,7 @@ class AppDiInitializer extends StateInitializer {
 
   @override
   Future<void> onLoad(final BuildContext context) async {
-    FlutterNativeSplash.remove();
+    // FlutterNativeSplash.remove();
 
     final dto = _AppDiInitializerDto.of(context.read);
     await dto.authCubit.onLoad();

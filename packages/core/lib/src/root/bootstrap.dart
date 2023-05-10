@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../states/global/global_initializer.dart';
 import 'widgets/widgets.dart';
@@ -59,18 +58,18 @@ Future<void> bootstrap({
   required final Widget Function(GlobalInitializer) builder,
   required final AppBootstrapDto? dto,
 }) async {
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   final GlobalInitializer initializer = GlobalInitializerImpl(
     firebaseOptions: dto?.firebaseOptions,
   );
   await initializer.onLoad();
 
-  Bloc.observer = _AppBlocObserver();
-
   runZonedGuarded(
-    () => runApp(builder(initializer)),
+    () {
+      final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+      // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+      Bloc.observer = _AppBlocObserver();
+      runApp(builder(initializer));
+    },
     initializer.analyticsService.recordError,
   );
 }

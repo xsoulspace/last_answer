@@ -57,7 +57,7 @@ dependencies:
   package_info_plus: ^3.1.2
   path_to_regexp: ^0.4.0
   provider: ^6.0.5
-  purchases_flutter: ^4.12.0
+  # purchases_flutter: ^4.12.0
   quiver: ^3.2.1
   recase: ^4.1.0
   rxdart: ^0.27.7

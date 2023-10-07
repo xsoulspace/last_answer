@@ -18,7 +18,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.15.1+30
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.1.2 <4.0.0"
+  flutter: ">=3.13.6"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -27,7 +28,7 @@ dependencies:
   collection: ^1.17.1
   connectivity_plus: ^3.0.6
   core:
-    path: ../core
+    path: ../../packages/core
   cupertino_icons: ^1.0.5
   dio: ^5.1.1
   equatable: ^2.0.5
@@ -65,9 +66,9 @@ dependencies:
   shared_preferences: ^2.1.0
   supabase_flutter: ^1.8.1
   ui_kit:
-    path: ../ui_kit
+    path: ../../packages/ui_kit
   ui_locale:
-    path: ../ui_locale
+    path: ../../packages/ui_locale
   universal_io: ^2.2.0
   url_launcher: ^6.1.10
   uuid: ^3.0.7

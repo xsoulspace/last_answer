@@ -18,7 +18,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.15.1+30
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.1.2 <4.0.0"
+  flutter: ">=3.13.6"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -47,9 +48,9 @@ dependencies:
   hive_flutter: ^1.1.0
   json_annotation: ^4.8.1
   core:
-    path: ../core
+    path: ../../packages/core
   ui_kit:
-    path: ../ui_kit
+    path: ../../packages/ui_kit
   life_hooks: ^0.0.18
   package_info_plus: ^3.1.2
   path_to_regexp: ^0.4.0

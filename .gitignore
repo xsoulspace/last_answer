@@ -9,8 +9,6 @@
 .buildlog/
 .history
 .svn/
-/android/key.properties
-android/key.properties
 # IntelliJ related
 *.iml
 *.ipr
@@ -52,7 +50,8 @@ app.*.map.json
 # Monarch related
 .monarch/
 .fvm/flutter_sdk
-packages/mobile_app/android/app/google-services.json
-packages/mobile_app/ios/firebase_app_id_file.json
-packages/mobile_app/ios/Runner/GoogleService-Info.plist
-packages/mobile_app/lib/firebase_options.dart
+apps/mobile_app/android/app/google-services.json
+apps/mobile_app/ios/firebase_app_id_file.json
+apps/mobile_app/ios/Runner/GoogleService-Info.plist
+apps/mobile_app/lib/firebase_options.dart
+apps/mobile_app/android/key.properties

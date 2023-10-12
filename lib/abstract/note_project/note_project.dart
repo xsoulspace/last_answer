@@ -3,6 +3,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:mockito/mockito.dart';
 
 typedef NoteProjectId = String;
 

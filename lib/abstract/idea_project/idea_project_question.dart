@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/abstract/localization/localized_text.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:mockito/mockito.dart';
 
 typedef IdeaProjectQuestionId = String;
 

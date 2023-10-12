@@ -24,7 +24,7 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
 
 class IdeaAnswerScreenState implements LifeState {
   IdeaAnswerScreenState({
-    required final this.context,
+    required this.context,
     required this.textController,
     required this.updatesStream,
     required this.answer,
@@ -45,11 +45,13 @@ class IdeaAnswerScreenState implements LifeState {
     textController.addListener(onTextChanged);
     ideasProvider = context.read<IdeaProjectsProvider>();
 
-    updatesStream.stream
-        .sampleTime(
-          const Duration(milliseconds: 700),
-        )
-        .forEach(onAnswerUpdate);
+    unawaited(
+      updatesStream.stream
+          .sampleTime(
+            const Duration(milliseconds: 700),
+          )
+          .forEach(onAnswerUpdate),
+    );
   }
 
   // ignore: avoid_positional_boolean_parameters

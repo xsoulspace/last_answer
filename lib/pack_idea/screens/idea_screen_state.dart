@@ -24,7 +24,7 @@ IdeaScreenState useIdeaScreenState({
 
 class IdeaScreenState implements LifeState {
   IdeaScreenState({
-    required final this.context,
+    required this.context,
     required this.onScreenBack,
     required this.ideaUpdatesStream,
     required this.idea,
@@ -46,11 +46,13 @@ class IdeaScreenState implements LifeState {
   void initState() {
     folderProvider = context.read<FolderStateProvider>();
     ideasProvider = context.read<IdeaProjectsProvider>();
-    ideaUpdatesStream.stream
-        .sampleTime(
-          const Duration(milliseconds: 700),
-        )
-        .forEach(onIdeaUpdate);
+    unawaited(
+      ideaUpdatesStream.stream
+          .sampleTime(
+            const Duration(milliseconds: 700),
+          )
+          .forEach(onIdeaUpdate),
+    );
   }
 
   @override

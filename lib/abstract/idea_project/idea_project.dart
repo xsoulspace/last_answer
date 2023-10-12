@@ -1,10 +1,9 @@
 // ignore_for_file: overridden_fields
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/abstract/localization/localized_text.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:mockito/mockito.dart';
 
 export 'idea_project_answer.dart';
 export 'idea_project_question.dart';

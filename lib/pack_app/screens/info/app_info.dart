@@ -1,6 +1,6 @@
 part of pack_app;
 
-class AppInfoScreen extends StatelessWidget {
+class AppInfoScreen extends StatefulWidget {
   const AppInfoScreen({
     required this.onBack,
     super.key,
@@ -10,6 +10,13 @@ class AppInfoScreen extends StatelessWidget {
       'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
   static const termsAndConditions =
       'https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md';
+
+  @override
+  State<AppInfoScreen> createState() => _AppInfoScreenState();
+}
+
+class _AppInfoScreenState extends State<AppInfoScreen> {
+  final _info = PackageInfo.fromPlatform();
   @override
   Widget build(final BuildContext context) {
     final bodyText1Style = Theme.of(context).textTheme.bodyText1;
@@ -18,7 +25,7 @@ class AppInfoScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: S.current.appInfo,
-        onBack: onBack,
+        onBack: widget.onBack,
       ),
       body: Align(
         alignment: Alignment.topCenter,
@@ -27,7 +34,7 @@ class AppInfoScreen extends StatelessWidget {
             maxWidth: ScreenLayout.maxFullscreenPageWidth,
           ),
           child: FutureBuilder<PackageInfo>(
-            future: PackageInfo.fromPlatform(),
+            future: _info,
             builder: (final context, final snapshot) {
               final info = snapshot.data;
               final version = S.current
@@ -79,8 +86,9 @@ class AppInfoScreen extends StatelessWidget {
                         TextButton(
                           onPressed: () async {
                             if (await url_launcher
-                                .canLaunch(privacyPolicyLink)) {
-                              await url_launcher.launch(privacyPolicyLink);
+                                .canLaunch(AppInfoScreen.privacyPolicyLink)) {
+                              await url_launcher
+                                  .launch(AppInfoScreen.privacyPolicyLink);
                             }
                           },
                           child: Text(
@@ -91,8 +99,9 @@ class AppInfoScreen extends StatelessWidget {
                         TextButton(
                           onPressed: () async {
                             if (await url_launcher
-                                .canLaunch(termsAndConditions)) {
-                              await url_launcher.launch(termsAndConditions);
+                                .canLaunch(AppInfoScreen.termsAndConditions)) {
+                              await url_launcher
+                                  .launch(AppInfoScreen.termsAndConditions);
                             }
                           },
                           child: Text(

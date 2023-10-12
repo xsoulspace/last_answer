@@ -2,6 +2,7 @@
 
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/abstract.dart';
+import 'package:mockito/mockito.dart';
 
 typedef StoryProjectId = String;
 

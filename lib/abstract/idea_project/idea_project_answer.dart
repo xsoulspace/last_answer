@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/abstract/idea_project/idea_project_question.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:mockito/mockito.dart';
 
 typedef IdeaProjectAnswerId = String;
 

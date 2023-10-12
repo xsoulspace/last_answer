@@ -2,9 +2,9 @@ part of pack_app;
 
 class AppInfoScreen extends StatelessWidget {
   const AppInfoScreen({
-    required final this.onBack,
-    final Key? key,
-  }) : super(key: key);
+    required this.onBack,
+    super.key,
+  });
   final VoidCallback onBack;
   static const privacyPolicyLink =
       'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';

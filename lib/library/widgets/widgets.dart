@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_slidable/flutter_slidable.dart' as slidable;
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/generated/assets.gen.dart';

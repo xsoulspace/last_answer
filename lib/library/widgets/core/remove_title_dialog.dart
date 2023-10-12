@@ -7,8 +7,7 @@ Future<bool> showRemoveTitleDialog({
   if (isAppleDevice) {
     return await showCupertinoDialog(
       context: context,
-      builder: (final context) {
-        return CupertinoAlertDialog(
+      builder: (final context) => CupertinoAlertDialog(
           actions: [
             CupertinoDialogAction(
               onPressed: () => Navigator.pop(context, false),
@@ -22,8 +21,7 @@ Future<bool> showRemoveTitleDialog({
           ],
           content: Text(S.current.willBeLost(title)),
           title: Text(S.current.areYouSure),
-        );
-      },
+        ),
     );
   }
 
@@ -44,7 +42,7 @@ Future<bool> showRemoveTitleDialog({
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               S.current.delete.toUpperCase(),
-              style: theme.textTheme.button?.copyWith(color: AppColors.accent2),
+              style: theme.textTheme.labelLarge?.copyWith(color: AppColors.accent2),
             ),
           ),
         ],

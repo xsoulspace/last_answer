@@ -2,10 +2,10 @@ part of widgets;
 
 class EmojiPopup extends HookWidget {
   const EmojiPopup({
-    required final this.controller,
-    required final this.focusNode,
-    final Key? key,
-  }) : super(key: key);
+    required this.controller,
+    required this.focusNode,
+    super.key,
+  });
   final TextEditingController controller;
   final FocusNode focusNode;
   @override
@@ -18,20 +18,18 @@ class EmojiPopup extends HookWidget {
     return PopupButton(
       icon: CupertinoIcons.smiley,
       useOnMobile: false,
-      builder: (final context) {
-        return EmojiGrid(
-          onChanged: emojiInserter.insert,
-        );
-      },
+      builder: (final context) => EmojiGrid(
+        onChanged: emojiInserter.insert,
+      ),
     );
   }
 }
 
 class EmojiGrid extends HookWidget {
   const EmojiGrid({
-    required final this.onChanged,
-    final Key? key,
-  }) : super(key: key);
+    required this.onChanged,
+    super.key,
+  });
   final ValueChanged<Emoji> onChanged;
 
   // Widget buildConsumer({
@@ -52,14 +50,16 @@ class EmojiGrid extends HookWidget {
       },
     );
 
-    emojiKeywordStream.stream
-        .sampleTime(
-      const Duration(milliseconds: 700),
-    )
-        .forEach(
-      (final keyword) async {
-        silentEmojiProider.filterKeyword = keyword;
-      },
+    unawaited(
+      emojiKeywordStream.stream
+          .sampleTime(
+        const Duration(milliseconds: 700),
+      )
+          .forEach(
+        (final keyword) {
+          silentEmojiProider.filterKeyword = keyword;
+        },
+      ),
     );
     final lastEmojis = useState(lastEmojisState.toSet());
     final theme = Theme.of(context);
@@ -69,7 +69,7 @@ class EmojiGrid extends HookWidget {
     const maxItemsInRow = 9;
     final emojiStyle = isNativeDesktop && Platform.isMacOS
         ? null
-        : Theme.of(context).textTheme.bodyText2?.copyWith(
+        : Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: 'NotoColorEmoji',
             );
     Widget buildEmojiButton(final Emoji emoji) {
@@ -126,7 +126,7 @@ class EmojiGrid extends HookWidget {
             ),
             child: Text(
               S.current.frequentlyUsed,
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleSmall,
               textAlign: TextAlign.start,
             ),
           ),
@@ -142,7 +142,7 @@ class EmojiGrid extends HookWidget {
         Material(
           color: Colors.transparent,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
@@ -164,8 +164,8 @@ class EmojiGrid extends HookWidget {
 
 class EmojiInserter {
   EmojiInserter.use({
-    required final this.controller,
-    required final this.focusNode,
+    required this.controller,
+    required this.focusNode,
     this.requestFocusOnInsert = true,
   });
   final TextEditingController controller;

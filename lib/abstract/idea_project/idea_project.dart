@@ -1,27 +1,29 @@
 // ignore_for_file: overridden_fields
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/abstract/localization/localized_text.dart';
+import 'package:lastanswer/utils/utils.dart';
 
-part of abstract;
+export 'idea_project_answer.dart';
+export 'idea_project_question.dart';
 
 typedef IdeaProjectId = String;
 
 @HiveType(typeId: HiveBoxesIds.ideaProject)
 class IdeaProject extends BasicProject with EquatableMixin {
   IdeaProject({
-    required final String id,
-    required final String title,
-    required final DateTime created,
-    required final DateTime updated,
-    final this.folder,
-    final bool isCompleted = defaultProjectIsCompleted,
-    final this.newAnswerText = '',
-    final this.newQuestion,
-    final this.answers,
+    required super.id,
+    required super.title,
+    required super.created,
+    required super.updated,
+    this.folder,
+    super.isCompleted,
+    this.newAnswerText = '',
+    this.newQuestion,
+    this.answers,
   }) : super(
-          created: created,
-          id: id,
-          title: title,
-          isCompleted: isCompleted,
-          updated: updated,
           folder: folder,
           type: ProjectTypes.idea,
         );

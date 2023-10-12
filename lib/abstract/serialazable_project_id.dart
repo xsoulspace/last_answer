@@ -1,11 +1,11 @@
-part of abstract;
+part of 'abstract.dart';
 
 @immutable
 @JsonSerializable()
 class SerializableProjectId {
   const SerializableProjectId({
-    required final this.id,
-    required final this.type,
+    required this.id,
+    required this.type,
   });
   factory SerializableProjectId.fromJson(final Map<String, dynamic> json) =>
       _$SerializableProjectIdFromJson(json);

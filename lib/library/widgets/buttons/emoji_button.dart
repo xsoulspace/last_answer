@@ -2,17 +2,16 @@ part of widgets;
 
 class EmojiButton extends StatelessWidget {
   const EmojiButton({
-    required final this.onPressed,
-    required final this.emoji,
-    required final this.style,
-    final Key? key,
-  }) : super(key: key);
+    required this.onPressed,
+    required this.emoji,
+    required this.style,
+    super.key,
+  });
   final Emoji emoji;
   final VoidCallback onPressed;
   final TextStyle? style;
   @override
-  Widget build(final BuildContext context) {
-    return MouseRegion(
+  Widget build(final BuildContext context) => MouseRegion(
       cursor: SystemMouseCursors.click,
       child: CupertinoButton(
         minSize: 0,
@@ -26,16 +25,15 @@ class EmojiButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class KeyboardEmojiButton extends StatelessWidget {
   const KeyboardEmojiButton({
-    required final this.onPressed,
-    required final this.emoji,
+    required this.onPressed,
+    required this.emoji,
     this.style,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Emoji emoji;
   final VoidCallback onPressed;
   final TextStyle? style;

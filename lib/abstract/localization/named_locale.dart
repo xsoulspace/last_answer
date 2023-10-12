@@ -1,12 +1,14 @@
-part of abstract;
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 
 /// Use this class to show user a list of supported [Languages]
 /// and let him to choose one of them
 @immutable
 class NamedLocale {
   const NamedLocale({
-    required final this.name,
-    required final this.locale,
+    required this.name,
+    required this.locale,
   });
 
   /// this field will be shown to user

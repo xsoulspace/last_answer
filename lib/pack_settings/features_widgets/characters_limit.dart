@@ -4,8 +4,8 @@ class CharactersLimitSetting extends HookWidget {
   const CharactersLimitSetting({
     this.note,
     this.updatesStream,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
 
@@ -41,7 +41,7 @@ class CharactersLimitSetting extends HookWidget {
 
     if (state.noLimitIsSet) {
       otherButton = Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 8),
         child: HoverableButton(
           onPressed: () => state.setLimit(
             0,
@@ -142,7 +142,7 @@ class CharactersLimitSetting extends HookWidget {
             height: 18,
             color: state.isInstagramLimit
                 ? null
-                : theme.textTheme.bodyText2?.color,
+                : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
@@ -152,7 +152,7 @@ class CharactersLimitSetting extends HookWidget {
             height: 16,
             color: state.isTwitterLimit
                 ? AppColors.twitterBlue
-                : theme.textTheme.bodyText2?.color,
+                : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
@@ -191,14 +191,13 @@ class CharactersLimitButton extends StatelessWidget {
   const CharactersLimitButton({
     required this.onTap,
     required this.child,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onTap;
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) {
-    return HoverableButton(
+  Widget build(final BuildContext context) => HoverableButton(
       onPressed: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -208,5 +207,4 @@ class CharactersLimitButton extends StatelessWidget {
         child: child,
       ),
     );
-  }
 }

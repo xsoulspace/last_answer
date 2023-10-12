@@ -1,10 +1,8 @@
 part of widgets;
 
 class UnsplashImage extends StatelessWidget {
-  const UnsplashImage({final Key? key}) : super(key: key);
+  const UnsplashImage({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    return Container();
-  }
+  Widget build(final BuildContext context) => Container();
 }

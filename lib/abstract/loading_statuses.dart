@@ -1,4 +1,4 @@
-part of abstract;
+part of 'abstract.dart';
 
 enum AppStateLoadingStatuses {
   settings,
@@ -9,6 +9,7 @@ enum AppStateLoadingStatuses {
   notes,
   migratingOldData,
 }
+
 const appLoadingStatusesTitles = <AppStateLoadingStatuses, LocalizedText>{
   AppStateLoadingStatuses.answersForIdeas: LocalizedText(
     en: 'Loading answers for ideas ✨',

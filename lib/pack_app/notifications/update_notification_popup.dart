@@ -63,7 +63,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
     final lastMessage = updates.first;
     final language = intl.Intl.getCurrentLocale();
     void close() {
-      notificationController.readAllUpdates();
+      unawaited(notificationController.readAllUpdates());
       Navigator.pop(context);
     }
 

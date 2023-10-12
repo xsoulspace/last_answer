@@ -2,19 +2,18 @@ part of widgets;
 
 class DismissibleTile extends StatelessWidget {
   const DismissibleTile({
-    required final this.child,
-    required final this.dismissibleKey,
-    required final this.onDismissed,
+    required this.child,
+    required this.dismissibleKey,
+    required this.onDismissed,
     // final this.confirmDismiss,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onDismissed;
   // final ConfirmDismissCallback? confirmDismiss;
   final Widget child;
   final Key dismissibleKey;
   @override
-  Widget build(final BuildContext context) {
-    return slidable.Slidable(
+  Widget build(final BuildContext context) => slidable.Slidable(
       key: dismissibleKey,
       startActionPane: slidable.ActionPane(
         motion: const slidable.BehindMotion(),
@@ -34,5 +33,4 @@ class DismissibleTile extends StatelessWidget {
       ),
       child: child,
     );
-  }
 }

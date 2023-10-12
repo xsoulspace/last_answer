@@ -2,10 +2,10 @@ part of widgets;
 
 class RightScrollbar extends StatelessWidget {
   const RightScrollbar({
-    required final this.child,
-    required final this.controller,
-    final Key? key,
-  }) : super(key: key);
+    required this.child,
+    required this.controller,
+    super.key,
+  });
   final Widget child;
   final ScrollController controller;
   @override
@@ -15,7 +15,7 @@ class RightScrollbar extends StatelessWidget {
     return Scrollbar(
       controller: controller,
       child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 8),
         child: Theme(
           data: theme.copyWith(
             scrollbarTheme: theme.scrollbarTheme.copyWith(

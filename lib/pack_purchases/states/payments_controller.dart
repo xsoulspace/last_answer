@@ -34,11 +34,11 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   Package? get annualSubscription => offerings?.current?.annual;
 
   String get annualSubscriptionTitle =>
-      //TODO(arenukvern): translate
+      // TODO(Arenukvern): translate
       'Subscribe - ${annualSubscription?.product.priceString} / year';
 
   Package? get monthlySubscription => offerings?.current?.monthly;
-  //TODO(arenukvern): translate
+  // TODO(arenukvern): translate
   String get monthlySubscriptionTitle =>
       'Subscribe - ${monthlySubscription?.product.priceString} / month';
 

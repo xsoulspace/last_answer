@@ -1,10 +1,10 @@
-part of theme;
+part of 'theme.dart';
 
 const lightColorScheme = ColorScheme(
   primary: AppColors.black,
-  primaryVariant: AppColors.grey1,
+  // primaryVariant: AppColors.grey1,
   secondary: AppColors.primary,
-  secondaryVariant: AppColors.primary1,
+  // secondaryVariant: AppColors.primary1,
   surface: AppColors.cleanWhite,
   background: AppColors.white,
   error: AppColors.accent1,
@@ -18,9 +18,9 @@ const lightColorScheme = ColorScheme(
 
 const darkColorScheme = ColorScheme(
   primary: AppColors.white,
-  primaryVariant: AppColors.grey2,
+  // primaryVariant: AppColors.grey2,
   secondary: AppColors.primary,
-  secondaryVariant: AppColors.primary1,
+  // secondaryVariant: AppColors.primary1,
   surface: AppColors.black,
   background: AppColors.black,
   error: AppColors.accent1,

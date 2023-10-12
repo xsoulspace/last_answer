@@ -1,12 +1,12 @@
-part of abstract;
+part of 'abstract.dart';
 
 @immutable
 @JsonSerializable()
 class Emoji {
   const Emoji({
-    required final this.category,
-    required final this.emoji,
-    required final this.keywords,
+    required this.category,
+    required this.emoji,
+    required this.keywords,
   });
   factory Emoji.fromJson(final Map<String, dynamic> json) =>
       _$EmojiFromJson(json);

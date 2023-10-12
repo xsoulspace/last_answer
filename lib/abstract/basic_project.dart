@@ -1,4 +1,4 @@
-part of abstract;
+part of 'abstract.dart';
 
 /// Use this for constructor default value in other projects
 const defaultProjectIsCompleted = false;
@@ -23,13 +23,13 @@ class BasicProject extends HiveObject
     with EquatableMixin
     implements Sharable, BasicProjectFields, HasId {
   BasicProject({
-    required final this.id,
-    required final this.title,
-    required final this.created,
-    required final this.updated,
-    required final this.folder,
-    required final this.type,
-    final this.isCompleted = defaultProjectIsCompleted,
+    required this.id,
+    required this.title,
+    required this.created,
+    required this.updated,
+    required this.folder,
+    required this.type,
+    this.isCompleted = defaultProjectIsCompleted,
   });
   @HiveField(BasicProjectIndexes.created)
   DateTime created;

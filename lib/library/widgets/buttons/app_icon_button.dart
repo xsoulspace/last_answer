@@ -2,10 +2,10 @@ part of widgets;
 
 class HoverableButton extends StatelessWidget {
   const HoverableButton({
-    required final this.onPressed,
-    required final this.child,
-    final Key? key,
-  }) : super(key: key);
+    required this.onPressed,
+    required this.child,
+    super.key,
+  });
   final VoidCallback? onPressed;
   final Widget child;
   @override

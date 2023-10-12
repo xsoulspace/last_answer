@@ -20,10 +20,10 @@ class NavigatorValueKeys {
 /// on the `routeState` that was parsed by the TemplateRouteParser.
 class AppNavigator extends StatefulWidget {
   const AppNavigator({
-    required final this.navigatorKey,
-    required final this.routeState,
-    final Key? key,
-  }) : super(key: key);
+    required this.navigatorKey,
+    required this.routeState,
+    super.key,
+  });
   final GlobalKey<NavigatorState> navigatorKey;
   final RouteState routeState;
   @override
@@ -36,12 +36,12 @@ class _AppNavigatorState extends State<AppNavigator> {
     super.initState();
     final notificationController = context.read<NotificationController>();
     if (notificationController.hasUnreadUpdates) {
-      WidgetsBinding.instance?.addPostFrameCallback((final _) {
-        showNotificationPopup(
+      WidgetsBinding.instance.addPostFrameCallback(
+        (final _) async => showNotificationPopup(
           context: widget.navigatorKey.currentContext!,
           notificationController: notificationController,
-        );
-      });
+        ),
+      );
     }
   }
 

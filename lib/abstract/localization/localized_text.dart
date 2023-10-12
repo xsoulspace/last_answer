@@ -1,4 +1,8 @@
-part of abstract;
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/abstract/localization/language.dart';
 
 /// Any text, that should be shown to user in different [Languages]
 /// should use this class to keep values
@@ -6,10 +10,10 @@ part of abstract;
 @HiveType(typeId: HiveBoxesIds.localizedText)
 class LocalizedText with EquatableMixin {
   const LocalizedText({
-    required final this.en,
-    required final this.ru,
-    final this.it,
-    final this.ga,
+    required this.en,
+    required this.ru,
+    this.it,
+    this.ga,
   });
   factory LocalizedText.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextFromJson(json);

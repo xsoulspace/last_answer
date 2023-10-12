@@ -1,4 +1,4 @@
-part of abstract;
+part of 'abstract.dart';
 
 /// all keys(ids) for [HiveBox.typeIds]
 ///

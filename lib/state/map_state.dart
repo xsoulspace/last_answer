@@ -6,8 +6,8 @@ typedef SaveUtil<TValue> = AbstractUtil<Map<String, TValue>>;
 
 class MapState<TValue> extends ChangeNotifier {
   MapState({
-    final this.saveUtil,
-    final this.onFilter,
+    this.saveUtil,
+    this.onFilter,
   });
   void notify() => notifyListeners();
 
@@ -45,7 +45,7 @@ class MapState<TValue> extends ChangeNotifier {
     _save();
   }
 
-  Future<void> _save() async => saveUtil?.save(state);
+  void _save() => unawaited(saveUtil?.save(state));
 
   void putAll(final Map<String, TValue> map) {
     state.addAll(map);
@@ -95,7 +95,6 @@ class MapState<TValue> extends ChangeNotifier {
   static TProvider load<TValue, TProvider extends MapState<TValue>>({
     required final BuildContext context,
     required final Box<TValue> box,
-  }) {
-    return context.read<TProvider>()..loadIterable(box.values);
-  }
+  }) =>
+      context.read<TProvider>()..loadIterable(box.values);
 }

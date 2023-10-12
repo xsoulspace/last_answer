@@ -1,24 +1,22 @@
 // ignore_for_file: overridden_fields
 
-part of abstract;
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
 
 typedef NoteProjectId = String;
 
 @HiveType(typeId: HiveBoxesIds.noteProject)
 class NoteProject extends BasicProject {
   NoteProject({
-    required final String id,
-    required final DateTime created,
-    required final DateTime updated,
-    final this.folder,
-    final this.note = '',
-    final bool isCompleted = defaultProjectIsCompleted,
-    final this.charactersLimit,
+    required super.id,
+    required super.created,
+    required super.updated,
+    this.folder,
+    this.note = '',
+    super.isCompleted,
+    this.charactersLimit,
   }) : super(
-          created: created,
-          id: id,
-          isCompleted: isCompleted,
-          updated: updated,
           title: '',
           folder: folder,
           type: ProjectTypes.note,

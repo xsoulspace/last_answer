@@ -4,11 +4,11 @@ abstract class StateInitializer extends Loadable {}
 
 class StateLoader extends HookWidget {
   const StateLoader({
-    required final this.child,
-    required final this.initializer,
-    required final this.loader,
-    final Key? key,
-  }) : super(key: key);
+    required this.child,
+    required this.initializer,
+    required this.loader,
+    super.key,
+  });
   final Widget child;
   final StateInitializer initializer;
   final Widget loader;
@@ -21,9 +21,9 @@ class StateLoader extends HookWidget {
     final loaded = useIsBool();
     final renderAllowed = useIsBool();
     final loading = useIsBool();
-    final homeOpacity = useState(0.0);
-    final loaderOpacity = useState(1.0);
-    final loaderScale = useState(1.0);
+    final homeOpacity = useState<double>(0);
+    final loaderOpacity = useState<double>(1);
+    final loaderScale = useState<double>(1);
 
     final animationController = useAnimationController(
       duration: _transitionDuration,
@@ -69,7 +69,7 @@ class StateLoader extends HookWidget {
               opacity: loaderOpacity.value,
               child: Transform.scale(
                 scale: loaderScale.value,
-                child: FutureBuilder<bool>(
+                child: FutureBuilder(
                   future: () async {
                     if (loading.value) return false;
                     loading.value = true;

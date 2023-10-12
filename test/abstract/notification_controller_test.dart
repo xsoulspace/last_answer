@@ -30,7 +30,7 @@ void main() {
         'en': 'Hola!',
         'ru': 'Hola!',
       },
-      'created': '2021-12-10'
+      'created': '2021-12-10',
     };
     final result = NotificationMessage.fromJson(messageJson);
     final expectedMessage = NotificationMessage(

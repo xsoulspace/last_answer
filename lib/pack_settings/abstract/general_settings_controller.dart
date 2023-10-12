@@ -7,7 +7,7 @@ part of pack_settings;
 /// uses the SettingsService to store and retrieve user settings.
 // ignore: prefer_mixin
 class GeneralSettingsController with ChangeNotifier implements Loadable {
-  GeneralSettingsController({required final this.settingsService});
+  GeneralSettingsController({required this.settingsService});
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService settingsService;
@@ -90,7 +90,7 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
   set projectsListReversed(final bool projectsReversed) {
     _projectsListReversed = projectsReversed;
     notify();
-    settingsService.setProjectsReversed(reversed: projectsReversed);
+    unawaited(settingsService.setProjectsReversed(reversed: projectsReversed));
   }
 
   int _charactersLimitForNewNotes = 0;
@@ -99,7 +99,7 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
   set charactersLimitForNewNotes(final int limit) {
     _charactersLimitForNewNotes = limit;
     notify();
-    settingsService.setCharactersLimitForNewNotes(limit: limit);
+    unawaited(settingsService.setCharactersLimitForNewNotes(limit: limit));
   }
 
   void notify() => notifyListeners();

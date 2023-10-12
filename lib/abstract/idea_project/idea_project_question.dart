@@ -1,4 +1,9 @@
-part of abstract;
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/abstract/localization/localized_text.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 typedef IdeaProjectQuestionId = String;
 
@@ -13,8 +18,8 @@ class IdeaProjectQuestion extends HiveObject
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
   IdeaProjectQuestion({
-    required final this.id,
-    required final this.title,
+    required this.id,
+    required this.title,
   });
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionFromJson(json);

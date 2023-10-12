@@ -1,9 +1,9 @@
-part of abstract;
+part of 'abstract.dart';
 
 abstract class BasicProjectFields {
   BasicProjectFields({
-    required final this.folder,
-    required final this.type,
+    required this.folder,
+    required this.type,
   });
   ProjectFolder? folder;
   final ProjectTypes type;

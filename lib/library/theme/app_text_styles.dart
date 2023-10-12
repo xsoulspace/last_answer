@@ -1,4 +1,4 @@
-part of theme;
+part of 'theme.dart';
 
 class AppTextStylesLight {
   AppTextStylesLight._();

@@ -1,21 +1,21 @@
-part of abstract;
+part of 'abstract.dart';
 
 typedef ProjectFolderId = String;
 
 @HiveType(typeId: HiveBoxesIds.projectFolder)
 class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   ProjectFolder({
-    required final this.id,
-    required final this.title,
-    final this.projectsService,
-    final this.projectsIdsString = '',
+    required this.id,
+    required this.title,
+    this.projectsService,
+    this.projectsIdsString = '',
   }) : _projects = createHashSet();
 
   ProjectFolder.zero({
-    final this.id = '',
-    final this.projectsIdsString = '',
-    final this.title = '',
-    final this.projectsService,
+    this.id = '',
+    this.projectsIdsString = '',
+    this.title = '',
+    this.projectsService,
   }) : _projects = createHashSet();
 
   static LinkedHashSet<BasicProject> createHashSet() =>
@@ -88,7 +88,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
     projectsIdsString = jsonEncode(
       _projects.map((final e) => e.serializableId.toJson()).toList(),
     );
-    save();
+    unawaited(save());
   }
 
   void addProject(final BasicProject project) {
@@ -134,13 +134,10 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
       switch (id.type) {
         case ProjectTypes.note:
           projects = service.notes;
-          break;
         case ProjectTypes.idea:
           projects = service.ideas;
-          break;
         case ProjectTypes.story:
           projects = service.stories;
-          break;
         default:
           throw UnimplementedError();
       }

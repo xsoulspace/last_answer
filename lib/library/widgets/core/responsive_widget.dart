@@ -4,13 +4,13 @@ typedef PagesCallback = List<Page<dynamic>> Function();
 
 class ResponsiveNavigator extends StatelessWidget {
   const ResponsiveNavigator({
-    required final this.navigatorKey,
-    required final this.onLargeScreen,
-    required final this.onPopPage,
-    final this.onMediumScreen,
-    final this.onSmallScreen,
-    final Key? key,
-  }) : super(key: key);
+    required this.navigatorKey,
+    required this.onLargeScreen,
+    required this.onPopPage,
+    this.onMediumScreen,
+    this.onSmallScreen,
+    super.key,
+  });
   final PagesCallback onLargeScreen;
   final PagesCallback? onMediumScreen;
   final PagesCallback? onSmallScreen;
@@ -34,25 +34,23 @@ class ResponsiveNavigator extends StatelessWidget {
   Widget build(final BuildContext context) {
     /// Returns the widget which is more appropriate for the screen size
     return LayoutBuilder(
-      builder: (final context, final constraints) {
-        return Navigator(
+      builder: (final context, final constraints) => Navigator(
           onGenerateRoute: (final _) => null,
           key: navigatorKey,
           onPopPage: onPopPage,
           pages: getPages(constraints: constraints),
-        );
-      },
+        ),
     );
   }
 }
 
 class ResponsiveWidget extends StatelessWidget {
   const ResponsiveWidget({
-    required final this.largeScreen,
-    final this.mediumScreen,
-    final this.smallScreen,
-    final Key? key,
-  }) : super(key: key);
+    required this.largeScreen,
+    this.mediumScreen,
+    this.smallScreen,
+    super.key,
+  });
   final Widget largeScreen;
   final Widget? mediumScreen;
   final Widget? smallScreen;
@@ -79,7 +77,7 @@ class ResponsiveWidget extends StatelessWidget {
 }
 
 class ScreenLayout {
-  ScreenLayout._({final this.context, final this.constraints})
+  ScreenLayout._({this.context, this.constraints})
       : assert(
           context != null || constraints != null,
           'context or constraints should be filled',

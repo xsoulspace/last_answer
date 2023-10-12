@@ -4,14 +4,13 @@ part of widgets;
 /// and close the keyboard on user scroll.
 class ScrollKeyboardCloser extends StatelessWidget {
   const ScrollKeyboardCloser({
-    required final this.child,
-    final Key? key,
-  }) : super(key: key);
+    required this.child,
+    super.key,
+  });
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) {
-    return NotificationListener<ScrollNotification>(
+  Widget build(final BuildContext context) => NotificationListener<ScrollNotification>(
       onNotification: (final scrollNotification) {
         if (scrollNotification is UserScrollNotification &&
             scrollNotification.direction == ScrollDirection.forward) {
@@ -22,5 +21,4 @@ class ScrollKeyboardCloser extends StatelessWidget {
       },
       child: child,
     );
-  }
 }

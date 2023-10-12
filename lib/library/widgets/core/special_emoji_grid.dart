@@ -2,24 +2,22 @@ part of widgets;
 
 class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({
-    required final this.onChanged,
-    final this.hideBorder = false,
-    final Key? key,
-  }) : super(key: key);
+    required this.onChanged,
+    this.hideBorder = false,
+    super.key,
+  });
   final ValueChanged<Emoji> onChanged;
   final bool hideBorder;
   @override
   Widget build(final BuildContext context) {
-    final emojiStyle = Theme.of(context).textTheme.bodyText2;
+    final emojiStyle = Theme.of(context).textTheme.bodyMedium;
 
-    Widget buildEmojiButton(final Emoji emoji) {
-      return EmojiButton(
+    Widget buildEmojiButton(final Emoji emoji) => EmojiButton(
         key: ValueKey(emoji),
         emoji: emoji,
         style: emojiStyle,
         onPressed: () => onChanged(emoji),
       );
-    }
 
     final specialEmojisProvider = context.read<SpecialEmojiProvider>();
     final emojis = specialEmojisProvider.values;

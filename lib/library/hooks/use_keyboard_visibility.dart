@@ -28,7 +28,7 @@ class _KeyboardVisiblityHookState
 
   @override
   void dispose() {
-    keyboardSubscription?.cancel();
+    unawaited(keyboardSubscription?.cancel());
     _state.dispose();
   }
 

@@ -1,4 +1,8 @@
-part of abstract;
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/abstract/idea_project/idea_project_question.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 typedef IdeaProjectAnswerId = String;
 
@@ -8,10 +12,10 @@ class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
     implements Sharable, HasId {
   IdeaProjectAnswer({
-    required final this.text,
-    required final this.question,
-    required final this.id,
-    required final this.created,
+    required this.text,
+    required this.question,
+    required this.id,
+    required this.created,
   });
   static Future<IdeaProjectAnswer> create({
     required final String text,
@@ -27,7 +31,7 @@ class IdeaProjectAnswer extends HiveObject
       HiveBoxesIds.ideaProjectAnswerKey,
     );
     await box.put(answer.id, answer);
-    
+
     return answer;
   }
 

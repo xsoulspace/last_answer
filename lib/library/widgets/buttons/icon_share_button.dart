@@ -2,9 +2,9 @@ part of widgets;
 
 class IconShareButton extends StatefulWidget {
   const IconShareButton({
-    required final this.onTap,
-    final Key? key,
-  }) : super(key: key);
+    required this.onTap,
+    super.key,
+  });
   final VoidCallback? onTap;
 
   @override
@@ -41,8 +41,7 @@ class _IconShareButtonState extends State<IconShareButton> {
   }
 
   @override
-  Widget build(final BuildContext context) {
-    return IconButton(
+  Widget build(final BuildContext context) => IconButton(
       icon: AnimatedSwitcher(
         duration: const Duration(milliseconds: 700),
         child: currentIcon,
@@ -54,5 +53,4 @@ class _IconShareButtonState extends State<IconShareButton> {
               await setDone();
             },
     );
-  }
 }

@@ -9,8 +9,8 @@ class HoverableArea extends HookWidget {
   const HoverableArea({
     required this.builder,
     this.clickable = true,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final HoverableWidgetBuilder builder;
   final bool clickable;
 

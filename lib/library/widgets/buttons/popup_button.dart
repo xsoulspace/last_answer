@@ -4,12 +4,12 @@ class PopupButton extends HookWidget {
   const PopupButton({
     required this.builder,
     required this.icon,
-    final this.mobileBuilder,
+    this.mobileBuilder,
     this.onMobileRemove,
     this.useOnMobile = true,
     this.title,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final WidgetBuilder builder;
   final WidgetBuilder? mobileBuilder;
   final IconData icon;
@@ -17,19 +17,19 @@ class PopupButton extends HookWidget {
   final Widget? title;
   final VoidCallback? onMobileRemove;
 
-  void onOpenPopup({
+  Future<void> onOpenPopup({
     required final BuildContext context,
     required final VoidCallback onClose,
-  }) {
+  }) async {
     if (isDesktop) return;
     void close(final BuildContext context) {
       onClose();
-      Navigator.maybePop(context);
+      unawaited(Navigator.maybePop(context));
     }
 
     final effectiveBuilder = mobileBuilder ?? builder;
 
-    showDialog(
+    return showDialog(
       barrierDismissible: false,
       context: context,
       barrierColor: Colors.black12,
@@ -61,12 +61,12 @@ class PopupButton extends HookWidget {
       (final _, final __) {
         if (!popupVisible.value) return;
 
-        WidgetsBinding.instance?.addPostFrameCallback((final _) {
-          onOpenPopup(
+        WidgetsBinding.instance.addPostFrameCallback(
+          (final _) async => onOpenPopup(
             context: context,
             onClose: () => popupVisible.value = false,
-          );
-        });
+          ),
+        );
       },
     );
 
@@ -112,12 +112,12 @@ class PopupButton extends HookWidget {
 
 class MobilePopupButtonDialog extends StatelessWidget {
   const MobilePopupButtonDialog({
-    required final this.title,
-    required final this.close,
-    required final this.builder,
+    required this.title,
+    required this.close,
+    required this.builder,
     required this.onRemove,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Widget? title;
   final ValueChanged<BuildContext> close;
   final VoidCallback? onRemove;
@@ -151,7 +151,7 @@ class MobilePopupButtonDialog extends StatelessWidget {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
+              horizontal: 20,
               vertical: 24,
             ),
             child: Column(
@@ -188,8 +188,8 @@ class RemoveActionButton extends StatelessWidget {
     this.useIcon = false,
     this.filled = false,
     this.text,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback? onTap;
   final bool useIcon;
   final String? text;
@@ -201,16 +201,16 @@ class RemoveActionButton extends StatelessWidget {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
+          backgroundColor: AppColors.accent3,
           padding: const EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
             borderRadius: defaultBorderRadius,
           ),
-          primary: AppColors.accent3,
         ),
         onPressed: onTap,
         child: Text(
           text ?? S.current.delete.sentenceCase,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       );
     }
@@ -218,17 +218,17 @@ class RemoveActionButton extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
+        foregroundColor: AppColors.accent3,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: defaultBorderRadius,
         ),
-        primary: AppColors.accent3,
       ),
       child: useIcon
           ? const Icon(Icons.delete_forever_rounded)
           : Text(
               text ?? S.current.delete.sentenceCase,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
               // ?.copyWith(color: AppColors.accent3),
             ),
     );
@@ -239,8 +239,8 @@ class OutlinedPrimaryButton extends StatelessWidget {
   const OutlinedPrimaryButton({
     required this.onClose,
     this.useIcon = false,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback? onClose;
   final bool useIcon;
   @override
@@ -251,19 +251,19 @@ class OutlinedPrimaryButton extends StatelessWidget {
 
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
+        foregroundColor: primaryColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
         side: BorderSide(color: primaryColor),
-        primary: primaryColor,
       ),
       onPressed: onClose,
       child: useIcon
           ? const Icon(Icons.check)
           : Text(
               S.current.close.sentenceCase,
-              style: theme.textTheme.headline6?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 color: primaryColor,
               ),
             ),

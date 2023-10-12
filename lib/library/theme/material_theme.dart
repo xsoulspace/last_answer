@@ -1,4 +1,4 @@
-part of theme;
+part of 'theme.dart';
 
 final _lightBase = ThemeData.from(
   colorScheme: lightColorScheme,
@@ -19,8 +19,8 @@ final lightThemeData = _lightBase.copyWith(
 
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scrollbarTheme: _lightBase.scrollbarTheme.copyWith(
-    showTrackOnHover: false,
-    isAlwaysShown: false,
+    thumbVisibility: const MaterialStatePropertyAll(false),
+    trackVisibility: const MaterialStatePropertyAll(false),
     interactive: true,
     // crossAxisMargin: -6,
     thumbColor: MaterialStateProperty.all(AppColors.grey1.withOpacity(0.4)),
@@ -55,8 +55,8 @@ final darkThemeData = _darkBase.copyWith(
   ),
   scrollbarTheme: _darkBase.scrollbarTheme.copyWith(
     interactive: true,
-    showTrackOnHover: false,
-    isAlwaysShown: false,
+    thumbVisibility: const MaterialStatePropertyAll(false),
+    trackVisibility: const MaterialStatePropertyAll(false),
     // crossAxisMargin: -6,
     thumbColor: MaterialStateProperty.all(AppColors.grey4.withOpacity(0.4)),
     // trackBorderColor: MaterialStateProperty.all(AppColors.cleanBlack),

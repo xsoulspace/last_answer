@@ -4,8 +4,8 @@ class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
     required this.onSelectRoute,
     required this.onBack,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final ValueChanged<AppRouteName> onSelectRoute;
   final VoidCallback onBack;
 
@@ -32,15 +32,12 @@ class SmallSettingsScreen extends HookWidget {
         case AppRoutesName.profile:
           subSettingsPage.value = MyAccountScreen(onBack: onBack);
           await toPage();
-          break;
         case AppRoutesName.generalSettings:
           subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
           await toPage();
-          break;
         case AppRoutesName.subscription:
           subSettingsPage.value = SubscriptionScreen(onBack: onBack);
           await toPage();
-          break;
         default:
           await toNavigation();
       }
@@ -55,7 +52,7 @@ class SmallSettingsScreen extends HookWidget {
 
     useEffect(
       () {
-        switchToPage();
+        unawaited(switchToPage());
 
         return null;
       },
@@ -64,9 +61,8 @@ class SmallSettingsScreen extends HookWidget {
     final screenLayout = ScreenLayout.of(context);
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((final _) {
-          switchToPage();
-        });
+        WidgetsBinding.instance
+            .addPostFrameCallback((final _) async => switchToPage());
 
         return null;
       },
@@ -89,13 +85,11 @@ class SmallSettingsScreen extends HookWidget {
 }
 
 class SpeedyPageViewScrollPhysics extends ScrollPhysics {
-  const SpeedyPageViewScrollPhysics({final ScrollPhysics? parent})
-      : super(parent: parent);
+  const SpeedyPageViewScrollPhysics({super.parent});
 
   @override
-  SpeedyPageViewScrollPhysics applyTo(final ScrollPhysics? ancestor) {
-    return SpeedyPageViewScrollPhysics(parent: buildParent(ancestor));
-  }
+  SpeedyPageViewScrollPhysics applyTo(final ScrollPhysics? ancestor) =>
+      SpeedyPageViewScrollPhysics(parent: buildParent(ancestor));
 
   @override
   SpringDescription get spring => const SpringDescription(

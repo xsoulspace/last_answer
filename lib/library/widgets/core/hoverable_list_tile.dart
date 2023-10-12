@@ -5,19 +5,17 @@ class HovarableListTile extends StatelessWidget {
     required this.onTap,
     this.titleBuilder,
     this.leadingBuilder,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final HoverableWidgetBuilder? leadingBuilder;
   final HoverableWidgetBuilder? titleBuilder;
   final VoidCallback onTap;
   @override
-  Widget build(final BuildContext context) {
-    return HoverableArea(
+  Widget build(final BuildContext context) => HoverableArea(
       builder: (final context, final hovered) => ListTile(
         onTap: onTap,
         leading: leadingBuilder?.call(context, hovered),
         title: titleBuilder?.call(context, hovered),
       ),
     );
-  }
 }

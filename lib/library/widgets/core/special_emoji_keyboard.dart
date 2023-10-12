@@ -3,10 +3,10 @@ part of widgets;
 class SpecialEmojisKeyboardActions extends HookWidget {
   const SpecialEmojisKeyboardActions({
     required this.builder,
-    required final this.controller,
+    required this.controller,
     required this.focusNode,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Widget Function(
     BuildContext context,
     VoidCallback showEmojiKeyboard,
@@ -51,23 +51,24 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       }
     }
 
+    final view = View.of(context);
     useEffect(
       () {
         Future.delayed(
           const Duration(milliseconds: 110),
-          () {
-            final keyboardOpen = window.viewInsets.bottom > 0;
+          () async {
+            final keyboardOpen = view.viewInsets.bottom > 0;
             if (keyboardOpen &&
                 isEmojiKeyboardOpen.value &&
                 !isEmojiKeyboardOpening.value) {
-              closeEmojiKeyboard();
+              await closeEmojiKeyboard();
             }
           },
         );
 
         return null;
       },
-      [window.viewInsets.bottom],
+      [view.viewInsets.bottom],
     );
 
     final emojiInserter = EmojiInserter.use(
@@ -77,10 +78,10 @@ class SpecialEmojisKeyboardActions extends HookWidget {
     );
     final footer = SpecialEmojisKeyboard(
       onChanged: emojiInserter.insert,
-      onHide: () => closeEmojiKeyboard(immediately: false),
+      onHide: () async => closeEmojiKeyboard(immediately: false),
       onShowKeyboard: () {
         if (focusNode.hasFocus) {
-          SoftKeyboard.open();
+          unawaited(SoftKeyboard.open());
         } else {
           focusNode.requestFocus();
         }
@@ -141,8 +142,8 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
     required this.onChanged,
     required this.onShowKeyboard,
     required this.onHide,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final ValueChanged<Emoji> onChanged;
   final VoidCallback onShowKeyboard;
   final VoidCallback onHide;
@@ -155,16 +156,14 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
     final specialEmojisProvider = context.read<SpecialEmojiProvider>();
     final emojis = specialEmojisProvider.values;
     final theme = Theme.of(context);
-    final emojiStyle = theme.textTheme.headline1?.copyWith(fontSize: 26);
+    final emojiStyle = theme.textTheme.displayLarge?.copyWith(fontSize: 26);
 
-    Widget buildEmojiButton(final Emoji emoji) {
-      return KeyboardEmojiButton(
-        key: ValueKey(emoji),
-        emoji: emoji,
-        style: emojiStyle,
-        onPressed: () => onChanged(emoji),
-      );
-    }
+    Widget buildEmojiButton(final Emoji emoji) => KeyboardEmojiButton(
+          key: ValueKey(emoji),
+          emoji: emoji,
+          style: emojiStyle,
+          onPressed: () => onChanged(emoji),
+        );
 
     return Container(
       color: theme.highlightColor.withOpacity(0.1),

@@ -4,8 +4,8 @@ class SettingsListContainer extends StatelessWidget {
   const SettingsListContainer({
     required this.builder,
     this.padding,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final EdgeInsets? padding;
   final List<Widget> Function(BuildContext context, double leftColumnWidth)
       builder;

@@ -20,6 +20,9 @@ dependencies:
   flutter_bloc: ^8.1.3
   form_builder_validators: ^9.1.0
   freezed_annotation: ^2.2.0
+  google_fonts: ^6.1.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   infinite_scroll_pagination: ^4.0.0-dev.1
   intl: ^0.18.0
   isar: ^3.1.0+1
@@ -29,7 +32,9 @@ dependencies:
   package_info_plus: ^4.1.0
   path: ^1.8.3
   path_provider: ^2.0.15
+  path_to_regexp: ^0.4.0
   permission_handler: ^10.0.0
+  quiver: ^3.2.1
   share_plus: ^7.1.0
   shared_preferences: ^2.2.2
   universal_io: ^2.2.0
@@ -45,10 +50,13 @@ dev_dependencies:
   bloc_test: ^9.1.3
   build_runner: ^2.4.5
   faker: ^2.1.0
+  flutter_gen: ^5.3.2
+  flutter_gen_runner: ^5.3.2
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   freezed: ^2.3.5
+  hive_generator: ^2.0.1
   injectable_generator: ^2.0.0
   isar_generator: ^3.1.0+1
   json_serializable: ^6.5.4
@@ -56,3 +64,51 @@ dev_dependencies:
   mocktail: ^0.3.0
   mocktail_image_network: ^0.3.1
   xsoulspace_lints: ^0.0.9
+
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+flutter_gen:
+  output: lib/src/generated/ # Optional (default: lib/gen/)
+  # line_length: 80 # Optional (default: 80)
+  # Optional
+  integrations:
+    flutter_svg: true
+    flare_flutter: true
+
+flutter:
+  generate: true
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/json/
+    - google_fonts/
+
+fonts:
+  - family: IBMPlexSans
+    fonts:
+      - asset: google_fonts/IBMPlexSans-Thin.ttf
+        weight: 100
+      - asset: google_fonts/IBMPlexSans-Light.ttf
+        weight: 300
+      - asset: google_fonts/IBMPlexSans-Regular.ttf
+        weight: 400
+      - asset: google_fonts/IBMPlexSans-Medium.ttf
+        weight: 500
+      - asset: google_fonts/IBMPlexSans-SemiBold.ttf
+        weight: 700
+      - asset: google_fonts/IBMPlexSans-Bold.ttf
+        weight: 900
+  - family: NotoColorEmoji
+    fonts:
+      - asset: google_fonts/NotoColorEmoji.ttf
+  - family: NotoSans
+    fonts:
+      - asset: google_fonts/NotoSans-Regular.ttf
+flutter_intl:
+  enabled: true

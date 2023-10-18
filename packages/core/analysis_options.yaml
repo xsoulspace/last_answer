@@ -7,6 +7,7 @@ analyzer:
     # rule, since the app_router.gr.dart can often
     # be cause of missing dependencies.
     - lib/**.*.dart
+    - lib/src/generated/*
 
   errors:
     unused_local_variable: info

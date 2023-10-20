@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class FocusBubbleContainerConsts {
   FocusBubbleContainerConsts._({required this.context});

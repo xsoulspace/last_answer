@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class SpecialEmojisGrid extends StatelessWidget {
   const SpecialEmojisGrid({
@@ -13,11 +13,11 @@ class SpecialEmojisGrid extends StatelessWidget {
     final emojiStyle = Theme.of(context).textTheme.bodyMedium;
 
     Widget buildEmojiButton(final Emoji emoji) => EmojiButton(
-        key: ValueKey(emoji),
-        emoji: emoji,
-        style: emojiStyle,
-        onPressed: () => onChanged(emoji),
-      );
+          key: ValueKey(emoji),
+          emoji: emoji,
+          style: emojiStyle,
+          onPressed: () => onChanged(emoji),
+        );
 
     final specialEmojisProvider = context.read<SpecialEmojiProvider>();
     final emojis = specialEmojisProvider.values;

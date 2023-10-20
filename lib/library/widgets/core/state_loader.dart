@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 abstract class StateInitializer extends Loadable {}
 

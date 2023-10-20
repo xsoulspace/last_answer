@@ -34,7 +34,6 @@ part 'buttons/special_emoji_button.dart';
 part 'buttons/svg_icon_button.dart';
 part 'core/background_frost_box.dart';
 part 'core/button_popup.dart';
-part 'core/choosable_bubble.dart';
 part 'core/danger_zone.dart';
 part 'core/dismissible_tile.dart';
 part 'core/emoji_grid.dart';

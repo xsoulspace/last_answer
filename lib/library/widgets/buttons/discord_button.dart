@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class DiscordButton extends StatelessWidget {
   const DiscordButton({this.text, super.key});
@@ -6,14 +6,14 @@ class DiscordButton extends StatelessWidget {
   final String? text;
   @override
   Widget build(final BuildContext context) => TextButton(
-      onPressed: () async {
-        if (await url_launcher.canLaunch(discordLink)) {
-          await url_launcher.launch(discordLink);
-        }
-      },
-      child: Text(
-        text ?? S.current.joinDiscord,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
-    );
+        onPressed: () async {
+          if (await url_launcher.canLaunch(discordLink)) {
+            await url_launcher.launch(discordLink);
+          }
+        },
+        child: Text(
+          text ?? S.current.joinDiscord,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      );
 }

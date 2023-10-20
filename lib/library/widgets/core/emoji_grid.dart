@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class EmojiPopup extends HookWidget {
   const EmojiPopup({

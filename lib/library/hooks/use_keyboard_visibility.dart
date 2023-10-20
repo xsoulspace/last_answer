@@ -1,8 +1,7 @@
-part of hooks;
+part of 'hooks.dart';
 
-ValueNotifier<bool> useKeyboardVisibility() {
-  return use(const _KeyboardVisiblityHook());
-}
+ValueNotifier<bool> useKeyboardVisibility() =>
+    use(const _KeyboardVisiblityHook());
 
 class _KeyboardVisiblityHook extends Hook<ValueNotifier<bool>> {
   const _KeyboardVisiblityHook();

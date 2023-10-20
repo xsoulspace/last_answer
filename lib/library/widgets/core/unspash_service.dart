@@ -1,1 +1,1 @@
-part of widgets;
+part of '../widgets.dart';

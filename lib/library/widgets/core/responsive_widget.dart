@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 typedef PagesCallback = List<Page<dynamic>> Function();
 
@@ -30,18 +30,16 @@ class ResponsiveNavigator extends StatelessWidget {
     }
   }
 
+  /// Returns the widget which is more appropriate for the screen size
   @override
-  Widget build(final BuildContext context) {
-    /// Returns the widget which is more appropriate for the screen size
-    return LayoutBuilder(
-      builder: (final context, final constraints) => Navigator(
+  Widget build(final BuildContext context) => LayoutBuilder(
+        builder: (final context, final constraints) => Navigator(
           onGenerateRoute: (final _) => null,
           key: navigatorKey,
           onPopPage: onPopPage,
           pages: getPages(constraints: constraints),
         ),
-    );
-  }
+      );
 }
 
 class ResponsiveWidget extends StatelessWidget {
@@ -55,25 +53,23 @@ class ResponsiveWidget extends StatelessWidget {
   final Widget? mediumScreen;
   final Widget? smallScreen;
 
+  /// Returns the widget which is more appropriate for the screen size
   @override
-  Widget build(final BuildContext context) {
-    /// Returns the widget which is more appropriate for the screen size
-    return LayoutBuilder(
-      builder: (final context, final constraints) {
-        final screenLayout = ScreenLayout.from(constraints);
-        if (screenLayout.large) {
-          return largeScreen;
-        } else if (screenLayout.medium) {
-          /// if medium screen not available, then return large screen
-          return mediumScreen ?? largeScreen;
-        } else {
-          /// if small screen implementation not available, then return
-          /// large screen
-          return smallScreen ?? largeScreen;
-        }
-      },
-    );
-  }
+  Widget build(final BuildContext context) => LayoutBuilder(
+        builder: (final context, final constraints) {
+          final screenLayout = ScreenLayout.from(constraints);
+          if (screenLayout.large) {
+            return largeScreen;
+          } else if (screenLayout.medium) {
+            /// if medium screen not available, then return large screen
+            return mediumScreen ?? largeScreen;
+          } else {
+            /// if small screen implementation not available, then return
+            /// large screen
+            return smallScreen ?? largeScreen;
+          }
+        },
+      );
 }
 
 class ScreenLayout {

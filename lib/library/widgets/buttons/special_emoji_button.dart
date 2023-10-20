@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class SpecialEmojiButton extends HookWidget {
   const SpecialEmojiButton({
@@ -27,8 +27,8 @@ class SpecialEmojiButton extends HookWidget {
     return PopupButton(
       icon: Icons.emoji_flags_rounded,
       builder: (final context) => SpecialEmojisGrid(
-          onChanged: emojiInserter.insert,
-        ),
+        onChanged: emojiInserter.insert,
+      ),
     );
   }
 }

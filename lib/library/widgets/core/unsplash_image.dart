@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class UnsplashImage extends StatelessWidget {
   const UnsplashImage({super.key});

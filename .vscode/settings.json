@@ -15,5 +15,10 @@
   "files.watcherExclude": {
     "**/.fvm": true
   },
-  "dart.runPubGetOnPubspecChanges": "never"
+  "dart.runPubGetOnPubspecChanges": "never",
+  "editor.formatOnSave": true,
+  "diffEditor.experimental.showMoves": true,
+  "dart.showTodos": true,
+  "dart.insertArgumentPlaceholders": true,
+  "dart.flutterOutline": true
 }

@@ -1,4 +1,4 @@
-part of pack_app;
+part of '../pack_app.dart';
 
 @immutable
 class AppNavigatorController {

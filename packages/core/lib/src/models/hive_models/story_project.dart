@@ -1,11 +1,5 @@
 // ignore_for_file: overridden_fields
-
-import 'package:hive/hive.dart';
-import 'package:mockito/mockito.dart';
-
-import '../hive_models.dart';
-
-part 'story_project.g.dart';
+part of 'hive_models.dart';
 
 typedef StoryProjectId = String;
 

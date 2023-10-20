@@ -4,11 +4,11 @@ typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
 
 class IdeaProjectScreen extends HookWidget {
   const IdeaProjectScreen({
-    required final this.onBack,
-    required final this.ideaId,
-    required final this.onAnswerExpand,
-    final Key? key,
-  }) : super(key: key);
+    required this.onBack,
+    required this.ideaId,
+    required this.onAnswerExpand,
+    super.key,
+  });
   final VoidCallback onBack;
   final TwoValuesChanged<IdeaProjectAnswer, IdeaProject> onAnswerExpand;
   final ProjectId ideaId;

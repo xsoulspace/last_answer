@@ -2,10 +2,9 @@ part of pack_app;
 
 class _VerticalProjectsBar extends StatelessWidget {
   const _VerticalProjectsBar({
-    required final this.onIdeaTap,
-    required final this.onNoteTap,
-    final Key? key,
-  }) : super(key: key);
+    required this.onIdeaTap,
+    required this.onNoteTap,
+  });
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
   @override
@@ -58,39 +57,37 @@ class _VerticalProjectsBar extends StatelessWidget {
 
 class BarItem extends StatelessWidget {
   const BarItem({
-    required final this.onTap,
-    required final this.child,
-    required final this.label,
-    final Key? key,
-  }) : super(key: key);
+    required this.onTap,
+    required this.child,
+    required this.label,
+    super.key,
+  });
   final VoidCallback onTap;
   final Widget child;
   final String label;
   @override
-  Widget build(final BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 56,
-        child: Stack(
-          children: [
-            SizedBox(
-              height: 50,
-              child: child,
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption,
+  Widget build(final BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: SizedBox(
+          height: 56,
+          child: Stack(
+            children: [
+              SizedBox(
+                height: 50,
+                child: child,
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

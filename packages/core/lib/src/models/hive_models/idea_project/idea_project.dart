@@ -1,15 +1,5 @@
 // ignore_for_file: overridden_fields
-import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
-import 'package:mockito/mockito.dart';
-
-import '../../../utils/utils.dart';
-import '../hive_models.dart';
-
-export 'idea_project_answer.dart';
-export 'idea_project_question.dart';
-
-part 'idea_project.g.dart';
+part of '../hive_models.dart';
 
 typedef IdeaProjectId = String;
 

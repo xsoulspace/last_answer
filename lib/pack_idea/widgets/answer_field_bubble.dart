@@ -73,7 +73,7 @@ class AnswerFieldBubble extends HookWidget {
           textAlignVertical: TextAlignVertical.bottom,
           keyboardType: TextInputType.multiline,
           onEditingComplete: updateAnswer,
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
           cursorColor: Theme.of(context).colorScheme.secondary,
         ),
       ),

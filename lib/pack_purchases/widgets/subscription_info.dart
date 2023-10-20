@@ -29,11 +29,11 @@ class SubscriptionInfo extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              style: theme.textTheme.headline6,
+              style: theme.textTheme.titleLarge,
               children: [
                 TextSpan(
                   text: 'Patron\n',
-                  style: theme.textTheme.headline1,
+                  style: theme.textTheme.displayLarge,
                 ),
                 const TextSpan(text: 'Subscription'),
               ],
@@ -55,7 +55,7 @@ class SubscriptionInfo extends StatelessWidget {
       const SizedBox(height: 40),
       Text(
         'Enhance this app for your writing mood.',
-        style: theme.textTheme.headline3,
+        style: theme.textTheme.displaySmall,
       ),
       const SizedBox(height: 40),
       const Text("What's included:"),
@@ -146,7 +146,7 @@ class FeatureCard extends StatelessWidget {
             vertical: 14,
             horizontal: 10,
           ),
-          title: Text(title, style: Theme.of(context).textTheme.headline5),
+          title: Text(title, style: Theme.of(context).textTheme.headlineSmall),
           subtitle: Text(description),
           leading: icon,
         ),

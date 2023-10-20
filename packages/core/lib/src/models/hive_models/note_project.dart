@@ -1,13 +1,5 @@
 // ignore_for_file: overridden_fields
-
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:mockito/mockito.dart';
-
-import '../../../utils/utils.dart';
-import '../hive_models.dart';
-
-part 'note_project.g.dart';
+part of 'hive_models.dart';
 
 typedef NoteProjectId = String;
 

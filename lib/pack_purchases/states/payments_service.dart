@@ -17,10 +17,10 @@ class PaymentsService {
   //   return purchaserInfo;
   // }
 
-  Future<Offerings> getOfferings() async {
-    final offerings = await Purchases.getOfferings();
-    print('${{"!!! offerings": offerings.toJson().toString()}}');
+  // Future<Offerings> getOfferings() async {
+  //   final offerings = await Purchases.getOfferings();
+  //   print('${{"!!! offerings": offerings.toJson().toString()}}');
 
-    return offerings;
-  }
+  //   return offerings;
+  // }
 }

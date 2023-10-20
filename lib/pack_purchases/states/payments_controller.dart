@@ -19,25 +19,23 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   });
   final PaymentsService paymentsService;
   SubscriptionTypes subscriptionType = SubscriptionTypes.free;
-  bool get isPatronSubscription {
-    switch (subscriptionType) {
-      case SubscriptionTypes.free:
-        return false;
-      default:
-        return true;
-    }
-  }
+  bool get isPatronSubscription => switch (subscriptionType) {
+        SubscriptionTypes.free => false,
+        SubscriptionTypes.advertisementPatron ||
+        SubscriptionTypes.paidPatron =>
+          true
+      };
 
   // PurchaserInfo? purchaserInfo;
-  Offerings? offerings;
+  // Offerings? offerings;
 
-  Package? get annualSubscription => offerings?.current?.annual;
+  // Package? get annualSubscription => offerings?.current?.annual;
 
   String get annualSubscriptionTitle => '';
   // TODO(Arenukvern): translate
   // 'Subscribe - ${annualSubscription?.product.priceString} / year';
 
-  Package? get monthlySubscription => offerings?.current?.monthly;
+  // Package? get monthlySubscription => offerings?.current?.monthly;
   // TODO(arenukvern): translate
   String get monthlySubscriptionTitle => '';
   // 'Subscribe - ${monthlySubscription?.product.priceString} / month';
@@ -55,8 +53,8 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     }
     if (key.isEmpty) throw ArgumentError.value('key is not provided');
     try {
-      await Purchases.setup(key);
-      await Purchases.setDebugLogsEnabled(false);
+      // await Purchases.setup(key);
+      // await Purchases.setDebugLogsEnabled(false);
       // final effectivePurchaserInfo =
       //     purchaserInfo = await paymentsService.getPurchaserInfo();
       // final allFeaturesEntitlment =

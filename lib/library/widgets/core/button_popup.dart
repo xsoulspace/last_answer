@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
@@ -10,7 +10,7 @@ class ButtonPopup extends StatelessWidget {
     this.mainAxisSize = MainAxisSize.min,
     this.mainAxisAlignment = MainAxisAlignment.start,
     super.key,
-  })  : assert(
+  }) : assert(
           children != const [] || child != null,
           'Please provide children or child',
         );

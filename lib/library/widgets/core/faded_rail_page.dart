@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class FadedRailPage<T> extends Page<T> {
   /// Creates a material page.
@@ -22,7 +22,8 @@ class FadedRailPage<T> extends Page<T> {
   final bool fullscreenDialog;
 
   @override
-  Route<T> createRoute(final BuildContext context) => _PageBasedFadedRailPageRoute<T>(page: this);
+  Route<T> createRoute(final BuildContext context) =>
+      _PageBasedFadedRailPageRoute<T>(page: this);
 }
 
 // A page-based version of MaterialPageRoute.
@@ -94,10 +95,11 @@ mixin FadedRailRouteTransitionMixin<T> on PageRoute<T> {
     final Animation<double> animation,
     final Animation<double> secondaryAnimation,
     final Widget child,
-  ) => FadedRailTransition(
-      animation: animation,
-      child: child,
-    );
+  ) =>
+      FadedRailTransition(
+        animation: animation,
+        child: child,
+      );
 }
 
 class FadedRailTransition extends StatelessWidget {

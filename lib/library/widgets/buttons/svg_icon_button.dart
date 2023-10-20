@@ -1,6 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-part of widgets;
+part of '../widgets.dart';
 
 // Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -149,7 +149,7 @@ class SvgIconButton extends StatelessWidget {
     this.tooltip,
     this.enableFeedback = true,
     this.constraints,
-  })  : assert(
+  }) : assert(
           splashRadius == null || splashRadius > 0,
           'splashRadius has to be filled',
         );

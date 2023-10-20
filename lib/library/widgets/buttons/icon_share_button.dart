@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class IconShareButton extends StatefulWidget {
   const IconShareButton({
@@ -42,15 +42,15 @@ class _IconShareButtonState extends State<IconShareButton> {
 
   @override
   Widget build(final BuildContext context) => IconButton(
-      icon: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 700),
-        child: currentIcon,
-      ),
-      onPressed: widget.onTap == null
-          ? null
-          : () async {
-              widget.onTap?.call();
-              await setDone();
-            },
-    );
+        icon: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 700),
+          child: currentIcon,
+        ),
+        onPressed: widget.onTap == null
+            ? null
+            : () async {
+                widget.onTap?.call();
+                await setDone();
+              },
+      );
 }

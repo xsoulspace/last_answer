@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class HovarableListTile extends StatelessWidget {
   const HovarableListTile({
@@ -12,10 +12,10 @@ class HovarableListTile extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(final BuildContext context) => HoverableArea(
-      builder: (final context, final hovered) => ListTile(
-        onTap: onTap,
-        leading: leadingBuilder?.call(context, hovered),
-        title: titleBuilder?.call(context, hovered),
-      ),
-    );
+        builder: (final context, final hovered) => ListTile(
+          onTap: onTap,
+          leading: leadingBuilder?.call(context, hovered),
+          title: titleBuilder?.call(context, hovered),
+        ),
+      );
 }

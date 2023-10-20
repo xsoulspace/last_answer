@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class CupertinoIconButton extends StatelessWidget {
   const CupertinoIconButton({
@@ -18,15 +18,15 @@ class CupertinoIconButton extends StatelessWidget {
   final double? size;
   @override
   Widget build(final BuildContext context) => CupertinoButton(
-      minSize: 0,
-      borderRadius: defaultBorderRadius,
-      padding: padding ?? EdgeInsets.zero,
-      color: backgroundColor,
-      onPressed: onPressed,
-      child: Icon(
-        icon,
-        color: color,
-        size: size,
-      ),
-    );
+        minSize: 0,
+        borderRadius: defaultBorderRadius,
+        padding: padding ?? EdgeInsets.zero,
+        color: backgroundColor,
+        onPressed: onPressed,
+        child: Icon(
+          icon,
+          color: color,
+          size: size,
+        ),
+      );
 }

@@ -23,7 +23,7 @@ class StateLoader extends StatefulHookWidget {
 
 class _StateLoaderState extends State<StateLoader>
     with SingleTickerProviderStateMixin {
-  bool _isLoading = true;
+  bool _isLoading = false;
   bool _loaded = false;
   bool _renderAllowed = false;
   late final animationController = AnimationController(

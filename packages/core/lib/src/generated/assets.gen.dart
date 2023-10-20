@@ -15,68 +15,80 @@ class $GoogleFontsGen {
   const $GoogleFontsGen();
 
   /// File path: google_fonts/IBMPlexSans-Bold.ttf
-  String get iBMPlexSansBold => 'google_fonts/IBMPlexSans-Bold.ttf';
+  String get iBMPlexSansBold =>
+      'packages/core/google_fonts/IBMPlexSans-Bold.ttf';
 
   /// File path: google_fonts/IBMPlexSans-BoldItalic.ttf
-  String get iBMPlexSansBoldItalic => 'google_fonts/IBMPlexSans-BoldItalic.ttf';
+  String get iBMPlexSansBoldItalic =>
+      'packages/core/google_fonts/IBMPlexSans-BoldItalic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-ExtraLight.ttf
-  String get iBMPlexSansExtraLight => 'google_fonts/IBMPlexSans-ExtraLight.ttf';
+  String get iBMPlexSansExtraLight =>
+      'packages/core/google_fonts/IBMPlexSans-ExtraLight.ttf';
 
   /// File path: google_fonts/IBMPlexSans-ExtraLightItalic.ttf
   String get iBMPlexSansExtraLightItalic =>
-      'google_fonts/IBMPlexSans-ExtraLightItalic.ttf';
+      'packages/core/google_fonts/IBMPlexSans-ExtraLightItalic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-Italic.ttf
-  String get iBMPlexSansItalic => 'google_fonts/IBMPlexSans-Italic.ttf';
+  String get iBMPlexSansItalic =>
+      'packages/core/google_fonts/IBMPlexSans-Italic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-Light.ttf
-  String get iBMPlexSansLight => 'google_fonts/IBMPlexSans-Light.ttf';
+  String get iBMPlexSansLight =>
+      'packages/core/google_fonts/IBMPlexSans-Light.ttf';
 
   /// File path: google_fonts/IBMPlexSans-LightItalic.ttf
   String get iBMPlexSansLightItalic =>
-      'google_fonts/IBMPlexSans-LightItalic.ttf';
+      'packages/core/google_fonts/IBMPlexSans-LightItalic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-Medium.ttf
-  String get iBMPlexSansMedium => 'google_fonts/IBMPlexSans-Medium.ttf';
+  String get iBMPlexSansMedium =>
+      'packages/core/google_fonts/IBMPlexSans-Medium.ttf';
 
   /// File path: google_fonts/IBMPlexSans-MediumItalic.ttf
   String get iBMPlexSansMediumItalic =>
-      'google_fonts/IBMPlexSans-MediumItalic.ttf';
+      'packages/core/google_fonts/IBMPlexSans-MediumItalic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-Regular.ttf
-  String get iBMPlexSansRegular => 'google_fonts/IBMPlexSans-Regular.ttf';
+  String get iBMPlexSansRegular =>
+      'packages/core/google_fonts/IBMPlexSans-Regular.ttf';
 
   /// File path: google_fonts/IBMPlexSans-SemiBold.ttf
-  String get iBMPlexSansSemiBold => 'google_fonts/IBMPlexSans-SemiBold.ttf';
+  String get iBMPlexSansSemiBold =>
+      'packages/core/google_fonts/IBMPlexSans-SemiBold.ttf';
 
   /// File path: google_fonts/IBMPlexSans-SemiBoldItalic.ttf
   String get iBMPlexSansSemiBoldItalic =>
-      'google_fonts/IBMPlexSans-SemiBoldItalic.ttf';
+      'packages/core/google_fonts/IBMPlexSans-SemiBoldItalic.ttf';
 
   /// File path: google_fonts/IBMPlexSans-Thin.ttf
-  String get iBMPlexSansThin => 'google_fonts/IBMPlexSans-Thin.ttf';
+  String get iBMPlexSansThin =>
+      'packages/core/google_fonts/IBMPlexSans-Thin.ttf';
 
   /// File path: google_fonts/IBMPlexSans-ThinItalic.ttf
-  String get iBMPlexSansThinItalic => 'google_fonts/IBMPlexSans-ThinItalic.ttf';
+  String get iBMPlexSansThinItalic =>
+      'packages/core/google_fonts/IBMPlexSans-ThinItalic.ttf';
 
   /// File path: google_fonts/NotoColorEmoji.ttf
-  String get notoColorEmoji => 'google_fonts/NotoColorEmoji.ttf';
+  String get notoColorEmoji => 'packages/core/google_fonts/NotoColorEmoji.ttf';
 
   /// File path: google_fonts/NotoSans-Bold.ttf
-  String get notoSansBold => 'google_fonts/NotoSans-Bold.ttf';
+  String get notoSansBold => 'packages/core/google_fonts/NotoSans-Bold.ttf';
 
   /// File path: google_fonts/NotoSans-BoldItalic.ttf
-  String get notoSansBoldItalic => 'google_fonts/NotoSans-BoldItalic.ttf';
+  String get notoSansBoldItalic =>
+      'packages/core/google_fonts/NotoSans-BoldItalic.ttf';
 
   /// File path: google_fonts/NotoSans-Italic.ttf
-  String get notoSansItalic => 'google_fonts/NotoSans-Italic.ttf';
+  String get notoSansItalic => 'packages/core/google_fonts/NotoSans-Italic.ttf';
 
   /// File path: google_fonts/NotoSans-Regular.ttf
-  String get notoSansRegular => 'google_fonts/NotoSans-Regular.ttf';
+  String get notoSansRegular =>
+      'packages/core/google_fonts/NotoSans-Regular.ttf';
 
   /// File path: google_fonts/OFL.txt
-  String get ofl => 'google_fonts/OFL.txt';
+  String get ofl => 'packages/core/google_fonts/OFL.txt';
 
   /// List of all assets
   List<String> get values => [
@@ -243,13 +255,14 @@ class $AssetsJsonGen {
   const $AssetsJsonGen();
 
   /// File path: assets/json/emojis.json
-  String get emojis => 'assets/json/emojis.json';
+  String get emojis => 'packages/core/assets/json/emojis.json';
 
   /// File path: assets/json/special_emoji.json
-  String get specialEmoji => 'assets/json/special_emoji.json';
+  String get specialEmoji => 'packages/core/assets/json/special_emoji.json';
 
   /// File path: assets/json/updates_notifications.json
-  String get updatesNotifications => 'assets/json/updates_notifications.json';
+  String get updatesNotifications =>
+      'packages/core/assets/json/updates_notifications.json';
 
   /// List of all assets
   List<String> get values => [emojis, specialEmoji, updatesNotifications];
@@ -288,7 +301,7 @@ class AssetGenImage {
     bool matchTextDirection = false,
     bool gaplessPlayback = false,
     bool isAntiAlias = false,
-    String? package,
+    String? package = 'core',
     FilterQuality filterQuality = FilterQuality.low,
     int? cacheWidth,
     int? cacheHeight,
@@ -323,7 +336,7 @@ class AssetGenImage {
 
   ImageProvider provider({
     AssetBundle? bundle,
-    String? package,
+    String? package = 'core',
   }) {
     return AssetImage(
       _assetName,
@@ -334,7 +347,7 @@ class AssetGenImage {
 
   String get path => _assetName;
 
-  String get keyName => _assetName;
+  String get keyName => 'packages/core/$_assetName';
 }
 
 class SvgGenImage {
@@ -346,7 +359,7 @@ class SvgGenImage {
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
-    String? package,
+    String? package = 'core',
     double? width,
     double? height,
     BoxFit fit = BoxFit.contain,
@@ -387,5 +400,5 @@ class SvgGenImage {
 
   String get path => _assetName;
 
-  String get keyName => _assetName;
+  String get keyName => 'packages/core/$_assetName';
 }

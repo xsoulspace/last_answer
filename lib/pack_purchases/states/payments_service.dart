@@ -10,12 +10,12 @@ class PaymentsService {
           Envs.revenueCatApiKeyGoogleIsNotEmpty);
   bool get paymentsNotAccessable => !paymentsAccessable;
 
-  Future<PurchaserInfo> getPurchaserInfo() async {
-    final purchaserInfo = await Purchases.getPurchaserInfo();
-    print('${{"!!! purchaserInfo": purchaserInfo.toJson().toString()}}');
+  // Future<PurchaserInfo> getPurchaserInfo() async {
+  //   final purchaserInfo = await Purchases.getPurchaserInfo();
+  //   print('${{"!!! purchaserInfo": purchaserInfo.toJson().toString()}}');
 
-    return purchaserInfo;
-  }
+  //   return purchaserInfo;
+  // }
 
   Future<Offerings> getOfferings() async {
     final offerings = await Purchases.getOfferings();

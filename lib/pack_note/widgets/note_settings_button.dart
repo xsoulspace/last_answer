@@ -2,11 +2,11 @@ part of pack_note;
 
 class NoteSettingsButton extends StatelessWidget {
   const NoteSettingsButton({
-    required final this.note,
+    required this.note,
     required this.onRemove,
     required this.updatesStream,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final NoteProject note;
   final VoidCallback onRemove;
   final StreamController<NoteProjectNotifier> updatesStream;
@@ -17,30 +17,26 @@ class NoteSettingsButton extends StatelessWidget {
     return PopupButton(
       title: Text(
         S.current.noteSettings,
-        style: theme.textTheme.headline6,
+        style: theme.textTheme.titleLarge,
       ),
-      mobileBuilder: (final context) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width - 50,
-          height: 150,
-          child: MobileNoteSettingsMenu(
-            note: note,
-            onRemove: onRemove,
-            updatesStream: updatesStream,
-          ),
-        );
-      },
+      mobileBuilder: (final context) => SizedBox(
+        width: MediaQuery.of(context).size.width - 50,
+        height: 150,
+        child: MobileNoteSettingsMenu(
+          note: note,
+          onRemove: onRemove,
+          updatesStream: updatesStream,
+        ),
+      ),
       onMobileRemove: onRemove,
-      builder: (final context) {
-        return ButtonPopup(
-          height: 230,
-          child: DesktopNoteSettingsMenu(
-            note: note,
-            onRemove: onRemove,
-            updatesStream: updatesStream,
-          ),
-        );
-      },
+      builder: (final context) => ButtonPopup(
+        height: 230,
+        child: DesktopNoteSettingsMenu(
+          note: note,
+          onRemove: onRemove,
+          updatesStream: updatesStream,
+        ),
+      ),
       icon: Icons.more_vert_rounded,
     );
   }

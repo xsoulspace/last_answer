@@ -2,7 +2,7 @@ part of pack_app;
 
 class AppNavigatorDataProvider {
   AppNavigatorDataProvider({
-    required final this.routeState,
+    required this.routeState,
     required final BuildContext context,
     required final ScreenLayout screenLayout,
   })  : pathTemplate = routeState.route.pathTemplate,

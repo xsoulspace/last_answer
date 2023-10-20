@@ -10,8 +10,8 @@ class NoteProjectSideActionBar extends HookWidget {
     required this.showEmojiKeyboard,
     required this.closeEmojiKeyboard,
     required this.isEmojiKeyboardOpen,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ValueNotifier<NoteProject> note;
   final FutureVoidCallback onRemove;

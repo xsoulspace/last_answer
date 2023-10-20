@@ -2,11 +2,10 @@ part of pack_idea;
 
 class _QuestionDropdown extends HookWidget {
   const _QuestionDropdown({
-    required final this.answer,
-    final this.onChange,
-    final this.alignment = Alignment.centerLeft,
-    final Key? key,
-  }) : super(key: key);
+    required this.answer,
+    this.onChange,
+    this.alignment = Alignment.centerLeft,
+  });
   final IdeaProjectAnswer answer;
   final Alignment alignment;
   final VoidCallback? onChange;
@@ -25,7 +24,7 @@ class _QuestionDropdown extends HookWidget {
 
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
     final questions = ideaQuestionsProvider.values;
-    final textStyle = Theme.of(context).textTheme.bodyText1!;
+    final textStyle = Theme.of(context).textTheme.bodyLarge!;
 
     final questionsItems = questions.map(
       (final question) => DropdownMenuItem<IdeaProjectQuestion>(

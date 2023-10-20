@@ -2,12 +2,12 @@ part of pack_app;
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({
-    required final this.themeDefiner,
-    required final this.onGoHome,
-    required final this.onProjectTap,
-    required final this.checkIsProjectActive,
-    final Key? key,
-  }) : super(key: key);
+    required this.themeDefiner,
+    required this.onGoHome,
+    required this.onProjectTap,
+    required this.checkIsProjectActive,
+    super.key,
+  });
   final VoidCallback onGoHome;
   final ValueChanged<BasicProject> onProjectTap;
   final ThemeDefiner themeDefiner;
@@ -29,10 +29,10 @@ class ProjectsListView extends HookWidget {
           return Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 S.current.noProjectsYet,
-                style: textTheme.headline2,
+                style: textTheme.displayMedium,
               ),
             ),
           );
@@ -40,7 +40,7 @@ class ProjectsListView extends HookWidget {
           return ListTileTheme(
             textColor: screenLayout.small
                 ? null
-                : textTheme.subtitle2?.color?.withOpacity(0.7),
+                : textTheme.titleSmall?.color?.withOpacity(0.7),
             child: RightScrollbar(
               controller: scrollController,
               child: ListView.builder(
@@ -69,12 +69,10 @@ class ProjectsListView extends HookWidget {
                         onGoHome: onGoHome,
                         project: project,
                       ),
-                      onRemoveConfirm: (final _) async {
-                        return showRemoveTitleDialog(
-                          context: context,
-                          title: project.title,
-                        );
-                      },
+                      onRemoveConfirm: (final _) async => showRemoveTitleDialog(
+                        context: context,
+                        title: project.title,
+                      ),
                     ),
                   );
                 },

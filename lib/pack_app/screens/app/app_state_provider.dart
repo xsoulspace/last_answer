@@ -2,9 +2,9 @@ part of pack_app;
 
 class AppStateProvider extends StatelessWidget {
   const AppStateProvider({
-    required final this.builder,
-    final Key? key,
-  }) : super(key: key);
+    required this.builder,
+    super.key,
+  });
   final WidgetBuilder builder;
   GeneralSettingsController get _settings => GlobalStateNotifiers.settings;
   @override
@@ -27,15 +27,13 @@ class AppStateProvider extends StatelessWidget {
       ],
       child: Portal(
         child: Builder(
-          builder: (final context) {
-            return StateLoader(
-              initializer: GlobalStateInitializer(
-                settings: _settings,
-              ),
-              loader: const AppLoadingScreen(),
-              child: builder(context),
-            );
-          },
+          builder: (final context) => StateLoader(
+            initializer: GlobalStateInitializer(
+              settings: _settings,
+            ),
+            loader: const AppLoadingScreen(),
+            child: builder(context),
+          ),
         ),
       ),
     );

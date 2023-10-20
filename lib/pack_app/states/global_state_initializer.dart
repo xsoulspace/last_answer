@@ -15,7 +15,7 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
-    required final this.settings,
+    required this.settings,
   });
   final GeneralSettingsController settings;
 
@@ -176,7 +176,7 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      MIGRATIONS END
     /// ********************************************
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       settings.notify();
     });
   }

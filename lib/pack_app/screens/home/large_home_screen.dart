@@ -2,16 +2,16 @@ part of pack_app;
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({
-    required final this.onProjectTap,
-    required final this.onSettingsTap,
-    required final this.onInfoTap,
-    required final this.onCreateIdeaTap,
-    required final this.onCreateNoteTap,
-    required final this.mainScreenNavigator,
-    required final this.onGoHome,
-    required final this.checkIsProjectActive,
-    final Key? key,
-  }) : super(key: key);
+    required this.onProjectTap,
+    required this.onSettingsTap,
+    required this.onInfoTap,
+    required this.onCreateIdeaTap,
+    required this.onCreateNoteTap,
+    required this.mainScreenNavigator,
+    required this.onGoHome,
+    required this.checkIsProjectActive,
+    super.key,
+  });
   final ValueChanged<BasicProject> onProjectTap;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
   final VoidCallback onSettingsTap;

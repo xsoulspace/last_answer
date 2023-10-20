@@ -2,11 +2,11 @@ part of pack_note;
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({
-    required final this.note,
+    required this.note,
     required this.onRemove,
     required this.updatesStream,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   static const borderPadding = 8.0;
   final NoteProject note;
   final VoidCallback onRemove;
@@ -36,7 +36,7 @@ class MobileNoteSettingsMenu extends HookWidget {
                 child: Text(
                   '${S.current.charactersLimit}:',
                   textAlign: TextAlign.end,
-                  style: theme.textTheme.headline6,
+                  style: theme.textTheme.titleLarge,
                 ),
               ),
               const SizedBox(width: 5),

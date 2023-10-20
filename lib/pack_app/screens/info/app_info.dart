@@ -19,7 +19,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
   final _info = PackageInfo.fromPlatform();
   @override
   Widget build(final BuildContext context) {
-    final bodyText1Style = Theme.of(context).textTheme.bodyText1;
+    final bodyText1Style = Theme.of(context).textTheme.bodyLarge;
 
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,

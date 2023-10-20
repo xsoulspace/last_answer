@@ -2,12 +2,12 @@ part of pack_idea;
 
 class IdeaAnswerScreen extends HookWidget {
   const IdeaAnswerScreen({
-    required final this.ideaId,
-    required final this.answerId,
-    required final this.onBack,
-    required final this.onUnknown,
-    final Key? key,
-  }) : super(key: key);
+    required this.ideaId,
+    required this.answerId,
+    required this.onBack,
+    required this.onUnknown,
+    super.key,
+  });
   final String ideaId;
   final String answerId;
   final ValueChanged<IdeaProject> onBack;
@@ -66,7 +66,7 @@ class IdeaAnswerScreen extends HookWidget {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               maxWidth: ScreenLayout.minFullscreenPageWidth,

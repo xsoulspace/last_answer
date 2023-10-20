@@ -28,19 +28,19 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     }
   }
 
-  PurchaserInfo? purchaserInfo;
+  // PurchaserInfo? purchaserInfo;
   Offerings? offerings;
 
   Package? get annualSubscription => offerings?.current?.annual;
 
-  String get annualSubscriptionTitle =>
-      // TODO(Arenukvern): translate
-      'Subscribe - ${annualSubscription?.product.priceString} / year';
+  String get annualSubscriptionTitle => '';
+  // TODO(Arenukvern): translate
+  // 'Subscribe - ${annualSubscription?.product.priceString} / year';
 
   Package? get monthlySubscription => offerings?.current?.monthly;
   // TODO(arenukvern): translate
-  String get monthlySubscriptionTitle =>
-      'Subscribe - ${monthlySubscription?.product.priceString} / month';
+  String get monthlySubscriptionTitle => '';
+  // 'Subscribe - ${monthlySubscription?.product.priceString} / month';
 
   bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
@@ -57,15 +57,15 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     try {
       await Purchases.setup(key);
       await Purchases.setDebugLogsEnabled(false);
-      final effectivePurchaserInfo =
-          purchaserInfo = await paymentsService.getPurchaserInfo();
-      final allFeaturesEntitlment =
-          effectivePurchaserInfo.entitlements.all['pro'];
-      if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
-        subscriptionType = SubscriptionTypes.paidPatron;
-      }
+      // final effectivePurchaserInfo =
+      //     purchaserInfo = await paymentsService.getPurchaserInfo();
+      // final allFeaturesEntitlment =
+      //     effectivePurchaserInfo.entitlements.all['pro'];
+      // if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
+      //   subscriptionType = SubscriptionTypes.paidPatron;
+      // }
 
-      offerings = await paymentsService.getOfferings();
+      // offerings = await paymentsService.getOfferings();
     } on PlatformException catch (e) {
       // TODO(arenukvern): add log for errors
       if (kDebugMode) {

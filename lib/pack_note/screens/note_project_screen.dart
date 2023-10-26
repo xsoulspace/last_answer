@@ -1,4 +1,4 @@
-part of pack_note;
+part of '../pack_note.dart';
 
 class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({

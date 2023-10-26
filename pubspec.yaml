@@ -19,7 +19,7 @@ version: 3.16.1+31
 
 environment:
   sdk: ">=3.1.2 <4.0.0"
-  flutter: ">=3.13.7"
+  flutter: ">=3.13.9"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:

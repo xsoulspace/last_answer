@@ -1,4 +1,4 @@
-part of pack_note;
+part of '../pack_note.dart';
 
 NoteProjectScreenState useNoteProjectScreenState({
   required final TextEditingController noteController,

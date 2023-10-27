@@ -1,7 +1,7 @@
-part of widgets;
+part of '../widgets.dart';
 
 class FocusBubbleContainerConsts {
-  FocusBubbleContainerConsts._({required final this.context});
+  FocusBubbleContainerConsts._({required this.context});
   factory FocusBubbleContainerConsts.of(final BuildContext context) =>
       FocusBubbleContainerConsts._(context: context);
   final BuildContext context;
@@ -18,15 +18,15 @@ class FocusBubbleContainerConsts {
 
 class FocusBubbleContainer extends HookWidget {
   const FocusBubbleContainer({
-    required final this.child,
-    final this.constraints,
-    final this.padding,
-    final this.onUnfocus,
-    final this.onFocus,
-    final this.fillColor,
-    final this.fillDefaultWithCanvas = false,
-    final Key? key,
-  }) : super(key: key);
+    required this.child,
+    this.constraints,
+    this.padding,
+    this.onUnfocus,
+    this.onFocus,
+    this.fillColor,
+    this.fillDefaultWithCanvas = false,
+    super.key,
+  });
   final Widget child;
   final BoxConstraints? constraints;
   final EdgeInsets? padding;

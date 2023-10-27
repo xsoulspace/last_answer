@@ -1,10 +1,10 @@
-part of widgets;
+part of '../widgets.dart';
 
 class BackgroundFrostBox extends StatelessWidget {
   const BackgroundFrostBox({
     this.onTap,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback? onTap;
   @override
   Widget build(final BuildContext context) {

@@ -1,13 +1,12 @@
-part of widgets;
+part of '../widgets.dart';
 
 class LeftPanelMacosAppBar extends AppBar {
   LeftPanelMacosAppBar({
     required final BuildContext context,
     final String title = '',
-    final List<Widget>? actions,
-    final Key? key,
+    super.actions,
+    super.key,
   }) : super(
-          actions: actions,
           leadingWidth: 0,
           toolbarHeight: 90,
           automaticallyImplyLeading: false,
@@ -23,13 +22,12 @@ class LeftPanelMacosAppBar extends AppBar {
                       style: ThemeDefiner.of(context)
                           .effectiveTheme
                           .textTheme
-                          .subtitle1
+                          .titleMedium
                           ?.copyWith(fontSize: 16),
                     ),
                   ]
                 : [],
           ),
-          key: key,
         );
 }
 
@@ -37,10 +35,10 @@ class BackTextUniversalAppBar extends AppBar {
   BackTextUniversalAppBar({
     required final VoidCallback onBack,
     final ScreenLayout? screenLayout,
-    final List<Widget>? actions,
+    super.actions,
     final String? titleStr,
     final Widget? title,
-    final Key? key,
+    super.key,
     final bool useBackButton = false,
     final double? height,
   })  : assert(
@@ -57,8 +55,6 @@ class BackTextUniversalAppBar extends AppBar {
               : null,
           centerTitle: true,
           title: title ?? Text(titleStr ?? ''),
-          key: key,
-          actions: actions,
         );
 }
 
@@ -66,8 +62,7 @@ class _AppBarLeading extends StatelessWidget {
   const _AppBarLeading({
     required this.useBackButton,
     required this.onBack,
-    final Key? key,
-  }) : super(key: key);
+  });
   final bool useBackButton;
   final VoidCallback onBack;
   @override

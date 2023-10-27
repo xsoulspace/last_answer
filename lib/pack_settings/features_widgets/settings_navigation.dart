@@ -3,8 +3,8 @@ part of pack_settings;
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({
     required this.onSelectRoute,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final ValueChanged<AppRouteName> onSelectRoute;
 
   @override
@@ -54,12 +54,10 @@ class SettingsNavigation extends StatelessWidget {
           ),
         SettingsButton(
           routeName: AppRoutesName.changelog,
-          onSelected: (final _) {
-            showNotificationPopup(
-              context: context,
-              notificationController: notificationController,
-            );
-          },
+          onSelected: (final _) async => showNotificationPopup(
+            context: context,
+            notificationController: notificationController,
+          ),
           checkSelected: routeState.checkIsCurrentRoute,
           text: S.current.changeLog,
           // TODO(arenukvern): add avatar

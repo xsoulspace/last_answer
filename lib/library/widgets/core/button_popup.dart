@@ -1,20 +1,19 @@
-part of widgets;
+part of '../widgets.dart';
 
 class ButtonPopup extends StatelessWidget {
   const ButtonPopup({
-    final this.children = const [],
-    final this.child,
-    final this.height = 320,
-    final this.hideBorder = false,
+    this.children = const [],
+    this.child,
+    this.height = 320,
+    this.hideBorder = false,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.mainAxisAlignment = MainAxisAlignment.start,
-    final Key? key,
-  })  : assert(
+    super.key,
+  }) : assert(
           children != const [] || child != null,
           'Please provide children or child',
-        ),
-        super(key: key);
+        );
   final List<Widget> children;
   final Widget? child;
   final double height;

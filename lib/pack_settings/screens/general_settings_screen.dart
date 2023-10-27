@@ -2,9 +2,9 @@ part of pack_settings;
 
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen({
-    required final this.onBack,
-    final Key? key,
-  }) : super(key: key);
+    required this.onBack,
+    super.key,
+  });
   final VoidCallback onBack;
   @override
   Widget build(final BuildContext context) {

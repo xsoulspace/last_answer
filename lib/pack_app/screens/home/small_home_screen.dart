@@ -9,9 +9,9 @@ class SmallHomeScreen extends StatefulHookWidget {
     required this.onCreateNoteTap,
     required this.onGoHome,
     required this.checkIsProjectActive,
-    final this.verticalMenuAlignment = Alignment.bottomLeft,
-    final Key? key,
-  }) : super(key: key);
+    this.verticalMenuAlignment = Alignment.bottomLeft,
+    super.key,
+  });
   final ValueChanged<BasicProject> onProjectTap;
   final VoidCallback onSettingsTap;
   final VoidCallback onInfoTap;
@@ -82,8 +82,8 @@ class HomeVerticalMenu extends StatelessWidget {
   const HomeVerticalMenu({
     required this.onCreateIdeaTap,
     required this.onCreateNoteTap,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onCreateIdeaTap;
   final VoidCallback onCreateNoteTap;
 
@@ -145,7 +145,7 @@ class HomeAppBar {
       // TODO(arenukvern): make popup with translation for native language
       title: SelectableText(
         greeting.current,
-        style: effectiveTheme.textTheme.headline2,
+        style: effectiveTheme.textTheme.displayMedium,
       ),
       actions: [
         IconButton(

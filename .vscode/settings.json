@@ -1,0 +1,24 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80]
+  },
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "dart.runPubGetOnPubspecChanges": "never",
+  "editor.formatOnSave": true,
+  "diffEditor.experimental.showMoves": true,
+  "dart.showTodos": true,
+  "dart.insertArgumentPlaceholders": true,
+  "dart.flutterOutline": true
+}

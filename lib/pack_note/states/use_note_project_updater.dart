@@ -47,11 +47,13 @@ class NoteProjectUpdaterState implements LifeState {
     notesProvider = context.read<NoteProjectsProvider>();
     folderProvider = context.read<FolderStateProvider>();
 
-    updatesStream.stream
-        .sampleTime(
-          const Duration(milliseconds: 700),
-        )
-        .forEach(onUpdateFolder);
+    unawaited(
+      updatesStream.stream
+          .sampleTime(
+            const Duration(milliseconds: 700),
+          )
+          .forEach(onUpdateFolder),
+    );
   }
 
   @override

@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 enum HeroIdTypes {
   projectTitle,
@@ -8,13 +8,13 @@ enum HeroIdTypes {
 
 class HeroId extends StatelessWidget {
   const HeroId({
-    required final this.id,
-    required final this.child,
-    required final this.type,
-    final this.flightShuttleBuilder,
-    final this.placeholderBuilder,
-    final Key? key,
-  }) : super(key: key);
+    required this.id,
+    required this.child,
+    required this.type,
+    this.flightShuttleBuilder,
+    this.placeholderBuilder,
+    super.key,
+  });
   final String id;
   final HeroIdTypes type;
   final Widget child;
@@ -25,7 +25,7 @@ class HeroId extends StatelessWidget {
     if (isDesktop) return child;
 
     return Hero(
-      tag: '${type.toString()}$id',
+      tag: '$type$id',
       placeholderBuilder: placeholderBuilder,
       flightShuttleBuilder: flightShuttleBuilder,
       child: Material(

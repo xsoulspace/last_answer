@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 class FadedRailPage<T> extends Page<T> {
   /// Creates a material page.
@@ -6,16 +6,11 @@ class FadedRailPage<T> extends Page<T> {
     required this.child,
     this.maintainState = true,
     this.fullscreenDialog = false,
-    final LocalKey? key,
-    final String? name,
-    final Object? arguments,
-    final String? restorationId,
-  }) : super(
-          key: key,
-          name: name,
-          arguments: arguments,
-          restorationId: restorationId,
-        );
+    super.key,
+    super.name,
+    super.arguments,
+    super.restorationId,
+  });
 
   /// The content to be shown in the [Route] created by this page.
   final Widget child;
@@ -27,9 +22,8 @@ class FadedRailPage<T> extends Page<T> {
   final bool fullscreenDialog;
 
   @override
-  Route<T> createRoute(final BuildContext context) {
-    return _PageBasedFadedRailPageRoute<T>(page: this);
-  }
+  Route<T> createRoute(final BuildContext context) =>
+      _PageBasedFadedRailPageRoute<T>(page: this);
 }
 
 // A page-based version of MaterialPageRoute.
@@ -45,9 +39,7 @@ class _PageBasedFadedRailPageRoute<T> extends PageRoute<T>
   FadedRailPage<T> get _page => settings as FadedRailPage<T>;
 
   @override
-  Widget buildContent(final BuildContext context) {
-    return _page.child;
-  }
+  Widget buildContent(final BuildContext context) => _page.child;
 
   @override
   bool get maintainState => _page.maintainState;
@@ -103,20 +95,19 @@ mixin FadedRailRouteTransitionMixin<T> on PageRoute<T> {
     final Animation<double> animation,
     final Animation<double> secondaryAnimation,
     final Widget child,
-  ) {
-    return FadedRailTransition(
-      animation: animation,
-      child: child,
-    );
-  }
+  ) =>
+      FadedRailTransition(
+        animation: animation,
+        child: child,
+      );
 }
 
 class FadedRailTransition extends StatelessWidget {
   const FadedRailTransition({
     required this.animation,
     required this.child,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Widget child;
   final Animation<double> animation;
   static const _minScale = 1.1;
@@ -154,15 +145,15 @@ class RailMagnetController extends ChangeNotifier {}
 class RailMagnet extends HookWidget {
   const RailMagnet({
     required this.child,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   static const _minScale = 0.98;
 
   final Widget child;
   @override
   Widget build(final BuildContext context) {
     final animationController = useAnimationController(
-      initialValue: 1.0,
+      initialValue: 1,
       lowerBound: _minScale,
     );
     final animation = useAnimation(animationController);

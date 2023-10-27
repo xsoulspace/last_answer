@@ -2,10 +2,9 @@ part of pack_idea;
 
 class _QuestionsChips extends StatelessWidget {
   const _QuestionsChips({
-    required final this.value,
-    required final this.onChange,
-    final Key? key,
-  }) : super(key: key);
+    required this.value,
+    required this.onChange,
+  });
   final IdeaProjectQuestion? value;
   final ValueChanged<IdeaProjectQuestion> onChange;
   @override
@@ -38,8 +37,8 @@ class QuestionChip extends StatelessWidget {
     required this.onSelected,
     required this.selected,
     required this.text,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   static final shape =
       RoundedRectangleBorder(borderRadius: defaultBorderRadius);
 
@@ -55,7 +54,7 @@ class QuestionChip extends StatelessWidget {
       height: 38,
       child: ChoiceChip(
         label: Text(text),
-        labelStyle: theme.textTheme.bodyText2,
+        labelStyle: theme.textTheme.bodyMedium,
         shape: shape,
         backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
         selectedColor: AppColors.primary2.withOpacity(0.2),

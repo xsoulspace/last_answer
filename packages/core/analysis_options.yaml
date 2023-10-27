@@ -1,0 +1,21 @@
+include: package:xsoulspace_lints/library.yaml
+
+analyzer:
+  exclude:
+    - bin/cache/*
+    # Please do not change this to lib wide
+    # rule, since the app_router.gr.dart can often
+    # be cause of missing dependencies.
+    - lib/**.*.dart
+    - lib/src/generated/intl/*
+    - lib/src/generated/assets.gen.dart
+    - lib/src/generated/fonts.gen.dart
+    - lib/src/generated/l10n.dart
+
+  errors:
+    unused_local_variable: info
+    require_trailing_commas: error
+    flutter_style_todos: error
+linter:
+  rules:
+    avoid_annotating_with_dynamic: false

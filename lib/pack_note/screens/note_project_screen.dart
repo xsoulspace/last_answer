@@ -1,13 +1,13 @@
-part of pack_note;
+part of '../pack_note.dart';
 
 class NoteProjectScreen extends HookWidget {
   const NoteProjectScreen({
-    required final this.noteId,
-    required final this.onBack,
+    required this.noteId,
+    required this.onBack,
     required this.onGoHome,
     required this.checkIsProjectActive,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final String noteId;
   final ValueChanged<NoteProject> onBack;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
@@ -71,49 +71,48 @@ class NoteProjectScreen extends HookWidget {
               final showEmojiKeyboard,
               final closeEmojiKeyboard,
               final isEmojiKeyboardOpen,
-            ) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ProjectTextField(
-                            hintText: S.current.writeANote,
-                            fillColor: Colors.transparent,
-                            filled: false,
-                            limit: note.value.charactersLimit,
-                            focusNode: noteFocusNode,
-                            endlessLines: true,
-                            focusOnInit: note.value.note.isEmpty,
-                            onSubmit: state.onBack,
-                            controller: noteController,
-                          ),
+            ) =>
+                Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ProjectTextField(
+                          hintText: S.current.writeANote,
+                          fillColor: Colors.transparent,
+                          filled: false,
+                          limit: note.value.charactersLimit,
+                          focusNode: noteFocusNode,
+                          endlessLines: true,
+                          focusOnInit: note.value.note.isEmpty,
+                          onSubmit: state.onBack,
+                          controller: noteController,
                         ),
-                        NoteProjectSideActionBar(
-                          closeEmojiKeyboard: closeEmojiKeyboard,
-                          isEmojiKeyboardOpen: isEmojiKeyboardOpen,
-                          note: note,
-                          noteController: noteController,
-                          noteFocusNode: noteFocusNode,
-                          onRemove: state.onRemove,
-                          showEmojiKeyboard: showEmojiKeyboard,
-                          updatesStream: updatesStream,
-                        ),
-                      ],
-                    ),
+                      ),
+                      NoteProjectSideActionBar(
+                        closeEmojiKeyboard: closeEmojiKeyboard,
+                        isEmojiKeyboardOpen: isEmojiKeyboardOpen,
+                        note: note,
+                        noteController: noteController,
+                        noteFocusNode: noteFocusNode,
+                        onRemove: state.onRemove,
+                        showEmojiKeyboard: showEmojiKeyboard,
+                        updatesStream: updatesStream,
+                      ),
+                    ],
                   ),
-                  if ((isNativeDesktop || kIsWeb) && !isEmojiKeyboardOpen.value)
-                    const SizedBox(height: 16),
-                  if (!isEmojiKeyboardOpen.value) const BottomSafeArea(),
-                ],
-              );
-            },
+                ),
+                if ((isNativeDesktop || kIsWeb) && !isEmojiKeyboardOpen.value)
+                  const SizedBox(height: 16),
+                if (!isEmojiKeyboardOpen.value) const BottomSafeArea(),
+              ],
+            ),
           ),
         ),
       ),

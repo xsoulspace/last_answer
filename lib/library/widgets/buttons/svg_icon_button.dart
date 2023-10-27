@@ -1,6 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-part of widgets;
+part of '../widgets.dart';
 
 // Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -129,31 +129,30 @@ class SvgIconButton extends StatelessWidget {
   /// The [icon] argument must be specified, and is typically either an [Icon]
   /// or an [ImageIcon].
   const SvgIconButton({
-    required final this.onPressed,
-    required final this.svg,
-    final Key? key,
-    final this.iconSize = 24.0,
-    final this.visualDensity,
-    final this.padding = const EdgeInsets.all(8.0),
-    final this.alignment = Alignment.center,
-    final this.splashRadius,
-    final this.color,
-    final this.focusColor,
-    final this.hoverColor,
-    final this.highlightColor,
-    final this.splashColor,
-    final this.disabledColor,
-    final this.mouseCursor = SystemMouseCursors.click,
-    final this.focusNode,
-    final this.autofocus = false,
-    final this.tooltip,
-    final this.enableFeedback = true,
-    final this.constraints,
-  })  : assert(
+    required this.onPressed,
+    required this.svg,
+    super.key,
+    this.iconSize = 24.0,
+    this.visualDensity,
+    this.padding = const EdgeInsets.all(8),
+    this.alignment = Alignment.center,
+    this.splashRadius,
+    this.color,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.disabledColor,
+    this.mouseCursor = SystemMouseCursors.click,
+    this.focusNode,
+    this.autofocus = false,
+    this.tooltip,
+    this.enableFeedback = true,
+    this.constraints,
+  }) : assert(
           splashRadius == null || splashRadius > 0,
           'splashRadius has to be filled',
-        ),
-        super(key: key);
+        );
 
   /// The size of the icon inside the button.
   ///

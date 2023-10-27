@@ -10,8 +10,8 @@ class NoteProjectSideActionBar extends HookWidget {
     required this.showEmojiKeyboard,
     required this.closeEmojiKeyboard,
     required this.isEmojiKeyboardOpen,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ValueNotifier<NoteProject> note;
   final FutureVoidCallback onRemove;
@@ -29,10 +29,10 @@ class NoteProjectSideActionBar extends HookWidget {
       final bool forceToOpen = false,
     }) {
       if (isKeyboardVisible && !forceToOpen) {
-        SoftKeyboard.close();
+        unawaited(SoftKeyboard.close());
       } else {
         if (noteFocusNode.hasFocus) {
-          SoftKeyboard.open();
+          unawaited(SoftKeyboard.open());
         } else {
           noteFocusNode.requestFocus();
         }
@@ -69,7 +69,7 @@ class NoteProjectSideActionBar extends HookWidget {
           width: 48,
           child: IconShareButton(
             onTap: () {
-              ProjectSharer.of(context).share(project: note.value);
+              unawaited(ProjectSharer.of(context).share(project: note.value));
             },
           ),
         ),
@@ -79,7 +79,7 @@ class NoteProjectSideActionBar extends HookWidget {
         ),
         if (Platform.isAndroid || Platform.isIOS)
           IconButton(
-            onPressed: () => onSwitchKeyboard(
+            onPressed: () async => onSwitchKeyboard(
               isKeyboardVisible: isKeyboardVisible.value,
             ),
             icon: AnimatedSwitcher(

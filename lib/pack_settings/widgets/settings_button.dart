@@ -8,8 +8,8 @@ class SettingsButton extends StatelessWidget {
     this.checkSelected,
     this.fallbackRouteName,
     this.avatar,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   static final shape =
       RoundedRectangleBorder(borderRadius: defaultBorderRadius);
   final AppRouteName? fallbackRouteName;
@@ -27,7 +27,7 @@ class SettingsButton extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: ChoiceChip(
         avatar: avatar,
         label: SizedBox(
@@ -36,7 +36,7 @@ class SettingsButton extends StatelessWidget {
         ),
         pressElevation: 0,
         padding: const EdgeInsets.all(14),
-        labelStyle: theme.textTheme.headline4,
+        labelStyle: theme.textTheme.headlineMedium,
         shape: shape,
         backgroundColor: Colors.transparent,
         selectedColor: AppColors.primary2.withOpacity(0.2),

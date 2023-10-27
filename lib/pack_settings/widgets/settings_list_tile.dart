@@ -2,14 +2,14 @@ part of pack_settings;
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
-    required final this.title,
-    required final this.child,
-    required final this.leftColumnWidth,
+    required this.title,
+    required this.child,
+    required this.leftColumnWidth,
     this.addTitleQuote = true,
-    final this.description = '',
+    this.description = '',
     this.crossAxisAlignment = CrossAxisAlignment.center,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final double leftColumnWidth;
   final String title;
   final Widget child;
@@ -40,10 +40,10 @@ class SettingsListTile extends StatelessWidget {
               child,
               if (description.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(top: 7.0),
+                  padding: const EdgeInsets.only(top: 7),
                   child: SelectableText(
                     description,
-                    style: theme.textTheme.subtitle2,
+                    style: theme.textTheme.titleSmall,
                   ),
                 ),
             ],

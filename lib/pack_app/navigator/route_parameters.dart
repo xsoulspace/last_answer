@@ -4,9 +4,9 @@ part of pack_app;
 @JsonSerializable()
 class AppRouteParameters {
   const AppRouteParameters({
-    final this.noteId,
-    final this.ideaId,
-    final this.answerId,
+    this.noteId,
+    this.ideaId,
+    this.answerId,
   });
   factory AppRouteParameters.fromJson(final Map<String, dynamic> json) =>
       _$AppRouteParametersFromJson(json);

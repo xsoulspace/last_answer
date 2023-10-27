@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastanswer/abstract/abstract.dart';

@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          fromJson: false
+          toJson: false
+          equal: true
+          addImplicitFinal: true
+          copyWith: true
+          unionValueCase: pascal

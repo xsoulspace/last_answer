@@ -2,10 +2,10 @@ part of pack_idea;
 
 class CreateIdeaProjectScreen extends StatefulHookWidget {
   const CreateIdeaProjectScreen({
-    required final this.onBack,
-    required final this.onCreate,
-    final Key? key,
-  }) : super(key: key);
+    required this.onBack,
+    required this.onCreate,
+    super.key,
+  });
   final VoidCallback onBack;
   final ValueChanged<String> onCreate;
 
@@ -18,7 +18,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
   final _textFieldFocusNode = FocusNode();
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((final _) {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       FocusScope.of(context).requestFocus(_textFieldFocusNode);
     });
     super.initState();
@@ -49,7 +49,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
         onBack: widget.onBack,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 8),
+        padding: const EdgeInsets.only(left: 16, right: 8),
         child: Center(
           child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -63,7 +63,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                   const SizedBox(height: 44),
                   Text(
                     S.current.whatsYourIdea,
-                    style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.displayLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 87),
@@ -77,7 +77,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                           focusNode: _textFieldFocusNode,
                           controller: textController,
                           maxLength: 90,
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.displayLarge,
                           decoration: effectiveInputDecoration,
                         ),
                       ),

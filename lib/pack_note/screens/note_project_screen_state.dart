@@ -1,4 +1,4 @@
-part of pack_note;
+part of '../pack_note.dart';
 
 NoteProjectScreenState useNoteProjectScreenState({
   required final TextEditingController noteController,
@@ -28,12 +28,12 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   NoteProjectScreenState({
     required this.noteController,
     required this.onScreenBack,
-    required final this.checkIsProjectActive,
-    required final this.onGoHome,
-    required final NoteProject note,
-    required final StreamController<NoteProjectNotifier> updatesStream,
-    required final BuildContext context,
-  }) : super(context: context, note: note, updatesStream: updatesStream);
+    required this.checkIsProjectActive,
+    required this.onGoHome,
+    required super.note,
+    required super.updatesStream,
+    required super.context,
+  });
 
   final TextEditingController noteController;
   final ValueChanged<NoteProject> onScreenBack;

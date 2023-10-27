@@ -1,4 +1,4 @@
-part of hooks;
+part of 'hooks.dart';
 
 abstract class LifeState {
   void initState();

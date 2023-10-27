@@ -1,10 +1,10 @@
-part of widgets;
+part of '../widgets.dart';
 
 class AdaptiveBackButton extends HookWidget {
   const AdaptiveBackButton({
-    required final this.onPressed,
-    final Key? key,
-  }) : super(key: key);
+    required this.onPressed,
+    super.key,
+  });
   final VoidCallback onPressed;
   @override
   Widget build(final BuildContext context) {

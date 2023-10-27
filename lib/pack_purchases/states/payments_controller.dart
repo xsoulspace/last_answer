@@ -19,28 +19,26 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   });
   final PaymentsService paymentsService;
   SubscriptionTypes subscriptionType = SubscriptionTypes.free;
-  bool get isPatronSubscription {
-    switch (subscriptionType) {
-      case SubscriptionTypes.free:
-        return false;
-      default:
-        return true;
-    }
-  }
+  bool get isPatronSubscription => switch (subscriptionType) {
+        SubscriptionTypes.free => false,
+        SubscriptionTypes.advertisementPatron ||
+        SubscriptionTypes.paidPatron =>
+          true
+      };
 
-  PurchaserInfo? purchaserInfo;
-  Offerings? offerings;
+  // PurchaserInfo? purchaserInfo;
+  // Offerings? offerings;
 
-  Package? get annualSubscription => offerings?.current?.annual;
+  // Package? get annualSubscription => offerings?.current?.annual;
 
-  String get annualSubscriptionTitle =>
-      //TODO(arenukvern): translate
-      'Subscribe - ${annualSubscription?.product.priceString} / year';
+  String get annualSubscriptionTitle => '';
+  // TODO(Arenukvern): translate
+  // 'Subscribe - ${annualSubscription?.product.priceString} / year';
 
-  Package? get monthlySubscription => offerings?.current?.monthly;
-  //TODO(arenukvern): translate
-  String get monthlySubscriptionTitle =>
-      'Subscribe - ${monthlySubscription?.product.priceString} / month';
+  // Package? get monthlySubscription => offerings?.current?.monthly;
+  // TODO(arenukvern): translate
+  String get monthlySubscriptionTitle => '';
+  // 'Subscribe - ${monthlySubscription?.product.priceString} / month';
 
   bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
@@ -55,17 +53,17 @@ class PaymentsController extends ChangeNotifier implements Loadable {
     }
     if (key.isEmpty) throw ArgumentError.value('key is not provided');
     try {
-      await Purchases.setup(key);
-      await Purchases.setDebugLogsEnabled(false);
-      final effectivePurchaserInfo =
-          purchaserInfo = await paymentsService.getPurchaserInfo();
-      final allFeaturesEntitlment =
-          effectivePurchaserInfo.entitlements.all['pro'];
-      if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
-        subscriptionType = SubscriptionTypes.paidPatron;
-      }
+      // await Purchases.setup(key);
+      // await Purchases.setDebugLogsEnabled(false);
+      // final effectivePurchaserInfo =
+      //     purchaserInfo = await paymentsService.getPurchaserInfo();
+      // final allFeaturesEntitlment =
+      //     effectivePurchaserInfo.entitlements.all['pro'];
+      // if (allFeaturesEntitlment != null && allFeaturesEntitlment.isActive) {
+      //   subscriptionType = SubscriptionTypes.paidPatron;
+      // }
 
-      offerings = await paymentsService.getOfferings();
+      // offerings = await paymentsService.getOfferings();
     } on PlatformException catch (e) {
       // TODO(arenukvern): add log for errors
       if (kDebugMode) {

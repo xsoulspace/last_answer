@@ -10,14 +10,14 @@ typedef ProjectSelectionChanged = void Function({
 
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
-    required final this.project,
-    required final this.onTap,
-    required final this.onRemove,
-    required final this.onRemoveConfirm,
-    required final this.themeDefiner,
-    required final this.isProjectActive,
-    final Key? key,
-  }) : super(key: key);
+    required this.project,
+    required this.onTap,
+    required this.onRemove,
+    required this.onRemoveConfirm,
+    required this.themeDefiner,
+    required this.isProjectActive,
+    super.key,
+  });
   final BasicProject project;
   final bool isProjectActive;
   final ValueChanged<BasicProject> onTap;
@@ -44,7 +44,7 @@ class ProjectTile extends StatelessWidget {
       );
     }
 
-    double blurOpacity = 0.0;
+    double blurOpacity = 0;
 
     if (!useContextTheme) {
       if (isProjectActive) {
@@ -98,7 +98,7 @@ class ProjectTile extends StatelessWidget {
                         Icons.book_rounded,
                         size: 12.5,
                         color:
-                            theme.textTheme.bodyText2?.color?.withOpacity(0.5),
+                            theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
                       ),
                     ),
                   Text(

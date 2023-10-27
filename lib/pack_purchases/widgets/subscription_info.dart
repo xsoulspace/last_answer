@@ -1,7 +1,7 @@
 part of pack_purchases;
 
 class SubscriptionInfo extends StatelessWidget {
-  const SubscriptionInfo({final Key? key}) : super(key: key);
+  const SubscriptionInfo({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -29,11 +29,11 @@ class SubscriptionInfo extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              style: theme.textTheme.headline6,
+              style: theme.textTheme.titleLarge,
               children: [
                 TextSpan(
                   text: 'Patron\n',
-                  style: theme.textTheme.headline1,
+                  style: theme.textTheme.displayLarge,
                 ),
                 const TextSpan(text: 'Subscription'),
               ],
@@ -55,13 +55,13 @@ class SubscriptionInfo extends StatelessWidget {
       const SizedBox(height: 40),
       Text(
         'Enhance this app for your writing mood.',
-        style: theme.textTheme.headline3,
+        style: theme.textTheme.displaySmall,
       ),
       const SizedBox(height: 40),
       const Text("What's included:"),
       const SizedBox(height: 24),
-      Wrap(
-        children: const [
+      const Wrap(
+        children: [
           FeatureCard(
             title: 'Synchronization',
             description:
@@ -120,12 +120,12 @@ class SubscriptionInfo extends StatelessWidget {
     final double leftColumnWidth,
   ) =>
       [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Text('You are a Patron!'),
             Text('Which means:'),
           ],
-        )
+        ),
       ];
 }
 
@@ -134,23 +134,21 @@ class FeatureCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.icon,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final String title;
   final String description;
   final Widget icon;
   @override
-  Widget build(final BuildContext context) {
-    return Card(
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 10,
+  Widget build(final BuildContext context) => Card(
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 14,
+            horizontal: 10,
+          ),
+          title: Text(title, style: Theme.of(context).textTheme.headlineSmall),
+          subtitle: Text(description),
+          leading: icon,
         ),
-        title: Text(title, style: Theme.of(context).textTheme.headline5),
-        subtitle: Text(description),
-        leading: icon,
-      ),
-    );
-  }
+      );
 }

@@ -3,12 +3,11 @@ part of pack_settings;
 class ThemeSwitcherButton extends StatelessWidget {
   const ThemeSwitcherButton({
     required this.settings,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final GeneralSettingsController settings;
   @override
-  Widget build(final BuildContext context) {
-    return DropdownButton<ThemeMode>(
+  Widget build(final BuildContext context) => DropdownButton<ThemeMode>(
       // Read the selected themeMode from the controller
       value: settings.themeMode,
       // Call the updateThemeMode method any time the user selects
@@ -33,5 +32,4 @@ class ThemeSwitcherButton extends StatelessWidget {
         ),
       ],
     );
-  }
 }

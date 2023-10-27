@@ -1,12 +1,12 @@
-part of widgets;
+part of '../widgets.dart';
 
 class DangerZone extends StatelessWidget {
   const DangerZone({
     required this.onRemove,
     this.removeText,
     this.dangerBackgroundColor,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onRemove;
   final Color? dangerBackgroundColor;
   final String? removeText;
@@ -17,7 +17,7 @@ class DangerZone extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 15),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -38,14 +38,14 @@ class DangerZone extends StatelessWidget {
             ),
             child: Text(
               S.current.danger,
-              style: theme.textTheme.bodyText2?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.accent3,
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 15),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

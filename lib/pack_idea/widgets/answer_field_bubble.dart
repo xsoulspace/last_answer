@@ -2,11 +2,11 @@ part of pack_idea;
 
 class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({
-    required final this.answer,
-    required final this.onFocus,
-    required final this.onChange,
-    final Key? key,
-  }) : super(key: key);
+    required this.answer,
+    required this.onFocus,
+    required this.onChange,
+    super.key,
+  });
   final IdeaProjectAnswer answer;
   final VoidCallback onFocus;
   final VoidCallback onChange;
@@ -25,18 +25,17 @@ class AnswerFieldBubble extends HookWidget {
       [answer.text],
     );
     final consts = FocusBubbleContainerConsts.of(context);
-    void _updateAnswer() {
+    void updateAnswer() {
       if (answer.text == controller.text) return;
-      answer
-        ..text = controller.text
-        ..save();
+      answer.text = controller.text;
+      unawaited(answer.save());
       onChange();
     }
 
     final theme = Theme.of(context);
 
     return FocusBubbleContainer(
-      onUnfocus: _updateAnswer,
+      onUnfocus: updateAnswer,
       onFocus: onFocus,
       child: Theme(
         data: theme.copyWith(
@@ -67,14 +66,14 @@ class AnswerFieldBubble extends HookWidget {
           ),
         ),
         child: TextField(
-          onChanged: (final _) => _updateAnswer(),
+          onChanged: (final _) => updateAnswer(),
           controller: controller,
           maxLines: null,
           keyboardAppearance: Theme.of(context).brightness,
           textAlignVertical: TextAlignVertical.bottom,
           keyboardType: TextInputType.multiline,
-          onEditingComplete: _updateAnswer,
-          style: Theme.of(context).textTheme.bodyText2,
+          onEditingComplete: updateAnswer,
+          style: Theme.of(context).textTheme.bodyMedium,
           cursorColor: Theme.of(context).colorScheme.secondary,
         ),
       ),

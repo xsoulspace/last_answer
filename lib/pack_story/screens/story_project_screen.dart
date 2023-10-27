@@ -2,7 +2,7 @@ part of pack_story;
 
 class StoryProjectScreen extends StatelessWidget {
   const StoryProjectScreen({
-    required final this.projectId,
+    required this.projectId,
     final Key? key,
   }) : super(key: key);
   final ProjectId projectId;

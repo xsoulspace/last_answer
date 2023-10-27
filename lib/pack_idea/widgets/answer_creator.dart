@@ -2,15 +2,14 @@ part of pack_idea;
 
 class _AnswerCreator extends HookWidget {
   const _AnswerCreator({
-    required final this.onCreated,
-    required final this.defaultQuestion,
-    required final this.idea,
-    required final this.onShareTap,
-    required final this.onFocus,
-    required final this.questionsOpened,
-    required final this.onChanged,
-    final Key? key,
-  }) : super(key: key);
+    required this.onCreated,
+    required this.defaultQuestion,
+    required this.idea,
+    required this.onShareTap,
+    required this.onFocus,
+    required this.questionsOpened,
+    required this.onChanged,
+  });
   final IdeaProjectQuestion defaultQuestion;
   final IdeaProject idea;
   final ValueChanged<IdeaProjectAnswer> onCreated;
@@ -115,7 +114,7 @@ class _AnswerCreator extends HookWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
                 Expanded(

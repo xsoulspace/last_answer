@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 typedef HoverableWidgetBuilder = Widget Function(
   BuildContext context,
@@ -9,8 +9,8 @@ class HoverableArea extends HookWidget {
   const HoverableArea({
     required this.builder,
     this.clickable = true,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final HoverableWidgetBuilder builder;
   final bool clickable;
 

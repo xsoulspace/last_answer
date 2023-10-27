@@ -4,8 +4,8 @@ class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
     required this.onSelectRoute,
     required this.onBack,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onBack;
   final ValueChanged<AppRouteName> onSelectRoute;
 
@@ -59,7 +59,7 @@ class DesktopSettingsScreen extends StatelessWidget {
 }
 
 class DesktopSettingsNavigator extends HookWidget {
-  const DesktopSettingsNavigator({final Key? key}) : super(key: key);
+  const DesktopSettingsNavigator({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -72,16 +72,13 @@ class DesktopSettingsNavigator extends HookWidget {
     switch (pathTemplate) {
       case AppRoutesName.subscription:
         child = previousChild.value = const SubscriptionInfo();
-        break;
       case AppRoutesName.profile:
         child = previousChild.value = const MyAccount();
-        break;
       case AppRoutesName.settings:
       case AppRoutesName.generalSettings:
         child = previousChild.value = const GeneralSettings(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );
-        break;
       default:
         child = previousChild.value;
     }

@@ -52,7 +52,7 @@ Future<void> showNotificationPopup({
 }
 
 class UpdateNotificaionPopup extends StatelessWidget {
-  const UpdateNotificaionPopup({final Key? key}) : super(key: key);
+  const UpdateNotificaionPopup({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -63,7 +63,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
     final lastMessage = updates.first;
     final language = intl.Intl.getCurrentLocale();
     void close() {
-      notificationController.readAllUpdates();
+      unawaited(notificationController.readAllUpdates());
       Navigator.pop(context);
     }
 
@@ -84,7 +84,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(14),
                     child: CloseButton(
                       onPressed: close,
                     ),
@@ -92,11 +92,11 @@ class UpdateNotificaionPopup extends StatelessWidget {
                 ),
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 18.0),
+                    padding: const EdgeInsets.only(top: 18),
                     child: SelectableText(
                       lastMessage.title.getByLanguage(language),
                       textAlign: TextAlign.center,
-                      style: textTheme.headline1,
+                      style: textTheme.displayLarge,
                     ),
                   ),
                 ),
@@ -111,12 +111,12 @@ class UpdateNotificaionPopup extends StatelessWidget {
                 Widget child = ListTile(
                   title: SelectableText(
                     notification.title.getByLanguage(language),
-                    style: theme.textTheme.headline5,
+                    style: theme.textTheme.headlineSmall,
                   ),
                   subtitle: SelectableText(
                     intl.DateFormat.yMd()
                         .format(notification.created.toLocal()),
-                    style: theme.textTheme.subtitle2,
+                    style: theme.textTheme.titleSmall,
                   ),
                 );
 
@@ -125,11 +125,11 @@ class UpdateNotificaionPopup extends StatelessWidget {
                     children: [
                       Divider(color: theme.highlightColor),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 35.0),
+                        padding: const EdgeInsets.symmetric(vertical: 35),
                         child: Text(
                           'PREVIOUS UPDATES',
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.subtitle2,
+                          style: theme.textTheme.titleSmall,
                         ),
                       ),
                       Divider(color: theme.highlightColor),
@@ -140,7 +140,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
                 }
 
                 return Padding(
-                  padding: const EdgeInsets.only(top: 95.0, bottom: 24),
+                  padding: const EdgeInsets.only(top: 95, bottom: 24),
                   child: child,
                 );
               },
@@ -157,7 +157,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(14.0),
+            padding: const EdgeInsets.all(14),
             child: Row(
               children: [
                 const DiscordButton(text: 'Discord'),
@@ -166,7 +166,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
                   onPressed: close,
                   child: Text(
                     S.current.close.sentenceCase,
-                    style: textTheme.bodyText1,
+                    style: textTheme.bodyLarge,
                   ),
                 ),
               ],

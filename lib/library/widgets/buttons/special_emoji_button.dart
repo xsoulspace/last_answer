@@ -1,12 +1,12 @@
-part of widgets;
+part of '../widgets.dart';
 
 class SpecialEmojiButton extends HookWidget {
   const SpecialEmojiButton({
-    required final this.controller,
-    required final this.focusNode,
-    required final this.onShowEmojiKeyboard,
-    final Key? key,
-  }) : super(key: key);
+    required this.controller,
+    required this.focusNode,
+    required this.onShowEmojiKeyboard,
+    super.key,
+  });
   final TextEditingController controller;
   final FocusNode focusNode;
   final VoidCallback onShowEmojiKeyboard;
@@ -26,11 +26,9 @@ class SpecialEmojiButton extends HookWidget {
 
     return PopupButton(
       icon: Icons.emoji_flags_rounded,
-      builder: (final context) {
-        return SpecialEmojisGrid(
-          onChanged: emojiInserter.insert,
-        );
-      },
+      builder: (final context) => SpecialEmojisGrid(
+        onChanged: emojiInserter.insert,
+      ),
     );
   }
 }

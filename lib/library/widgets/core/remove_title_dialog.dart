@@ -1,4 +1,4 @@
-part of widgets;
+part of '../widgets.dart';
 
 Future<bool> showRemoveTitleDialog({
   required final String title,
@@ -7,23 +7,21 @@ Future<bool> showRemoveTitleDialog({
   if (isAppleDevice) {
     return await showCupertinoDialog(
       context: context,
-      builder: (final context) {
-        return CupertinoAlertDialog(
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(S.current.cancel.titleCase),
-            ),
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(S.current.delete.titleCase),
-            ),
-          ],
-          content: Text(S.current.willBeLost(title)),
-          title: Text(S.current.areYouSure),
-        );
-      },
+      builder: (final context) => CupertinoAlertDialog(
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(S.current.cancel.titleCase),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(S.current.delete.titleCase),
+          ),
+        ],
+        content: Text(S.current.willBeLost(title)),
+        title: Text(S.current.areYouSure),
+      ),
     );
   }
 
@@ -44,7 +42,8 @@ Future<bool> showRemoveTitleDialog({
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               S.current.delete.toUpperCase(),
-              style: theme.textTheme.button?.copyWith(color: AppColors.accent2),
+              style: theme.textTheme.labelLarge
+                  ?.copyWith(color: AppColors.accent2),
             ),
           ),
         ],

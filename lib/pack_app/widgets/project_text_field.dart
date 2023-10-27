@@ -2,21 +2,21 @@ part of pack_app;
 
 class ProjectTextField extends StatefulHookWidget {
   const ProjectTextField({
-    required final this.controller,
-    required final this.onSubmit,
-    required final this.hintText,
-    final this.onUnfocus,
-    final this.onFocus,
-    final this.filled = true,
-    final this.maxLines = 7,
-    final this.endlessLines = false,
-    final this.focusOnInit = true,
-    final this.fillColor,
-    final this.focusNode,
+    required this.controller,
+    required this.onSubmit,
+    required this.hintText,
+    this.onUnfocus,
+    this.onFocus,
+    this.filled = true,
+    this.maxLines = 7,
+    this.endlessLines = false,
+    this.focusOnInit = true,
+    this.fillColor,
+    this.focusNode,
     this.countCharacters = false,
     this.limit,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final TextEditingController controller;
   final VoidCallback onSubmit;
   final int maxLines;
@@ -53,7 +53,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   void initState() {
     setMaxLength();
     if (widget.focusOnInit) {
-      WidgetsBinding.instance?.addPostFrameCallback((final _) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
         if (!mounted) return;
         if (_textFieldFocusNode.canRequestFocus) {
           FocusScope.of(context).requestFocus(_textFieldFocusNode);
@@ -118,7 +118,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             expands: widget.endlessLines,
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.bottom,
-            style: theme.textTheme.bodyText2,
+            style: theme.textTheme.bodyMedium,
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(

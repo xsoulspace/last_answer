@@ -4,8 +4,8 @@ class CharactersLimitSetting extends HookWidget {
   const CharactersLimitSetting({
     this.note,
     this.updatesStream,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final NoteProject? note;
   final StreamController<NoteProjectNotifier>? updatesStream;
 
@@ -41,7 +41,7 @@ class CharactersLimitSetting extends HookWidget {
 
     if (state.noLimitIsSet) {
       otherButton = Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 8),
         child: HoverableButton(
           onPressed: () => state.setLimit(
             0,
@@ -132,17 +132,12 @@ class CharactersLimitSetting extends HookWidget {
       children: [
         CharactersLimitButton(
           onTap: state.onSetInstagramLimit,
-          child: Image.asset(
-            instagramIcon.assetName,
-            bundle: instagramIcon.bundle,
-            package: instagramIcon.package,
-            cacheHeight: 36,
-            cacheWidth: 36,
-            width: 18,
-            height: 18,
+          child: ImageGenIcon(
+            genImage: instagramIcon,
+            dimension: 18,
             color: state.isInstagramLimit
                 ? null
-                : theme.textTheme.bodyText2?.color,
+                : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
@@ -152,19 +147,14 @@ class CharactersLimitSetting extends HookWidget {
             height: 16,
             color: state.isTwitterLimit
                 ? AppColors.twitterBlue
-                : theme.textTheme.bodyText2?.color,
+                : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
           onTap: state.onSetFacebookLimit,
-          child: Image.asset(
-            facebookIcon.assetName,
-            bundle: facebookIcon.bundle,
-            package: facebookIcon.package,
-            cacheHeight: 36,
-            cacheWidth: 36,
-            width: 18,
-            height: 18,
+          child: ImageGenIcon(
+            genImage: facebookIcon,
+            dimension: 18,
           ),
         ),
         CharactersLimitButton(
@@ -191,22 +181,43 @@ class CharactersLimitButton extends StatelessWidget {
   const CharactersLimitButton({
     required this.onTap,
     required this.child,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onTap;
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) {
-    return HoverableButton(
-      onPressed: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 3,
-          horizontal: 3,
+  Widget build(final BuildContext context) => HoverableButton(
+        onPressed: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 3,
+            horizontal: 3,
+          ),
+          child: child,
         ),
-        child: child,
-      ),
-    );
-  }
+      );
+}
+
+class ImageGenIcon extends StatelessWidget {
+  const ImageGenIcon({
+    required this.dimension,
+    required this.genImage,
+    this.color,
+    super.key,
+  });
+  final AssetGenImage genImage;
+  final Color? color;
+  final double dimension;
+  @override
+  Widget build(final BuildContext context) => Container(
+        width: dimension,
+        height: dimension,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: genImage.provider(),
+          ),
+          color: color,
+        ),
+      );
 }

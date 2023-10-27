@@ -3,8 +3,8 @@ part of pack_settings;
 class MyAccount extends StatelessWidget {
   const MyAccount({
     this.padding,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final EdgeInsets? padding;
 
   @override

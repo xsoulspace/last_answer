@@ -1,4 +1,4 @@
-part of pack_app;
+part of '../pack_app.dart';
 
 class NavigatorValueKeys {
   NavigatorValueKeys._();
@@ -7,10 +7,10 @@ class NavigatorValueKeys {
 
   static const _info = ValueKey<String>('info');
 
-  static const _notes = ValueKey<String>('notes');
+  // static const _notes = ValueKey<String>('notes');
   static const _notesNote = ValueKey<String>('notes/note');
   static const _createIdea = ValueKey<String>('createIdea');
-  static const _ideas = ValueKey<String>('ideas');
+  // static const _ideas = ValueKey<String>('ideas');
   static const _ideasIdea = ValueKey<String>('ideas/idea');
   static const _ideasIdeaAnswer = ValueKey<String>('ideas/idea/answer');
   static final _largeScreenHomeNavigator = GlobalKey();
@@ -20,10 +20,10 @@ class NavigatorValueKeys {
 /// on the `routeState` that was parsed by the TemplateRouteParser.
 class AppNavigator extends StatefulWidget {
   const AppNavigator({
-    required final this.navigatorKey,
-    required final this.routeState,
-    final Key? key,
-  }) : super(key: key);
+    required this.navigatorKey,
+    required this.routeState,
+    super.key,
+  });
   final GlobalKey<NavigatorState> navigatorKey;
   final RouteState routeState;
   @override
@@ -36,12 +36,12 @@ class _AppNavigatorState extends State<AppNavigator> {
     super.initState();
     final notificationController = context.read<NotificationController>();
     if (notificationController.hasUnreadUpdates) {
-      WidgetsBinding.instance?.addPostFrameCallback((final _) {
-        showNotificationPopup(
+      WidgetsBinding.instance.addPostFrameCallback(
+        (final _) async => showNotificationPopup(
           context: widget.navigatorKey.currentContext!,
           notificationController: notificationController,
-        );
-      });
+        ),
+      );
     }
   }
 

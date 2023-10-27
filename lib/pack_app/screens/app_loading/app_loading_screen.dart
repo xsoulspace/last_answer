@@ -2,8 +2,8 @@ part of pack_app;
 
 class AppLoadingScreen extends StatelessWidget {
   const AppLoadingScreen({
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(final BuildContext context) {
     final settings = context.watch<GeneralSettingsController>();

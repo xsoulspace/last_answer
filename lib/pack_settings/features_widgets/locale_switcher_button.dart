@@ -3,8 +3,8 @@ part of pack_settings;
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({
     required this.settings,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final GeneralSettingsController settings;
 
   @override

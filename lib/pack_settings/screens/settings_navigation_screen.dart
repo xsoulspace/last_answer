@@ -2,10 +2,10 @@ part of pack_settings;
 
 class SettingsNavigationScreen extends StatelessWidget {
   const SettingsNavigationScreen({
-    required final this.onBack,
+    required this.onBack,
     required this.onSelectRoute,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final VoidCallback onBack;
   final ValueChanged<AppRouteName> onSelectRoute;
 

@@ -1,0 +1,122 @@
+name: core
+description: Unified data layer & tools
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=3.1.2 <4.0.0"
+  flutter: ">=3.13.9"
+
+dependencies:
+  collection: ^1.18.0
+  connectivity_plus: ^5.0.1
+  equatable: ^2.0.5
+  firebase_analytics: ^10.6.1
+  firebase_core: ^2.19.0
+  firebase_crashlytics: ^3.4.1
+  firebase_messaging: ^14.7.1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.3
+  form_builder_validators: ^9.1.0
+  freezed_annotation: ^2.4.1
+  google_fonts: ^6.1.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  infinite_scroll_pagination: ^4.0.0
+  intl: ^0.18.1
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  json_annotation: ^4.8.1
+  logger: ^2.0.2+1
+  package_info_plus: ^4.2.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+  path_to_regexp: ^0.4.0
+  permission_handler: ^11.0.1
+  quiver: ^3.2.1
+  share_plus: ^7.2.1
+  shared_preferences: ^2.2.2
+  universal_io: ^2.2.0
+  url_launcher: ^6.1.14
+  uuid: ^4.1.0
+
+dependency_overrides:
+  collection: 1.18.0
+  intl: ^0.18.1
+  uuid: ^4.1.0
+
+dev_dependencies:
+  bloc_test: ^9.1.4
+  build_runner: ^2.4.6
+  faker: ^2.1.0
+  flutter_gen: ^5.3.2
+  flutter_gen_runner: ^5.3.2
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.4.5
+  hive_generator: ^2.0.1
+  injectable_generator: ^2.4.1
+  isar_generator: ^3.1.0+1
+  json_serializable: ^6.7.1
+  mockito: ^5.4.2
+  mocktail: ^1.0.1
+  mocktail_image_network: ^1.0.0
+  xsoulspace_lints: ^0.0.10
+
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+flutter_gen:
+  output: lib/src/generated/ # Optional (default: lib/gen/)
+  lineLength: 80
+
+  assets:
+    enabled: true
+    outputs:
+      gen_for_package: true
+      package_parameter_enabled: true
+
+  integrations:
+    flutter_svg: true
+
+  fonts:
+    enabled: true
+
+flutter:
+  generate: true
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/json/
+    - google_fonts/
+
+fonts:
+  - family: IBMPlexSans
+    fonts:
+      - asset: google_fonts/IBMPlexSans-Thin.ttf
+        weight: 100
+      - asset: google_fonts/IBMPlexSans-Light.ttf
+        weight: 300
+      - asset: google_fonts/IBMPlexSans-Regular.ttf
+        weight: 400
+      - asset: google_fonts/IBMPlexSans-Medium.ttf
+        weight: 500
+      - asset: google_fonts/IBMPlexSans-SemiBold.ttf
+        weight: 700
+      - asset: google_fonts/IBMPlexSans-Bold.ttf
+        weight: 900
+  - family: NotoColorEmoji
+    fonts:
+      - asset: google_fonts/NotoColorEmoji.ttf
+  - family: NotoSans
+    fonts:
+      - asset: google_fonts/NotoSans-Regular.ttf
+flutter_intl:
+  enabled: true

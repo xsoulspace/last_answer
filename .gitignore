@@ -50,3 +50,5 @@ app.*.map.json
 
 # Monarch related
 .monarch/
+.fvm/flutter_sdk
+configs/envs/prod.json

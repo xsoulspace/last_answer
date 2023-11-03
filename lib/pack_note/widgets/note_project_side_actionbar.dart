@@ -1,4 +1,4 @@
-part of pack_note;
+part of '../pack_note.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({
@@ -14,7 +14,7 @@ class NoteProjectSideActionBar extends HookWidget {
   });
 
   final ValueNotifier<NoteProject> note;
-  final FutureVoidCallback onRemove;
+  final AsyncCallback onRemove;
   final StreamController<NoteProjectNotifier> updatesStream;
   final TextEditingController noteController;
   final VoidCallback showEmojiKeyboard;

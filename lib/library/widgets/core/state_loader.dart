@@ -1,6 +1,6 @@
 part of '../widgets.dart';
 
-abstract class StateInitializer extends Loadable {}
+abstract interface class StateInitializer implements Loadable {}
 
 class StateLoader extends StatefulHookWidget {
   const StateLoader({
@@ -37,7 +37,7 @@ class _StateLoaderState extends State<StateLoader>
     if (!_loaded) {
       _isLoading = true;
       _loaded = true;
-      await widget.initializer.onLoad(context: context);
+      await widget.initializer.onLoad();
       _renderAllowed = true;
       await animationController.forward();
       _isLoading = false;

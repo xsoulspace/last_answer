@@ -55,7 +55,7 @@ class GeneralSettingsController with ChangeNotifier implements Loadable {
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     _themeMode = await settingsService.themeMode();
     _locale = await settingsService.locale();
     migrated = await settingsService.migrated();

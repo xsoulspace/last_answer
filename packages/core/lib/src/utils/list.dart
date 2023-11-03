@@ -1,4 +1,4 @@
-part of utils;
+part of 'utils.dart';
 
 extension ListExtension on List<BasicProject> {
   void sortByDate() => sort(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../models/hive_models/hive_models.dart';
+import '../datasources/datasources.dart';
 import '../utils/utils.dart';
 import 'map_state.dart';
 

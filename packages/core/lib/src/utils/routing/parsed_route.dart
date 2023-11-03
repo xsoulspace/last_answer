@@ -1,4 +1,4 @@
-part of utils;
+part of '../utils.dart';
 
 /// A route path that has been parsed by [TemplateRouteParser].
 @immutable

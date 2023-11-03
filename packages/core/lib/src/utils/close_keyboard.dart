@@ -1,4 +1,4 @@
-part of utils;
+part of 'utils.dart';
 
 void closeKeyboard({required final BuildContext context}) {
   final FocusScopeNode currentFocus = FocusScope.of(context);

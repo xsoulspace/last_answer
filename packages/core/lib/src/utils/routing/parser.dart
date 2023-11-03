@@ -1,4 +1,4 @@
-part of utils;
+part of '../utils.dart';
 
 /// Used by [TemplateRouteParser] to guard access to routes.
 ///

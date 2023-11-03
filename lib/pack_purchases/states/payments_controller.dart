@@ -43,7 +43,7 @@ class PaymentsController extends ChangeNotifier implements Loadable {
   bool get paymentsAccessable => paymentsService.paymentsAccessable;
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     if (paymentsService.paymentsNotAccessable) return;
     String key = '';
     if (Platform.isIOS) {

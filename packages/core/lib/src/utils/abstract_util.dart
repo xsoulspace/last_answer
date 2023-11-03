@@ -1,4 +1,4 @@
-part of utils;
+part of 'utils.dart';
 
 abstract class AbstractUtil<TValue> {
   AbstractUtil._();

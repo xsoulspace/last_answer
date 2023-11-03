@@ -1,4 +1,4 @@
-part of utils;
+part of 'utils.dart';
 
 /// This service purpose to manage shared preferences only
 mixin SharedPreferencesUtil {

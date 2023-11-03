@@ -15,13 +15,14 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
 
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
+    required this.context,
     required this.settings,
   });
+  final BuildContext context;
   final GeneralSettingsController settings;
 
   @override
-  // ignore: long-method
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     /// ********************************************
     /// *      CONTEXT RELATED READINGS START
     /// ********************************************
@@ -48,7 +49,7 @@ class GlobalStateInitializer implements StateInitializer {
     ];
     await Future.forEach<Loadable>(
       loadableControllers,
-      (final loadable) => loadable.onLoad(context: context),
+      (final loadable) => loadable.onLoad(),
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.emoji;
@@ -171,7 +172,7 @@ class GlobalStateInitializer implements StateInitializer {
     // }
     settings.loadingStatus = AppStateLoadingStatuses.settings;
 
-    await notificationController.onLoad(context: context);
+    await notificationController.onLoad();
 
     /// ********************************************
     /// *      MIGRATIONS END

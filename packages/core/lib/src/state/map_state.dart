@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../models/hive_models/hive_models.dart';
+import '../datasources/datasources.dart';
 import '../utils/utils.dart';
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);

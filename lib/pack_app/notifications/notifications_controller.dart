@@ -1,10 +1,12 @@
-part of pack_app;
+part of '../pack_app.dart';
 
 class NotificationController extends ChangeNotifier implements Loadable {
   NotificationController({
+    required this.context,
     required this.notificationService,
   });
   final NotificationService notificationService;
+  final BuildContext context;
 
   Future<void> readAllUpdates() async {
     _hasUnreadUpdates = false;
@@ -35,7 +37,7 @@ class NotificationController extends ChangeNotifier implements Loadable {
   final List<NotificationMessage> updates = [];
 
   @override
-  Future<void> onLoad({required final BuildContext context}) async {
+  Future<void> onLoad() async {
     final notifications = await notificationService.getUpdatesNotifications(
       context: context,
     );
@@ -50,4 +52,5 @@ NotificationController createNotificationController(
 ) =>
     NotificationController(
       notificationService: NotificationService(),
+      context: context,
     );

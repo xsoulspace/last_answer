@@ -82,13 +82,13 @@ msix_config:
   identity_name: 31440AntonMalofeev.lastanswer
   publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1
   msix_version: 3.16.1.0
-  logo_path: ./assets/icons/logo_256.png
+  logo_path: ./packages/core/assets/icons/logo_256.png
   store: true
 
 # flutter pub run flutter_launcher_icons:main
 # generate for macos https://appicon.co
 flutter_icons:
-  image_path: "assets/icons/logo.png"
+  image_path: "packages/core/assets/icons/logo.png"
   ios: true
   android: true
   remove_alpha_ios: true

@@ -1,13 +1,5 @@
-part of pack_purchases;
-
 class PaymentsService {
-  bool get paymentsAccessable =>
-      // TODO(antmalofeev): remove kDebugMode when purchases will be released
-      kDebugMode &&
-      ((Platform.isIOS || Platform.isMacOS || Platform.isAndroid) &&
-          !kIsWeb &&
-          Envs.revenueCatApiKeyAppleIsNotEmpty &&
-          Envs.revenueCatApiKeyGoogleIsNotEmpty);
+  bool get paymentsAccessable => false;
   bool get paymentsNotAccessable => !paymentsAccessable;
 
   // Future<PurchaserInfo> getPurchaserInfo() async {

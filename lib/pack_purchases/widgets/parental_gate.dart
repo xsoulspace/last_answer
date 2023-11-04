@@ -1,4 +1,3 @@
-part of pack_purchases;
 
 
 // TODO(arenukvern): add parental gate

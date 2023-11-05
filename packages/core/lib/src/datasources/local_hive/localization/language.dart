@@ -4,34 +4,27 @@ import 'named_locale.dart';
 
 class Locales {
   Locales._();
-  static const en = Locale(Languages.en, 'EN');
-  static const ru = Locale(Languages.ru, 'RU');
-  static const it = Locale(Languages.it, 'IT');
-  static const ga = Locale(Languages.ga, 'GA');
-  static const values = <Locale>[en, ru, it];
+  static final en = Locale(Languages.en.name, 'EN');
+  static final ru = Locale(Languages.ru.name, 'RU');
+  static final it = Locale(Languages.it.name, 'IT');
+  static final ga = Locale(Languages.ga.name, 'GA');
+  static final values = <Locale>[en, ru, it];
 }
 
 typedef LanguageName = String;
 
-class Languages {
-  Languages._();
-  static const ru = 'ru';
-  static const en = 'en';
-  static const it = 'it';
-  static const ga = 'ga';
-  static const values = <LanguageName>[ru, en, it, ga];
-}
+enum Languages { ru, en, it, ga }
 
-final Map<String, NamedLocale> namedLocalesMap = {
-  Languages.en: const NamedLocale(
+final Map<Languages, NamedLocale> namedLocalesMap = {
+  Languages.en: NamedLocale(
     name: 'English',
     locale: Locales.en,
   ),
-  Languages.ru: const NamedLocale(
+  Languages.ru: NamedLocale(
     name: 'Русский',
     locale: Locales.ru,
   ),
-  Languages.it: const NamedLocale(
+  Languages.it: NamedLocale(
     name: 'Italian',
     locale: Locales.it,
   ),

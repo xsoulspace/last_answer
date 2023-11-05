@@ -138,8 +138,6 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
           projects = service.ideas;
         case ProjectTypes.story:
           projects = service.stories;
-        default:
-          throw UnimplementedError();
       }
 
       return projects[id.id];

@@ -66,13 +66,14 @@ mixin FadedRailRouteTransitionMixin<T> on PageRoute<T> {
   String? get barrierLabel => null;
 
   @override
-  bool canTransitionTo(final TransitionRoute<dynamic> nextRoute) {
-    // Don't perform outgoing animation if the next route is a fullscreen dialog
-    return (nextRoute is MaterialRouteTransitionMixin &&
-            !nextRoute.fullscreenDialog) ||
-        (nextRoute is CupertinoRouteTransitionMixin &&
-            !nextRoute.fullscreenDialog);
-  }
+  bool canTransitionTo(final TransitionRoute<dynamic> nextRoute)
+      // Don't perform outgoing animation if the next route is
+      // a fullscreen dialog
+      =>
+      (nextRoute is MaterialRouteTransitionMixin &&
+          !nextRoute.fullscreenDialog) ||
+      (nextRoute is CupertinoRouteTransitionMixin &&
+          !nextRoute.fullscreenDialog);
 
   @override
   Widget buildPage(

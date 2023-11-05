@@ -1,4 +1,4 @@
-part of pack_settings;
+part of '../pack_settings.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({
@@ -12,8 +12,8 @@ class LocaleSwitcherButton extends StatelessWidget {
     final languageCode = settings.locale?.languageCode;
     final String effectiveLanguageCode =
         languageCode ?? getLanguageCode(intl.Intl.getCurrentLocale());
-    final initLocale =
-        namedLocalesMap[effectiveLanguageCode]?.locale ?? Locales.en;
+    final language = Languages.values.byName(effectiveLanguageCode);
+    final initLocale = namedLocalesMap[language]?.locale ?? Locales.en;
 
     return DropdownButton<Locale>(
       // Read the selected themeMode from the controller

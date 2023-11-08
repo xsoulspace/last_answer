@@ -1,8 +1,10 @@
 part of 'hive_models.dart';
 
+@Deprecated('')
 @immutable
 @JsonSerializable()
 class SerializableProjectId {
+  @Deprecated('')
   const SerializableProjectId({
     required this.id,
     required this.type,

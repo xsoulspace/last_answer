@@ -5,7 +5,9 @@ part of 'hive_models.dart';
 /// Important! Do not change order of items and incase of increase
 /// just add new item at bottom. In case of replace old value must be marked
 /// as [deprecated] and should have name of new value name;
+@Deprecated('')
 class HiveBoxesIds {
+  @Deprecated('')
   HiveBoxesIds._();
 
   /// index 0

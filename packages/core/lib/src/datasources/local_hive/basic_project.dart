@@ -17,11 +17,14 @@ class BasicProjectIndexes {
 
 typedef ProjectId = String;
 
+@Deprecated('')
+
 /// This type purpose is to support all project types
 /// such as [NoteProject], [StoryProject], [IdeaProject]
 class BasicProject extends HiveObject
     with EquatableMixin
     implements Sharable, BasicProjectFields, HasId {
+  @Deprecated('')
   BasicProject({
     required this.id,
     required this.title,

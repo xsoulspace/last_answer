@@ -7,17 +7,21 @@ import '../hive_models.dart';
 
 part 'localized_text.g.dart';
 
+@Deprecated('')
+
 /// Any text, that should be shown to user in different [Languages]
 /// should use this class to keep values
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.localizedText)
 class LocalizedText with EquatableMixin {
+  @Deprecated('')
   const LocalizedText({
     required this.en,
     required this.ru,
     this.it,
     this.ga,
   });
+  @Deprecated('')
   factory LocalizedText.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextFromJson(json);
   Map<String, dynamic> toJson() => _$LocalizedTextToJson(this);

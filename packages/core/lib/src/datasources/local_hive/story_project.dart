@@ -3,9 +3,11 @@ part of 'hive_models.dart';
 
 typedef StoryProjectId = String;
 
+@Deprecated('')
 // TODO(arenukvern): implement StoryProject
 @HiveType(typeId: HiveBoxesIds.storyProject)
 class StoryProject extends BasicProject {
+  @Deprecated('')
   StoryProject({
     required super.id,
     required super.title,

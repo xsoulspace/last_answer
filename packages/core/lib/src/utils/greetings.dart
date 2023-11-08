@@ -1,4 +1,6 @@
-part of 'hive_models.dart';
+import 'dart:math';
+
+import '../models/models.dart';
 
 class Greeting {
   Greeting() : _random = Random();
@@ -7,13 +9,13 @@ class Greeting {
   int get _randomMin => 0;
   int _nextRandom() => _randomMin + _random.nextInt(_randomMax - _randomMin);
 
-  static LocalizedText? _previousLocalizedGreeting;
+  static LocalizedTextModel? _previousLocalizedGreeting;
   static String _previousStrGreeting = '';
   String get current {
     final now = DateTime.now();
 
     final int randomNumber = _nextRandom();
-    LocalizedText text;
+    LocalizedTextModel text;
     if (now.hour < 7) {
       text = night;
     } else if (now.hour < 12 && now.hour >= 7) {
@@ -33,25 +35,25 @@ class Greeting {
     }
   }
 
-  static const morning = LocalizedText(
+  static const morning = LocalizedTextModel(
     en: 'Good morning',
     ru: 'Доброе утро',
     it: 'Buon giorno',
     ga: 'Maidin mhaith',
   );
-  static const day = LocalizedText(
+  static const day = LocalizedTextModel(
     en: 'Good afternoon',
     ru: 'Добрый день',
     it: 'Buona giornata',
     ga: 'Lá maith',
   );
-  static const evening = LocalizedText(
+  static const evening = LocalizedTextModel(
     en: 'Good evening',
     ru: 'Добрый вечер',
     it: 'Buona serata',
     ga: 'Tráthnóna maith',
   );
-  static const night = LocalizedText(
+  static const night = LocalizedTextModel(
     en: 'Good night',
     ru: 'Доброй ночи',
     it: 'Buona notte',

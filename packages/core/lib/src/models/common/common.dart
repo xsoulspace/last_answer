@@ -6,6 +6,7 @@ import '../../utils/utils.dart';
 
 part 'common.freezed.dart';
 part 'common.g.dart';
+part 'emoji.dart';
 part 'project.dart';
 part 'settings.dart';
 part 'user.dart';

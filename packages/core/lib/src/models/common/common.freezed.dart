@@ -14,6 +14,176 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Emoji _$EmojiFromJson(Map<String, dynamic> json) {
+  return _Emoji.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Emoji {
+  String get category => throw _privateConstructorUsedError;
+  String get emoji => throw _privateConstructorUsedError;
+  String get keywords => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EmojiCopyWith<Emoji> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EmojiCopyWith<$Res> {
+  factory $EmojiCopyWith(Emoji value, $Res Function(Emoji) then) =
+      _$EmojiCopyWithImpl<$Res, Emoji>;
+  @useResult
+  $Res call({String category, String emoji, String keywords});
+}
+
+/// @nodoc
+class _$EmojiCopyWithImpl<$Res, $Val extends Emoji>
+    implements $EmojiCopyWith<$Res> {
+  _$EmojiCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? category = null,
+    Object? emoji = null,
+    Object? keywords = null,
+  }) {
+    return _then(_value.copyWith(
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      keywords: null == keywords
+          ? _value.keywords
+          : keywords // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$EmojiImplCopyWith<$Res> implements $EmojiCopyWith<$Res> {
+  factory _$$EmojiImplCopyWith(
+          _$EmojiImpl value, $Res Function(_$EmojiImpl) then) =
+      __$$EmojiImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String category, String emoji, String keywords});
+}
+
+/// @nodoc
+class __$$EmojiImplCopyWithImpl<$Res>
+    extends _$EmojiCopyWithImpl<$Res, _$EmojiImpl>
+    implements _$$EmojiImplCopyWith<$Res> {
+  __$$EmojiImplCopyWithImpl(
+      _$EmojiImpl _value, $Res Function(_$EmojiImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? category = null,
+    Object? emoji = null,
+    Object? keywords = null,
+  }) {
+    return _then(_$EmojiImpl(
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      keywords: null == keywords
+          ? _value.keywords
+          : keywords // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EmojiImpl implements _Emoji {
+  const _$EmojiImpl(
+      {required this.category, required this.emoji, required this.keywords});
+
+  factory _$EmojiImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EmojiImplFromJson(json);
+
+  @override
+  final String category;
+  @override
+  final String emoji;
+  @override
+  final String keywords;
+
+  @override
+  String toString() {
+    return 'Emoji(category: $category, emoji: $emoji, keywords: $keywords)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EmojiImpl &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.emoji, emoji) || other.emoji == emoji) &&
+            (identical(other.keywords, keywords) ||
+                other.keywords == keywords));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, category, emoji, keywords);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EmojiImplCopyWith<_$EmojiImpl> get copyWith =>
+      __$$EmojiImplCopyWithImpl<_$EmojiImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$EmojiImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Emoji implements Emoji {
+  const factory _Emoji(
+      {required final String category,
+      required final String emoji,
+      required final String keywords}) = _$EmojiImpl;
+
+  factory _Emoji.fromJson(Map<String, dynamic> json) = _$EmojiImpl.fromJson;
+
+  @override
+  String get category;
+  @override
+  String get emoji;
+  @override
+  String get keywords;
+  @override
+  @JsonKey(ignore: true)
+  _$$EmojiImplCopyWith<_$EmojiImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 /// @nodoc
 mixin _$ProjectModelId {
   String get value => throw _privateConstructorUsedError;

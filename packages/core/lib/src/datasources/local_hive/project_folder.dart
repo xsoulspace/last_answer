@@ -2,8 +2,10 @@ part of 'hive_models.dart';
 
 typedef ProjectFolderId = String;
 
+@Deprecated('')
 @HiveType(typeId: HiveBoxesIds.projectFolder)
 class ProjectFolder extends HiveObject with EquatableMixin, HasId {
+  @Deprecated('')
   ProjectFolder({
     required this.id,
     required this.title,
@@ -11,6 +13,7 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
     this.projectsIdsString = '',
   }) : _projects = createHashSet();
 
+  @Deprecated('')
   ProjectFolder.zero({
     this.id = '',
     this.projectsIdsString = '',

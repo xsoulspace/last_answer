@@ -3,8 +3,10 @@ part of 'hive_models.dart';
 
 typedef NoteProjectId = String;
 
+@Deprecated('')
 @HiveType(typeId: HiveBoxesIds.noteProject)
 class NoteProject extends BasicProject {
+  @Deprecated('')
   NoteProject({
     required super.id,
     required super.created,
@@ -72,4 +74,5 @@ class NoteProject extends BasicProject {
 /// A mock for [NoteProject].
 /// To create use `final mockNoteProject = MockNoteProject();`
 // ignore: avoid_implementing_value_types
+@Deprecated('')
 class MockNoteProject extends Mock implements NoteProject {}

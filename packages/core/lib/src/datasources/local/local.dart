@@ -1,2 +1,2 @@
-export 'dictionaries_repository.dart';
-export 'projects_repository.dart';
+export 'dictionaries.dart';
+export 'projects.dart';

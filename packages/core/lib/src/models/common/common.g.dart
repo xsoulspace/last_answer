@@ -6,6 +6,19 @@ part of 'common.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$EmojiImpl _$$EmojiImplFromJson(Map<String, dynamic> json) => _$EmojiImpl(
+      category: json['category'] as String,
+      emoji: json['emoji'] as String,
+      keywords: json['keywords'] as String,
+    );
+
+Map<String, dynamic> _$$EmojiImplToJson(_$EmojiImpl instance) =>
+    <String, dynamic>{
+      'category': instance.category,
+      'emoji': instance.emoji,
+      'keywords': instance.keywords,
+    };
+
 _$ProjectModelIdeaImpl _$$ProjectModelIdeaImplFromJson(
         Map<String, dynamic> json) =>
     _$ProjectModelIdeaImpl(

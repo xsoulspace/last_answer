@@ -50,7 +50,7 @@ class NoteProject extends BasicProject {
   @HiveField(projectLatestFieldHiveId + 3)
   int? charactersLimit;
 
-  static const titleLimit = 90;
+  static const titleLimit = ProjectModel.titleLimit;
   @override
   @JsonKey(ignore: true)
   String get title => getTitle(note);

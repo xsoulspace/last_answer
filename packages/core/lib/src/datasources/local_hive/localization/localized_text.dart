@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../models/common/common.dart';
 import '../hive_models.dart';
 
 part 'localized_text.g.dart';
@@ -52,13 +53,4 @@ class LocalizedText with EquatableMixin {
 
   @override
   List<Object?> get props => [ru, en, it, ga];
-}
-
-String getLanguageCode(final LanguageName language) {
-  String lang = language;
-  if (language.contains('_')) {
-    lang = language.split('_').first;
-  }
-
-  return lang;
 }

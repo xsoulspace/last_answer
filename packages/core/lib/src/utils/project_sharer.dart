@@ -45,7 +45,11 @@ class ProjectSharer {
   }
 }
 
-abstract class Sharable {
+abstract interface class Sharable {
   Sharable._();
   String toShareString();
+}
+
+abstract interface class Archivable {
+  abstract final DateTime? archivedAt;
 }

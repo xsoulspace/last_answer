@@ -59,13 +59,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @override
   String toShareString() {
-    final buffer = StringBuffer('$title \n');
-    final List<IdeaProjectAnswer> resolvedAnswers = answers ?? [];
-    for (final answer in resolvedAnswers) {
-      buffer.writeln(answer.toShareString());
-    }
-
-    return buffer.toString();
+    throw UnsupportedError('');
   }
 
   @override
@@ -73,6 +67,16 @@ class IdeaProject extends BasicProject with EquatableMixin {
 
   @override
   bool? get stringify => true;
+}
+
+String ideaProjectToShareString(final ProjectModelIdea projectIdea) {
+  final buffer = StringBuffer('${projectIdea.title} \n');
+  final resolvedAnswers = projectIdea.answers;
+  for (final answer in resolvedAnswers) {
+    buffer.writeln(answer.toShareString());
+  }
+
+  return buffer.toString();
 }
 
 /// A mock for [IdeaProject].

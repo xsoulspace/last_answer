@@ -10,9 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../state/state.dart';
-import '../../utils/utils.dart';
-import 'hive_models.dart';
+import '../../../core.dart';
 
 export 'localization/localization.dart';
 

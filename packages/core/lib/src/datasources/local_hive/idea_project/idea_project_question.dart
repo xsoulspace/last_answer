@@ -38,6 +38,11 @@ class IdeaProjectQuestion extends HiveObject
 
   @override
   String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+
+  IdeaProjectQuestionModel toModel() => IdeaProjectQuestionModel(
+        id: IdeaProjectQuestionModelId.fromJson(id),
+        title: title.toModel(),
+      );
 }
 
 /// A mock for [IdeaProjectQuestion].

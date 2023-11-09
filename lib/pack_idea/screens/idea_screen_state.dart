@@ -41,11 +41,11 @@ class IdeaScreenState implements LifeState {
   @override
   ValueChanged<VoidCallback>? setState;
   late FolderStateProvider folderProvider;
-  late IdeaProjectsProvider ideasProvider;
+  late IdeaProjectsState ideasProvider;
   @override
   void initState() {
     folderProvider = context.read<FolderStateProvider>();
-    ideasProvider = context.read<IdeaProjectsProvider>();
+    ideasProvider = context.read<IdeaProjectsState>();
     unawaited(
       ideaUpdatesStream.stream
           .sampleTime(

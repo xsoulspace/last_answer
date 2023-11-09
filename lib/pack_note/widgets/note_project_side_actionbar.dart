@@ -14,7 +14,7 @@ class NoteProjectSideActionBar extends HookWidget {
   });
 
   final ValueNotifier<NoteProject> note;
-  final AsyncCallback onRemove;
+  final ValueChanged<BuildContext> onRemove;
   final StreamController<NoteProjectNotifier> updatesStream;
   final TextEditingController noteController;
   final VoidCallback showEmojiKeyboard;
@@ -56,7 +56,7 @@ class NoteProjectSideActionBar extends HookWidget {
       children: [
         NoteSettingsButton(
           note: note.value,
-          onRemove: onRemove,
+          onRemove: () => onRemove(context),
           updatesStream: updatesStream,
         ),
         SpecialEmojiButton(

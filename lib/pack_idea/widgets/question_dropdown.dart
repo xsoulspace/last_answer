@@ -22,7 +22,7 @@ class _QuestionDropdown extends HookWidget {
       [answer.question],
     );
 
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
+    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsState>();
     final questions = ideaQuestionsProvider.values;
     final textStyle = Theme.of(context).textTheme.bodyLarge!;
 

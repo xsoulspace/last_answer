@@ -91,14 +91,14 @@ class GlobalStateInitializer implements StateInitializer {
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-    MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsProvider>(
+    MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsState>(
       context: context,
       box: questions,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
-    final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsProvider>(
+    final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsState>(
       context: context,
       box: ideas,
     );
@@ -109,7 +109,7 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.noteProjectKey,
     );
 
-    final notesProjectsState = MapState.load<NoteProject, NoteProjectsProvider>(
+    final notesProjectsState = MapState.load<NoteProject, NoteProjectsState>(
       context: context,
       box: notes,
     );

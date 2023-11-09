@@ -58,15 +58,21 @@ class IdeaProject extends BasicProject with EquatableMixin {
   ProjectFolder? folder;
 
   @override
-  String toShareString() {
-    throw UnsupportedError('');
-  }
+  String toShareString() => ideaProjectToShareString(toModel());
 
   @override
   List get props => [id];
 
   @override
   bool? get stringify => true;
+
+  ProjectModelIdea toModel() => ProjectModelIdea(
+        createdAt: created,
+        id: ProjectModelId.fromJson(id),
+        updatedAt: updated,
+        answers: answers?.map((final e) => e.toModel()).toList() ?? [],
+        title: title,
+      );
 }
 
 String ideaProjectToShareString(final ProjectModelIdea projectIdea) {

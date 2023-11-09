@@ -57,4 +57,11 @@ class LocalizedText with EquatableMixin {
 
   @override
   List<Object?> get props => [ru, en, it, ga];
+
+  LocalizedTextModel toModel() => LocalizedTextModel(
+        en: en,
+        ru: ru,
+        it: it ?? '',
+        ga: ga ?? '',
+      );
 }

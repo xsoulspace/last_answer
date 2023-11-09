@@ -20,7 +20,7 @@ class NoteProjectScreen extends HookWidget {
 
     final noteFocusNode = useFocusNode();
 
-    final noteProvider = context.read<NoteProjectsProvider>();
+    final noteProvider = context.read<NoteProjectsState>();
     final maybeNote = noteProvider.state[noteId];
     if (maybeNote == null) return const SizedBox();
 

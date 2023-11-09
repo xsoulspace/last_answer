@@ -69,6 +69,14 @@ class NoteProject extends BasicProject {
 
   @override
   String toShareString() => note;
+
+  ProjectModelNote toModel() => ProjectModelNote(
+        createdAt: created,
+        updatedAt: updated,
+        id: ProjectModelId.fromJson(id),
+        charactersLimit: charactersLimit,
+        note: note,
+      );
 }
 
 /// A mock for [NoteProject].

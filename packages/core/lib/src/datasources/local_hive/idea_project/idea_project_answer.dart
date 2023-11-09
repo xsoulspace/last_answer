@@ -53,6 +53,13 @@ class IdeaProjectAnswer extends HiveObject
 
   @override
   bool? get stringify => true;
+
+  IdeaProjectAnswerModel toModel() => IdeaProjectAnswerModel(
+        createdAt: created,
+        id: IdeaProjectAnswerModelId.fromJson(id),
+        question: question.toModel(),
+        text: text,
+      );
 }
 
 /// A mock for [IdeaProjectAnswer].

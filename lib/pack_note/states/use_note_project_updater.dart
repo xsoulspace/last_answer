@@ -38,13 +38,13 @@ class NoteProjectUpdaterState implements LifeState {
   final BuildContext context;
   final NoteProject note;
   final StreamController<NoteProjectNotifier> updatesStream;
-  late NoteProjectsProvider notesProvider;
+  late NoteProjectsState notesProvider;
   late FolderStateProvider folderProvider;
 
   @override
   @mustCallSuper
   void initState() {
-    notesProvider = context.read<NoteProjectsProvider>();
+    notesProvider = context.read<NoteProjectsState>();
     folderProvider = context.read<FolderStateProvider>();
 
     unawaited(

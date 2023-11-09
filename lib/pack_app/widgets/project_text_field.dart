@@ -14,6 +14,7 @@ class ProjectTextField extends StatefulHookWidget {
     this.fillColor,
     this.focusNode,
     this.countCharacters = false,
+    this.undoController,
     this.limit,
     super.key,
   });
@@ -23,6 +24,7 @@ class ProjectTextField extends StatefulHookWidget {
   final String hintText;
   final FocusNode? focusNode;
   final int? limit;
+  final UndoHistoryController? undoController;
   final bool countCharacters;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
@@ -113,6 +115,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             focusNode: _textFieldFocusNode,
             onFieldSubmitted: (final _) => widget.onSubmit(),
             controller: widget.controller,
+            undoController: widget.undoController,
             keyboardAppearance: theme.brightness,
             minLines: widget.endlessLines ? null : 1,
             expands: widget.endlessLines,

@@ -43,12 +43,12 @@ class NoteProjectScreenState extends NoteProjectUpdaterState {
   @override
   void initState() {
     noteController.addListener(onNoteChange);
-    notesProvider = context.read<NoteProjectsProvider>();
+    notesProvider = context.read<NoteProjectsState>();
     folderProvider = context.read<FolderStateProvider>();
     super.initState();
   }
 
-  Future<void> onRemove() async {
+  Future<void> onRemove(final BuildContext context) async {
     final remove = await showRemoveTitleDialog(
       title: note.title,
       context: context,

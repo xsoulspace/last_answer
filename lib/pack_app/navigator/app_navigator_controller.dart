@@ -31,7 +31,7 @@ class AppNavigatorController {
     if (resolvedNoteId.isEmpty) {
       final folder = context.read<FolderStateProvider>();
       final settings = context.read<GeneralSettingsController>();
-      final noteProjects = context.read<NoteProjectsProvider>();
+      final noteProjects = context.read<NoteProjectsState>();
       final currentFolder = folder.state;
       final newNote = await NoteProject.create(
         title: '',
@@ -58,7 +58,7 @@ class AppNavigatorController {
   Future<void> onCreateIdea(final String title) async {
     final folder = context.read<FolderStateProvider>();
     final currentFolder = folder.state;
-    final ideaProjectProvider = context.read<IdeaProjectsProvider>();
+    final ideaProjectProvider = context.read<IdeaProjectsState>();
     final idea = await IdeaProject.create(
       title: title,
       folder: currentFolder,

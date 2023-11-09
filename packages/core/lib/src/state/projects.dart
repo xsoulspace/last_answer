@@ -3,19 +3,19 @@ import 'package:flutter/cupertino.dart';
 import '../datasources/datasources.dart';
 import 'map_state.dart';
 
-class IdeaProjectsProvider extends MapState<IdeaProject> {}
+class IdeaProjectsState extends MapState<IdeaProject> {}
 
-IdeaProjectsProvider createIdeaProjectsProvider(final BuildContext context) =>
-    IdeaProjectsProvider();
+IdeaProjectsState createIdeaProjectsState(final BuildContext context) =>
+    IdeaProjectsState();
 
-class IdeaProjectQuestionsProvider extends MapState<IdeaProjectQuestion> {}
+class IdeaProjectQuestionsState extends MapState<IdeaProjectQuestion> {}
 
-IdeaProjectQuestionsProvider createIdeaProjectQuestionsProvider(
+IdeaProjectQuestionsState createIdeaProjectQuestionsState(
   final BuildContext context,
 ) =>
-    IdeaProjectQuestionsProvider();
+    IdeaProjectQuestionsState();
 
-class NoteProjectsProvider extends MapState<NoteProject> {}
+class NoteProjectsState extends MapState<NoteProject> {}
 
-NoteProjectsProvider createNoteProjectsProvider(final BuildContext context) =>
-    NoteProjectsProvider();
+NoteProjectsState createNoteProjectsState(final BuildContext context) =>
+    NoteProjectsState();

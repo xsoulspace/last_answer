@@ -39,11 +39,11 @@ class IdeaAnswerScreenState implements LifeState {
   final ValueChanged<IdeaProject> onScreenBack;
   @override
   ValueChanged<VoidCallback>? setState;
-  late IdeaProjectsProvider ideasProvider;
+  late IdeaProjectsState ideasProvider;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsProvider>();
+    ideasProvider = context.read<IdeaProjectsState>();
 
     unawaited(
       updatesStream.stream

@@ -1,4 +1,8 @@
-part of pack_settings;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 /// A service that stores and retrieves user settings.
 ///
@@ -38,11 +42,6 @@ class SettingsService with SharedPreferencesUtil {
   Future<void> setLocale(final Locale locale) async {
     await setString(SharedPreferencesKeys.locale.name, locale.languageCode);
   }
-
-  Future<bool> migrated() async => getBool(SharedPreferencesKeys.migrated.name);
-
-  Future<void> setMigrated() async =>
-      setBool(SharedPreferencesKeys.migrated.name, true);
 
   Future<bool> projectsReversed() async =>
       getBool(SharedPreferencesKeys.projectsReversed.name);

@@ -59,17 +59,19 @@ class AppNavigatorPageBuilder {
         child: AppNavigatorPopScope(
           popper: popper,
           child: NoteProjectScreen(
-            checkIsProjectActive: checkIsProjectActive,
-            onGoHome: popper.navigatorController.goHome,
-            onBack: (final note) async {
-              if (note.note.replaceAll(' ', '').isEmpty) {
+            delegate: NoteProjectViewDelegate(
+              noteId: params.noteId!,
+              onBack: (){
+                if (note.note.replaceAll(' ', '').isEmpty) {
                 context.read<NoteProjectsState>().remove(key: note.id);
                 note.folder?.removeProject(note);
                 await note.delete();
               }
               navigatorController.goHome();
-            },
-            noteId: params.noteId!,
+              },
+              onGoHome: popper.navigatorController.goHome,
+              checkIsProjectActive: checkIsProjectActive,
+            ),
             key: ValueKey(params.noteId),
           ),
         ),

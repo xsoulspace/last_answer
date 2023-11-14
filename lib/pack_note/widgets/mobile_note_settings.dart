@@ -1,4 +1,10 @@
-part of pack_note;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/utils/utils.dart';
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({
@@ -8,7 +14,7 @@ class MobileNoteSettingsMenu extends HookWidget {
     super.key,
   });
   static const borderPadding = 8.0;
-  final NoteProject note;
+  final ProjectModelNote note;
   final VoidCallback onRemove;
   final StreamController<NoteProjectNotifier> updatesStream;
 

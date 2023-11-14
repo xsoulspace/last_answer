@@ -76,7 +76,7 @@ class DesktopSettingsNavigator extends HookWidget {
         child = previousChild.value = const MyAccount();
       case AppRoutesName.settings:
       case AppRoutesName.generalSettings:
-        child = previousChild.value = const GeneralSettings(
+        child = previousChild.value = const GeneralSettingsView(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );
       default:

@@ -1,51 +1,38 @@
-part of pack_settings;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
+import 'package:lastanswer/pack_settings/states/general_settings_controller.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:ui_kit/ui_kit.dart';
 
 class CharactersLimitSetting extends HookWidget {
   const CharactersLimitSetting({
-    this.note,
-    this.updatesStream,
+    required this.controller,
     super.key,
   });
-  final NoteProject? note;
-  final StreamController<NoteProjectNotifier>? updatesStream;
-
-  String getInitialLimit({required final GeneralSettingsController settings}) {
-    int limit;
-
-    if (note != null) {
-      limit = note?.charactersLimit ?? 0;
-    } else {
-      limit = settings.charactersLimitForNewNotes;
-    }
-
-    return limit == 0 ? '' : '$limit';
-  }
+  final CharactersLimitController controller;
 
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
-    final settings = context.watch<GeneralSettingsController>();
-    final initialText = getInitialLimit(settings: settings);
-    final controller = useTextEditingController(text: initialText);
-
-    final state = useCharactersLimitSettingStateState(
-      context: context,
-      note: note,
-      updatesStream: updatesStream,
-      controller: controller,
-    );
+    context.watch<GeneralSettingsController>();
+    useListenable(controller);
 
     Widget otherButton;
-    // TODO(arenukvern): refactor to separate widget
 
-    if (state.noLimitIsSet) {
+    // TODO(arenukvern): refactor to separate widget
+    if (controller.noLimitIsSet) {
       otherButton = Padding(
         padding: const EdgeInsets.only(right: 8),
         child: HoverableButton(
-          onPressed: () => state.setLimit(
+          onPressed: () => controller.setLimit(
             0,
-            updateController: true,
             zeroEqualNull: false,
           ),
           child: Text(S.current.charactersUnlimited),
@@ -56,25 +43,22 @@ class CharactersLimitSetting extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(width: 12),
-          SizedBox(
-            width: 60,
-            child: TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              autocorrect: false,
-              keyboardAppearance: theme.brightness,
-              enableSuggestions: false,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: const InputDecoration()
-                  .applyDefaults(theme.inputDecorationTheme)
-                  .copyWith(
-                    hintText: S.current.charactersUnlimited,
-                  ),
-            ),
+          UiTextField(
+            keyboardType: TextInputType.number,
+            autocorrect: false,
+            enableSuggestions: false,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: const InputDecoration()
+                .applyDefaults(theme.inputDecorationTheme)
+                .copyWith(
+                  hintText: S.current.charactersUnlimited,
+                  constraints: const BoxConstraints(maxWidth: 60),
+                ),
           ),
           const SizedBox(width: 2),
           HoverableButton(
-            onPressed: controller.text.isEmpty ? null : state.onClearLimit,
+            onPressed:
+                controller.value.isEmpty ? null : controller.onClearLimit,
             child: const Icon(
               CupertinoIcons.clear,
               size: 14,
@@ -86,7 +70,7 @@ class CharactersLimitSetting extends HookWidget {
     // TODO(arenukvern): refactor to separate widget
 
     SvgGenImage vkIcon;
-    if (state.isVkLimit) {
+    if (controller.isVkLimit) {
       vkIcon = Assets.icons.vkLogoBlue;
     } else {
       vkIcon = dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack;
@@ -94,7 +78,7 @@ class CharactersLimitSetting extends HookWidget {
     // TODO(arenukvern): refactor to separate widget
 
     AssetGenImage instagramIcon;
-    if (state.isInstagramLimit) {
+    if (controller.isInstagramLimit) {
       instagramIcon = Assets.icons.instagramLogoColorful;
     } else {
       instagramIcon = Assets.icons.instagramLogoBlack;
@@ -102,7 +86,7 @@ class CharactersLimitSetting extends HookWidget {
     // TODO(arenukvern): refactor to separate widget
 
     SvgGenImage twitterIcon;
-    if (state.isTwitterLimit) {
+    if (controller.isTwitterLimit) {
       twitterIcon = Assets.icons.twitterLogoBlue;
     } else {
       twitterIcon =
@@ -111,14 +95,14 @@ class CharactersLimitSetting extends HookWidget {
     // TODO(arenukvern): refactor to separate widget
 
     AssetGenImage facebookIcon;
-    if (state.isFacebookLimit) {
+    if (controller.isFacebookLimit) {
       facebookIcon = Assets.icons.fbLogoBlue;
     } else {
       facebookIcon = dark ? Assets.icons.fbLogoWhite : Assets.icons.fbLogoBlack;
     }
     // TODO(arenukvern): refactor to separate widget
     SvgGenImage discordIcon;
-    if (state.isDiscordLimit) {
+    if (controller.isDiscordLimit) {
       discordIcon = Assets.icons.discordLogoBlue;
     } else {
       discordIcon =
@@ -131,41 +115,41 @@ class CharactersLimitSetting extends HookWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         CharactersLimitButton(
-          onTap: state.onSetInstagramLimit,
+          onTap: controller.onSetInstagramLimit,
           child: ImageGenIcon(
             genImage: instagramIcon,
             dimension: 18,
-            color: state.isInstagramLimit
+            color: controller.isInstagramLimit
                 ? null
                 : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
-          onTap: state.onSetTwitterLimit,
+          onTap: controller.onSetTwitterLimit,
           child: twitterIcon.svg(
             width: 16,
             height: 16,
-            color: state.isTwitterLimit
+            color: controller.isTwitterLimit
                 ? AppColors.twitterBlue
                 : theme.textTheme.bodyMedium?.color,
           ),
         ),
         CharactersLimitButton(
-          onTap: state.onSetFacebookLimit,
+          onTap: controller.onSetFacebookLimit,
           child: ImageGenIcon(
             genImage: facebookIcon,
             dimension: 18,
           ),
         ),
         CharactersLimitButton(
-          onTap: state.onSetDiscordLimit,
+          onTap: controller.onSetDiscordLimit,
           child: discordIcon.svg(
             width: 16,
             height: 16,
           ),
         ),
         CharactersLimitButton(
-          onTap: state.onSetVkLimit,
+          onTap: controller.onSetVkLimit,
           child: vkIcon.svg(
             width: 18,
             height: 18,

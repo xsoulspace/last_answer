@@ -1,7 +1,45 @@
-part of pack_settings;
+import 'package:flutter/material.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
+import 'package:lastanswer/pack_settings/features_widgets/general_settings_bloc.dart';
+import 'package:lastanswer/pack_settings/pack_settings.dart';
+import 'package:lastanswer/pack_settings/states/general_settings_controller.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
-class GeneralSettings extends StatelessWidget {
-  const GeneralSettings({
+class GeneralSettingsProvider extends StatelessWidget {
+  const GeneralSettingsProvider({
+    required this.builder,
+    super.key,
+  });
+  final WidgetBuilder builder;
+  @override
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
+        create: (final context) => GeneralSettingsBloc(
+          dto: GeneralSettingsBlocDto(context: context),
+        ),
+        builder: (final context, final child) => builder(context),
+      );
+}
+
+class GeneralSettingsView extends StatelessWidget {
+  const GeneralSettingsView({
+    this.padding,
+    super.key,
+  });
+  final EdgeInsets? padding;
+
+  @override
+  Widget build(final BuildContext context) => GeneralSettingsProvider(
+        builder: (final context) => GeneralSettingsViewBody(
+          padding: padding,
+        ),
+      );
+}
+
+class GeneralSettingsViewBody extends StatelessWidget {
+  const GeneralSettingsViewBody({
     this.padding,
     super.key,
   });
@@ -11,6 +49,7 @@ class GeneralSettings extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final settings = context.watch<GeneralSettingsController>();
+    final bloc = context.watch<GeneralSettingsBloc>();
 
     return SettingsListContainer(
       padding: padding,
@@ -57,7 +96,9 @@ class GeneralSettings extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           leftColumnWidth: leftColumnWidth,
           description: S.current.charactersLimitForNewNotesDesription,
-          child: const CharactersLimitSetting(),
+          child: CharactersLimitSetting(
+            controller: bloc.characterLimitController,
+          ),
         ),
 
         // ** An Example of how to use link **

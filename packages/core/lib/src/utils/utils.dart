@@ -24,8 +24,6 @@ part 'close_keyboard.dart';
 part 'color_extension.dart';
 part 'emoji_util.dart';
 part 'is_desktop.dart';
-part 'iterable.dart';
-part 'list.dart';
 part 'project_sharer.dart';
 part 'routing/delegate.dart';
 part 'routing/parsed_route.dart';

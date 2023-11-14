@@ -10,6 +10,7 @@ import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/pack_note.dart';
+import 'package:lastanswer/pack_note/widgets/note_project_side_actionbar.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
 
-part 'note_project_view_state.dart';
+part 'note_project_view_bloc.dart';
 
 class NoteProjectViewDelegate {
   const NoteProjectViewDelegate({
@@ -27,7 +28,7 @@ class NoteProjectViewDelegate {
     required this.checkIsProjectActive,
   });
   final String noteId;
-  final VoidCallback onBack;
+  final ValueChanged<ProjectModelNote> onBack;
   final BoolValueChanged<BasicProject> checkIsProjectActive;
   final VoidCallback onGoHome;
 }
@@ -57,12 +58,16 @@ class NoteProjectViewProvider extends StatelessWidget {
   final NoteProjectViewDelegate delegate;
 
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
-        create: (final context) => NoteProjectViewState(
-          delegate: delegate,
-          dto: NoteProjectViewStateDto(context: context),
-        ),
-        child: builder(context),
+  Widget build(final BuildContext context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (final context) => NoteProjectViewBloc(
+              delegate: delegate,
+              dto: NoteProjectViewStateDto(context: context),
+            ),
+          ),
+        ],
+        builder: (final context, final child) => builder(context),
       );
 }
 
@@ -77,14 +82,14 @@ class NoteProjectView extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final screenLayout = ScreenLayout.of(context);
-    final state = context.watch<NoteProjectViewState>();
+    final state = context.watch<NoteProjectViewBloc>();
     double? appBarHeight;
     if (Platform.isMacOS) {
       appBarHeight = null;
     } else {
       appBarHeight = screenLayout.small ? 40 : 30;
     }
-    final note = state.noteContainer.value;
+    final note = state.value.value;
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
@@ -99,7 +104,9 @@ class NoteProjectView extends StatelessWidget {
       ),
       body: Builder(
         builder: (final context) {
-          if (!state.noteContainer.isLoaded) return const SizedBox();
+          if (!state.value.isLoaded) {
+            return const CircularProgressIndicator.adaptive();
+          }
 
           return Container(
             constraints: const BoxConstraints(
@@ -132,7 +139,7 @@ class NoteProjectView extends StatelessWidget {
                             limit: note.charactersLimit,
                             focusNode: state.focusNode,
                             endlessLines: true,
-                            focusOnInit: note.isEmpty,
+                            focusOnInit: note.note.isEmpty,
                             onSubmit: state.onBack,
                             controller: state.noteController,
                             undoController: state.undoController,

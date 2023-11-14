@@ -6,27 +6,26 @@ class NoteProjectViewStateDto {
   })  : noteProjectsProvider = context.read(),
         folderStateProvider = context.read();
   final NoteProjectsState noteProjectsProvider;
-  final FolderStateProvider folderStateProvider;
+  final FolderStateNotifier folderStateProvider;
 }
 
-class NoteProjectViewState with ChangeNotifier implements Loadable {
-  NoteProjectViewState({
+class NoteProjectViewBloc
+    extends ValueNotifier<LoadableContainer<ProjectModelNote>>
+    implements Loadable {
+  NoteProjectViewBloc({
     required this.delegate,
     required this.dto,
-  }) {
+  }) : super(LoadableContainer(value: ProjectModel.emptyNote)) {
     noteController.addListener(_onNoteChange);
   }
   final NoteProjectViewStateDto dto;
   final NoteProjectViewDelegate delegate;
   final noteController = TextEditingController();
   final undoController = UndoHistoryController();
-  LoadableContainer<ProjectModelNote> noteContainer =
-      LoadableContainer<ProjectModelNote>(
-    value: ProjectModel.emptyNote,
-  );
+
   ProjectModelNote get _note {
-    assert(noteContainer.isLoaded, 'should be loaded at this moment');
-    return noteContainer.value;
+    assert(value.isLoaded, 'should be loaded at this moment');
+    return value.value;
   }
 
   final focusNode = FocusNode();
@@ -37,8 +36,7 @@ class NoteProjectViewState with ChangeNotifier implements Loadable {
     if (maybeNote == null) {
       /// create note
     } else {
-      noteContainer = LoadableContainer.loaded(maybeNote.toModel());
-      notifyListeners();
+      setValue(LoadableContainer.loaded(maybeNote.toModel()));
     }
   }
 
@@ -76,7 +74,7 @@ class NoteProjectViewState with ChangeNotifier implements Loadable {
 
   void onBack() {
     unawaited(SoftKeyboard.close());
-    delegate.onBack();
+    delegate.onBack(value.value);
   }
 
   @override

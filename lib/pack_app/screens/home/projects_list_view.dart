@@ -21,7 +21,7 @@ class ProjectsListView extends HookWidget {
     final settings = context.read<GeneralSettingsController>();
     final reversed = settings.projectsListReversed;
 
-    return Consumer<FolderStateProvider>(
+    return Consumer<FolderStateNotifier>(
       builder: (final context, final folderState, final __) {
         final projects = folderState.state.projectsList;
 
@@ -89,7 +89,7 @@ class ProjectsListView extends HookWidget {
 Future<void> removeProject({
   required final BuildContext context,
   required final BasicProject project,
-  required final FolderStateProvider folderProvider,
+  required final FolderStateNotifier folderProvider,
   required final BoolValueChanged<BasicProject> checkIsProjectActive,
   required final VoidCallback onGoHome,
 }) async {

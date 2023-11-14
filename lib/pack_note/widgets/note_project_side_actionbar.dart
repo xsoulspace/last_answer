@@ -1,4 +1,14 @@
-part of '../pack_note.dart';
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({
@@ -13,7 +23,7 @@ class NoteProjectSideActionBar extends HookWidget {
     super.key,
   });
 
-  final ValueNotifier<NoteProject> note;
+  final ProjectModelNote note;
   final ValueChanged<BuildContext> onRemove;
   final StreamController<NoteProjectNotifier> updatesStream;
   final TextEditingController noteController;
@@ -55,7 +65,7 @@ class NoteProjectSideActionBar extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         NoteSettingsButton(
-          note: note.value,
+          note: note,
           onRemove: () => onRemove(context),
           updatesStream: updatesStream,
         ),

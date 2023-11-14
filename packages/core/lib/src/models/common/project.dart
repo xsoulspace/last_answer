@@ -34,7 +34,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     required final DateTime updatedAt,
     @Default('') final String note,
     @Default(ProjectTypes.note) final ProjectTypes type,
-    final int? charactersLimit,
+    @Default(0) final int charactersLimit,
     final DateTime? archivedAt,
   }) = ProjectModelNote;
   factory ProjectModel.fromJson(final Map<String, dynamic> json) =>

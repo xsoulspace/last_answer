@@ -5,7 +5,6 @@ enum SharedPreferencesKeys {
   theme,
   locale,
   notificationUpdatesReadDateTime,
-  migrated,
   projectsReversed,
   lastUsedEmojis,
   charactersLimitForNewNotes,

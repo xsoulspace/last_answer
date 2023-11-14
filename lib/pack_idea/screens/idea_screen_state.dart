@@ -40,11 +40,11 @@ class IdeaScreenState implements LifeState {
   final StreamController<bool> ideaUpdatesStream;
   @override
   ValueChanged<VoidCallback>? setState;
-  late FolderStateProvider folderProvider;
+  late FolderStateNotifier folderProvider;
   late IdeaProjectsState ideasProvider;
   @override
   void initState() {
-    folderProvider = context.read<FolderStateProvider>();
+    folderProvider = context.read<FolderStateNotifier>();
     ideasProvider = context.read<IdeaProjectsState>();
     unawaited(
       ideaUpdatesStream.stream

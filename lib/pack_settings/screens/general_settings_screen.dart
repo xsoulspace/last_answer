@@ -17,7 +17,7 @@ class GeneralSettingsScreen extends StatelessWidget {
         leading: AdaptiveBackButton(onPressed: onBack),
         title: Text(S.current.generalSettingsFullTitle),
       ),
-      body: const GeneralSettings(),
+      body: const GeneralSettingsView(),
     );
   }
 }

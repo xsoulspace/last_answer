@@ -30,7 +30,7 @@ class GlobalStateInitializer implements StateInitializer {
     final lastEmojiProvider = context.read<LastEmojiProvider>();
     final specialEmojiProvider = context.read<SpecialEmojiProvider>();
     final emojiProvider = context.read<EmojiProvider>();
-    final currentFolderProvider = context.read<FolderStateProvider>();
+    final currentFolderProvider = context.read<FolderStateNotifier>();
     final notificationController = context.read<NotificationController>();
     final paymentsController = context.read<PaymentsController>();
 
@@ -139,7 +139,7 @@ class GlobalStateInitializer implements StateInitializer {
           ...notesProjectsState.state.values,
         ]);
     } else {
-      MapState.load<ProjectFolder, ProjectsFolderProvider>(
+      MapState.load<ProjectFolder, FolderState>(
         context: context,
         box: projectsFolders,
       );
@@ -177,8 +177,8 @@ class GlobalStateInitializer implements StateInitializer {
     /// ********************************************
     /// *      MIGRATIONS END
     /// ********************************************
-    WidgetsBinding.instance.addPostFrameCallback((final _) {
-      settings.notify();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((final _) {
+    //   settings.notify();
+    // });
   }
 }

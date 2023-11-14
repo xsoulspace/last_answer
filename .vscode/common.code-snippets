@@ -15,28 +15,28 @@
   // 	],
   // 	"description": "Log output to console"
   // }
-  "utils": {
-    "prefix": "utils",
-    "body": "import 'package:lastanswer/utils/utils.dart';"
+  "todo(username):description": {
+    "prefix": "todo",
+    "body": "// TODO(${1:username}): ${2:description}, "
   },
-  "theme": {
-    "prefix": "theme",
-    "body": "import 'package:lastanswer/library/theme/theme.dart';"
-  },
-  "widgets": {
-    "prefix": "widgets",
-    "body": "import 'package:lastanswer/library/widgets/widgets.dart';"
-  },
-  "assets": {
-    "prefix": "assets",
-    "body": "import 'package:lastanswer/generated/assets.gen.dart';"
-  },
-  "add todo arenukvern": {
+  "todo(arenukvern):description": {
     "prefix": "tdar",
-    "body": "// TODO(arenukvern): "
+    "body": "// TODO(arenukvern): ${1:description}, "
   },
-  "section": {
-    "prefix": "section",
-    "body": "/// ********************************************\n/// *      CONTEXT RELATED READINGS START\n/// ********************************************"
+  "fixme(username):description": {
+    "prefix": "fixme",
+    "body": "// FIXME(${1:username}): ${2:description}, "
+  },
+  "unimplemented": {
+    "prefix": "unimplemented",
+    "body": "// TODO(${1:username}): ${2:unimplemented}\nthrow UnimplementedError('${3:unimplemented error}');"
+  },
+  "section-start": {
+    "prefix": "section start",
+    "body": "/// ********************************************\n/// *      ${1:TITLE} START\n/// ********************************************"
+  },
+  "section-end": {
+    "prefix": "section end",
+    "body": "/// ********************************************\n/// *      ${1:TITLE} END\n/// ********************************************"
   }
 }

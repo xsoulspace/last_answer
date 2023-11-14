@@ -163,3 +163,9 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
   @override
   bool? get stringify => true;
 }
+
+extension BasicProjectListExtension on List<BasicProject> {
+  void sortByDate() => sort(
+        (final a, final b) => b.updated.compareTo(a.updated),
+      );
+}

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of pack_app;
+part of 'pack_app.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

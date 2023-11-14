@@ -3,18 +3,18 @@ import 'package:flutter/cupertino.dart';
 import '../datasources/datasources.dart';
 import 'map_state.dart';
 
-class ProjectsFolderProvider extends MapState<ProjectFolder> {}
+class FolderState extends MapState<ProjectFolder> {}
 
-ProjectsFolderProvider createProjectsFoldersProvider(
+FolderState createProjectsFoldersProvider(
   final BuildContext context,
 ) =>
-    ProjectsFolderProvider();
+    FolderState();
 
-FolderStateProvider createCurrentFolderProvider(final BuildContext context) =>
-    FolderStateProvider(ProjectFolder.zero());
+FolderStateNotifier createCurrentFolderProvider(final BuildContext context) =>
+    FolderStateNotifier(ProjectFolder.zero());
 
-class FolderStateProvider extends ChangeNotifier {
-  FolderStateProvider(this.state);
+class FolderStateNotifier extends ChangeNotifier {
+  FolderStateNotifier(this.state);
   ProjectFolder state;
   void setState(final ProjectFolder folder) {
     state = folder;

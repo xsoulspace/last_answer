@@ -60,14 +60,14 @@ class AppNavigatorPageBuilder {
           popper: popper,
           child: NoteProjectScreen(
             delegate: NoteProjectViewDelegate(
-              noteId: params.noteId!,
-              onBack: (){
+              noteId: ProjectModelId.fromJson(params.noteId!),
+              onBack: (final note) async {
                 if (note.note.replaceAll(' ', '').isEmpty) {
-                context.read<NoteProjectsState>().remove(key: note.id);
-                note.folder?.removeProject(note);
-                await note.delete();
-              }
-              navigatorController.goHome();
+                  context.read<NoteProjectsState>().remove(key: note.id.value);
+                  note.folder?.removeProject(note);
+                  await note.delete();
+                }
+                navigatorController.goHome();
               },
               onGoHome: popper.navigatorController.goHome,
               checkIsProjectActive: checkIsProjectActive,

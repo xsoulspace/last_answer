@@ -26,4 +26,3 @@ part 'note_project.dart';
 part 'project_folder.dart';
 part 'project_types.dart';
 part 'serialazable_project_id.dart';
-part 'story_project.dart';

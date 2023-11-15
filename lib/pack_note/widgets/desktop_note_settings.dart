@@ -1,34 +1,25 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:recase/recase.dart';
 
 class DesktopNoteSettingsMenu extends HookWidget {
   const DesktopNoteSettingsMenu({
-    required this.note,
     required this.onRemove,
-    required this.updatesStream,
+    required this.characterLimitController,
     super.key,
   });
   static const borderPadding = 8.0;
-  final NoteProject note;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final CharactersLimitController characterLimitController;
 
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-
-    useNoteProjectUpdaterState(
-      note: note,
-      updatesStream: updatesStream,
-      context: context,
-    );
     final divider = Divider(
       color: theme.highlightColor,
       height: borderPadding,
@@ -77,8 +68,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
                     const Divider(),
                     Expanded(
                       child: CharactersLimitSetting(
-                        note: note,
-                        updatesStream: updatesStream,
+                        controller: characterLimitController,
                       ),
                     ),
                     const Divider(),

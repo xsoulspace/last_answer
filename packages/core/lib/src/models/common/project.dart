@@ -98,6 +98,8 @@ class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel implements Sharable {
       _$IdeaProjectAnswerModelFromJson(json);
   String get title => _getTitle(text, titleLimit: 50);
   @override
+  String get sharableTitle => title;
+  @override
   String toShareString() => '${question.toShareString()} \n $text';
 }
 
@@ -127,6 +129,9 @@ class IdeaProjectQuestionModel
       _$IdeaProjectQuestionModelFromJson(json);
   @override
   String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+  @override
+  String get sharableTitle =>
+      _getTitle(title.getByLanguage(Intl.getCurrentLocale()));
 }
 
 @freezed

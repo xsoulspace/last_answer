@@ -2,7 +2,6 @@ library widgets;
 
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:blur/blur.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,12 +13,15 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_slidable/flutter_slidable.dart' as slidable;
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:lastanswer/library/widgets/core/special_emoji_keyboard.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
+
+export 'core/special_emoji_keyboard.dart';
 
 part 'buttons/adaptive_back_button.dart';
 part 'buttons/app_icon_button.dart';
@@ -49,7 +51,6 @@ part 'core/right_scrollbar.dart';
 part 'core/safe_areas.dart';
 part 'core/scroll_keyboard_closer.dart';
 part 'core/special_emoji_grid.dart';
-part 'core/special_emoji_keyboard.dart';
 part 'core/state_loader.dart';
 part 'core/unspash_service.dart';
 part 'core/unsplash_image.dart';

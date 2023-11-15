@@ -1,67 +1,121 @@
-part of '../widgets.dart';
+import 'dart:async';
+import 'dart:ui';
 
-class SpecialEmojisKeyboardActions extends HookWidget {
-  const SpecialEmojisKeyboardActions({
-    required this.builder,
-    required this.controller,
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
+
+part 'special_emoji_keyboard.freezed.dart';
+
+@freezed
+class SpecialEmojisKeyboardControllerState
+    with _$SpecialEmojisKeyboardControllerState {
+  const factory SpecialEmojisKeyboardControllerState({
+    @Default(false) final bool isKeyboardOpen,
+    @Default(false) final bool isKeyboardOpening,
+  }) = _SpecialEmojisKeyboardControllerState;
+}
+
+class SpecialEmojiController
+    extends ValueNotifier<SpecialEmojisKeyboardControllerState> {
+  SpecialEmojiController({
     required this.focusNode,
+    required this.textController,
+    required final TickerProvider tickerProvider,
+  })  : _animationController = AnimationController(
+          vsync: tickerProvider,
+          duration: const Duration(milliseconds: 200),
+        ),
+        super(const SpecialEmojisKeyboardControllerState());
+  final FocusNode focusNode;
+  final TextEditingController textController;
+  final AnimationController _animationController;
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
+  }
+
+  late final _animation = Tween<Offset>(
+    begin: Offset.zero,
+    end: const Offset(
+      0,
+      SpecialEmojisKeyboard.height,
+    ),
+  ).animate(
+    CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linearToEaseOut,
+    ),
+  );
+  Offset get keyboardOffset => _animation.value;
+  Future<void> closeEmojiKeyboard({final bool immediately = true}) async {
+    if (immediately) {
+      _animationController.reset();
+    } else {
+      await _animationController.reverse();
+    }
+    setValue(value.copyWith(isKeyboardOpen: false));
+  }
+
+  Future<void> switchEmojiKeyboard() async {
+    if (value.isKeyboardOpen) {
+      await closeEmojiKeyboard(immediately: false);
+    } else {
+      setValue(value.copyWith(isKeyboardOpening: true));
+      await SoftKeyboard.close();
+      setValue(value.copyWith(isKeyboardOpen: true));
+      await _animationController.forward();
+      await Future.delayed(const Duration(milliseconds: 400));
+      setValue(value.copyWith(isKeyboardOpening: false));
+    }
+  }
+
+  void showSoftKeyboard() {
+    if (focusNode.hasFocus) {
+      unawaited(SoftKeyboard.open());
+    } else {
+      focusNode.requestFocus();
+    }
+  }
+
+  late final emojiInserter = EmojiInserter.use(
+    controller: textController,
+    focusNode: focusNode,
+    requestFocusOnInsert: false,
+  );
+}
+
+class SpecialEmojiKeyboardProvider extends HookWidget {
+  const SpecialEmojiKeyboardProvider({
+    required this.controller,
+    required this.builder,
     super.key,
   });
-  final Widget Function(
-    BuildContext context,
-    VoidCallback showEmojiKeyboard,
-    VoidCallback hideEmojiKeyboard,
-    ValueNotifier<bool> isEmojiKeyboardOpen,
-  ) builder;
-  final FocusNode focusNode;
-  final TextEditingController controller;
+  final SpecialEmojiController controller;
+  final WidgetBuilder builder;
+
   @override
   Widget build(final BuildContext context) {
-    final isEmojiKeyboardOpen = useIsBool();
-    final isEmojiKeyboardOpening = useIsBool();
-    if (isNativeDesktop || kIsWeb) {
-      return builder(context, () {}, () {}, isEmojiKeyboardOpen);
-    }
-
-    final emojiKeyboardController = useAnimationController(
-      duration: const Duration(milliseconds: 200),
-    );
-    final emojiKeyboardHeight = useAnimation(
-      Tween<Offset>(
-        begin: Offset.zero,
-        end: const Offset(
-          0,
-          SpecialEmojisKeyboard.height,
-        ),
-      ).animate(
-        CurvedAnimation(
-          parent: emojiKeyboardController,
-          curve: Curves.linearToEaseOut,
-        ),
-      ),
-    );
-
-    Future<void> closeEmojiKeyboard({final bool immediately = true}) async {
-      if (immediately) {
-        emojiKeyboardController.reset();
-        isEmojiKeyboardOpen.value = false;
-      } else {
-        await emojiKeyboardController.reverse();
-        isEmojiKeyboardOpen.value = false;
-      }
-    }
-
+    if (isNativeDesktop || kIsWeb) return builder(context);
+    final state = controller.value;
     final view = View.of(context);
     useEffect(
       () {
         Future.delayed(
           const Duration(milliseconds: 110),
           () async {
-            final keyboardOpen = view.viewInsets.bottom > 0;
-            if (keyboardOpen &&
-                isEmojiKeyboardOpen.value &&
-                !isEmojiKeyboardOpening.value) {
-              await closeEmojiKeyboard();
+            final isSystemKeyboardOpen = view.viewInsets.bottom > 0;
+            if (isSystemKeyboardOpen &&
+                state.isKeyboardOpen &&
+                !state.isKeyboardOpening) {
+              await controller.closeEmojiKeyboard();
             }
           },
         );
@@ -71,34 +125,7 @@ class SpecialEmojisKeyboardActions extends HookWidget {
       [view.viewInsets.bottom],
     );
 
-    final emojiInserter = EmojiInserter.use(
-      controller: controller,
-      focusNode: focusNode,
-      requestFocusOnInsert: false,
-    );
-    final footer = SpecialEmojisKeyboard(
-      onChanged: emojiInserter.insert,
-      onHide: () async => closeEmojiKeyboard(immediately: false),
-      onShowKeyboard: () {
-        if (focusNode.hasFocus) {
-          unawaited(SoftKeyboard.open());
-        } else {
-          focusNode.requestFocus();
-        }
-      },
-    );
-    Future<void> showEmojiKeyboard() async {
-      if (isEmojiKeyboardOpen.value) {
-        await closeEmojiKeyboard(immediately: false);
-      } else {
-        isEmojiKeyboardOpening.value = true;
-        await SoftKeyboard.close();
-        isEmojiKeyboardOpen.value = true;
-        await emojiKeyboardController.forward();
-        await Future.delayed(const Duration(milliseconds: 400));
-        isEmojiKeyboardOpening.value = false;
-      }
-    }
+    final keyboardOffset = controller.keyboardOffset;
 
     return Stack(
       children: [
@@ -107,29 +134,29 @@ class SpecialEmojisKeyboardActions extends HookWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  child: builder(
-                    context,
-                    showEmojiKeyboard,
-                    closeEmojiKeyboard,
-                    isEmojiKeyboardOpen,
-                  ),
+                  child: builder(context),
                 ),
               ),
               SizedBox(
-                height: isEmojiKeyboardOpen.value
-                    ? emojiKeyboardHeight.dy
+                height: controller.value.isKeyboardOpen
+                    ? keyboardOffset.dy
                     : window.viewInsets.bottom / window.devicePixelRatio,
               ),
             ],
           ),
         ),
         Positioned(
-          bottom: emojiKeyboardHeight.dy - SpecialEmojisKeyboard.height,
+          bottom: keyboardOffset.dy - SpecialEmojisKeyboard.height,
           left: 0,
           right: 0,
           child: Offstage(
-            offstage: !isEmojiKeyboardOpen.value,
-            child: footer,
+            offstage: !controller.value.isKeyboardOpen,
+            child: SpecialEmojisKeyboard(
+              onChanged: controller.emojiInserter.insert,
+              onHide: () async =>
+                  controller.closeEmojiKeyboard(immediately: false),
+              onShowKeyboard: controller.showSoftKeyboard,
+            ),
           ),
         ),
       ],

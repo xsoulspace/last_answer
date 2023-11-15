@@ -77,6 +77,9 @@ class NoteProject extends BasicProject {
         charactersLimit: charactersLimit,
         note: note,
       );
+
+  @override
+  String get sharableTitle => throw UnimplementedError();
 }
 
 /// A mock for [NoteProject].

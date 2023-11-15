@@ -1,30 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
+import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
 import 'package:lastanswer/utils/utils.dart';
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({
-    required this.note,
     required this.onRemove,
-    required this.updatesStream,
+    required this.characterLimitController,
     super.key,
   });
   static const borderPadding = 8.0;
-  final ProjectModelNote note;
   final VoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
+  final CharactersLimitController characterLimitController;
 
   @override
   Widget build(final BuildContext context) {
-    useNoteProjectUpdaterState(
-      note: note,
-      updatesStream: updatesStream,
-      context: context,
-    );
     final theme = Theme.of(context);
 
     return Padding(
@@ -48,8 +40,7 @@ class MobileNoteSettingsMenu extends HookWidget {
               const SizedBox(width: 5),
               Expanded(
                 child: CharactersLimitSetting(
-                  note: note,
-                  updatesStream: updatesStream,
+                  controller: characterLimitController,
                 ),
               ),
             ],

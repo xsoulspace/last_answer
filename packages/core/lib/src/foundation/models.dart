@@ -11,6 +11,8 @@ class LoadableContainer<T> with _$LoadableContainer<T> {
   }) = _LoadableContainer<T>;
   factory LoadableContainer.loaded(final T value) =>
       LoadableContainer<T>(value: value, isLoaded: true);
+  const LoadableContainer._();
+  bool get isLoading => !isLoaded;
 }
 
 /// Use this object to mark some state

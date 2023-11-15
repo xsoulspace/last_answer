@@ -4,97 +4,50 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/pack_note/note_view.dart';
+import 'package:lastanswer/pack_note/widgets/note_settings_button.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({
-    required this.note,
-    required this.onRemove,
-    required this.updatesStream,
-    required this.noteController,
-    required this.noteFocusNode,
-    required this.showEmojiKeyboard,
-    required this.closeEmojiKeyboard,
-    required this.isEmojiKeyboardOpen,
     super.key,
   });
 
-  final ProjectModelNote note;
-  final ValueChanged<BuildContext> onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
-  final TextEditingController noteController;
-  final VoidCallback showEmojiKeyboard;
-  final VoidCallback closeEmojiKeyboard;
-  final FocusNode noteFocusNode;
-  final ValueNotifier<bool> isEmojiKeyboardOpen;
-
-  Future<void> onSwitchKeyboard({
-    required final bool isKeyboardVisible,
-  }) async {
-    void switchKeyboard({
-      final bool forceToOpen = false,
-    }) {
-      if (isKeyboardVisible && !forceToOpen) {
-        unawaited(SoftKeyboard.close());
-      } else {
-        if (noteFocusNode.hasFocus) {
-          unawaited(SoftKeyboard.open());
-        } else {
-          noteFocusNode.requestFocus();
-        }
-      }
-    }
-
-    if (isEmojiKeyboardOpen.value) {
-      closeEmojiKeyboard();
-      switchKeyboard(forceToOpen: true);
-    } else {
-      switchKeyboard();
-    }
-  }
-
   @override
   Widget build(final BuildContext context) {
-    final isKeyboardVisible = useKeyboardVisibility();
-
+    final bloc = context.watch<NoteProjectViewBloc>();
+    final specialEmojiController = bloc.specialEmojiController;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        NoteSettingsButton(
-          note: note,
-          onRemove: () => onRemove(context),
-          updatesStream: updatesStream,
-        ),
+        const NoteSettingsButton(),
         SpecialEmojiButton(
-          controller: noteController,
-          focusNode: noteFocusNode,
-          onShowEmojiKeyboard: showEmojiKeyboard,
+          controller: specialEmojiController,
         ),
         SizedBox(
           height: 34,
           width: 48,
           child: IconShareButton(
             onTap: () {
-              unawaited(ProjectSharer.of(context).share(project: note.value));
+              unawaited(ProjectSharer.of(context).share(sharable: bloc.note));
             },
           ),
         ),
         EmojiPopup(
-          controller: noteController,
-          focusNode: noteFocusNode,
+          controller: bloc.noteController,
+          focusNode: bloc.focusNode,
         ),
         if (Platform.isAndroid || Platform.isIOS)
           IconButton(
-            onPressed: () async => onSwitchKeyboard(
-              isKeyboardVisible: isKeyboardVisible.value,
+            onPressed: () async => bloc.onSwitchKeyboard(
+              isKeyboardVisible: specialEmojiController.value.isKeyboardOpen,
             ),
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              child: isEmojiKeyboardOpen.value || !isKeyboardVisible.value
+              child: !specialEmojiController.value.isKeyboardOpen
                   ? const Icon(
                       CupertinoIcons.keyboard,
                     )

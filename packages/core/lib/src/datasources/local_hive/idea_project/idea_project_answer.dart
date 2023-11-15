@@ -60,6 +60,9 @@ class IdeaProjectAnswer extends HiveObject
         question: question.toModel(),
         text: text,
       );
+
+  @override
+  String get sharableTitle => '';
 }
 
 /// A mock for [IdeaProjectAnswer].

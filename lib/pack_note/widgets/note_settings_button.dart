@@ -1,27 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_note/screens/use_note_project_updater.dart';
+import 'package:lastanswer/pack_note/note_view.dart';
 import 'package:lastanswer/pack_note/widgets/desktop_note_settings.dart';
 import 'package:lastanswer/pack_note/widgets/mobile_note_settings.dart';
 import 'package:lastanswer/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class NoteSettingsButton extends StatelessWidget {
   const NoteSettingsButton({
-    required this.note,
-    required this.onRemove,
-    required this.updatesStream,
     super.key,
   });
-  final NoteProject note;
-  final VoidCallback onRemove;
-  final StreamController<NoteProjectNotifier> updatesStream;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-
+    final bloc = context.read<NoteProjectViewBloc>();
+    Future<void> onRemove() async => bloc.onRemove(context);
     return PopupButton(
       title: Text(
         S.current.noteSettings,
@@ -31,18 +25,16 @@ class NoteSettingsButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width - 50,
         height: 150,
         child: MobileNoteSettingsMenu(
-          note: note,
           onRemove: onRemove,
-          updatesStream: updatesStream,
+          characterLimitController: bloc.characterLimitController,
         ),
       ),
       onMobileRemove: onRemove,
       builder: (final context) => ButtonPopup(
         height: 230,
         child: DesktopNoteSettingsMenu(
-          note: note,
           onRemove: onRemove,
-          updatesStream: updatesStream,
+          characterLimitController: bloc.characterLimitController,
         ),
       ),
       icon: Icons.more_vert_rounded,

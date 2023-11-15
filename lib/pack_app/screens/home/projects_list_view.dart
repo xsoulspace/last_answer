@@ -104,8 +104,6 @@ Future<void> removeProject({
     context.read<IdeaProjectsState>().remove(key: project.id);
   } else if (project is NoteProject) {
     context.read<NoteProjectsState>().remove(key: project.id);
-  } else if (project is StoryProject) {
-    // TODO(arenukvern): implement Story removal
   }
   project.folder?.removeProject(project);
   folderProvider.notify();

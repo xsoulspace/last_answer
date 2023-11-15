@@ -10,14 +10,14 @@ class ProjectSharer {
   final BuildContext context;
 
   Future<void> share({
-    required final BasicProject project,
+    required final Sharable sharable,
   }) async {
     final RenderBox? box = context.findRenderObject() as RenderBox?;
     if (box == null) return;
     final desktop = isDesktop;
     if (desktop) {
       final messenger = ScaffoldMessenger.of(context);
-      final data = ClipboardData(text: project.toShareString());
+      final data = ClipboardData(text: sharable.toShareString());
       await Clipboard.setData(data);
       void closeBanner() => messenger.hideCurrentMaterialBanner();
 
@@ -37,8 +37,8 @@ class ProjectSharer {
       );
     } else {
       await Share.share(
-        project.toShareString(),
-        subject: project.title,
+        sharable.toShareString(),
+        subject: sharable.sharableTitle,
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
     }
@@ -48,8 +48,10 @@ class ProjectSharer {
 abstract interface class Sharable {
   Sharable._();
   String toShareString();
+  abstract final String sharableTitle;
 }
 
 abstract interface class Archivable {
+  Archivable._();
   abstract final DateTime? archivedAt;
 }

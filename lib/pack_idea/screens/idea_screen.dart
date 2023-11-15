@@ -99,7 +99,7 @@ class IdeaProjectScreen extends HookWidget {
           ),
           _AnswerCreator(
             onShareTap: () async {
-              await ProjectSharer.of(context).share(project: idea);
+              await ProjectSharer.of(context).share(sharable: idea);
             },
             questionsOpened: questionsOpened,
             onFocus: state.openQuestions,

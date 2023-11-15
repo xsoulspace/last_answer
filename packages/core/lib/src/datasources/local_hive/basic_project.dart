@@ -72,4 +72,7 @@ class BasicProject extends HiveObject
         id: id,
         type: type,
       );
+
+  @override
+  String get sharableTitle => '';
 }

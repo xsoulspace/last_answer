@@ -58,12 +58,6 @@ class HiveBoxesIds {
   /// index 6
   static const noteProjectKey = 'noteProject';
 
-  /// index 7
-  static const storyProject = 7;
-
-  /// index 7
-  static const storyProjectKey = 'storyProject';
-
   /// index 8
   static const localizedText = 8;
 

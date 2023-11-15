@@ -43,6 +43,9 @@ class IdeaProjectQuestion extends HiveObject
         id: IdeaProjectQuestionModelId.fromJson(id),
         title: title.toModel(),
       );
+
+  @override
+  String get sharableTitle => '';
 }
 
 /// A mock for [IdeaProjectQuestion].

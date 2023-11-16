@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../datasources/datasources.dart';
-import '../repositories/repositories.dart';
+import '../../core.dart';
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
@@ -14,7 +13,8 @@ base class MapState<TValue> extends ChangeNotifier {
   });
   void notify() => notifyListeners();
 
-  Map<String, TValue> state = {};
+  LoadableContainer<Map<String, TValue>> state =
+      const LoadableContainer(value: {});
 
   /// Use [filterKeyword] to get filtered values
   String _filterKeyword = '';
@@ -32,7 +32,7 @@ base class MapState<TValue> extends ChangeNotifier {
   final OnFilterCallback<TValue>? onFilter;
   final MapBasedRepository<String, TValue>? repository;
 
-  List<TValue> get values => state.values.toList();
+  List<TValue> get values => state.value.values.toList();
   List<TValue> get filteredValues {
     final list = [...values];
     if (onFilter != null) {
@@ -42,55 +42,52 @@ base class MapState<TValue> extends ChangeNotifier {
     return list;
   }
 
-  void _save() => repository?.putAll(state);
-
+  void _save() => repository?.putAll(state.value);
+  void setState(final Map<String, TValue> value) =>
+      LoadableContainer.loaded(value);
   void put({required final String key, required final TValue value}) {
-    state[key] = value;
+    setState({...state.value}..[key] = value);
     notifyListeners();
     _save();
   }
 
   void putAll(final Map<String, TValue> map) {
-    state.addAll(map);
+    setState({...state.value}..addAll(map));
     notifyListeners();
     _save();
   }
 
   void putEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
-    state.addEntries(newEntries);
+    setState({...state.value}..addEntries(newEntries));
     notifyListeners();
     _save();
   }
 
   void remove({required final String key}) {
-    state.remove(key);
+    setState({...state.value}..remove(key));
     notifyListeners();
     _save();
   }
 
   void assignAll(final Map<String, TValue> map) {
-    state = map;
-    _save();
+    setState({...map});
   }
 
   void assignEntries(final Iterable<MapEntry<String, TValue>> newEntries) {
-    state = Map.fromEntries(newEntries);
+    setState(Map.fromEntries(newEntries));
     notifyListeners();
     _save();
   }
 
-  void loadIterable(final Iterable<TValue> values) {
+  void loadIterable({
+    required final Iterable<TValue> values,
+    required final String Function(TValue) toKey,
+  }) {
     if (values.isEmpty) {
       assignAll({});
     } else {
       assignEntries(
-        values.map((final e) {
-          if (e is HasId) {
-            return MapEntry(e.id, e);
-          } else {
-            throw UnimplementedError('Provide HasId interface to load type');
-          }
-        }),
+        values.map((final e) => MapEntry(toKey(e), e)),
       );
     }
   }
@@ -98,6 +95,7 @@ base class MapState<TValue> extends ChangeNotifier {
   static TProvider load<TValue, TProvider extends MapState<TValue>>({
     required final BuildContext context,
     required final Box<TValue> box,
+    required final String Function(TValue) toKey,
   }) =>
-      context.read<TProvider>()..loadIterable(box.values);
+      context.read<TProvider>()..loadIterable(values: box.values, toKey: toKey);
 }

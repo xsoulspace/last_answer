@@ -130,8 +130,8 @@ class ProjectFolder extends HiveObject with EquatableMixin, HasId {
 
     BasicProject? getProjectById(final SerializableProjectId id) {
       final Map<ProjectId, BasicProject?> projects = switch (id.type) {
-        ProjectTypes.note => notes.state,
-        ProjectTypes.idea => ideas.state,
+        ProjectTypes.note => notes.state.value,
+        ProjectTypes.idea => ideas.state.value,
       };
 
       return projects[id.id];

@@ -30,7 +30,7 @@ class AppStateProvider extends StatelessWidget {
           builder: (final context) => StateLoader(
             initializer: GlobalStateInitializer(
               settings: _settings,
-              context: context,
+              dto: GlobalStateInitializerDto(context: context),
             ),
             loader: const AppLoadingScreen(),
             child: builder(context),

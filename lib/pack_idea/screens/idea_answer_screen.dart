@@ -29,7 +29,7 @@ class IdeaAnswerScreen extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final ideasProvider = context.read<IdeaProjectsState>();
-    final maybeIdea = ideasProvider.state[ideaId]!;
+    final maybeIdea = ideasProvider.state.value[ideaId]!;
     final maybeAnswer = getInitialAnswer(idea: maybeIdea);
     if (maybeAnswer == null) return Container();
     final answer = useState<IdeaProjectAnswer>(maybeAnswer);

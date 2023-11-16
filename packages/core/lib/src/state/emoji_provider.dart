@@ -4,29 +4,29 @@ import 'package:provider/provider.dart';
 import '../models/models.dart';
 import 'map_state.dart';
 
-final class EmojiProvider extends MapState<EmojiModel> {
-  EmojiProvider({
+final class EmojiState extends MapState<EmojiModel> {
+  EmojiState({
     required final OnFilterCallback<EmojiModel> onFilter,
   }) : super(onFilter: onFilter);
 }
 
-EmojiProvider createEmojiProvider(final BuildContext context) => EmojiProvider(
+EmojiState createEmojiProvider(final BuildContext context) => EmojiState(
       onFilter: (final emoji, final keyword) =>
           emoji.keywords.contains(keyword),
     );
 
-final class LastEmojiProvider extends MapState<EmojiModel> {
-  LastEmojiProvider({
+final class LastEmojiState extends MapState<EmojiModel> {
+  LastEmojiState({
     required super.repository,
   });
 }
 
-LastEmojiProvider createLastUsedEmojisProvider(final BuildContext context) =>
-    LastEmojiProvider(
+LastEmojiState createLastUsedEmojisProvider(final BuildContext context) =>
+    LastEmojiState(
       repository: context.read(),
     );
 
-final class SpecialEmojiProvider extends MapState<EmojiModel> {}
+final class SpecialEmojiState extends MapState<EmojiModel> {}
 
-SpecialEmojiProvider createSpecialEmojisProvider(final BuildContext context) =>
-    SpecialEmojiProvider();
+SpecialEmojiState createSpecialEmojisProvider(final BuildContext context) =>
+    SpecialEmojiState();

@@ -13,31 +13,40 @@ Future<Box<T>> _openAnyway<T>(final String boxName) async {
   return Hive.openBox<T>(boxName);
 }
 
+class GlobalStateInitializerDto {
+  GlobalStateInitializerDto({
+    required this.context,
+  })  : emojiRepository = context.read(),
+        lastUsedEmojiRepository = context.read(),
+        lastEmojiProvider = context.read(),
+        specialEmojiProvider = context.read(),
+        emojiProvider = context.read(),
+        currentFolderProvider = context.read(),
+        notificationController = context.read(),
+        paymentsController = context.read(),
+        assetBundle = DefaultAssetBundle.of(context);
+  final BuildContext context;
+  final EmojiRepository emojiRepository;
+  final LastUsedEmojiRepository lastUsedEmojiRepository;
+  final AssetBundle assetBundle;
+  final LastEmojiState lastEmojiProvider;
+  final SpecialEmojiState specialEmojiProvider;
+  final EmojiState emojiProvider;
+  final FolderStateNotifier currentFolderProvider;
+  final NotificationController notificationController;
+  final PaymentsController paymentsController;
+}
+
 class GlobalStateInitializer implements StateInitializer {
   GlobalStateInitializer({
-    required this.context,
+    required this.dto,
     required this.settings,
   });
-  final BuildContext context;
+  final GlobalStateInitializerDto dto;
   final GeneralSettingsController settings;
 
   @override
   Future<void> onLoad() async {
-    /// ********************************************
-    /// *      CONTEXT RELATED READINGS START
-    /// ********************************************
-
-    final lastEmojiProvider = context.read<LastEmojiProvider>();
-    final specialEmojiProvider = context.read<SpecialEmojiProvider>();
-    final emojiProvider = context.read<EmojiProvider>();
-    final currentFolderProvider = context.read<FolderStateNotifier>();
-    final notificationController = context.read<NotificationController>();
-    final paymentsController = context.read<PaymentsController>();
-
-    /// ********************************************
-    /// *      CONTEXT RELATED READINGS END
-    /// ********************************************
-
     /// ********************************************
     /// *      CONTENT LOADING START
     /// ********************************************
@@ -45,7 +54,7 @@ class GlobalStateInitializer implements StateInitializer {
     /// Loadindependent controllers
     final loadableControllers = <Loadable>[
       settings,
-      paymentsController,
+      dto.paymentsController,
     ];
     await Future.forEach<Loadable>(
       loadableControllers,
@@ -53,19 +62,20 @@ class GlobalStateInitializer implements StateInitializer {
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.emoji;
-    // ignore: use_build_context_synchronously
-    final emojis = await EmojiUtil.getList(context);
+    final emojis = await dto.emojiRepository.getAllEmoji(dto.assetBundle);
 
-    emojiProvider.putEntries(emojis.map((final e) => MapEntry(e.emoji, e)));
+    dto.emojiProvider
+        .loadIterable(values: emojis, toKey: (final p0) => p0.emoji);
 
-    // ignore: use_build_context_synchronously
-    final specialEmojis = await EmojiUtil.getSpecialList(context);
-    specialEmojiProvider
-        .putEntries(specialEmojis.map((final e) => MapEntry(e.emoji, e)));
+    final specialEmojis =
+        await dto.emojiRepository.getSpecialEmoji(dto.assetBundle);
+    dto.specialEmojiProvider.loadIterable(
+      values: specialEmojis,
+      toKey: (final p0) => p0.emoji,
+    );
 
-    final lastUsedEmojis = await EmojiUtil().load();
-    lastEmojiProvider.putAll(lastUsedEmojis);
-
+    final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
+    dto.lastEmojiProvider.putAll(lastUsedEmojis);
     settings.loadingStatus = AppStateLoadingStatuses.ideas;
 
     await Hive.openBox<IdeaProjectAnswer>(
@@ -91,16 +101,20 @@ class GlobalStateInitializer implements StateInitializer {
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
+    // ignore: use_build_context_synchronously
     MapState.load<IdeaProjectQuestion, IdeaProjectQuestionsState>(
-      context: context,
+      context: dto.context,
       box: questions,
+      toKey: (final p0) => p0.id,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.answersForIdeas;
 
+    // ignore: use_build_context_synchronously
     final ideaProjectsState = MapState.load<IdeaProject, IdeaProjectsState>(
-      context: context,
+      context: dto.context,
       box: ideas,
+      toKey: (final p0) => p0.id,
     );
 
     settings.loadingStatus = AppStateLoadingStatuses.notes;
@@ -109,9 +123,11 @@ class GlobalStateInitializer implements StateInitializer {
       HiveBoxesIds.noteProjectKey,
     );
 
+    // ignore: use_build_context_synchronously
     final notesProjectsState = MapState.load<NoteProject, NoteProjectsState>(
-      context: context,
+      context: dto.context,
       box: notes,
+      toKey: (final p0) => p0.id,
     );
 
     final projectsFolders = await Hive.openBox<ProjectFolder>(
@@ -124,13 +140,15 @@ class GlobalStateInitializer implements StateInitializer {
     if (projectsFolders.isEmpty) {
       currentFolder = (await ProjectFolder.create())
         ..addProjects([
-          ...ideaProjectsState.state.values,
-          ...notesProjectsState.state.values,
+          ...ideaProjectsState.values,
+          ...notesProjectsState.values,
         ]);
     } else {
+      // ignore: use_build_context_synchronously
       MapState.load<ProjectFolder, FolderState>(
-        context: context,
+        context: dto.context,
         box: projectsFolders,
+        toKey: (final p0) => p0.id,
       );
 
       for (final projectsFolder in projectsFolders.values) {
@@ -145,7 +163,7 @@ class GlobalStateInitializer implements StateInitializer {
       // TODO(arenukvern): add last used folder
       currentFolder = projectsFolders.values.first;
     }
-    currentFolderProvider.setState(currentFolder);
+    dto.currentFolderProvider.setState(currentFolder);
 
     /// ********************************************
     /// *      CONTENT LOADING END
@@ -162,7 +180,7 @@ class GlobalStateInitializer implements StateInitializer {
     // }
     settings.loadingStatus = AppStateLoadingStatuses.settings;
 
-    await notificationController.onLoad();
+    await dto.notificationController.onLoad();
 
     /// ********************************************
     /// *      MIGRATIONS END

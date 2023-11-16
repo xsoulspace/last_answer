@@ -171,7 +171,7 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
     required this.onHide,
     super.key,
   });
-  final ValueChanged<Emoji> onChanged;
+  final ValueChanged<EmojiModel> onChanged;
   final VoidCallback onShowKeyboard;
   final VoidCallback onHide;
   static const height = 200.0;
@@ -185,7 +185,7 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
     final emojiStyle = theme.textTheme.displayLarge?.copyWith(fontSize: 26);
 
-    Widget buildEmojiButton(final Emoji emoji) => KeyboardEmojiButton(
+    Widget buildEmojiButton(final EmojiModel emoji) => KeyboardEmojiButton(
           key: ValueKey(emoji),
           emoji: emoji,
           style: emojiStyle,

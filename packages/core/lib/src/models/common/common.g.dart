@@ -6,13 +6,14 @@ part of 'common.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$EmojiImpl _$$EmojiImplFromJson(Map<String, dynamic> json) => _$EmojiImpl(
+_$EmojiModelImpl _$$EmojiModelImplFromJson(Map<String, dynamic> json) =>
+    _$EmojiModelImpl(
       category: json['category'] as String,
       emoji: json['emoji'] as String,
       keywords: json['keywords'] as String,
     );
 
-Map<String, dynamic> _$$EmojiImplToJson(_$EmojiImpl instance) =>
+Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
     <String, dynamic>{
       'category': instance.category,
       'emoji': instance.emoji,
@@ -55,7 +56,6 @@ Map<String, dynamic> _$$ProjectModelIdeaImplToJson(
 const _$ProjectTypesEnumMap = {
   ProjectTypes.idea: 'idea',
   ProjectTypes.note: 'note',
-  ProjectTypes.story: 'story',
 };
 
 _$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
@@ -67,7 +67,7 @@ _$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
       note: json['note'] as String? ?? '',
       type: $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
           ProjectTypes.note,
-      charactersLimit: json['charactersLimit'] as int?,
+      charactersLimit: json['charactersLimit'] as int? ?? 0,
       archivedAt: json['archivedAt'] == null
           ? null
           : DateTime.parse(json['archivedAt'] as String),

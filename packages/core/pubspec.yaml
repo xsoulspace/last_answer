@@ -29,14 +29,18 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.8.1
   logger: ^2.0.2+1
+  murmur3: ^2.1.0
   package_info_plus: ^4.2.0
   path: ^1.8.3
   path_provider: ^2.1.1
   path_to_regexp: ^0.4.0
   permission_handler: ^11.0.1
+  provider: ^6.1.1
   quiver: ^3.2.1
   share_plus: ^7.2.1
   shared_preferences: ^2.2.2
+  ui_kit:
+    path: ../ui_kit
   universal_io: ^2.2.0
   url_launcher: ^6.1.14
   uuid: ^4.1.0

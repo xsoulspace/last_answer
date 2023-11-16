@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../datasources/datasources.dart';
 import 'map_state.dart';
 
-class FolderState extends MapState<ProjectFolder> {}
+final class FolderState extends MapState<ProjectFolder> {}
 
 FolderState createProjectsFoldersProvider(
   final BuildContext context,

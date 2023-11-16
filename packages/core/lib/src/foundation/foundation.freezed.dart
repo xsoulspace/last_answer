@@ -103,8 +103,9 @@ class __$$LoadableContainerImplCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$LoadableContainerImpl<T> implements _LoadableContainer<T> {
-  const _$LoadableContainerImpl({required this.value, this.isLoaded = false});
+class _$LoadableContainerImpl<T> extends _LoadableContainer<T> {
+  const _$LoadableContainerImpl({required this.value, this.isLoaded = false})
+      : super._();
 
   @override
   final T value;
@@ -140,10 +141,11 @@ class _$LoadableContainerImpl<T> implements _LoadableContainer<T> {
               this, _$identity);
 }
 
-abstract class _LoadableContainer<T> implements LoadableContainer<T> {
+abstract class _LoadableContainer<T> extends LoadableContainer<T> {
   const factory _LoadableContainer(
       {required final T value,
       final bool isLoaded}) = _$LoadableContainerImpl<T>;
+  const _LoadableContainer._() : super._();
 
   @override
   T get value;

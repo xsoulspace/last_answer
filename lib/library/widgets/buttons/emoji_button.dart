@@ -7,7 +7,7 @@ class EmojiButton extends StatelessWidget {
     required this.style,
     super.key,
   });
-  final Emoji emoji;
+  final EmojiModel emoji;
   final VoidCallback onPressed;
   final TextStyle? style;
   @override
@@ -34,7 +34,7 @@ class KeyboardEmojiButton extends StatelessWidget {
     this.style,
     super.key,
   });
-  final Emoji emoji;
+  final EmojiModel emoji;
   final VoidCallback onPressed;
   final TextStyle? style;
   @override

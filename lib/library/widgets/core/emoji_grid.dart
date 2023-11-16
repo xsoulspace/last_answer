@@ -30,7 +30,7 @@ class EmojiGrid extends HookWidget {
     required this.onChanged,
     super.key,
   });
-  final ValueChanged<Emoji> onChanged;
+  final ValueChanged<EmojiModel> onChanged;
 
   // Widget buildConsumer({
   //   required final BuildContext context,
@@ -72,10 +72,10 @@ class EmojiGrid extends HookWidget {
         : Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: 'NotoColorEmoji',
             );
-    Widget buildEmojiButton(final Emoji emoji) {
+    Widget buildEmojiButton(final EmojiModel emoji) {
       void onPressed() {
         onChanged(emoji);
-        List<Emoji> newLastEmojis = [...lastEmojis.value];
+        List<EmojiModel> newLastEmojis = [...lastEmojis.value];
         final emojiExists = newLastEmojis.contains(emoji);
         if (!emojiExists) {
           newLastEmojis.insert(0, emoji);
@@ -172,7 +172,7 @@ class EmojiInserter {
   final FocusNode focusNode;
   final bool requestFocusOnInsert;
 
-  void insert(final Emoji emoji) {
+  void insert(final EmojiModel emoji) {
     void addEmoji() {
       final emojiChar = emoji.emoji;
       // Get cursor current position

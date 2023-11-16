@@ -1,19 +1,15 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../datasources/datasources.dart';
-import '../utils/utils.dart';
+import '../repositories/repositories.dart';
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
-typedef SaveUtil<TValue> = AbstractUtil<Map<String, TValue>>;
-
-class MapState<TValue> extends ChangeNotifier {
+base class MapState<TValue> extends ChangeNotifier {
   MapState({
-    this.saveUtil,
+    this.repository,
     this.onFilter,
   });
   void notify() => notifyListeners();
@@ -34,7 +30,7 @@ class MapState<TValue> extends ChangeNotifier {
   }
 
   final OnFilterCallback<TValue>? onFilter;
-  final SaveUtil<TValue>? saveUtil;
+  final MapBasedRepository<String, TValue>? repository;
 
   List<TValue> get values => state.values.toList();
   List<TValue> get filteredValues {
@@ -46,13 +42,13 @@ class MapState<TValue> extends ChangeNotifier {
     return list;
   }
 
+  void _save() => repository?.putAll(state);
+
   void put({required final String key, required final TValue value}) {
     state[key] = value;
     notifyListeners();
     _save();
   }
-
-  void _save() => unawaited(saveUtil?.save(state));
 
   void putAll(final Map<String, TValue> map) {
     state.addAll(map);

@@ -1,4 +1,4 @@
-part of 'utils.dart';
+import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 

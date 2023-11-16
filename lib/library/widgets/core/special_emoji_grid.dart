@@ -6,13 +6,13 @@ class SpecialEmojisGrid extends StatelessWidget {
     this.hideBorder = false,
     super.key,
   });
-  final ValueChanged<Emoji> onChanged;
+  final ValueChanged<EmojiModel> onChanged;
   final bool hideBorder;
   @override
   Widget build(final BuildContext context) {
     final emojiStyle = Theme.of(context).textTheme.bodyMedium;
 
-    Widget buildEmojiButton(final Emoji emoji) => EmojiButton(
+    Widget buildEmojiButton(final EmojiModel emoji) => EmojiButton(
           key: ValueKey(emoji),
           emoji: emoji,
           style: emojiStyle,

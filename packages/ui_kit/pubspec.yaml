@@ -10,6 +10,8 @@ environment:
 dependencies:
   collection: ^1.18.0
   connectivity_plus: ^5.0.1
+  core:
+    path: ../core
   equatable: ^2.0.5
   firebase_analytics: ^10.6.1
   firebase_core: ^2.19.0

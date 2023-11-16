@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 import '../models/models.dart';
-import '../utils/utils.dart';
 import 'map_state.dart';
 
-class EmojiProvider extends MapState<Emoji> {
+final class EmojiProvider extends MapState<EmojiModel> {
   EmojiProvider({
-    required final OnFilterCallback<Emoji> onFilter,
+    required final OnFilterCallback<EmojiModel> onFilter,
   }) : super(onFilter: onFilter);
 }
 
@@ -15,16 +15,18 @@ EmojiProvider createEmojiProvider(final BuildContext context) => EmojiProvider(
           emoji.keywords.contains(keyword),
     );
 
-class LastEmojiProvider extends MapState<Emoji> {
+final class LastEmojiProvider extends MapState<EmojiModel> {
   LastEmojiProvider({
-    required super.saveUtil,
+    required super.repository,
   });
 }
 
 LastEmojiProvider createLastUsedEmojisProvider(final BuildContext context) =>
-    LastEmojiProvider(saveUtil: EmojiUtil());
+    LastEmojiProvider(
+      repository: context.read(),
+    );
 
-class SpecialEmojiProvider extends MapState<Emoji> {}
+final class SpecialEmojiProvider extends MapState<EmojiModel> {}
 
 SpecialEmojiProvider createSpecialEmojisProvider(final BuildContext context) =>
     SpecialEmojiProvider();

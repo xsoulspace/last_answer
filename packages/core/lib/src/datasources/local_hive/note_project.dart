@@ -74,7 +74,7 @@ class NoteProject extends BasicProject {
         createdAt: created,
         updatedAt: updated,
         id: ProjectModelId.fromJson(id),
-        charactersLimit: charactersLimit,
+        charactersLimit: charactersLimit ?? 0,
         note: note,
       );
 

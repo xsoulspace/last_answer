@@ -19,7 +19,7 @@ class IdeaProjectScreen extends HookWidget {
     final ideaUpdatesStream = useStreamController<bool>();
     final ideasProvider = context.read<IdeaProjectsState>();
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsState>();
-    final idea = ideasProvider.state[ideaId]!;
+    final idea = ideasProvider.state.value[ideaId]!;
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...?idea.answers?.reversed]);
@@ -106,7 +106,7 @@ class IdeaProjectScreen extends HookWidget {
             idea: idea,
             defaultQuestion: answers.value.isNotEmpty
                 ? answers.value.first.question
-                : questions.values.first,
+                : questions.value.values.first,
             onChanged: state.onAnswersChange,
             onCreated: state.onAnswerCreated,
           ),

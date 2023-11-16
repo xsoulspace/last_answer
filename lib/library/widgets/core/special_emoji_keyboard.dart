@@ -180,7 +180,7 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final specialEmojisProvider = context.read<SpecialEmojiProvider>();
+    final specialEmojisProvider = context.read<SpecialEmojiState>();
     final emojis = specialEmojisProvider.values;
     final theme = Theme.of(context);
     final emojiStyle = theme.textTheme.displayLarge?.copyWith(fontSize: 26);

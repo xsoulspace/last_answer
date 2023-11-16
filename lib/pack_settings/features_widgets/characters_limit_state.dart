@@ -27,7 +27,7 @@ class CharactersLimitController extends ValueNotifier<String> {
     int limit;
 
     if (note != null && note.id.isEmpty) {
-      limit = note.charactersLimit ?? 0;
+      limit = note.charactersLimit;
     } else {
       limit = settings.charactersLimitForNewNotes;
     }

@@ -1,5 +1,6 @@
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:murmur3/murmur3.dart';
 
 extension StringExtension on String {
   /// To invoke a callback when this is a non-empty value.
@@ -20,4 +21,6 @@ extension StringExtension on String {
 
   @useResult
   String? getNullable() => isEmpty ? null : this;
+
+  Future<int> getHashcode() async => murmur3a(this);
 }

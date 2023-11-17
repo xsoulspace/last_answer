@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GlobalStateNotifierState {
-  Map<String, IdeaProjectQuestionModel> get ideaProjectQuestions =>
-      throw _privateConstructorUsedError;
   RequestProjectsDto get requestProjectsDto =>
+      throw _privateConstructorUsedError;
+  UserModel get user => throw _privateConstructorUsedError;
+  AppStateLoadingStatuses get appLoadingStatus =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -33,10 +34,12 @@ abstract class $GlobalStateNotifierStateCopyWith<$Res> {
       _$GlobalStateNotifierStateCopyWithImpl<$Res, GlobalStateNotifierState>;
   @useResult
   $Res call(
-      {Map<String, IdeaProjectQuestionModel> ideaProjectQuestions,
-      RequestProjectsDto requestProjectsDto});
+      {RequestProjectsDto requestProjectsDto,
+      UserModel user,
+      AppStateLoadingStatuses appLoadingStatus});
 
   $RequestProjectsDtoCopyWith<$Res> get requestProjectsDto;
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -53,18 +56,23 @@ class _$GlobalStateNotifierStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ideaProjectQuestions = null,
     Object? requestProjectsDto = null,
+    Object? user = null,
+    Object? appLoadingStatus = null,
   }) {
     return _then(_value.copyWith(
-      ideaProjectQuestions: null == ideaProjectQuestions
-          ? _value.ideaProjectQuestions
-          : ideaProjectQuestions // ignore: cast_nullable_to_non_nullable
-              as Map<String, IdeaProjectQuestionModel>,
       requestProjectsDto: null == requestProjectsDto
           ? _value.requestProjectsDto
           : requestProjectsDto // ignore: cast_nullable_to_non_nullable
               as RequestProjectsDto,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      appLoadingStatus: null == appLoadingStatus
+          ? _value.appLoadingStatus
+          : appLoadingStatus // ignore: cast_nullable_to_non_nullable
+              as AppStateLoadingStatuses,
     ) as $Val);
   }
 
@@ -74,6 +82,14 @@ class _$GlobalStateNotifierStateCopyWithImpl<$Res,
     return $RequestProjectsDtoCopyWith<$Res>(_value.requestProjectsDto,
         (value) {
       return _then(_value.copyWith(requestProjectsDto: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res> get user {
+    return $UserModelCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
     });
   }
 }
@@ -88,11 +104,14 @@ abstract class _$$GlobalStateNotifierStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Map<String, IdeaProjectQuestionModel> ideaProjectQuestions,
-      RequestProjectsDto requestProjectsDto});
+      {RequestProjectsDto requestProjectsDto,
+      UserModel user,
+      AppStateLoadingStatuses appLoadingStatus});
 
   @override
   $RequestProjectsDtoCopyWith<$Res> get requestProjectsDto;
+  @override
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -108,18 +127,23 @@ class __$$GlobalStateNotifierStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ideaProjectQuestions = null,
     Object? requestProjectsDto = null,
+    Object? user = null,
+    Object? appLoadingStatus = null,
   }) {
     return _then(_$GlobalStateNotifierStateImpl(
-      ideaProjectQuestions: null == ideaProjectQuestions
-          ? _value._ideaProjectQuestions
-          : ideaProjectQuestions // ignore: cast_nullable_to_non_nullable
-              as Map<String, IdeaProjectQuestionModel>,
       requestProjectsDto: null == requestProjectsDto
           ? _value.requestProjectsDto
           : requestProjectsDto // ignore: cast_nullable_to_non_nullable
               as RequestProjectsDto,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      appLoadingStatus: null == appLoadingStatus
+          ? _value.appLoadingStatus
+          : appLoadingStatus // ignore: cast_nullable_to_non_nullable
+              as AppStateLoadingStatuses,
     ));
   }
 }
@@ -128,28 +152,23 @@ class __$$GlobalStateNotifierStateImplCopyWithImpl<$Res>
 
 class _$GlobalStateNotifierStateImpl implements _GlobalStateNotifierState {
   const _$GlobalStateNotifierStateImpl(
-      {final Map<String, IdeaProjectQuestionModel> ideaProjectQuestions =
-          const {},
-      this.requestProjectsDto = RequestProjectsDto.empty})
-      : _ideaProjectQuestions = ideaProjectQuestions;
-
-  final Map<String, IdeaProjectQuestionModel> _ideaProjectQuestions;
-  @override
-  @JsonKey()
-  Map<String, IdeaProjectQuestionModel> get ideaProjectQuestions {
-    if (_ideaProjectQuestions is EqualUnmodifiableMapView)
-      return _ideaProjectQuestions;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_ideaProjectQuestions);
-  }
+      {this.requestProjectsDto = RequestProjectsDto.empty,
+      this.user = UserModel.empty,
+      this.appLoadingStatus = AppStateLoadingStatuses.settings});
 
   @override
   @JsonKey()
   final RequestProjectsDto requestProjectsDto;
+  @override
+  @JsonKey()
+  final UserModel user;
+  @override
+  @JsonKey()
+  final AppStateLoadingStatuses appLoadingStatus;
 
   @override
   String toString() {
-    return 'GlobalStateNotifierState(ideaProjectQuestions: $ideaProjectQuestions, requestProjectsDto: $requestProjectsDto)';
+    return 'GlobalStateNotifierState(requestProjectsDto: $requestProjectsDto, user: $user, appLoadingStatus: $appLoadingStatus)';
   }
 
   @override
@@ -157,17 +176,16 @@ class _$GlobalStateNotifierStateImpl implements _GlobalStateNotifierState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GlobalStateNotifierStateImpl &&
-            const DeepCollectionEquality()
-                .equals(other._ideaProjectQuestions, _ideaProjectQuestions) &&
             (identical(other.requestProjectsDto, requestProjectsDto) ||
-                other.requestProjectsDto == requestProjectsDto));
+                other.requestProjectsDto == requestProjectsDto) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.appLoadingStatus, appLoadingStatus) ||
+                other.appLoadingStatus == appLoadingStatus));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_ideaProjectQuestions),
-      requestProjectsDto);
+  int get hashCode =>
+      Object.hash(runtimeType, requestProjectsDto, user, appLoadingStatus);
 
   @JsonKey(ignore: true)
   @override
@@ -179,14 +197,17 @@ class _$GlobalStateNotifierStateImpl implements _GlobalStateNotifierState {
 
 abstract class _GlobalStateNotifierState implements GlobalStateNotifierState {
   const factory _GlobalStateNotifierState(
-          {final Map<String, IdeaProjectQuestionModel> ideaProjectQuestions,
-          final RequestProjectsDto requestProjectsDto}) =
+          {final RequestProjectsDto requestProjectsDto,
+          final UserModel user,
+          final AppStateLoadingStatuses appLoadingStatus}) =
       _$GlobalStateNotifierStateImpl;
 
   @override
-  Map<String, IdeaProjectQuestionModel> get ideaProjectQuestions;
-  @override
   RequestProjectsDto get requestProjectsDto;
+  @override
+  UserModel get user;
+  @override
+  AppStateLoadingStatuses get appLoadingStatus;
   @override
   @JsonKey(ignore: true)
   _$$GlobalStateNotifierStateImplCopyWith<_$GlobalStateNotifierStateImpl>

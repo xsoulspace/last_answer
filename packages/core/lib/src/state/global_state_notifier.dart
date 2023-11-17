@@ -3,33 +3,27 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
 import '../../core.dart';
-import 'projects_paged_controller.dart';
 import 'projects_paged_requests_builder.dart';
 
 part 'global_state_notifier.freezed.dart';
 
-class GlobalStateNotifiers {
-  GlobalStateNotifiers._();
-  // Set up the SettingsController, which will glue user settings to multiple
-  // Flutter Widgets.
-  static final settings =
-      GeneralSettingsController(settingsService: SettingsService());
-}
-
 @freezed
 class GlobalStateNotifierState with _$GlobalStateNotifierState {
   const factory GlobalStateNotifierState({
-    @Default({})
-    final Map<String, IdeaProjectQuestionModel> ideaProjectQuestions,
     @Default(RequestProjectsDto.empty)
     final RequestProjectsDto requestProjectsDto,
+    @Default(UserModel.empty) final UserModel user,
+    @Default(AppStateLoadingStatuses.settings)
+    final AppStateLoadingStatuses appLoadingStatus,
   }) = _GlobalStateNotifierState;
 }
 
 class GlobalStateNotifierDto {
   GlobalStateNotifierDto(final BuildContext context)
-      : projectsRepository = context.read();
+      : projectsRepository = context.read(),
+        userRepository = context.read();
   final ProjectsRepository projectsRepository;
+  final UserRepository userRepository;
 }
 
 class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
@@ -49,6 +43,16 @@ class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
       getDto: () => value.requestProjectsDto,
     ),
   )..onLoad();
+  List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
+
+  Future<void> onLoad() async {
+    value = value.copyWith(user: await dto.userRepository.getUser());
+  }
+
+  void updateAppLoadingStatus(final AppStateLoadingStatuses status) =>
+      setValue(value.copyWith(appLoadingStatus: status));
+
+  void updateUser(final UserModel user) => setValue(value.copyWith(user: user));
 
   @override
   void dispose() {

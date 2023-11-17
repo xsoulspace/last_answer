@@ -38,6 +38,7 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
       pagesCount: 1,
       values: ideas.values.map((final e) => e.toModel()).toList(),
     );
+    // TODO(arenukvern): description,
     // await Hive.deleteFromDisk();
     return response;
   }

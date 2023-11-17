@@ -10,3 +10,7 @@ abstract interface class Loadable {
   /// instance initialization
   Future<void> onLoad();
 }
+
+abstract interface class StateInitializer implements Loadable {
+  StateInitializer._();
+}

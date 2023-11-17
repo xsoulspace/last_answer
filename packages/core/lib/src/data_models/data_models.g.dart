@@ -171,12 +171,21 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
           ? UserSettingsModel.initial
           : UserSettingsModel.fromJson(
               json['settings'] as Map<String, dynamic>),
+      localDbVersion: $enumDecodeNullable(
+              _$LocalDbVersionEnumMap, json['localDbVersion']) ??
+          LocalDbVersion.v3_16,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
       'settings': instance.settings,
+      'localDbVersion': _$LocalDbVersionEnumMap[instance.localDbVersion]!,
     };
+
+const _$LocalDbVersionEnumMap = {
+  LocalDbVersion.v3_16: 'v3_16',
+  LocalDbVersion.v3_17: 'v3_17',
+};
 
 _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
         Map<String, dynamic> json) =>

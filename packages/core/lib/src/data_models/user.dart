@@ -18,6 +18,7 @@ class UserModelId with _$UserModelId {
 class UserModel with _$UserModel {
   const factory UserModel({
     @Default(UserSettingsModel.initial) final UserSettingsModel settings,
+    @Default(LocalDbVersion.v3_16) final LocalDbVersion localDbVersion,
   }) = _UserModel;
   factory UserModel.fromJson(final Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

@@ -21,8 +21,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final int itemsCount;
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterOffset> offsetQuery;
-// TODO(arenukvern): description,
-    final type = (getDto?.types.firstOrNull ?? ProjectTypes.note).name;
+    final types = getDto?.types ?? [];
     if (getDto != null && getDto.search.isNotEmpty) {
       final basicQuery = isarDb.projects
           .filter()
@@ -31,13 +30,15 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
             caseSensitive: false,
           )
           .and()
-          .typeEqualTo(type)
+          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name))
           .sortByUpdatedAt();
       offsetQuery = basicQuery.offset(dto.page * dto.limit);
       itemsCount = basicQuery.countSync();
     } else {
-      final basicQuery =
-          isarDb.projects.filter().typeEqualTo(type).sortByUpdatedAt();
+      final basicQuery = isarDb.projects
+          .filter()
+          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name))
+          .sortByUpdatedAt();
       offsetQuery = basicQuery.offset(dto.page * dto.limit);
       itemsCount = basicQuery.countSync();
     }

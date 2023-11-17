@@ -1,7 +1,5 @@
 part of '../widgets.dart';
 
-abstract interface class StateInitializer implements Loadable {}
-
 class StateLoader extends StatefulHookWidget {
   const StateLoader({
     required this.child,

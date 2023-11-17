@@ -2394,6 +2394,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   UserSettingsModel get settings => throw _privateConstructorUsedError;
+  LocalDbVersion get localDbVersion => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2406,7 +2407,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({UserSettingsModel settings});
+  $Res call({UserSettingsModel settings, LocalDbVersion localDbVersion});
 
   $UserSettingsModelCopyWith<$Res> get settings;
 }
@@ -2425,12 +2426,17 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @override
   $Res call({
     Object? settings = null,
+    Object? localDbVersion = null,
   }) {
     return _then(_value.copyWith(
       settings: null == settings
           ? _value.settings
           : settings // ignore: cast_nullable_to_non_nullable
               as UserSettingsModel,
+      localDbVersion: null == localDbVersion
+          ? _value.localDbVersion
+          : localDbVersion // ignore: cast_nullable_to_non_nullable
+              as LocalDbVersion,
     ) as $Val);
   }
 
@@ -2451,7 +2457,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserSettingsModel settings});
+  $Res call({UserSettingsModel settings, LocalDbVersion localDbVersion});
 
   @override
   $UserSettingsModelCopyWith<$Res> get settings;
@@ -2469,12 +2475,17 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? settings = null,
+    Object? localDbVersion = null,
   }) {
     return _then(_$UserModelImpl(
       settings: null == settings
           ? _value.settings
           : settings // ignore: cast_nullable_to_non_nullable
               as UserSettingsModel,
+      localDbVersion: null == localDbVersion
+          ? _value.localDbVersion
+          : localDbVersion // ignore: cast_nullable_to_non_nullable
+              as LocalDbVersion,
     ));
   }
 }
@@ -2482,7 +2493,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
-  const _$UserModelImpl({this.settings = UserSettingsModel.initial});
+  const _$UserModelImpl(
+      {this.settings = UserSettingsModel.initial,
+      this.localDbVersion = LocalDbVersion.v3_16});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -2490,10 +2503,13 @@ class _$UserModelImpl implements _UserModel {
   @override
   @JsonKey()
   final UserSettingsModel settings;
+  @override
+  @JsonKey()
+  final LocalDbVersion localDbVersion;
 
   @override
   String toString() {
-    return 'UserModel(settings: $settings)';
+    return 'UserModel(settings: $settings, localDbVersion: $localDbVersion)';
   }
 
   @override
@@ -2502,12 +2518,14 @@ class _$UserModelImpl implements _UserModel {
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
             (identical(other.settings, settings) ||
-                other.settings == settings));
+                other.settings == settings) &&
+            (identical(other.localDbVersion, localDbVersion) ||
+                other.localDbVersion == localDbVersion));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, settings);
+  int get hashCode => Object.hash(runtimeType, settings, localDbVersion);
 
   @JsonKey(ignore: true)
   @override
@@ -2524,14 +2542,17 @@ class _$UserModelImpl implements _UserModel {
 }
 
 abstract class _UserModel implements UserModel {
-  const factory _UserModel({final UserSettingsModel settings}) =
-      _$UserModelImpl;
+  const factory _UserModel(
+      {final UserSettingsModel settings,
+      final LocalDbVersion localDbVersion}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
 
   @override
   UserSettingsModel get settings;
+  @override
+  LocalDbVersion get localDbVersion;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

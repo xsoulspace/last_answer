@@ -21,7 +21,6 @@ part 'hive_models.g.dart';
 part 'idea_project/idea_project.dart';
 part 'idea_project/idea_project_answer.dart';
 part 'idea_project/idea_project_question.dart';
-part 'loading_statuses.dart';
 part 'note_project.dart';
 part 'project_folder.dart';
 part 'project_types.dart';

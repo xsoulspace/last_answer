@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../models/models.dart';
+import '../data_models/data_models.dart';
 
 class Greeting {
   Greeting() : _random = Random();

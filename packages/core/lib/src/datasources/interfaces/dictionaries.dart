@@ -1,1 +1,0 @@
-abstract base class DictionariesLocalDataSource {}

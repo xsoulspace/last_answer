@@ -14,7 +14,7 @@ class NoteProjectViewStateDto {
 
   final BuildContext context;
   ProjectModelNote _getInitialNote() {
-    final maybeNote = noteProjectsState.state[noteId.value];
+    final maybeNote = noteProjectsState.state.value[noteId.value];
     if (maybeNote == null) {
       return ProjectModel.emptyNote;
     } else {

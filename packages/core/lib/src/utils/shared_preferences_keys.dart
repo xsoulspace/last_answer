@@ -8,4 +8,5 @@ enum SharedPreferencesKeys {
   projectsReversed,
   lastUsedEmojis,
   charactersLimitForNewNotes,
+  user,
 }

@@ -3,36 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
 import 'package:provider/provider.dart';
 
-class NoteProjectScreen extends StatelessWidget {
+class NoteProjectScreen extends StatefulWidget {
   const NoteProjectScreen({
     required this.delegate,
     super.key,
   });
   final NoteProjectViewDelegate delegate;
-  @override
-  Widget build(final BuildContext context) => NoteProjectViewProvider(
-        delegate: delegate,
-        builder: (final context) => NoteProjectView(
-          delegate: delegate,
-        ),
-      );
-}
-
-class NoteProjectViewProvider extends StatefulWidget {
-  const NoteProjectViewProvider({
-    required this.builder,
-    required this.delegate,
-    super.key,
-  });
-  final WidgetBuilder builder;
-  final NoteProjectViewDelegate delegate;
 
   @override
-  State<NoteProjectViewProvider> createState() =>
-      _NoteProjectViewProviderState();
+  State<NoteProjectScreen> createState() => _NoteProjectScreenState();
 }
 
-class _NoteProjectViewProviderState extends State<NoteProjectViewProvider>
+class _NoteProjectScreenState extends State<NoteProjectScreen>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(final BuildContext context) => MultiProvider(
@@ -48,6 +30,7 @@ class _NoteProjectViewProviderState extends State<NoteProjectViewProvider>
             ),
           ),
         ],
-        builder: (final context, final child) => widget.builder(context),
+        builder: (final context, final child) =>
+            NoteProjectView(delegate: widget.delegate),
       );
 }

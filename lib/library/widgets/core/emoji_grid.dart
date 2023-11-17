@@ -41,8 +41,8 @@ class EmojiGrid extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final silentEmojiProider = context.read<EmojiState>();
-    final lastEmojisState = context.read<LastEmojiState>().values;
+    final silentEmojiProider = context.read<EmojiStateNotifier>();
+    final lastEmojisState = context.read<LastEmojiStateNotifier>().values;
     // ignore: close_sinks
     final emojiKeywordStream = useStreamController<String>(
       onCancel: () {
@@ -84,7 +84,7 @@ class EmojiGrid extends HookWidget {
           newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
         }
         lastEmojis.value = newLastEmojis.toSet();
-        context.read<LastEmojiState>().assignEntries(
+        context.read<LastEmojiStateNotifier>().assignEntries(
               newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
             );
       }
@@ -100,7 +100,7 @@ class EmojiGrid extends HookWidget {
     return ButtonPopup(
       children: [
         Expanded(
-          child: Consumer<EmojiState>(
+          child: Consumer<EmojiStateNotifier>(
             builder: (final _, final provider, final __) {
               final emojis = provider.filteredValues;
 

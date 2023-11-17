@@ -3,7 +3,6 @@
 import 'package:flutter/widgets.dart';
 
 import '../../../core.dart';
-import '../local/projects_hive.dart';
 import '../local_hive/hive_db.dart';
 
 enum LocalDbVersion {
@@ -13,7 +12,7 @@ enum LocalDbVersion {
   static const newestVersion = v3_17;
 }
 
-Future<void> runMutations(final GlobalStateInitializerDto dto) async {
+Future<void> runMutations(final GlobalStatesInitializerDto dto) async {
   final globalStateNotifier = dto.globalStateNotifier;
   final currentLocalDbVersion = globalStateNotifier.value.user.localDbVersion;
   if (currentLocalDbVersion == LocalDbVersion.newestVersion) return;
@@ -40,7 +39,7 @@ Future<void> runMutations(final GlobalStateInitializerDto dto) async {
   );
 }
 
-Future<void> _mutate_3_16_up_3_17(final GlobalStateInitializerDto dto) async {
+Future<void> _mutate_3_16_up_3_17(final GlobalStatesInitializerDto dto) async {
   final hiveDataSource = ProjectsLocalDataSourceHiveImpl();
   final projectsResponse = await hiveDataSource.getProjects(
     dto: PaginatedPageRequestModel(),

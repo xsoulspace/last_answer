@@ -1,4 +1,4 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
 
 typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
 
@@ -19,7 +19,7 @@ class IdeaProjectScreen extends HookWidget {
     final ideaUpdatesStream = useStreamController<bool>();
     final ideasProvider = context.read<IdeaProjectsState>();
     final ideaQuestionsProvider = context.read<IdeaProjectQuestionsState>();
-    final idea = ideasProvider.state.value[ideaId]!;
+    final idea = ideasProvider.state.value[ideaId];
     final titleController = useTextEditingController(text: idea.title);
     final answers =
         useState<List<IdeaProjectAnswer>>([...?idea.answers?.reversed]);

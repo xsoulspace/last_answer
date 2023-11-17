@@ -1,31 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:math' as math;
-
-import 'package:blur/blur.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_portal/flutter_portal.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:json_annotation/json_annotation.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_idea/pack_idea.dart';
-import 'package:lastanswer/pack_note/note_screen.dart';
-import 'package:lastanswer/pack_note/note_view.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
-import 'package:lastanswer/pack_settings/pack_settings.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
-import 'package:universal_io/io.dart';
-import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({

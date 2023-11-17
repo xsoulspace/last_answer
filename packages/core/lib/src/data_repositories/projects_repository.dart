@@ -1,20 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../core.dart';
 import '../state/projects_paged_requests_builder.dart';
 
 class ProjectsRepository {
-  ProjectsRepository({
-    required this.localDataSource,
-  });
-  final ProjectsLocalDataSource localDataSource;
+  ProjectsRepository.provide(final BuildContext context)
+      : _datasource = context.read();
+  final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) async =>
-      localDataSource.putAll(projects: projects);
+      _datasource.putAll(projects: projects);
   Future<void> put({required final ProjectModel project}) async =>
-      localDataSource.put(project: project);
+      _datasource.put(project: project);
   Future<void> remove({required final ProjectModelId id}) async =>
-      localDataSource.remove(id: id);
+      _datasource.remove(id: id);
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,
   }) async =>
-      localDataSource.getProjects(dto: request);
+      _datasource.getProjects(dto: request);
 }

@@ -1,4 +1,4 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
 
 class _QuestionsChips extends StatelessWidget {
   const _QuestionsChips({

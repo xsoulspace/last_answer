@@ -1,4 +1,4 @@
-part of pack_settings;
+import 'package:lastanswer/common_imports.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({

@@ -7,10 +7,15 @@ import '../../generated/generated.dart';
 import '../interfaces/interfaces.dart';
 
 final class EmojiLocalDataSourceImpl implements EmojiLocalDataSource {
+  EmojiLocalDataSourceImpl({
+    required this.assetBundle,
+  });
+
+  /// use [DefaultAssetBundle.of(context)]
+  final AssetBundle assetBundle;
+
   @override
-  Future<Iterable<EmojiModel>> getAllEmoji(
-    final AssetBundle assetBundle,
-  ) async {
+  Future<Iterable<EmojiModel>> getAllEmoji() async {
     final emojisStr = await assetBundle.loadString(
       Assets.json.emojis,
     );
@@ -21,11 +26,8 @@ final class EmojiLocalDataSourceImpl implements EmojiLocalDataSource {
     return emojiList.map(EmojiModel.fromJson);
   }
 
-  /// use [DefaultAssetBundle.of(context)]
   @override
-  Future<Iterable<EmojiModel>> getSpecialEmoji(
-    final AssetBundle assetBundle,
-  ) async {
+  Future<Iterable<EmojiModel>> getSpecialEmoji() async {
     final emojisStr = await assetBundle.loadString(Assets.json.specialEmoji);
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
       jsonDecode(emojisStr),

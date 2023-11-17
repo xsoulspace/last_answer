@@ -1,4 +1,4 @@
-part of pack_settings;
+import 'package:lastanswer/common_imports.dart';
 
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({
@@ -17,7 +17,7 @@ class SettingsNavigation extends StatelessWidget {
     if (screenLayout.notSmall) {
       effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
     }
-    final notificationController = context.read<NotificationController>();
+    final notificationController = context.read<NotificationsNotifier>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

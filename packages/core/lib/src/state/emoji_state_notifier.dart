@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unused_constructor_parameters
+
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,8 @@ final class EmojiStateNotifier extends MapStateNotifier<EmojiModel> {
     required final OnFilterCallback<EmojiModel> onFilter,
   }) : super(onFilter: onFilter);
 
-  factory EmojiStateNotifier.provide() => EmojiStateNotifier(
+  factory EmojiStateNotifier.provide(final BuildContext context) =>
+      EmojiStateNotifier(
         onFilter: (final emoji, final keyword) =>
             emoji.keywords.contains(keyword),
       );
@@ -28,5 +31,6 @@ final class LastEmojiStateNotifier extends MapStateNotifier<EmojiModel> {
 
 final class SpecialEmojiStateNotifier extends MapStateNotifier<EmojiModel> {
   SpecialEmojiStateNotifier();
-  factory SpecialEmojiStateNotifier.provide() => SpecialEmojiStateNotifier();
+  factory SpecialEmojiStateNotifier.provide(final BuildContext context) =>
+      SpecialEmojiStateNotifier();
 }

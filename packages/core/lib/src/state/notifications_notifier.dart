@@ -4,24 +4,24 @@ import 'package:provider/provider.dart';
 
 import '../../core.dart';
 
-part 'notifications_controller.freezed.dart';
+part 'notifications_notifier.freezed.dart';
 
 @freezed
-class NotificationControllerState with _$NotificationControllerState {
-  const factory NotificationControllerState({
+class NotificationsNotifierState with _$NotificationsNotifierState {
+  const factory NotificationsNotifierState({
     /// Should be ordered from newest to oldest and never be
     @Default([]) final List<NotificationMessageModel> updates,
     @Default(false) final bool hasUnreadUpdates,
-  }) = _NotificationControllerState;
+  }) = _NotificationsNotifierState;
 }
 
-class NotificationController extends ValueNotifier<NotificationControllerState>
+class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
     implements Loadable {
-  NotificationController({
+  NotificationsNotifier({
     required this.notificationRepository,
-  }) : super(const NotificationControllerState());
-  factory NotificationController.provide(final BuildContext context) =>
-      NotificationController(
+  }) : super(const NotificationsNotifierState());
+  factory NotificationsNotifier.provide(final BuildContext context) =>
+      NotificationsNotifier(
         notificationRepository: context.read(),
       );
   final NotificationsRepository notificationRepository;

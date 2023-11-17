@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../core.dart';
 
-class GlobalStateInitializerDto {
-  GlobalStateInitializerDto({
+class GlobalStatesInitializerDto {
+  GlobalStatesInitializerDto({
     required final BuildContext context,
   })  : emojiRepository = context.read(),
         lastUsedEmojiRepository = context.read(),
@@ -24,16 +24,16 @@ class GlobalStateInitializerDto {
   final LastEmojiStateNotifier lastEmojiState;
   final SpecialEmojiStateNotifier specialEmojiState;
   final EmojiStateNotifier emojiProvider;
-  final NotificationController notificationController;
+  final NotificationsNotifier notificationController;
   final GlobalStateNotifier globalStateNotifier;
   final ProjectsRepository projectsRepository;
 }
 
-class GlobalStateInitializer implements StateInitializer {
-  GlobalStateInitializer({
+class GlobalStatesInitializer implements StateInitializer {
+  GlobalStatesInitializer({
     required this.dto,
   });
-  final GlobalStateInitializerDto dto;
+  final GlobalStatesInitializerDto dto;
 
   @override
   Future<void> onLoad() async {
@@ -49,13 +49,12 @@ class GlobalStateInitializer implements StateInitializer {
     await runMutations(dto);
 
     globalStateNotifier.updateAppLoadingStatus(AppStateLoadingStatuses.emoji);
-    final emojis = await dto.emojiRepository.getAllEmoji(dto.assetBundle);
+    final emojis = await dto.emojiRepository.getAllEmoji();
 
     dto.emojiProvider
         .loadIterable(values: emojis, toKey: (final p0) => p0.emoji);
 
-    final specialEmojis =
-        await dto.emojiRepository.getSpecialEmoji(dto.assetBundle);
+    final specialEmojis = await dto.emojiRepository.getSpecialEmoji();
     dto.specialEmojiState.loadIterable(
       values: specialEmojis,
       toKey: (final p0) => p0.emoji,

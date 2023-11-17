@@ -1,4 +1,4 @@
-part of pack_settings;
+import 'package:lastanswer/common_imports.dart';
 
 class SettingsText extends StatelessWidget {
   const SettingsText({
@@ -8,7 +8,7 @@ class SettingsText extends StatelessWidget {
   final String text;
   @override
   Widget build(final BuildContext context) => Text(
-      text,
-      style: Theme.of(context).textTheme.bodyMedium,
-    );
+        text,
+        style: Theme.of(context).textTheme.bodyMedium,
+      );
 }

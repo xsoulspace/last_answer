@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class _VerticalProjectsBar extends StatelessWidget {
   const _VerticalProjectsBar({

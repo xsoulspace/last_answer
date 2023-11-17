@@ -1,32 +1,25 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core.dart';
 
 final class LastUsedEmojiRepository
     extends MapBasedRepository<String, EmojiModel>
     implements LastUsedEmojiLocalDataSource {
-  LastUsedEmojiRepository({
-    required this.localDataSource,
-  });
-  final LastUsedEmojiLocalDataSource localDataSource;
+  LastUsedEmojiRepository.provide(final BuildContext context)
+      : _datasource = context.read();
+  final LastUsedEmojiLocalDataSource _datasource;
 
   @override
-  void putAll(final Map<String, EmojiModel> map) => localDataSource.putAll(map);
+  void putAll(final Map<String, EmojiModel> map) => _datasource.putAll(map);
   @override
-  Map<String, EmojiModel> getAll() => localDataSource.getAll();
+  Map<String, EmojiModel> getAll() => _datasource.getAll();
 }
 
 final class EmojiRepository {
-  EmojiRepository({
-    required this.localDataSource,
-  });
-  final EmojiLocalDataSource localDataSource;
-  Future<Iterable<EmojiModel>> getAllEmoji(
-    final AssetBundle assetBundle,
-  ) =>
-      localDataSource.getAllEmoji(assetBundle);
-  Future<Iterable<EmojiModel>> getSpecialEmoji(
-    final AssetBundle assetBundle,
-  ) =>
-      localDataSource.getAllEmoji(assetBundle);
+  EmojiRepository.provide(final BuildContext context)
+      : _datasource = context.read();
+  final EmojiLocalDataSource _datasource;
+  Future<Iterable<EmojiModel>> getAllEmoji() => _datasource.getAllEmoji();
+  Future<Iterable<EmojiModel>> getSpecialEmoji() => _datasource.getAllEmoji();
 }

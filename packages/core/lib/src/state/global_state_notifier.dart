@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../core.dart';
 import 'projects_paged_requests_builder.dart';
@@ -53,9 +57,21 @@ class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
       setValue(value.copyWith(appLoadingStatus: status));
 
   void updateUser(final UserModel user) => setValue(value.copyWith(user: user));
+  void updateProject(final ProjectModel project) =>
+      _projectsUpdatesController.add(project);
+
+  late final _projectsUpdatesController = StreamController<ProjectModel>()
+    ..stream.sampleTime(1.seconds).listen(_updateProject);
+  void _updateProject(final ProjectModel project) =>
+      projectsPagedController.pager.replaceElement(
+        element: project,
+        equals: (final e, final e2) => e.id == e2.id,
+        shouldAddOnNotFound: true,
+      );
 
   @override
   void dispose() {
+    unawaited(_projectsUpdatesController.close());
     projectsPagedController.dispose();
     super.dispose();
   }

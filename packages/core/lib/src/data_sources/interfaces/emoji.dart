@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../data_models/data_models.dart';
 
 abstract interface class LastUsedEmojiLocalDataSource {
@@ -8,10 +6,6 @@ abstract interface class LastUsedEmojiLocalDataSource {
 }
 
 abstract interface class EmojiLocalDataSource {
-  Future<Iterable<EmojiModel>> getAllEmoji(
-    final AssetBundle assetBundle,
-  );
-  Future<Iterable<EmojiModel>> getSpecialEmoji(
-    final AssetBundle assetBundle,
-  );
+  Future<Iterable<EmojiModel>> getAllEmoji();
+  Future<Iterable<EmojiModel>> getSpecialEmoji();
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 
 class UnknownScreen extends StatelessWidget {
   const UnknownScreen({

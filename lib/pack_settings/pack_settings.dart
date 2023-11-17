@@ -9,13 +9,9 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/abstract/abstract.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
-import 'package:lastanswer/pack_settings/states/general_settings_controller.dart';
 import 'package:lastanswer/utils/utils.dart';
 import 'package:provider/provider.dart';
-
-export 'states/states.dart';
 
 part 'features_widgets/locale_switcher_button.dart';
 part 'features_widgets/my_account.dart';

@@ -1,12 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings_bloc.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
-import 'package:lastanswer/pack_settings/states/general_settings_controller.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class GeneralSettingsProvider extends StatelessWidget {
   const GeneralSettingsProvider({

@@ -1,4 +1,4 @@
-part of pack_app;
+import 'package:lastanswer/common_imports.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
   const ProjectsDirectionSwitch({

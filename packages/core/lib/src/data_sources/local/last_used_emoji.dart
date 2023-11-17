@@ -1,6 +1,6 @@
 import '../../data_models/data_models.dart';
-import '../../utils/utils.dart';
 import '../interfaces/interfaces.dart';
+import 'local.dart';
 
 final class LastUsedEmojiLocalDataSourceImpl
     implements LastUsedEmojiLocalDataSource {

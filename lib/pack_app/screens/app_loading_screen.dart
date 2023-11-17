@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_purchases/pack_purchases.dart';
-import 'package:lastanswer/pack_settings/pack_settings.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:provider/provider.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class AppLoadingScreen extends StatelessWidget {
   const AppLoadingScreen({
@@ -12,8 +7,11 @@ class AppLoadingScreen extends StatelessWidget {
   });
   @override
   Widget build(final BuildContext context) {
-    final settings = context.watch<GeneralSettingsController>();
-    final statusText = appLoadingStatusesTitlesData[settings.loadingStatus]
+    final appLoadingStatus =
+        context.select<GlobalStateNotifier, AppStateLoadingStatuses>(
+      (final c) => c.value.appLoadingStatus,
+    );
+    final statusText = appLoadingStatusesTitlesData[appLoadingStatus]
             ?.getByLanguage(intl.Intl.systemLocale) ??
         '';
 

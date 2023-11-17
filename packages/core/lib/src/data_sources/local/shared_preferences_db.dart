@@ -4,13 +4,12 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core.dart';
-import '../interfaces/interfaces.dart';
 
 /// This service purpose to manage shared preferences only
 class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
   // cached SharedPreferences instance
-  SharedPreferences? _sharedPreferences;
-  SharedPreferences get _prefs => _sharedPreferences!;
+  late final SharedPreferences _sharedPreferences;
+  SharedPreferences get _prefs => _sharedPreferences;
   @override
   Future<void> onLoad() async {
     _sharedPreferences = await SharedPreferences.getInstance();

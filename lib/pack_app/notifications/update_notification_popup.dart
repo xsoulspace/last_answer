@@ -1,8 +1,12 @@
-part of pack_app;
+import 'dart:math' as math;
+
+import 'package:intl/intl.dart' as intl;
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 Future<void> showNotificationPopup({
   required final BuildContext context,
-  required final NotificationController notificationController,
+  required final NotificationsNotifier notificationController,
 }) async {
   await showDialog(
     context: context,
@@ -58,7 +62,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final notificationController = context.read<NotificationController>();
+    final notificationController = context.read<NotificationsNotifier>();
     final updates = notificationController.updates;
     final lastMessage = updates.first;
     final language = intl.Intl.getCurrentLocale();

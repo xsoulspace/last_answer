@@ -1,27 +1,29 @@
-import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/abstract/abstract.dart';
-import 'package:lastanswer/pack_settings/states/general_settings_controller.dart';
-import 'package:provider/provider.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class CharactersLimitControllerDto {
   CharactersLimitControllerDto({
     required final BuildContext context,
-  }) : settings = context.read<GeneralSettingsController>();
-  final GeneralSettingsController settings;
+  }) : globalStateNotifier = context.read<GlobalStateNotifier>();
+  final GlobalStateNotifier globalStateNotifier;
 }
 
 class CharactersLimitController extends ValueNotifier<String> {
   CharactersLimitController.fromNote({
     required final ProjectModelNote note,
     required this.dto,
-  }) : super(_getInitialLimit(note: note, settings: dto.settings));
+  }) : super(
+          _getInitialLimit(
+            note: note,
+            globalStateNotifier: dto.globalStateNotifier,
+          ),
+        );
   CharactersLimitController.fromSettings({
     required this.dto,
-  }) : super(_getInitialLimit(settings: dto.settings));
+  }) : super(_getInitialLimit(globalStateNotifier: dto.globalStateNotifier));
   final CharactersLimitControllerDto dto;
 
   static String _getInitialLimit({
-    required final GeneralSettingsController settings,
+    required final GlobalStateNotifier globalStateNotifier,
     final ProjectModelNote? note,
   }) {
     int limit;
@@ -29,7 +31,8 @@ class CharactersLimitController extends ValueNotifier<String> {
     if (note != null && note.id.isEmpty) {
       limit = note.charactersLimit;
     } else {
-      limit = settings.charactersLimitForNewNotes;
+      limit =
+          globalStateNotifier.value.user.settings.charactersLimitForNewNotes;
     }
 
     return limit == 0 ? '' : '$limit';

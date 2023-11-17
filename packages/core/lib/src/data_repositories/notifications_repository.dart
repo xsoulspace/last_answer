@@ -1,17 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../core.dart';
 
 class NotificationsRepository implements NotificationsDataSource {
-  NotificationsRepository({
-    required this.datasource,
-  });
-  final NotificationsDataSource datasource;
+  NotificationsRepository.provide(final BuildContext context)
+      : _datasource = NotificationDataSourceImpl(
+          localDbDataSource: context.read(),
+          assetBundle: DefaultAssetBundle.of(context),
+        );
+  final NotificationsDataSource _datasource;
   @override
-  Future<DateTime?> getLastReadDateTime() => datasource.getLastReadDateTime();
+  Future<DateTime?> getLastReadDateTime() => _datasource.getLastReadDateTime();
 
   @override
   Future<List<NotificationMessageModel>> getUpdatesNotifications() =>
-      datasource.getUpdatesNotifications();
+      _datasource.getUpdatesNotifications();
 
   @override
-  Future<void> setLastReadTime() => datasource.setLastReadTime();
+  Future<void> setLastReadTime() => _datasource.setLastReadTime();
 }

@@ -1,17 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_note/widgets/note_project_side_actionbar.dart';
 import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:universal_io/io.dart';
 
 part 'note_view_bloc.dart';
 

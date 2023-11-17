@@ -1,4 +1,4 @@
-part of '../pack_settings.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({

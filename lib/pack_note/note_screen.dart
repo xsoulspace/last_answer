@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
-import 'package:provider/provider.dart';
 
 class NoteProjectScreen extends StatefulWidget {
   const NoteProjectScreen({

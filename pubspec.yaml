@@ -33,6 +33,7 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_animate: ^4.2.0+1
   flutter_hooks: ^0.20.3
   flutter_keyboard_visibility: ^5.4.1
   flutter_localizations:
@@ -43,6 +44,7 @@ dependencies:
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.4.1
   gap: ^3.0.1
+  go_router: ^12.1.1
   google_fonts: ^6.1.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -62,6 +64,7 @@ dependencies:
   uuid: ^4.1.0
 
 dev_dependencies:
+  analyzer: ^6.3.0
   build_runner: ^2.4.6
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^3.0.0
@@ -76,7 +79,10 @@ dev_dependencies:
   xsoulspace_lints: ^0.0.10
 
 dependency_overrides:
+  analyzer: ^6.3.0
   collection: ^1.18.0
+  intl: ^0.18.1
+  meta: ^1.11.0
   uuid: ^4.1.0
 
 msix_config:
@@ -105,7 +111,6 @@ flutter_icons:
 # integrations:
 #   flutter_svg: true
 #   flare_flutter: true
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

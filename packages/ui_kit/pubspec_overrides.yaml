@@ -1,7 +1,9 @@
-# melos_managed_dependency_overrides: collection,intl,uuid,core
+# melos_managed_dependency_overrides: collection,intl,uuid,core,meta,analyzer
 dependency_overrides:
-  collection: 1.18.0
+  analyzer: ^6.3.0
+  collection: ^1.18.0
   core:
     path: ../core
   intl: ^0.18.1
+  meta: ^1.11.0
   uuid: ^4.1.0

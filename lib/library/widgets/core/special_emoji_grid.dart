@@ -19,7 +19,7 @@ class SpecialEmojisGrid extends StatelessWidget {
           onPressed: () => onChanged(emoji),
         );
 
-    final specialEmojisProvider = context.read<SpecialEmojiState>();
+    final specialEmojisProvider = context.read<SpecialEmojiStateNotifier>();
     final emojis = specialEmojisProvider.values;
     const maxItemsInRow = 9;
 

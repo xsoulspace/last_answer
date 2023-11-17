@@ -30,10 +30,8 @@ class NoteProjectViewDelegate {
 
 class NoteProjectView extends StatelessWidget {
   const NoteProjectView({
-    required this.delegate,
     super.key,
   });
-  final NoteProjectViewDelegate delegate;
 
   @override
   Widget build(final BuildContext context) {
@@ -51,7 +49,7 @@ class NoteProjectView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.canvasColor,
-      restorationId: 'notes/${delegate.noteId}',
+      restorationId: 'notes/${bloc.dto.noteId.value}',
       resizeToAvoidBottomInset: false,
       appBar: BackTextUniversalAppBar(
         useBackButton: true,

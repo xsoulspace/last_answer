@@ -46,11 +46,14 @@ dependencies:
   uuid: ^4.1.0
 
 dependency_overrides:
-  collection: 1.18.0
+  analyzer: ^6.3.0
+  collection: ^1.18.0
   intl: ^0.18.1
+  meta: ^1.11.0
   uuid: ^4.1.0
 
 dev_dependencies:
+  analyzer: ^6.3.0
   bloc_test: ^9.1.4
   build_runner: ^2.4.6
   faker: ^2.1.0

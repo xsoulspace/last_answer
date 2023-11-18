@@ -1,4 +1,6 @@
-part of 'utils.dart';
+import 'package:flutter/material.dart';
+
+import '../../core.dart';
 
 enum ThemeToUse {
   fromContext,
@@ -21,7 +23,8 @@ class ThemeDefiner {
   }
 
   ThemeToUse get themeToUse {
-    if (isNativeDesktop && nativeTransparentBackgroundSupported) {
+    if (PlatformInfo.isNativeDesktop &&
+        PlatformInfo.isTransparentBackgroundSupported) {
       final platformBrightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
       switch (platformBrightness) {

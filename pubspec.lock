@@ -312,6 +312,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
+  device_info_plus:
+    dependency: transitive
+    description:
+      name: device_info_plus
+      sha256: "7035152271ff67b072a211152846e9f1259cf1be41e34cd3e0b5463d2d6b8419"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
+  device_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_plus_platform_interface
+      sha256: d3b01d5868b50ae571cd1dc6e502fc94d956b665756180f7b16ead09e836fd64
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
+  diff_match_patch:
+    dependency: transitive
+    description:
+      name: diff_match_patch
+      sha256: "2efc9e6e8f449d0abe15be240e2c2a3bcd977c8d126cfd70598aee60af35c0a4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1"
   dio:
     dependency: "direct main"
     description:
@@ -485,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  flutter_colorpicker:
+    dependency: transitive
+    description:
+      name: flutter_colorpicker
+      sha256: "458a6ed8ea480eb16ff892aedb4b7092b2804affd7e046591fb03127e8d8ef8b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -578,6 +610,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.4"
+  flutter_quill:
+    dependency: transitive
+    description:
+      name: flutter_quill
+      sha256: "7ffe6f0ea651ee64aa3ac0e659fa82f097f25ab060a533081ad0ec26ea354b57"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.6.1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -756,6 +796,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  internet_connection_checker:
+    dependency: transitive
+    description:
+      name: internet_connection_checker
+      sha256: "1c683e63e89c9ac66a40748b1b20889fd9804980da732bf2b58d6d5456c8e876"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   intl:
     dependency: "direct overridden"
     description:
@@ -812,6 +860,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  life_hooks:
+    dependency: "direct main"
+    description:
+      name: life_hooks
+      sha256: "26005a34257161c7bb7261a200380775a4283389b84d40ec4dcdb44d768b2534"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.19"
   lints:
     dependency: transitive
     description:
@@ -956,6 +1012,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  pasteboard:
+    dependency: transitive
+    description:
+      name: pasteboard
+      sha256: "1c8b6a8b3f1d12e55d4e9404433cda1b4abe66db6b17bc2d2fb5965772c04674"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   path:
     dependency: transitive
     description:
@@ -1544,6 +1608,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
+  win32_registry:
+    dependency: transitive
+    description:
+      name: win32_registry
+      sha256: "41fd8a189940d8696b1b810efb9abcf60827b6cbfab90b0c43e8439e3a39d85a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   xdg_directories:
     dependency: transitive
     description:

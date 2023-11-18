@@ -1,4 +1,6 @@
-part of '../widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 class HoverableButton extends StatelessWidget {
   const HoverableButton({

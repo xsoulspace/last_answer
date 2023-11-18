@@ -22,7 +22,7 @@ class HeroId extends StatelessWidget {
   final HeroPlaceholderBuilder? placeholderBuilder;
   @override
   Widget build(final BuildContext context) {
-    if (isDesktop) return child;
+    if (PlatformInfo.isNativeWebDesktop) return child;
 
     return Hero(
       tag: '$type$id',

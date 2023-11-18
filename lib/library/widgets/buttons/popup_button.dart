@@ -1,4 +1,6 @@
-part of '../widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 class PopupButton extends HookWidget {
   const PopupButton({
@@ -21,7 +23,7 @@ class PopupButton extends HookWidget {
     required final BuildContext context,
     required final VoidCallback onClose,
   }) async {
-    if (isDesktop) return;
+    if (PlatformInfo.isNativeWebDesktop) return;
     void close(final BuildContext context) {
       onClose();
       unawaited(Navigator.maybePop(context));
@@ -80,7 +82,7 @@ class PopupButton extends HookWidget {
       icon: Icon(icon),
     );
 
-    if (!isDesktop) {
+    if (!PlatformInfo.isNativeWebDesktop) {
       if (useOnMobile) return button;
 
       return const SizedBox();

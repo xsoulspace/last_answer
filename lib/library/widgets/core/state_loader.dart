@@ -66,11 +66,12 @@ class _StateLoaderState extends State<StateLoader>
       textDirection: TextDirection.ltr,
       child: Stack(
         children: [
-          if (!nativeTransparentBackgroundSupported)
+          if (!PlatformInfo.isTransparentBackgroundSupported)
             Container(
               color: AppColors.black,
             ),
-          if (nativeTransparentBackgroundSupported && loaderOpacity.value > 0.0)
+          if (PlatformInfo.isTransparentBackgroundSupported &&
+              loaderOpacity.value > 0.0)
             Opacity(
               opacity: loaderOpacity.value,
               child: Container(

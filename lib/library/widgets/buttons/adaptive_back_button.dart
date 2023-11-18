@@ -1,4 +1,6 @@
-part of '../widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/buttons/cupertino_icon_button.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 class AdaptiveBackButton extends HookWidget {
   const AdaptiveBackButton({
@@ -9,7 +11,7 @@ class AdaptiveBackButton extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final hovered = useIsBool();
-    if (isDesktop) {
+    if (PlatformInfo.isNativeWebDesktop) {
       final theme = Theme.of(context);
 
       return MouseRegion(

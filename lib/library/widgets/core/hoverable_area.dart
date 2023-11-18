@@ -2,6 +2,7 @@ part of '../widgets.dart';
 
 typedef HoverableWidgetBuilder = Widget Function(
   BuildContext context,
+  // ignore: avoid_positional_boolean_parameters
   bool hovered,
 );
 

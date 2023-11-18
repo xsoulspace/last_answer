@@ -29,10 +29,10 @@ final lightThemeData = _lightBase.copyWith(
         MaterialStateProperty.all(AppColors.grey4.withOpacity(0.2)),
   ),
   // scaffoldBackgroundColor: Colors.transparent,
-  scaffoldBackgroundColor:
-      isNativeDesktop && nativeTransparentBackgroundSupported
-          ? Colors.transparent
-          : _lightBase.scaffoldBackgroundColor,
+  scaffoldBackgroundColor: PlatformInfo.isNativeDesktop &&
+          PlatformInfo.isTransparentBackgroundSupported
+      ? Colors.transparent
+      : _lightBase.scaffoldBackgroundColor,
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
     isDense: true,
   ),
@@ -66,10 +66,10 @@ final darkThemeData = _darkBase.copyWith(
   ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   // scaffoldBackgroundColor: Colors.transparent,
-  scaffoldBackgroundColor:
-      isNativeDesktop && nativeTransparentBackgroundSupported
-          ? Colors.transparent
-          : _darkBase.scaffoldBackgroundColor,
+  scaffoldBackgroundColor: PlatformInfo.isNativeDesktop &&
+          PlatformInfo.isTransparentBackgroundSupported
+      ? Colors.transparent
+      : _darkBase.scaffoldBackgroundColor,
   cardColor: AppColors.grey1.withOpacity(0.5),
   splashColor: AppColors.primary2.withOpacity(0.4),
   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(

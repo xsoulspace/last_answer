@@ -56,7 +56,8 @@ class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
   void updateAppLoadingStatus(final AppStateLoadingStatuses status) =>
       setValue(value.copyWith(appLoadingStatus: status));
 
-  void updateUser(final UserModel user) => setValue(value.copyWith(user: user));
+  void updateUser(final UserModel Function(UserModel) updateUser) =>
+      setValue(value.copyWith(user: updateUser(value.user)));
   void updateProject(final ProjectModel project) =>
       _projectsUpdatesController.add(project);
 

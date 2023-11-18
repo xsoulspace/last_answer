@@ -23,7 +23,6 @@ class AppNavigatorController {
   }
 
   void goSettings() => go(AppRoutesName.settings);
-
   void goAppInfo() => go(AppRoutesName.appInfo);
 
   Future<void> goNoteScreen({final String? noteId}) async {

@@ -1,4 +1,5 @@
-part of pack_app;
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 typedef ProjectSelectionChanged = void Function({
   required bool? selected,

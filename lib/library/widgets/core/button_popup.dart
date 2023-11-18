@@ -45,7 +45,7 @@ class ButtonPopup extends StatelessWidget {
       ),
       child: SizedBox(
         height: height,
-        width: !isNativeDesktop && !kIsWeb
+        width: !PlatformInfo.isNativeDesktop && !kIsWeb
             ? MediaQuery.of(context).size.width - 50
             : 250,
         child: Stack(

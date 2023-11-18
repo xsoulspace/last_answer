@@ -1,4 +1,5 @@
-part of '../widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class IconShareButton extends StatefulWidget {
   const IconShareButton({
@@ -19,10 +20,10 @@ class _IconShareButtonState extends State<IconShareButton> {
   void initState() {
     super.initState();
     IconData iconData;
-    if (isDesktop) {
+    if (PlatformInfo.isNativeWebDesktop) {
       iconData = Icons.copy;
     } else {
-      iconData = isAppleDevice ? CupertinoIcons.share : Icons.share;
+      iconData = PlatformInfo.isCupertino ? CupertinoIcons.share : Icons.share;
     }
     defaultIcon = Icon(iconData);
 

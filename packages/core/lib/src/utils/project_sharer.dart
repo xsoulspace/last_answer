@@ -1,4 +1,9 @@
-part of 'utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../core.dart';
+import 'platform_info.dart';
 
 @immutable
 class ProjectSharer {
@@ -12,10 +17,10 @@ class ProjectSharer {
   Future<void> share({
     required final Sharable sharable,
   }) async {
-    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    final box = context.findRenderObject() as RenderBox?;
     if (box == null) return;
-    final desktop = isDesktop;
-    if (desktop) {
+    final isDesktop = PlatformInfo.isNativeWebDesktop;
+    if (isDesktop) {
       final messenger = ScaffoldMessenger.of(context);
       final data = ClipboardData(text: sharable.toShareString());
       await Clipboard.setData(data);

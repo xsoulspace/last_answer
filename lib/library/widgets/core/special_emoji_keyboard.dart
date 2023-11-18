@@ -1,14 +1,10 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/buttons/emoji_button.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 part 'special_emoji_keyboard.freezed.dart';
 
@@ -103,7 +99,7 @@ class SpecialEmojiKeyboardProvider extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    if (isNativeDesktop || kIsWeb) return builder(context);
+    if (PlatformInfo.isNativeDesktop || kIsWeb) return builder(context);
     final state = controller.value;
     final view = View.of(context);
     useEffect(

@@ -67,7 +67,7 @@ class EmojiGrid extends HookWidget {
         ? AppColors.cleanBlack
         : AppColors.grey4;
     const maxItemsInRow = 9;
-    final emojiStyle = isNativeDesktop && Platform.isMacOS
+    final emojiStyle = PlatformInfo.isNativeDesktop && Platform.isMacOS
         ? null
         : Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: 'NotoColorEmoji',

@@ -1,4 +1,5 @@
-part of '../widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class DiscordButton extends StatelessWidget {
   const DiscordButton({this.text, super.key});

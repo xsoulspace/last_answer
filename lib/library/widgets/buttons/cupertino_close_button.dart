@@ -1,4 +1,6 @@
-part of '../widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 class CupertinoCloseButton extends HookWidget {
   const CupertinoCloseButton({

@@ -1,4 +1,5 @@
-part of '../widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class CupertinoIconButton extends StatelessWidget {
   const CupertinoIconButton({

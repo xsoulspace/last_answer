@@ -4,7 +4,7 @@ Future<bool> showRemoveTitleDialog({
   required final String title,
   required final BuildContext context,
 }) async {
-  if (isAppleDevice) {
+  if (PlatformInfo.isCupertino) {
     return await showCupertinoDialog(
       context: context,
       builder: (final context) => CupertinoAlertDialog(

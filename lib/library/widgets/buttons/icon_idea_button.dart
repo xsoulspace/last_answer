@@ -1,4 +1,5 @@
-part of '../widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/buttons/svg_icon_button.dart';
 
 class IconIdeaButton extends StatelessWidget {
   const IconIdeaButton({

@@ -1,4 +1,8 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/screens/general_settings_screen.dart';
+import 'package:lastanswer/pack_settings/screens/my_account_screen.dart';
+import 'package:lastanswer/pack_settings/screens/settings_navigation_screen.dart';
 
 class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
@@ -34,9 +38,6 @@ class SmallSettingsScreen extends HookWidget {
           await toPage();
         case AppRoutesName.generalSettings:
           subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
-          await toPage();
-        case AppRoutesName.subscription:
-          subSettingsPage.value = SubscriptionScreen(onBack: onBack);
           await toPage();
         default:
           await toNavigation();

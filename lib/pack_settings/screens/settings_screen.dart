@@ -1,4 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/screens/desktop_settings_screen.dart';
+import 'package:lastanswer/pack_settings/screens/small_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({

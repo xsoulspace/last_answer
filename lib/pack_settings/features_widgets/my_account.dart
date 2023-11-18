@@ -1,4 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_container.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_list_tile.dart';
 
 class MyAccount extends StatelessWidget {
   const MyAccount({
@@ -10,7 +13,7 @@ class MyAccount extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final settings = context.watch<GeneralSettingsController>();
+    final settings = context.watch<GlobalStateNotifier>();
 
     return SettingsListContainer(
       padding: padding,

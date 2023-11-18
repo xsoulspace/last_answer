@@ -1,5 +1,6 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 IdeaScreenState useIdeaScreenState({
   required final BuildContext context,
@@ -23,7 +24,7 @@ IdeaScreenState useIdeaScreenState({
       ),
     );
 
-class IdeaScreenState implements LifeState {
+class IdeaScreenState extends LifeState {
   IdeaScreenState({
     required this.context,
     required this.onScreenBack,
@@ -45,6 +46,7 @@ class IdeaScreenState implements LifeState {
   late IdeaProjectsState ideasProvider;
   @override
   void initState() {
+    super.initState();
     folderProvider = context.read<FolderStateNotifier>();
     ideasProvider = context.read<IdeaProjectsState>();
     unawaited(
@@ -55,9 +57,6 @@ class IdeaScreenState implements LifeState {
           .forEach(onIdeaUpdate),
     );
   }
-
-  @override
-  void dispose() {}
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {

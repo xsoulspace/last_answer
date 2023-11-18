@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
 import 'package:lastanswer/pack_note/widgets/desktop_note_settings.dart';
 import 'package:lastanswer/pack_note/widgets/mobile_note_settings.dart';
-import 'package:lastanswer/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class NoteSettingsButton extends StatelessWidget {
   const NoteSettingsButton({

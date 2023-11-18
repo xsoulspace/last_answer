@@ -1,4 +1,9 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_tile.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 typedef TwoValuesChanged<TFirst, TSecond> = void Function(TFirst, TSecond);
 
@@ -77,7 +82,7 @@ class IdeaProjectScreen extends HookWidget {
                   }
                   final answer = answers.value[index];
 
-                  return _AnswerTile(
+                  return AnswerTile(
                     onFocus: state.closeQuestions,
                     key: ValueKey(answer),
                     answer: answer,
@@ -91,13 +96,13 @@ class IdeaProjectScreen extends HookWidget {
                     },
                     onReadyToDelete: state.onReadyToDeleteAnswer,
                     onChange: state.onAnswersChange,
-                    deleteIconVisible: isDesktop,
+                    deleteIconVisible: PlatformInfo.isNativeWebDesktop,
                   );
                 },
               ),
             ),
           ),
-          _AnswerCreator(
+          AnswerCreator(
             onShareTap: () async {
               await ProjectSharer.of(context).share(sharable: idea);
             },

@@ -125,7 +125,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(
-                  contentPadding: isNativeDesktop
+                  contentPadding: PlatformInfo.isNativeDesktop
                       ? const EdgeInsets.all(6)
                       : const EdgeInsets.only(top: 6, bottom: 4),
                   filled: widget.filled,

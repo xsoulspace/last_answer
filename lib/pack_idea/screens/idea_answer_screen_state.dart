@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 IdeaAnswerScreenState useIdeaAnswerScreenState({
   required final BuildContext context,

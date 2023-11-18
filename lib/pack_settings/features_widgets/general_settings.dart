@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_app/widgets/project_direction_switch.dart';
 import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings_bloc.dart';
 import 'package:lastanswer/pack_settings/pack_settings.dart';
@@ -44,7 +44,7 @@ class GeneralSettingsViewBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final settings = context.watch<GeneralSettingsController>();
+    final settings = context.watch<GlobalStateNotifier>();
     final bloc = context.watch<GeneralSettingsBloc>();
 
     return SettingsListContainer(
@@ -72,9 +72,7 @@ class GeneralSettingsViewBody extends StatelessWidget {
         SettingsListTile(
           title: S.current.projectsDirection,
           leftColumnWidth: leftColumnWidth,
-          child: ProjectsDirectionSwitch(
-            settings: settings,
-          ),
+          child: const ProjectsDirectionSwitch(),
         ),
 
         Divider(

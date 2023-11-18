@@ -1,7 +1,9 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 
-class _AnswerCreator extends HookWidget {
-  const _AnswerCreator({
+class AnswerCreator extends HookWidget {
+  const AnswerCreator({
     required this.onCreated,
     required this.defaultQuestion,
     required this.idea,
@@ -9,6 +11,7 @@ class _AnswerCreator extends HookWidget {
     required this.onFocus,
     required this.questionsOpened,
     required this.onChanged,
+    super.key,
   });
   final IdeaProjectQuestion defaultQuestion;
   final IdeaProject idea;
@@ -89,7 +92,7 @@ class _AnswerCreator extends HookWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: _QuestionsChips(
+                    child: QuestionsChips(
                       onChange: (final question) =>
                           selectedQuestion.value = question,
                       value: selectedQuestion.value,

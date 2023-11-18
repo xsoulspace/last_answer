@@ -23,7 +23,7 @@ class SettingsButton extends StatelessWidget {
     final theme = Theme.of(context);
     bool selected = checkSelected?.call(routeName) ?? false;
     if (!selected && fallbackRouteName != null) {
-      selected = checkSelected?.call(fallbackRouteName!) ?? false;
+      selected = checkSelected?.call(fallbackRouteName) ?? false;
     }
 
     return Padding(

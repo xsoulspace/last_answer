@@ -1,9 +1,12 @@
+import 'package:intl/intl.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
 
-class _QuestionsChips extends StatelessWidget {
-  const _QuestionsChips({
+class QuestionsChips extends StatelessWidget {
+  const QuestionsChips({
     required this.value,
     required this.onChange,
+    super.key,
   });
   final IdeaProjectQuestion? value;
   final ValueChanged<IdeaProjectQuestion> onChange;
@@ -56,7 +59,7 @@ class QuestionChip extends StatelessWidget {
         label: Text(text),
         labelStyle: theme.textTheme.bodyMedium,
         shape: shape,
-        backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
+        backgroundColor: AnswerCreator.getBackgroundByTheme(theme),
         selectedColor: AppColors.primary2.withOpacity(0.2),
         selected: selected,
         onSelected: onSelected,

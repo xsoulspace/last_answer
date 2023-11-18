@@ -1,7 +1,10 @@
-part of pack_idea;
+import 'package:intl/intl.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_field_bubble.dart';
 
-class _AnswerTile extends StatelessWidget {
-  const _AnswerTile({
+class AnswerTile extends StatelessWidget {
+  const AnswerTile({
     required this.answer,
     required this.confirmDelete,
     required this.onReadyToDelete,
@@ -79,7 +82,7 @@ class _AnswerTile extends StatelessWidget {
                   },
                   id: '${answer.id}-question${answer.question.id}',
                   type: HeroIdTypes.projectIdeaQuestionTitle,
-                  child: _QuestionDropdown(
+                  child: QuestionDropdown(
                     answer: answer,
                     onChange: onChange,
                   ),

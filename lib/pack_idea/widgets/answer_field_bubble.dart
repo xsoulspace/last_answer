@@ -1,4 +1,5 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
 
 class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({

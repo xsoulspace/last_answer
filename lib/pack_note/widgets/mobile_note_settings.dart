@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lastanswer/abstract/abstract.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
 import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
-import 'package:lastanswer/utils/utils.dart';
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({

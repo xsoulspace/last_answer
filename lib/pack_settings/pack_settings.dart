@@ -8,7 +8,6 @@ export 'screens/my_account_screen.dart';
 export 'screens/settings_navigation_screen.dart';
 export 'screens/settings_screen.dart';
 export 'screens/small_settings_screen.dart';
-export 'screens/subscription_screen.dart';
 export 'widgets/settings_button.dart';
 export 'widgets/settings_list_container.dart';
 export 'widgets/settings_list_tile.dart';

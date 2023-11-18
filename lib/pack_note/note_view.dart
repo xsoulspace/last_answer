@@ -84,7 +84,7 @@ class NoteProjectView extends StatelessWidget {
                   ],
                 ),
               ),
-              if ((isNativeDesktop || kIsWeb) &&
+              if ((PlatformInfo.isNativeDesktop || kIsWeb) &&
                   !specialEmojiController.value.isKeyboardOpen)
                 const Gap(16),
               if (!specialEmojiController.value.isKeyboardOpen)

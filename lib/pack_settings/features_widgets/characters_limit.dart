@@ -14,7 +14,7 @@ class CharactersLimitSetting extends HookWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
-    context.watch<GeneralSettingsController>();
+    context.watch<GlobalStateNotifier>();
     useListenable(controller);
 
     Widget otherButton;

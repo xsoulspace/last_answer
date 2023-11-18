@@ -28,7 +28,6 @@ class _NoteProjectScreenState extends State<NoteProjectScreen>
             ),
           ),
         ],
-        builder: (final context, final child) =>
-            NoteProjectView(delegate: widget.delegate),
+        builder: (final context, final child) => const NoteProjectView(),
       );
 }

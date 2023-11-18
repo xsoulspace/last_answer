@@ -1,4 +1,6 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/buttons/adaptive_back_button.dart';
+import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen({

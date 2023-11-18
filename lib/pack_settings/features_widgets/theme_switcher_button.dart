@@ -1,11 +1,12 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_text.dart';
 
 class ThemeSwitcherButton extends StatelessWidget {
   const ThemeSwitcherButton({
     required this.settings,
     super.key,
   });
-  final GeneralSettingsController settings;
+  final GlobalStateNotifier settings;
   @override
   Widget build(final BuildContext context) => DropdownButton<ThemeMode>(
         // Read the selected themeMode from the controller

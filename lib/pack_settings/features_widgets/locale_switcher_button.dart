@@ -1,11 +1,13 @@
+import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_text.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({
     required this.settings,
     super.key,
   });
-  final GeneralSettingsController settings;
+  final GlobalStateNotifier settings;
 
   @override
   Widget build(final BuildContext context) {

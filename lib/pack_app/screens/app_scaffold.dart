@@ -1,3 +1,4 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/screens/app_loading_screen.dart';
@@ -20,7 +21,7 @@ class LastAnswerApp extends StatelessWidget {
             ),
           );
 
-          if (isNativeDesktop) {
+          if (PlatformInfo.isNativeDesktop) {
             return child;
           }
 

@@ -1,4 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/notifications/update_notification_popup.dart';
+import 'package:lastanswer/pack_settings/widgets/settings_button.dart';
 
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({
@@ -11,7 +14,6 @@ class SettingsNavigation extends StatelessWidget {
   Widget build(final BuildContext context) {
     final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
-    final paymentsService = context.read<PaymentsController>();
 
     BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
     if (screenLayout.notSmall) {
@@ -36,22 +38,6 @@ class SettingsNavigation extends StatelessWidget {
               : S.current.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
-        if (paymentsService.paymentsAccessable)
-          SettingsButton(
-            routeName: AppRoutesName.profile,
-            onSelected: onSelectRoute,
-            checkSelected: routeState.checkIsCurrentRoute,
-            text: S.current.myAccount,
-            // TODO(arenukvern): add avatar
-          ),
-        if (paymentsService.paymentsAccessable)
-          SettingsButton(
-            routeName: AppRoutesName.subscription,
-            onSelected: onSelectRoute,
-            checkSelected: routeState.checkIsCurrentRoute,
-            text: S.current.subscription,
-            // TODO(arenukvern): add avatar
-          ),
         SettingsButton(
           routeName: AppRoutesName.changelog,
           onSelected: (final _) async => showNotificationPopup(

@@ -1,4 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
+import 'package:lastanswer/pack_settings/features_widgets/my_account.dart';
+import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
@@ -70,8 +76,6 @@ class DesktopSettingsNavigator extends HookWidget {
     final routeState = RouteStateScope.of(context);
     final pathTemplate = routeState.route.pathTemplate;
     switch (pathTemplate) {
-      case AppRoutesName.subscription:
-        child = previousChild.value = const SubscriptionInfo();
       case AppRoutesName.profile:
         child = previousChild.value = const MyAccount();
       case AppRoutesName.settings:

@@ -2,6 +2,7 @@ library pack_app;
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/notifications/update_notification_popup.dart';
 import 'package:lastanswer/pack_idea/pack_idea.dart';
 import 'package:lastanswer/pack_note/note_screen.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
@@ -28,6 +29,3 @@ part 'navigator/app_navigator_popper.dart';
 part 'navigator/app_routes.dart';
 part 'navigator/route_parameters.dart';
 part 'pack_app.g.dart';
-part 'widgets/project_text_field.dart';
-part 'widgets/project_tile.dart';
-part 'widgets/project_title_field.dart';

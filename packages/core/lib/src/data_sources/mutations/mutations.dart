@@ -33,7 +33,7 @@ Future<void> runMutations(final GlobalStatesInitializerDto dto) async {
   }
 
   globalStateNotifier.updateUser(
-    globalStateNotifier.value.user.copyWith(
+    (final user) => user.copyWith(
       localDbVersion: LocalDbVersion.newestVersion,
     ),
   );

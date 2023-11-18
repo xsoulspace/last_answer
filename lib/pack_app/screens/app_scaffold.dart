@@ -16,7 +16,7 @@ class LastAnswerApp extends StatelessWidget {
                   dto: GlobalStatesInitializerDto(context: context),
                 ),
                 loader: const AppLoadingScreen(),
-                child: const AppScaffold(),
+                child: const OldAppScaffold(),
               ),
             ),
           );
@@ -39,14 +39,14 @@ class LastAnswerApp extends StatelessWidget {
       );
 }
 
-class AppScaffold extends StatefulHookWidget {
-  const AppScaffold({super.key});
+class OldAppScaffold extends StatefulHookWidget {
+  const OldAppScaffold({super.key});
 
   @override
   _AppScaffoldState createState() => _AppScaffoldState();
 }
 
-class _AppScaffoldState extends State<AppScaffold> {
+class _AppScaffoldState extends State<OldAppScaffold> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override

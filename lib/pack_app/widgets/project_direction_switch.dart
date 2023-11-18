@@ -9,9 +9,15 @@ class ProjectsDirectionSwitch extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final globalStateNotifier = context.watch<GlobalStateNotifier>();
-    // ignore: use_setters_to_change_properties
+    final settings = globalStateNotifier.value.user.settings;
     void setReverse({required final bool reverse}) {
-      settings.projectsListReversed = reverse;
+      globalStateNotifier.updateUser(
+        (final user) => user.copyWith(
+          settings: settings.copyWith(
+            isProjectsListReversed: reverse,
+          ),
+        ),
+      );
     }
 
     return Padding(
@@ -19,22 +25,18 @@ class ProjectsDirectionSwitch extends StatelessWidget {
       child: Row(
         children: [
           CupertinoIconButton(
-            onPressed: settings.projectsListReversed
+            onPressed: settings.isProjectsListReversed
                 ? null
-                : () {
-                    setReverse(reverse: true);
-                  },
+                : () => setReverse(reverse: true),
             icon: Icons.vertical_align_bottom_rounded,
-            color: settings.projectsListReversed ? AppColors.primary : null,
+            color: settings.isProjectsListReversed ? AppColors.primary : null,
           ),
           const SizedBox(width: 8),
           CupertinoIconButton(
-            onPressed: settings.projectsListReversed
-                ? () {
-                    setReverse(reverse: false);
-                  }
+            onPressed: settings.isProjectsListReversed
+                ? () => setReverse(reverse: false)
                 : null,
-            color: settings.projectsListReversed ? null : AppColors.primary,
+            color: settings.isProjectsListReversed ? null : AppColors.primary,
             icon: Icons.vertical_align_top_rounded,
           ),
         ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core.dart';
@@ -41,9 +42,10 @@ class GlobalStatesInitializerDto {
 class GlobalStatesInitializer implements StateInitializer {
   GlobalStatesInitializer({
     required this.dto,
+    required this.router,
   });
   final GlobalStatesInitializerDto dto;
-
+  final GoRouter router;
   @override
   Future<void> onLoad() async {
     final initializer = UserInitializer(
@@ -78,5 +80,10 @@ class GlobalStatesInitializer implements StateInitializer {
       AppStatus.online,
       // isConnected ? AppStatus.online : AppStatus.offline,
     );
+    if (dto.userNotifier.hasCompletedOnboarding) {
+      router.go(AppPaths.home);
+    } else {
+      router.go(AppPaths.intro);
+    }
   }
 }

@@ -35,6 +35,7 @@ class GlobalStatesProvider extends StatelessWidget {
           ChangeNotifierProvider(create: ProjectsNotifier.provide),
           ChangeNotifierProvider(create: UserNotifier.provide),
           ChangeNotifierProvider(create: AppNotifier.provide),
+          ChangeNotifierProvider(create: OpenedProjectNotifier.provide),
         ],
         child: Builder(builder: builder),
       );

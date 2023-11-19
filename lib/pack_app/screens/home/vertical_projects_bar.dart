@@ -1,5 +1,5 @@
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({
@@ -85,7 +85,7 @@ class BarItem extends StatelessWidget {
                 child: Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: context.textTheme.bodySmall,
                 ),
               ),
             ],

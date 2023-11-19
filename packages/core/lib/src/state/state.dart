@@ -15,6 +15,7 @@ part 'app_notifier.dart';
 part 'emoji_state_notifier.dart';
 part 'map_state_notifier.dart';
 part 'notifications_notifier.dart';
+part 'opened_project_notifier.dart';
 part 'projects_notifier.dart';
 part 'projects_paged_controller.dart';
 part 'projects_paged_requests_builder.dart';

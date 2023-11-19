@@ -4,32 +4,6 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/other/other.dart';
 
-class AppPaths {
-  AppPaths._();
-  static const bootstrap = '/';
-  static const home = '/home';
-  static const intro = '/intro';
-  static const createIdea = '/i/create';
-  static const ideas = '/i';
-  static const idea = '$ideas/:ideaId';
-  static String getIdeaPath({required final String ideaId}) => '$ideas/$ideaId';
-  static const ideaAnswer = '$ideas/:ideaId/:answerId';
-  static String getIdeaAnswerPath({
-    required final String ideaId,
-    required final String answerId,
-  }) =>
-      '$ideas/$ideaId/$answerId';
-  static const notes = '/n';
-  static const note = '$notes/:noteId';
-  static String getNotePath({required final String noteId}) => '$notes/$noteId';
-  static const settings = '/settings';
-  static const generalSettings = '$settings/general';
-  static const profile = '$settings/profile';
-  static const subscription = '$settings/subscription';
-  static const changelog = '$settings/changelog';
-  static const appInfo = '/info';
-}
-
 final appRouter = GoRouter(
   redirect: _handleRootRedirect,
   routes: [
@@ -37,12 +11,9 @@ final appRouter = GoRouter(
       builder: (final context, final router, final navigator) =>
           AppScaffold(navigator: navigator),
       routes: [
-        AppRoute(
-          AppPaths.bootstrap,
-          (final _) => const LoadingScreen(),
-        ), // This will be hidden
-        AppRoute(AppPaths.home, (final _) => const HomeScreen()),
+        AppRoute(AppPaths.bootstrap, (final _) => const LoadingScreen()),
         AppRoute(AppPaths.intro, (final _) => const IntroScreen()),
+        AppRoute(AppPaths.home, (final _) => const HomeScreen()),
       ],
     ),
   ],
@@ -87,11 +58,9 @@ String? _handleRootRedirect(
   final GoRouterState state,
 ) {
   final appStatus = context.read<AppNotifier>().value.status;
-  final hasCompletedOnboarding =
-      context.read<UserNotifier>().hasCompletedOnboarding;
   final location = state.uri.toString();
   // Prevent anyone from navigating away from `/` if app is starting up.
-  if (appStatus == AppStatus.loading || location != AppPaths.bootstrap) {
+  if (appStatus == AppStatus.loading && location != AppPaths.bootstrap) {
     return AppPaths.bootstrap;
   }
   //  else if (location == AppPaths.bootstrap) {

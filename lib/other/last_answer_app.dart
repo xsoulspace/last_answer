@@ -23,6 +23,7 @@ class _AppScaffold extends StatefulWidget {
 class _AppScaffoldState extends State<_AppScaffold> {
   late final _initializer = GlobalStatesInitializer(
     dto: GlobalStatesInitializerDto(context: context),
+    router: appRouter,
   );
   @override
   void initState() {

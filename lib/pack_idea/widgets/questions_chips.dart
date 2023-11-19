@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
 
@@ -8,14 +7,12 @@ class QuestionsChips extends StatelessWidget {
     required this.onChange,
     super.key,
   });
-  final IdeaProjectQuestion? value;
-  final ValueChanged<IdeaProjectQuestion> onChange;
+  final IdeaProjectQuestionModel? value;
+  final ValueChanged<IdeaProjectQuestionModel> onChange;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsState>();
-
-    final questions = ideaQuestionsProvider.values;
+    final questions = context.read<ProjectsNotifier>().ideaQuestions;
 
     return Wrap(
       spacing: 1,
@@ -25,7 +22,7 @@ class QuestionsChips extends StatelessWidget {
           .map(
             (final question) => QuestionChip(
               key: ValueKey(question.id),
-              text: question.title.getByLanguage(Intl.getCurrentLocale()),
+              text: question.title.localize(context),
               selected: value == question,
               onSelected: (final _) => onChange(question),
             ),

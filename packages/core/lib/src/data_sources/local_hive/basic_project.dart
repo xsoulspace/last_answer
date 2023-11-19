@@ -60,7 +60,10 @@ class BasicProject extends HiveObject
 
   /// Always override it in extended projects
   @override
-  String toShareString() => '';
+  String toShareString(final BuildContext context) => '';
+
+  @override
+  String toSharableTitle(final BuildContext context) => '';
 
   @override
   List<Object?> get props => [id];
@@ -72,7 +75,4 @@ class BasicProject extends HiveObject
         id: id,
         type: type,
       );
-
-  @override
-  String get sharableTitle => '';
 }

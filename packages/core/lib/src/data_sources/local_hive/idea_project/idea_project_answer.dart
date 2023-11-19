@@ -46,7 +46,8 @@ class IdeaProjectAnswer extends HiveObject
 
   String get title => text.length <= 50 ? text : text.substring(0, 49);
   @override
-  String toShareString() => '${question.toShareString()} \n $text';
+  String toShareString(final BuildContext context) =>
+      '${question.toShareString(context)} \n $text';
 
   @override
   List get props => [id];
@@ -62,7 +63,7 @@ class IdeaProjectAnswer extends HiveObject
       );
 
   @override
-  String get sharableTitle => '';
+  String toSharableTitle(final BuildContext context) => '';
 }
 
 /// A mock for [IdeaProjectAnswer].

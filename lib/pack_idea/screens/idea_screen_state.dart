@@ -1,5 +1,4 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/hooks/hooks.dart';
 import 'package:life_hooks/life_hooks.dart';
 
 IdeaScreenState useIdeaScreenState({
@@ -40,15 +39,15 @@ class IdeaScreenState extends LifeState {
   final ValueNotifier<List<IdeaProjectAnswer>> answers;
 
   final StreamController<bool> ideaUpdatesStream;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late FolderStateNotifier folderProvider;
-  late IdeaProjectsState ideasProvider;
+  // @override
+  // ValueChanged<VoidCallback>? setState;
+  // late FolderStateNotifier folderProvider;
+  // late IdeaProjectsState ideasProvider;
   @override
   void initState() {
     super.initState();
-    folderProvider = context.read<FolderStateNotifier>();
-    ideasProvider = context.read<IdeaProjectsState>();
+    // folderProvider = context.read<FolderStateNotifier>();
+    // ideasProvider = context.read<IdeaProjectsState>();
     unawaited(
       ideaUpdatesStream.stream
           .sampleTime(
@@ -60,15 +59,15 @@ class IdeaScreenState extends LifeState {
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    ideasProvider.put(
-      key: idea.id,
-      value: idea..updated = DateTime.now(),
-    );
+    // ideasProvider.put(
+    //   key: idea.id,
+    //   value: idea..updated = DateTime.now(),
+    // );
 
-    if (updateFolder) {
-      idea.folder?.sortProjectsByDate(project: idea);
-      folderProvider.notify();
-    }
+    // if (updateFolder) {
+    //   idea.folder?.sortProjectsByDate(project: idea);
+    //   folderProvider.notify();
+    // }
     await idea.save();
   }
 

@@ -58,7 +58,10 @@ class IdeaProject extends BasicProject with EquatableMixin {
   ProjectFolder? folder;
 
   @override
-  String toShareString() => ideaProjectToShareString(toModel());
+  String toShareString(final BuildContext context) => ideaProjectToShareString(
+        context: context,
+        projectIdea: toModel(),
+      );
 
   @override
   List get props => [id];
@@ -75,11 +78,14 @@ class IdeaProject extends BasicProject with EquatableMixin {
       );
 }
 
-String ideaProjectToShareString(final ProjectModelIdea projectIdea) {
+String ideaProjectToShareString({
+  required final ProjectModelIdea projectIdea,
+  required final BuildContext context,
+}) {
   final buffer = StringBuffer('${projectIdea.title} \n');
   final resolvedAnswers = projectIdea.answers;
   for (final answer in resolvedAnswers) {
-    buffer.writeln(answer.toShareString());
+    buffer.writeln(answer.toShareString(context));
   }
 
   return buffer.toString();

@@ -47,8 +47,9 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
       };
 
   @override
-  String toShareString() => map(
-        idea: ideaProjectToShareString,
+  String toShareString(final BuildContext context) => map(
+        idea: (final value) =>
+            ideaProjectToShareString(context: context, projectIdea: value),
         note: (final value) => value.note,
       );
   static final emptyNote = ProjectModelNote(
@@ -98,9 +99,10 @@ class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel implements Sharable {
       _$IdeaProjectAnswerModelFromJson(json);
   String get title => _getTitle(text, titleLimit: 50);
   @override
-  String get sharableTitle => title;
+  String toSharableTitle(final BuildContext context) => title;
   @override
-  String toShareString() => '${question.toShareString()} \n $text';
+  String toShareString(final BuildContext context) =>
+      '${question.toShareString(context)} \n $text';
 }
 
 @Freezed(fromJson: false, toJson: false)
@@ -128,10 +130,10 @@ class IdeaProjectQuestionModel
   factory IdeaProjectQuestionModel.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionModelFromJson(json);
   @override
-  String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+  String toShareString(final BuildContext context) => title.localize(context);
   @override
-  String get sharableTitle =>
-      _getTitle(title.getByLanguage(Intl.getCurrentLocale()));
+  String toSharableTitle(final BuildContext context) =>
+      _getTitle(title.localize(context));
 }
 
 @freezed
@@ -154,7 +156,10 @@ class LocalizedTextModel with _$LocalizedTextModel {
         Locales.it.languageCode: it,
         // Locales.ga.languageCode: ga,
       };
-  String getByLanguage(final String languageCode) =>
+
+  String localize(final BuildContext context) =>
+      _getByLanguage(context.locale.languageCode);
+  String _getByLanguage(final String languageCode) =>
       values[languageCode] ?? ''.useWhenEmpty(en);
 }
 

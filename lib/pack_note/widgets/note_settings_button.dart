@@ -1,5 +1,5 @@
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
 import 'package:lastanswer/pack_note/widgets/desktop_note_settings.dart';
 import 'package:lastanswer/pack_note/widgets/mobile_note_settings.dart';

@@ -5,29 +5,39 @@ class NoteProjectViewStateDto {
     required this.context,
     required this.noteId,
     required this.tickerProvider,
-  })  : noteProjectsState = context.read(),
-        folderStateProvider = context.read();
-  final NoteProjectsState noteProjectsState;
-  final FolderStateNotifier folderStateProvider;
+  });
+  //  :
+  // noteProjectsState = context.read(),
+  //       folderStateProvider = context.read();
+  // final NoteProjectsState noteProjectsState;
+  // final FolderStateNotifier folderStateProvider;
   final ProjectModelId noteId;
   final TickerProvider tickerProvider;
 
   final BuildContext context;
-  ProjectModelNote _getInitialNote() {
-    final maybeNote = noteProjectsState.state.value[noteId.value];
-    if (maybeNote == null) {
-      return ProjectModel.emptyNote;
-    } else {
-      return maybeNote.toModel();
-    }
-  }
+  // ProjectModelNote _getInitialNote() {
+  //   final maybeNote = noteProjectsState.state.value[noteId.value];
+  //   if (maybeNote == null) {
+  //     return ProjectModel.emptyNote;
+  //   } else {
+  //     return maybeNote.toModel();
+  //   }
+  // }
 }
 
 class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
   NoteProjectViewBloc({
     required this.delegate,
     required this.dto,
-  }) : super(dto._getInitialNote()) {
+  }) : super(
+          ProjectModelNote(
+            id: ProjectModelId.empty,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          )
+          // dto._getInitialNote()
+          ,
+        ) {
     specialEmojiController.addListener(notifyListeners);
   }
 
@@ -62,13 +72,13 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
       context: context,
     );
     if (!remove) return;
-    await removeProject(
-      context: context,
-      project: note,
-      folderProvider: dto.folderStateProvider,
-      checkIsProjectActive: delegate.checkIsProjectActive,
-      onGoHome: delegate.onGoHome,
-    );
+    // await removeProject(
+    //   context: context,
+    //   project: note,
+    //   folderProvider: dto.folderStateProvider,
+    //   checkIsProjectActive: delegate.checkIsProjectActive,
+    //   onGoHome: delegate.onGoHome,
+    // );
   }
 
   Future<void> onSwitchKeyboard({
@@ -97,21 +107,21 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
   }
 
   void _onNoteChange() {
-    final oldNote = note;
-    final fixedNewValue = noteController.text;
-    if (oldNote.note == fixedNewValue) return;
-    bool positionChanged = false;
-    if (oldNote.title != NoteProject.getTitle(fixedNewValue)) {
-      positionChanged = true;
-    } else {
-      positionChanged = oldNote.folder?.projectsList.first.id != note;
-    }
-    final updatedNote = oldNote.copyWith(
-      note: fixedNewValue,
-      updatedAt: DateTime.now(),
-    );
+    // final oldNote = note;
+    // final fixedNewValue = noteController.text;
+    // if (oldNote.note == fixedNewValue) return;
+    // bool positionChanged = false;
+    // if (oldNote.title != NoteProject.getTitle(fixedNewValue)) {
+    //   positionChanged = true;
+    // } else {
+    //   positionChanged = oldNote.folder?.projectsList.first.id != note;
+    // }
+    // final updatedNote = oldNote.copyWith(
+    //   note: fixedNewValue,
+    //   updatedAt: DateTime.now(),
+    // );
 
-    _updatesStreamController.add();
+    // _updatesStreamController.add();
   }
 
   void onBack() {
@@ -120,15 +130,15 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
   }
 
   Future<void> _onUpdateNote(final ProjectModelNote updatedNote) async {
-    dto.notesState.put(key: note.id, value: note);
+    // dto.notesState.put(key: note.id, value: note);
 
-    if (notifier.positionChanged) {
-      note.folder?.sortProjectsByDate(project: note);
-      dto.folderBloc.notify();
-    }
+    // if (notifier.positionChanged) {
+    //   note.folder?.sortProjectsByDate(project: note);
+    //   dto.folderBloc.notify();
+    // }
 
-    await note.save();
-    if (notifier.charactersLimitChanged) notifyListeners();
+    // await note.save();
+    // if (notifier.charactersLimitChanged) notifyListeners();
   }
 
   @override

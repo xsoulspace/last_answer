@@ -166,12 +166,14 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       localDbVersion: $enumDecodeNullable(
               _$LocalDbVersionEnumMap, json['localDbVersion']) ??
           LocalDbVersion.v3_16,
+      hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
       'settings': instance.settings,
       'localDbVersion': _$LocalDbVersionEnumMap[instance.localDbVersion]!,
+      'hasCompletedOnboarding': instance.hasCompletedOnboarding,
     };
 
 const _$LocalDbVersionEnumMap = {

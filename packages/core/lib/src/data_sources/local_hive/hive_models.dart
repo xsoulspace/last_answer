@@ -3,9 +3,9 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../core.dart';

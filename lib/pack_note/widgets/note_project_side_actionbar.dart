@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_note/note_view.dart';
 import 'package:lastanswer/pack_note/widgets/note_settings_button.dart';
 

@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class QuestionDropdown extends HookWidget {
@@ -13,29 +12,29 @@ class QuestionDropdown extends HookWidget {
   final VoidCallback? onChange;
   @override
   Widget build(final BuildContext context) {
-    final chosenQuestion = useState(answer.question);
+    final projectsNotifier = context.read<ProjectsNotifier>();
+    final questions = projectsNotifier.ideaQuestions;
+    final chosenQuestion = useState<IdeaProjectQuestionModel>(questions.first);
 
-    useEffect(
-      () {
-        chosenQuestion.value = answer.question;
+    // useEffect(
+    //   () {
+    //     chosenQuestion.value = answer.question;
 
-        return null;
-      },
-      [answer.question],
-    );
+    //     return null;
+    //   },
+    //   [answer.question],
+    // );
 
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsState>();
-    final questions = ideaQuestionsProvider.values;
     final textStyle = Theme.of(context).textTheme.bodyLarge!;
 
     final questionsItems = questions.map(
-      (final question) => DropdownMenuItem<IdeaProjectQuestion>(
+      (final question) => DropdownMenuItem<IdeaProjectQuestionModel>(
         value: question,
         alignment: alignment,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            question.title.getByLanguage(Intl.getCurrentLocale()),
+            question.title.localize(context),
             style: textStyle.copyWith(
               color: textStyle.color!.withOpacity(0.8),
             ),
@@ -45,7 +44,7 @@ class QuestionDropdown extends HookWidget {
     );
 
     return DropdownButtonHideUnderline(
-      child: DropdownButton<IdeaProjectQuestion>(
+      child: DropdownButton<IdeaProjectQuestionModel>(
         isExpanded: true,
         itemHeight: null,
         icon: const SizedBox(),
@@ -55,7 +54,7 @@ class QuestionDropdown extends HookWidget {
         onChanged: (final question) async {
           if (question == null || chosenQuestion.value == question) return;
           chosenQuestion.value = question;
-          answer.question = question;
+          // answer.question = question;
           onChange?.call();
           await answer.save();
         },

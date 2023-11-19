@@ -27,5 +27,6 @@ final class EmojiRepository {
         );
   final EmojiLocalDataSource _datasource;
   Future<Iterable<EmojiModel>> getAllEmoji() => _datasource.getAllEmoji();
-  Future<Iterable<EmojiModel>> getSpecialEmoji() => _datasource.getAllEmoji();
+  Future<Iterable<EmojiModel>> getSpecialEmoji() =>
+      _datasource.getSpecialEmoji();
 }

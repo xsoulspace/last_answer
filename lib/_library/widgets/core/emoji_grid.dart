@@ -1,6 +1,6 @@
 part of '../widgets.dart';
 
-class EmojiPopup extends HookWidget {
+class EmojiPopup extends StatelessWidget {
   const EmojiPopup({
     required this.controller,
     required this.focusNode,
@@ -32,36 +32,12 @@ class EmojiGrid extends HookWidget {
   });
   final ValueChanged<EmojiModel> onChanged;
 
-  // Widget buildConsumer({
-  //   required final BuildContext context,
-  //   required final StreamController<String> emojiKeywordStream,
-  // }){
-
-  // }
-
   @override
   Widget build(final BuildContext context) {
-    final silentEmojiProider = context.read<EmojiStateNotifier>();
-    final lastEmojisState = context.read<LastEmojiStateNotifier>().values;
-    // ignore: close_sinks
-    final emojiKeywordStream = useStreamController<String>(
-      onCancel: () {
-        silentEmojiProider.filterKeyword = '';
-      },
-    );
-
-    unawaited(
-      emojiKeywordStream.stream
-          .sampleTime(
-        const Duration(milliseconds: 700),
-      )
-          .forEach(
-        (final keyword) {
-          silentEmojiProider.filterKeyword = keyword;
-        },
-      ),
-    );
-    final lastEmojis = useState(lastEmojisState.toSet());
+    final emojiNotifier = context.watch<EmojiStateNotifier>();
+    final lastEmojisNotifier = context.watch<LastEmojiStateNotifier>();
+    final lastEmojis = lastEmojisNotifier.filteredValues;
+    final filteredEmoji = emojiNotifier.filteredValues;
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
         ? AppColors.cleanBlack
@@ -72,52 +48,44 @@ class EmojiGrid extends HookWidget {
         : Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: 'NotoColorEmoji',
             );
-    Widget buildEmojiButton(final EmojiModel emoji) {
-      void onPressed() {
-        onChanged(emoji);
-        List<EmojiModel> newLastEmojis = [...lastEmojis.value];
-        final emojiExists = newLastEmojis.contains(emoji);
-        if (!emojiExists) {
-          newLastEmojis.insert(0, emoji);
-        }
-        if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
-          newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
-        }
-        lastEmojis.value = newLastEmojis.toSet();
-        context.read<LastEmojiStateNotifier>().assignEntries(
-              newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+    Widget buildEmojiButton(final EmojiModel emoji) => EmojiButton(
+          key: ValueKey(emoji),
+          style: emojiStyle,
+          emoji: emoji,
+          onPressed: () {
+            onChanged(emoji);
+            List<EmojiModel> newLastEmojis = [...lastEmojisNotifier.values];
+            final emojiExists = newLastEmojis.contains(emoji);
+            if (!emojiExists) {
+              newLastEmojis.insert(0, emoji);
+            }
+            if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
+              newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
+            }
+            lastEmojisNotifier.loadIterable(
+              values: newLastEmojis,
+              toKey: (final c) => c.emoji,
             );
-      }
-
-      return EmojiButton(
-        key: ValueKey(emoji),
-        style: emojiStyle,
-        emoji: emoji,
-        onPressed: onPressed,
-      );
-    }
+            context.read<LastEmojiStateNotifier>().assignEntries(
+                  newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
+                );
+          },
+        );
 
     return ButtonPopup(
       children: [
-        Expanded(
-          child: Consumer<EmojiStateNotifier>(
-            builder: (final _, final provider, final __) {
-              final emojis = provider.filteredValues;
-
-              return GridView.count(
-                restorationId: 'emojis-grid',
-                shrinkWrap: true,
-                crossAxisCount: maxItemsInRow,
-                semanticChildCount: emojis.length,
-                padding: const EdgeInsets.only(right: 12),
-                children: emojis.map(buildEmojiButton).toList(),
-              );
-            },
+        Flexible(
+          child: GridView.count(
+            restorationId: 'emojis-grid',
+            crossAxisCount: maxItemsInRow,
+            semanticChildCount: filteredEmoji.length,
+            padding: const EdgeInsets.only(right: 12),
+            children: filteredEmoji.map(buildEmojiButton).toList(),
           ),
         ),
         Divider(color: borderColor, height: 1),
         Visibility(
-          visible: lastEmojis.value.isNotEmpty,
+          visible: filteredEmoji.isNotEmpty,
           child: Padding(
             padding: const EdgeInsets.only(
               top: 6,
@@ -131,13 +99,16 @@ class EmojiGrid extends HookWidget {
             ),
           ),
         ),
-        GridView.count(
-          restorationId: 'last-emojis-grid',
-          shrinkWrap: true,
-          crossAxisCount: maxItemsInRow,
-          semanticChildCount: lastEmojis.value.length,
-          reverse: true,
-          children: lastEmojis.value.map(buildEmojiButton).toList(),
+        SizedBox(
+          height: 40,
+          child: GridView.count(
+            restorationId: 'last-emojis-grid',
+            crossAxisCount: maxItemsInRow,
+            semanticChildCount: lastEmojis.length,
+            reverse: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: lastEmojis.map(buildEmojiButton).toList(),
+          ),
         ),
         Material(
           color: Colors.transparent,
@@ -146,10 +117,11 @@ class EmojiGrid extends HookWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    onChanged: emojiKeywordStream.add,
+                  child: TextFormField(
+                    onChanged: (final value) {
+                      // emojiNotifier.filterKeyword = value;
+                    },
                     decoration: const InputDecoration()
-                        .applyDefaults(theme.inputDecorationTheme)
                         .copyWith(hintText: context.l10n.search),
                   ),
                 ),

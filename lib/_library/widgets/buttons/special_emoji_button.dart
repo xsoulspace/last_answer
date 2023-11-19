@@ -1,7 +1,7 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
-class SpecialEmojiButton extends HookWidget {
+class SpecialEmojiButton extends StatelessWidget {
   const SpecialEmojiButton({
     required this.controller,
     super.key,
@@ -16,7 +16,6 @@ class SpecialEmojiButton extends HookWidget {
         icon: const Icon(Icons.emoji_flags_rounded),
       );
     }
-
     return PopupButton(
       icon: Icons.emoji_flags_rounded,
       builder: (final context) => SpecialEmojisGrid(

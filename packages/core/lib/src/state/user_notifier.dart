@@ -1,12 +1,9 @@
 part of 'state.dart';
 
 class UserNotifierDto {
-  UserNotifierDto(final BuildContext context)
-      : userRepository = context.read(),
-        globalStatesInitializerDto =
-            GlobalStatesInitializerDto(context: context);
+  UserNotifierDto(final BuildContext context) : userRepository = context.read();
+
   final UserRepository userRepository;
-  final GlobalStatesInitializerDto globalStatesInitializerDto;
 }
 
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
@@ -30,11 +27,9 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => _uiLocale;
   bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
-  late final _initializer =
-      UserInitializer(dto: dto.globalStatesInitializerDto);
-  Future<void> onLoad() async {
+  Future<void> onLoad(final UserInitializer initializer) async {
     value = LoadableContainer.loaded(await dto.userRepository.getUser());
-    unawaited(_initializer.onUserLoad());
+    unawaited(initializer.onUserLoad());
   }
 
   void completeOnboarding() => _updateUser(

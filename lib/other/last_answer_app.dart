@@ -58,6 +58,7 @@ class _AppScaffoldState extends State<_AppScaffold> {
       darkTheme: darkThemeData,
       themeMode: themeMode,
       routerDelegate: appRouter.routerDelegate,
+      routeInformationProvider: appRouter.routeInformationProvider,
       routeInformationParser: appRouter.routeInformationParser,
     );
   }

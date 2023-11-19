@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unused_constructor_parameters
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +9,9 @@ final class LastUsedEmojiRepository
     extends MapBasedRepository<String, EmojiModel>
     implements LastUsedEmojiLocalDataSource {
   LastUsedEmojiRepository.provide(final BuildContext context)
-      : _datasource = context.read();
+      : _datasource = LastUsedEmojiLocalDataSourceImpl(
+          localDbDataSource: context.read(),
+        );
   final LastUsedEmojiLocalDataSource _datasource;
 
   @override
@@ -18,7 +22,9 @@ final class LastUsedEmojiRepository
 
 final class EmojiRepository {
   EmojiRepository.provide(final BuildContext context)
-      : _datasource = context.read();
+      : _datasource = EmojiLocalDataSourceImpl(
+          assetBundle: DefaultAssetBundle.of(context),
+        );
   final EmojiLocalDataSource _datasource;
   Future<Iterable<EmojiModel>> getAllEmoji() => _datasource.getAllEmoji();
   Future<Iterable<EmojiModel>> getSpecialEmoji() => _datasource.getAllEmoji();

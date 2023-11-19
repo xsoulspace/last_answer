@@ -5,7 +5,9 @@ import '../../core.dart';
 
 class ProjectsRepository {
   ProjectsRepository.provide(final BuildContext context)
-      : _datasource = context.read();
+      : _datasource = ProjectsLocalDataSourceIsarImpl(
+          isarDb: context.read(),
+        );
   final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) async =>
       _datasource.putAll(projects: projects);

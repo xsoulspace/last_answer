@@ -52,6 +52,10 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
             ideaProjectToShareString(context: context, projectIdea: value),
         note: (final value) => value.note,
       );
+
+  @override
+  String toSharableTitle(final BuildContext context) => title;
+
   static final emptyNote = ProjectModelNote(
     id: ProjectModelId.empty,
     createdAt: DateTime.now(),

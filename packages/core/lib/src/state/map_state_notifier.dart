@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
-
-import '../../core.dart';
+part of 'state.dart';
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
@@ -92,11 +88,4 @@ base class MapStateNotifier<TValue> extends ChangeNotifier {
       );
     }
   }
-
-  static TProvider load<TValue, TProvider extends MapStateNotifier<TValue>>({
-    required final BuildContext context,
-    required final Box<TValue> box,
-    required final String Function(TValue) toKey,
-  }) =>
-      context.read<TProvider>()..loadIterable(values: box.values, toKey: toKey);
 }

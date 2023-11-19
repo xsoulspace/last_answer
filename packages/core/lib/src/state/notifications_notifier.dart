@@ -1,10 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:provider/provider.dart';
-
-import '../../core.dart';
-
-part 'notifications_notifier.freezed.dart';
+part of 'state.dart';
 
 @freezed
 class NotificationsNotifierState with _$NotificationsNotifierState {

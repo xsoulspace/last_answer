@@ -1,11 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../core.dart';
-import 'logic/locale_logic.dart';
+part of 'state.dart';
 
 class UserNotifierDto {
   UserNotifierDto(final BuildContext context) : userRepository = context.read();

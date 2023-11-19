@@ -1,10 +1,5 @@
 // ignore_for_file: avoid_unused_constructor_parameters
-
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-
-import '../data_models/data_models.dart';
-import 'map_state_notifier.dart';
+part of 'state.dart';
 
 final class EmojiStateNotifier extends MapStateNotifier<EmojiModel> {
   EmojiStateNotifier({

@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ui_kit/ui_kit.dart';
-
-import '../../../../core.dart';
-
-part 'projects_paged_requests_builder.freezed.dart';
+part of 'state.dart';
 
 @freezed
 class RequestProjectsDto with _$RequestProjectsDto {

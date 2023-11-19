@@ -13,7 +13,7 @@ class DiscordButton extends StatelessWidget {
           }
         },
         child: Text(
-          text ?? S.current.joinDiscord,
+          text ?? context.l10n.joinDiscord,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       );

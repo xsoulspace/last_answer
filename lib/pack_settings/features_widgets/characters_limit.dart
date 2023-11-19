@@ -28,7 +28,7 @@ class CharactersLimitSetting extends HookWidget {
             0,
             zeroEqualNull: false,
           ),
-          child: Text(S.current.charactersUnlimited),
+          child: Text(context.l10n.charactersUnlimited),
         ),
       );
     } else {
@@ -44,7 +44,7 @@ class CharactersLimitSetting extends HookWidget {
             decoration: const InputDecoration()
                 .applyDefaults(theme.inputDecorationTheme)
                 .copyWith(
-                  hintText: S.current.charactersUnlimited,
+                  hintText: context.l10n.charactersUnlimited,
                   constraints: const BoxConstraints(maxWidth: 60),
                 ),
           ),

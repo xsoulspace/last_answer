@@ -15,7 +15,7 @@ class NoteSettingsButton extends StatelessWidget {
     Future<void> onRemove() async => bloc.onRemove(context);
     return PopupButton(
       title: Text(
-        S.current.noteSettings,
+        context.l10n.noteSettings,
         style: theme.textTheme.titleLarge,
       ),
       mobileBuilder: (final context) => SizedBox(

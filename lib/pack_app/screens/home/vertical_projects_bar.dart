@@ -1,10 +1,11 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 
-class _VerticalProjectsBar extends StatelessWidget {
-  const _VerticalProjectsBar({
+class VerticalProjectsBar extends StatelessWidget {
+  const VerticalProjectsBar({
     required this.onIdeaTap,
     required this.onNoteTap,
+    super.key,
   });
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
@@ -36,14 +37,14 @@ class _VerticalProjectsBar extends StatelessWidget {
           children: [
             BarItem(
               onTap: onIdeaTap,
-              label: S.current.idea,
+              label: context.l10n.idea,
               child: IconIdeaButton(
                 onTap: onIdeaTap,
               ),
             ),
             BarItem(
               onTap: onNoteTap,
-              label: S.current.note,
+              label: context.l10n.note,
               child: IconButton(
                 onPressed: onNoteTap,
                 icon: const Icon(Icons.book),

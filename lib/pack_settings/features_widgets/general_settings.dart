@@ -56,21 +56,19 @@ class GeneralSettingsViewBody extends StatelessWidget {
         // When a user selects a theme from the dropdown list, the
         // SettingsController is updated, which rebuilds the MaterialApp.
         SettingsListTile(
-          title: S.current.theme,
+          title: context.l10n.theme,
           leftColumnWidth: leftColumnWidth,
           child: ThemeSwitcherButton(
             settings: settings,
           ),
         ),
         SettingsListTile(
-          title: S.current.language,
+          title: context.l10n.language,
           leftColumnWidth: leftColumnWidth,
-          child: LocaleSwitcherButton(
-            settings: settings,
-          ),
+          child: const LocaleSwitcherButton(),
         ),
         SettingsListTile(
-          title: S.current.projectsDirection,
+          title: context.l10n.projectsDirection,
           leftColumnWidth: leftColumnWidth,
           child: const ProjectsDirectionSwitch(),
         ),
@@ -81,15 +79,15 @@ class GeneralSettingsViewBody extends StatelessWidget {
           endIndent: 10,
           indent: 10,
         ),
-        Text(S.current.note),
+        Text(context.l10n.note),
 
         const SizedBox(height: 24),
 
         SettingsListTile(
-          title: S.current.charactersLimit,
+          title: context.l10n.charactersLimit,
           crossAxisAlignment: CrossAxisAlignment.start,
           leftColumnWidth: leftColumnWidth,
-          description: S.current.charactersLimitForNewNotesDesription,
+          description: context.l10n.charactersLimitForNewNotesDesription,
           child: CharactersLimitSetting(
             controller: bloc.characterLimitController,
           ),

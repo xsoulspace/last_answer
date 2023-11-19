@@ -20,14 +20,14 @@ class MyAccount extends StatelessWidget {
       builder: (final context, final leftColumnWidth) => [
         const SizedBox(height: 24),
         SettingsListTile(
-          title: S.current.username,
+          title: context.l10n.username,
           leftColumnWidth: leftColumnWidth,
           // TODO(arenukvern): add username
           child: const Text(''),
         ),
         const SizedBox(height: 24),
         SettingsListTile(
-          title: S.current.email,
+          title: context.l10n.email,
           leftColumnWidth: leftColumnWidth,
           // TODO(arenukvern): add email
           child: const Text(''),
@@ -45,7 +45,7 @@ class MyAccount extends StatelessWidget {
         DangerZone(
           // TODO(arenukvern): add delete account
           onRemove: () {},
-          removeText: S.current.deleteMyAccount,
+          removeText: context.l10n.deleteMyAccount,
         ),
         const SizedBox(height: 24),
       ],

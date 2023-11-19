@@ -27,7 +27,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
-        titleStr: S.current.appInfo,
+        titleStr: context.l10n.appInfo,
         onBack: widget.onBack,
       ),
       body: Align(
@@ -50,17 +50,17 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                 children: [
                   ...[
                     SelectableText(
-                      S.of(context).aboutAbstractWhatForDescription,
+                      context.l10n.aboutAbstractWhatForDescription,
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 5),
                     SelectableText(
-                      S.of(context).niceDayWish,
+                      context.l10n.niceDayWish,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                     SelectableText(
-                      S.of(context).aboutAbstractIdeasImprovementsBugs,
+                      context.l10n.aboutAbstractIdeasImprovementsBugs,
                       textAlign: TextAlign.center,
                     ),
                     Wrap(
@@ -68,7 +68,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                       children: [
                         const DiscordButton(),
                         SelectableText(
-                          S.current.feedbackTextWithEmail,
+                          context.l10n.feedbackTextWithEmail,
                         ),
                       ],
                     ),
@@ -80,7 +80,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                         );
                       },
                       child: Text(
-                        S.current.madeWithLoveAndFlutter,
+                        context.l10n.madeWithLoveAndFlutter,
                         style: bodyText1Style,
                       ),
                     ),
@@ -96,7 +96,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                             }
                           },
                           child: Text(
-                            S.current.privacyPolicy,
+                            context.l10n.privacyPolicy,
                             style: bodyText1Style,
                           ),
                         ),
@@ -109,7 +109,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                             }
                           },
                           child: Text(
-                            S.current.termsAndConditions,
+                            context.l10n.termsAndConditions,
                             style: bodyText1Style,
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/widgets/widgets.dart';
 
 class ProjectsListView extends HookWidget {
   const ProjectsListView({
@@ -32,7 +33,7 @@ class ProjectsListView extends HookWidget {
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Text(
-                S.current.noProjectsYet,
+                context.l10n.noProjectsYet,
                 style: textTheme.displayMedium,
               ),
             ),

@@ -11,16 +11,16 @@ Future<bool> showRemoveTitleDialog({
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(S.current.cancel.titleCase),
+            child: Text(context.l10n.cancel.titleCase),
           ),
           CupertinoDialogAction(
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, true),
-            child: Text(S.current.delete.titleCase),
+            child: Text(context.l10n.delete.titleCase),
           ),
         ],
-        content: Text(S.current.willBeLost(title)),
-        title: Text(S.current.areYouSure),
+        content: Text(context.l10n.willBeLost(title)),
+        title: Text(context.l10n.areYouSure),
       ),
     );
   }
@@ -35,20 +35,20 @@ Future<bool> showRemoveTitleDialog({
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              S.current.cancel.toUpperCase(),
+              context.l10n.cancel.toUpperCase(),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
-              S.current.delete.toUpperCase(),
+              context.l10n.delete.toUpperCase(),
               style: theme.textTheme.labelLarge
                   ?.copyWith(color: AppColors.accent2),
             ),
           ),
         ],
-        content: Text(S.current.willBeLost(title)),
-        title: Text(S.current.areYouSure),
+        content: Text(context.l10n.willBeLost(title)),
+        title: Text(context.l10n.areYouSure),
       );
     },
   );

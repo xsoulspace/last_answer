@@ -39,7 +39,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
           Theme.of(context).inputDecorationTheme,
         )
         .copyWith(
-          hintText: S.current.createIdeaHelperText,
+          hintText: context.l10n.createIdeaHelperText,
           border: const UnderlineInputBorder(),
         );
 
@@ -63,7 +63,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                   const IconIdeaButton(size: 76),
                   const SizedBox(height: 44),
                   Text(
-                    S.current.whatsYourIdea,
+                    context.l10n.whatsYourIdea,
                     style: Theme.of(context).textTheme.displayLarge,
                     textAlign: TextAlign.center,
                   ),

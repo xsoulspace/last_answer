@@ -217,7 +217,7 @@ class RemoveActionButton extends StatelessWidget {
         ),
         onPressed: onTap,
         child: Text(
-          text ?? S.current.delete.sentenceCase,
+          text ?? context.l10n.delete.sentenceCase,
           style: Theme.of(context).textTheme.titleLarge,
         ),
       );
@@ -235,7 +235,7 @@ class RemoveActionButton extends StatelessWidget {
       child: useIcon
           ? const Icon(Icons.delete_forever_rounded)
           : Text(
-              text ?? S.current.delete.sentenceCase,
+              text ?? context.l10n.delete.sentenceCase,
               style: Theme.of(context).textTheme.titleLarge,
               // ?.copyWith(color: AppColors.accent3),
             ),
@@ -270,7 +270,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
       child: useIcon
           ? const Icon(Icons.check)
           : Text(
-              S.current.close.sentenceCase,
+              context.l10n.close.sentenceCase,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: primaryColor,
               ),

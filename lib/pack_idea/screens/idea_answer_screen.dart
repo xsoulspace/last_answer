@@ -1,6 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_app/widgets/widgets.dart';
 import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
 
 class IdeaAnswerScreen extends HookWidget {
@@ -82,7 +83,7 @@ class IdeaAnswerScreen extends HookWidget {
                     id: answerId,
                     type: HeroIdTypes.projectIdeaAnswerText,
                     child: ProjectTextField(
-                      hintText: S.current.answer,
+                      hintText: context.l10n.answer,
                       fillColor: Colors.transparent,
                       filled: false,
                       endlessLines: true,

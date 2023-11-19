@@ -1,20 +1,17 @@
-import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_settings/widgets/settings_text.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({
-    required this.settings,
     super.key,
   });
-  final ProjectsNotifier settings;
 
   @override
   Widget build(final BuildContext context) {
-    final languageCode = settings.locale?.languageCode;
-    final String effectiveLanguageCode =
-        languageCode ?? getLanguageCode(intl.Intl.getCurrentLocale());
-    final language = Languages.values.byName(effectiveLanguageCode);
+    final userNotifier = context.read<UserNotifier>();
+    final locale =
+        context.select<UserNotifier, Locale>((final c) => c.locale.value);
+    final language = Languages.values.byName(locale.languageCode);
     final initLocale = namedLocalesMap[language]?.locale ?? Locales.en;
 
     return DropdownButton<Locale>(
@@ -22,7 +19,7 @@ class LocaleSwitcherButton extends StatelessWidget {
       value: initLocale,
       // Call the updateThemeMode method any time the user selects
       // theme.
-      onChanged: settings.updateLocale,
+      onChanged: userNotifier.updateLocale,
       isExpanded: true,
       items: namedLocalesMap.values
           .map(

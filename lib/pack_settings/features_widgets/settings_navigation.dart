@@ -34,8 +34,8 @@ class SettingsNavigation extends StatelessWidget {
           onSelected: onSelectRoute,
           checkSelected: effectiveSelectedRouteCheck,
           text: screenLayout.small
-              ? S.current.generalSettingsFullTitle
-              : S.current.generalSettingsShortTitle,
+              ? context.l10n.generalSettingsFullTitle
+              : context.l10n.generalSettingsShortTitle,
           // TODO(arenukvern): add avatar
         ),
         SettingsButton(
@@ -45,7 +45,7 @@ class SettingsNavigation extends StatelessWidget {
             notificationController: notificationController,
           ),
           checkSelected: routeState.checkIsCurrentRoute,
-          text: S.current.changeLog,
+          text: context.l10n.changeLog,
           // TODO(arenukvern): add avatar
         ),
       ],

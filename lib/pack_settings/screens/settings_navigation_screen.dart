@@ -20,7 +20,7 @@ class SettingsNavigationScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         leading: CupertinoCloseButton(onPressed: onBack),
-        title: Text(S.current.settings),
+        title: Text(context.l10n.settings),
       ),
       body: SettingsNavigation(
         onSelectRoute: onSelectRoute,

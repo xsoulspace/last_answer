@@ -1,8 +1,12 @@
 part of 'state.dart';
 
 class UserNotifierDto {
-  UserNotifierDto(final BuildContext context) : userRepository = context.read();
+  UserNotifierDto(final BuildContext context)
+      : userRepository = context.read(),
+        globalStatesInitializerDto =
+            GlobalStatesInitializerDto(context: context);
   final UserRepository userRepository;
+  final GlobalStatesInitializerDto globalStatesInitializerDto;
 }
 
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
@@ -25,18 +29,23 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserModel get user => value.value;
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => _uiLocale;
-
+  late final _initializer =
+      UserInitializer(dto: dto.globalStatesInitializerDto);
   Future<void> onLoad() async {
     value = LoadableContainer.loaded(await dto.userRepository.getUser());
+    await _initializer.onUserLoad();
   }
 
   void updateCharactersLimitForNewNotes(final int newLimit) => _updateSettings(
         (final settings) =>
             settings.copyWith(charactersLimitForNewNotes: newLimit),
       );
-  void updateThemeMode(final ThemeMode themeMode) => _updateSettings(
-        (final settings) => settings.copyWith(themeMode: themeMode),
-      );
+  void updateThemeMode(final ThemeMode? themeMode) {
+    if (themeMode == null) return;
+    _updateSettings(
+      (final settings) => settings.copyWith(themeMode: themeMode),
+    );
+  }
 
   void updateIsProjectsReversed({required final bool isReversed}) =>
       _updateSettings(

@@ -37,7 +37,7 @@ class DangerZone extends StatelessWidget {
               color: dangerBackgroundColor ?? theme.canvasColor.withOpacity(1),
             ),
             child: Text(
-              S.current.danger,
+              context.l10n.danger,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.accent3,
               ),

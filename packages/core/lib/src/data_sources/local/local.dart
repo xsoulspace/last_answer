@@ -1,5 +1,6 @@
 export 'dictionaries.dart';
 export 'emoji.dart';
+export 'last_used_emoji.dart';
 export 'notifications.dart';
 export 'projects_hive.dart';
 export 'projects_isar.dart';

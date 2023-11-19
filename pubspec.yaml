@@ -97,9 +97,9 @@ msix_config:
   logo_path: ./packages/core/assets/icons/logo_256.png
   store: true
 
-# flutter pub run flutter_launcher_icons:main
+# fvm dart run flutter_launcher_icons
 # generate for macos https://appicon.co
-flutter_icons:
+flutter_launcher_icons:
   image_path: "packages/core/assets/icons/logo.png"
   ios: true
   android: true

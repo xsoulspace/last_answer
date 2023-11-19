@@ -8,7 +8,7 @@ import '../../core.dart';
 
 class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({
-    required final BuildContext context,
+    required this.context,
   })  : emojiRepository = context.read(),
         lastUsedEmojiRepository = context.read(),
         lastEmojiState = context.read(),
@@ -18,8 +18,13 @@ class GlobalStatesInitializerDto {
         projectsNotifier = context.read(),
         userNotifier = context.read(),
         appNotifier = context.read(),
+        complexLocalDb = context.read(),
+        localDbDataSource = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
+  final BuildContext context;
+  final LocalDbDataSource localDbDataSource;
+  final ComplexLocalDb complexLocalDb;
   final EmojiRepository emojiRepository;
   final LastUsedEmojiRepository lastUsedEmojiRepository;
   final AssetBundle assetBundle;
@@ -41,6 +46,12 @@ class GlobalStatesInitializer implements StateInitializer {
 
   @override
   Future<void> onLoad() async {
+    final initializer = UserInitializer(
+      dto: GlobalStatesInitializerDto(context: dto.context),
+    );
+    await dto.complexLocalDb.open();
+    await dto.localDbDataSource.onLoad();
+
     /// ********************************************
     /// *      CONTENT LOADING START
     /// ********************************************
@@ -59,7 +70,8 @@ class GlobalStatesInitializer implements StateInitializer {
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
-    await dto.userNotifier.onLoad();
+    // ignore: use_build_context_synchronously
+    await dto.userNotifier.onLoad(initializer);
 
     final isConnected = await PlatformInfo.isConnected;
     dto.appNotifier.updateAppStatus(

@@ -65,12 +65,14 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
       ..jsonContent = jsonEncode(project.toJson())
       ..modelIdStr = project.id.value
       ..modelIdHashcode = await project.id.value.getHashcode();
-    await isarDb.projects.put(isarProject);
+    await isarDb.db.writeTxn(() => isarDb.projects.put(isarProject));
   }
 
   @override
   Future<void> remove({required final ProjectModelId id}) async {
-    await isarDb.projects.delete(await id.value.getHashcode());
+    await isarDb.db.writeTxn(
+      () async => isarDb.projects.delete(await id.value.getHashcode()),
+    );
   }
 
   @override
@@ -85,6 +87,9 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
         ..modelIdStr = project.id.value;
       isarProjects.add(isarProject);
     }
-    await isarDb.projects.putAll(isarProjects);
+
+    await isarDb.db.writeTxn(
+      () async => isarDb.projects.putAll(isarProjects),
+    );
   }
 }

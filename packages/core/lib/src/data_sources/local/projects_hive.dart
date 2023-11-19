@@ -24,16 +24,16 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
   Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
-    await _openAnyway<IdeaProjectAnswer>(
-      HiveBoxesIds.ideaProjectAnswerKey,
-    );
-
+    await _openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);
+    await _openAnyway<IdeaProjectQuestion>(HiveBoxesIds.ideaProjectQuestionKey);
     final ideas = await _openAnyway<IdeaProject>(HiveBoxesIds.ideaProjectKey);
-
+    final notes = await _openAnyway<NoteProject>(HiveBoxesIds.noteProjectKey);
+    final notesModels = notes.values.map((final e) => e.toModel()).toList();
+    final ideasModels = ideas.values.map((final e) => e.toModel()).toList();
     final response = PaginatedPageResponseModel(
       currentPage: 1,
       pagesCount: 1,
-      values: ideas.values.map((final e) => e.toModel()).toList(),
+      values: [...notesModels, ...ideasModels],
     );
     // TODO(arenukvern): description,
     // await Hive.deleteFromDisk();

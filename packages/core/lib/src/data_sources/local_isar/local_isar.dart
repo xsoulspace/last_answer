@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../interfaces/interfaces.dart';
-import 'collections/collections.dart';
+import '../../../core.dart';
 
 export 'collections/collections.dart';
 export 'utils.dart';
@@ -24,6 +23,7 @@ final class ComplexLocalDbIsarImpl implements ComplexLocalDb {
         ProjectIsarCollectionSchema,
       ],
       directory: dir.path,
+      name: Envs.isarDbName,
     );
   }
 

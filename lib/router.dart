@@ -4,7 +4,6 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/other/other.dart';
 
-/// !In case of new routes all routes should be added to values!
 class AppPaths {
   AppPaths._();
   static const bootstrap = '/';
@@ -94,16 +93,17 @@ String? _handleRootRedirect(
   // Prevent anyone from navigating away from `/` if app is starting up.
   if (appStatus == AppStatus.loading || location != AppPaths.bootstrap) {
     return AppPaths.bootstrap;
-  } else if (location == AppPaths.bootstrap) {
-    debugPrint('Router: hasCompletedOnboarding $hasCompletedOnboarding');
-
-    /// at this moment user should be logged in
-    if (hasCompletedOnboarding) {
-      return AppPaths.home;
-    } else {
-      return AppPaths.intro;
-    }
   }
+  //  else if (location == AppPaths.bootstrap) {
+  //   debugPrint('Router: hasCompletedOnboarding $hasCompletedOnboarding');
+
+  //   /// at this moment user should be logged in
+  //   if (hasCompletedOnboarding) {
+  //     return AppPaths.home;
+  //   } else {
+  //     return AppPaths.intro;
+  //   }
+  // }
   debugPrint('Navigate to: ${state.uri}');
   return null; // do nothing
 }

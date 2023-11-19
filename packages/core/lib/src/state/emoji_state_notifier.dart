@@ -20,7 +20,7 @@ final class LastEmojiStateNotifier extends MapStateNotifier<EmojiModel> {
 
   factory LastEmojiStateNotifier.provide(final BuildContext context) =>
       LastEmojiStateNotifier(
-        repository: context.read(),
+        repository: context.read<LastUsedEmojiRepository>(),
       );
 }
 

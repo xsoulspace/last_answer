@@ -31,7 +31,7 @@ class GlobalStatesProvider extends StatelessWidget {
           ChangeNotifierProvider(create: LastEmojiStateNotifier.provide),
           ChangeNotifierProvider(create: NotificationsNotifier.provide),
           ChangeNotifierProvider(create: SpecialEmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: GlobalStateNotifier.provide),
+          ChangeNotifierProvider(create: ProjectsNotifier.provide),
         ],
         child: Builder(builder: builder),
       );

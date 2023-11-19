@@ -157,14 +157,6 @@ Map<String, dynamic> _$$LocalizedTextModelImplToJson(
       'ga': instance.ga,
     };
 
-_$AppSettingsModelImpl _$$AppSettingsModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$AppSettingsModelImpl();
-
-Map<String, dynamic> _$$AppSettingsModelImplToJson(
-        _$AppSettingsModelImpl instance) =>
-    <String, dynamic>{};
-
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
       settings: json['settings'] == null

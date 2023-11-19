@@ -56,7 +56,7 @@ class _AppScaffoldState extends State<OldAppScaffold> {
 
   @override
   Widget build(final BuildContext context) {
-    final settings = context.select<GlobalStateNotifier, UserSettingsModel>(
+    final settings = context.select<ProjectsNotifier, UserSettingsModel>(
       (final c) => c.value.user.settings,
     );
     return MaterialApp.router(

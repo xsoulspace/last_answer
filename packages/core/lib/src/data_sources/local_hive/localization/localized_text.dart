@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../data_models/data_models.dart';
-import '../hive_models.dart';
+import '../../../../core.dart';
 
 part 'localized_text.g.dart';
 
@@ -47,7 +46,7 @@ class LocalizedText with EquatableMixin {
         Locales.ru.languageCode: ru,
         Locales.en.languageCode: en,
         Locales.it.languageCode: it,
-        Locales.ga.languageCode: ga,
+        // Locales.ga.languageCode: ga,
       };
   String getByLanguage(final LanguageName language) {
     final text = values[getLanguageCode(language)];

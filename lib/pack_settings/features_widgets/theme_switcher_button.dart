@@ -6,7 +6,7 @@ class ThemeSwitcherButton extends StatelessWidget {
     required this.settings,
     super.key,
   });
-  final GlobalStateNotifier settings;
+  final ProjectsNotifier settings;
   @override
   Widget build(final BuildContext context) => DropdownButton<ThemeMode>(
         // Read the selected themeMode from the controller

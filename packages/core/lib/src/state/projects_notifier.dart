@@ -9,37 +9,32 @@ import 'package:rxdart/rxdart.dart';
 import '../../core.dart';
 import 'projects_paged_requests_builder.dart';
 
-part 'global_state_notifier.freezed.dart';
+part 'projects_notifier.freezed.dart';
 
 @freezed
-class GlobalStateNotifierState with _$GlobalStateNotifierState {
-  const factory GlobalStateNotifierState({
+class ProjectsNotifierState with _$ProjectsNotifierState {
+  const factory ProjectsNotifierState({
     @Default(RequestProjectsDto.empty)
     final RequestProjectsDto requestProjectsDto,
-    @Default(UserModel.empty) final UserModel user,
-    @Default(AppStateLoadingStatuses.settings)
-    final AppStateLoadingStatuses appLoadingStatus,
-  }) = _GlobalStateNotifierState;
+  }) = _ProjectsNotifierState;
 }
 
-class GlobalStateNotifierDto {
-  GlobalStateNotifierDto(final BuildContext context)
-      : projectsRepository = context.read(),
-        userRepository = context.read();
+class ProjectsNotifierDto {
+  ProjectsNotifierDto(final BuildContext context)
+      : projectsRepository = context.read();
   final ProjectsRepository projectsRepository;
-  final UserRepository userRepository;
 }
 
-class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
-  GlobalStateNotifier({
+class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
+  ProjectsNotifier({
     required this.dto,
-  }) : super(const GlobalStateNotifierState());
+  }) : super(const ProjectsNotifierState());
 
-  factory GlobalStateNotifier.provide(final BuildContext context) =>
-      GlobalStateNotifier(
-        dto: GlobalStateNotifierDto(context),
+  factory ProjectsNotifier.provide(final BuildContext context) =>
+      ProjectsNotifier(
+        dto: ProjectsNotifierDto(context),
       );
-  final GlobalStateNotifierDto dto;
+  final ProjectsNotifierDto dto;
   late final ProjectsPagedController projectsPagedController =
       ProjectsPagedController(
     requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
@@ -50,14 +45,13 @@ class GlobalStateNotifier extends ValueNotifier<GlobalStateNotifierState> {
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
 
   Future<void> onLoad() async {
-    value = value.copyWith(user: await dto.userRepository.getUser());
+    projectsPagedController.loadFirstPage();
   }
 
-  void updateAppLoadingStatus(final AppStateLoadingStatuses status) =>
-      setValue(value.copyWith(appLoadingStatus: status));
+  void onReset() {
+    projectsPagedController.refresh();
+  }
 
-  void updateUser(final UserModel Function(UserModel) updateUser) =>
-      setValue(value.copyWith(user: updateUser(value.user)));
   void updateProject(final ProjectModel project) =>
       _projectsUpdatesController.add(project);
 

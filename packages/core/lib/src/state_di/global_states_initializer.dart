@@ -15,7 +15,9 @@ class GlobalStatesInitializerDto {
         specialEmojiState = context.read(),
         emojiProvider = context.read(),
         notificationController = context.read(),
-        globalStateNotifier = context.read(),
+        projectsNotifier = context.read(),
+        userNotifier = context.read(),
+        appNotifier = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
   final EmojiRepository emojiRepository;
@@ -25,7 +27,9 @@ class GlobalStatesInitializerDto {
   final SpecialEmojiStateNotifier specialEmojiState;
   final EmojiStateNotifier emojiProvider;
   final NotificationsNotifier notificationController;
-  final GlobalStateNotifier globalStateNotifier;
+  final ProjectsNotifier projectsNotifier;
+  final UserNotifier userNotifier;
+  final AppNotifier appNotifier;
   final ProjectsRepository projectsRepository;
 }
 
@@ -40,15 +44,6 @@ class GlobalStatesInitializer implements StateInitializer {
     /// ********************************************
     /// *      CONTENT LOADING START
     /// ********************************************
-    final globalStateNotifier = dto.globalStateNotifier;
-    await dto.globalStateNotifier.onLoad();
-
-    globalStateNotifier.updateAppLoadingStatus(
-      AppStateLoadingStatuses.migratingOldData,
-    );
-    await runMutations(dto);
-
-    globalStateNotifier.updateAppLoadingStatus(AppStateLoadingStatuses.emoji);
     final emojis = await dto.emojiRepository.getAllEmoji();
 
     dto.emojiProvider
@@ -63,13 +58,14 @@ class GlobalStatesInitializer implements StateInitializer {
     final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
-    /// ********************************************
-    /// *      MIGRATIONS START
-    /// ********************************************
-
     await dto.notificationController.onLoad();
-    globalStateNotifier.updateAppLoadingStatus(
-      AppStateLoadingStatuses.migratingOldData,
+
+    final isConnected = await PlatformInfo.isConnected;
+    dto.appNotifier.updateAppStatus(
+      isConnected ? AppStatus.online : AppStatus.offline,
     );
+
+    /// we may not await for user, as it has its own loader
+    unawaited(dto.userNotifier.onLoad());
   }
 }

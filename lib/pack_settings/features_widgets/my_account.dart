@@ -13,7 +13,7 @@ class MyAccount extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final settings = context.watch<GlobalStateNotifier>();
+    final settings = context.watch<ProjectsNotifier>();
 
     return SettingsListContainer(
       padding: padding,

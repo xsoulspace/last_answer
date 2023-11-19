@@ -42,6 +42,7 @@ Future<void> _mutate_3_16_up_3_17(final GlobalStatesInitializerDto dto) async {
   final projectsResponse = await hiveDataSource.getProjects(
     dto: PaginatedPageRequestModel(),
   );
+  print(projectsResponse.values);
   final actualDataSource = dto.projectsRepository;
   await actualDataSource.putAll(projects: projectsResponse.values);
 }

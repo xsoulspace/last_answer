@@ -73,9 +73,10 @@ class GlobalStatesInitializer implements StateInitializer {
     // ignore: use_build_context_synchronously
     await dto.userNotifier.onLoad(initializer);
 
-    final isConnected = await PlatformInfo.isConnected;
+    // final isConnected = await PlatformInfo.isConnected;
     dto.appNotifier.updateAppStatus(
-      isConnected ? AppStatus.online : AppStatus.offline,
+      AppStatus.online,
+      // isConnected ? AppStatus.online : AppStatus.offline,
     );
   }
 }

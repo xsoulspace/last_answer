@@ -1,6 +1,6 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/idea_screen.dart';
-import 'package:lastanswer/note/note_screen.dart';
+import 'package:lastanswer/note/note_view.dart';
 
 class ProjectView extends StatelessWidget {
   const ProjectView({super.key});
@@ -16,7 +16,7 @@ class ProjectView extends StatelessWidget {
     }
     return projectContainer.value.map(
       idea: (final idea) => IdeaScreen(idea: idea),
-      note: (final note) => NoteScreen(note: note),
+      note: (final note) => NoteView(note: note),
     );
   }
 }

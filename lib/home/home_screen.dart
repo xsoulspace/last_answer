@@ -46,6 +46,13 @@ class HomeScreen extends StatelessWidget {
                     builderDelegate: PagedChildBuilderDelegate(
                       itemBuilder: (final context, final item, final index) =>
                           ListTile(
+                        leading: switch (item.type) {
+                          ProjectTypes.idea => const IconIdeaButton(),
+                          ProjectTypes.note => IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.book),
+                            ),
+                        },
                         title: Text(item.title),
                         onTap: () {
                           projectNotifier.loadProject(item);
@@ -53,8 +60,14 @@ class HomeScreen extends StatelessWidget {
                         selected: openedProjectId == item.id,
                       ),
                     ),
-                    separatorBuilder: (final context, final index) =>
-                        const Divider(height: 0),
+                    separatorBuilder: (final context, final index) => const Row(
+                      children: [
+                        Gap(64),
+                        Expanded(
+                          child: Divider(height: 0),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

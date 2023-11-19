@@ -6,23 +6,9 @@ class NoteProjectViewStateDto {
     required this.noteId,
     required this.tickerProvider,
   });
-  //  :
-  // noteProjectsState = context.read(),
-  //       folderStateProvider = context.read();
-  // final NoteProjectsState noteProjectsState;
-  // final FolderStateNotifier folderStateProvider;
   final ProjectModelId noteId;
   final TickerProvider tickerProvider;
-
   final BuildContext context;
-  // ProjectModelNote _getInitialNote() {
-  //   final maybeNote = noteProjectsState.state.value[noteId.value];
-  //   if (maybeNote == null) {
-  //     return ProjectModel.emptyNote;
-  //   } else {
-  //     return maybeNote.toModel();
-  //   }
-  // }
 }
 
 class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
@@ -47,7 +33,7 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
   final undoController = UndoHistoryController();
   late final characterLimitController = CharactersLimitController.fromNote(
     dto: CharactersLimitControllerDto(context: dto.context),
-    note: note,
+    noteCharactersLimit: note.charactersLimit,
   );
   final focusNode = FocusNode();
   ProjectModelNote get note => value;
@@ -56,15 +42,6 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
     textController: noteController,
     tickerProvider: dto.tickerProvider,
   );
-
-  late final _updatesStreamController =
-      StreamController<ProjectModelNote>.broadcast()
-        ..stream
-            .sampleTime(
-              const Duration(milliseconds: 700),
-            )
-            .forEach(_onUpdateNote)
-            .ignore();
 
   Future<void> onRemove(final BuildContext context) async {
     final remove = await showRemoveTitleDialog(
@@ -106,50 +83,17 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
     }
   }
 
-  void _onNoteChange() {
-    // final oldNote = note;
-    // final fixedNewValue = noteController.text;
-    // if (oldNote.note == fixedNewValue) return;
-    // bool positionChanged = false;
-    // if (oldNote.title != NoteProject.getTitle(fixedNewValue)) {
-    //   positionChanged = true;
-    // } else {
-    //   positionChanged = oldNote.folder?.projectsList.first.id != note;
-    // }
-    // final updatedNote = oldNote.copyWith(
-    //   note: fixedNewValue,
-    //   updatedAt: DateTime.now(),
-    // );
-
-    // _updatesStreamController.add();
-  }
-
   void onBack() {
     unawaited(SoftKeyboard.close());
     delegate.onBack(note);
   }
 
-  Future<void> _onUpdateNote(final ProjectModelNote updatedNote) async {
-    // dto.notesState.put(key: note.id, value: note);
-
-    // if (notifier.positionChanged) {
-    //   note.folder?.sortProjectsByDate(project: note);
-    //   dto.folderBloc.notify();
-    // }
-
-    // await note.save();
-    // if (notifier.charactersLimitChanged) notifyListeners();
-  }
-
   @override
   void dispose() {
-    noteController
-      ..removeListener(_onNoteChange)
-      ..dispose();
+    noteController.dispose();
     specialEmojiController
       ..removeListener(notifyListeners)
       ..dispose();
-    unawaited(_updatesStreamController.close());
     focusNode.dispose();
     undoController.dispose();
     super.dispose();

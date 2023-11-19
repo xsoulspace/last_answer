@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_note/note_view.dart';
+import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/pack_note/widgets/note_settings_button.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
@@ -11,7 +11,7 @@ class NoteProjectSideActionBar extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final bloc = context.watch<NoteProjectViewBloc>();
+    final bloc = context.watch<NoteViewBloc>();
     final specialEmojiController = bloc.specialEmojiController;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,

@@ -1,6 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_note/note_view.dart';
+import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/pack_note/widgets/desktop_note_settings.dart';
 import 'package:lastanswer/pack_note/widgets/mobile_note_settings.dart';
 
@@ -11,7 +11,7 @@ class NoteSettingsButton extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final bloc = context.read<NoteProjectViewBloc>();
+    final bloc = context.read<NoteViewBloc>();
     Future<void> onRemove() async => bloc.onRemove(context);
     return PopupButton(
       title: Text(

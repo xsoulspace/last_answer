@@ -2638,7 +2638,7 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
   const _$UserSettingsModelImpl(
       {@JsonKey(fromJson: _themeModeFromJson, toJson: _themeModeToJson)
       this.themeMode = ThemeMode.system,
-      this.isProjectsListReversed = false,
+      this.isProjectsListReversed = true,
       this.charactersLimitForNewNotes = 0,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) this.locale});
 

@@ -187,7 +187,7 @@ _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
       themeMode: json['themeMode'] == null
           ? ThemeMode.system
           : _themeModeFromJson(json['themeMode'] as int?),
-      isProjectsListReversed: json['isProjectsListReversed'] as bool? ?? false,
+      isProjectsListReversed: json['isProjectsListReversed'] as bool? ?? true,
       charactersLimitForNewNotes:
           json['charactersLimitForNewNotes'] as int? ?? 0,
       locale: _localeFromJson(json['locale'] as String),

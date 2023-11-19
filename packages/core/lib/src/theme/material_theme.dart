@@ -6,12 +6,14 @@ final _lightBase = ThemeData.from(
   useMaterial3: true,
 );
 
-final lightThemeData = _lightBase.copyWith(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
-    isDense: true,
-  ),
-);
+final lightThemeData = ThemeData.light();
+
+// _lightBase.copyWith(
+//   visualDensity: VisualDensity.adaptivePlatformDensity,
+//   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
+//     isDense: true,
+//   ),
+// );
 
 final _darkBase = ThemeData.from(
   colorScheme: ColorScheme.fromSeed(
@@ -21,10 +23,11 @@ final _darkBase = ThemeData.from(
   textTheme: textTheme,
   useMaterial3: true,
 );
+final darkThemeData = ThemeData.dark();
 
-final darkThemeData = _darkBase.copyWith(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
-    isDense: true,
-  ),
-);
+// final darkThemeData = _darkBase.copyWith(
+//   visualDensity: VisualDensity.adaptivePlatformDensity,
+//   inputDecorationTheme: _lightBase.inputDecorationTheme.copyWith(
+//     isDense: true,
+//   ),
+// );

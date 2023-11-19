@@ -11,7 +11,7 @@ PaginatedPageRequestModel<TData> _$PaginatedPageRequestModelFromJson<TData>(
   TData Function(Object? json) fromJsonTData,
 ) =>
     PaginatedPageRequestModel<TData>(
-      page: json['page'] as int? ?? 1,
+      page: json['page'] as int? ?? 0,
       limit: json['limit'] as int? ?? 5,
       data: _$nullableGenericFromJson(json['data'], fromJsonTData),
     );

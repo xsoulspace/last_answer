@@ -1,7 +1,4 @@
-import 'package:ui_kit/ui_kit.dart';
-
-import '../../core.dart';
-import 'projects_paged_requests_builder.dart';
+part of 'state.dart';
 
 final class ProjectsPagedController
     extends ExternalPagedController<ProjectModel> {

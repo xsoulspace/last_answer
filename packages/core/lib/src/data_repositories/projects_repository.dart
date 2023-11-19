@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core.dart';
-import '../state/projects_paged_requests_builder.dart';
 
 class ProjectsRepository {
   ProjectsRepository.provide(final BuildContext context)

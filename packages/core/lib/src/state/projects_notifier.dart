@@ -1,15 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
-
-import '../../core.dart';
-import 'projects_paged_requests_builder.dart';
-
-part 'projects_notifier.freezed.dart';
+part of 'state.dart';
 
 @freezed
 class ProjectsNotifierState with _$ProjectsNotifierState {

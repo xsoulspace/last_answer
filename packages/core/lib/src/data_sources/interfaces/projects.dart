@@ -1,6 +1,4 @@
-import '../../data_models/data_models.dart';
-import '../../foundation/foundation.dart';
-import '../../state/projects_paged_requests_builder.dart';
+import '../../../core.dart';
 
 abstract interface class ProjectsLocalDataSource {
   Future<void> putAll({required final List<ProjectModel> projects});

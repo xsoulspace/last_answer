@@ -1,7 +1,4 @@
-import 'dart:async';
-
-import '../data_sources/data_sources.dart';
-import '../state_di/state_di.dart';
+part of 'state.dart';
 
 class UserInitializer {
   UserInitializer({required this.dto});

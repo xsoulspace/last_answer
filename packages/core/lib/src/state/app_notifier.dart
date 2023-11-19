@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../core.dart';
-
-part 'app_notifier.freezed.dart';
+part of 'state.dart';
 
 enum AppStatus {
   offline,

@@ -1,4 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/idea/idea_screen.dart';
 import 'package:lastanswer/note/note_screen.dart';
 
 class ProjectView extends StatelessWidget {
@@ -13,6 +14,9 @@ class ProjectView extends StatelessWidget {
     if (projectContainer.isLoading) {
       return const CircularProgressIndicator.adaptive();
     }
-    return const NoteScreen();
+    return projectContainer.value.map(
+      idea: (final idea) => IdeaScreen(idea: idea),
+      note: (final note) => NoteScreen(note: note),
+    );
   }
 }

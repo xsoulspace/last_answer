@@ -10,6 +10,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final projectsNotifier = context.read<ProjectsNotifier>();
+    final projectNotifier = context.read<OpenedProjectNotifier>();
+
     final projectsController = projectsNotifier.projectsPagedController;
     final screenLayout = ScreenLayout.of(context);
     final isReversed = context.select<UserNotifier, bool>(
@@ -19,19 +21,17 @@ class HomeScreen extends StatelessWidget {
         context.select<OpenedProjectNotifier, ProjectModelId>(
       (final c) => c.value.value.id,
     );
+    final verticalColumn = Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        VerticalProjectsBar(
+          onIdeaTap: () {},
+          onNoteTap: () {},
+        ),
+      ],
+    );
     return Row(
       children: [
-        Column(
-          mainAxisAlignment: PlatformInfo.isNativeWebMobile
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.center,
-          children: [
-            VerticalProjectsBar(
-              onIdeaTap: () {},
-              onNoteTap: () {},
-            ),
-          ],
-        ),
         Flexible(
           child: ConstrainedBox(
             constraints: const BoxConstraints(
@@ -47,7 +47,9 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (final context, final item, final index) =>
                           ListTile(
                         title: Text(item.title),
-                        onTap: () {},
+                        onTap: () {
+                          projectNotifier.loadProject(item);
+                        },
                         selected: openedProjectId == item.id,
                       ),
                     ),
@@ -59,7 +61,22 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        if (screenLayout.notSmall) const Expanded(child: ProjectView()),
+        if (screenLayout.notSmall)
+          Flexible(
+            child: Row(
+              children: [
+                verticalColumn,
+                const Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 24),
+                    child: ProjectView(),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          verticalColumn,
       ],
     );
   }

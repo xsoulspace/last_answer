@@ -17,4 +17,13 @@ class OpenedProjectNotifier
       );
 
   final OpenedProjectNotifierDto dto;
+
+  void loadProject(final ProjectModel item) {
+    setValue(LoadableContainer.loaded(item));
+  }
+
+  void updateProject(final ProjectModel item) {
+    setValue(value.copyWith(value: item));
+    dto.projectsNotifier.updateProject(item);
+  }
 }

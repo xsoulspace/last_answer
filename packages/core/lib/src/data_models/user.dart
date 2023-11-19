@@ -32,7 +32,7 @@ class UserSettingsModel with _$UserSettingsModel {
     @JsonKey(fromJson: _themeModeFromJson, toJson: _themeModeToJson)
     @Default(ThemeMode.system)
     final ThemeMode themeMode,
-    @Default(false) final bool isProjectsListReversed,
+    @Default(true) final bool isProjectsListReversed,
     @Default(0) final int charactersLimitForNewNotes,
     @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
     final Locale? locale,

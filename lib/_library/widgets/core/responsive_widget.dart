@@ -95,7 +95,7 @@ class ScreenLayout {
       return Size(constraints!.maxWidth, constraints!.maxHeight);
     }
 
-    return MediaQuery.of(context!).size;
+    return MediaQuery.sizeOf(context!);
   }
 
   //Large screen is any screen whose width is more than 1200 pixels

@@ -33,7 +33,7 @@ class AppPaths {
 }
 
 final appRouter = GoRouter(
-  redirect: _handleRedirect,
+  redirect: _handleRootRedirect,
   routes: [
     ShellRoute(
       builder: (final context, final router, final navigator) =>
@@ -41,7 +41,7 @@ final appRouter = GoRouter(
       routes: [
         AppRoute(
           AppPaths.bootstrap,
-          (final _) => const AppLoadingScreen(),
+          (final _) => const LoadingScreen(),
         ), // This will be hidden
         AppRoute(AppPaths.home, (final _) => HomeScreen()),
         AppRoute(AppPaths.intro, (final _) => IntroScreen()),
@@ -84,7 +84,10 @@ class AppRoute extends GoRoute {
   final bool useFade;
 }
 
-String? _handleRedirect(final BuildContext context, final GoRouterState state) {
+String? _handleRootRedirect(
+  final BuildContext context,
+  final GoRouterState state,
+) {
   final appStatus = context.read<AppNotifier>().value.status;
   // Prevent anyone from navigating away from `/` if app is starting up.
   if (appStatus == AppStatus.loading ||

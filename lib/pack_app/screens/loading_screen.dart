@@ -1,7 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
 
-class AppLoadingScreen extends StatelessWidget {
-  const AppLoadingScreen({
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({
     super.key,
   });
   @override

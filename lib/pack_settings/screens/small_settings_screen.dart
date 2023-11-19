@@ -3,19 +3,18 @@ import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_settings/screens/general_settings_screen.dart';
 import 'package:lastanswer/pack_settings/screens/my_account_screen.dart';
 import 'package:lastanswer/pack_settings/screens/settings_navigation_screen.dart';
+import 'package:lastanswer/router.dart';
 
 class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
-    required this.onSelectRoute,
     required this.onBack,
     super.key,
   });
-  final ValueChanged<AppRouteName> onSelectRoute;
   final VoidCallback onBack;
 
   @override
   Widget build(final BuildContext context) {
-    final routeState = RouteStateScope.of(context);
+    final currentLocation = context.router.location();
     final subSettingsPage = useState<Widget?>(null);
     final pageController = usePageController();
     final chosenPage = useState(0);
@@ -32,11 +31,11 @@ class SmallSettingsScreen extends HookWidget {
     Future<void> toNavigation() async => toPage(page: 0);
 
     Future<void> switchToPage() async {
-      switch (routeState.route.pathTemplate) {
-        case AppRoutesName.profile:
+      switch (currentLocation) {
+        case AppPaths.profile:
           subSettingsPage.value = MyAccountScreen(onBack: onBack);
           await toPage();
-        case AppRoutesName.generalSettings:
+        case AppPaths.generalSettings:
           subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
           await toPage();
         default:
@@ -44,11 +43,12 @@ class SmallSettingsScreen extends HookWidget {
       }
     }
 
+// TODO(arenukvern): fixme,
     pageController.addListener(() {
       if (!pageController.hasClients) return;
       final controllerPage = pageController.page?.ceil();
       if (chosenPage.value == controllerPage) return;
-      onSelectRoute(AppRoutesName.settings);
+      unawaited(context.pushNamed(AppPaths.settings));
     });
 
     useEffect(
@@ -57,7 +57,7 @@ class SmallSettingsScreen extends HookWidget {
 
         return null;
       },
-      [routeState.route],
+      [context.router],
     );
     final screenLayout = ScreenLayout.of(context);
     useEffect(
@@ -77,7 +77,6 @@ class SmallSettingsScreen extends HookWidget {
       children: [
         SettingsNavigationScreen(
           onBack: onBack,
-          onSelectRoute: onSelectRoute,
         ),
         if (subPage != null) subPage,
       ],

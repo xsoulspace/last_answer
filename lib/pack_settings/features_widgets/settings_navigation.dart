@@ -2,23 +2,19 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/notifications/update_notification_popup.dart';
 import 'package:lastanswer/pack_settings/widgets/settings_button.dart';
+import 'package:lastanswer/router.dart';
 
 class SettingsNavigation extends StatelessWidget {
   const SettingsNavigation({
-    required this.onSelectRoute,
     super.key,
   });
-  final ValueChanged<AppRouteName> onSelectRoute;
 
   @override
   Widget build(final BuildContext context) {
-    final routeState = RouteStateScope.of(context);
     final screenLayout = ScreenLayout.of(context);
 
-    BoolValueChanged<AppRouteName>? effectiveSelectedRouteCheck;
-    if (screenLayout.notSmall) {
-      effectiveSelectedRouteCheck = routeState.checkIsCurrentRoute;
-    }
+    bool checkSelected(final String route) =>
+        context.router.location() == route;
     final notificationController = context.read<NotificationsNotifier>();
 
     return Column(
@@ -29,24 +25,22 @@ class SettingsNavigation extends StatelessWidget {
       mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
       children: [
         SettingsButton(
-          routeName: AppRoutesName.generalSettings,
-          fallbackRouteName: AppRoutesName.settings,
-          onSelected: onSelectRoute,
-          checkSelected: effectiveSelectedRouteCheck,
+          routeName: AppPaths.generalSettings,
+          fallbackRouteName: AppPaths.settings,
+          onSelected: (final route) async => context.pushNamed(route),
+          checkSelected: checkSelected,
           text: screenLayout.small
               ? context.l10n.generalSettingsFullTitle
               : context.l10n.generalSettingsShortTitle,
-          // TODO(arenukvern): add avatar
         ),
         SettingsButton(
-          routeName: AppRoutesName.changelog,
+          routeName: AppPaths.changelog,
           onSelected: (final _) async => showNotificationPopup(
             context: context,
             notificationController: notificationController,
           ),
-          checkSelected: routeState.checkIsCurrentRoute,
+          checkSelected: checkSelected,
           text: context.l10n.changeLog,
-          // TODO(arenukvern): add avatar
         ),
       ],
     );

@@ -1,63 +1,42 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/screens/app_loading_screen.dart';
+import 'package:lastanswer/router.dart';
 
 class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
 
   @override
-  Widget build(final BuildContext context) => GlobalStatesProvider(
-        builder: (final context) {
-          final child = Portal(
-            child: Builder(
-              builder: (final context) => StateLoader(
-                initializer: GlobalStatesInitializer(
-                  dto: GlobalStatesInitializerDto(context: context),
-                ),
-                loader: const AppLoadingScreen(),
-                child: const OldAppScaffold(),
-              ),
-            ),
-          );
-
-          if (PlatformInfo.isNativeDesktop) {
-            return child;
-          }
-
-          return Directionality(
-            // TODO(arenukvern): replace with default device textDirection
-            textDirection: TextDirection.ltr,
-            child: Stack(
-              children: [
-                Container(color: AppColors.black),
-                child,
-              ],
-            ),
-          );
-        },
+  Widget build(final BuildContext context) => Portal(
+        child: GlobalStatesProvider(
+          builder: (final context) => const _AppScaffold(),
+        ),
       );
 }
 
-class OldAppScaffold extends StatefulHookWidget {
-  const OldAppScaffold({super.key});
+class _AppScaffold extends StatefulWidget {
+  const _AppScaffold();
 
   @override
-  _AppScaffoldState createState() => _AppScaffoldState();
+  State<_AppScaffold> createState() => _AppScaffoldState();
 }
 
-class _AppScaffoldState extends State<OldAppScaffold> {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+class _AppScaffoldState extends State<_AppScaffold> {
+  late final _initializer = GlobalStatesInitializer(
+    dto: GlobalStatesInitializerDto(context: context),
+  );
   @override
   void initState() {
     super.initState();
+    unawaited(_initializer.onLoad());
   }
 
   @override
   Widget build(final BuildContext context) {
-    final settings = context.select<ProjectsNotifier, UserSettingsModel>(
-      (final c) => c.value.user.settings,
+    final locale = context.select<UserNotifier, Locale>(
+      (final c) => c.locale.value,
+    );
+    final themeMode = context.select<UserNotifier, ThemeMode>(
+      (final c) => c.settings.themeMode,
     );
     return MaterialApp.router(
       /// Providing a restorationScopeId allows the Navigator built by
@@ -72,20 +51,14 @@ class _AppScaffoldState extends State<OldAppScaffold> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      localeListResolutionCallback: (final locales, final supportedLocales) {
-        final locale = settings.locale;
-        if (locale == null) return null;
-        if (S.delegate.isSupported(locale)) return locale;
-
-        return null;
-      },
+      locale: locale,
       supportedLocales: Locales.values,
-      onGenerateTitle: (final context) => S.of(context).lastAnswer,
+      onGenerateTitle: (final context) => context.l10n.lastAnswer,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      themeMode: settings.themeMode,
-      routerDelegate: routerDelegate,
-      routeInformationParser: routeParser,
+      themeMode: themeMode,
+      routerDelegate: appRouter.routerDelegate,
+      routeInformationParser: appRouter.routeInformationParser,
     );
   }
 }

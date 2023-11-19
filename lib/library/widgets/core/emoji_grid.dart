@@ -125,7 +125,7 @@ class EmojiGrid extends HookWidget {
               left: 9,
             ),
             child: Text(
-              S.current.frequentlyUsed,
+              context.l10n.frequentlyUsed,
               style: Theme.of(context).textTheme.titleSmall,
               textAlign: TextAlign.start,
             ),
@@ -150,7 +150,7 @@ class EmojiGrid extends HookWidget {
                     onChanged: emojiKeywordStream.add,
                     decoration: const InputDecoration()
                         .applyDefaults(theme.inputDecorationTheme)
-                        .copyWith(hintText: S.current.search),
+                        .copyWith(hintText: context.l10n.search),
                   ),
                 ),
               ],

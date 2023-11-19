@@ -169,7 +169,7 @@ class UpdateNotificaionPopup extends StatelessWidget {
                 TextButton(
                   onPressed: close,
                   child: Text(
-                    S.current.close.sentenceCase,
+                    context.l10n.close.sentenceCase,
                     style: textTheme.bodyLarge,
                   ),
                 ),

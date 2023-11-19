@@ -17,7 +17,7 @@ class MyAccountScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         leading: AdaptiveBackButton(onPressed: onBack),
-        title: Text(S.current.myAccount),
+        title: Text(context.l10n.myAccount),
       ),
       body: const MyAccount(),
     );

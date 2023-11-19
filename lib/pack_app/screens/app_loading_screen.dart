@@ -5,18 +5,22 @@ class AppLoadingScreen extends StatelessWidget {
     super.key,
   });
   @override
-  Widget build(final BuildContext context) => ColoredBox(
-        color: AppColors.black,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(AppColors.primary2),
-              ),
-              const SizedBox(height: 5),
-              Text(S.of(context).loading),
-            ],
+  Widget build(final BuildContext context) => Directionality(
+        // TODO(arenukvern): replace with default device textDirection
+        textDirection: TextDirection.ltr,
+        child: ColoredBox(
+          color: AppColors.black,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(AppColors.primary2),
+                ),
+                const SizedBox(height: 5),
+                Text(S.of(context).loading),
+              ],
+            ),
           ),
         ),
       );

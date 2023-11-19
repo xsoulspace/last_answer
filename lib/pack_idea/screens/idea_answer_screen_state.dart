@@ -23,7 +23,7 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
       ),
     );
 
-class IdeaAnswerScreenState implements LifeState {
+class IdeaAnswerScreenState extends LifeState {
   IdeaAnswerScreenState({
     required this.context,
     required this.textController,

@@ -7,7 +7,7 @@ part of 'models.dart';
 class PaginatedPageResponseModel<TValues> {
   PaginatedPageResponseModel({
     required this.values,
-    required this.currentPage,
+    required thicontext.l10nPage,
     required this.pagesCount,
   });
   factory PaginatedPageResponseModel.fromJson(
@@ -32,6 +32,6 @@ class PaginatedPageResponseModel<TValues> {
       PaginatedPageResponseModel<TValues>(
         values: values ?? this.values,
         pagesCount: pagesCount ?? this.pagesCount,
-        currentPage: currentPage ?? this.currentPage,
+        currentPage: currentPage ?? thicontext.l10nPage,
       );
 }

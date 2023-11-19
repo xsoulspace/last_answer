@@ -29,7 +29,7 @@ class MobileNoteSettingsMenu extends HookWidget {
               SizedBox(
                 width: 90,
                 child: Text(
-                  '${S.current.charactersLimit}:',
+                  '${context.l10n.charactersLimit}:',
                   textAlign: TextAlign.end,
                   style: theme.textTheme.titleLarge,
                 ),

@@ -3,8 +3,8 @@ import 'package:lastanswer/common_imports.dart';
 class CharactersLimitControllerDto {
   CharactersLimitControllerDto({
     required final BuildContext context,
-  }) : globalStateNotifier = context.read<ProjectsNotifier>();
-  final ProjectsNotifier globalStateNotifier;
+  }) : userNotifier = context.read<UserNotifier>();
+  final UserNotifier userNotifier;
 }
 
 class CharactersLimitController extends ValueNotifier<String> {
@@ -14,16 +14,16 @@ class CharactersLimitController extends ValueNotifier<String> {
   }) : super(
           _getInitialLimit(
             note: note,
-            globalStateNotifier: dto.globalStateNotifier,
+            userNotifier: dto.userNotifier,
           ),
         );
   CharactersLimitController.fromSettings({
     required this.dto,
-  }) : super(_getInitialLimit(globalStateNotifier: dto.globalStateNotifier));
+  }) : super(_getInitialLimit(userNotifier: dto.userNotifier));
   final CharactersLimitControllerDto dto;
 
   static String _getInitialLimit({
-    required final ProjectsNotifier globalStateNotifier,
+    required final UserNotifier userNotifier,
     final ProjectModelNote? note,
   }) {
     int limit;
@@ -31,8 +31,7 @@ class CharactersLimitController extends ValueNotifier<String> {
     if (note != null && note.id.isEmpty) {
       limit = note.charactersLimit;
     } else {
-      limit =
-          globalStateNotifier.value.user.settings.charactersLimitForNewNotes;
+      limit = userNotifier.settings.charactersLimitForNewNotes;
     }
 
     return limit == 0 ? '' : '$limit';

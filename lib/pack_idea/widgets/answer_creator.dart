@@ -1,6 +1,7 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_app/widgets/widgets.dart';
+import 'package:lastanswer/pack_idea/widgets/questions_chips.dart';
 
 class AnswerCreator extends HookWidget {
   const AnswerCreator({
@@ -122,7 +123,7 @@ class AnswerCreator extends HookWidget {
               children: [
                 Expanded(
                   child: ProjectTextField(
-                    hintText: S.current.writeAnAnswer,
+                    hintText: context.l10n.writeAnAnswer,
                     focusOnInit: idea.answers?.isEmpty == true,
                     controller: answerController,
                     onSubmit: onCreate,

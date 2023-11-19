@@ -35,7 +35,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
           titleBuilder: (final context, final hovered) => Opacity(
             opacity: hovered ? 1.0 : 0.7,
             child: Text(
-              S.current.deleteThisNote.sentenceCase,
+              context.l10n.deleteThisNote.sentenceCase,
             ),
           ),
         ),
@@ -55,7 +55,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${S.current.charactersLimit}:',
+                          '${context.l10n.charactersLimit}:',
                           textAlign: TextAlign.center,
                           style: theme.textTheme.titleLarge,
                         ),

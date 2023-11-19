@@ -17,7 +17,7 @@ class GeneralSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         leading: AdaptiveBackButton(onPressed: onBack),
-        title: Text(S.current.generalSettingsFullTitle),
+        title: Text(context.l10n.generalSettingsFullTitle),
       ),
       body: const GeneralSettingsView(),
     );

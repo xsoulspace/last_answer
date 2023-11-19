@@ -7,7 +7,7 @@ class LocaleSwitcherButton extends StatelessWidget {
     required this.settings,
     super.key,
   });
-  final GlobalStateNotifier settings;
+  final ProjectsNotifier settings;
 
   @override
   Widget build(final BuildContext context) {

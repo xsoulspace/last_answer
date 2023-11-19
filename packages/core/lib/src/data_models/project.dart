@@ -145,19 +145,17 @@ class LocalizedTextModel with _$LocalizedTextModel {
   factory LocalizedTextModel.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextModelFromJson(json);
   const LocalizedTextModel._();
+  static const empty = LocalizedTextModel(en: '', ru: '');
 
   /// If any new [Languages] added, add this to [values]
   Map<LanguageName, String?> get values => {
         Locales.ru.languageCode: ru,
         Locales.en.languageCode: en,
         Locales.it.languageCode: it,
-        Locales.ga.languageCode: ga,
+        // Locales.ga.languageCode: ga,
       };
-  String getByLanguage(final LanguageName language) {
-    final text = values[getLanguageCode(language)];
-
-    return (text == null || text.isEmpty) ? en : text;
-  }
+  String getByLanguage(final String languageCode) =>
+      values[languageCode] ?? ''.useWhenEmpty(en);
 }
 
 String getLanguageCode(final LanguageName language) {

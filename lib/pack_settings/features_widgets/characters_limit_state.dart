@@ -3,8 +3,8 @@ import 'package:lastanswer/common_imports.dart';
 class CharactersLimitControllerDto {
   CharactersLimitControllerDto({
     required final BuildContext context,
-  }) : globalStateNotifier = context.read<GlobalStateNotifier>();
-  final GlobalStateNotifier globalStateNotifier;
+  }) : globalStateNotifier = context.read<ProjectsNotifier>();
+  final ProjectsNotifier globalStateNotifier;
 }
 
 class CharactersLimitController extends ValueNotifier<String> {
@@ -23,7 +23,7 @@ class CharactersLimitController extends ValueNotifier<String> {
   final CharactersLimitControllerDto dto;
 
   static String _getInitialLimit({
-    required final GlobalStateNotifier globalStateNotifier,
+    required final ProjectsNotifier globalStateNotifier,
     final ProjectModelNote? note,
   }) {
     int limit;

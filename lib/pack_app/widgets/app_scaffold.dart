@@ -5,7 +5,7 @@ class AppScaffold extends StatelessWidget {
     required this.navigator,
     super.key,
   });
-  final Widget? navigator;
+  final Widget navigator;
   @override
   Widget build(final BuildContext context) => navigator;
 }

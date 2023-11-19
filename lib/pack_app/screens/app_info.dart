@@ -40,7 +40,8 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
             future: _info,
             builder: (final context, final snapshot) {
               final info = snapshot.data;
-              final version = S.current
+              final version = S
+                  .of(context)
                   .appVersion(info?.version ?? '', info?.buildNumber ?? '');
 
               return ListView(
@@ -49,17 +50,17 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                 children: [
                   ...[
                     SelectableText(
-                      S.current.aboutAbstractWhatForDescription,
+                      S.of(context).aboutAbstractWhatForDescription,
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 5),
                     SelectableText(
-                      S.current.niceDayWish,
+                      S.of(context).niceDayWish,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                     SelectableText(
-                      S.current.aboutAbstractIdeasImprovementsBugs,
+                      S.of(context).aboutAbstractIdeasImprovementsBugs,
                       textAlign: TextAlign.center,
                     ),
                     Wrap(

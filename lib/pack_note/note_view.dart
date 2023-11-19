@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_app/widgets/widgets.dart';
 import 'package:lastanswer/pack_note/widgets/note_project_side_actionbar.dart';
-import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
+import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
 
 part 'note_view_bloc.dart';
 

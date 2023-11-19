@@ -1,7 +1,7 @@
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
-import 'package:lastanswer/pack_settings/features_widgets/characters_limit.dart';
-import 'package:lastanswer/pack_settings/features_widgets/characters_limit_state.dart';
+import 'package:lastanswer/settings/features_widgets/characters_limit.dart';
+import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
 
 class DesktopNoteSettingsMenu extends HookWidget {
   const DesktopNoteSettingsMenu({

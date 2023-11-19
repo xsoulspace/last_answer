@@ -1,5 +1,5 @@
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/widgets/widgets.dart';
 import 'package:lastanswer/pack_idea/widgets/questions_chips.dart';
 
@@ -14,9 +14,9 @@ class AnswerCreator extends HookWidget {
     required this.onChanged,
     super.key,
   });
-  final IdeaProjectQuestion defaultQuestion;
-  final IdeaProject idea;
-  final ValueChanged<IdeaProjectAnswer> onCreated;
+  final IdeaProjectQuestionModel defaultQuestion;
+  final ProjectModelIdea idea;
+  final ValueChanged<IdeaProjectAnswerModel> onCreated;
   final VoidCallback onShareTap;
   final VoidCallback onFocus;
   final ValueNotifier<bool> questionsOpened;
@@ -30,39 +30,43 @@ class AnswerCreator extends HookWidget {
     final answerFocusNode = useFocusNode();
     final theme = Theme.of(context);
 
-    final selectedQuestion =
-        useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
-    selectedQuestion.addListener(() async {
-      if (selectedQuestion.value == idea.newQuestion) return;
-      idea.newQuestion = selectedQuestion.value;
-      unawaited(idea.save());
-    });
+    final selectedQuestion = useState<IdeaProjectQuestionModel?>(
+      null
+      // idea.newQuestion ?? defaultQuestion
+      ,
+    );
+    // selectedQuestion.addListener(() async {
+    //   if (selectedQuestion.value == idea.newQuestion) return;
+    //   idea.newQuestion = selectedQuestion.value;
+    //   unawaited(idea.save());
+    // });
 
-    final answerController = useTextEditingController(text: idea.newAnswerText);
-    final answer = useState(answerController.text);
-    answerController.addListener(() {
-      if (idea.newAnswerText == answerController.text) return;
-      idea.newAnswerText = answerController.text;
-      answer.value = answerController.text;
-      onChanged();
-      unawaited(idea.save());
-    });
+    final answerController = useTextEditingController(text: '');
+    // final answer = useState(answerController.text);
+    // answerController.addListener(() {
+    //   if (idea.newAnswerText == answerController.text) return;
+    //   idea.newAnswerText = answerController.text;
+    //   answer.value = answerController.text;
+    //   onChanged();
+    //   unawaited(idea.save());
+    // });
 
     Future<void> onCreate() async {
-      final text = answerController.text;
-      answerController.clear();
-      final question = selectedQuestion.value;
-      if (question == null || text.isEmpty) return;
-      final answer =
-          await IdeaProjectAnswer.create(text: text, question: question);
+      // final text = answerController.text;
+      // answerController.clear();
+      // final question = selectedQuestion.value;
+      // if (question == null || text.isEmpty) return;
+      // final answer =
+      //     await IdeaProjectAnswer.create(text: text, question: question);
 
-      onCreated(answer);
+      // onCreated(answer);
     }
 
     final sendButton = RotatedBox(
       quarterTurns: 3,
       child: IconButton(
-        onPressed: answer.value.isNotEmpty ? onCreate : null,
+        onPressed: () {},
+        // onPressed: answer.value.isNotEmpty ? onCreate : null,
         color: AppColors.primary2,
         icon: const Icon(Icons.send),
       ),
@@ -124,7 +128,7 @@ class AnswerCreator extends HookWidget {
                 Expanded(
                   child: ProjectTextField(
                     hintText: context.l10n.writeAnAnswer,
-                    focusOnInit: idea.answers?.isEmpty == true,
+                    focusOnInit: idea.answers.isEmpty == true,
                     controller: answerController,
                     onSubmit: onCreate,
                     focusNode: answerFocusNode,

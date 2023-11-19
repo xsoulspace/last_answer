@@ -68,7 +68,7 @@ class NoteProject extends BasicProject {
   set title(final String _) => throw UnimplementedError();
 
   @override
-  String toShareString() => note;
+  String toShareString(final BuildContext context) => note;
 
   ProjectModelNote toModel() => ProjectModelNote(
         createdAt: created,
@@ -79,7 +79,7 @@ class NoteProject extends BasicProject {
       );
 
   @override
-  String get sharableTitle => throw UnimplementedError();
+  String toSharableTitle(final BuildContext context) => '';
 }
 
 /// A mock for [NoteProject].

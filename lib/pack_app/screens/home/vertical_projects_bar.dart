@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
 
 class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({

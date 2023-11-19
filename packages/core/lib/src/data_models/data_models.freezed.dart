@@ -2314,6 +2314,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 mixin _$UserModel {
   UserSettingsModel get settings => throw _privateConstructorUsedError;
   LocalDbVersion get localDbVersion => throw _privateConstructorUsedError;
+  bool get hasCompletedOnboarding => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2326,7 +2327,10 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({UserSettingsModel settings, LocalDbVersion localDbVersion});
+  $Res call(
+      {UserSettingsModel settings,
+      LocalDbVersion localDbVersion,
+      bool hasCompletedOnboarding});
 
   $UserSettingsModelCopyWith<$Res> get settings;
 }
@@ -2346,6 +2350,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? settings = null,
     Object? localDbVersion = null,
+    Object? hasCompletedOnboarding = null,
   }) {
     return _then(_value.copyWith(
       settings: null == settings
@@ -2356,6 +2361,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.localDbVersion
           : localDbVersion // ignore: cast_nullable_to_non_nullable
               as LocalDbVersion,
+      hasCompletedOnboarding: null == hasCompletedOnboarding
+          ? _value.hasCompletedOnboarding
+          : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -2376,7 +2385,10 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserSettingsModel settings, LocalDbVersion localDbVersion});
+  $Res call(
+      {UserSettingsModel settings,
+      LocalDbVersion localDbVersion,
+      bool hasCompletedOnboarding});
 
   @override
   $UserSettingsModelCopyWith<$Res> get settings;
@@ -2395,6 +2407,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
   $Res call({
     Object? settings = null,
     Object? localDbVersion = null,
+    Object? hasCompletedOnboarding = null,
   }) {
     return _then(_$UserModelImpl(
       settings: null == settings
@@ -2405,6 +2418,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.localDbVersion
           : localDbVersion // ignore: cast_nullable_to_non_nullable
               as LocalDbVersion,
+      hasCompletedOnboarding: null == hasCompletedOnboarding
+          ? _value.hasCompletedOnboarding
+          : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2414,7 +2431,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
       {this.settings = UserSettingsModel.initial,
-      this.localDbVersion = LocalDbVersion.v3_16});
+      this.localDbVersion = LocalDbVersion.v3_16,
+      this.hasCompletedOnboarding = false});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -2425,10 +2443,13 @@ class _$UserModelImpl implements _UserModel {
   @override
   @JsonKey()
   final LocalDbVersion localDbVersion;
+  @override
+  @JsonKey()
+  final bool hasCompletedOnboarding;
 
   @override
   String toString() {
-    return 'UserModel(settings: $settings, localDbVersion: $localDbVersion)';
+    return 'UserModel(settings: $settings, localDbVersion: $localDbVersion, hasCompletedOnboarding: $hasCompletedOnboarding)';
   }
 
   @override
@@ -2439,12 +2460,15 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.settings, settings) ||
                 other.settings == settings) &&
             (identical(other.localDbVersion, localDbVersion) ||
-                other.localDbVersion == localDbVersion));
+                other.localDbVersion == localDbVersion) &&
+            (identical(other.hasCompletedOnboarding, hasCompletedOnboarding) ||
+                other.hasCompletedOnboarding == hasCompletedOnboarding));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, settings, localDbVersion);
+  int get hashCode => Object.hash(
+      runtimeType, settings, localDbVersion, hasCompletedOnboarding);
 
   @JsonKey(ignore: true)
   @override
@@ -2463,7 +2487,8 @@ class _$UserModelImpl implements _UserModel {
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
       {final UserSettingsModel settings,
-      final LocalDbVersion localDbVersion}) = _$UserModelImpl;
+      final LocalDbVersion localDbVersion,
+      final bool hasCompletedOnboarding}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -2472,6 +2497,8 @@ abstract class _UserModel implements UserModel {
   UserSettingsModel get settings;
   @override
   LocalDbVersion get localDbVersion;
+  @override
+  bool get hasCompletedOnboarding;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

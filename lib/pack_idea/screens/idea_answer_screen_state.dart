@@ -38,13 +38,11 @@ class IdeaAnswerScreenState extends LifeState {
   final ValueNotifier<IdeaProjectAnswer> answer;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late IdeaProjectsState ideasProvider;
+  // late IdeaProjectsState ideasProvider;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsState>();
+    // ideasProvider = context.read<IdeaProjectsState>();
 
     unawaited(
       updatesStream.stream
@@ -59,7 +57,7 @@ class IdeaAnswerScreenState extends LifeState {
   Future<void> onAnswerUpdate(final bool update) async {
     idea.folder?.sortProjectsByDate(project: idea);
     await answer.value.save();
-    ideasProvider.notify();
+    // ideasProvider.notify();
     await idea.save();
   }
 

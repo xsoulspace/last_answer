@@ -59,13 +59,11 @@ class GlobalStatesInitializer implements StateInitializer {
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
+    await dto.userNotifier.onLoad();
 
     final isConnected = await PlatformInfo.isConnected;
     dto.appNotifier.updateAppStatus(
       isConnected ? AppStatus.online : AppStatus.offline,
     );
-
-    /// we may not await for user, as it has its own loader
-    unawaited(dto.userNotifier.onLoad());
   }
 }

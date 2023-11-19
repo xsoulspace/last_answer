@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core.dart';
-import 'platform_info.dart';
 
 @immutable
 class ProjectSharer {
@@ -22,7 +21,7 @@ class ProjectSharer {
     final isDesktop = PlatformInfo.isNativeWebDesktop;
     if (isDesktop) {
       final messenger = ScaffoldMessenger.of(context);
-      final data = ClipboardData(text: sharable.toShareString());
+      final data = ClipboardData(text: sharable.toShareString(context));
       await Clipboard.setData(data);
       void closeBanner() => messenger.hideCurrentMaterialBanner();
 
@@ -42,8 +41,8 @@ class ProjectSharer {
       );
     } else {
       await Share.share(
-        sharable.toShareString(),
-        subject: sharable.sharableTitle,
+        sharable.toShareString(context),
+        subject: sharable.toSharableTitle(context),
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
     }
@@ -52,8 +51,8 @@ class ProjectSharer {
 
 abstract interface class Sharable {
   Sharable._();
-  String toShareString();
-  abstract final String sharableTitle;
+  String toShareString(final BuildContext context);
+  String toSharableTitle(final BuildContext context);
 }
 
 abstract interface class Archivable {

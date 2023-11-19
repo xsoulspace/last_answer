@@ -37,7 +37,7 @@ class IdeaProjectQuestion extends HiveObject
   bool get stringify => true;
 
   @override
-  String toShareString() => title.getByLanguage(Intl.getCurrentLocale());
+  String toShareString(final BuildContext context) => '';
 
   IdeaProjectQuestionModel toModel() => IdeaProjectQuestionModel(
         id: IdeaProjectQuestionModelId.fromJson(id),
@@ -45,7 +45,7 @@ class IdeaProjectQuestion extends HiveObject
       );
 
   @override
-  String get sharableTitle => '';
+  String toSharableTitle(final BuildContext context) => '';
 }
 
 /// A mock for [IdeaProjectQuestion].

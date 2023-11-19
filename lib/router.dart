@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_app/pack_app.dart';
-import 'package:lastanswer/pack_app/widgets/widgets.dart';
+import 'package:lastanswer/home/home_screen.dart';
+import 'package:lastanswer/other/other.dart';
 
 /// !In case of new routes all routes should be added to values!
 class AppPaths {
@@ -43,8 +42,8 @@ final appRouter = GoRouter(
           AppPaths.bootstrap,
           (final _) => const LoadingScreen(),
         ), // This will be hidden
-        AppRoute(AppPaths.home, (final _) => HomeScreen()),
-        AppRoute(AppPaths.intro, (final _) => IntroScreen()),
+        AppRoute(AppPaths.home, (final _) => const HomeScreen()),
+        AppRoute(AppPaths.intro, (final _) => const IntroScreen()),
       ],
     ),
   ],
@@ -89,10 +88,21 @@ String? _handleRootRedirect(
   final GoRouterState state,
 ) {
   final appStatus = context.read<AppNotifier>().value.status;
+  final hasCompletedOnboarding =
+      context.read<UserNotifier>().hasCompletedOnboarding;
+  final location = state.uri.toString();
   // Prevent anyone from navigating away from `/` if app is starting up.
-  if (appStatus == AppStatus.loading ||
-      state.uri.toString() != AppPaths.bootstrap) {
+  if (appStatus == AppStatus.loading || location != AppPaths.bootstrap) {
     return AppPaths.bootstrap;
+  } else if (location == AppPaths.bootstrap) {
+    debugPrint('Router: hasCompletedOnboarding $hasCompletedOnboarding');
+
+    /// at this moment user should be logged in
+    if (hasCompletedOnboarding) {
+      return AppPaths.home;
+    } else {
+      return AppPaths.intro;
+    }
   }
   debugPrint('Navigate to: ${state.uri}');
   return null; // do nothing

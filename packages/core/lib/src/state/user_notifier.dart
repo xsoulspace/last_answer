@@ -29,13 +29,18 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserModel get user => value.value;
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => _uiLocale;
+  bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
   late final _initializer =
       UserInitializer(dto: dto.globalStatesInitializerDto);
   Future<void> onLoad() async {
     value = LoadableContainer.loaded(await dto.userRepository.getUser());
-    await _initializer.onUserLoad();
+    unawaited(_initializer.onUserLoad());
   }
 
+  void completeOnboarding() => _updateUser(
+        (final user) =>
+            user.copyWith(hasCompletedOnboarding: hasCompletedOnboarding),
+      );
   void updateCharactersLimitForNewNotes(final int newLimit) => _updateSettings(
         (final settings) =>
             settings.copyWith(charactersLimitForNewNotes: newLimit),
@@ -77,6 +82,8 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   void updateLocalDbVersion(final LocalDbVersion dbVersion) => _updateUser(
         (final user) => user.copyWith(localDbVersion: dbVersion),
       );
-  void _updateUser(final UserModel Function(UserModel) updateUser) =>
-      setValue(value.copyWith(value: updateUser(value.value)));
+  void _updateUser(final UserModel Function(UserModel) updateUser) {
+    setValue(value.copyWith(value: updateUser(value.value)));
+    unawaited(dto.userRepository.putUser(user: user));
+  }
 }

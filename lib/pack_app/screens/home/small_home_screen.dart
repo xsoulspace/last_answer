@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/library/widgets/widgets.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/pack_app/screens/home/projects_list_view.dart';
 import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
 

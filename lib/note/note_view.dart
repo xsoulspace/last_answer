@@ -36,10 +36,10 @@ class NoteViewBody extends StatelessWidget {
     final projectNotifier = context.read<OpenedProjectNotifier>();
     final bloc = context.watch<NoteViewBloc>();
     final isKeyboardClosed = !bloc.specialEmojiController.value.isKeyboardOpen;
-    return Column(
+    return Row(
       children: [
         Expanded(
-          child: Row(
+          child: Column(
             children: [
               Expanded(
                 child: ProjectTextField(
@@ -56,12 +56,15 @@ class NoteViewBody extends StatelessWidget {
                   undoController: bloc.undoController,
                 ),
               ),
-              const NoteProjectSideActionBar(),
+              if (PlatformInfo.isNativeWebDesktop) const Gap(48),
+              if (isKeyboardClosed) const BottomSafeArea(),
             ],
           ),
         ),
-        if (PlatformInfo.isNativeWebDesktop) const Gap(48),
-        if (isKeyboardClosed) const BottomSafeArea(),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 24),
+          child: NoteProjectSideActionBar(),
+        ),
       ],
     );
   }

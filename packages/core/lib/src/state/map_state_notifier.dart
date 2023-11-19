@@ -8,7 +8,6 @@ base class MapStateNotifier<TValue> extends ChangeNotifier {
     this.repository,
     this.onFilter,
   });
-  void notify() => notifyListeners();
 
   LoadableContainer<Map<String, TValue>> state =
       const LoadableContainer(value: {});
@@ -41,7 +40,7 @@ base class MapStateNotifier<TValue> extends ChangeNotifier {
 
   void _save() => repository?.putAll(state.value);
   void setState(final Map<String, TValue> value) =>
-      LoadableContainer.loaded(value);
+      state = LoadableContainer.loaded(value);
   void put({required final String key, required final TValue value}) {
     setState({...state.value}..[key] = value);
     notifyListeners();

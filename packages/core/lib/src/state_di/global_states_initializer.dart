@@ -54,24 +54,6 @@ class GlobalStatesInitializer implements StateInitializer {
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
 
-    /// ********************************************
-    /// *      CONTENT LOADING START
-    /// ********************************************
-    final emojis = await dto.emojiRepository.getAllEmoji();
-
-    dto.emojiProvider
-        .loadIterable(values: emojis, toKey: (final p0) => p0.emoji);
-
-    final specialEmojis = await dto.emojiRepository.getSpecialEmoji();
-    dto.specialEmojiState.loadIterable(
-      values: specialEmojis,
-      toKey: (final p0) => p0.emoji,
-    );
-
-    final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
-    dto.lastEmojiState.putAll(lastUsedEmojis);
-
-    await dto.notificationController.onLoad();
     // ignore: use_build_context_synchronously
     await dto.userNotifier.onLoad(initializer);
 
@@ -83,7 +65,32 @@ class GlobalStatesInitializer implements StateInitializer {
     if (dto.userNotifier.hasCompletedOnboarding) {
       router.go(ScreenPaths.home);
     } else {
-      router.go(ScreenPaths.intro);
+      router.go(ScreenPaths.home);
+      // router.go(ScreenPaths.intro);
     }
+    unawaited(_loadPost());
+  }
+
+  /// ********************************************
+  /// *      CONTENT LOADING START
+  /// ********************************************
+  Future<void> _loadPost() async {
+    final emojis = await dto.emojiRepository.getAllEmoji();
+
+    dto.emojiProvider.loadIterable(
+      values: emojis,
+      toKey: (final p0) => p0.emoji,
+    );
+
+    final specialEmojis = await dto.emojiRepository.getSpecialEmoji();
+    dto.specialEmojiState.loadIterable(
+      values: specialEmojis,
+      toKey: (final p0) => p0.emoji,
+    );
+
+    final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
+    dto.lastEmojiState.putAll(lastUsedEmojis);
+
+    await dto.notificationController.onLoad();
   }
 }

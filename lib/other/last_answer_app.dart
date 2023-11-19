@@ -6,10 +6,8 @@ class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
 
   @override
-  Widget build(final BuildContext context) => Portal(
-        child: GlobalStatesProvider(
-          builder: (final context) => const _AppScaffold(),
-        ),
+  Widget build(final BuildContext context) => GlobalStatesProvider(
+        builder: (final context) => const Portal(child: _AppScaffold()),
       );
 }
 

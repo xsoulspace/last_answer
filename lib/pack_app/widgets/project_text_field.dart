@@ -123,20 +123,18 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.bottom,
             style: theme.textTheme.bodyMedium,
-            decoration: const InputDecoration()
-                .applyDefaults(theme.inputDecorationTheme)
-                .copyWith(
-                  contentPadding: PlatformInfo.isNativeDesktop
-                      ? const EdgeInsets.all(6)
-                      : const EdgeInsets.only(top: 6, bottom: 4),
-                  filled: widget.filled,
-                  // labelStyle: TextStyle(color: Colors.white),
-                  // fillColor: ThemeColors.lightAccent,
-                  focusedBorder: _border,
-                  border: _border,
-                  fillColor: Colors.transparent,
-                  hintText: widget.hintText,
-                ),
+            decoration: InputDecoration(
+              contentPadding: PlatformInfo.isNativeDesktop
+                  ? const EdgeInsets.all(6)
+                  : const EdgeInsets.only(top: 6, bottom: 4),
+              filled: widget.filled,
+              // labelStyle: TextStyle(color: Colors.white),
+              // fillColor: ThemeColors.lightAccent,
+              focusedBorder: _border,
+              border: _border,
+              fillColor: Colors.transparent,
+              hintText: widget.hintText,
+            ),
             cursorColor: theme.colorScheme.secondary,
           ),
         ),

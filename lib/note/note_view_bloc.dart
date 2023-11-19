@@ -1,39 +1,29 @@
-part of 'note_view.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
 
-class NoteProjectViewStateDto {
-  NoteProjectViewStateDto({
-    required this.context,
-    required this.noteId,
+class NoteViewBlocDto {
+  NoteViewBlocDto({
+    required this.initialNote,
     required this.tickerProvider,
-  });
-  final ProjectModelId noteId;
+    required this.context,
+  }) : openedProjectNotifier = context.read();
+  final ProjectModelNote initialNote;
   final TickerProvider tickerProvider;
   final BuildContext context;
+  final OpenedProjectNotifier openedProjectNotifier;
 }
 
-class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
-  NoteProjectViewBloc({
-    required this.delegate,
-    required this.dto,
-  }) : super(
-          ProjectModelNote(
-            id: ProjectModelId.empty,
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          )
-          // dto._getInitialNote()
-          ,
-        ) {
-    specialEmojiController.addListener(notifyListeners);
-  }
+class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
+  NoteViewBloc({required this.dto}) : super(dto.initialNote);
 
-  final NoteProjectViewStateDto dto;
-  final NoteProjectViewDelegate delegate;
-  final noteController = TextEditingController();
+  final NoteViewBlocDto dto;
+  late final noteController = TextEditingController(text: dto.initialNote.note)
+    ..addListener(_onTextChanged);
   final undoController = UndoHistoryController();
   late final characterLimitController = CharactersLimitController.fromNote(
     dto: CharactersLimitControllerDto(context: dto.context),
-    noteCharactersLimit: note.charactersLimit,
+    noteCharactersLimit: dto.initialNote.charactersLimit,
   );
   final focusNode = FocusNode();
   ProjectModelNote get note => value;
@@ -41,7 +31,12 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
     focusNode: focusNode,
     textController: noteController,
     tickerProvider: dto.tickerProvider,
-  );
+  )..addListener(notifyListeners);
+  void _onTextChanged() {
+    final updatedNote = value.copyWith(note: noteController.text);
+    setValue(updatedNote);
+    dto.openedProjectNotifier.updateProject(updatedNote);
+  }
 
   Future<void> onRemove(final BuildContext context) async {
     final remove = await showRemoveTitleDialog(
@@ -49,13 +44,7 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
       context: context,
     );
     if (!remove) return;
-    // await removeProject(
-    //   context: context,
-    //   project: note,
-    //   folderProvider: dto.folderStateProvider,
-    //   checkIsProjectActive: delegate.checkIsProjectActive,
-    //   onGoHome: delegate.onGoHome,
-    // );
+    dto.openedProjectNotifier.deleteProject();
   }
 
   Future<void> onSwitchKeyboard({
@@ -83,14 +72,15 @@ class NoteProjectViewBloc extends ValueNotifier<ProjectModelNote> {
     }
   }
 
-  void onBack() {
+  void onSubmit() {
     unawaited(SoftKeyboard.close());
-    delegate.onBack(note);
   }
 
   @override
   void dispose() {
-    noteController.dispose();
+    noteController
+      ..removeListener(_onTextChanged)
+      ..dispose();
     specialEmojiController
       ..removeListener(notifyListeners)
       ..dispose();

@@ -9,11 +9,11 @@ class CharactersLimitControllerDto {
 
 class CharactersLimitController extends ValueNotifier<String> {
   CharactersLimitController.fromNote({
-    required final ProjectModelNote note,
+    required final int noteCharactersLimit,
     required this.dto,
   }) : super(
           _getInitialLimit(
-            note: note,
+            noteCharactersLimit: noteCharactersLimit,
             userNotifier: dto.userNotifier,
           ),
         );
@@ -24,12 +24,12 @@ class CharactersLimitController extends ValueNotifier<String> {
 
   static String _getInitialLimit({
     required final UserNotifier userNotifier,
-    final ProjectModelNote? note,
+    final int? noteCharactersLimit,
   }) {
     int limit;
 
-    if (note != null && note.id.isEmpty) {
-      limit = note.charactersLimit;
+    if (noteCharactersLimit != null) {
+      limit = noteCharactersLimit;
     } else {
       limit = userNotifier.settings.charactersLimitForNewNotes;
     }

@@ -43,6 +43,10 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   void updateProject(final ProjectModel project) =>
       _projectsUpdatesController.add(project);
+  void deleteProject(final ProjectModel project) {
+    projectsPagedController.pager.removeElement(element: project);
+    unawaited(dto.projectsRepository.remove(id: project.id));
+  }
 
   late final _projectsUpdatesController = StreamController<ProjectModel>()
     ..stream.sampleTime(1.seconds).listen(_updateProject);

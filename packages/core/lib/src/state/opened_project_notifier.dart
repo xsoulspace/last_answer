@@ -26,4 +26,11 @@ class OpenedProjectNotifier
     setValue(value.copyWith(value: item));
     dto.projectsNotifier.updateProject(item);
   }
+
+  void deleteProject() {
+    if (value.isLoading) return;
+    final item = value.value;
+    setValue(LoadableContainer(value: ProjectModel.emptyNote));
+    dto.projectsNotifier.deleteProject(item);
+  }
 }

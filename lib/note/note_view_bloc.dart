@@ -19,12 +19,12 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
 
   final NoteViewBlocDto dto;
   late final noteController = TextEditingController(text: dto.initialNote.note)
-    ..addListener(_onTextChanged);
+    ..addListener(_onChanged);
   final undoController = UndoHistoryController();
   late final characterLimitController = CharactersLimitController.fromNote(
     dto: CharactersLimitControllerDto(context: dto.context),
     noteCharactersLimit: dto.initialNote.charactersLimit,
-  );
+  )..addListener(_onChanged);
   final focusNode = FocusNode();
   ProjectModelNote get note => value;
   late final specialEmojiController = SpecialEmojiController(
@@ -32,8 +32,12 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
     textController: noteController,
     tickerProvider: dto.tickerProvider,
   )..addListener(notifyListeners);
-  void _onTextChanged() {
-    final updatedNote = value.copyWith(note: noteController.text);
+  void _onChanged() {
+    final updatedNote = value.copyWith(
+      note: noteController.text,
+      updatedAt: DateTime.now(),
+      charactersLimit: int.tryParse(characterLimitController.value) ?? 0,
+    );
     setValue(updatedNote);
     dto.openedProjectNotifier.updateProject(updatedNote);
   }
@@ -79,7 +83,10 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   @override
   void dispose() {
     noteController
-      ..removeListener(_onTextChanged)
+      ..removeListener(_onChanged)
+      ..dispose();
+    characterLimitController
+      ..removeListener(_onChanged)
       ..dispose();
     specialEmojiController
       ..removeListener(notifyListeners)

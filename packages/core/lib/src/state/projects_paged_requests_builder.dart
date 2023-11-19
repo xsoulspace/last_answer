@@ -5,6 +5,7 @@ class RequestProjectsDto with _$RequestProjectsDto {
   const factory RequestProjectsDto({
     @Default('') final String search,
     @Default([]) final List<ProjectTypes> types,
+    @Default(false) final bool isReversed,
   }) = _RequestProjectsDto;
   static const empty = RequestProjectsDto();
 }

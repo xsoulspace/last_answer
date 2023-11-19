@@ -1,8 +1,8 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
-import 'package:lastanswer/pack_note/widgets/desktop_note_settings.dart';
-import 'package:lastanswer/pack_note/widgets/mobile_note_settings.dart';
+import 'package:lastanswer/note/widgets/desktop_note_settings.dart';
+import 'package:lastanswer/note/widgets/mobile_note_settings.dart';
 
 class NoteSettingsButton extends StatelessWidget {
   const NoteSettingsButton({

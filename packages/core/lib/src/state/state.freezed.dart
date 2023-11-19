@@ -472,6 +472,7 @@ abstract class _ProjectsNotifierState implements ProjectsNotifierState {
 mixin _$RequestProjectsDto {
   String get search => throw _privateConstructorUsedError;
   List<ProjectTypes> get types => throw _privateConstructorUsedError;
+  bool get isReversed => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RequestProjectsDtoCopyWith<RequestProjectsDto> get copyWith =>
@@ -484,7 +485,7 @@ abstract class $RequestProjectsDtoCopyWith<$Res> {
           RequestProjectsDto value, $Res Function(RequestProjectsDto) then) =
       _$RequestProjectsDtoCopyWithImpl<$Res, RequestProjectsDto>;
   @useResult
-  $Res call({String search, List<ProjectTypes> types});
+  $Res call({String search, List<ProjectTypes> types, bool isReversed});
 }
 
 /// @nodoc
@@ -502,6 +503,7 @@ class _$RequestProjectsDtoCopyWithImpl<$Res, $Val extends RequestProjectsDto>
   $Res call({
     Object? search = null,
     Object? types = null,
+    Object? isReversed = null,
   }) {
     return _then(_value.copyWith(
       search: null == search
@@ -512,6 +514,10 @@ class _$RequestProjectsDtoCopyWithImpl<$Res, $Val extends RequestProjectsDto>
           ? _value.types
           : types // ignore: cast_nullable_to_non_nullable
               as List<ProjectTypes>,
+      isReversed: null == isReversed
+          ? _value.isReversed
+          : isReversed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -524,7 +530,7 @@ abstract class _$$RequestProjectsDtoImplCopyWith<$Res>
       __$$RequestProjectsDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String search, List<ProjectTypes> types});
+  $Res call({String search, List<ProjectTypes> types, bool isReversed});
 }
 
 /// @nodoc
@@ -540,6 +546,7 @@ class __$$RequestProjectsDtoImplCopyWithImpl<$Res>
   $Res call({
     Object? search = null,
     Object? types = null,
+    Object? isReversed = null,
   }) {
     return _then(_$RequestProjectsDtoImpl(
       search: null == search
@@ -550,6 +557,10 @@ class __$$RequestProjectsDtoImplCopyWithImpl<$Res>
           ? _value._types
           : types // ignore: cast_nullable_to_non_nullable
               as List<ProjectTypes>,
+      isReversed: null == isReversed
+          ? _value.isReversed
+          : isReversed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -560,7 +571,9 @@ class _$RequestProjectsDtoImpl
     with DiagnosticableTreeMixin
     implements _RequestProjectsDto {
   const _$RequestProjectsDtoImpl(
-      {this.search = '', final List<ProjectTypes> types = const []})
+      {this.search = '',
+      final List<ProjectTypes> types = const [],
+      this.isReversed = false})
       : _types = types;
 
   @override
@@ -576,8 +589,12 @@ class _$RequestProjectsDtoImpl
   }
 
   @override
+  @JsonKey()
+  final bool isReversed;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RequestProjectsDto(search: $search, types: $types)';
+    return 'RequestProjectsDto(search: $search, types: $types, isReversed: $isReversed)';
   }
 
   @override
@@ -586,7 +603,8 @@ class _$RequestProjectsDtoImpl
     properties
       ..add(DiagnosticsProperty('type', 'RequestProjectsDto'))
       ..add(DiagnosticsProperty('search', search))
-      ..add(DiagnosticsProperty('types', types));
+      ..add(DiagnosticsProperty('types', types))
+      ..add(DiagnosticsProperty('isReversed', isReversed));
   }
 
   @override
@@ -595,12 +613,14 @@ class _$RequestProjectsDtoImpl
         (other.runtimeType == runtimeType &&
             other is _$RequestProjectsDtoImpl &&
             (identical(other.search, search) || other.search == search) &&
-            const DeepCollectionEquality().equals(other._types, _types));
+            const DeepCollectionEquality().equals(other._types, _types) &&
+            (identical(other.isReversed, isReversed) ||
+                other.isReversed == isReversed));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, search, const DeepCollectionEquality().hash(_types));
+  int get hashCode => Object.hash(runtimeType, search,
+      const DeepCollectionEquality().hash(_types), isReversed);
 
   @JsonKey(ignore: true)
   @override
@@ -613,12 +633,15 @@ class _$RequestProjectsDtoImpl
 abstract class _RequestProjectsDto implements RequestProjectsDto {
   const factory _RequestProjectsDto(
       {final String search,
-      final List<ProjectTypes> types}) = _$RequestProjectsDtoImpl;
+      final List<ProjectTypes> types,
+      final bool isReversed}) = _$RequestProjectsDtoImpl;
 
   @override
   String get search;
   @override
   List<ProjectTypes> get types;
+  @override
+  bool get isReversed;
   @override
   @JsonKey(ignore: true)
   _$$RequestProjectsDtoImplCopyWith<_$RequestProjectsDtoImpl> get copyWith =>

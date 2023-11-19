@@ -50,12 +50,14 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   late final _projectsUpdatesController = StreamController<ProjectModel>()
     ..stream.sampleTime(1.seconds).listen(_updateProject);
-  void _updateProject(final ProjectModel project) =>
-      projectsPagedController.pager.replaceElement(
-        element: project,
-        equals: (final e, final e2) => e.id == e2.id,
-        shouldAddOnNotFound: true,
-      );
+  void _updateProject(final ProjectModel project) {
+    projectsPagedController.pager.replaceElement(
+      element: project,
+      equals: (final e, final e2) => e.id == e2.id,
+      shouldAddOnNotFound: true,
+    );
+    unawaited(dto.projectsRepository.put(project: project));
+  }
 
   @override
   void dispose() {

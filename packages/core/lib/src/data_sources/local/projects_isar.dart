@@ -19,26 +19,31 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterOffset> offsetQuery;
     final types = getDto?.types ?? [];
+    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
+        QAfterFilterCondition> basicQuery;
     if (getDto != null && getDto.search.isNotEmpty) {
-      final basicQuery = isarDb.projects
+      basicQuery = isarDb.projects
           .filter()
           .jsonContentContains(
             '*${getDto.search}*',
             caseSensitive: false,
           )
           .and()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name))
-          .sortByUpdatedAt();
-      offsetQuery = basicQuery.offset(dto.page * dto.limit);
-      itemsCount = basicQuery.countSync();
+          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     } else {
-      final basicQuery = isarDb.projects
+      basicQuery = isarDb.projects
           .filter()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name))
-          .sortByUpdatedAt();
-      offsetQuery = basicQuery.offset(dto.page * dto.limit);
-      itemsCount = basicQuery.countSync();
+          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     }
+    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
+        QAfterSortBy> sortedBasicQuery;
+    if (getDto?.isReversed == true) {
+      sortedBasicQuery = basicQuery.sortByUpdatedAt();
+    } else {
+      sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();
+    }
+    offsetQuery = sortedBasicQuery.offset(dto.page * dto.limit);
+    itemsCount = sortedBasicQuery.countSync();
     final pagesCount = (itemsCount / dto.limit).ceil();
     final items = await offsetQuery.limit(dto.limit).findAll();
 

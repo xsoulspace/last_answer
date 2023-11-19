@@ -1,8 +1,8 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
+import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
 import 'package:lastanswer/pack_app/widgets/project_text_field.dart';
-import 'package:lastanswer/pack_note/widgets/note_project_side_actionbar.dart';
 
 class NoteView extends StatefulWidget {
   const NoteView({

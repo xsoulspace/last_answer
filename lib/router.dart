@@ -11,9 +11,9 @@ final appRouter = GoRouter(
       builder: (final context, final router, final navigator) =>
           AppScaffold(navigator: navigator),
       routes: [
-        AppRoute(AppPaths.bootstrap, (final _) => const LoadingScreen()),
-        AppRoute(AppPaths.intro, (final _) => const IntroScreen()),
-        AppRoute(AppPaths.home, (final _) => const HomeScreen()),
+        AppRoute(ScreenPaths.bootstrap, (final _) => const LoadingScreen()),
+        AppRoute(ScreenPaths.intro, (final _) => const IntroScreen()),
+        AppRoute(ScreenPaths.home, (final _) => const HomeScreen()),
       ],
     ),
   ],
@@ -60,19 +60,10 @@ String? _handleRootRedirect(
   final appStatus = context.read<AppNotifier>().value.status;
   final location = state.uri.toString();
   // Prevent anyone from navigating away from `/` if app is starting up.
-  if (appStatus == AppStatus.loading && location != AppPaths.bootstrap) {
-    return AppPaths.bootstrap;
+  if (appStatus == AppStatus.loading && location != ScreenPaths.bootstrap) {
+    return ScreenPaths.bootstrap;
   }
-  //  else if (location == AppPaths.bootstrap) {
-  //   debugPrint('Router: hasCompletedOnboarding $hasCompletedOnboarding');
 
-  //   /// at this moment user should be logged in
-  //   if (hasCompletedOnboarding) {
-  //     return AppPaths.home;
-  //   } else {
-  //     return AppPaths.intro;
-  //   }
-  // }
   debugPrint('Navigate to: ${state.uri}');
   return null; // do nothing
 }

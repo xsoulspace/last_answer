@@ -789,7 +789,7 @@ packages:
     source: hosted
     version: "4.1.3"
   infinite_scroll_pagination:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: infinite_scroll_pagination
       sha256: b68bce20752fcf36c7739e60de4175494f74e99e9a69b4dd2fe3a1dd07a7f16a

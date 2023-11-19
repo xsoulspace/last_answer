@@ -6,7 +6,7 @@ part of 'models.dart';
 )
 class PaginatedPageRequestModel<TData> {
   PaginatedPageRequestModel({
-    this.page = 1,
+    this.page = 0,
     this.limit = 5,
     this.data,
   });

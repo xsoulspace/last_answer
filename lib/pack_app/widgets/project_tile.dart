@@ -3,7 +3,7 @@ import 'package:lastanswer/common_imports.dart';
 
 typedef ProjectSelectionChanged = void Function({
   required bool? selected,
-  required BasicProject project,
+  required ProjectModel project,
 });
 
 class ProjectTile extends StatelessWidget {
@@ -16,15 +16,14 @@ class ProjectTile extends StatelessWidget {
     required this.isProjectActive,
     super.key,
   });
-  final BasicProject project;
+  final ProjectModel project;
   final bool isProjectActive;
-  final ValueChanged<BasicProject> onTap;
-  final ValueChanged<BasicProject> onRemove;
-  final FutureBoolValueChanged<BasicProject> onRemoveConfirm;
+  final ValueChanged<ProjectModel> onTap;
+  final ValueChanged<ProjectModel> onRemove;
+  final FutureBoolValueChanged<ProjectModel> onRemoveConfirm;
   final ThemeDefiner themeDefiner;
 
-  String createTitle() =>
-      (project is NoteProject ? '      ' : '') + project.title;
+  String createTitle() => project.title;
 
   @override
   Widget build(final BuildContext context) {
@@ -60,7 +59,7 @@ class ProjectTile extends StatelessWidget {
       // },
       onDismissed: () => onRemove(project),
       child: HeroId(
-        id: project.id,
+        id: project.id.value,
         type: HeroIdTypes.projectTitle,
         child: Stack(
           children: [

@@ -6,6 +6,8 @@ class UserNotifierDto {
   final UserRepository userRepository;
 }
 
+final uiLocaleNotifier = ValueNotifier(Locales.en);
+
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserNotifier({
     required this.dto,
@@ -14,10 +16,9 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
         dto: UserNotifierDto(context),
       );
   final UserNotifierDto dto;
-  final _uiLocale = ValueNotifier(Locales.en);
   @override
   void dispose() {
-    _uiLocale.dispose();
+    uiLocaleNotifier.dispose();
     return super.dispose();
   }
 
@@ -25,7 +26,7 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   bool get isLoading => value.isLoading;
   UserModel get user => value.value;
   UserSettingsModel get settings => user.settings;
-  ValueListenable<Locale> get locale => _uiLocale;
+  ValueListenable<Locale> get locale => uiLocaleNotifier;
   bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
   Future<void> onLoad(final UserInitializer initializer) async {
     value = LoadableContainer.loaded(await dto.userRepository.getUser());
@@ -58,10 +59,10 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     final result = await LocaleLogic().updateLocale(
       newLocale: locale,
       oldLocale: settings.locale,
-      uiLocale: _uiLocale.value,
+      uiLocale: uiLocaleNotifier.value,
     );
     if (result == null) return;
-    _uiLocale.value = result.uiLocale;
+    uiLocaleNotifier.value = result.uiLocale;
     notifyListeners();
     _updateSettings(
       (final settings) => settings.copyWith(locale: result.updatedLocale),

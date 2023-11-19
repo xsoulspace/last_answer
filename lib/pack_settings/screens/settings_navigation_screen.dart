@@ -5,11 +5,9 @@ import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.da
 class SettingsNavigationScreen extends StatelessWidget {
   const SettingsNavigationScreen({
     required this.onBack,
-    required this.onSelectRoute,
     super.key,
   });
   final VoidCallback onBack;
-  final ValueChanged<AppRouteName> onSelectRoute;
 
   @override
   Widget build(final BuildContext context) {
@@ -22,9 +20,7 @@ class SettingsNavigationScreen extends StatelessWidget {
         leading: CupertinoCloseButton(onPressed: onBack),
         title: Text(context.l10n.settings),
       ),
-      body: SettingsNavigation(
-        onSelectRoute: onSelectRoute,
-      ),
+      body: const SettingsNavigation(),
     );
   }
 }

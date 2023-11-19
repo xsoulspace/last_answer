@@ -5,15 +5,14 @@ import 'package:lastanswer/library/widgets/widgets.dart';
 import 'package:lastanswer/pack_settings/features_widgets/general_settings.dart';
 import 'package:lastanswer/pack_settings/features_widgets/my_account.dart';
 import 'package:lastanswer/pack_settings/features_widgets/settings_navigation.dart';
+import 'package:lastanswer/router.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
-    required this.onSelectRoute,
     required this.onBack,
     super.key,
   });
   final VoidCallback onBack;
-  final ValueChanged<AppRouteName> onSelectRoute;
 
   @override
   Widget build(final BuildContext context) {
@@ -38,9 +37,7 @@ class DesktopSettingsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SettingsNavigation(
-                    onSelectRoute: onSelectRoute,
-                  ),
+                  const SettingsNavigation(),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 350),
                     child: SizedBox(
@@ -73,13 +70,12 @@ class DesktopSettingsNavigator extends HookWidget {
     final screenLayout = ScreenLayout.of(context);
     final previousChild = useState<Widget>(const SizedBox());
     Widget child;
-    final routeState = RouteStateScope.of(context);
-    final pathTemplate = routeState.route.pathTemplate;
-    switch (pathTemplate) {
-      case AppRoutesName.profile:
+    final routeState = context.router.location();
+    switch (routeState) {
+      case AppPaths.profile:
         child = previousChild.value = const MyAccount();
-      case AppRoutesName.settings:
-      case AppRoutesName.generalSettings:
+      case AppPaths.settings:
+      case AppPaths.generalSettings:
         child = previousChild.value = const GeneralSettingsView(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );

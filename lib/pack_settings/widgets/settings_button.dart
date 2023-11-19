@@ -12,10 +12,10 @@ class SettingsButton extends StatelessWidget {
   });
   static final shape =
       RoundedRectangleBorder(borderRadius: defaultBorderRadius);
-  final AppRouteName? fallbackRouteName;
+  final String? fallbackRouteName;
   final String text;
-  final BoolValueChanged<AppRouteName>? checkSelected;
-  final ValueChanged<AppRouteName> onSelected;
+  final BoolValueChanged<String>? checkSelected;
+  final ValueChanged<String> onSelected;
   final String routeName;
   final Widget? avatar;
   @override
@@ -23,7 +23,7 @@ class SettingsButton extends StatelessWidget {
     final theme = Theme.of(context);
     bool selected = checkSelected?.call(routeName) ?? false;
     if (!selected && fallbackRouteName != null) {
-      selected = checkSelected?.call(fallbackRouteName) ?? false;
+      selected = checkSelected?.call(fallbackRouteName!) ?? false;
     }
 
     return Padding(

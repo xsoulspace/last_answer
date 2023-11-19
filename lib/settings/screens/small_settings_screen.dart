@@ -1,6 +1,5 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/router.dart';
 import 'package:lastanswer/settings/screens/general_settings_screen.dart';
 import 'package:lastanswer/settings/screens/my_account_screen.dart';
 import 'package:lastanswer/settings/screens/settings_navigation_screen.dart';
@@ -32,10 +31,10 @@ class SmallSettingsScreen extends HookWidget {
 
     Future<void> switchToPage() async {
       switch (currentLocation) {
-        case AppPaths.profile:
+        case ScreenPaths.profile:
           subSettingsPage.value = MyAccountScreen(onBack: onBack);
           await toPage();
-        case AppPaths.generalSettings:
+        case ScreenPaths.generalSettings:
           subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
           await toPage();
         default:
@@ -48,7 +47,7 @@ class SmallSettingsScreen extends HookWidget {
       if (!pageController.hasClients) return;
       final controllerPage = pageController.page?.ceil();
       if (chosenPage.value == controllerPage) return;
-      unawaited(context.pushNamed(AppPaths.settings));
+      unawaited(context.pushNamed(ScreenPaths.settings));
     });
 
     useEffect(

@@ -81,9 +81,9 @@ class GlobalStatesInitializer implements StateInitializer {
       // isConnected ? AppStatus.online : AppStatus.offline,
     );
     if (dto.userNotifier.hasCompletedOnboarding) {
-      router.go(AppPaths.home);
+      router.go(ScreenPaths.home);
     } else {
-      router.go(AppPaths.intro);
+      router.go(ScreenPaths.intro);
     }
   }
 }

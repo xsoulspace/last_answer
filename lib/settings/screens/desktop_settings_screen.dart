@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/router.dart';
 import 'package:lastanswer/settings/features_widgets/general_settings.dart';
 import 'package:lastanswer/settings/features_widgets/my_account.dart';
 import 'package:lastanswer/settings/features_widgets/settings_navigation.dart';
@@ -72,10 +71,10 @@ class DesktopSettingsNavigator extends HookWidget {
     Widget child;
     final routeState = context.router.location();
     switch (routeState) {
-      case AppPaths.profile:
+      case ScreenPaths.profile:
         child = previousChild.value = const MyAccount();
-      case AppPaths.settings:
-      case AppPaths.generalSettings:
+      case ScreenPaths.settings:
+      case ScreenPaths.generalSettings:
         child = previousChild.value = const GeneralSettingsView(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );

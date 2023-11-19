@@ -42,7 +42,7 @@ Future<void> showNotificationDialog({
           child: SizedBox(
             height: height,
             width: width,
-            child: const _UpdateNotificaionDialog(),
+            child: const UpdateNotificationDialog(),
           ),
         ),
       );
@@ -50,8 +50,8 @@ Future<void> showNotificationDialog({
   );
 }
 
-class _UpdateNotificaionDialog extends StatelessWidget {
-  const _UpdateNotificaionDialog();
+class UpdateNotificationDialog extends StatelessWidget {
+  const UpdateNotificationDialog({super.key});
 
   @override
   Widget build(final BuildContext context) {

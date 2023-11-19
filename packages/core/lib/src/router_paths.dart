@@ -1,5 +1,5 @@
-class AppPaths {
-  AppPaths._();
+class ScreenPaths {
+  ScreenPaths._();
   static const bootstrap = '/';
   static const home = '/home';
   static const intro = '/intro';

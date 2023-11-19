@@ -1,7 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/update_notification_dialog.dart';
-import 'package:lastanswer/router.dart';
 import 'package:lastanswer/settings/widgets/settings_button.dart';
 
 class SettingsNavigation extends StatelessWidget {
@@ -25,8 +24,8 @@ class SettingsNavigation extends StatelessWidget {
       mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
       children: [
         SettingsButton(
-          routeName: AppPaths.generalSettings,
-          fallbackRouteName: AppPaths.settings,
+          routeName: ScreenPaths.generalSettings,
+          fallbackRouteName: ScreenPaths.settings,
           onSelected: (final route) async => context.pushNamed(route),
           checkSelected: checkSelected,
           text: screenLayout.small
@@ -34,7 +33,7 @@ class SettingsNavigation extends StatelessWidget {
               : context.l10n.generalSettingsShortTitle,
         ),
         SettingsButton(
-          routeName: AppPaths.changelog,
+          routeName: ScreenPaths.changelog,
           onSelected: (final _) async => showNotificationDialog(
             context: context,
             notificationController: notificationController,

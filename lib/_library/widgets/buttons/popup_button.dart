@@ -1,8 +1,7 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:life_hooks/life_hooks.dart';
 
-class PopupButton extends HookWidget {
+class PopupButton extends StatefulWidget {
   const PopupButton({
     required this.builder,
     required this.icon,
@@ -19,6 +18,39 @@ class PopupButton extends HookWidget {
   final Widget? title;
   final VoidCallback? onMobileRemove;
 
+  @override
+  State<PopupButton> createState() => _PopupButtonState();
+}
+
+class _PopupButtonState extends State<PopupButton> {
+  bool _popupVisible = false;
+
+  bool get popupVisible => _popupVisible;
+
+  set popupVisible(final bool isVisible) {
+    if (_popupVisible == isVisible) return;
+    _popupVisible = isVisible;
+    if (mounted) setState(() {});
+    if (!isVisible) return;
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (final _) async => onOpenPopup(
+        context: context,
+        onClose: () => popupVisible = false,
+      ),
+    );
+  }
+
+  bool _popupHovered = false;
+
+  bool get popupHovered => _popupHovered;
+
+  set popupHovered(final bool value) {
+    if (_popupHovered == value) return;
+    _popupHovered = value;
+    if (mounted) setState(() {});
+  }
+
   Future<void> onOpenPopup({
     required final BuildContext context,
     required final VoidCallback onClose,
@@ -29,89 +61,68 @@ class PopupButton extends HookWidget {
       unawaited(Navigator.maybePop(context));
     }
 
-    final effectiveBuilder = mobileBuilder ?? builder;
+    final effectiveBuilder = widget.mobileBuilder ?? widget.builder;
 
-    return showDialog(
+    return showAdaptiveDialog(
       barrierDismissible: false,
       context: context,
       barrierColor: Colors.black12,
       builder: (final context) => MobilePopupButtonDialog(
         builder: effectiveBuilder,
-        onRemove: onMobileRemove,
+        onRemove: widget.onMobileRemove,
         close: close,
-        title: title,
+        title: widget.title,
       ),
     );
   }
 
   @override
   Widget build(final BuildContext context) {
-    final popupVisible = useIsBool();
-    final popupHovered = useIsBool();
     final screenLayout = ScreenLayout.of(context);
-    final getIsMounted = useIsMounted();
-    Future<void> onClose() async {
+    Future<void> onClose([final MenuController? controller]) async {
       await Future.delayed(const Duration(milliseconds: 300), () {
-        if (popupHovered.value) return;
-        if (!getIsMounted()) return;
-        popupVisible.value = false;
+        if (popupHovered) return;
+        popupVisible = false;
+        controller?.close();
       });
     }
 
-    useValueChanged<bool, void>(
-      popupVisible.value,
-      (final _, final __) {
-        if (!popupVisible.value) return;
-
-        WidgetsBinding.instance.addPostFrameCallback(
-          (final _) async => onOpenPopup(
-            context: context,
-            onClose: () => popupVisible.value = false,
-          ),
-        );
-      },
-    );
-
     final button = IconButton(
       onPressed: () {
-        popupVisible
-          ..value = true
-          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          ..notifyListeners();
+        popupVisible = true;
       },
-      icon: Icon(icon),
+      icon: Icon(widget.icon),
     );
 
     if (!PlatformInfo.isNativeWebDesktop) {
-      if (useOnMobile) return button;
+      if (widget.useOnMobile) return button;
 
       return const SizedBox();
     }
-
-    return PortalTarget(
-      visible: popupVisible.value,
-      anchor: screenLayout.large
-          ? const Aligned(
-              follower: Alignment.bottomRight,
-              target: Alignment.topLeft,
-            )
-          : const Aligned(
-              follower: Alignment.bottomRight,
-              target: Alignment.topLeft,
-            ),
-      portalFollower: MouseRegion(
+    return MenuAnchor(
+      onClose: () {
+        popupHovered = false;
+      },
+      alignmentOffset: const Offset(-250, -35),
+      menuChildren: [
+        MouseRegion(
+          onExit: (final _) {
+            popupHovered = false;
+          },
+          onHover: (final _) => popupHovered = true,
+          child: widget.builder(context),
+        ),
+      ],
+      builder: (final context, final controller, final child) => MouseRegion(
+        onEnter: (final _) async {
+          controller.open();
+          popupHovered = true;
+        },
         onExit: (final _) async {
-          popupHovered.value = false;
-          await onClose();
+          popupHovered = false;
+          await onClose(controller);
         },
-        onHover: (final _) => popupHovered.value = true,
-        child: builder(context),
-      ),
-      child: MouseRegion(
-        onHover: (final _) {
-          popupVisible.value = true;
-        },
-        onExit: (final _) async => onClose(),
+        onHover: (final _) => popupHovered = true,
         child: button,
       ),
     );
@@ -139,11 +150,9 @@ class MobilePopupButtonDialog extends StatelessWidget {
       useIcon: true,
     );
 
-    return WillPopScope(
-      onWillPop: () async {
+    return NavigatorPopHandler(
+      onPop: () async {
         close(context);
-
-        return true;
       },
       child: Dialog(
         alignment: Alignment.topCenter,

@@ -32,56 +32,19 @@ class HomeScreen extends StatelessWidget {
     );
     return Row(
       children: [
-        Flexible(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: ScreenLayout.maxSmallWidth - 100,
-            ),
-            child: Column(
-              children: [
-                Flexible(
-                  child: PagedListView<int, ProjectModel>.separated(
-                    pagingController: projectsController.pager,
-                    reverse: isReversed,
-                    builderDelegate: PagedChildBuilderDelegate(
-                      itemBuilder: (final context, final item, final index) =>
-                          ListTile(
-                        leading: switch (item.type) {
-                          ProjectTypes.idea => const IconIdeaButton(),
-                          ProjectTypes.note => IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.book),
-                            ),
-                        },
-                        title: Text(item.title),
-                        onTap: () {
-                          projectNotifier.loadProject(item);
-                        },
-                        selected: openedProjectId == item.id,
-                      ),
-                    ),
-                    separatorBuilder: (final context, final index) => const Row(
-                      children: [
-                        Gap(64),
-                        Expanded(
-                          child: Divider(height: 0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        const _ProjectsListView(),
         if (screenLayout.notSmall)
-          Flexible(
+          Expanded(
             child: Row(
               children: [
                 verticalColumn,
-                Expanded(
+                Flexible(
                   child: Builder(
-                    builder: (final context) => Container(
+                    builder: (final context) => AnimatedContainer(
+                      duration: 250.milliseconds,
+                      constraints: const BoxConstraints(
+                        maxWidth: 600,
+                      ),
                       decoration: BoxDecoration(
                         border: Border.symmetric(
                           vertical: BorderSide(
@@ -100,6 +63,67 @@ class HomeScreen extends StatelessWidget {
         else
           verticalColumn,
       ],
+    );
+  }
+}
+
+class _ProjectsListView extends StatelessWidget {
+  const _ProjectsListView({super.key});
+
+  @override
+  Widget build(final BuildContext context) {
+    final projectsNotifier = context.read<ProjectsNotifier>();
+    final projectNotifier = context.read<OpenedProjectNotifier>();
+
+    final projectsController = projectsNotifier.projectsPagedController;
+    final isReversed = context.select<UserNotifier, bool>(
+      (final c) => c.settings.isProjectsListReversed,
+    );
+    final openedProjectId =
+        context.select<OpenedProjectNotifier, ProjectModelId>(
+      (final c) => c.value.value.id,
+    );
+    final width = MediaQuery.sizeOf(context).width * 0.3;
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: PlatformInfo.isNativeWebMobile ? double.infinity : 270,
+      ),
+      width: width,
+      child: Column(
+        children: [
+          Flexible(
+            child: PagedListView<int, ProjectModel>.separated(
+              pagingController: projectsController.pager,
+              reverse: isReversed,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (final context, final item, final index) =>
+                    ListTile(
+                  leading: switch (item.type) {
+                    ProjectTypes.idea => const IconIdeaButton(),
+                    ProjectTypes.note => IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.book),
+                      ),
+                  },
+                  title: Text(item.title),
+                  onTap: () {
+                    projectNotifier.loadProject(item);
+                  },
+                  selected: openedProjectId == item.id,
+                ),
+              ),
+              separatorBuilder: (final context, final index) => const Row(
+                children: [
+                  Gap(64),
+                  Expanded(
+                    child: Divider(height: 0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

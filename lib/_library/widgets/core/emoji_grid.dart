@@ -119,7 +119,7 @@ class EmojiGrid extends HookWidget {
                 Expanded(
                   child: TextFormField(
                     onChanged: (final value) {
-                      // emojiNotifier.filterKeyword = value;
+                      emojiNotifier.filterKeyword = value;
                     },
                     decoration: const InputDecoration()
                         .copyWith(hintText: context.l10n.search),

@@ -22,35 +22,13 @@ class ButtonPopup extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   @override
-  Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    Color borderColor;
-    if (hideBorder) {
-      borderColor = Colors.transparent;
-    } else if (theme.brightness == Brightness.dark) {
-      borderColor = AppColors.cleanBlack;
-    } else {
-      borderColor = AppColors.grey4;
-    }
-
-    return Card(
-      elevation: 0,
-      clipBehavior: Clip.hardEdge,
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: defaultBorderRadius,
-        side: BorderSide(
-          color: borderColor,
-        ),
-      ),
-      child: SizedBox(
+  Widget build(final BuildContext context) => SizedBox(
         height: height,
         width: !PlatformInfo.isNativeDesktop && !kIsWeb
             ? MediaQuery.of(context).size.width - 50
             : 250,
         child: Stack(
           children: [
-            const BackgroundFrostBox(),
             if (child != null)
               child!
             else
@@ -62,7 +40,5 @@ class ButtonPopup extends StatelessWidget {
               ),
           ],
         ),
-      ),
-    );
-  }
+      );
 }

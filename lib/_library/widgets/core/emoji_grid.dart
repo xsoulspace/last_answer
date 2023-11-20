@@ -18,6 +18,7 @@ class EmojiPopup extends StatelessWidget {
     return PopupButton(
       icon: CupertinoIcons.smiley,
       useOnMobile: false,
+      onWebClose: () => context.read<EmojiStateNotifier>().filterKeyword = '',
       builder: (final context) => EmojiGrid(
         onChanged: emojiInserter.insert,
       ),
@@ -25,7 +26,7 @@ class EmojiPopup extends StatelessWidget {
   }
 }
 
-class EmojiGrid extends HookWidget {
+class EmojiGrid extends StatelessWidget {
   const EmojiGrid({
     required this.onChanged,
     super.key,
@@ -117,12 +118,20 @@ class EmojiGrid extends HookWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: TextFormField(
+                  child: UiTextField(
                     onChanged: (final value) {
                       emojiNotifier.filterKeyword = value;
                     },
-                    decoration: const InputDecoration()
-                        .copyWith(hintText: context.l10n.search),
+                    value: emojiNotifier.filterKeyword,
+                    decoration: const InputDecoration().copyWith(
+                      hintText: context.l10n.search,
+                      suffix: IconButton(
+                        onPressed: () {
+                          emojiNotifier.filterKeyword = '';
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                    ),
                   ),
                 ),
               ],

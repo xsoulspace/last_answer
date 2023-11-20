@@ -79,10 +79,19 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               children: [
                 verticalColumn,
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 24),
-                    child: ProjectView(),
+                Expanded(
+                  child: Builder(
+                    builder: (final context) => Container(
+                      decoration: BoxDecoration(
+                        border: Border.symmetric(
+                          vertical: BorderSide(
+                            color: context.theme.colorScheme.onSecondary,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(left: 24),
+                      child: const ProjectView(),
+                    ),
                   ),
                 ),
               ],

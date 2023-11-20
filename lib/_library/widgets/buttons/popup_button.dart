@@ -8,6 +8,7 @@ class PopupButton extends StatefulWidget {
     this.mobileBuilder,
     this.onMobileRemove,
     this.useOnMobile = true,
+    this.onWebClose,
     this.title,
     super.key,
   });
@@ -17,6 +18,7 @@ class PopupButton extends StatefulWidget {
   final bool useOnMobile;
   final Widget? title;
   final VoidCallback? onMobileRemove;
+  final VoidCallback? onWebClose;
 
   @override
   State<PopupButton> createState() => _PopupButtonState();
@@ -31,7 +33,10 @@ class _PopupButtonState extends State<PopupButton> {
     if (_popupVisible == isVisible) return;
     _popupVisible = isVisible;
     if (mounted) setState(() {});
-    if (!isVisible) return;
+    if (!isVisible) {
+      widget.onWebClose?.call();
+      return;
+    }
 
     WidgetsBinding.instance.addPostFrameCallback(
       (final _) async => onOpenPopup(
@@ -58,6 +63,8 @@ class _PopupButtonState extends State<PopupButton> {
     if (PlatformInfo.isNativeWebDesktop) return;
     void close(final BuildContext context) {
       onClose();
+      widget.onWebClose?.call();
+
       unawaited(Navigator.maybePop(context));
     }
 
@@ -100,8 +107,9 @@ class _PopupButtonState extends State<PopupButton> {
       return const SizedBox();
     }
     return MenuAnchor(
-      onClose: () {
+      onClose: () async {
         popupHovered = false;
+        await onClose();
       },
       alignmentOffset: const Offset(-250, -35),
       menuChildren: [

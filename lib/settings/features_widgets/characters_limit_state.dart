@@ -39,7 +39,7 @@ class CharactersLimitController extends ValueNotifier<String> {
 
   void onLimitChanged(final String? value) {
     final limit = int.tryParse(value ?? '') ?? 0;
-    setLimit(limit);
+    setLimit(limit, zeroEqualNull: false);
   }
 
   void setLimit(

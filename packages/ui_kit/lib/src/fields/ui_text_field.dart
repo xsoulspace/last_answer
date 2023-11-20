@@ -8,6 +8,7 @@ class UiTextField extends StatefulWidget {
     this.value,
     this.onChanged,
     this.decoration,
+    this.controller,
     this.inputFormatters,
     this.keyboardType,
     super.key,
@@ -17,6 +18,7 @@ class UiTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final bool autocorrect;
   final bool enableSuggestions;
+  final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
   final InputDecoration? decoration;
   @override
@@ -24,7 +26,9 @@ class UiTextField extends StatefulWidget {
 }
 
 class _UiTextFieldState extends State<UiTextField> {
-  late final _controller = TextEditingController(text: widget.value);
+  late final _isInnerControllerUsed = widget.controller == null;
+  late final _controller =
+      widget.controller ?? TextEditingController(text: widget.value);
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -34,7 +38,7 @@ class _UiTextFieldState extends State<UiTextField> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    if (_isInnerControllerUsed) _controller.dispose();
   }
 
   @override

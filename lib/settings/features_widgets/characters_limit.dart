@@ -37,6 +37,8 @@ class CharactersLimitSetting extends HookWidget {
         children: [
           const SizedBox(width: 12),
           UiTextField(
+            value: controller.value,
+            onChanged: controller.onLimitChanged,
             keyboardType: TextInputType.number,
             autocorrect: false,
             enableSuggestions: false,

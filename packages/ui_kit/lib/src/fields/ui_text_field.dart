@@ -29,10 +29,11 @@ class _UiTextFieldState extends State<UiTextField> {
   late final _isInnerControllerUsed = widget.controller == null;
   late final _controller =
       widget.controller ?? TextEditingController(text: widget.value);
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(covariant final UiTextField oldWidget) {
     _controller.text = widget.value ?? '';
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

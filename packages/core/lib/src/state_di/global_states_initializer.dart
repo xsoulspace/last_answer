@@ -54,7 +54,6 @@ class GlobalStatesInitializer implements StateInitializer {
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
 
-    // ignore: use_build_context_synchronously
     await dto.userNotifier.onLoad(initializer);
 
     // final isConnected = await PlatformInfo.isConnected;

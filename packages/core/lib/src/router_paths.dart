@@ -1,21 +1,20 @@
+import '../core.dart';
+
 class ScreenPaths {
   ScreenPaths._();
   static const bootstrap = '/';
   static const home = '/home';
   static const intro = '/intro';
-  static const createIdea = '/i/create';
-  static const ideas = '/i';
-  static const idea = '$ideas/:ideaId';
-  static String getIdeaPath({required final String ideaId}) => '$ideas/$ideaId';
-  static const ideaAnswer = '$ideas/:ideaId/:answerId';
-  static String getIdeaAnswerPath({
-    required final String ideaId,
-    required final String answerId,
+  static const createIdea = '$home/i/create';
+  static String idea({required final ProjectModelId ideaId}) =>
+      '$home/i/${ideaId.value}';
+  static String ideaAnswer({
+    required final ProjectModelId ideaId,
+    required final ProjectModelId answerId,
   }) =>
-      '$ideas/$ideaId/$answerId';
-  static const notes = '/n';
-  static const note = '$notes/:noteId';
-  static String getNotePath({required final String noteId}) => '$notes/$noteId';
+      '$home/i/${ideaId.value}/${answerId.value}';
+  static String note({required final ProjectModelId noteId}) =>
+      '$home/n/${noteId.value}';
   static const settings = '/settings';
   static const generalSettings = '$settings/general';
   static const profile = '$settings/profile';

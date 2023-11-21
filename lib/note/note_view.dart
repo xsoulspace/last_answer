@@ -1,5 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
 import 'package:lastanswer/pack_app/widgets/project_text_field.dart';
@@ -41,6 +42,7 @@ class NoteViewBody extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
+              const ProjectViewAppBar(),
               Expanded(
                 child: ProjectTextField(
                   hintText: context.l10n.writeANote,

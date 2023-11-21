@@ -8,6 +8,7 @@ class ProjectModelId with _$ProjectModelId {
   const ProjectModelId._();
   factory ProjectModelId.fromJson(final String value) =>
       ProjectModelId(value: value);
+  factory ProjectModelId.generate() => ProjectModelId(value: createId());
   static const empty = ProjectModelId(value: '');
   bool get isEmpty => value.isEmpty;
   String toJson() => value;

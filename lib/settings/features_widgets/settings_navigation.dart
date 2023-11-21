@@ -24,8 +24,8 @@ class SettingsNavigation extends StatelessWidget {
       mainAxisSize: screenLayout.small ? MainAxisSize.max : MainAxisSize.min,
       children: [
         SettingsButton(
-          routeName: ScreenPaths.generalSettings,
-          fallbackRouteName: ScreenPaths.settings,
+          routeName: '', // ScreenPaths.generalSettings,
+          fallbackRouteName: '', //ScreenPaths.settings,
           onSelected: (final route) async => context.pushNamed(route),
           checkSelected: checkSelected,
           text: screenLayout.small
@@ -33,7 +33,7 @@ class SettingsNavigation extends StatelessWidget {
               : context.l10n.generalSettingsShortTitle,
         ),
         SettingsButton(
-          routeName: ScreenPaths.changelog,
+          routeName: '', // ScreenPaths.changelog,
           onSelected: (final _) async => showNotificationDialog(
             context: context,
             notificationController: notificationController,

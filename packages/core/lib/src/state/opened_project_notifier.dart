@@ -58,6 +58,19 @@ class OpenedProjectNotifier
     loadProject(context: context, project: note);
   }
 
+  void createIdeaProject({
+    required final BuildContext context,
+    required final String title,
+  }) {
+    final idea = ProjectModelIdea(
+      id: ProjectModelId.generate(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      title: title,
+    );
+    loadProject(context: context, project: idea);
+  }
+
   void deleteProject() {
     if (value.isLoading) return;
     final item = value.value;

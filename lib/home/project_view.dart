@@ -1,5 +1,5 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
 
@@ -16,26 +16,16 @@ class ProjectView extends StatelessWidget {
       return const CircularProgressIndicator.adaptive();
     }
     final id = projectContainer.value.id;
-    return projectContainer.value.map(
-      idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
-      note: (final note) => NoteView(note: note, key: ValueKey(id)),
-    );
-  }
-}
-
-class ProjectViewAppBar extends StatelessWidget {
-  const ProjectViewAppBar({super.key});
-
-  @override
-  Widget build(final BuildContext context) {
-    final screenLayout = ScreenLayout.of(context);
-    return SafeArea(
-      child: Row(
-        children: [
-          if (screenLayout.small)
-            BackButton(onPressed: () => context.go(ScreenPaths.home)),
-        ],
-      ),
+    return Column(
+      children: [
+        const ProjectViewAppBar(),
+        Expanded(
+          child: projectContainer.value.map(
+            idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
+            note: (final note) => NoteView(note: note, key: ValueKey(id)),
+          ),
+        ),
+      ],
     );
   }
 }

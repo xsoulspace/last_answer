@@ -5,56 +5,79 @@ import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({
+    required this.navigator,
+    super.key,
+  });
+  final Widget navigator;
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-    final verticalColumn = Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        VerticalProjectsBar(
-          onIdeaTap: () {},
-          onNoteTap: () {},
-        ),
-      ],
-    );
+    if (screenLayout.small) {
+      return navigator;
+    }
     return Row(
       children: [
         const _ProjectsListView(),
-        if (screenLayout.notSmall)
-          Expanded(
-            child: Row(
-              children: [
-                verticalColumn,
-                Flexible(
-                  child: Builder(
-                    builder: (final context) => AnimatedContainer(
-                      duration: 250.milliseconds,
-                      constraints: const BoxConstraints(
-                        minWidth: 300,
-                        maxWidth: 700,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(
-                            color: context.theme.colorScheme.onSecondary,
-                          ),
+        Expanded(
+          child: Row(
+            children: [
+              const _VerticalBar(),
+              Flexible(
+                child: Builder(
+                  builder: (final context) => AnimatedContainer(
+                    duration: 250.milliseconds,
+                    constraints: const BoxConstraints(
+                      minWidth: 300,
+                      maxWidth: 700,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.symmetric(
+                        vertical: BorderSide(
+                          color: context.theme.colorScheme.onSecondary,
                         ),
                       ),
-                      padding: const EdgeInsets.only(left: 24),
-                      child: const ProjectView(),
                     ),
+                    padding: const EdgeInsets.only(left: 24),
+                    child: const ProjectView(),
                   ),
                 ),
-              ],
-            ),
-          )
-        else
-          verticalColumn,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
+}
+
+class _VerticalBar extends StatelessWidget {
+  const _VerticalBar();
+
+  @override
+  Widget build(final BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          VerticalProjectsBar(
+            onIdeaTap: () {},
+            onNoteTap: () {
+              context.read<OpenedProjectNotifier>().createNoteProject(context);
+            },
+          ),
+        ],
+      );
+}
+
+class ProjectsListScreen extends StatelessWidget {
+  const ProjectsListScreen({super.key});
+
+  @override
+  Widget build(final BuildContext context) => const Row(
+        children: [
+          _ProjectsListView(),
+          _VerticalBar(),
+        ],
+      );
 }
 
 class _ProjectsListView extends StatelessWidget {
@@ -90,7 +113,7 @@ class _ProjectsListView extends StatelessWidget {
                 },
                 title: Text(item.title),
                 onTap: () {
-                  projectNotifier.loadProject(item);
+                  projectNotifier.loadProject(project: item, context: context);
                 },
                 selected: openedProjectId == item.id,
               ),
@@ -107,7 +130,9 @@ class _ProjectsListView extends StatelessWidget {
         ),
       ],
     );
-    if (PlatformInfo.isNativeWebMobile) {
+    final screenLayout = ScreenLayout.of(context);
+
+    if (PlatformInfo.isNativeWebMobile || screenLayout.small) {
       return Expanded(child: child);
     } else {
       final width = MediaQuery.sizeOf(context).width * 0.3;

@@ -18,13 +18,31 @@ class OpenedProjectNotifier
 
   final OpenedProjectNotifierDto dto;
 
-  void loadProject(final ProjectModel item) {
-    setValue(LoadableContainer.loaded(item));
+  void loadProject({
+    required final ProjectModel project,
+    required final BuildContext context,
+  }) {
+    setValue(LoadableContainer.loaded(project));
+
+    final path = switch (project.type) {
+      ProjectTypes.note => ScreenPaths.note(noteId: project.id),
+      ProjectTypes.idea => ScreenPaths.idea(ideaId: project.id),
+    };
+    unawaited(context.push(path));
   }
 
   void updateProject(final ProjectModel item) {
     setValue(value.copyWith(value: item));
     dto.projectsNotifier.updateProject(item);
+  }
+
+  void createNoteProject(final BuildContext context) {
+    final note = ProjectModelNote(
+      id: ProjectModelId.generate(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    loadProject(context: context, project: note);
   }
 
   void deleteProject() {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
+import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
 
 final appRouter = GoRouter(
@@ -11,9 +12,36 @@ final appRouter = GoRouter(
       builder: (final context, final router, final navigator) =>
           AppScaffold(navigator: navigator),
       routes: [
-        AppRoute(ScreenPaths.bootstrap, (final _) => const LoadingScreen()),
-        AppRoute(ScreenPaths.intro, (final _) => const IntroScreen()),
-        AppRoute(ScreenPaths.home, (final _) => const HomeScreen()),
+        AppRoute(
+          ScreenPaths.bootstrap,
+          (final _) => const LoadingScreen(),
+        ),
+        AppRoute(
+          ScreenPaths.intro,
+          (final _) => const IntroScreen(),
+        ),
+        ShellRoute(
+          builder: (final context, final state, final navigator) =>
+              ScreenScaffold(
+            navigator: HomeScreen(
+              navigator: navigator,
+            ),
+          ),
+          routes: [
+            AppRoute(
+              ScreenPaths.home,
+              (final _) => const ProjectsListScreen(),
+            ),
+            AppRoute(
+              '/home/n/:noteId',
+              (final _) => const ProjectView(),
+            ),
+            AppRoute(
+              '/home/i/:ideaId',
+              (final _) => const ProjectView(),
+            ),
+          ],
+        ),
       ],
     ),
   ],

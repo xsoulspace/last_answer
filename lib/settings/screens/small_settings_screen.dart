@@ -6,10 +6,10 @@ import 'package:lastanswer/settings/screens/settings_navigation_screen.dart';
 
 class SmallSettingsScreen extends HookWidget {
   const SmallSettingsScreen({
-    required this.onBack,
+    required this.onHome,
     super.key,
   });
-  final VoidCallback onBack;
+  final VoidCallback onHome;
 
   @override
   Widget build(final BuildContext context) {
@@ -32,10 +32,10 @@ class SmallSettingsScreen extends HookWidget {
     Future<void> switchToPage() async {
       switch (currentLocation) {
         case ScreenPaths.profile:
-          subSettingsPage.value = MyAccountScreen(onBack: onBack);
+          subSettingsPage.value = MyAccountScreen(onBack: onHome);
           await toPage();
         case ScreenPaths.generalSettings:
-          subSettingsPage.value = GeneralSettingsScreen(onBack: onBack);
+          subSettingsPage.value = GeneralSettingsScreen(onBack: onHome);
           await toPage();
         default:
           await toNavigation();
@@ -75,7 +75,7 @@ class SmallSettingsScreen extends HookWidget {
       controller: pageController,
       children: [
         SettingsNavigationScreen(
-          onBack: onBack,
+          onBack: onHome,
         ),
         if (subPage != null) subPage,
       ],

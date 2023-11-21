@@ -2,7 +2,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
-import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
+import 'package:lastanswer/pack_app/pack_app.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -98,6 +98,10 @@ class _ProjectsListView extends StatelessWidget {
     );
     final child = Column(
       children: [
+        HomeAppBar(
+          onInfoTap: () async => context.go(ScreenPaths.appInfo),
+          onSettingsTap: () async => context.go(ScreenPaths.settings),
+        ),
         Flexible(
           child: PagedListView<int, ProjectModel>.separated(
             pagingController: projectsController.pager,

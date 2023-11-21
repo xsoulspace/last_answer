@@ -4,6 +4,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/settings/pack_settings.dart';
 
 final appRouter = GoRouter(
   redirect: _handleRootRedirect,
@@ -41,6 +42,14 @@ final appRouter = GoRouter(
               (final _) => const ProjectView(),
             ),
           ],
+        ),
+        AppRoute(
+          ScreenPaths.settings,
+          (final _) => const SettingsScreen(),
+        ),
+        AppRoute(
+          ScreenPaths.appInfo,
+          (final _) => const AppInfoScreen(),
         ),
       ],
     ),

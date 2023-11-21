@@ -22,6 +22,19 @@ class OpenedProjectNotifier
     required final ProjectModel project,
     required final BuildContext context,
   }) {
+    if (value.isLoaded) {
+      /// deleting current project, if its empty
+      value.value.map(
+        idea: (final idea) {
+          if (idea.title.isNotEmpty || idea.answers.isNotEmpty) return;
+          dto.projectsNotifier.deleteProject(idea);
+        },
+        note: (final note) {
+          if (note.note.isNotEmpty) return;
+          dto.projectsNotifier.deleteProject(note);
+        },
+      );
+    }
     setValue(LoadableContainer.loaded(project));
 
     final path = switch (project.type) {

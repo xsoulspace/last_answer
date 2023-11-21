@@ -29,11 +29,13 @@ class ProjectViewAppBar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-    return AppBar(
-      leading: screenLayout.small
-          ? BackButton(onPressed: () => context.go(ScreenPaths.home))
-          : null,
-      automaticallyImplyLeading: false,
+    return SafeArea(
+      child: Row(
+        children: [
+          if (screenLayout.small)
+            BackButton(onPressed: () => context.go(ScreenPaths.home)),
+        ],
+      ),
     );
   }
 }

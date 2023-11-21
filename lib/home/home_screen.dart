@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
+import 'package:lastanswer/pack_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -13,16 +16,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-    if (screenLayout.small) {
-      return navigator;
-    }
+    if (screenLayout.small) return navigator;
+
     return Row(
       children: [
         const _ProjectsListView(),
         Expanded(
           child: Row(
             children: [
-              const _VerticalBar(),
               Flexible(
                 child: Builder(
                   builder: (final context) => AnimatedContainer(
@@ -72,12 +73,7 @@ class ProjectsListScreen extends StatelessWidget {
   const ProjectsListScreen({super.key});
 
   @override
-  Widget build(final BuildContext context) => const Row(
-        children: [
-          _ProjectsListView(),
-          _VerticalBar(),
-        ],
-      );
+  Widget build(final BuildContext context) => const _ProjectsListView();
 }
 
 class _ProjectsListView extends StatelessWidget {
@@ -96,56 +92,71 @@ class _ProjectsListView extends StatelessWidget {
         context.select<OpenedProjectNotifier, ProjectModelId>(
       (final c) => c.value.value.id,
     );
-    final child = Column(
+    final Widget child = Column(
       children: [
-        HomeAppBar(
-          onInfoTap: () async => context.go(ScreenPaths.appInfo),
-          onSettingsTap: () async => context.go(ScreenPaths.settings),
-        ),
         Flexible(
-          child: PagedListView<int, ProjectModel>.separated(
+          child: PagedListView<int, ProjectModel>(
             pagingController: projectsController.pager,
             reverse: isReversed,
             builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (final context, final item, final index) => ListTile(
-                leading: switch (item.type) {
-                  ProjectTypes.idea => const IconIdeaButton(),
-                  ProjectTypes.note => IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.book),
-                    ),
-                },
-                title: Text(item.title),
-                onTap: () {
+              itemBuilder: (final context, final item, final index) =>
+                  ProjectTile(
+                onRemoveConfirm: (final _) async => false,
+                onRemove: (final _) {},
+                project: item,
+                onTap: (final item) {
                   projectNotifier.loadProject(project: item, context: context);
                 },
                 selected: openedProjectId == item.id,
               ),
             ),
-            separatorBuilder: (final context, final index) => const Row(
-              children: [
-                Gap(64),
-                Expanded(
-                  child: Divider(height: 0),
-                ),
-              ],
-            ),
           ),
         ),
       ],
     );
+    final appBar = HomeAppBar(
+      onInfoTap: () async => context.go(ScreenPaths.appInfo),
+      onSettingsTap: () async => context.go(ScreenPaths.settings),
+    );
     final screenLayout = ScreenLayout.of(context);
-
     if (PlatformInfo.isNativeWebMobile || screenLayout.small) {
-      return Expanded(child: child);
+      return Column(
+        children: [
+          appBar,
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(child: child),
+                const _VerticalBar(),
+              ],
+            ),
+          ),
+        ],
+      );
     } else {
-      final width = MediaQuery.sizeOf(context).width * 0.3;
-      return Container(
+      final double width =
+          math.max(200, MediaQuery.sizeOf(context).width * 0.3);
+      return AnimatedContainer(
+        duration: 250.milliseconds,
         constraints: const BoxConstraints(
           maxWidth: 270,
         ),
         width: width,
-        child: child,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            appBar,
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(child: child),
+                  const _VerticalBar(),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
     }
   }

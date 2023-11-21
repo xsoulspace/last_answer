@@ -20,13 +20,16 @@ class IconIdeaButton extends StatelessWidget {
 class IconIdea extends StatelessWidget {
   const IconIdea({
     this.size = 24.0,
+    this.color,
     super.key,
   });
   final double size;
+  final Color? color;
   @override
   Widget build(final BuildContext context) => Assets.icons.idea.svg(
         height: size,
         width: size,
-        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+        colorFilter:
+            color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
       );
 }

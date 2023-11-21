@@ -152,7 +152,7 @@ class HomeAppBar extends StatelessWidget {
     return AppBar(
       title: SelectableText(
         greeting.current,
-        style: context.textTheme.labelLarge,
+        style: context.textTheme.labelSmall,
       ),
       actions: [
         IconButton(

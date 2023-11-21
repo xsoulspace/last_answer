@@ -1,3 +1,3 @@
 class Envs {
-  static const isarDbName = 'isar_3';
+  static const isarDbName = 'isar_4';
 }

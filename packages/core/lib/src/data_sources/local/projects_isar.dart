@@ -16,14 +16,12 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   }) async {
     final getDto = dto.data;
     final int itemsCount;
-    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-        QAfterOffset> offsetQuery;
     final types = getDto?.types ?? [];
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterFilterCondition> basicQuery;
     if (getDto != null && getDto.search.isNotEmpty) {
       basicQuery = isarDb.projects
-          .filter()
+          .where()
           .jsonContentContains(
             '*${getDto.search}*',
             caseSensitive: false,
@@ -32,7 +30,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
           .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     } else {
       basicQuery = isarDb.projects
-          .filter()
+          .where()
           .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     }
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
@@ -42,10 +40,12 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     } else {
       sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();
     }
-    offsetQuery = sortedBasicQuery.offset(dto.page * dto.limit);
-    itemsCount = sortedBasicQuery.countSync();
+    itemsCount = await sortedBasicQuery.countAsync();
     final pagesCount = (itemsCount / dto.limit).ceil();
-    final items = await offsetQuery.limit(dto.limit).findAll();
+    final items = await sortedBasicQuery.findAllAsync(
+      offset: dto.page * dto.limit,
+      limit: dto.limit,
+    );
 
     final resultItems = items
         .map(
@@ -68,33 +68,37 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
       ..type = project.type.name
       ..updatedAt = project.updatedAt
       ..jsonContent = jsonEncode(project.toJson())
-      ..modelIdStr = project.id.value
-      ..modelIdHashcode = await project.id.value.getHashcode();
-    await isarDb.db.writeTxn(() => isarDb.projects.put(isarProject));
+      ..modelIdStr = project.id.value;
+
+    isarDb.db.write(
+      (final isar) => isar.projectIsarCollections.put(isarProject),
+    );
   }
 
   @override
   Future<void> remove({required final ProjectModelId id}) async {
-    await isarDb.db.writeTxn(
-      () async => isarDb.projects.delete(await id.value.getHashcode()),
+    isarDb.db.write(
+      (final isar) => isar.projectIsarCollections.delete(id.value),
     );
   }
 
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async {
-    final List<ProjectIsarCollection> isarProjects = [];
-    for (final project in projects) {
-      final isarProject = ProjectIsarCollection()
-        ..jsonContent = jsonEncode(project.toJson())
-        ..type = project.type.name
-        ..updatedAt = project.updatedAt
-        ..modelIdHashcode = await project.id.value.getHashcode()
-        ..modelIdStr = project.id.value;
-      isarProjects.add(isarProject);
-    }
+    isarDb.db.write(
+      (final isar) {
+        final List<ProjectIsarCollection> isarProjects = [];
+        for (final project in projects) {
+          final isarProject = ProjectIsarCollection()
+            ..jsonContent = jsonEncode(project.toJson())
+            ..type = project.type.name
+            ..updatedAt = project.updatedAt
+            ..modelIdStr = project.id.value;
 
-    await isarDb.db.writeTxn(
-      () async => isarDb.projects.putAll(isarProjects),
+          isarProjects.add(isarProject);
+        }
+
+        isar.projectIsarCollections.putAll(isarProjects);
+      },
     );
   }
 }

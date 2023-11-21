@@ -9,7 +9,7 @@ final class EmojiStateNotifier extends MapStateNotifier<EmojiModel> {
   factory EmojiStateNotifier.provide(final BuildContext context) =>
       EmojiStateNotifier(
         onFilter: (final emoji, final keyword) =>
-            keyword.isNotEmpty && emoji.keywords.contains(keyword),
+            keyword.isEmpty || emoji.keywords.contains(keyword),
       );
 }
 

@@ -29,8 +29,8 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   internet_connection_checker: ^1.0.0+1
   intl: ^0.18.1
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+  isar: ^4.0.0-dev.14
+  isar_flutter_libs: ^4.0.0-dev.14
   json_annotation: ^4.8.1
   logger: ^2.0.2+1
   murmur3: ^2.1.0
@@ -70,7 +70,7 @@ dev_dependencies:
   freezed: ^2.4.5
   hive_generator: ^2.0.1
   injectable_generator: ^2.4.1
-  isar_generator: ^3.1.0+1
+  # isar_generator: ^3.1.0+1
   json_serializable: ^6.7.1
   mockito: ^5.4.2
   mocktail: ^1.0.1

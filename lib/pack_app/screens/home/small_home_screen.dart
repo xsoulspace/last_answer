@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_app/screens/home/projects_list_view.dart';
 import 'package:lastanswer/pack_app/screens/home/vertical_projects_bar.dart';
 
@@ -48,11 +48,11 @@ class _SmallHomeScreenState extends State<SmallHomeScreen> {
     );
 
     final body = Scaffold(
-      appBar: HomeAppBar.build(
-        context: context,
-        onInfoTap: widget.onInfoTap,
-        onSettingsTap: widget.onSettingsTap,
-      ),
+      // appBar: HomeAppBar(
+      //   // context: context,
+      //   onInfoTap: widget.onInfoTap,
+      //   onSettingsTap: widget.onSettingsTap,
+      // ),
       body: Column(
         children: [
           Expanded(
@@ -110,46 +110,49 @@ class HomeVerticalMenu extends StatelessWidget {
   }
 }
 
-class HomeAppBar {
-  HomeAppBar._();
-  static PreferredSizeWidget build({
-    required final VoidCallback onSettingsTap,
-    required final VoidCallback onInfoTap,
-    required final BuildContext context,
-  }) {
-    final greeting = Greeting();
-    final themeDefiner = ThemeDefiner.of(context);
-    final effectiveTheme = themeDefiner.effectiveTheme;
+class HomeAppBar extends StatelessWidget {
+  const HomeAppBar({
+    required this.onInfoTap,
+    required this.onSettingsTap,
+    super.key,
+  });
 
-    if (Platform.isMacOS) {
-      return LeftPanelMacosAppBar(
-        context: context,
-        title: greeting.current,
-        actions: [
-          IconButton(
-            onPressed: onInfoTap,
-            icon: const Icon(Icons.info_outline),
-          ),
-          IconButton(
-            onPressed: onSettingsTap,
-            icon: const Icon(CupertinoIcons.settings),
-          ),
-        ]
-            .map(
-              (final child) => Padding(
-                padding: const EdgeInsets.only(right: 18),
-                child: child,
-              ),
-            )
-            .toList(),
-      );
-    }
+  final VoidCallback onSettingsTap;
+  final VoidCallback onInfoTap;
+  @override
+  Widget build(final BuildContext context) {
+    final greeting = Greeting();
+    // final themeDefiner = ThemeDefiner.of(context);
+    // final effectiveTheme = themeDefiner.effectiveTheme;
+
+    // if (Platform.isMacOS) {
+    //   return LeftPanelMacosAppBar(
+    //     context: context,
+    //     title: greeting.current,
+    //     actions: [
+    //       IconButton(
+    //         onPressed: onInfoTap,
+    //         icon: const Icon(Icons.info_outline),
+    //       ),
+    //       IconButton(
+    //         onPressed: onSettingsTap,
+    //         icon: const Icon(CupertinoIcons.settings),
+    //       ),
+    //     ]
+    //         .map(
+    //           (final child) => Padding(
+    //             padding: const EdgeInsets.only(right: 18),
+    //             child: child,
+    //           ),
+    //         )
+    //         .toList(),
+    //   );
+    // }
 
     return AppBar(
-      // TODO(arenukvern): make popup with translation for native language
       title: SelectableText(
         greeting.current,
-        style: effectiveTheme.textTheme.displayMedium,
+        style: context.textTheme.labelLarge,
       ),
       actions: [
         IconButton(

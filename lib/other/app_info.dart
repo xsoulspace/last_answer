@@ -5,10 +5,8 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class AppInfoScreen extends StatefulWidget {
   const AppInfoScreen({
-    required this.onBack,
     super.key,
   });
-  final VoidCallback onBack;
   static const privacyPolicyLink =
       'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
   static const termsAndConditions =
@@ -28,7 +26,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: context.l10n.appInfo,
-        onBack: widget.onBack,
+        onBack: () => context.router.go(ScreenPaths.home),
       ),
       body: Align(
         alignment: Alignment.topCenter,

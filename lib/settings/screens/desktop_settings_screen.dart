@@ -8,10 +8,10 @@ import 'package:lastanswer/settings/features_widgets/settings_navigation.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
   const DesktopSettingsScreen({
-    required this.onBack,
+    required this.onHome,
     super.key,
   });
-  final VoidCallback onBack;
+  final VoidCallback onHome;
 
   @override
   Widget build(final BuildContext context) {
@@ -24,7 +24,7 @@ class DesktopSettingsScreen extends StatelessWidget {
           Positioned(
             top: 70,
             left: 50,
-            child: CupertinoCloseButton(onPressed: onBack),
+            child: CupertinoCloseButton(onPressed: onHome),
           ),
           Center(
             child: ConstrainedBox(

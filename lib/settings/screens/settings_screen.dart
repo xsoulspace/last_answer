@@ -5,22 +5,16 @@ import 'package:lastanswer/settings/screens/small_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
-    required this.onBack,
     super.key,
   });
-  final VoidCallback onBack;
 
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-
+    void onHome() => context.go(ScreenPaths.home);
     final child = screenLayout.small
-        ? SmallSettingsScreen(
-            onBack: onBack,
-          )
-        : DesktopSettingsScreen(
-            onBack: onBack,
-          );
+        ? SmallSettingsScreen(onHome: onHome)
+        : DesktopSettingsScreen(onHome: onHome);
 
     return child;
   }

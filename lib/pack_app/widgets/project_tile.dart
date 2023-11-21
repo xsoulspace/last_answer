@@ -11,7 +11,6 @@ class ProjectTile extends StatelessWidget {
     required this.project,
     required this.onTap,
     required this.onRemove,
-    required this.onRemoveConfirm,
     required this.selected,
     super.key,
   });
@@ -19,7 +18,6 @@ class ProjectTile extends StatelessWidget {
   final bool selected;
   final ValueChanged<ProjectModel> onTap;
   final ValueChanged<ProjectModel> onRemove;
-  final FutureBoolValueChanged<ProjectModel> onRemoveConfirm;
 
   String createTitle() => project.title;
 

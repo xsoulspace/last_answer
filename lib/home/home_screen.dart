@@ -101,8 +101,12 @@ class _ProjectsListView extends StatelessWidget {
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (final context, final item, final index) =>
                   ProjectTile(
-                onRemoveConfirm: (final _) async => false,
-                onRemove: (final _) {},
+                onRemove: (final _) async {
+                  await showRemoveTitleDialog(
+                    context: context,
+                    title: item.title,
+                  );
+                },
                 project: item,
                 onTap: (final item) {
                   projectNotifier.loadProject(project: item, context: context);

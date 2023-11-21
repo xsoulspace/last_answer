@@ -68,6 +68,7 @@ class OpenedProjectNotifier
       updatedAt: DateTime.now(),
       title: title,
     );
+    if (title.isNotEmpty) dto.projectsNotifier.updateProject(idea);
     loadProject(context: context, project: idea);
   }
 

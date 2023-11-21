@@ -42,11 +42,14 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
     void onBack() => Navigator.pop(context);
 
     void onCreate() {
+      final text = textController.text;
+      if (text.isNotEmpty) {
+        projectNotifier.createIdeaProject(
+          context: context,
+          title: textController.text,
+        );
+      }
       onBack();
-      projectNotifier.createIdeaProject(
-        context: context,
-        title: textController.text,
-      );
     }
 
     return Scaffold(

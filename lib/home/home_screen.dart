@@ -102,10 +102,13 @@ class _ProjectsListView extends StatelessWidget {
               itemBuilder: (final context, final item, final index) =>
                   ProjectTile(
                 onRemove: (final _) async {
-                  await showRemoveTitleDialog(
+                  final shouldProceed = await showRemoveTitleDialog(
                     context: context,
                     title: item.title,
                   );
+                  if (shouldProceed) {
+                    projectsNotifier.deleteProject(item);
+                  }
                 },
                 project: item,
                 onTap: (final item) {

@@ -1,7 +1,7 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:universal_io/io.dart';
 
 import '../../../core.dart';
 
@@ -15,24 +15,32 @@ final class ComplexLocalDbIsarImpl implements ComplexLocalDb {
       : _db!;
   @override
   Future<void> open() async {
-    final dir = Platform.isIOS
-        ? await getLibraryDirectory()
-        : await getApplicationDocumentsDirectory();
-    _db ??= await Isar.open(
-      [
+    final String dirPath;
+
+    /// doesn't work on web
+    if (kIsWeb) {
+      dirPath = '/assets/${Envs.isarDbName}';
+    } else if (Platform.isIOS) {
+      dirPath = (await getLibraryDirectory()).path;
+    } else {
+      dirPath = (await getApplicationDocumentsDirectory()).path;
+    }
+
+    _db ??= Isar.open(
+      schemas: [
         ProjectIsarCollectionSchema,
       ],
-      directory: dir.path,
+      directory: dirPath,
       name: Envs.isarDbName,
     );
   }
 
-  IsarCollection<ProjectIsarCollection> get projects =>
+  IsarCollection<String, ProjectIsarCollection> get projects =>
       db.projectIsarCollections;
 
   @override
   Future<void> close() async {
-    await _db?.close();
+    _db?.close();
     _db = null;
   }
 }

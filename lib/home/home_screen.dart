@@ -73,47 +73,51 @@ class _ProjectsListView extends StatelessWidget {
         context.select<OpenedProjectNotifier, ProjectModelId>(
       (final c) => c.value.value.id,
     );
-    final width = MediaQuery.sizeOf(context).width * 0.3;
-    return Container(
-      constraints: BoxConstraints(
-        maxWidth: PlatformInfo.isNativeWebMobile ? double.infinity : 270,
-      ),
-      width: width,
-      child: Column(
-        children: [
-          Flexible(
-            child: PagedListView<int, ProjectModel>.separated(
-              pagingController: projectsController.pager,
-              reverse: isReversed,
-              builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (final context, final item, final index) =>
-                    ListTile(
-                  leading: switch (item.type) {
-                    ProjectTypes.idea => const IconIdeaButton(),
-                    ProjectTypes.note => IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.book),
-                      ),
-                  },
-                  title: Text(item.title),
-                  onTap: () {
-                    projectNotifier.loadProject(item);
-                  },
-                  selected: openedProjectId == item.id,
-                ),
-              ),
-              separatorBuilder: (final context, final index) => const Row(
-                children: [
-                  Gap(64),
-                  Expanded(
-                    child: Divider(height: 0),
-                  ),
-                ],
+    final child = Column(
+      children: [
+        Flexible(
+          child: PagedListView<int, ProjectModel>.separated(
+            pagingController: projectsController.pager,
+            reverse: isReversed,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (final context, final item, final index) => ListTile(
+                leading: switch (item.type) {
+                  ProjectTypes.idea => const IconIdeaButton(),
+                  ProjectTypes.note => IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.book),
+                    ),
+                },
+                title: Text(item.title),
+                onTap: () {
+                  projectNotifier.loadProject(item);
+                },
+                selected: openedProjectId == item.id,
               ),
             ),
+            separatorBuilder: (final context, final index) => const Row(
+              children: [
+                Gap(64),
+                Expanded(
+                  child: Divider(height: 0),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+    if (PlatformInfo.isNativeWebMobile) {
+      return Expanded(child: child);
+    } else {
+      final width = MediaQuery.sizeOf(context).width * 0.3;
+      return Container(
+        constraints: const BoxConstraints(
+          maxWidth: 270,
+        ),
+        width: width,
+        child: child,
+      );
+    }
   }
 }

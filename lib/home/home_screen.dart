@@ -9,18 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final projectsNotifier = context.read<ProjectsNotifier>();
-    final projectNotifier = context.read<OpenedProjectNotifier>();
-
-    final projectsController = projectsNotifier.projectsPagedController;
     final screenLayout = ScreenLayout.of(context);
-    final isReversed = context.select<UserNotifier, bool>(
-      (final c) => c.settings.isProjectsListReversed,
-    );
-    final openedProjectId =
-        context.select<OpenedProjectNotifier, ProjectModelId>(
-      (final c) => c.value.value.id,
-    );
     final verticalColumn = Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -43,7 +32,8 @@ class HomeScreen extends StatelessWidget {
                     builder: (final context) => AnimatedContainer(
                       duration: 250.milliseconds,
                       constraints: const BoxConstraints(
-                        maxWidth: 600,
+                        minWidth: 300,
+                        maxWidth: 700,
                       ),
                       decoration: BoxDecoration(
                         border: Border.symmetric(
@@ -68,7 +58,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _ProjectsListView extends StatelessWidget {
-  const _ProjectsListView({super.key});
+  const _ProjectsListView();
 
   @override
   Widget build(final BuildContext context) {

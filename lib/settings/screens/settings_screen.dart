@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
-    void onHome() => context.go(ScreenPaths.home);
+    void onHome() => Navigator.pop(context);
     final child = screenLayout.small
         ? SmallSettingsScreen(onHome: onHome)
         : DesktopSettingsScreen(onHome: onHome);

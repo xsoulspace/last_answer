@@ -3,12 +3,8 @@ import 'package:lastanswer/common_imports.dart';
 
 class CreateIdeaProjectScreen extends StatefulHookWidget {
   const CreateIdeaProjectScreen({
-    required this.onBack,
-    required this.onCreate,
     super.key,
   });
-  final VoidCallback onBack;
-  final ValueChanged<String> onCreate;
 
   @override
   State<CreateIdeaProjectScreen> createState() =>
@@ -20,7 +16,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((final _) {
-      FocusScope.of(context).requestFocus(_textFieldFocusNode);
+      _textFieldFocusNode.requestFocus();
     });
     super.initState();
   }
@@ -42,12 +38,22 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
           hintText: context.l10n.createIdeaHelperText,
           border: const UnderlineInputBorder(),
         );
+    final projectNotifier = context.read<OpenedProjectNotifier>();
+    void onBack() => Navigator.pop(context);
+
+    void onCreate() {
+      onBack();
+      projectNotifier.createIdeaProject(
+        context: context,
+        title: textController.text,
+      );
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: '',
-        onBack: widget.onBack,
+        onBack: onBack,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 8),
@@ -73,8 +79,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                     children: [
                       Expanded(
                         child: TextField(
-                          onSubmitted: (final _) =>
-                              widget.onCreate(textController.text),
+                          onSubmitted: (final _) => onCreate(),
                           focusNode: _textFieldFocusNode,
                           controller: textController,
                           maxLength: 90,
@@ -84,7 +89,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                       ),
                       const SizedBox(width: 6),
                       IconButton(
-                        onPressed: () => widget.onCreate(textController.text),
+                        onPressed: onCreate,
                         icon: const Icon(Icons.send),
                       ),
                     ],

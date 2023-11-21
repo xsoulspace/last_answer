@@ -4,8 +4,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
+import 'package:lastanswer/idea/create_idea_screen.dart';
+import 'package:lastanswer/other/other.dart';
 import 'package:lastanswer/pack_app/pack_app.dart';
 import 'package:lastanswer/pack_app/widgets/widgets.dart';
+import 'package:lastanswer/settings/pack_settings.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -60,7 +63,15 @@ class _VerticalBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           VerticalProjectsBar(
-            onIdeaTap: () {},
+            onIdeaTap: () async {
+              await Navigator.push<bool>(
+                context,
+                MaterialPageRoute(
+                  builder: (final context) => const CreateIdeaProjectScreen(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
             onNoteTap: () {
               context.read<OpenedProjectNotifier>().createNoteProject(context);
             },
@@ -122,8 +133,20 @@ class _ProjectsListView extends StatelessWidget {
       ],
     );
     final appBar = HomeAppBar(
-      onInfoTap: () async => context.go(ScreenPaths.appInfo),
-      onSettingsTap: () async => context.go(ScreenPaths.settings),
+      onInfoTap: () async => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (final context) => const AppInfoScreen(),
+          fullscreenDialog: true,
+        ),
+      ),
+      onSettingsTap: () async => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (final context) => const SettingsScreen(),
+          fullscreenDialog: true,
+        ),
+      ),
     );
     final screenLayout = ScreenLayout.of(context);
     if (PlatformInfo.isNativeWebMobile || screenLayout.small) {

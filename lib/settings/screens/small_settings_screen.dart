@@ -1,7 +1,5 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/screens/general_settings_screen.dart';
-import 'package:lastanswer/settings/screens/my_account_screen.dart';
 import 'package:lastanswer/settings/screens/settings_navigation_screen.dart';
 
 class SmallSettingsScreen extends HookWidget {
@@ -30,16 +28,16 @@ class SmallSettingsScreen extends HookWidget {
     Future<void> toNavigation() async => toPage(page: 0);
 
     Future<void> switchToPage() async {
-      switch (currentLocation) {
-        case ScreenPaths.profile:
-          subSettingsPage.value = MyAccountScreen(onBack: onHome);
-          await toPage();
-        case ScreenPaths.generalSettings:
-          subSettingsPage.value = GeneralSettingsScreen(onBack: onHome);
-          await toPage();
-        default:
-          await toNavigation();
-      }
+      // switch (currentLocation) {
+      //   case ScreenPaths.profile:
+      //     subSettingsPage.value = MyAccountScreen(onBack: onHome);
+      //     await toPage();
+      //   case ScreenPaths.generalSettings:
+      //     subSettingsPage.value = GeneralSettingsScreen(onBack: onHome);
+      //     await toPage();
+      //   default:
+      //     await toNavigation();
+      // }
     }
 
 // TODO(arenukvern): fixme,
@@ -47,7 +45,7 @@ class SmallSettingsScreen extends HookWidget {
       if (!pageController.hasClients) return;
       final controllerPage = pageController.page?.ceil();
       if (chosenPage.value == controllerPage) return;
-      unawaited(context.pushNamed(ScreenPaths.settings));
+      // unawaited(context.pushNamed(ScreenPaths.settings));
     });
 
     useEffect(

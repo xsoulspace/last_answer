@@ -1,5 +1,4 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/home/project_view.dart';
 
 class IdeaView extends StatelessWidget {
   const IdeaView({
@@ -8,10 +7,5 @@ class IdeaView extends StatelessWidget {
   });
   final ProjectModelIdea idea;
   @override
-  Widget build(final BuildContext context) => const Column(
-        children: [
-          ProjectViewAppBar(),
-          Placeholder(),
-        ],
-      );
+  Widget build(final BuildContext context) => const Placeholder();
 }

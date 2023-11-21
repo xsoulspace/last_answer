@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features_widgets/general_settings.dart';
-import 'package:lastanswer/settings/features_widgets/my_account.dart';
 import 'package:lastanswer/settings/features_widgets/settings_navigation.dart';
 
 class DesktopSettingsScreen extends StatelessWidget {
@@ -71,15 +70,15 @@ class DesktopSettingsNavigator extends HookWidget {
     Widget child;
     final routeState = context.router.location();
     switch (routeState) {
-      case ScreenPaths.profile:
-        child = previousChild.value = const MyAccount();
-      case ScreenPaths.settings:
-      case ScreenPaths.generalSettings:
+      // case ScreenPaths.profile:
+      //   child = previousChild.value = const MyAccount();
+      // case ScreenPaths.settings:
+      // case ScreenPaths.generalSettings:
+      default:
         child = previousChild.value = const GeneralSettingsView(
           padding: EdgeInsets.only(left: 18, right: 48, top: 64, bottom: 64),
         );
-      default:
-        child = previousChild.value;
+      // child = previousChild.value;
     }
 
     return AnimatedSize(

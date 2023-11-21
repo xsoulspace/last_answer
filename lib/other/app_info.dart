@@ -26,7 +26,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
       backgroundColor: Theme.of(context).canvasColor,
       appBar: BackTextUniversalAppBar(
         titleStr: context.l10n.appInfo,
-        onBack: () => context.router.go(ScreenPaths.home),
+        onBack: () => Navigator.pop(context),
       ),
       body: Align(
         alignment: Alignment.topCenter,

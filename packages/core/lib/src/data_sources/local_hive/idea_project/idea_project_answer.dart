@@ -2,11 +2,14 @@ part of '../hive_models.dart';
 
 typedef IdeaProjectAnswerId = String;
 
+@Deprecated('use IdeaProjectAnswerModel')
+
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
     with EquatableMixin
     implements Sharable, HasId {
+  @Deprecated('use IdeaProjectAnswerModel')
   IdeaProjectAnswer({
     required this.text,
     required this.question,

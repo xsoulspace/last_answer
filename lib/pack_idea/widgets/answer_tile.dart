@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/pack_idea/widgets/answer_field_bubble.dart';
@@ -15,16 +14,16 @@ class AnswerTile extends StatelessWidget {
     required this.onChange,
     super.key,
   });
-  final IdeaProjectAnswer answer;
+  final IdeaProjectAnswerModel answer;
   final FutureBoolCallback confirmDelete;
-  final ValueChanged<IdeaProjectAnswer> onReadyToDelete;
+  final ValueChanged<IdeaProjectAnswerModel> onReadyToDelete;
   final bool deleteIconVisible;
-  final ValueChanged<IdeaProjectAnswer> onExpand;
+  final ValueChanged<IdeaProjectAnswerModel> onExpand;
   final VoidCallback onFocus;
   final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) => DismissibleTile(
-        dismissibleKey: Key(answer.id),
+        dismissibleKey: Key(answer.id.value),
         // confirmDismiss: (final direction) async {
         //   if (direction != DismissDirection.startToEnd) return false;
         //   return confirmDelete();
@@ -51,8 +50,7 @@ class AnswerTile extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8, top: 11.5),
                             child: Text(
-                              answer.question.title
-                                  .getByLanguage(Intl.getCurrentLocale()),
+                              answer.question.title.localize(context),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
@@ -67,8 +65,7 @@ class AnswerTile extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  answer.question.title
-                                      .getByLanguage(Intl.getCurrentLocale()),
+                                  answer.question.title.localize(context),
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
@@ -126,7 +123,7 @@ class AnswerTile extends StatelessWidget {
                   const SizedBox(width: 24),
                   Flexible(
                     child: HeroId(
-                      id: answer.id,
+                      id: answer.id.value,
                       placeholderBuilder: (final _, final __, final child) =>
                           Opacity(opacity: 0.4, child: child),
                       type: HeroIdTypes.projectIdeaAnswerText,

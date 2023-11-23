@@ -99,6 +99,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
       controller: scrollController,
       child: FocusBubbleContainer(
         onFocus: widget.onFocus,
+        onUnfocus: widget.onUnfocus,
         fillColor: widget.fillColor,
         child: RawKeyboardListener(
           focusNode: _keyboardFocusNode,

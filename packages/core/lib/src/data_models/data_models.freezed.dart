@@ -567,7 +567,8 @@ mixin _$ProjectModel {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -589,7 +590,8 @@ mixin _$ProjectModel {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -611,7 +613,8 @@ mixin _$ProjectModel {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult Function(
             ProjectModelId id,
@@ -733,10 +736,12 @@ abstract class _$$ProjectModelIdeaImplCopyWith<$Res>
       String title,
       ProjectTypes type,
       DateTime? archivedAt,
-      List<IdeaProjectAnswerModel> answers});
+      List<IdeaProjectAnswerModel> answers,
+      IdeaProjectAnswerModel? draftAnswer});
 
   @override
   $ProjectModelIdCopyWith<$Res> get id;
+  $IdeaProjectAnswerModelCopyWith<$Res>? get draftAnswer;
 }
 
 /// @nodoc
@@ -757,6 +762,7 @@ class __$$ProjectModelIdeaImplCopyWithImpl<$Res>
     Object? type = null,
     Object? archivedAt = freezed,
     Object? answers = null,
+    Object? draftAnswer = freezed,
   }) {
     return _then(_$ProjectModelIdeaImpl(
       id: null == id
@@ -787,7 +793,23 @@ class __$$ProjectModelIdeaImplCopyWithImpl<$Res>
           ? _value._answers
           : answers // ignore: cast_nullable_to_non_nullable
               as List<IdeaProjectAnswerModel>,
+      draftAnswer: freezed == draftAnswer
+          ? _value.draftAnswer
+          : draftAnswer // ignore: cast_nullable_to_non_nullable
+              as IdeaProjectAnswerModel?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $IdeaProjectAnswerModelCopyWith<$Res>? get draftAnswer {
+    if (_value.draftAnswer == null) {
+      return null;
+    }
+
+    return $IdeaProjectAnswerModelCopyWith<$Res>(_value.draftAnswer!, (value) {
+      return _then(_value.copyWith(draftAnswer: value));
+    });
   }
 }
 
@@ -802,6 +824,7 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
       this.type = ProjectTypes.idea,
       this.archivedAt,
       final List<IdeaProjectAnswerModel> answers = const [],
+      this.draftAnswer,
       final String? $type})
       : _answers = answers,
         $type = $type ?? 'idea',
@@ -833,12 +856,15 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
     return EqualUnmodifiableListView(_answers);
   }
 
+  @override
+  final IdeaProjectAnswerModel? draftAnswer;
+
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ProjectModel.idea(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, title: $title, type: $type, archivedAt: $archivedAt, answers: $answers)';
+    return 'ProjectModel.idea(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, title: $title, type: $type, archivedAt: $archivedAt, answers: $answers, draftAnswer: $draftAnswer)';
   }
 
   @override
@@ -855,13 +881,23 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.archivedAt, archivedAt) ||
                 other.archivedAt == archivedAt) &&
-            const DeepCollectionEquality().equals(other._answers, _answers));
+            const DeepCollectionEquality().equals(other._answers, _answers) &&
+            (identical(other.draftAnswer, draftAnswer) ||
+                other.draftAnswer == draftAnswer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt, title,
-      type, archivedAt, const DeepCollectionEquality().hash(_answers));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      createdAt,
+      updatedAt,
+      title,
+      type,
+      archivedAt,
+      const DeepCollectionEquality().hash(_answers),
+      draftAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -880,7 +916,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -892,7 +929,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             DateTime? archivedAt)
         note,
   }) {
-    return idea(id, createdAt, updatedAt, title, type, archivedAt, answers);
+    return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
+        draftAnswer);
   }
 
   @override
@@ -905,7 +943,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -917,8 +956,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             DateTime? archivedAt)?
         note,
   }) {
-    return idea?.call(
-        id, createdAt, updatedAt, title, type, archivedAt, answers);
+    return idea?.call(id, createdAt, updatedAt, title, type, archivedAt,
+        answers, draftAnswer);
   }
 
   @override
@@ -931,7 +970,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult Function(
             ProjectModelId id,
@@ -945,7 +985,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
     required TResult orElse(),
   }) {
     if (idea != null) {
-      return idea(id, createdAt, updatedAt, title, type, archivedAt, answers);
+      return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
+          draftAnswer);
     }
     return orElse();
   }
@@ -998,7 +1039,8 @@ abstract class ProjectModelIdea extends ProjectModel
       final String title,
       final ProjectTypes type,
       final DateTime? archivedAt,
-      final List<IdeaProjectAnswerModel> answers}) = _$ProjectModelIdeaImpl;
+      final List<IdeaProjectAnswerModel> answers,
+      final IdeaProjectAnswerModel? draftAnswer}) = _$ProjectModelIdeaImpl;
   const ProjectModelIdea._() : super._();
 
   factory ProjectModelIdea.fromJson(Map<String, dynamic> json) =
@@ -1016,6 +1058,7 @@ abstract class ProjectModelIdea extends ProjectModel
   @override
   DateTime? get archivedAt;
   List<IdeaProjectAnswerModel> get answers;
+  IdeaProjectAnswerModel? get draftAnswer;
   @override
   @JsonKey(ignore: true)
   _$$ProjectModelIdeaImplCopyWith<_$ProjectModelIdeaImpl> get copyWith =>
@@ -1179,7 +1222,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -1205,7 +1249,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -1231,7 +1276,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String title,
             ProjectTypes type,
             DateTime? archivedAt,
-            List<IdeaProjectAnswerModel> answers)?
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer)?
         idea,
     TResult Function(
             ProjectModelId id,

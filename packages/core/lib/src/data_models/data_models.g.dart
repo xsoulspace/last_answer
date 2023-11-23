@@ -56,6 +56,10 @@ _$ProjectModelIdeaImpl _$$ProjectModelIdeaImplFromJson(
                   IdeaProjectAnswerModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      draftAnswer: json['draftAnswer'] == null
+          ? null
+          : IdeaProjectAnswerModel.fromJson(
+              json['draftAnswer'] as Map<String, dynamic>),
       $type: json['runtimeType'] as String?,
     );
 
@@ -69,6 +73,7 @@ Map<String, dynamic> _$$ProjectModelIdeaImplToJson(
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'archivedAt': instance.archivedAt?.toIso8601String(),
       'answers': instance.answers,
+      'draftAnswer': instance.draftAnswer,
       'runtimeType': instance.$type,
     };
 

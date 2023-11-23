@@ -3,13 +3,13 @@ import 'package:lastanswer/common_imports.dart';
 class QuestionDropdown extends HookWidget {
   const QuestionDropdown({
     required this.answer,
+    required this.onChanged,
     super.key,
-    this.onChange,
     this.alignment = Alignment.centerLeft,
   });
-  final IdeaProjectAnswer answer;
+  final IdeaProjectAnswerModel answer;
   final Alignment alignment;
-  final VoidCallback? onChange;
+  final ValueChanged<IdeaProjectAnswerModel> onChanged;
   @override
   Widget build(final BuildContext context) {
     final projectsNotifier = context.read<ProjectsNotifier>();
@@ -54,9 +54,7 @@ class QuestionDropdown extends HookWidget {
         onChanged: (final question) async {
           if (question == null || chosenQuestion.value == question) return;
           chosenQuestion.value = question;
-          // answer.question = question;
-          onChange?.call();
-          await answer.save();
+          onChanged(answer.copyWith(question: question));
         },
       ),
     );

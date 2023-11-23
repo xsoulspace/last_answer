@@ -29,8 +29,7 @@ class IdeaViewBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final bloc = context.watch<IdeaViewBloc>();
-    final answers = bloc.value.answers;
-    final questions = context.watch<ProjectsNotifier>();
+    final answers = bloc.value.idea.answers;
     return Column(
       children: [
         BackTextUniversalAppBar(
@@ -44,69 +43,59 @@ class IdeaViewBody extends StatelessWidget {
           ),
           onBack: context.pop,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  closeKeyboard(context: context);
-                  // state.closeQuestions();
-                },
-                behavior: HitTestBehavior.translucent,
-                child: ListView.separated(
-                  // key: PageStorageKey('ideas/listeview/$ideaId/answers'),
-                  // controller: scrollController,
-                  // restorationId: 'ideas/listeview/$ideaId/answers',
-                  separatorBuilder: (final _, final __) =>
-                      const SizedBox(height: 26),
-                  padding:
-                      const EdgeInsets.all(10).copyWith(bottom: 24, top: 0),
-                  itemCount: answers.length,
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (final context, final index) {
-                    if (index > answers.length - 1 || index < 0) {
-                      return Container();
-                    }
-                    final answer = answers[index];
-
-                    return AnswerTile(
-                      onFocus: () {}, //state.closeQuestions,
-                      key: ValueKey(answer),
-                      answer: answer,
-                      confirmDelete: () async => showRemoveTitleDialog(
-                        title: answer.title,
-                        context: context,
-                      ),
-                      onExpand: (final _) {
-                        closeKeyboard(context: context);
-                        // onAnswerExpand(answer, idea);
-                      },
-                      onReadyToDelete:
-                          (final _) {}, // state.onReadyToDeleteAnswer,
-                      onChange: () {}, //state.onAnswersChange,
-                      deleteIconVisible: PlatformInfo.isNativeWebDesktop,
-                    );
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    closeKeyboard(context: context);
+                    // state.closeQuestions();
                   },
+                  behavior: HitTestBehavior.translucent,
+                  child: ListView.separated(
+                    // key: PageStorageKey('ideas/listeview/$ideaId/answers'),
+                    // controller: scrollController,
+                    // restorationId: 'ideas/listeview/$ideaId/answers',
+                    separatorBuilder: (final _, final __) =>
+                        const SizedBox(height: 26),
+                    padding:
+                        const EdgeInsets.all(10).copyWith(bottom: 24, top: 0),
+                    itemCount: answers.length,
+                    reverse: true,
+                    shrinkWrap: true,
+                    itemBuilder: (final context, final index) {
+                      final answer = answers[index];
+
+                      return AnswerTile(
+                        onFocus: () => bloc.draftAnswerController
+                            .updateIsQuestionsOpened(isOpened: false),
+                        key: ValueKey(answer.id),
+                        answer: answer,
+                        confirmDelete: () async => showRemoveTitleDialog(
+                          title: answer.title,
+                          context: context,
+                        ),
+                        onExpand: (final _) {
+                          closeKeyboard(context: context);
+                          bloc.onExpandAnswer(answer: answer, index: index);
+                        },
+                        onReadyToDelete: (final _) {},
+                        onChanged: (final answer) =>
+                            bloc.onAnswerChanged(answer: answer, index: index),
+                        deleteIconVisible: PlatformInfo.isNativeWebDesktop,
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            AnswerCreator(
-              onShareTap: () async {
-                await ProjectSharer.of(context).share(sharable: bloc.idea);
-              },
-              questionsOpened: questionsOpened,
-              onFocus: () {}, //state.openQuestions,
-              idea: bloc.idea,
-              defaultQuestion: answers.isNotEmpty
-                  ? answers.firstOrNull?.question
-                  : questions.value.values.first,
-              onChanged: () {}, //state.onAnswersChange,
-              onCreated: (final _) {}, //state.onAnswerCreated,
-            ),
-            const BottomSafeArea(),
-          ],
+              AnswerCreator(
+                controller: bloc.draftAnswerController,
+              ),
+              const BottomSafeArea(),
+            ],
+          ),
         ),
       ],
     );

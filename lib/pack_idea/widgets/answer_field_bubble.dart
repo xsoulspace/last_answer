@@ -5,38 +5,24 @@ class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({
     required this.answer,
     required this.onFocus,
-    required this.onChange,
+    required this.onChanged,
     super.key,
   });
-  final IdeaProjectAnswer answer;
+  final IdeaProjectAnswerModel answer;
+  final ValueChanged<IdeaProjectAnswerModel> onChanged;
   final VoidCallback onFocus;
-  final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) {
-    final controller = useTextEditingController(
-      text: answer.text,
-    );
-
-    useEffect(
-      () {
-        controller.text = answer.text;
-
-        return null;
-      },
-      [answer.text],
-    );
     final consts = FocusBubbleContainerConsts.of(context);
-    void updateAnswer() {
-      if (answer.text == controller.text) return;
-      answer.text = controller.text;
-      unawaited(answer.save());
-      onChange();
+    void updateAnswer(final String text) {
+      if (answer.text == text) return;
+      onChanged(answer.copyWith(text: text));
     }
 
     final theme = Theme.of(context);
 
     return FocusBubbleContainer(
-      onUnfocus: updateAnswer,
+      onUnfocus: () {},
       onFocus: onFocus,
       child: Theme(
         data: theme.copyWith(
@@ -66,16 +52,15 @@ class AnswerFieldBubble extends HookWidget {
                     .copyWith(top: 4),
           ),
         ),
-        child: TextField(
-          onChanged: (final _) => updateAnswer(),
-          controller: controller,
+        child: TextFormField(
+          onChanged: updateAnswer,
           maxLines: null,
-          keyboardAppearance: Theme.of(context).brightness,
+          initialValue: answer.text,
           textAlignVertical: TextAlignVertical.bottom,
           keyboardType: TextInputType.multiline,
-          onEditingComplete: updateAnswer,
-          style: Theme.of(context).textTheme.bodyMedium,
-          cursorColor: Theme.of(context).colorScheme.secondary,
+          onEditingComplete: () {},
+          style: context.textTheme.bodyMedium,
+          cursorColor: context.colorScheme.secondary,
         ),
       ),
     );

@@ -26,6 +26,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(ProjectTypes.idea) final ProjectTypes type,
     final DateTime? archivedAt,
     @Default([]) final List<IdeaProjectAnswerModel> answers,
+    final IdeaProjectAnswerModel? draftAnswer,
   }) = ProjectModelIdea;
   @Implements<Archivable>()
   @Implements<Sharable>()

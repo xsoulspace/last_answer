@@ -60,8 +60,11 @@ class IdeaViewBody extends StatelessWidget {
                     // restorationId: 'ideas/listeview/$ideaId/answers',
                     separatorBuilder: (final _, final __) =>
                         const SizedBox(height: 26),
-                    padding:
-                        const EdgeInsets.all(10).copyWith(bottom: 24, top: 0),
+                    padding: const EdgeInsets.only(
+                      bottom: 24,
+                      left: 8,
+                      right: 12,
+                    ),
                     itemCount: answers.length,
                     reverse: true,
                     shrinkWrap: true,

@@ -33,7 +33,6 @@ class NoteViewBody extends StatelessWidget {
   const NoteViewBody({super.key});
   @override
   Widget build(final BuildContext context) {
-    final projectNotifier = context.read<OpenedProjectNotifier>();
     final bloc = context.watch<NoteViewBloc>();
     final isKeyboardClosed = !bloc.specialEmojiController.value.isKeyboardOpen;
     return Row(

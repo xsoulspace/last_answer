@@ -4,15 +4,18 @@ import 'package:lastanswer/common_imports.dart';
 class IconIdeaButton extends StatelessWidget {
   const IconIdeaButton({
     this.onTap,
+    this.color,
     this.size = 24.0,
     super.key,
   });
   final VoidCallback? onTap;
   final double size;
+  final Color? color;
   @override
   Widget build(final BuildContext context) => SvgIconButton(
         onPressed: onTap,
         iconSize: size,
+        color: color,
         svg: Assets.icons.idea,
       );
 }

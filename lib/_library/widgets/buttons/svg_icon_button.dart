@@ -345,7 +345,9 @@ class SvgIconButton extends StatelessWidget {
           alignment: alignment,
           height: iconSize,
           width: iconSize,
-          color: currentColor,
+          colorFilter: currentColor == null
+              ? null
+              : ColorFilter.mode(currentColor, BlendMode.srcIn),
         ),
       ),
     );

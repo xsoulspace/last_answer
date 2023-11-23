@@ -5,15 +5,9 @@ class ProjectViewAppBar extends StatelessWidget {
   const ProjectViewAppBar({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    final screenLayout = ScreenLayout.of(context);
-    return SafeArea(
-      child: Row(
-        children: [
-          if (screenLayout.small)
-            BackButton(onPressed: () => context.go(ScreenPaths.home)),
-        ],
-      ),
-    );
-  }
+  Widget build(final BuildContext context) => BackTextUniversalAppBar(
+        onBack: () => context.go(ScreenPaths.home),
+        titleStr: '',
+        useBackButton: true,
+      );
 }

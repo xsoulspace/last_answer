@@ -17,16 +17,14 @@ class ProjectView extends StatelessWidget {
     }
     final id = projectContainer.value.id;
 
-    return Column(
-      children: [
-        const ProjectViewAppBar(),
-        Expanded(
-          child: projectContainer.value.map(
-            idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
-            note: (final note) => NoteView(note: note, key: ValueKey(id)),
-          ),
-        ),
-      ],
+    return projectContainer.value.map(
+      idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
+      note: (final note) => Column(
+        children: [
+          const ProjectViewAppBar(),
+          Expanded(child: NoteView(note: note, key: ValueKey(id))),
+        ],
+      ),
     );
   }
 }

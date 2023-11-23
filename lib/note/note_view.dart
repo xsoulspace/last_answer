@@ -43,8 +43,8 @@ class NoteViewBody extends StatelessWidget {
               Expanded(
                 child: ProjectTextField(
                   hintText: context.l10n.writeANote,
-                  fillColor: Colors.transparent,
                   filled: false,
+                  hasBorder: false,
                   limit: int.tryParse(bloc.characterLimitController.value),
                   focusNode: bloc.focusNode,
                   endlessLines: true,

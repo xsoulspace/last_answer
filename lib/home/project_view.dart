@@ -16,6 +16,7 @@ class ProjectView extends StatelessWidget {
       return const CircularProgressIndicator.adaptive();
     }
     final id = projectContainer.value.id;
+
     return Column(
       children: [
         const ProjectViewAppBar(),

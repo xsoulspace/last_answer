@@ -42,7 +42,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    padding: const EdgeInsets.only(left: 24),
                     child: const ProjectView(),
                   ),
                 ),

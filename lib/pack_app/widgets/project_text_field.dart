@@ -126,8 +126,8 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
               contentPadding: PlatformInfo.isNativeDesktop
-                  ? const EdgeInsets.all(6)
-                  : const EdgeInsets.only(top: 6, bottom: 4),
+                  ? const EdgeInsets.only(left: 24)
+                  : const EdgeInsets.only(bottom: 4),
               filled: widget.filled,
               // labelStyle: TextStyle(color: Colors.white),
               // fillColor: ThemeColors.lightAccent,

@@ -12,11 +12,11 @@ class ProjectTextField extends StatefulHookWidget {
     this.maxLines = 7,
     this.endlessLines = false,
     this.focusOnInit = true,
-    this.fillColor,
     this.focusNode,
     this.countCharacters = false,
     this.undoController,
     this.limit,
+    this.hasBorder = true,
     super.key,
   });
   final TextEditingController controller;
@@ -32,8 +32,8 @@ class ProjectTextField extends StatefulHookWidget {
   final bool endlessLines;
   final bool focusOnInit;
   final bool filled;
-  final Color? fillColor;
   final VoidCallback? onUnfocus;
+  final bool hasBorder;
   final VoidCallback? onFocus;
 
   @override
@@ -82,6 +82,13 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
 
   @override
   Widget build(final BuildContext context) {
+    final focusedBorder = widget.hasBorder
+        ? OutlineInputBorder(
+            borderRadius: defaultBorderRadius,
+            borderSide:
+                BorderSide(color: context.colorScheme.primary.withOpacity(0.4)),
+          )
+        : _border;
     final theme = Theme.of(context);
     final scrollController = useScrollController();
 
@@ -94,13 +101,11 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
       },
       [widget.limit],
     );
-
     return RightScrollbar(
       controller: scrollController,
       child: FocusBubbleContainer(
         onFocus: widget.onFocus,
         onUnfocus: widget.onUnfocus,
-        fillColor: widget.fillColor,
         child: RawKeyboardListener(
           focusNode: _keyboardFocusNode,
           onKey: (final event) {
@@ -126,17 +131,16 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
               contentPadding: PlatformInfo.isNativeDesktop
-                  ? const EdgeInsets.only(left: 24)
+                  ? const EdgeInsets.fromLTRB(12, 20, 0, 20)
                   : const EdgeInsets.only(bottom: 4),
               filled: widget.filled,
-              // labelStyle: TextStyle(color: Colors.white),
-              // fillColor: ThemeColors.lightAccent,
-              focusedBorder: _border,
+              focusedBorder: focusedBorder,
               border: _border,
+              hoverColor: context.colorScheme.secondary.withOpacity(0.01),
+              focusColor: Colors.transparent,
               fillColor: Colors.transparent,
               hintText: widget.hintText,
             ),
-            cursorColor: theme.colorScheme.secondary,
           ),
         ),
       ),

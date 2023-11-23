@@ -54,7 +54,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                   IconIdeaButton(
                     size: 84,
                     onTap: () {},
-                    color: color,
+                    color: color.withOpacity(0.4),
                   ),
                   const Gap(44),
                   Text(

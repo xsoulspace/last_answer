@@ -101,10 +101,6 @@ class AnswerCreator extends HookWidget {
     super.key,
   });
   final AnswerCreatorController controller;
-  static Color getBackgroundByTheme(final ThemeData theme) =>
-      theme.brightness == Brightness.light
-          ? AppColors.grey4.withOpacity(0.15)
-          : AppColors.grey1.withOpacity(0.15);
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -120,7 +116,7 @@ class AnswerCreator extends HookWidget {
         onPressed: controller.answerController.text.isNotEmpty
             ? controller.onCreateAnswer
             : null,
-        color: AppColors.primary2,
+        color: theme.colorScheme.primary,
         icon: const Icon(Icons.send),
       ),
     );
@@ -131,17 +127,21 @@ class AnswerCreator extends HookWidget {
       ),
     );
 
-    return Material(
-      color:
-          isQuestionsOpened ? getBackgroundByTheme(theme) : theme.canvasColor,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: context.theme.colorScheme.onSecondary,
+          ),
+        ),
+      ),
+      padding: const EdgeInsets.only(top: 2),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: isQuestionsOpened,
-            child: Padding(
+          if (isQuestionsOpened)
+            Padding(
               padding: const EdgeInsets.only(
-                top: 14,
                 bottom: 2,
                 right: 10,
                 left: 10,
@@ -170,8 +170,7 @@ class AnswerCreator extends HookWidget {
                   ),
                 ],
               ),
-            ),
-          ),
+            ).animate().fadeIn(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(

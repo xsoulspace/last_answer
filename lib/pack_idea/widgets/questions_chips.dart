@@ -1,5 +1,4 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
 
 class QuestionsChips extends StatelessWidget {
   const QuestionsChips({
@@ -11,11 +10,11 @@ class QuestionsChips extends StatelessWidget {
   final ValueChanged<IdeaProjectQuestionModel> onChange;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     final questions = context.read<ProjectsNotifier>().ideaQuestions;
 
     return Wrap(
-      spacing: 1,
+      spacing: 3,
+      runSpacing: 3,
       crossAxisAlignment: WrapCrossAlignment.center,
       alignment: WrapAlignment.center,
       children: questions
@@ -39,8 +38,9 @@ class QuestionChip extends StatelessWidget {
     required this.text,
     super.key,
   });
-  static final shape =
-      RoundedRectangleBorder(borderRadius: defaultBorderRadius);
+  static final shape = RoundedRectangleBorder(
+    borderRadius: defaultBorderRadius,
+  );
 
   final String text;
   final bool selected;
@@ -50,17 +50,15 @@ class QuestionChip extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
 
-    return SizedBox(
-      height: 38,
-      child: ChoiceChip(
-        label: Text(text),
-        labelStyle: theme.textTheme.bodyMedium,
-        shape: shape,
-        backgroundColor: AnswerCreator.getBackgroundByTheme(theme),
-        selectedColor: AppColors.primary2.withOpacity(0.2),
-        selected: selected,
-        onSelected: onSelected,
-      ),
+    return ChoiceChip.elevated(
+      label: Text(text),
+      labelStyle: theme.textTheme.bodyMedium,
+      shape: shape,
+      pressElevation: 2,
+      showCheckmark: false,
+      elevation: 0,
+      selected: selected,
+      onSelected: onSelected,
     );
   }
 }

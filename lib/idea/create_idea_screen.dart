@@ -12,42 +12,24 @@ class CreateIdeaProjectScreen extends StatefulHookWidget {
 }
 
 class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
-  final _textFieldFocusNode = FocusNode();
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((final _) {
-      _textFieldFocusNode.requestFocus();
-    });
-    super.initState();
-  }
-
+  final _textController = TextEditingController();
   @override
   void dispose() {
-    _textFieldFocusNode.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(final BuildContext context) {
-    final textController = useTextEditingController();
-    final effectiveInputDecoration = const InputDecoration()
-        .applyDefaults(
-          Theme.of(context).inputDecorationTheme,
-        )
-        .copyWith(
-          hintText: context.l10n.createIdeaHelperText,
-          border: const UnderlineInputBorder(),
-        );
     final projectNotifier = context.read<OpenedProjectNotifier>();
     void onBack() => Navigator.pop(context);
+    final color = context.colorScheme.onBackground.withOpacity(0.75);
+    final textColor = context.colorScheme.onPrimaryContainer;
 
     void onCreate() {
-      final text = textController.text;
+      final text = _textController.text;
       if (text.isNotEmpty) {
-        projectNotifier.createIdeaProject(
-          context: context,
-          title: textController.text,
-        );
+        projectNotifier.createIdeaProject(context: context, title: text);
       }
       onBack();
     }
@@ -69,28 +51,40 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const IconIdeaButton(size: 76),
-                  const SizedBox(height: 44),
+                  IconIdeaButton(
+                    size: 84,
+                    onTap: () {},
+                    color: color,
+                  ),
+                  const Gap(44),
                   Text(
                     context.l10n.whatsYourIdea,
-                    style: Theme.of(context).textTheme.displayLarge,
+                    style: context.textTheme.displaySmall?.copyWith(
+                      color: color,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 87),
+                  const Gap(87),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: TextField(
-                          onSubmitted: (final _) => onCreate(),
-                          focusNode: _textFieldFocusNode,
-                          controller: textController,
+                        child: TextFormField(
+                          autofocus: true,
+                          onFieldSubmitted: (final _) => onCreate(),
+                          controller: _textController,
                           maxLength: 90,
-                          style: Theme.of(context).textTheme.displayLarge,
-                          decoration: effectiveInputDecoration,
+                          maxLines: null,
+                          style: context.textTheme.displaySmall?.copyWith(
+                            color: textColor,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: context.l10n.createIdeaHelperText,
+                            border: const UnderlineInputBorder(),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      const Gap(6),
                       IconButton(
                         onPressed: onCreate,
                         icon: const Icon(Icons.send),

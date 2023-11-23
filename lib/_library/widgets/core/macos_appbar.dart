@@ -46,7 +46,7 @@ class BackTextUniversalAppBar extends AppBar {
           'Title or title str should not be empty',
         ),
         super(
-          toolbarHeight: height ?? (Platform.isMacOS ? 70 : null),
+          toolbarHeight: height,
           leading: (screenLayout?.small ?? true)
               ? _AppBarLeading(
                   onBack: onBack,
@@ -70,15 +70,6 @@ class _AppBarLeading extends StatelessWidget {
     final backButton = useBackButton
         ? AdaptiveBackButton(onPressed: onBack)
         : CloseButton(onPressed: onBack);
-    if (Platform.isMacOS) {
-      return Column(
-        children: [
-          const TopSafeArea(),
-          const SizedBox(height: 25),
-          backButton,
-        ],
-      );
-    }
 
     return backButton;
   }

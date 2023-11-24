@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,9 +6,9 @@ import '../../core.dart';
 
 class ProjectsRepository {
   ProjectsRepository.provide(final BuildContext context)
-      : _datasource = ProjectsLocalDataSourceIsarImpl(
-          isarDb: context.read(),
-        );
+      : _datasource = kIsWeb
+            ? ProjectsLocalDataSourceLocalDbImpl(localDb: context.read())
+            : ProjectsLocalDataSourceIsarImpl(isarDb: context.read());
   final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) async =>
       _datasource.putAll(projects: projects);

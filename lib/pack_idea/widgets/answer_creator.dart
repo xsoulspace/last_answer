@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -179,6 +180,7 @@ class AnswerCreator extends HookWidget {
                 Expanded(
                   child: ProjectTextField(
                     hintText: context.l10n.writeAnAnswer,
+                    contentPadding: kIsWeb ? const EdgeInsets.all(24) : null,
                     focusOnInit:
                         controller.dto.ideaViewBloc.idea.answers.isEmpty,
                     controller: controller.answerController,

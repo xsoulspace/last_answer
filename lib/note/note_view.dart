@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
@@ -45,6 +46,8 @@ class NoteViewBody extends StatelessWidget {
                   hintText: context.l10n.writeANote,
                   filled: false,
                   hasBorder: false,
+                  contentPadding:
+                      kIsWeb ? const EdgeInsets.only(left: 24) : null,
                   limit: int.tryParse(bloc.characterLimitController.value),
                   focusNode: bloc.focusNode,
                   endlessLines: true,

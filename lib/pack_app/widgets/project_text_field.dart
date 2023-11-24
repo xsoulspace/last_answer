@@ -57,8 +57,8 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
     setMaxLength();
     if (widget.focusOnInit) {
       WidgetsBinding.instance.addPostFrameCallback((final _) {
-        if (!mounted) return;
         if (_textFieldFocusNode.canRequestFocus) {
+          if (!mounted) return;
           FocusScope.of(context).requestFocus(_textFieldFocusNode);
         }
       });
@@ -110,7 +110,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
           focusNode: _keyboardFocusNode,
           onKey: (final event) {
             if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-                (event.isShiftPressed || event.isControlPressed)) {
+                (event.isMetaPressed || event.isControlPressed)) {
               widget.onSubmit();
             }
           },

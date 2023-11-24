@@ -48,12 +48,12 @@ class AnswerCreatorController
   late final _textUpdatesController = StreamController<String>()
     ..stream
         .sampleTime(
-          const Duration(milliseconds: 700),
+          const Duration(milliseconds: 200),
         )
         .forEach(_save);
   void _addTextUpdate() => _textUpdatesController.add(answerController.text);
-  late final TextEditingController answerController =
-      TextEditingController(text: dto.initialText)..addListener(_addTextUpdate);
+  late final answerController = TextEditingController(text: dto.initialText)
+    ..addListener(_addTextUpdate);
   final FocusNode focusNode = FocusNode();
   final AnswerCreatorControllerDto dto;
   Future<void> onShare(final BuildContext context) async {
@@ -69,6 +69,7 @@ class AnswerCreatorController
   void onCreateAnswer() {
     final text = answerController.text;
     if (text.isEmpty) return;
+    _save();
     answerController.clear();
     dto.ideaViewBloc.onCreateAnswerFromDraft();
   }

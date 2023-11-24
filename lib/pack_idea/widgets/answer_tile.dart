@@ -14,6 +14,16 @@ class AnswerTile extends StatelessWidget {
     required this.onChanged,
     super.key,
   });
+  const AnswerTile.deletable({
+    required this.answer,
+    required this.confirmDelete,
+    required this.onReadyToDelete,
+    required this.deleteIconVisible,
+    required this.onExpand,
+    required this.onFocus,
+    required this.onChanged,
+    super.key,
+  });
   final IdeaProjectAnswerModel answer;
   final FutureBoolCallback confirmDelete;
   final ValueChanged<IdeaProjectAnswerModel> onReadyToDelete;
@@ -116,7 +126,7 @@ class AnswerTile extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 54),
+              padding: const EdgeInsets.only(top: 54, bottom: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

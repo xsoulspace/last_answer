@@ -1,5 +1,5 @@
 name: last-answer
-version: 3.16.1+31
+version: 3.17.0+32
 summary: Fast ideas brainstorming tool with quick notes
 description: |
   You have a cool idea or you need to write a post/article for your blog.
@@ -53,7 +53,7 @@ slots:
 apps:
   last-answer:
     command: lastanswer
-    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
+    extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     plugs:
       - home
@@ -62,6 +62,12 @@ apps:
       - desktop-legacy
     slots:
       - dbus-last-answer
+
+# https://forum.snapcraft.io/t/failed-to-install-or-refresh-a-snap-flutter-does-not-exist/25623
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
 parts:
   last-answer:
     source: .

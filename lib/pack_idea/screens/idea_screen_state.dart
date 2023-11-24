@@ -1,4 +1,5 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 IdeaScreenState useIdeaScreenState({
   required final BuildContext context,
@@ -22,7 +23,7 @@ IdeaScreenState useIdeaScreenState({
       ),
     );
 
-class IdeaScreenState implements LifeState {
+class IdeaScreenState extends LifeState {
   IdeaScreenState({
     required this.context,
     required this.onScreenBack,
@@ -38,14 +39,15 @@ class IdeaScreenState implements LifeState {
   final ValueNotifier<List<IdeaProjectAnswer>> answers;
 
   final StreamController<bool> ideaUpdatesStream;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late FolderStateProvider folderProvider;
-  late IdeaProjectsProvider ideasProvider;
+  // @override
+  // ValueChanged<VoidCallback>? setState;
+  // late FolderStateNotifier folderProvider;
+  // late IdeaProjectsState ideasProvider;
   @override
   void initState() {
-    folderProvider = context.read<FolderStateProvider>();
-    ideasProvider = context.read<IdeaProjectsProvider>();
+    super.initState();
+    // folderProvider = context.read<FolderStateNotifier>();
+    // ideasProvider = context.read<IdeaProjectsState>();
     unawaited(
       ideaUpdatesStream.stream
           .sampleTime(
@@ -55,20 +57,17 @@ class IdeaScreenState implements LifeState {
     );
   }
 
-  @override
-  void dispose() {}
-
   // ignore: avoid_positional_boolean_parameters
   Future<void> onIdeaUpdate(final bool updateFolder) async {
-    ideasProvider.put(
-      key: idea.id,
-      value: idea..updated = DateTime.now(),
-    );
+    // ideasProvider.put(
+    //   key: idea.id,
+    //   value: idea..updated = DateTime.now(),
+    // );
 
-    if (updateFolder) {
-      idea.folder?.sortProjectsByDate(project: idea);
-      folderProvider.notify();
-    }
+    // if (updateFolder) {
+    //   idea.folder?.sortProjectsByDate(project: idea);
+    //   folderProvider.notify();
+    // }
     await idea.save();
   }
 

@@ -1,265 +1,67 @@
 {
   "language": "Lingua",
-  "@language": {
-    "description": "menu title language"
-  },
   "frequentlyUsed": "Usato frequentemente",
-  "@frequentlyUsed": {
-    "description": "frequentlyUsed"
-  },
   "search": "Кicerca",
-  "@search": {
-    "description": "Search"
-  },
   "writeAnAnswer": "Scrivi una risposta",
-  "@writeAnAnswer": {
-    "description": "writeAnAnswer"
-  },
   "charactersLimit": "Limite di caratteri",
-  "@charactersLimit": {
-    "description": "charactersLimit"
-  },
   "changeLog": "Change Log",
-  "@changeLog": {
-    "description": "changeLog"
-  },
   "username": "Nome utente",
-  "@username": {
-    "description": "username"
-  },
+  "loading": "Caricamento",
   "email": "E-mail",
-  "@email": {
-    "description": "email"
-  },
   "deleteMyAccount": "Eliminare l'account",
-  "@deleteMyAccount": {
-    "description": "deleteMyAccount"
-  },
   "danger": "Pericolo",
-  "@danger": {
-    "description": "danger"
-  },
   "esc": "ESC",
-  "@esc": {
-    "description": "esc"
-  },
   "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
-  "@charactersLimitForNewNotesDesription": {
-    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
-  },
   "charactersUnlimited": "Altro",
-  "@charactersUnlimited": {
-    "description": "charactersUnlimited"
-  },
   "writeANote": "Scrivi una nota",
-  "@writeANote": {
-    "description": "writeANote"
-  },
   "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
-  "@madeWithLoveAndFlutter": {
-    "description": "madeWithLoveAndFlutter"
-  },
   "feedbackTextWithEmail": "o inviare un messaggio a idea@xsoulspace.dev",
-  "@feedbackTextWithEmail": {
-    "description": "feedbackTextWithEmail"
-  },
   "niceDayWish": "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
-  "@niceDayWish": {
-    "description": "niceDayWish"
-  },
   "privacyPolicy": "Politica sulla riservatezza",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
   "termsAndConditions": "Termini & Condizioni",
-  "@termsAndConditions": {
-    "description": "Terms & Conditions"
-  },
   "joinDiscord": "Unisciti a Discord",
-  "@joinDiscord": {
-    "description": "joinDiscord button"
-  },
   "pleaseNotice": "Si prega di notare",
-  "@pleaseNotice": {
-    "description": "Please notice title"
-  },
   "appInfo": "Last Answer",
-  "@appInfo": {
-    "description": "app info title"
-  },
   "appVersion": "Versione dell'app: {version}, build: {buildNumber}",
-  "@appVersion": {
-    "description": "app version",
-    "args": [
-      "version",
-      "buildNumber"
-    ]
-  },
   "wordNew": "Nuovo",
-  "@wordNew": {
-    "description": "New"
-  },
   "theme": "Tema",
-  "@theme": {
-    "description": "app theme"
-  },
   "projectsDirection": "Note direzione",
-  "@projectsDirection": {
-    "description": "Projects direction"
-  },
   "themeSystem": "Auto",
-  "@themeSystem": {
-    "description": "app theme - system"
-  },
   "themeDark": "Buia",
-  "@themeDark": {
-    "description": "app theme - dark"
-  },
   "themeLight": "Leggera",
-  "@themeLight": {
-    "description": "app theme - light"
-  },
   "yes": "Si",
-  "@yes": {
-    "description": "yes"
-  },
   "settings": "Impostazioni",
-  "@settings": {
-    "description": "Settings"
-  },
   "noteSettings": "Impostazioni nota",
-  "@noteSettings": {
-    "description": "noteSettings"
-  },
   "noProjectsYet": "Nessun progetto ancora.",
-  "@noProjectsYet": {
-    "description": "text if no projects created"
-  },
   "whatsYourIdea": "Qual è la tua idea?",
-  "@whatsYourIdea": {
-    "description": "What's your idea? label"
-  },
   "createIdeaHelperText": "Crea tutorial",
-  "@createIdeaHelperText": {
-    "description": "createIdeaHelperText"
-  },
   "lastAnswer": "Last Answer",
-  "@lastAnswer": {
-    "description": "menu title Last answer"
-  },
   "idea": "Idea",
-  "@idea": {
-    "description": "idea name"
-  },
   "note": "Nota",
-  "@note": {
-    "description": "Note name"
-  },
   "answer": "Risposta",
-  "@answer": {
-    "description": "answer input"
-  },
   "subscription": "Abbonamento",
-  "@subscription": {
-    "description": "subscription"
-  },
   "freeSubscription": "Gratuito",
-  "@freeSubscription": {
-    "description": "free Subscription"
-  },
   "patronSubscription": "Patron",
-  "@patronSubscription": {
-    "description": "patronSubscription"
-  },
   "myAccount": "Il mio account",
-  "@myAccount": {
-    "description": "myAccount"
-  },
   "generalSettingsFullTitle": "Impostazioni generali",
-  "@generalSettingsFullTitle": {
-    "description": "generalSettingsFullTitle"
-  },
   "generalSettingsShortTitle": "General",
-  "@generalSettingsShortTitle": {
-    "description": "generalSettingsShortTitle"
-  },
   "cancel": "Cancella",
-  "@cancel": {
-    "description": "popup start cancel"
-  },
   "close": "Chiudi",
-  "@close": {
-    "description": "Close"
-  },
   "delete": "Elimina",
-  "@delete": {
-    "description": "delete"
-  },
   "deleteThisNote": "Elimina questa nota",
-  "@deleteThisNote": {
-    "description": "deleteThisNote"
-  },
   "areYouSure": "Sei sicuro?",
-  "@areYouSure": {
-    "description": "Are you sure"
-  },
   "willBeLost": "{title} sarà perso per sempre",
-  "@willBeLost": {
-    "description": "removal warning",
-    "args": [
-      "title"
-    ]
-  },
   "philosophyInspirationTitle": "Ispirazione",
-  "@philosophyInspirationTitle": {
-    "description": "Inspiration"
-  },
   "philosophyAbstractWhatElse": "Cos'altro?",
-  "@philosophyAbstractWhatElse": {
-    "description": "What else"
-  },
   "philosophyAbstractFiveWhyesWhat": "Puoi usare: \"Cinque perché\"",
-  "@philosophyAbstractFiveWhyesWhat": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractFiveWhyesWhy": "Perché puoi usare questa tecnica se hai un problema o un'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys",
-  "@philosophyAbstractFiveWhyesWhy": {
-    "description": "Description of Five Whyes"
-  },
   "philosophyAbstractPDSAWhy": "Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l'esplorazione di idee, ma a comprendere i problemi dell'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA",
-  "@philosophyAbstractPDSAWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractPDSAWhat": "Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ",
-  "@philosophyAbstractPDSAWhat": {
-    "description": "Description of PDSA"
-  },
   "philosophyAbstractSixSigmaWhy": "Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma",
-  "@philosophyAbstractSixSigmaWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractSixSigmaWhat": "Puoi usare: \"Six Sigma\"",
-  "@philosophyAbstractSixSigmaWhat": {
-    "description": "Description of Six Sigma"
-  },
   "about": "Informazioni",
-  "@about": {
-    "description": "About title"
-  },
   "aboutAbstractWhatFor": "Per che cosa?",
-  "@aboutAbstractWhatFor": {
-    "description": "What For About Abstract"
-  },
   "aboutAbstractWhatForDescription": "Questa app è progettata per risolvere l'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.",
-  "@aboutAbstractWhatForDescription": {
-    "description": "Description of About Abstract"
-  },
   "aboutAbstractHowDescription": "Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.",
-  "@aboutAbstractHowDescription": {
-    "description": "Description of About Abstract How Description"
-  },
-  "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?",
-  "@aboutAbstractIdeasImprovementsBugs": {
-    "description": "Ideas Improvements Bugs"
-  }
+  "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?"
 }

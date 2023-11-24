@@ -1,4 +1,5 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 IdeaAnswerScreenState useIdeaAnswerScreenState({
   required final BuildContext context,
@@ -22,7 +23,7 @@ IdeaAnswerScreenState useIdeaAnswerScreenState({
       ),
     );
 
-class IdeaAnswerScreenState implements LifeState {
+class IdeaAnswerScreenState extends LifeState {
   IdeaAnswerScreenState({
     required this.context,
     required this.textController,
@@ -37,13 +38,11 @@ class IdeaAnswerScreenState implements LifeState {
   final ValueNotifier<IdeaProjectAnswer> answer;
   final IdeaProject idea;
   final ValueChanged<IdeaProject> onScreenBack;
-  @override
-  ValueChanged<VoidCallback>? setState;
-  late IdeaProjectsProvider ideasProvider;
+  // late IdeaProjectsState ideasProvider;
   @override
   void initState() {
     textController.addListener(onTextChanged);
-    ideasProvider = context.read<IdeaProjectsProvider>();
+    // ideasProvider = context.read<IdeaProjectsState>();
 
     unawaited(
       updatesStream.stream
@@ -58,7 +57,7 @@ class IdeaAnswerScreenState implements LifeState {
   Future<void> onAnswerUpdate(final bool update) async {
     idea.folder?.sortProjectsByDate(project: idea);
     await answer.value.save();
-    ideasProvider.notify();
+    // ideasProvider.notify();
     await idea.save();
   }
 

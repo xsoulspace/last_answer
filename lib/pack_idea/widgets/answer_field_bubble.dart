@@ -1,41 +1,28 @@
-part of pack_idea;
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class AnswerFieldBubble extends HookWidget {
   const AnswerFieldBubble({
     required this.answer,
     required this.onFocus,
-    required this.onChange,
+    required this.onChanged,
     super.key,
   });
-  final IdeaProjectAnswer answer;
+  final IdeaProjectAnswerModel answer;
+  final ValueChanged<IdeaProjectAnswerModel> onChanged;
   final VoidCallback onFocus;
-  final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) {
-    final controller = useTextEditingController(
-      text: answer.text,
-    );
-
-    useEffect(
-      () {
-        controller.text = answer.text;
-
-        return null;
-      },
-      [answer.text],
-    );
     final consts = FocusBubbleContainerConsts.of(context);
-    void updateAnswer() {
-      if (answer.text == controller.text) return;
-      answer.text = controller.text;
-      unawaited(answer.save());
-      onChange();
+    void updateAnswer(final String text) {
+      if (answer.text == text) return;
+      onChanged(answer.copyWith(text: text));
     }
 
     final theme = Theme.of(context);
 
     return FocusBubbleContainer(
-      onUnfocus: updateAnswer,
+      onUnfocus: () {},
       onFocus: onFocus,
       child: Theme(
         data: theme.copyWith(
@@ -43,38 +30,25 @@ class AnswerFieldBubble extends HookWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                width: 0.1,
-                color: consts.brightness == Brightness.light
-                    ? AppColors.black
-                    : AppColors.grey2,
+                color: context.colorScheme.onPrimaryContainer,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                width: 0.05,
-                color: consts.brightness == Brightness.light
-                    ? AppColors.black
-                    : AppColors.grey4,
+                color: context.colorScheme.onPrimaryContainer.withOpacity(0.2),
               ),
             ),
-            focusColor: Colors.red,
-            fillColor: Colors.green,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
-                    .copyWith(top: 4),
           ),
         ),
-        child: TextField(
-          onChanged: (final _) => updateAnswer(),
-          controller: controller,
+        child: UiTextField(
+          onChanged: updateAnswer,
+          value: answer.text,
           maxLines: null,
-          keyboardAppearance: Theme.of(context).brightness,
-          textAlignVertical: TextAlignVertical.bottom,
+          textAlignVertical: TextAlignVertical.center,
           keyboardType: TextInputType.multiline,
-          onEditingComplete: updateAnswer,
-          style: Theme.of(context).textTheme.bodyMedium,
-          cursorColor: Theme.of(context).colorScheme.secondary,
+          style: context.textTheme.bodyMedium,
+          decoration: const InputDecoration(isDense: true),
         ),
       ),
     );

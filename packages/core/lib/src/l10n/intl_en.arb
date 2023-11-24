@@ -1,265 +1,67 @@
 {
   "language": "Language",
-  "@language": {
-    "description": "menu title language"
-  },
   "search": "Search",
-  "@search": {
-    "description": "Search"
-  },
   "writeAnAnswer": "Write an answer",
-  "@writeAnAnswer": {
-    "description": "writeAnAnswer"
-  },
   "writeANote": "Write a note",
-  "@writeANote": {
-    "description": "writeANote"
-  },
   "subscription": "Subscription",
-  "@subscription": {
-    "description": "subscription"
-  },
   "freeSubscription": "Free",
-  "@freeSubscription": {
-    "description": "free Subscription"
-  },
   "patronSubscription": "Patron",
-  "@patronSubscription": {
-    "description": "patronSubscription"
-  },
   "myAccount": "My Account",
-  "@myAccount": {
-    "description": "myAccount"
-  },
   "changeLog": "Change Log",
-  "@changeLog": {
-    "description": "changeLog"
-  },
   "username": "Username",
-  "@username": {
-    "description": "username"
-  },
   "email": "E-mail",
-  "@email": {
-    "description": "email"
-  },
   "deleteMyAccount": "Delete Account",
-  "@deleteMyAccount": {
-    "description": "deleteMyAccount"
-  },
   "danger": "Danger",
-  "@danger": {
-    "description": "danger"
-  },
+  "loading": "Loading",
   "esc": "ESC",
-  "@esc": {
-    "description": "esc"
-  },
   "generalSettingsFullTitle": "General Settings",
-  "@generalSettingsFullTitle": {
-    "description": "generalSettingsFullTitle"
-  },
   "generalSettingsShortTitle": "General",
-  "@generalSettingsShortTitle": {
-    "description": "generalSettingsShortTitle"
-  },
   "charactersLimit": "Characters limit",
-  "@charactersLimit": {
-    "description": "charactersLimit"
-  },
   "charactersLimitForNewNotesDesription": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.",
-  "@charactersLimitForNewNotesDesription": {
-    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
-  },
   "charactersUnlimited": "Other",
-  "@charactersUnlimited": {
-    "description": "charactersUnlimited"
-  },
   "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
-  "@madeWithLoveAndFlutter": {
-    "description": "madeWithLoveAndFlutter"
-  },
   "feedbackTextWithEmail": "or send a message to idea@xsoulspace.dev",
-  "@feedbackTextWithEmail": {
-    "description": "feedbackTextWithEmail"
-  },
   "niceDayWish": "Thank you for using this app and have a nice day, full of ideas and inspiration!:)",
-  "@niceDayWish": {
-    "description": "niceDayWish"
-  },
   "privacyPolicy": "Privacy Policy",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
   "termsAndConditions": "Terms & Conditions",
-  "@termsAndConditions": {
-    "description": "Terms & Conditions"
-  },
   "joinDiscord": "Join Discord",
-  "@joinDiscord": {
-    "description": "joinDiscord button"
-  },
   "pleaseNotice": "Please notice",
-  "@pleaseNotice": {
-    "description": "Please notice title"
-  },
   "appInfo": "Last Answer",
-  "@appInfo": {
-    "description": "app info title"
-  },
   "appVersion": "App version: {version}, build: {buildNumber}",
-  "@appVersion": {
-    "description": "app version",
-    "args": [
-      "version",
-      "buildNumber"
-    ]
-  },
   "frequentlyUsed": "Frequently used",
-  "@frequentlyUsed": {
-    "description": "frequentlyUsed"
-  },
   "theme": "Theme",
-  "@theme": {
-    "description": "app theme"
-  },
   "themeSystem": "Auto",
-  "@themeSystem": {
-    "description": "app theme - system"
-  },
   "themeDark": "Dark",
-  "@themeDark": {
-    "description": "app theme - dark"
-  },
   "themeLight": "Light",
-  "@themeLight": {
-    "description": "app theme - light"
-  },
   "projectsDirection": "Notes direction",
-  "@projectsDirection": {
-    "description": "Projects direction"
-  },
   "settings": "Settings",
-  "@settings": {
-    "description": "Settings"
-  },
   "noteSettings": "Note settings",
-  "@noteSettings": {
-    "description": "noteSettings"
-  },
   "wordNew": "New",
-  "@wordNew": {
-    "description": "New"
-  },
   "yes": "YES",
-  "@yes": {
-    "description": "yes"
-  },
   "noProjectsYet": "No projects yet.",
-  "@noProjectsYet": {
-    "description": "text if no projects created"
-  },
   "createIdeaHelperText": "Create tutorial",
-  "@createIdeaHelperText": {
-    "description": "createIdeaHelperText"
-  },
   "whatsYourIdea": "What's your idea?",
-  "@whatsYourIdea": {
-    "description": "What's your idea? label"
-  },
   "lastAnswer": "Last Answer",
-  "@lastAnswer": {
-    "description": "menu title Last answer"
-  },
   "idea": "Idea",
-  "@idea": {
-    "description": "idea name"
-  },
   "note": "Note",
-  "@note": {
-    "description": "Note name"
-  },
   "answer": "Answer",
-  "@answer": {
-    "description": "answer input"
-  },
   "cancel": "Cancel",
-  "@cancel": {
-    "description": "popup start cancel"
-  },
   "close": "Close",
-  "@close": {
-    "description": "Close"
-  },
   "about": "About",
-  "@about": {
-    "description": "About title"
-  },
   "aboutAbstractWhatFor": "What for?",
-  "@aboutAbstractWhatFor": {
-    "description": "What For About Abstract"
-  },
   "delete": "Delete",
-  "@delete": {
-    "description": "delete"
-  },
   "deleteThisNote": "Delete this note",
-  "@deleteThisNote": {
-    "description": "deleteThisNote"
-  },
   "areYouSure": "Are you sure?",
-  "@areYouSure": {
-    "description": "Are you sure"
-  },
   "willBeLost": "{title} will be lost forever",
-  "@willBeLost": {
-    "description": "removal warning",
-    "args": [
-      "title"
-    ]
-  },
   "philosophyInspirationTitle": "Inspiration",
-  "@philosophyInspirationTitle": {
-    "description": "Inspiration"
-  },
   "philosophyAbstractWhatElse": "What else?",
-  "@philosophyAbstractWhatElse": {
-    "description": "What else"
-  },
   "philosophyAbstractFiveWhyesWhat": "You can use: \"Five whys\"",
-  "@philosophyAbstractFiveWhyesWhat": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractFiveWhyesWhy": "Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys",
-  "@philosophyAbstractFiveWhyesWhy": {
-    "description": "Description of Five Whyes"
-  },
   "philosophyAbstractPDSAWhy": "Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA",
-  "@philosophyAbstractPDSAWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractPDSAWhat": "You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" ",
-  "@philosophyAbstractPDSAWhat": {
-    "description": "Description of PDSA"
-  },
   "philosophyAbstractSixSigmaWhy": "Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma",
-  "@philosophyAbstractSixSigmaWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractSixSigmaWhat": "You can use: \"Six Sigma\"",
-  "@philosophyAbstractSixSigmaWhat": {
-    "description": "Description of Six Sigma"
-  },
   "aboutAbstractWhatForDescription": "This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.",
-  "@aboutAbstractWhatForDescription": {
-    "description": "Description of About Abstract"
-  },
   "aboutAbstractHowDescription": "You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.",
-  "@aboutAbstractHowDescription": {
-    "description": "Description of About Abstract How Description"
-  },
-  "aboutAbstractIdeasImprovementsBugs": "Ideas Improvements Bugs?",
-  "@aboutAbstractIdeasImprovementsBugs": {
-    "description": "Ideas Improvements Bugs"
-  }
+  "aboutAbstractIdeasImprovementsBugs": "Ideas Improvements Bugs?"
 }

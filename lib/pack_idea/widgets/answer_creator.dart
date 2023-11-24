@@ -1,87 +1,149 @@
-part of pack_idea;
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/idea/idea_view_bloc.dart';
+import 'package:lastanswer/pack_app/widgets/widgets.dart';
+import 'package:lastanswer/pack_idea/widgets/questions_chips.dart';
 
-class _AnswerCreator extends HookWidget {
-  const _AnswerCreator({
-    required this.onCreated,
-    required this.defaultQuestion,
-    required this.idea,
-    required this.onShareTap,
-    required this.onFocus,
-    required this.questionsOpened,
-    required this.onChanged,
+part 'answer_creator.freezed.dart';
+
+@freezed
+class AnswerCreatorControllerState with _$AnswerCreatorControllerState {
+  const factory AnswerCreatorControllerState({
+    required final IdeaProjectQuestionModel question,
+    @Default(false) final bool isQuestionsOpened,
+  }) = _AnswerCreatorControllerState;
+}
+
+class AnswerCreatorControllerDto {
+  AnswerCreatorControllerDto({
+    required this.ideaViewBloc,
+    required this.projectsNotifier,
   });
-  final IdeaProjectQuestion defaultQuestion;
-  final IdeaProject idea;
-  final ValueChanged<IdeaProjectAnswer> onCreated;
-  final VoidCallback onShareTap;
-  final VoidCallback onFocus;
-  final ValueNotifier<bool> questionsOpened;
-  final VoidCallback onChanged;
-  static Color getBackgroundByTheme(final ThemeData theme) =>
-      theme.brightness == Brightness.light
-          ? AppColors.grey4.withOpacity(0.15)
-          : AppColors.grey1.withOpacity(0.15);
+  final IdeaViewBloc ideaViewBloc;
+  final ProjectsNotifier projectsNotifier;
+
+  IdeaProjectQuestionModel get initialQuestion {
+    IdeaProjectQuestionModel? question =
+        ideaViewBloc.idea.draftAnswer?.question;
+    if (question != null) return question;
+
+    final answers = ideaViewBloc.idea.answers;
+    question = answers.firstOrNull?.question;
+    if (question != null) return question;
+
+    return projectsNotifier.ideaQuestions.first;
+  }
+
+  String get initialText => ideaViewBloc.idea.draftAnswer?.text ?? '';
+}
+
+class AnswerCreatorController
+    extends ValueNotifier<AnswerCreatorControllerState> {
+  AnswerCreatorController({
+    required this.dto,
+  }) : super(
+          AnswerCreatorControllerState(question: dto.initialQuestion),
+        );
+  late final _textUpdatesController = StreamController<String>()
+    ..stream
+        .sampleTime(
+          const Duration(milliseconds: 200),
+        )
+        .forEach(_save);
+  void _addTextUpdate() => _textUpdatesController.add(answerController.text);
+  late final answerController = TextEditingController(text: dto.initialText)
+    ..addListener(_addTextUpdate);
+  final FocusNode focusNode = FocusNode();
+  final AnswerCreatorControllerDto dto;
+  Future<void> onShare(final BuildContext context) async {
+    await ProjectSharer.of(context).share(sharable: dto.ideaViewBloc.idea);
+  }
+
+  void changeQuestion(final IdeaProjectQuestionModel newQuestion) {
+    final updatedState = value.copyWith(question: newQuestion);
+    setValue(updatedState);
+    _save();
+  }
+
+  void onCreateAnswer() {
+    final text = answerController.text;
+    if (text.isEmpty) return;
+    _save();
+    answerController.clear();
+    dto.ideaViewBloc.onCreateAnswerFromDraft();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    answerController.dispose();
+    unawaited(_textUpdatesController.close());
+    super.dispose();
+  }
+
+  void updateIsQuestionsOpened({required final bool isOpened}) {
+    final updatedState = value.copyWith(isQuestionsOpened: isOpened);
+    setValue(updatedState);
+  }
+
+  void onFocus() => updateIsQuestionsOpened(isOpened: true);
+  void onUnfocus() {}
+
+  void _save([final String? text]) => dto.ideaViewBloc.onUpdateDraftAnswer(
+        text: answerController.text,
+        question: value.question,
+      );
+}
+
+class AnswerCreator extends HookWidget {
+  const AnswerCreator({
+    required this.controller,
+    super.key,
+  });
+  final AnswerCreatorController controller;
   @override
   Widget build(final BuildContext context) {
-    final answerFocusNode = useFocusNode();
     final theme = Theme.of(context);
+    useListenable(controller);
 
-    final selectedQuestion =
-        useState<IdeaProjectQuestion?>(idea.newQuestion ?? defaultQuestion);
-    selectedQuestion.addListener(() async {
-      if (selectedQuestion.value == idea.newQuestion) return;
-      idea.newQuestion = selectedQuestion.value;
-      unawaited(idea.save());
-    });
-
-    final answerController = useTextEditingController(text: idea.newAnswerText);
-    final answer = useState(answerController.text);
-    answerController.addListener(() {
-      if (idea.newAnswerText == answerController.text) return;
-      idea.newAnswerText = answerController.text;
-      answer.value = answerController.text;
-      onChanged();
-      unawaited(idea.save());
-    });
-
-    Future<void> onCreate() async {
-      final text = answerController.text;
-      answerController.clear();
-      final question = selectedQuestion.value;
-      if (question == null || text.isEmpty) return;
-      final answer =
-          await IdeaProjectAnswer.create(text: text, question: question);
-
-      onCreated(answer);
-    }
+    final controllerState = controller.value;
+    final isQuestionsOpened = controllerState.isQuestionsOpened;
+    final selectedQuestion = controllerState.question;
 
     final sendButton = RotatedBox(
       quarterTurns: 3,
       child: IconButton(
-        onPressed: answer.value.isNotEmpty ? onCreate : null,
-        color: AppColors.primary2,
+        onPressed: controller.answerController.text.isNotEmpty
+            ? controller.onCreateAnswer
+            : null,
+        color: theme.colorScheme.primary,
         icon: const Icon(Icons.send),
       ),
     );
     final shareButton = Hero(
       tag: const Key('shareButton'),
       child: IconShareButton(
-        onTap: onShareTap,
+        onTap: () async => controller.onShare(context),
       ),
     );
 
-    return Material(
-      color: questionsOpened.value
-          ? getBackgroundByTheme(theme)
-          : theme.canvasColor,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: context.theme.colorScheme.onSecondary,
+          ),
+        ),
+      ),
+      padding: const EdgeInsets.only(top: 2),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: questionsOpened.value,
-            child: Padding(
+          if (isQuestionsOpened)
+            Padding(
               padding: const EdgeInsets.only(
-                top: 14,
                 bottom: 2,
                 right: 10,
                 left: 10,
@@ -89,10 +151,9 @@ class _AnswerCreator extends HookWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: _QuestionsChips(
-                      onChange: (final question) =>
-                          selectedQuestion.value = question,
-                      value: selectedQuestion.value,
+                    child: QuestionsChips(
+                      onChange: controller.changeQuestion,
+                      value: selectedQuestion,
                     ),
                   ),
                   Padding(
@@ -103,31 +164,33 @@ class _AnswerCreator extends HookWidget {
                       children: [
                         shareButton,
                         EmojiPopup(
-                          controller: answerController,
-                          focusNode: answerFocusNode,
+                          controller: controller.answerController,
+                          focusNode: controller.focusNode,
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
+            ).animate().fadeIn(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
                 Expanded(
                   child: ProjectTextField(
-                    hintText: S.current.writeAnAnswer,
-                    focusOnInit: idea.answers?.isEmpty == true,
-                    controller: answerController,
-                    onSubmit: onCreate,
-                    focusNode: answerFocusNode,
-                    onFocus: onFocus,
+                    hintText: context.l10n.writeAnAnswer,
+                    contentPadding: kIsWeb ? const EdgeInsets.all(24) : null,
+                    focusOnInit:
+                        controller.dto.ideaViewBloc.idea.answers.isEmpty,
+                    controller: controller.answerController,
+                    onSubmit: controller.onCreateAnswer,
+                    focusNode: controller.focusNode,
+                    onFocus: controller.onFocus,
+                    onUnfocus: controller.onUnfocus,
                   ),
                 ),
-                if (questionsOpened.value) sendButton else shareButton,
+                if (isQuestionsOpened) sendButton else shareButton,
               ],
             ),
           ),

@@ -1,277 +1,70 @@
 {
   "language": "Язык",
-  "@language": {
-    "description": "пункт меню язык"
-  },
   "search": "Поиск",
-  "@search": {
-    "description": "Search"
-  },
   "frequentlyUsed": "Часто используемые",
-  "@frequentlyUsed": {
-    "description": "frequentlyUsed"
-  },
   "writeAnAnswer": "Запишите ответ",
-  "@writeAnAnswer": {
-    "description": "writeAnAnswer"
-  },
   "writeANote": "Запишите заметку",
-  "@writeANote": {
-    "description": "writeANote"
-  },
   "charactersLimit": "Лимит символов",
-  "@charactersLimit": {
-    "description": "charactersLimit"
-  },
   "changeLog": "Change Log",
-  "@changeLog": {
-    "description": "changeLog"
-  },
+  "loading": "Загрузка",
   "username": "Имя пользователя",
-  "@username": {
-    "description": "username"
-  },
   "deleteMyAccount": "Удалить аккаунт",
-  "@deleteMyAccount": {
-    "description": "deleteMyAccount"
-  },
   "esc": "ESC",
-  "@esc": {
-    "description": "esc"
-  },
   "danger": "Опасно",
-  "@danger": {
-    "description": "danger"
-  },
   "email": "E-mail",
-  "@email": {
-    "description": "email"
-  },
   "charactersLimitForNewNotesDesription": "Когда вы устанавливаете лимит, все новые заметки будут иметь это ограничение. А если вам нужно выйти за пределы лимита для одной заметки - просто установите его в настройках заметки.",
-  "@charactersLimitForNewNotesDesription": {
-    "description": "When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings."
-  },
   "charactersUnlimited": "Другой",
-  "@charactersUnlimited": {
-    "description": "charactersUnlimited"
-  },
   "madeWithLoveAndFlutter": "Сделано с Flutter ❤ и Open Source Libraries",
-  "@madeWithLoveAndFlutter": {
-    "description": "madeWithLoveAndFlutter"
-  },
   "feedbackTextWithEmail": "или отправьте сообщение на idea@xsoulspace.dev",
-  "@feedbackTextWithEmail": {
-    "description": "feedbackTextWithEmail"
-  },
   "niceDayWish": "Спасибо что используете приложение и хорошего дня, полного идей и вдохновения!",
-  "@niceDayWish": {
-    "description": "niceDayWish"
-  },
   "privacyPolicy": "Политика конфиденциальности",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
   "termsAndConditions": "Условия использования",
-  "@termsAndConditions": {
-    "description": "Terms & Conditions"
-  },
   "joinDiscord": "Присоединяйтесь к Discord",
-  "@joinDiscord": {
-    "description": "joinDiscord button"
-  },
   "pleaseNotice": "Обратите внимание",
-  "@pleaseNotice": {
-    "description": "Please notice title"
-  },
   "appInfo": "Last Answer",
-  "@appInfo": {
-    "description": "app info title"
-  },
   "appVersion": "Версия: {version}, билд: {buildNumber}",
-  "@appVersion": {
-    "description": "app version",
-    "args": [
-      "version",
-      "buildNumber"
-    ]
-  },
   "projectsDirection": "Направление заметок",
-  "@projectsDirection": {
-    "description": "Projects direction"
-  },
   "wordNew": "Новое",
-  "@wordNew": {
-    "description": "New"
-  },
   "theme": "Тема",
-  "@theme": {
-    "description": "app theme"
-  },
   "themeSystem": "Как в системе",
-  "@themeSystem": {
-    "description": "app theme - system"
-  },
   "themeDark": "Темная",
-  "@themeDark": {
-    "description": "app theme - dark"
-  },
   "themeLight": "Светлая",
-  "@themeLight": {
-    "description": "app theme - light"
-  },
   "yes": "ДА",
-  "@yes": {
-    "description": "yes"
-  },
   "settings": "Настройки",
-  "@settings": {
-    "description": "Settings"
-  },
   "noteSettings": "Настройки заметки",
-  "@noteSettings": {
-    "description": "noteSettings"
-  },
   "createIdeaHelperText": "Создать туториал",
-  "@createIdeaHelperText": {
-    "description": "createIdeaHelperText"
-  },
   "whatsYourIdea": "В чём идея?",
-  "@whatsYourIdea": {
-    "description": "What's your idea? label"
-  },
   "noProjectsYet": "Тут пока пусто",
-  "@noProjectsYet": {
-    "description": "text if no projects created"
-  },
   "idea": "Идея",
-  "@idea": {
-    "description": "idea name"
-  },
   "note": "Заметка",
-  "@note": {
-    "description": "Note name"
-  },
   "subscription": "Подписка",
-  "@subscription": {
-    "description": "subscription"
-  },
   "freeSubscription": "Бесплатно",
-  "@freeSubscription": {
-    "description": "free Subscription"
-  },
   "patronSubscription": "Patron",
-  "@patronSubscription": {
-    "description": "patronSubscription"
-  },
   "myAccount": "Мой аккаунт",
-  "@myAccount": {
-    "description": "myAccount"
-  },
   "generalSettingsFullTitle": "Общие настройки",
-  "@generalSettingsFullTitle": {
-    "description": "generalSettingsFullTitle"
-  },
   "generalSettingsShortTitle": "Общие",
-  "@generalSettingsShortTitle": {
-    "description": "generalSettingsShortTitle"
-  },
   "cancel": "Отменить",
-  "@cancel": {
-    "description": "Отменить"
-  },
   "close": "Закрыть",
-  "@close": {
-    "description": "Закрыть"
-  },
   "delete": "Удалить",
-  "@delete": {
-    "description": "Удалить"
-  },
   "deleteThisNote": "Удалить заметку",
-  "@deleteThisNote": {
-    "description": "deleteThisNote"
-  },
   "successfullySaved": "Успешно сохранено!",
-  "@successfullySaved": {
-    "description": "Successfully saved"
-  },
   "successfullyDeleted": "Успешно удалено!",
-  "@successfullyDeleted": {
-    "description": "Successfully deleted"
-  },
   "areYouSure": "Вы уверены?",
-  "@areYouSure": {
-    "description": "Вы уверены"
-  },
   "willBeLost": "{title} будет потерян безвозвратно",
-  "@willBeLost": {
-    "description": "removal warning",
-    "args": [
-      "title"
-    ]
-  },
   "lastAnswer": "Последний ответ",
-  "@lastAnswer": {
-    "description": "пункт меню последний ответ"
-  },
   "answer": "Ответ",
-  "@answer": {
-    "description": "ввод ответа"
-  },
   "newQuestStart": "начать",
-  "@newQuestStart": {
-    "description": "popup новый начать"
-  },
   "philosophyInspirationTitle": "Вдохновление",
-  "@philosophyInspirationTitle": {
-    "description": "Inspiration"
-  },
   "philosophyAbstractWhatElse": "Что ещё?",
-  "@philosophyAbstractWhatElse": {
-    "description": "What else"
-  },
   "philosophyAbstractFiveWhyesWhat": "Можно использовать: \"Пять почему\"",
-  "@philosophyAbstractFiveWhyesWhat": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractFiveWhyesWhy": "Потому что благодаря этой технике можно углубить область, изучаемой или создаваемой идеи или проблемы. В качестве метода используется изучение \"причины и эффекта\". Больше об этой технике: https://ru.wikipedia.org/wiki/Пять_почему",
-  "@philosophyAbstractFiveWhyesWhy": {
-    "description": "Description of Five Whyes"
-  },
   "philosophyAbstractPDSAWhy": "Потому что это наиболее универсальная техника, не содержащаяя твердых вопросов, как \"Пять почему\", позволяющая реализовать не просто глубинное изучение идеи или проблемы, а изучение области. Больше об этой технике:  https://ru.wikipedia.org/wiki/Цикл_Деминга",
-  "@philosophyAbstractPDSAWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractPDSAWhat": "Ещё можно использовать: \"PDCA/PDSA (Plan-Do-Check(Study)-Act): Цикл Деминга - Шухарта\"",
-  "@philosophyAbstractPDSAWhat": {
-    "description": "Description of PDSA"
-  },
   "philosophyAbstractSixSigmaWhy": "Если проблема или идея связана с производством - стоит посмотреть этот метод. Он позволяет контролировать процесс улучшения и создания бизнес процессов и продуктов. Больше об этой технике:  https://ru.wikipedia.org/wiki/Шесть_сигм",
-  "@philosophyAbstractSixSigmaWhy": {
-    "description": "Method that you can use"
-  },
   "philosophyAbstractSixSigmaWhat": "Ещё можно использовать: \"Шесть сигм\" ",
-  "@philosophyAbstractSixSigmaWhat": {
-    "description": "Description of Six Sigma"
-  },
   "about": "О приложении",
-  "@about": {
-    "description": "About Abstract title"
-  },
   "aboutAbstractWhatFor": "Зачем?",
-  "@aboutAbstractWhatFor": {
-    "description": "What For About Abstract"
-  },
   "aboutAbstractWhatForDescription": "Это приложение создано для момента, когда нужно быстро описать свои идеи и мысли; чтобы облегчить решение сложных проблем и обмен идеями между людьми.",
-  "@aboutAbstractWhatForDescription": {
-    "description": "Description of About Abstract"
-  },
   "aboutAbstractHowDescription": "Можно использовать раздел Вдохновление, чтобы получить пример с какими техниками возможно использовать приложение.",
-  "@aboutAbstractHowDescription": {
-    "description": "Description of About Abstract How Description"
-  },
-  "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?",
-  "@aboutAbstractIdeasImprovementsBugs": {
-    "description": "Ideas Improvements Bugs"
-  }
+  "aboutAbstractIdeasImprovementsBugs": "Идеи Улучшения Баги?"
 }

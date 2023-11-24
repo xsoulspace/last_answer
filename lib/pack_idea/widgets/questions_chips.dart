@@ -1,28 +1,27 @@
-part of pack_idea;
+import 'package:lastanswer/common_imports.dart';
 
-class _QuestionsChips extends StatelessWidget {
-  const _QuestionsChips({
+class QuestionsChips extends StatelessWidget {
+  const QuestionsChips({
     required this.value,
     required this.onChange,
+    super.key,
   });
-  final IdeaProjectQuestion? value;
-  final ValueChanged<IdeaProjectQuestion> onChange;
+  final IdeaProjectQuestionModel? value;
+  final ValueChanged<IdeaProjectQuestionModel> onChange;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final ideaQuestionsProvider = context.read<IdeaProjectQuestionsProvider>();
-
-    final questions = ideaQuestionsProvider.values;
+    final questions = context.read<ProjectsNotifier>().ideaQuestions;
 
     return Wrap(
-      spacing: 1,
+      spacing: 3,
+      runSpacing: 3,
       crossAxisAlignment: WrapCrossAlignment.center,
       alignment: WrapAlignment.center,
       children: questions
           .map(
             (final question) => QuestionChip(
               key: ValueKey(question.id),
-              text: question.title.getByLanguage(Intl.getCurrentLocale()),
+              text: question.title.localize(context),
               selected: value == question,
               onSelected: (final _) => onChange(question),
             ),
@@ -39,8 +38,9 @@ class QuestionChip extends StatelessWidget {
     required this.text,
     super.key,
   });
-  static final shape =
-      RoundedRectangleBorder(borderRadius: defaultBorderRadius);
+  static final shape = RoundedRectangleBorder(
+    borderRadius: defaultBorderRadius,
+  );
 
   final String text;
   final bool selected;
@@ -50,17 +50,15 @@ class QuestionChip extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
 
-    return SizedBox(
-      height: 38,
-      child: ChoiceChip(
-        label: Text(text),
-        labelStyle: theme.textTheme.bodyMedium,
-        shape: shape,
-        backgroundColor: _AnswerCreator.getBackgroundByTheme(theme),
-        selectedColor: AppColors.primary2.withOpacity(0.2),
-        selected: selected,
-        onSelected: onSelected,
-      ),
+    return ChoiceChip.elevated(
+      label: Text(text),
+      labelStyle: theme.textTheme.bodyMedium,
+      shape: shape,
+      pressElevation: 2,
+      showCheckmark: false,
+      elevation: 0,
+      selected: selected,
+      onSelected: onSelected,
     );
   }
 }

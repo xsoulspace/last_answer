@@ -1,26 +1,39 @@
-part of pack_idea;
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/pack_idea/widgets/answer_field_bubble.dart';
+import 'package:lastanswer/pack_idea/widgets/question_dropdown.dart';
 
-class _AnswerTile extends StatelessWidget {
-  const _AnswerTile({
+class AnswerTile extends StatelessWidget {
+  const AnswerTile({
     required this.answer,
     required this.confirmDelete,
     required this.onReadyToDelete,
     required this.deleteIconVisible,
     required this.onExpand,
     required this.onFocus,
-    required this.onChange,
+    required this.onChanged,
     super.key,
   });
-  final IdeaProjectAnswer answer;
+  const AnswerTile.deletable({
+    required this.answer,
+    required this.confirmDelete,
+    required this.onReadyToDelete,
+    required this.deleteIconVisible,
+    required this.onExpand,
+    required this.onFocus,
+    required this.onChanged,
+    super.key,
+  });
+  final IdeaProjectAnswerModel answer;
   final FutureBoolCallback confirmDelete;
-  final ValueChanged<IdeaProjectAnswer> onReadyToDelete;
+  final ValueChanged<IdeaProjectAnswerModel> onReadyToDelete;
+  final ValueChanged<IdeaProjectAnswerModel> onChanged;
+  final ValueChanged<IdeaProjectAnswerModel> onExpand;
   final bool deleteIconVisible;
-  final ValueChanged<IdeaProjectAnswer> onExpand;
   final VoidCallback onFocus;
-  final VoidCallback onChange;
   @override
   Widget build(final BuildContext context) => DismissibleTile(
-        dismissibleKey: Key(answer.id),
+        dismissibleKey: Key(answer.id.value),
         // confirmDismiss: (final direction) async {
         //   if (direction != DismissDirection.startToEnd) return false;
         //   return confirmDelete();
@@ -47,8 +60,7 @@ class _AnswerTile extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8, top: 11.5),
                             child: Text(
-                              answer.question.title
-                                  .getByLanguage(Intl.getCurrentLocale()),
+                              answer.question.title.localize(context),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
@@ -63,8 +75,7 @@ class _AnswerTile extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  answer.question.title
-                                      .getByLanguage(Intl.getCurrentLocale()),
+                                  answer.question.title.localize(context),
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
@@ -79,9 +90,9 @@ class _AnswerTile extends StatelessWidget {
                   },
                   id: '${answer.id}-question${answer.question.id}',
                   type: HeroIdTypes.projectIdeaQuestionTitle,
-                  child: _QuestionDropdown(
+                  child: QuestionDropdown(
                     answer: answer,
-                    onChange: onChange,
+                    onChanged: onChanged,
                   ),
                 ),
               ),
@@ -115,21 +126,21 @@ class _AnswerTile extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 54),
+              padding: const EdgeInsets.only(top: 54, bottom: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const SizedBox(width: 24),
                   Flexible(
                     child: HeroId(
-                      id: answer.id,
+                      id: answer.id.value,
                       placeholderBuilder: (final _, final __, final child) =>
                           Opacity(opacity: 0.4, child: child),
                       type: HeroIdTypes.projectIdeaAnswerText,
                       child: AnswerFieldBubble(
                         onFocus: onFocus,
                         answer: answer,
-                        onChange: onChange,
+                        onChanged: onChanged,
                       ),
                     ),
                   ),

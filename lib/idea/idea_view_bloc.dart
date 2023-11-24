@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
+import 'package:lastanswer/pack_idea/pack_idea.dart';
 
 part 'idea_view_bloc.freezed.dart';
 
@@ -35,6 +35,8 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
     ),
   );
 
+  final listKey = GlobalKey<AnimatedListState>();
+
   final IdeaViewBlocDto dto;
   late final titleController =
       TextEditingController(text: dto.initialIdea.title)
@@ -49,7 +51,7 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
     dto.openedProjectNotifier.updateProject(updatedIdea);
   }
 
-  Future<void> onRemove(final BuildContext context) async {
+  Future<void> onDeleteIdea(final BuildContext context) async {
     final remove = await showRemoveTitleDialog(
       title: idea.title,
       context: context,
@@ -58,15 +60,36 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
     dto.openedProjectNotifier.deleteProject();
   }
 
-  void onSubmit() {
-    unawaited(SoftKeyboard.close());
-  }
-
   void onExpandAnswer({
     required final IdeaProjectAnswerModel answer,
     required final int index,
   }) {
     // TODO(arenukvern): description,
+  }
+
+  void onDeleteAnswer({
+    required final IdeaProjectAnswerModel answer,
+    required final int index,
+  }) {
+    listKey.currentState!.removeItem(
+      index,
+      (final context, final animation) => SizeTransition(
+        sizeFactor: animation,
+        child: AnswerTile(
+          answer: answer,
+          confirmDelete: () async => false,
+          deleteIconVisible: false,
+          onChanged: (final _) {},
+          onExpand: (final _) {},
+          onFocus: () {},
+          onReadyToDelete: (final _) {},
+        ),
+      ),
+    );
+    final updatedAnswers = [...idea.answers]..removeAt(index);
+    final updatedIdea = idea.copyWith(answers: updatedAnswers);
+    setValue(value.copyWith(idea: updatedIdea));
+    dto.openedProjectNotifier.updateProject(updatedIdea);
   }
 
   void onAnswerChanged({
@@ -108,6 +131,7 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
     final updatedIdea = idea.copyWith(answers: updatedAnswers);
     setValue(value.copyWith(idea: updatedIdea));
     dto.openedProjectNotifier.updateProject(updatedIdea);
+    listKey.currentState!.insertItem(0);
   }
 
   @override

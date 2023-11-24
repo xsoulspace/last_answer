@@ -30,37 +30,25 @@ class AnswerFieldBubble extends HookWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                width: 0.1,
-                color: consts.brightness == Brightness.light
-                    ? AppColors.black
-                    : AppColors.grey2,
+                color: context.colorScheme.onSecondary,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                width: 0.05,
-                color: consts.brightness == Brightness.light
-                    ? AppColors.black
-                    : AppColors.grey4,
+                color: context.colorScheme.onSecondary.withOpacity(0.4),
               ),
             ),
-            focusColor: Colors.red,
-            fillColor: Colors.green,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
-                    .copyWith(top: 4),
           ),
         ),
-        child: TextFormField(
+        child: UiTextField(
           onChanged: updateAnswer,
+          value: answer.text,
           maxLines: null,
-          initialValue: answer.text,
-          textAlignVertical: TextAlignVertical.bottom,
+          textAlignVertical: TextAlignVertical.center,
           keyboardType: TextInputType.multiline,
-          onEditingComplete: () {},
           style: context.textTheme.bodyMedium,
-          cursorColor: context.colorScheme.secondary,
+          decoration: const InputDecoration(isDense: true),
         ),
       ),
     );

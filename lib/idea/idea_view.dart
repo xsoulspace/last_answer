@@ -41,7 +41,7 @@ class IdeaViewBody extends StatelessWidget {
             heroId: bloc.dto.initialIdea.id.value,
             onChanged: (final _) {},
           ),
-          onBack: context.pop,
+          onBack: () => context.go(ScreenPaths.home),
         ),
         Expanded(
           child: Column(
@@ -54,27 +54,23 @@ class IdeaViewBody extends StatelessWidget {
                     // state.closeQuestions();
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: ListView.separated(
-                    // key: PageStorageKey('ideas/listeview/$ideaId/answers'),
-                    // controller: scrollController,
-                    // restorationId: 'ideas/listeview/$ideaId/answers',
-                    separatorBuilder: (final _, final __) =>
-                        const SizedBox(height: 26),
+                  child: AnimatedList(
+                    key: bloc.listKey,
                     padding: const EdgeInsets.only(
-                      bottom: 24,
+                      bottom: 32,
                       left: 8,
                       right: 12,
                     ),
-                    itemCount: answers.length,
+                    initialItemCount: answers.length,
                     reverse: true,
                     shrinkWrap: true,
-                    itemBuilder: (final context, final index) {
+                    itemBuilder: (final context, final index, final animation) {
                       final answer = answers[index];
 
                       return AnswerTile(
+                        key: ValueKey(answer.id),
                         onFocus: () => bloc.draftAnswerController
                             .updateIsQuestionsOpened(isOpened: false),
-                        key: ValueKey(answer.id),
                         answer: answer,
                         confirmDelete: () async => showRemoveTitleDialog(
                           title: answer.title,
@@ -84,7 +80,9 @@ class IdeaViewBody extends StatelessWidget {
                           closeKeyboard(context: context);
                           bloc.onExpandAnswer(answer: answer, index: index);
                         },
-                        onReadyToDelete: (final _) {},
+                        onReadyToDelete: (final answer) {
+                          bloc.onDeleteAnswer(answer: answer, index: index);
+                        },
                         onChanged: (final answer) =>
                             bloc.onAnswerChanged(answer: answer, index: index),
                         deleteIconVisible: PlatformInfo.isNativeWebDesktop,
@@ -93,9 +91,7 @@ class IdeaViewBody extends StatelessWidget {
                   ),
                 ),
               ),
-              AnswerCreator(
-                controller: bloc.draftAnswerController,
-              ),
+              AnswerCreator(controller: bloc.draftAnswerController),
               const BottomSafeArea(),
             ],
           ),

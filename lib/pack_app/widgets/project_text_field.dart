@@ -17,6 +17,7 @@ class ProjectTextField extends StatefulHookWidget {
     this.undoController,
     this.limit,
     this.hasBorder = true,
+    this.contentPadding,
     super.key,
   });
   final TextEditingController controller;
@@ -25,6 +26,7 @@ class ProjectTextField extends StatefulHookWidget {
   final String hintText;
   final FocusNode? focusNode;
   final int? limit;
+  final EdgeInsets? contentPadding;
   final UndoHistoryController? undoController;
   final bool countCharacters;
 
@@ -130,9 +132,10 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             textAlignVertical: TextAlignVertical.bottom,
             style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
-              contentPadding: PlatformInfo.isNativeDesktop
-                  ? const EdgeInsets.fromLTRB(12, 20, 0, 20)
-                  : const EdgeInsets.only(bottom: 4),
+              contentPadding: widget.contentPadding ??
+                  (PlatformInfo.isNativeDesktop
+                      ? const EdgeInsets.fromLTRB(12, 20, 0, 20)
+                      : const EdgeInsets.only(bottom: 4)),
               filled: widget.filled,
               focusedBorder: focusedBorder,
               border: _border,

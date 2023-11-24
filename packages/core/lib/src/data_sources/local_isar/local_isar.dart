@@ -15,6 +15,7 @@ final class ComplexLocalDbIsarImpl implements ComplexLocalDb {
       : _db!;
   @override
   Future<void> open() async {
+    if (kIsWeb) return;
     final String dirPath;
 
     /// doesn't work on web

@@ -1,6 +1,6 @@
 import 'package:lastanswer/common_imports.dart';
 
-class QuestionDropdown extends HookWidget {
+class QuestionDropdown extends StatelessWidget {
   const QuestionDropdown({
     required this.answer,
     required this.onChanged,
@@ -12,51 +12,52 @@ class QuestionDropdown extends HookWidget {
   final ValueChanged<IdeaProjectAnswerModel> onChanged;
   @override
   Widget build(final BuildContext context) {
-    final projectsNotifier = context.read<ProjectsNotifier>();
+    final projectsNotifier = context.watch<ProjectsNotifier>();
     final questions = projectsNotifier.ideaQuestions;
-    final chosenQuestion = useState<IdeaProjectQuestionModel>(questions.first);
+    final textStyle = context.textTheme.bodyLarge;
 
-    // useEffect(
-    //   () {
-    //     chosenQuestion.value = answer.question;
-
-    //     return null;
-    //   },
-    //   [answer.question],
-    // );
-
-    final textStyle = Theme.of(context).textTheme.bodyLarge!;
-
-    final questionsItems = questions.map(
-      (final question) => DropdownMenuItem<IdeaProjectQuestionModel>(
-        value: question,
-        alignment: alignment,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            question.title.localize(context),
-            style: textStyle.copyWith(
-              color: textStyle.color!.withOpacity(0.8),
+    final dropdownMenuEntries = questions
+        .map(
+          (final question) => DropdownMenuEntry<IdeaProjectQuestionModel>(
+            value: question,
+            labelWidget: Text(
+              question.title.localize(context),
+              style: textStyle?.copyWith(
+                color: textStyle.color?.withOpacity(0.8),
+              ),
             ),
+            label: question.title.localize(context),
+          ),
+        )
+        .toList();
+
+    return DropdownMenu<IdeaProjectQuestionModel>(
+      dropdownMenuEntries: dropdownMenuEntries,
+      initialSelection: answer.question,
+      menuStyle: MenuStyle(
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: defaultBorderRadius,
           ),
         ),
       ),
-    );
-
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<IdeaProjectQuestionModel>(
-        isExpanded: true,
-        itemHeight: null,
-        icon: const SizedBox(),
-        borderRadius: defaultBorderRadius,
-        value: chosenQuestion.value,
-        items: questionsItems.toList(),
-        onChanged: (final question) async {
-          if (question == null || chosenQuestion.value == question) return;
-          chosenQuestion.value = question;
-          onChanged(answer.copyWith(question: question));
-        },
+      leadingIcon: Icon(
+        Icons.circle,
+        color: context.colorScheme.tertiaryContainer.withOpacity(0.4),
+        size: 6,
       ),
+      selectedTrailingIcon: const SizedBox(),
+      trailingIcon: const SizedBox(),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: InputBorder.none,
+        isCollapsed: true,
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 5),
+      ),
+      onSelected: (final question) async {
+        if (question == null) return;
+        onChanged(answer.copyWith(question: question));
+      },
     );
   }
 }

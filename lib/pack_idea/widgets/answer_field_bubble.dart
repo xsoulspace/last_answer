@@ -30,13 +30,13 @@ class AnswerFieldBubble extends HookWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                color: context.colorScheme.onSecondary,
+                color: context.colorScheme.onPrimaryContainer,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: defaultBorderRadius,
               borderSide: BorderSide(
-                color: context.colorScheme.onSecondary.withOpacity(0.4),
+                color: context.colorScheme.onPrimaryContainer.withOpacity(0.2),
               ),
             ),
           ),

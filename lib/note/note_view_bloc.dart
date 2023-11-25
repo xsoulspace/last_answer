@@ -1,3 +1,4 @@
+import 'package:lastanswer/_library/hooks/hooks.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
@@ -16,7 +17,7 @@ class NoteViewBlocDto {
 
 class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   NoteViewBloc({required this.dto}) : super(dto.initialNote);
-
+  late final keyboardVisibilityController = KeyboardController();
   final NoteViewBlocDto dto;
   late final noteController = TextEditingController(text: dto.initialNote.note)
     ..addListener(_onChanged);
@@ -50,9 +51,8 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
     dto.openedProjectNotifier.deleteProject();
   }
 
-  Future<void> onSwitchKeyboard({
-    required final bool isKeyboardVisible,
-  }) async {
+  Future<void> onSwitchKeyboard() async {
+    final isKeyboardVisible = keyboardVisibilityController.value;
     void switchKeyboard({
       final bool forceToOpen = false,
     }) {
@@ -81,6 +81,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
 
   @override
   void dispose() {
+    keyboardVisibilityController.dispose();
     noteController
       ..removeListener(_onChanged)
       ..dispose();

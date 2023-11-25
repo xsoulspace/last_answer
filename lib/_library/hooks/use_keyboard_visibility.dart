@@ -18,10 +18,6 @@ class _KeyboardVisiblityHookState
   void initHook() {
     if (PlatformInfo.isNativeDesktop) return;
 
-    final keyboardVisibilityController = KeyboardVisibilityController();
-    keyboardSubscription =
-        keyboardVisibilityController.onChange.listen(onKeyboardVisibiltyChange);
-
     super.initHook();
   }
 
@@ -48,4 +44,23 @@ class _KeyboardVisiblityHookState
 
   @override
   String get debugLabel => 'useState<$bool>';
+}
+
+class KeyboardController extends ValueNotifier<bool> {
+  KeyboardController() : super(false) {
+    if (PlatformInfo.isNativeDesktop) return;
+    final controller = KeyboardVisibilityController();
+    value = controller.isVisible;
+    _keyboardSubscription = controller.onChange.listen(_onVisiblityChanged);
+  }
+  StreamSubscription<bool>? _keyboardSubscription;
+
+  // ignore: use_setters_to_change_properties
+  void _onVisiblityChanged(final bool isVisible) => value = isVisible;
+
+  @override
+  void dispose() {
+    unawaited(_keyboardSubscription?.cancel());
+    super.dispose();
+  }
 }

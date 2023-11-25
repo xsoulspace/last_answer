@@ -9,7 +9,7 @@ class ProjectTextField extends StatefulHookWidget {
     this.onUnfocus,
     this.onFocus,
     this.filled = true,
-    this.value = '',
+    this.value,
     this.onChanged,
     this.maxLines = 7,
     this.endlessLines = false,
@@ -31,7 +31,7 @@ class ProjectTextField extends StatefulHookWidget {
   final EdgeInsets? contentPadding;
   final UndoHistoryController? undoController;
   final bool countCharacters;
-  final String value;
+  final String? value;
   final ValueChanged<String>? onChanged;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
@@ -53,8 +53,10 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
 
   @override
   void didUpdateWidget(covariant final ProjectTextField oldWidget) {
-    _controller.text = widget.value;
     super.didUpdateWidget(oldWidget);
+    final v = widget.value;
+    if (v == null) return;
+    if (mounted) _controller.text = v;
   }
 
   final _keyboardFocusNode = FocusNode();

@@ -3,12 +3,14 @@ import 'package:lastanswer/common_imports.dart';
 
 class ProjectTextField extends StatefulHookWidget {
   const ProjectTextField({
-    required this.controller,
     required this.onSubmit,
     required this.hintText,
+    this.controller,
     this.onUnfocus,
     this.onFocus,
     this.filled = true,
+    this.value = '',
+    this.onChanged,
     this.maxLines = 7,
     this.endlessLines = false,
     this.focusOnInit = true,
@@ -20,7 +22,7 @@ class ProjectTextField extends StatefulHookWidget {
     this.contentPadding,
     super.key,
   });
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final VoidCallback onSubmit;
   final int maxLines;
   final String hintText;
@@ -29,6 +31,8 @@ class ProjectTextField extends StatefulHookWidget {
   final EdgeInsets? contentPadding;
   final UndoHistoryController? undoController;
   final bool countCharacters;
+  final String value;
+  final ValueChanged<String>? onChanged;
 
   /// if [endlessLines] == [true] then maxLines will be ignored
   final bool endlessLines;
@@ -43,6 +47,16 @@ class ProjectTextField extends StatefulHookWidget {
 }
 
 class _ProjectTextFieldState extends State<ProjectTextField> {
+  late final _isInnerControllerUsed = widget.controller == null;
+  late final _controller =
+      widget.controller ?? TextEditingController(text: widget.value);
+
+  @override
+  void didUpdateWidget(covariant final ProjectTextField oldWidget) {
+    _controller.text = widget.value;
+    super.didUpdateWidget(oldWidget);
+  }
+
   final _keyboardFocusNode = FocusNode();
   late FocusNode _textFieldFocusNode;
   int? _maxLength;
@@ -74,6 +88,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
   void dispose() {
     _keyboardFocusNode.dispose();
     if (widget.focusNode == null) _textFieldFocusNode.dispose();
+    if (_isInnerControllerUsed) _controller.dispose();
     super.dispose();
   }
 
@@ -117,13 +132,14 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             }
           },
           child: TextFormField(
+            onChanged: widget.onChanged,
             maxLength: _maxLength,
             maxLengthEnforcement: MaxLengthEnforcement.none,
             maxLines: widget.endlessLines ? null : widget.maxLines,
             scrollController: scrollController,
             focusNode: _textFieldFocusNode,
             onFieldSubmitted: (final _) => widget.onSubmit(),
-            controller: widget.controller,
+            controller: _controller,
             undoController: widget.undoController,
             keyboardAppearance: theme.brightness,
             minLines: widget.endlessLines ? null : 1,

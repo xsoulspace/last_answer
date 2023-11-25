@@ -41,8 +41,10 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     projectsPagedController.refresh();
   }
 
-  void updateProject(final ProjectModel project) =>
-      _projectsUpdatesController.add(project);
+  void updateProject(final ProjectModel project) {
+    _projectsUpdatesController.add(project.copyWith(updatedAt: DateTime.now()));
+  }
+
   void deleteProject(final ProjectModel project) {
     projectsPagedController.pager.removeElement(element: project);
     unawaited(dto.projectsRepository.remove(id: project.id));

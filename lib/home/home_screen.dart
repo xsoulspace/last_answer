@@ -149,18 +149,22 @@ class _ProjectsListView extends StatelessWidget {
     );
     final screenLayout = ScreenLayout.of(context);
     if (PlatformInfo.isNativeWebMobile || screenLayout.small) {
-      return Column(
-        children: [
-          appBar,
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(child: child),
-                const _VerticalBar(),
-              ],
+      return GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => closeKeyboard(context: context),
+        child: Column(
+          children: [
+            appBar,
+            Expanded(
+              child: Row(
+                children: [
+                  const _VerticalBar(),
+                  Expanded(child: child),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     } else {
       final double width =

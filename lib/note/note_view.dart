@@ -34,7 +34,7 @@ class NoteViewBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final bloc = context.watch<NoteViewBloc>();
-    final isKeyboardClosed = !bloc.specialEmojiController.value.isKeyboardOpen;
+    final isKeyboardOpen = bloc.specialEmojiController.value.isKeyboardOpen;
     return Row(
       children: [
         Expanded(
@@ -56,7 +56,7 @@ class NoteViewBody extends StatelessWidget {
                 ),
               ),
               if (PlatformInfo.isNativeWebDesktop) const Gap(48),
-              if (isKeyboardClosed) const BottomSafeArea(),
+              if (!isKeyboardOpen) const BottomSafeArea(),
             ],
           ),
         ),

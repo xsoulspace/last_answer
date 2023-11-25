@@ -56,7 +56,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
     void switchKeyboard({
       final bool forceToOpen = false,
     }) {
-      if (isKeyboardVisible && !forceToOpen) {
+      if (isKeyboardVisible || forceToOpen) {
         unawaited(SoftKeyboard.close());
       } else {
         if (focusNode.hasFocus) {

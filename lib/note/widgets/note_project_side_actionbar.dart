@@ -12,6 +12,7 @@ class NoteProjectSideActionBar extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final bloc = context.watch<NoteViewBloc>();
+
     final specialEmojiController = bloc.specialEmojiController;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -36,7 +37,7 @@ class NoteProjectSideActionBar extends HookWidget {
         if (Platform.isAndroid || Platform.isIOS)
           IconButton(
             onPressed: () async => bloc.onSwitchKeyboard(
-              isKeyboardVisible: specialEmojiController.value.isKeyboardOpen,
+              isKeyboardVisible: false,
             ),
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),

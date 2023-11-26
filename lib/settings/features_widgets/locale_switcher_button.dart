@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/widgets/settings_text.dart';
+import 'package:lastanswer/idea/widgets/question_dropdown.dart';
 
 class LocaleSwitcherButton extends StatelessWidget {
   const LocaleSwitcherButton({
@@ -13,20 +13,17 @@ class LocaleSwitcherButton extends StatelessWidget {
         context.select<UserNotifier, Locale>((final c) => c.locale.value);
     final language = Languages.values.byName(locale.languageCode);
     final initLocale = namedLocalesMap[language]?.locale ?? Locales.en;
-
-    return DropdownButton<Locale>(
-      // Read the selected themeMode from the controller
-      value: initLocale,
-      // Call the updateThemeMode method any time the user selects
-      // theme.
-      onChanged: userNotifier.updateLocale,
-      isExpanded: true,
-      items: namedLocalesMap.values
+    return DropdownMenu<Locale>(
+      menuStyle: defaultDropdownMenuStyle,
+      textStyle: context.textTheme.bodyMedium,
+      inputDecorationTheme: defaultDropdownMenuInputTheme,
+      initialSelection: initLocale,
+      onSelected: userNotifier.updateLocale,
+      dropdownMenuEntries: namedLocalesMap.values
           .map(
-            (final e) => DropdownMenuItem<Locale>(
+            (final e) => DropdownMenuEntry(
               value: e.locale,
-              key: ValueKey(e.code),
-              child: SettingsText(text: e.name),
+              label: e.name,
             ),
           )
           .toList(),

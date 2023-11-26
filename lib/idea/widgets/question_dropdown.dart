@@ -33,14 +33,9 @@ class QuestionDropdown extends StatelessWidget {
 
     return DropdownMenu<IdeaProjectQuestionModel>(
       dropdownMenuEntries: dropdownMenuEntries,
+      textStyle: context.textTheme.bodyMedium,
       initialSelection: answer.question,
-      menuStyle: MenuStyle(
-        shape: MaterialStatePropertyAll(
-          RoundedRectangleBorder(
-            borderRadius: defaultBorderRadius,
-          ),
-        ),
-      ),
+      menuStyle: defaultDropdownMenuStyle,
       leadingIcon: Icon(
         Icons.circle,
         color: context.colorScheme.tertiaryContainer.withOpacity(0.4),
@@ -48,12 +43,7 @@ class QuestionDropdown extends StatelessWidget {
       ),
       selectedTrailingIcon: const SizedBox(),
       trailingIcon: const SizedBox(),
-      inputDecorationTheme: const InputDecorationTheme(
-        border: InputBorder.none,
-        isCollapsed: true,
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 5),
-      ),
+      inputDecorationTheme: defaultDropdownMenuInputTheme,
       onSelected: (final question) async {
         if (question == null) return;
         onChanged(answer.copyWith(question: question));
@@ -61,3 +51,18 @@ class QuestionDropdown extends StatelessWidget {
     );
   }
 }
+
+final defaultDropdownMenuStyle = MenuStyle(
+  shape: MaterialStatePropertyAll(
+    RoundedRectangleBorder(
+      borderRadius: defaultBorderRadius,
+    ),
+  ),
+);
+
+const defaultDropdownMenuInputTheme = InputDecorationTheme(
+  border: InputBorder.none,
+  isCollapsed: true,
+  isDense: true,
+  contentPadding: EdgeInsets.symmetric(vertical: 5),
+);

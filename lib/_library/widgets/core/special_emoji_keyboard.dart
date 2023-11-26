@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
@@ -24,7 +22,7 @@ class SpecialEmojiController
     required final TickerProvider tickerProvider,
   })  : _animationController = AnimationController(
           vsync: tickerProvider,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 365),
         ),
         super(const SpecialEmojisKeyboardControllerState());
   final FocusNode focusNode;
@@ -32,8 +30,8 @@ class SpecialEmojiController
   final AnimationController _animationController;
   @override
   void dispose() {
+    _animation.removeListener(notifyListeners);
     _animationController.dispose();
-
     super.dispose();
   }
 
@@ -46,9 +44,9 @@ class SpecialEmojiController
   ).animate(
     CurvedAnimation(
       parent: _animationController,
-      curve: Curves.linearToEaseOut,
+      curve: Curves.easeInOutExpo,
     ),
-  );
+  )..addListener(notifyListeners);
   Offset get keyboardOffset => _animation.value;
   Future<void> closeEmojiKeyboard({final bool immediately = true}) async {
     if (immediately) {
@@ -98,28 +96,8 @@ class SpecialEmojiKeyboardProvider extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    if (PlatformInfo.isNativeDesktop || kIsWeb) return builder(context);
-    final state = controller.value;
-    final view = View.of(context);
-    useEffect(
-      () {
-        Future.delayed(
-          const Duration(milliseconds: 110),
-          () async {
-            final isSystemKeyboardOpen = view.viewInsets.bottom > 0;
-            if (isSystemKeyboardOpen &&
-                state.isKeyboardOpen &&
-                !state.isKeyboardOpening) {
-              await controller.closeEmojiKeyboard();
-            }
-          },
-        );
-
-        return null;
-      },
-      [view.viewInsets.bottom],
-    );
-
+    if (PlatformInfo.isNativeWebDesktop) return builder(context);
+    useListenable(controller);
     final keyboardOffset = controller.keyboardOffset;
 
     return Stack(
@@ -132,10 +110,14 @@ class SpecialEmojiKeyboardProvider extends HookWidget {
                   child: builder(context),
                 ),
               ),
-              SizedBox(
-                height: controller.value.isKeyboardOpen
-                    ? keyboardOffset.dy
-                    : window.viewInsets.bottom / window.devicePixelRatio,
+              AnimatedBuilder(
+                animation: controller,
+                builder: (final context, final child) => SizedBox(
+                  height: controller.value.isKeyboardOpen ||
+                          controller.value.isKeyboardOpening
+                      ? keyboardOffset.dy
+                      : 0,
+                ),
               ),
             ],
           ),

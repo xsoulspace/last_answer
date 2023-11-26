@@ -42,7 +42,7 @@ Future<void> showNotificationDialog({
           child: SizedBox(
             height: height,
             width: width,
-            child: const UpdateNotificationDialog(),
+            child: const ChangelogDialog(),
           ),
         ),
       );
@@ -50,8 +50,8 @@ Future<void> showNotificationDialog({
   );
 }
 
-class UpdateNotificationDialog extends StatelessWidget {
-  const UpdateNotificationDialog({super.key});
+class ChangelogDialog extends StatelessWidget {
+  const ChangelogDialog({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -102,58 +102,6 @@ class UpdateNotificationDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 40),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (final _, final index) {
-                final notification = updates[index + 1];
-                Widget child = ListTile(
-                  title: SelectableText(
-                    notification.title.localize(context),
-                    style: theme.textTheme.headlineSmall,
-                  ),
-                  subtitle: SelectableText(
-                    intl.DateFormat.yMd()
-                        .format(notification.created.toLocal()),
-                    style: theme.textTheme.titleSmall,
-                  ),
-                );
-
-                if (index == 0) {
-                  child = Column(
-                    children: [
-                      Divider(color: theme.highlightColor),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 35),
-                        child: Text(
-                          'PREVIOUS UPDATES',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleSmall,
-                        ),
-                      ),
-                      Divider(color: theme.highlightColor),
-                      const SizedBox(height: 35),
-                      child,
-                    ],
-                  );
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.only(top: 95, bottom: 24),
-                  child: child,
-                );
-              },
-              shrinkWrap: true,
-              itemCount: updates.length,
-              padding: const EdgeInsets.all(24),
-              itemBuilder: (final context, final i) {
-                final notification = updates[i];
-
-                return SelectableText(
-                  notification.message.localize(context),
-                );
-              },
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(14),
             child: Row(
@@ -170,9 +118,82 @@ class UpdateNotificationDialog extends StatelessWidget {
               ],
             ),
           ),
+          const Expanded(child: ChangelogBody()),
           const BottomSafeArea(),
           const SizedBox(height: 10),
         ],
+      ),
+    );
+  }
+}
+
+class ChangelogBody extends StatelessWidget {
+  const ChangelogBody({super.key});
+  @override
+  Widget build(final BuildContext context) {
+    final notificationController = context.read<NotificationsNotifier>();
+    final updates = notificationController.updates;
+    final theme = context.theme;
+    return ListView.separated(
+      separatorBuilder: (final context, final index) {
+        final notification = updates[index + 1];
+        Widget child = ChangelogTile(notification: notification);
+
+        if (index == 0) {
+          child = Column(
+            children: [
+              Divider(color: theme.highlightColor),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 35),
+                child: Text(
+                  'PREVIOUS UPDATES',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleSmall,
+                ),
+              ),
+              Divider(color: theme.highlightColor),
+              const SizedBox(height: 35),
+              child,
+            ],
+          );
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 95, bottom: 24),
+          child: child,
+        );
+      },
+      shrinkWrap: true,
+      itemCount: updates.length,
+      padding: const EdgeInsets.all(24),
+      itemBuilder: (final context, final i) {
+        final notification = updates[i];
+
+        return SelectableText(
+          notification.message.localize(context),
+        );
+      },
+    );
+  }
+}
+
+class ChangelogTile extends StatelessWidget {
+  const ChangelogTile({
+    required this.notification,
+    super.key,
+  });
+  final NotificationMessageModel notification;
+  @override
+  Widget build(final BuildContext context) {
+    final theme = context.theme;
+    return ListTile(
+      title: SelectableText(
+        notification.title.localize(context),
+        style: theme.textTheme.headlineSmall,
+      ),
+      subtitle: SelectableText(
+        intl.DateFormat.yMd().format(notification.created.toLocal()),
+        style: theme.textTheme.titleSmall,
       ),
     );
   }

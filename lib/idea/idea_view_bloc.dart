@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/pack_idea/pack_idea.dart';
+import 'package:lastanswer/idea/idea_answer_screen.dart';
+import 'package:lastanswer/idea/widgets/answer_creator.dart';
+import 'package:lastanswer/idea/widgets/answer_tile.dart';
 
 part 'idea_view_bloc.freezed.dart';
 
@@ -43,10 +45,7 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
         ..addListener(_onChanged);
   ProjectModelIdea get idea => value.idea;
   void _onChanged() {
-    final updatedIdea = value.idea.copyWith(
-      title: titleController.text,
-      updatedAt: DateTime.now(),
-    );
+    final updatedIdea = value.idea.copyWith(title: titleController.text);
     setValue(value.copyWith(idea: updatedIdea));
     dto.openedProjectNotifier.updateProject(updatedIdea);
   }
@@ -60,11 +59,19 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
     dto.openedProjectNotifier.deleteProject();
   }
 
-  void onExpandAnswer({
+  Future<void> onExpandAnswer({
     required final IdeaProjectAnswerModel answer,
     required final int index,
-  }) {
-    // TODO(arenukvern): description,
+    required final BuildContext context,
+  }) async {
+    final updatedAnswer = await IdeaAnswerScreen.open(
+      context: context,
+      answer: answer,
+      idea: idea,
+      index: index,
+    );
+    if (updatedAnswer == null) return;
+    onAnswerChanged(answer: updatedAnswer, index: index);
   }
 
   void onDeleteAnswer({

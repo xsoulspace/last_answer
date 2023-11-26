@@ -1,9 +1,9 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/idea_view_bloc.dart';
+import 'package:lastanswer/idea/widgets/answer_creator.dart';
+import 'package:lastanswer/idea/widgets/answer_tile.dart';
 import 'package:lastanswer/pack_app/widgets/project_title_field.dart';
-import 'package:lastanswer/pack_idea/widgets/answer_creator.dart';
-import 'package:lastanswer/pack_idea/widgets/answer_tile.dart';
 
 class IdeaView extends StatelessWidget {
   const IdeaView({
@@ -68,7 +68,7 @@ class IdeaViewBody extends StatelessWidget {
                       final answer = answers[index];
 
                       return AnswerTile(
-                        key: ValueKey(answer.id),
+                        key: ValueKey(answer.id.value),
                         onFocus: () => bloc.draftAnswerController
                             .updateIsQuestionsOpened(isOpened: false),
                         answer: answer,
@@ -78,7 +78,13 @@ class IdeaViewBody extends StatelessWidget {
                         ),
                         onExpand: (final _) {
                           closeKeyboard(context: context);
-                          bloc.onExpandAnswer(answer: answer, index: index);
+                          unawaited(
+                            bloc.onExpandAnswer(
+                              answer: answer,
+                              index: index,
+                              context: context,
+                            ),
+                          );
                         },
                         onReadyToDelete: (final answer) {
                           bloc.onDeleteAnswer(answer: answer, index: index);

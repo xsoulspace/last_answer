@@ -12,14 +12,13 @@ class NoteProjectSideActionBar extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final bloc = context.watch<NoteViewBloc>();
+
     final specialEmojiController = bloc.specialEmojiController;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const NoteSettingsButton(),
-        SpecialEmojiButton(
-          controller: specialEmojiController,
-        ),
+        SpecialEmojiButton(controller: specialEmojiController),
         SizedBox(
           height: 34,
           width: 48,
@@ -34,19 +33,16 @@ class NoteProjectSideActionBar extends HookWidget {
           focusNode: bloc.focusNode,
         ),
         if (Platform.isAndroid || Platform.isIOS)
-          IconButton(
-            onPressed: () async => bloc.onSwitchKeyboard(
-              isKeyboardVisible: specialEmojiController.value.isKeyboardOpen,
-            ),
-            icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: !specialEmojiController.value.isKeyboardOpen
-                  ? const Icon(
-                      CupertinoIcons.keyboard,
-                    )
-                  : const Icon(
-                      CupertinoIcons.keyboard_chevron_compact_down,
-                    ),
+          AnimatedBuilder(
+            animation: bloc.keyboardVisibilityController,
+            builder: (final context, final child) => IconButton(
+              onPressed: () async => bloc.onSwitchKeyboard(),
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: !bloc.keyboardVisibilityController.value
+                    ? const Icon(CupertinoIcons.keyboard)
+                    : const Icon(CupertinoIcons.keyboard_chevron_compact_down),
+              ),
             ),
           ),
       ]

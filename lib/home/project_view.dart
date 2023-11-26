@@ -1,3 +1,4 @@
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/idea_view.dart';
@@ -15,13 +16,14 @@ class ProjectView extends StatelessWidget {
     if (projectContainer.isLoading) {
       return const CircularProgressIndicator.adaptive();
     }
-    final id = projectContainer.value.id;
 
+    final id = projectContainer.value.id;
+    final screenLayout = ScreenLayout.of(context);
     return projectContainer.value.map(
       idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
       note: (final note) => Column(
         children: [
-          const ProjectViewAppBar(),
+          if (screenLayout.small) const ProjectViewAppBar() else const Gap(42),
           Expanded(child: NoteView(note: note, key: ValueKey(id))),
         ],
       ),

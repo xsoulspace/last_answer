@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
@@ -35,38 +34,43 @@ class NoteViewBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final bloc = context.watch<NoteViewBloc>();
-    final isKeyboardClosed = !bloc.specialEmojiController.value.isKeyboardOpen;
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: ProjectTextField(
-                  hintText: context.l10n.writeANote,
-                  filled: false,
-                  hasBorder: false,
-                  contentPadding:
-                      kIsWeb ? const EdgeInsets.only(left: 24) : null,
-                  limit: int.tryParse(bloc.characterLimitController.value),
-                  focusNode: bloc.focusNode,
-                  endlessLines: true,
-                  focusOnInit: bloc.dto.initialNote.note.isEmpty,
-                  onSubmit: bloc.onSubmit,
-                  controller: bloc.noteController,
-                  undoController: bloc.undoController,
+    final isSpecialEmojiKeyboardOpen =
+        bloc.specialEmojiController.value.isKeyboardOpen;
+    return SpecialEmojiKeyboardProvider(
+      controller: bloc.specialEmojiController,
+      builder: (final context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: ProjectTextField(
+                    hintText: context.l10n.writeANote,
+                    filled: false,
+                    hasBorder: false,
+                    contentPadding: const EdgeInsets.only(left: 24),
+                    limit: int.tryParse(bloc.characterLimitController.value),
+                    focusNode: bloc.focusNode,
+                    endlessLines: true,
+                    focusOnInit: bloc.dto.initialNote.note.isEmpty,
+                    onSubmit: bloc.onSubmit,
+                    controller: bloc.noteController,
+                    undoController: bloc.undoController,
+                  ),
                 ),
-              ),
-              if (PlatformInfo.isNativeWebDesktop) const Gap(48),
-              if (isKeyboardClosed) const BottomSafeArea(),
-            ],
+                if (PlatformInfo.isNativeWebDesktop) const Gap(48),
+                if (!isSpecialEmojiKeyboardOpen) const BottomSafeArea(),
+              ],
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 24),
-          child: NoteProjectSideActionBar(),
-        ),
-      ],
+          const Padding(
+            padding: EdgeInsets.only(bottom: 24),
+            child: NoteProjectSideActionBar(),
+          ),
+        ],
+      ),
     );
   }
 }

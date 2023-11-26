@@ -20,8 +20,10 @@ class ProjectTextField extends StatefulHookWidget {
     this.limit,
     this.hasBorder = true,
     this.contentPadding,
+    this.textAlignVertical = TextAlignVertical.bottom,
     super.key,
   });
+  final TextAlignVertical textAlignVertical;
   final TextEditingController? controller;
   final VoidCallback onSubmit;
   final int maxLines;
@@ -147,7 +149,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             minLines: widget.endlessLines ? null : 1,
             expands: widget.endlessLines,
             keyboardType: TextInputType.multiline,
-            textAlignVertical: TextAlignVertical.bottom,
+            textAlignVertical: widget.textAlignVertical,
             style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
               contentPadding: widget.contentPadding ??

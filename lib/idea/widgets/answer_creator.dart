@@ -110,7 +110,7 @@ class AnswerCreator extends HookWidget {
     final controllerState = controller.value;
     final isQuestionsOpened = controllerState.isQuestionsOpened;
     final selectedQuestion = controllerState.question;
-
+    final screenLayout = ScreenLayout.of(context);
     final sendButton = RotatedBox(
       quarterTurns: 3,
       child: IconButton(
@@ -178,8 +178,17 @@ class AnswerCreator extends HookWidget {
               children: [
                 Expanded(
                   child: ProjectTextField(
+                    textAlignVertical: TextAlignVertical.center,
                     hintText: context.l10n.writeAnAnswer,
-                    contentPadding: const EdgeInsets.all(24),
+                    contentPadding: screenLayout.notSmall
+                        ? const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 14,
+                          )
+                        : const EdgeInsets.symmetric(
+                            vertical: 3,
+                            horizontal: 3,
+                          ),
                     focusOnInit:
                         controller.dto.ideaViewBloc.idea.answers.isEmpty,
                     controller: controller.answerController,

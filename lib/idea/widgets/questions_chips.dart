@@ -57,6 +57,7 @@ class QuestionChip extends StatelessWidget {
       pressElevation: 2,
       showCheckmark: false,
       elevation: 0,
+      padding: PlatformInfo.isNativeWebDesktop ? null : EdgeInsets.zero,
       selected: selected,
       onSelected: onSelected,
     );

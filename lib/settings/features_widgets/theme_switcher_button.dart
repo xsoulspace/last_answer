@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/widgets/settings_text.dart';
+import 'package:lastanswer/idea/widgets/question_dropdown.dart';
 
 class ThemeSwitcherButton extends StatelessWidget {
   const ThemeSwitcherButton({
@@ -13,30 +13,26 @@ class ThemeSwitcherButton extends StatelessWidget {
     final themeMode = context.select<UserNotifier, ThemeMode>(
       (final c) => c.user.settings.themeMode,
     );
-    return DropdownButton<ThemeMode>(
-      // Read the selected themeMode from the controller
-      value: themeMode,
-      // Call the updateThemeMode method any time the user selects
-      // theme.
-      onChanged: userNotifier.updateThemeMode,
-      isExpanded: true,
-      items: [
-        DropdownMenuItem(
-          key: const ValueKey(ThemeMode.system),
+    return DropdownMenu<ThemeMode>(
+      menuStyle: defaultDropdownMenuStyle,
+      textStyle: context.textTheme.bodyMedium,
+      inputDecorationTheme: defaultDropdownMenuInputTheme,
+      dropdownMenuEntries: [
+        DropdownMenuEntry(
           value: ThemeMode.system,
-          child: SettingsText(text: context.l10n.themeSystem),
+          label: context.l10n.themeSystem,
         ),
-        DropdownMenuItem(
-          key: const ValueKey(ThemeMode.light),
+        DropdownMenuEntry(
           value: ThemeMode.light,
-          child: SettingsText(text: context.l10n.themeLight),
+          label: context.l10n.themeLight,
         ),
-        DropdownMenuItem(
-          key: const ValueKey(ThemeMode.dark),
+        DropdownMenuEntry(
           value: ThemeMode.dark,
-          child: SettingsText(text: context.l10n.themeDark),
+          label: context.l10n.themeDark,
         ),
       ],
+      initialSelection: themeMode,
+      onSelected: userNotifier.updateThemeMode,
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:lastanswer/_library/widgets/buttons/cupertino_icon_button.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
@@ -17,20 +17,23 @@ class ProjectsDirectionSwitch extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
-          CupertinoIconButton(
-            onPressed: settings.isProjectsListReversed
-                ? null
-                : () => setReverse(isReversed: true),
-            icon: Icons.vertical_align_bottom_rounded,
-            color: settings.isProjectsListReversed ? AppColors.primary : null,
+          HoverableButton(
+            onPressed: () => setReverse(isReversed: true),
+            child: Icon(
+              Icons.vertical_align_bottom_rounded,
+              color: settings.isProjectsListReversed
+                  ? context.colorScheme.primary
+                  : context.colorScheme.onSecondary,
+            ),
           ),
-          const SizedBox(width: 8),
-          CupertinoIconButton(
-            onPressed: settings.isProjectsListReversed
-                ? () => setReverse(isReversed: false)
-                : null,
-            color: settings.isProjectsListReversed ? null : AppColors.primary,
-            icon: Icons.vertical_align_top_rounded,
+          HoverableButton(
+            onPressed: () => setReverse(isReversed: false),
+            child: Icon(
+              Icons.vertical_align_top_rounded,
+              color: settings.isProjectsListReversed
+                  ? context.colorScheme.onSecondary
+                  : context.colorScheme.primary,
+            ),
           ),
         ],
       ),

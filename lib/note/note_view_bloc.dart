@@ -17,7 +17,8 @@ class NoteViewBlocDto {
 
 class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   NoteViewBloc({required this.dto}) : super(dto.initialNote);
-  late final keyboardVisibilityController = KeyboardController();
+  late final keyboardVisibilityController = KeyboardController()
+    ..addListener(_onKeyboardVisibilityChanged);
   final NoteViewBlocDto dto;
   late final noteController = TextEditingController(text: dto.initialNote.note)
     ..addListener(_onChanged);
@@ -33,6 +34,15 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
     textController: noteController,
     tickerProvider: dto.tickerProvider,
   )..addListener(notifyListeners);
+  void _onKeyboardVisibilityChanged() {
+    final isKeyboardVisible = keyboardVisibilityController.value;
+    if (!isKeyboardVisible) return;
+    if (specialEmojiController.value.isKeyboardOpen ||
+        specialEmojiController.value.isKeyboardOpening) {
+      unawaited(specialEmojiController.closeEmojiKeyboard());
+    }
+  }
+
   void _onChanged() {
     final updatedNote = value.copyWith(
       note: noteController.text,
@@ -56,10 +66,10 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
     void switchKeyboard({
       final bool forceToOpen = false,
     }) {
-      if (isKeyboardVisible || forceToOpen) {
+      if (isKeyboardVisible) {
         unawaited(SoftKeyboard.close());
       } else {
-        if (focusNode.hasFocus) {
+        if (focusNode.hasFocus || forceToOpen) {
           unawaited(SoftKeyboard.open());
         } else {
           focusNode.requestFocus();
@@ -81,7 +91,9 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
 
   @override
   void dispose() {
-    keyboardVisibilityController.dispose();
+    keyboardVisibilityController
+      ..removeListener(_onKeyboardVisibilityChanged)
+      ..dispose();
     noteController
       ..removeListener(_onChanged)
       ..dispose();

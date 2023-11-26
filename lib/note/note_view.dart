@@ -36,36 +36,41 @@ class NoteViewBody extends StatelessWidget {
     final bloc = context.watch<NoteViewBloc>();
     final isSpecialEmojiKeyboardOpen =
         bloc.specialEmojiController.value.isKeyboardOpen;
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: ProjectTextField(
-                  hintText: context.l10n.writeANote,
-                  filled: false,
-                  hasBorder: false,
-                  contentPadding: const EdgeInsets.only(left: 24),
-                  limit: int.tryParse(bloc.characterLimitController.value),
-                  focusNode: bloc.focusNode,
-                  endlessLines: true,
-                  focusOnInit: bloc.dto.initialNote.note.isEmpty,
-                  onSubmit: bloc.onSubmit,
-                  controller: bloc.noteController,
-                  undoController: bloc.undoController,
+    return SpecialEmojiKeyboardProvider(
+      controller: bloc.specialEmojiController,
+      builder: (final context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: ProjectTextField(
+                    hintText: context.l10n.writeANote,
+                    filled: false,
+                    hasBorder: false,
+                    contentPadding: const EdgeInsets.only(left: 24),
+                    limit: int.tryParse(bloc.characterLimitController.value),
+                    focusNode: bloc.focusNode,
+                    endlessLines: true,
+                    focusOnInit: bloc.dto.initialNote.note.isEmpty,
+                    onSubmit: bloc.onSubmit,
+                    controller: bloc.noteController,
+                    undoController: bloc.undoController,
+                  ),
                 ),
-              ),
-              if (PlatformInfo.isNativeWebDesktop) const Gap(48),
-              if (!isSpecialEmojiKeyboardOpen) const BottomSafeArea(),
-            ],
+                if (PlatformInfo.isNativeWebDesktop) const Gap(48),
+                if (!isSpecialEmojiKeyboardOpen) const BottomSafeArea(),
+              ],
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 24),
-          child: NoteProjectSideActionBar(),
-        ),
-      ],
+          const Padding(
+            padding: EdgeInsets.only(bottom: 24),
+            child: NoteProjectSideActionBar(),
+          ),
+        ],
+      ),
     );
   }
 }

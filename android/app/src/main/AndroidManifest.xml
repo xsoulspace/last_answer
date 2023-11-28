@@ -1,8 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.xsoulspace.lastanswer">    
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">    
    <application
-        android:label="Last Answer"
-        android:icon="@mipmap/ic_launcher">
+          android:label="Last Answer"
+          android:name="${applicationName}"
+          android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

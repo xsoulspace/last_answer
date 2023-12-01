@@ -1,4 +1,5 @@
-part of pack_app;
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class ProjectTitleField extends HookWidget {
   const ProjectTitleField({

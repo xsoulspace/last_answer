@@ -1,4 +1,8 @@
-part of utils;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../core.dart';
 
 @immutable
 class ProjectSharer {
@@ -10,14 +14,14 @@ class ProjectSharer {
   final BuildContext context;
 
   Future<void> share({
-    required final BasicProject project,
+    required final Sharable sharable,
   }) async {
-    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    final box = context.findRenderObject() as RenderBox?;
     if (box == null) return;
-    final desktop = isDesktop;
-    if (desktop) {
+    final isDesktop = PlatformInfo.isNativeWebDesktop;
+    if (isDesktop) {
       final messenger = ScaffoldMessenger.of(context);
-      final data = ClipboardData(text: project.toShareString());
+      final data = ClipboardData(text: sharable.toShareString(context));
       await Clipboard.setData(data);
       void closeBanner() => messenger.hideCurrentMaterialBanner();
 
@@ -37,15 +41,21 @@ class ProjectSharer {
       );
     } else {
       await Share.share(
-        project.toShareString(),
-        subject: project.title,
+        sharable.toShareString(context),
+        subject: sharable.toSharableTitle(context),
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
     }
   }
 }
 
-abstract class Sharable {
+abstract interface class Sharable {
   Sharable._();
-  String toShareString();
+  String toShareString(final BuildContext context);
+  String toSharableTitle(final BuildContext context);
+}
+
+abstract interface class Archivable {
+  Archivable._();
+  abstract final DateTime? archivedAt;
 }

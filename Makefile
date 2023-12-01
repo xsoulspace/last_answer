@@ -20,4 +20,5 @@ gen:
 	fvm dart run build_runner build
 gen-rewrite:
 	fvm dart run build_runner build --delete-conflicting-outputs
-
+gen-icons:
+	fvm dart run flutter_launcher_icons

@@ -1,4 +1,6 @@
-part of pack_app;
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/pack_app/screens/home/small_home_screen.dart';
 
 class LargeHomeScreen extends StatelessWidget {
   const LargeHomeScreen({
@@ -66,7 +68,7 @@ class LargeHomeScreen extends StatelessWidget {
         ),
         if (rightColumn > 0)
           Container(
-            color: isNativeDesktop
+            color: PlatformInfo.isNativeDesktop
                 ? Theme.of(context).canvasColor.withOpacity(0.9)
                 : Theme.of(context).canvasColor,
             width: rightColumn,

@@ -12,14 +12,14 @@ enum LocalDbVersion {
   static const newestVersion = v3_17;
 }
 
-Future<void> runMutations(final GlobalStatesInitializerDto dto) async {
+Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
   final userNotifier = dto.userNotifier;
   if (userNotifier.isLoading) {
     throw ArgumentError.value('user is not loaded yet');
   }
 
   final currentLocalDbVersion = userNotifier.value.value.localDbVersion;
-  if (currentLocalDbVersion == LocalDbVersion.newestVersion) return;
+  if (currentLocalDbVersion == LocalDbVersion.newestVersion) return false;
   try {
     await ComplexLocalDbHiveImpl().open();
     for (final v in LocalDbVersion.values) {
@@ -37,6 +37,7 @@ Future<void> runMutations(final GlobalStatesInitializerDto dto) async {
   }
 
   userNotifier.updateLocalDbVersion(LocalDbVersion.newestVersion);
+  return true;
 }
 
 Future<void> _mutate_3_16_up_3_17(final GlobalStatesInitializerDto dto) async {

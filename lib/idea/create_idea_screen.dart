@@ -74,7 +74,6 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                           onFieldSubmitted: (final _) => onCreate(),
                           controller: _textController,
                           maxLength: 90,
-                          maxLines: null,
                           style: context.textTheme.displaySmall?.copyWith(
                             color: textColor,
                           ),

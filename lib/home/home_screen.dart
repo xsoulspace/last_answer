@@ -104,27 +104,37 @@ class _ProjectsListView extends StatelessWidget {
     );
     final Widget child = Column(
       children: [
-        Flexible(
-          child: PagedListView<int, ProjectModel>(
-            pagingController: projectsController.pager,
-            reverse: isReversed,
-            builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (final context, final item, final index) =>
-                  ProjectTile(
-                onRemove: (final _) async {
-                  final shouldProceed = await showRemoveTitleDialog(
-                    context: context,
-                    title: item.title,
-                  );
-                  if (shouldProceed) {
-                    projectsNotifier.deleteProject(item);
-                  }
-                },
-                project: item,
-                onTap: (final item) {
-                  projectNotifier.loadProject(project: item, context: context);
-                },
-                selected: openedProjectId == item.id,
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              projectsController
+                ..refresh()
+                ..loadFirstPage();
+            },
+            child: PagedListView<int, ProjectModel>(
+              pagingController: projectsController.pager,
+              reverse: isReversed,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (final context, final item, final index) =>
+                    ProjectTile(
+                  onRemove: (final _) async {
+                    final shouldProceed = await showRemoveTitleDialog(
+                      context: context,
+                      title: item.title,
+                    );
+                    if (shouldProceed) {
+                      projectsNotifier.deleteProject(item);
+                    }
+                  },
+                  project: item,
+                  onTap: (final item) {
+                    projectNotifier.loadProject(
+                      project: item,
+                      context: context,
+                    );
+                  },
+                  selected: openedProjectId == item.id,
+                ),
               ),
             ),
           ),

@@ -7,10 +7,13 @@ final class ComplexLocalDbHiveImpl implements ComplexLocalDb {
   @override
   Future<void> close() async {
     await Hive.close();
+    _isOpen = false;
   }
 
+  static bool _isOpen = false;
   @override
   Future<void> open() async {
+    if (_isOpen) return;
     await Hive.initFlutter();
     Hive
       ..registerAdapter(IdeaProjectAdapter())
@@ -19,5 +22,6 @@ final class ComplexLocalDbHiveImpl implements ComplexLocalDb {
       ..registerAdapter(IdeaProjectQuestionAdapter())
       ..registerAdapter(NoteProjectAdapter())
       ..registerAdapter(ProjectFolderAdapter());
+    _isOpen = true;
   }
 }

@@ -124,9 +124,10 @@ class HashPagingController<TKey, TItem> extends PagingController<TKey, TItem> {
 
   void removeElement({
     required final TItem element,
+    final bool Function(TItem element)? test,
   }) {
-    final int index =
-        value.itemList?.indexWhere((final a) => a == element) ?? -1;
+    final testCallback = test ?? (final a) => a == element;
+    final int index = value.itemList?.indexWhere(testCallback) ?? -1;
     removeElementByIndex(index: index);
   }
 

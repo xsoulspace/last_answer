@@ -17,15 +17,19 @@ class NoteView extends StatefulWidget {
 class _NoteViewState extends State<NoteView>
     with SingleTickerProviderStateMixin {
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
-        create: (final _) => NoteViewBloc(
-          dto: NoteViewBlocDto(
-            initialNote: widget.note,
-            tickerProvider: this,
-            context: context,
+  Widget build(final BuildContext context) => PopScope(
+        onPopInvoked: (final _) =>
+            context.read<OpenedProjectNotifier>().onPopProject(),
+        child: ChangeNotifierProvider(
+          create: (final _) => NoteViewBloc(
+            dto: NoteViewBlocDto(
+              initialNote: widget.note,
+              tickerProvider: this,
+              context: context,
+            ),
           ),
+          builder: (final context, final child) => const NoteViewBody(),
         ),
-        builder: (final context, final child) => const NoteViewBody(),
       );
 }
 
@@ -46,18 +50,22 @@ class NoteViewBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                  child: ProjectTextField(
-                    hintText: context.l10n.writeANote,
-                    filled: false,
-                    hasBorder: false,
-                    contentPadding: const EdgeInsets.only(left: 24),
-                    limit: int.tryParse(bloc.characterLimitController.value),
-                    focusNode: bloc.focusNode,
-                    endlessLines: true,
-                    focusOnInit: bloc.dto.initialNote.note.isEmpty,
-                    onSubmit: bloc.onSubmit,
-                    controller: bloc.noteController,
-                    undoController: bloc.undoController,
+                  child: HeroId(
+                    id: bloc.note.id.value,
+                    type: HeroIdTypes.projectTitle,
+                    child: ProjectTextField(
+                      hintText: context.l10n.writeANote,
+                      filled: false,
+                      hasBorder: false,
+                      contentPadding: const EdgeInsets.only(left: 24),
+                      limit: int.tryParse(bloc.characterLimitController.value),
+                      focusNode: bloc.focusNode,
+                      endlessLines: true,
+                      focusOnInit: bloc.dto.initialNote.note.isEmpty,
+                      onSubmit: bloc.onSubmit,
+                      controller: bloc.noteController,
+                      undoController: bloc.undoController,
+                    ),
                   ),
                 ),
                 if (PlatformInfo.isNativeWebDesktop) const Gap(48),

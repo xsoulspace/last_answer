@@ -2,8 +2,10 @@ part of 'state.dart';
 
 class OpenedProjectNotifierDto {
   OpenedProjectNotifierDto(final BuildContext context)
-      : projectsNotifier = context.read();
+      : projectsNotifier = context.read(),
+        userNotifier = context.read();
   final ProjectsNotifier projectsNotifier;
+  final UserNotifier userNotifier;
 }
 
 class OpenedProjectNotifier
@@ -22,19 +24,7 @@ class OpenedProjectNotifier
     required final ProjectModel project,
     required final BuildContext context,
   }) {
-    if (value.isLoaded) {
-      /// deleting current project, if its empty
-      value.value.map(
-        idea: (final idea) {
-          if (idea.title.isNotEmpty || idea.answers.isNotEmpty) return;
-          dto.projectsNotifier.deleteProject(idea);
-        },
-        note: (final note) {
-          if (note.note.isNotEmpty) return;
-          dto.projectsNotifier.deleteProject(note);
-        },
-      );
-    }
+    onPopProject();
     setValue(LoadableContainer.loaded(project));
 
     final path = switch (project.type) {
@@ -42,6 +32,22 @@ class OpenedProjectNotifier
       ProjectTypes.idea => ScreenPaths.idea(ideaId: project.id),
     };
     unawaited(context.push(path));
+  }
+
+  void onPopProject() {
+    if (value.isLoading) return;
+
+    /// deleting current project, if its empty
+    value.value.map(
+      idea: (final idea) {
+        if (idea.title.isNotEmpty || idea.answers.isNotEmpty) return;
+        dto.projectsNotifier.deleteProject(idea);
+      },
+      note: (final note) {
+        if (note.note.isNotEmpty) return;
+        dto.projectsNotifier.deleteProject(note);
+      },
+    );
   }
 
   void updateProject(final ProjectModel item) {
@@ -54,6 +60,7 @@ class OpenedProjectNotifier
       id: ProjectModelId.generate(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      charactersLimit: dto.userNotifier.settings.charactersLimitForNewNotes,
     );
     loadProject(context: context, project: note);
   }

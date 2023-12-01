@@ -60,10 +60,14 @@ class ProjectTile extends StatelessWidget {
         title: Stack(
           children: [
             effectiveLeadingIcon,
-            Text(
-              '      ${createTitle()}',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 4,
+            HeroId(
+              id: project.id.value,
+              type: HeroIdTypes.projectTitle,
+              child: Text(
+                '      ${createTitle()}',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
             ),
           ],
         ),

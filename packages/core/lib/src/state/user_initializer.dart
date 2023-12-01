@@ -6,8 +6,13 @@ class UserInitializer {
   Future<void> onUserLoad() async {
     await runMutations(dto);
 
-    /// not wait projects since it has its own loader
-    unawaited(dto.projectsNotifier.onLoad());
+    /// not wait for this since it has its own loader
+    unawaited(_onDelayedLoad());
+  }
+
+  Future<void> _onDelayedLoad() async {
+    await Future.delayed(const Duration(seconds: 1));
+    await dto.projectsNotifier.onLoad();
   }
 
   void onUserReset() {

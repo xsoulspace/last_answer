@@ -104,7 +104,7 @@ class _ProjectsListView extends StatelessWidget {
     );
     final Widget child = Column(
       children: [
-        Flexible(
+        Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
               projectsController

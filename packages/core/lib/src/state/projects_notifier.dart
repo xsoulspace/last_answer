@@ -46,7 +46,10 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   }
 
   void deleteProject(final ProjectModel project) {
-    projectsPagedController.pager.removeElement(element: project);
+    projectsPagedController.pager.removeElement(
+      element: project,
+      test: (final e) => e.id == project.id,
+    );
     unawaited(dto.projectsRepository.remove(id: project.id));
   }
 

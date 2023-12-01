@@ -47,48 +47,48 @@ class AnswerTile extends StatelessWidget {
               child: SizedBox(
                 width: 150,
                 child: HeroId(
-                  flightShuttleBuilder: (
-                    final context,
-                    final animation,
-                    final direction,
-                    final ____,
-                    final _____,
-                  ) {
-                    switch (direction) {
-                      case HeroFlightDirection.pop:
-                        return Material(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, top: 11.5),
-                            child: Text(
-                              answer.question.title.localize(context),
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        );
-                      case HeroFlightDirection.push:
-                        return Material(
-                          child: Padding(
-                            padding: EdgeInsets.zero,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  answer.question.title.localize(context),
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
+                  // flightShuttleBuilder: (
+                  //   final context,
+                  //   final animation,
+                  //   final direction,
+                  //   final ____,
+                  //   final _____,
+                  // ) {
+                  //   switch (direction) {
+                  //     case HeroFlightDirection.pop:
+                  //       return Material(
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.only(left: 8, top: 11.5),
+                  //           child: Text(
+                  //             answer.question.title.localize(context),
+                  //             textAlign: TextAlign.left,
+                  //             style: Theme.of(context).textTheme.bodyLarge,
+                  //           ),
+                  //         ),
+                  //       );
+                  //     case HeroFlightDirection.push:
+                  //       return Material(
+                  //         child: Padding(
+                  //           padding: EdgeInsets.zero,
+                  //           child: Row(
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: [
+                  //               Text(
+                  //                 answer.question.title.localize(context),
+                  //                 textAlign: TextAlign.center,
+                  //                 style: Theme.of(context).textTheme.bodyLarge,
+                  //               ),
 
-                                /// Size of icon for dropdown
-                                const SizedBox(width: 24),
-                              ],
-                            ),
-                          ),
-                        );
-                    }
-                  },
-                  id: '${answer.id}-question${answer.question.id}',
+                  //               /// Size of icon for dropdown
+                  //               const SizedBox(width: 24),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //   }
+                  // },
+                  id: '${answer.id}-question',
                   type: HeroIdTypes.projectIdeaQuestionTitle,
                   child: QuestionDropdown(
                     answer: answer,

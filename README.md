@@ -71,14 +71,22 @@ Have a nice day!
 
 [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
 
----
-
 ## Support Development
 
-You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or support on [Patreon](https://patreon.com/arenukvern)
+You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or
+be donate to the creator on [Boosty](https://boosty.to/arenukvern) or [Patreon](https://patreon.com/arenukvern).
 
-Thank you for your support!
+Thank you for your support and have a great day! 🌄
 
-# Huge thank you for contributions!
+## Huge thank you for all contributions!
 
-[@albanobattistella](https://github.com/albanobattistella)
+[@albanobattistella for initial Italian translation](https://github.com/albanobattistella)
+
+## Other
+
+This project uses:
+
+Flutter & Dart 💙
+
+melos to manage packages
+https://melos.invertase.dev

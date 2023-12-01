@@ -23,7 +23,7 @@ class ProjectsDirectionSwitch extends StatelessWidget {
               Icons.vertical_align_bottom_rounded,
               color: settings.isProjectsListReversed
                   ? context.colorScheme.primary
-                  : context.colorScheme.onSecondary,
+                  : context.colorScheme.onBackground,
             ),
           ),
           HoverableButton(
@@ -31,7 +31,7 @@ class ProjectsDirectionSwitch extends StatelessWidget {
             child: Icon(
               Icons.vertical_align_top_rounded,
               color: settings.isProjectsListReversed
-                  ? context.colorScheme.onSecondary
+                  ? context.colorScheme.onBackground
                   : context.colorScheme.primary,
             ),
           ),

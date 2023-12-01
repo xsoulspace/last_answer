@@ -15,11 +15,11 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 3.16.1+31
+version: 3.17.0+32
 
 environment:
-  sdk: ">=3.1.2 <4.0.0"
-  flutter: ">=3.13.9"
+  sdk: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -31,8 +31,11 @@ dependencies:
   cupertino_icons: ^1.0.6
   dio: ^5.3.3
   equatable: ^2.0.5
+  extra_alignments: ^1.0.0+1
+  flextras: ^1.0.0
   flutter:
     sdk: flutter
+  flutter_animate: ^4.2.0+1
   flutter_hooks: ^0.20.3
   flutter_keyboard_visibility: ^5.4.1
   flutter_localizations:
@@ -41,30 +44,37 @@ dependencies:
   flutter_portal: ^1.1.4
   flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.7
+  freezed_annotation: ^2.4.1
+  gap: ^3.0.1
+  go_router: ^12.1.1
   google_fonts: ^6.1.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  infinite_scroll_pagination: ^4.0.0
   json_annotation: ^4.8.1
+  life_hooks: ^0.0.19
   package_info_plus: ^4.1.0
   path_to_regexp: ^0.4.0
   provider: ^6.0.5
-  # purchases_flutter: ^6.0.0
   quiver: ^3.2.1
   recase: ^4.1.0
   rxdart: ^0.27.7
   share_plus: ^7.1.0
   shared_preferences: ^2.2.2
+  ui_kit:
+    path: ./packages/ui_kit
   universal_io: ^2.2.2
   url_launcher: ^6.1.14
   uuid: ^4.1.0
 
 dev_dependencies:
+  analyzer: ^6.3.0
   build_runner: ^2.4.6
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-  hive_generator: ^2.0.1
+  freezed: ^2.4.5
   json_serializable: ^6.7.1
   melos: ^3.1.1
   mockito: ^5.4.2
@@ -73,7 +83,10 @@ dev_dependencies:
   xsoulspace_lints: ^0.0.10
 
 dependency_overrides:
+  analyzer: ^6.3.0
   collection: ^1.18.0
+  intl: ^0.18.1
+  meta: ^1.11.0
   uuid: ^4.1.0
 
 msix_config:
@@ -82,38 +95,36 @@ msix_config:
   identity_name: 31440AntonMalofeev.lastanswer
   publisher: CN=2B407028-2F14-45EB-85E6-15AFF9A915E1
   msix_version: 3.16.1.0
-  logo_path: ./assets/icons/logo_256.png
+  logo_path: ./packages/core/assets/icons/logo_256.png
   store: true
 
-# flutter pub run flutter_launcher_icons:main
+# fvm dart run flutter_launcher_icons
 # generate for macos https://appicon.co
-flutter_icons:
-  image_path: "assets/icons/logo.png"
+flutter_launcher_icons:
+  image_path: "packages/core/assets/icons/logo.png"
   ios: true
   android: true
   remove_alpha_ios: true
 
 # For information see the following page:
 # https://pub.dev/packages/flutter_gen
-flutter_gen:
-  output: lib/generated/ # Optional (default: lib/gen/)
-  # line_length: 80 # Optional (default: 80)
-  # Optional
-  integrations:
-    flutter_svg: true
-    flare_flutter: true
-
+# flutter_gen:
+# output: lib/generated/ # Optional (default: lib/gen/)
+# # line_length: 80 # Optional (default: 80)
+# # Optional
+# integrations:
+#   flutter_svg: true
+#   flare_flutter: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
-  generate: true
+  generate: false
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

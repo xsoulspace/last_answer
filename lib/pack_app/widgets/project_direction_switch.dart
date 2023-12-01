@@ -1,43 +1,42 @@
-part of pack_app;
+import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
   const ProjectsDirectionSwitch({
-    required this.settings,
     super.key,
   });
 
-  final GeneralSettingsController settings;
-
-  // ignore: use_setters_to_change_properties
-  void setReverse({required final bool reverse}) {
-    settings.projectsListReversed = reverse;
-  }
-
   @override
-  Widget build(final BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            CupertinoIconButton(
-              onPressed: settings.projectsListReversed
-                  ? null
-                  : () {
-                      setReverse(reverse: true);
-                    },
-              icon: Icons.vertical_align_bottom_rounded,
-              color: settings.projectsListReversed ? AppColors.primary : null,
+  Widget build(final BuildContext context) {
+    final userNotifier = context.watch<UserNotifier>();
+    final settings = userNotifier.settings;
+    void setReverse({required final bool isReversed}) =>
+        userNotifier.updateIsProjectsReversed(isReversed: isReversed);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        children: [
+          HoverableButton(
+            onPressed: () => setReverse(isReversed: true),
+            child: Icon(
+              Icons.vertical_align_bottom_rounded,
+              color: settings.isProjectsListReversed
+                  ? context.colorScheme.primary
+                  : context.colorScheme.onBackground,
             ),
-            const SizedBox(width: 8),
-            CupertinoIconButton(
-              onPressed: settings.projectsListReversed
-                  ? () {
-                      setReverse(reverse: false);
-                    }
-                  : null,
-              color: settings.projectsListReversed ? null : AppColors.primary,
-              icon: Icons.vertical_align_top_rounded,
+          ),
+          HoverableButton(
+            onPressed: () => setReverse(isReversed: false),
+            child: Icon(
+              Icons.vertical_align_top_rounded,
+              color: settings.isProjectsListReversed
+                  ? context.colorScheme.onBackground
+                  : context.colorScheme.primary,
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

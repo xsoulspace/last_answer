@@ -1,3 +1,14 @@
+## 3.17.0+32
+
+🧹 Broom update
+
+The application has been completely rewritten and updated to Material 3. Now, with the new architecture, it should start up and run faster than before + some bugs have been fixed for the landscape layout.
+Some bugs may still exist, but as always, they will be fixed later :)
+
+Friendly and cozy weather:)
+
+Anton
+
 ## 3.15.0+29
 
 - new: new settings screen optimized for large screens, desktop, web and mobile

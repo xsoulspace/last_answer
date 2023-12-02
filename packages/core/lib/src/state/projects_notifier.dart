@@ -60,6 +60,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       element: project,
       equals: (final e, final e2) => e.id == e2.id,
       shouldAddOnNotFound: true,
+      shouldMoveToFirst: true,
     );
     unawaited(dto.projectsRepository.put(project: project));
   }

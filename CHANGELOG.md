@@ -1,3 +1,7 @@
+## 3.17.1+33
+
+- fix: move updated project to first index
+
 ## 3.17.0+32
 
 🧹 Broom update

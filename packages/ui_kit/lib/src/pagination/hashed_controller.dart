@@ -155,6 +155,7 @@ class HashPagingController<TKey, TItem> extends PagingController<TKey, TItem> {
   void replaceElement({
     required final TItem element,
     final bool shouldAddOnNotFound = false,
+    final bool shouldMoveToFirst = false,
     final bool Function(TItem a, TItem b)? equals,
     final int? index,
   }) {
@@ -168,6 +169,7 @@ class HashPagingController<TKey, TItem> extends PagingController<TKey, TItem> {
       element: element,
       shouldAddOnNotFound: shouldAddOnNotFound,
     );
+    if (shouldMoveToFirst) moveElementByIndex(index: eIndex, element: element);
   }
 
   bool _mounted = true;

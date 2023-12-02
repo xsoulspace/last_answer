@@ -5,6 +5,7 @@ export 'src/data_sources/data_sources.dart';
 export 'src/foundation/foundation.dart';
 export 'src/generated/generated.dart';
 export 'src/router_paths.dart';
+export 'src/services/services.dart';
 export 'src/state/state.dart';
 export 'src/state_di/state_di.dart';
 export 'src/theme/theme.dart';

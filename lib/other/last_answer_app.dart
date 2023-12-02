@@ -4,7 +4,6 @@ import 'package:lastanswer/router.dart';
 
 class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
-
   @override
   Widget build(final BuildContext context) => GlobalStatesProvider(
         builder: (final context) => const Portal(child: _AppScaffold()),

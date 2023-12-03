@@ -22,3 +22,6 @@ gen-rewrite:
 	fvm dart run build_runner build --delete-conflicting-outputs
 gen-icons:
 	fvm dart run flutter_launcher_icons
+
+gen-server-types:
+	cd apps/core_server_server && serverpod generate

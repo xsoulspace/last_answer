@@ -8,4 +8,5 @@ part 'data_models.g.dart';
 part 'emoji.dart';
 part 'notification.dart';
 part 'project.dart';
+part 'subscription.dart';
 part 'user.dart';

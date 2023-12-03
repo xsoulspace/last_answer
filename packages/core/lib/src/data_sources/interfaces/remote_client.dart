@@ -1,1 +1,3 @@
-abstract interface class RemoteClient {}
+abstract interface class RemoteClient {
+  Future<void> onLoad();
+}

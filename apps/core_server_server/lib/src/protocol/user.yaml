@@ -6,17 +6,16 @@
 # Please consult the documentation for more information on what you can add to
 # your yaml-files.
 
-
 # Name of the class to generate.
-class: Example
+class: User
 
 # Add the table key, if this class represents a row in the database.
-#table: example
+table: user
 
 # The fields (and columns if connected to the database) of the class. Supported
 # types are `bool`, `int`, `double`, `String`, `DateTime`, and any other
 # generated classes. You can also add lists of objects and types have support
 # for null safety. Eg. `List<int>?` or `List<MyOtherClass?>`.
 fields:
-  name: String
-  data: int
+  created_at: DateTime
+  updated_at: DateTime

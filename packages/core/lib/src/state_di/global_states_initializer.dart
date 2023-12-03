@@ -21,9 +21,11 @@ class GlobalStatesInitializerDto {
         appNotifier = context.read(),
         complexLocalDb = context.read(),
         localDbDataSource = context.read(),
+        remoteClient = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
   final BuildContext context;
+  final RemoteClient remoteClient;
   final LocalDbDataSource localDbDataSource;
   final ComplexLocalDb complexLocalDb;
   final EmojiRepository emojiRepository;
@@ -53,7 +55,7 @@ class GlobalStatesInitializer implements StateInitializer {
     );
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
-
+    await dto.remoteClient.onLoad();
     await dto.userNotifier.onLoad(initializer);
 
     // final isConnected = await PlatformInfo.isConnected;

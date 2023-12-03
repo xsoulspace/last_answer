@@ -1,0 +1,14 @@
+class: Purchase
+table: purchase
+fields:
+  # TODO: replace to Enum
+  # GooglePlay, AppStore, RuStore, Web
+  source: String
+  # TODO: replace to Enum
+  # pending, active, expired
+  status: String
+  purchaseDate: DateTime
+  expiryDate: DateTime
+  userId: int, parent=user
+  orderId: String
+  productId: String

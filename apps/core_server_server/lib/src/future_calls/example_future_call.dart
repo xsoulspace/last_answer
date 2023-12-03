@@ -13,7 +13,10 @@ import 'package:serverpod/serverpod.dart';
 
 class ExampleFutureCall extends FutureCall {
   @override
-  Future<void> invoke(Session session, SerializableEntity? object) async {
+  Future<void> invoke(
+    final Session session,
+    final SerializableEntity? object,
+  ) async {
     // Do something interesting in the future here.
   }
 }

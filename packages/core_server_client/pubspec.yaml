@@ -6,4 +6,5 @@ environment:
   flutter: ">=3.16.0"
 
 dependencies:
+  serverpod_auth_client: ^1.1.0
   serverpod_client: ^1.1.1

@@ -44,7 +44,9 @@ dependency_overrides:
   analyzer: ^6.3.0
   collection: ^1.18.0
   connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
   http: ^1.1.2
+  lints: ^3.0.0
   intl: ^0.18.1
   meta: ^1.11.0
   uuid: ^4.1.0

@@ -44,6 +44,7 @@ dependencies:
   provider: ^6.1.1
   quiver: ^3.2.1
   rxdart: ^0.27.7
+  serverpod_auth_shared_flutter: ^1.1.1
   serverpod_client: ^1.1.1
   serverpod_flutter: ^1.1.1
   share_plus: ^7.2.1
@@ -58,7 +59,9 @@ dependency_overrides:
   analyzer: ^6.3.0
   collection: ^1.18.0
   connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
   http: ^1.1.2
+  lints: ^3.0.0
   intl: ^0.18.1
   meta: ^1.11.0
   uuid: ^4.1.0

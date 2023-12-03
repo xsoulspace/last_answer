@@ -1,9 +1,13 @@
-# melos_managed_dependency_overrides: collection,intl,uuid,ui_kit,meta,analyzer
+# melos_managed_dependency_overrides: ui_kit,analyzer,collection,connectivity_plus,http,intl,meta,uuid,core_server_client
 dependency_overrides:
-  analyzer: ^6.3.0
-  collection: ^1.18.0
-  intl: ^0.18.1
-  meta: ^1.11.0
   ui_kit:
     path: ../ui_kit
+  analyzer: ^6.3.0
+  collection: ^1.18.0
+  connectivity_plus: ^5.0.2
+  http: ^1.1.2
+  intl: ^0.18.1
+  meta: ^1.11.0
   uuid: ^4.1.0
+  core_server_client:
+    path: ../core_server_client

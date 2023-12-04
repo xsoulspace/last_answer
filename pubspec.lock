@@ -1515,6 +1515,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  serverpod_auth_google_flutter:
+    dependency: transitive
+    description:
+      name: serverpod_auth_google_flutter
+      sha256: "014f9ca58e50327dc0f07b5307a158d8488b596a96b8f6ccb8a0c5e6b643d34d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   serverpod_auth_shared_flutter:
     dependency: transitive
     description:

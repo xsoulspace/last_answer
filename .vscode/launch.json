@@ -19,7 +19,8 @@
       "type": "dart",
       "args": [
         "--dart-define-from-file=configs/envs/prod.json",
-        "--d=chrome",
+        "-d",
+        "chrome",
         "--web-port=49660"
       ],
       "flutterMode": "debug"

@@ -2,6 +2,7 @@ name: lastanswer
 
 packages:
   - packages/*
+  - apps/*
 
 sdkPath: ./.fvm/flutter_sdk
 

@@ -17,6 +17,7 @@ class SettingsScreen extends HookWidget {
         physics: SpeedyPageViewScrollPhysics(),
         children: [
           GeneralSettingsView(),
+          AccountView(),
           ChangelogView(),
         ],
       ),
@@ -28,6 +29,7 @@ class SettingsScreen extends HookWidget {
       bottom: TabBar(
         tabs: [
           Tab(text: context.l10n.generalSettingsShortTitle),
+          Tab(text: context.l10n.myAccount),
           Tab(text: context.l10n.changeLog),
         ],
       ),
@@ -62,7 +64,7 @@ class SettingsScreen extends HookWidget {
         ),
       );
     }
-    return DefaultTabController(length: 2, child: child);
+    return DefaultTabController(length: 3, child: child);
   }
 }
 
@@ -92,6 +94,17 @@ class ChangelogView extends StatelessWidget {
       },
     );
   }
+}
+
+class AccountView extends StatelessWidget {
+  const AccountView({super.key});
+
+  @override
+  Widget build(final BuildContext context) => ListView(
+        children: const [
+          GoogleSignInButton(),
+        ],
+      );
 }
 
 class SpeedyPageViewScrollPhysics extends ScrollPhysics {

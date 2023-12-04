@@ -22,12 +22,12 @@ Future<void> run(final List<String> args) async {
   // Setup a default page at the web root.
   pod.webServer.addRoute(RouteRoot(), '/');
   pod.webServer.addRoute(RouteRoot(), '/index.html');
+  pod.webServer.addRoute(auth.RouteGoogleSignIn(), '/googlesignin');
   // Serve all files in the /static directory.
   pod.webServer.addRoute(
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
-  pod.webServer.addRoute(auth.RouteGoogleSignIn(), '/googlesignin');
 
   // Start the server.
   await pod.start();

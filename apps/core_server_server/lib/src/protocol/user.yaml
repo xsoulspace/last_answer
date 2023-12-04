@@ -10,7 +10,7 @@
 class: User
 
 # Add the table key, if this class represents a row in the database.
-table: user
+table: users
 
 # The fields (and columns if connected to the database) of the class. Supported
 # types are `bool`, `int`, `double`, `String`, `DateTime`, and any other

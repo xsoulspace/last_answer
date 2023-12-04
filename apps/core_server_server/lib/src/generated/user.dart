@@ -35,7 +35,7 @@ class User extends _i1.TableRow {
   DateTime updated_at;
 
   @override
-  String get tableName => 'user';
+  String get tableName => 'users';
 
   @override
   Map<String, dynamic> toJson() {
@@ -196,7 +196,7 @@ class User extends _i1.TableRow {
 typedef UserExpressionBuilder = _i1.Expression Function(UserTable);
 
 class UserTable extends _i1.Table {
-  UserTable() : super(tableName: 'user');
+  UserTable() : super(tableName: 'users');
 
   /// The database id, set if the object has been inserted into the
   /// database or if it has been fetched from the database. Otherwise,

@@ -27,3 +27,6 @@ gen-server-types:
 	cd apps/core_server_server && serverpod generate
 start-server-docker:
 	cd apps/core_server_server && docker-compose up --build --detach
+
+start-server:
+	cd apps/core_server_server && fvm dart bin/main.dart 

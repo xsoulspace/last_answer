@@ -5,3 +5,6 @@ gen:
 	serverpod generate
 detach:
 	docker-compose up --build --detach
+
+start:
+	dart bin/main.dart

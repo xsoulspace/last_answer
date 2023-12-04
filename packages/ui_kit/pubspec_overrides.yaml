@@ -1,15 +1,15 @@
-# melos_managed_dependency_overrides: collection,intl,uuid,core,meta,analyzer,connectivity_plus,http,core_server_client,flutter_lints,lints
+# melos_managed_dependency_overrides: core,core_server_client,analyzer,collection,connectivity_plus,flutter_lints,http,lints,intl,meta,uuid
 dependency_overrides:
-  analyzer: ^6.3.0
-  collection: ^1.18.0
-  connectivity_plus: ^5.0.2
   core:
     path: ../core
   core_server_client:
     path: ../core_server_client
+  analyzer: ^6.3.0
+  collection: ^1.18.0
+  connectivity_plus: ^5.0.2
   flutter_lints: ^3.0.0
   http: ^1.1.2
-  intl: ^0.18.1
   lints: ^3.0.0
+  intl: ^0.18.1
   meta: ^1.11.0
   uuid: ^4.1.0

@@ -1,12 +1,15 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';
 
 class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
   @override
-  Widget build(final BuildContext context) => GlobalStatesProvider(
-        builder: (final context) => const Portal(child: _AppScaffold()),
+  Widget build(final BuildContext context) => FeedbackProvider(
+        child: GlobalStatesProvider(
+          builder: (final context) => const Portal(child: _AppScaffold()),
+        ),
       );
 }
 

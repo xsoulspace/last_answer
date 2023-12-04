@@ -1,5 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/other/feedback.dart';
 
 class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({
@@ -35,6 +36,12 @@ class VerticalProjectsBar extends StatelessWidget {
           direction: Axis.vertical,
           spacing: 16,
           children: [
+            if (Envs.isFeedbackAvailable)
+              BarItem(
+                onTap: () => FeedbackProvider.show(context),
+                label: 'Bugs',
+                child: const FeedbackButton(),
+              ),
             BarItem(
               onTap: onIdeaTap,
               label: context.l10n.idea,

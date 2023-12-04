@@ -15,4 +15,9 @@ class Envs {
   );
   static const googleServerClientId =
       String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID');
+  static bool get isFeedbackAvailable => wiredashProjectId.isNotEmpty;
+  static const wiredashProjectId =
+      String.fromEnvironment('WIREDASH_PROJECT_ID');
+  static const wiredashProjectSecret =
+      String.fromEnvironment('WIREDASH_PROJECT_SECRET');
 }

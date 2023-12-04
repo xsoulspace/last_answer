@@ -1,5 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/other/other.dart';
 import 'package:lastanswer/settings/features_widgets/general_settings_view.dart';
 
@@ -24,6 +25,9 @@ class SettingsScreen extends HookWidget {
     final appbar = AppBar(
       centerTitle: true,
       leading: CupertinoCloseButton(onPressed: onBack),
+      actions: const [
+        FeedbackButton(),
+      ],
       title: Text(context.l10n.settings),
       bottom: TabBar(
         tabs: [

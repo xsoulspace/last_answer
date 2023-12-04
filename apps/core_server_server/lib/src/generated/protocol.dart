@@ -26,7 +26,7 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final targetDatabaseDefinition = _i2.DatabaseDefinition(tables: [
     _i2.TableDefinition(
-      name: 'purchase',
+      name: 'purchases',
       schema: 'public',
       columns: [
         _i2.ColumnDefinition(
@@ -34,7 +34,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'purchase_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'purchases_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'source',
@@ -81,9 +81,9 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
-          constraintName: 'purchase_fk_0',
+          constraintName: 'purchases_fk_0',
           columns: ['userId'],
-          referenceTable: 'user',
+          referenceTable: 'users',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: null,
@@ -93,7 +93,7 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'purchase_pkey',
+          indexName: 'purchases_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -109,7 +109,7 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
-      name: 'user',
+      name: 'users',
       schema: 'public',
       columns: [
         _i2.ColumnDefinition(
@@ -117,7 +117,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'user_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'users_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'created_at',
@@ -135,7 +135,7 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'user_pkey',
+          indexName: 'users_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(

@@ -1,5 +1,5 @@
 class: Purchase
-table: purchase
+table: purchases
 fields:
   # TODO: replace to Enum
   # GooglePlay, AppStore, RuStore, Web
@@ -9,6 +9,6 @@ fields:
   status: String
   purchaseDate: DateTime
   expiryDate: DateTime
-  userId: int, parent=user
+  userId: int, parent=users
   orderId: String
   productId: String

@@ -2,6 +2,7 @@ import 'package:core_server_server/src/generated/endpoints.dart';
 import 'package:core_server_server/src/generated/protocol.dart';
 import 'package:core_server_server/src/web/routes/root.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/module.dart' as auth;
 
 // This is the starting point of your Serverpod server. In most cases, you will
 // only need to make additions to this file if you add future calls,  are
@@ -26,6 +27,7 @@ Future<void> run(final List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+  pod.webServer.addRoute(auth.RouteGoogleSignIn(), '/googlesignin');
 
   // Start the server.
   await pod.start();

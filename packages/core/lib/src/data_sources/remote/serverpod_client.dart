@@ -6,7 +6,7 @@ import '../interfaces/interfaces.dart';
 
 class RemoteClientServerpodImpl implements RemoteClient {
   RemoteClientServerpodImpl({
-    this.host = 'http://localhost:8080/',
+    required this.host,
   });
   final String host;
   // Sets up a singleton client object that can be used to talk to the server
@@ -25,6 +25,7 @@ class RemoteClientServerpodImpl implements RemoteClient {
     caller: client.modules.auth,
   );
 
+  @override
   Future<void> onLoad() async {
     await sessionManager.initialize();
   }

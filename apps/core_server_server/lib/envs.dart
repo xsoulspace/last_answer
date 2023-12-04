@@ -1,6 +1,6 @@
 class Envs {
   Envs._();
-  static const androidPackageId = 'your Android package ID';
+  static const androidPackageId = 'dev.xsoulspace.lastanswer';
   static const appStoreIssuerId = 'App Store Key issuer ID';
   static const appStoreKeyId = 'App Store Key ID';
   static const appStoreSharedSecret = 'App Store shared secret';

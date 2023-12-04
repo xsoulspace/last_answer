@@ -58,3 +58,5 @@ ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
 apps/core_server_server/config/google_client_secret.json
 apps/core_server_server/config/prod.json
+apps/core_server_server/config/passwords.yaml
+packages/core_server_client/pubspec.lock

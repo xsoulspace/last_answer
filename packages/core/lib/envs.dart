@@ -1,0 +1,18 @@
+// ignore_for_file: do_not_use_environment
+
+class Envs {
+  Envs._();
+  static const isarDbName = 'isar_4';
+  static const serverHost = String.fromEnvironment(
+    'SERVER_HOST',
+    defaultValue: 'http://localhost:8080/',
+  );
+  static final serverRedirectUri = Uri.parse(
+    '${const String.fromEnvironment(
+      "SERVER_REDIRECT_HOST",
+      defaultValue: "http://localhost:8082/",
+    )}googlesignin',
+  );
+  static const googleServerClientId =
+      String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID');
+}

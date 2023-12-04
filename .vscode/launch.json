@@ -6,18 +6,22 @@
   "configurations": [
     {
       "program": "lib/main.dart",
-      "name": "dev",
+      "name": "mobile dev",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "configs/envs/dev.json"],
+      "args": ["--dart-define-from-file=configs/envs/prod.json"],
       "flutterMode": "debug"
     },
     {
       "program": "lib/main.dart",
-      "name": "prod dev",
+      "name": "web dev",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"],
+      "args": [
+        "--dart-define-from-file=configs/envs/prod.json",
+        "--d=chrome",
+        "--web-port=49660"
+      ],
       "flutterMode": "debug"
     },
     {
@@ -26,7 +30,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"]
+      "args": ["--dart-define-from-file=configs/envs/prod.json"]
     },
     {
       "program": "lib/main.dart",
@@ -34,7 +38,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"]
+      "args": ["--dart-define-from-file=configs/envs/prod.json"]
     }
   ]
 }

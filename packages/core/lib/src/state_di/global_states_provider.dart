@@ -14,7 +14,9 @@ class GlobalStatesProvider extends StatelessWidget {
   Widget build(final BuildContext context) => MultiProvider(
         providers: [
           Provider<RemoteClient>(
-            create: (final context) => RemoteClientServerpodImpl(),
+            create: (final context) => RemoteClientServerpodImpl(
+              host: Envs.serverHost,
+            ),
           ),
           Provider<ComplexLocalDbIsarImpl>(
             create: (final context) => ComplexLocalDbIsarImpl(),

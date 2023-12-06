@@ -13,6 +13,7 @@ class Envs {
       defaultValue: "http://localhost:8082/",
     )}googlesignin',
   );
+  static const googleClientId = String.fromEnvironment('GOOGLE_CLIENT_ID');
   static const googleServerClientId =
       String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID');
   static bool get isFeedbackAvailable => wiredashProjectId.isNotEmpty;

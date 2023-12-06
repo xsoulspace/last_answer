@@ -15,7 +15,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_analytics: ^10.6.1
   firebase_core: ^2.19.0
-  firebase_crashlytics: ^3.4.1
+  firebase_crashlytics: ^3.4.6
   firebase_messaging: ^14.7.1
   flutter:
     sdk: flutter

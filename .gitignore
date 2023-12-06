@@ -60,3 +60,5 @@ apps/core_server_server/config/google_client_secret.json
 apps/core_server_server/config/prod.json
 apps/core_server_server/config/passwords.yaml
 packages/core_server_client/pubspec.lock
+macos/Runner/GoogleService-Info.plist
+macos/firebase_app_id_file.json

@@ -28,5 +28,8 @@ gen-server-types:
 start-server-docker:
 	cd apps/core_server_server && docker-compose up --build --detach
 
-start-server:
+start-server-dart:
 	cd apps/core_server_server && fvm dart bin/main.dart 
+
+start-server:
+	make start-server-docker && make start-server-dart

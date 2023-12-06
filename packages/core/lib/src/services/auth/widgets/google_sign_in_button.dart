@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
 
@@ -19,9 +21,12 @@ class _ServerpodImpl extends StatelessWidget {
     final remoteClient =
         context.read<RemoteClient>() as RemoteClientServerpodImpl;
     return SignInWithGoogleButton(
+      clientId: kIsWeb ? null : Envs.googleClientId,
       caller: remoteClient.client.modules.auth,
       serverClientId: Envs.googleServerClientId,
       redirectUri: Envs.serverRedirectUri,
+      onFailure: context.pop,
+      onSignedIn: context.pop,
     );
   }
 }

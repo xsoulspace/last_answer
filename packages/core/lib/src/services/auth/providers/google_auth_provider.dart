@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core.dart';
-import '../auth_provider.dart';
 
 class GoogleAuthProvider implements AuthProvider {
   final _googleSignIn = GoogleSignIn(
@@ -10,7 +9,7 @@ class GoogleAuthProvider implements AuthProvider {
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
-    serverClientId: '',
+    serverClientId: Envs.googleServerClientId,
   );
 
   @override

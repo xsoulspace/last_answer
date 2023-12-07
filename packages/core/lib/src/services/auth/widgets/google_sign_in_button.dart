@@ -1,15 +1,28 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
 
 import '../../../../core.dart';
+import '../providers/providers.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({super.key});
 
   @override
-  Widget build(final BuildContext context) => const _ServerpodImpl();
+  Widget build(final BuildContext context) => const _CustomImpl();
+}
+
+class _CustomImpl extends StatelessWidget {
+  const _CustomImpl({super.key});
+
+  @override
+  Widget build(final BuildContext context) => TextButton(
+        onPressed: () async {
+          await GoogleAuthProvider().getCredentials();
+        },
+        child: const Text('Sign in'),
+      );
 }
 
 class _ServerpodImpl extends StatelessWidget {

@@ -10,7 +10,7 @@ class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({super.key});
 
   @override
-  Widget build(final BuildContext context) => const _CustomImpl();
+  Widget build(final BuildContext context) => const _ServerpodImpl();
 }
 
 class _CustomImpl extends StatelessWidget {
@@ -33,7 +33,7 @@ class _ServerpodImpl extends StatelessWidget {
     final remoteClient =
         context.read<RemoteClient>() as RemoteClientServerpodImpl;
     return SignInWithGoogleButton(
-      clientId: PlatformInfo.isWeb ? null : Envs.googleClientId,
+      // clientId: PlatformInfo.isWeb ? null : Envs.googleClientId,
       caller: remoteClient.client.modules.auth,
       serverClientId: Envs.googleServerClientId,
       redirectUri: Envs.serverRedirectUri,

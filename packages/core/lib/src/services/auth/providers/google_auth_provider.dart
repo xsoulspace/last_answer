@@ -1,26 +1,23 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core.dart';
 
 class GoogleAuthProvider implements AuthProvider {
-  final _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-    serverClientId: Envs.googleServerClientId,
-  );
-
   @override
   Future<ProviderResponseModel> getCredentials() async {
     try {
+      final googleSignIn = GoogleSignIn(
+        serverClientId: Envs.googleServerClientId,
+      );
       try {
-        await _googleSignIn.disconnect();
+        await googleSignIn.disconnect();
       } on PlatformException {
         // noop
       }
-      final account = await _googleSignIn.signIn();
+
+      final account = await googleSignIn.signIn();
       if (account == null) throw const CancelException();
       final serverAuthCode = account.serverAuthCode;
 
@@ -29,7 +26,8 @@ class GoogleAuthProvider implements AuthProvider {
       );
 
       /// we expect [PlatformException] as user can just cancel sign in
-    } on PlatformException {
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
       throw const CancelException();
     }
   }

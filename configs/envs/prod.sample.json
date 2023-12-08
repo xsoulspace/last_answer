@@ -1,4 +1,7 @@
 {
   "GOOGLE_SERVER_CLIENT_ID": "",
-  "SERVER_HOST": "http://localhost:8080/"
+  "SERVER_HOST": "",
+  "WIREDASH_PROJECT_ID": "",
+  "WIREDASH_PROJECT_SECRET": "",
+  "GOOGLE_CLIENT_ID": ""
 }

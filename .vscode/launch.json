@@ -6,7 +6,7 @@
   "configurations": [
     {
       "program": "lib/main.dart",
-      "name": "mobile dev",
+      "name": "mobile prod",
       "request": "launch",
       "type": "dart",
       "args": ["--dart-define-from-file=configs/envs/prod.json"],
@@ -14,11 +14,32 @@
     },
     {
       "program": "lib/main.dart",
-      "name": "web dev",
+      "name": "mobile local",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define-from-file=configs/envs/local.json"],
+      "flutterMode": "debug"
+    },
+    {
+      "program": "lib/main.dart",
+      "name": "web prod",
       "request": "launch",
       "type": "dart",
       "args": [
         "--dart-define-from-file=configs/envs/prod.json",
+        "-d",
+        "chrome",
+        "--web-port=49660"
+      ],
+      "flutterMode": "debug"
+    },
+    {
+      "program": "lib/main.dart",
+      "name": "web local",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define-from-file=configs/envs/local.json",
         "-d",
         "chrome",
         "--web-port=49660"

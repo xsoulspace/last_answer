@@ -3,6 +3,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/other/other.dart';
 import 'package:lastanswer/settings/features_widgets/general_settings_view.dart';
+import 'package:lastanswer/settings/pack_settings.dart';
 
 class SettingsScreen extends HookWidget {
   const SettingsScreen({
@@ -18,7 +19,7 @@ class SettingsScreen extends HookWidget {
         physics: SpeedyPageViewScrollPhysics(),
         children: [
           GeneralSettingsView(),
-          AccountView(),
+          MyAccountView(),
           ChangelogView(),
         ],
       ),
@@ -98,17 +99,6 @@ class ChangelogView extends StatelessWidget {
       },
     );
   }
-}
-
-class AccountView extends StatelessWidget {
-  const AccountView({super.key});
-
-  @override
-  Widget build(final BuildContext context) => ListView(
-        children: const [
-          GoogleSignInButton(),
-        ],
-      );
 }
 
 class SpeedyPageViewScrollPhysics extends ScrollPhysics {

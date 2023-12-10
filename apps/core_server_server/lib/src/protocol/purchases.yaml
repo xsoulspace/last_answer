@@ -1,0 +1,7 @@
+class: Purchases
+table: user_purchases
+fields:
+  userId: int, parent=users
+  has_one_time_purchase: bool
+  subscription_end_date: DateTime
+  purchased_days_left: int

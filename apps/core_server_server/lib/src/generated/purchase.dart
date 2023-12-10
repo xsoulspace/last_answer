@@ -13,8 +13,8 @@ class Purchase extends _i1.TableRow {
     int? id,
     required this.source,
     required this.status,
-    required this.purchaseDate,
-    required this.expiryDate,
+    required this.purchase_date,
+    required this.expiry_date,
     required this.userId,
     required this.orderId,
     required this.productId,
@@ -27,13 +27,13 @@ class Purchase extends _i1.TableRow {
     return Purchase(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       source:
-          serializationManager.deserialize<String>(jsonSerialization['source']),
+          serializationManager.deserialize<int>(jsonSerialization['source']),
       status:
-          serializationManager.deserialize<String>(jsonSerialization['status']),
-      purchaseDate: serializationManager
-          .deserialize<DateTime>(jsonSerialization['purchaseDate']),
-      expiryDate: serializationManager
-          .deserialize<DateTime>(jsonSerialization['expiryDate']),
+          serializationManager.deserialize<int>(jsonSerialization['status']),
+      purchase_date: serializationManager
+          .deserialize<DateTime>(jsonSerialization['purchase_date']),
+      expiry_date: serializationManager
+          .deserialize<DateTime>(jsonSerialization['expiry_date']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
       orderId: serializationManager
@@ -45,13 +45,13 @@ class Purchase extends _i1.TableRow {
 
   static final t = PurchaseTable();
 
-  String source;
+  int source;
 
-  String status;
+  int status;
 
-  DateTime purchaseDate;
+  DateTime purchase_date;
 
-  DateTime expiryDate;
+  DateTime expiry_date;
 
   int userId;
 
@@ -68,8 +68,8 @@ class Purchase extends _i1.TableRow {
       'id': id,
       'source': source,
       'status': status,
-      'purchaseDate': purchaseDate,
-      'expiryDate': expiryDate,
+      'purchase_date': purchase_date,
+      'expiry_date': expiry_date,
       'userId': userId,
       'orderId': orderId,
       'productId': productId,
@@ -82,8 +82,8 @@ class Purchase extends _i1.TableRow {
       'id': id,
       'source': source,
       'status': status,
-      'purchaseDate': purchaseDate,
-      'expiryDate': expiryDate,
+      'purchase_date': purchase_date,
+      'expiry_date': expiry_date,
       'userId': userId,
       'orderId': orderId,
       'productId': productId,
@@ -96,8 +96,8 @@ class Purchase extends _i1.TableRow {
       'id': id,
       'source': source,
       'status': status,
-      'purchaseDate': purchaseDate,
-      'expiryDate': expiryDate,
+      'purchase_date': purchase_date,
+      'expiry_date': expiry_date,
       'userId': userId,
       'orderId': orderId,
       'productId': productId,
@@ -119,11 +119,11 @@ class Purchase extends _i1.TableRow {
       case 'status':
         status = value;
         return;
-      case 'purchaseDate':
-        purchaseDate = value;
+      case 'purchase_date':
+        purchase_date = value;
         return;
-      case 'expiryDate':
-        expiryDate = value;
+      case 'expiry_date':
+        expiry_date = value;
         return;
       case 'userId':
         userId = value;
@@ -258,13 +258,13 @@ class PurchaseTable extends _i1.Table {
   /// the id will be null.
   final id = _i1.ColumnInt('id');
 
-  final source = _i1.ColumnString('source');
+  final source = _i1.ColumnInt('source');
 
-  final status = _i1.ColumnString('status');
+  final status = _i1.ColumnInt('status');
 
-  final purchaseDate = _i1.ColumnDateTime('purchaseDate');
+  final purchase_date = _i1.ColumnDateTime('purchase_date');
 
-  final expiryDate = _i1.ColumnDateTime('expiryDate');
+  final expiry_date = _i1.ColumnDateTime('expiry_date');
 
   final userId = _i1.ColumnInt('userId');
 
@@ -277,8 +277,8 @@ class PurchaseTable extends _i1.Table {
         id,
         source,
         status,
-        purchaseDate,
-        expiryDate,
+        purchase_date,
+        expiry_date,
         userId,
         orderId,
         productId,

@@ -20,6 +20,7 @@ class UserModel with _$UserModel {
     @Default(UserSettingsModel.initial) final UserSettingsModel settings,
     @Default(LocalDbVersion.v3_16) final LocalDbVersion localDbVersion,
     @Default(false) final bool hasCompletedOnboarding,
+    @Default(RemoteUserModel.empty) final RemoteUserModel remoteUser,
   }) = _UserModel;
   factory UserModel.fromJson(final Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

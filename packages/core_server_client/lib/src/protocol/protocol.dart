@@ -9,9 +9,11 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'purchase.dart' as _i2;
-import 'user.dart' as _i3;
-import 'package:serverpod_auth_client/module.dart' as _i4;
+import 'purchases.dart' as _i3;
+import 'user.dart' as _i4;
+import 'package:serverpod_auth_client/module.dart' as _i5;
 export 'purchase.dart';
+export 'purchases.dart';
 export 'user.dart';
 export 'client.dart';
 
@@ -36,17 +38,23 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i2.Purchase) {
       return _i2.Purchase.fromJson(data, this) as T;
     }
-    if (t == _i3.User) {
-      return _i3.User.fromJson(data, this) as T;
+    if (t == _i3.Purchases) {
+      return _i3.Purchases.fromJson(data, this) as T;
+    }
+    if (t == _i4.User) {
+      return _i4.User.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i2.Purchase?>()) {
       return (data != null ? _i2.Purchase.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i3.User?>()) {
-      return (data != null ? _i3.User.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i3.Purchases?>()) {
+      return (data != null ? _i3.Purchases.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i4.User?>()) {
+      return (data != null ? _i4.User.fromJson(data, this) : null) as T;
     }
     try {
-      return _i4.Protocol().deserialize<T>(data, t);
+      return _i5.Protocol().deserialize<T>(data, t);
     } catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -54,14 +62,17 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i4.Protocol().getClassNameForObject(data);
+    className = _i5.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
     if (data is _i2.Purchase) {
       return 'Purchase';
     }
-    if (data is _i3.User) {
+    if (data is _i3.Purchases) {
+      return 'Purchases';
+    }
+    if (data is _i4.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -71,13 +82,16 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i4.Protocol().deserializeByClassName(data);
+      return _i5.Protocol().deserializeByClassName(data);
     }
     if (data['className'] == 'Purchase') {
       return deserialize<_i2.Purchase>(data['data']);
     }
+    if (data['className'] == 'Purchases') {
+      return deserialize<_i3.Purchases>(data['data']);
+    }
     if (data['className'] == 'User') {
-      return deserialize<_i3.User>(data['data']);
+      return deserialize<_i4.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

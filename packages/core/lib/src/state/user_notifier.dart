@@ -24,6 +24,7 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
 
   bool get isLoaded => value.isLoaded;
   bool get isLoading => value.isLoading;
+  bool get isAuthorized => false;
   UserModel get user => value.value;
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => uiLocaleNotifier;

@@ -11,8 +11,10 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'purchase.dart' as _i4;
-import 'user.dart' as _i5;
+import 'purchases.dart' as _i5;
+import 'user.dart' as _i6;
 export 'purchase.dart';
+export 'purchases.dart';
 export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -38,24 +40,24 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'source',
-          columnType: _i2.ColumnType.text,
+          columnType: _i2.ColumnType.integer,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'status',
-          columnType: _i2.ColumnType.text,
+          columnType: _i2.ColumnType.integer,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'int',
         ),
         _i2.ColumnDefinition(
-          name: 'purchaseDate',
+          name: 'purchase_date',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
           dartType: 'DateTime',
         ),
         _i2.ColumnDefinition(
-          name: 'expiryDate',
+          name: 'expiry_date',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
           dartType: 'DateTime',
@@ -94,6 +96,71 @@ class Protocol extends _i1.SerializationManagerServer {
       indexes: [
         _i2.IndexDefinition(
           indexName: 'purchases_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'user_purchases',
+      schema: 'public',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'user_purchases_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'has_one_time_purchase',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _i2.ColumnDefinition(
+          name: 'subscription_end_date',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'purchased_days_left',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'user_purchases_fk_0',
+          columns: ['userId'],
+          referenceTable: 'users',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: null,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'user_purchases_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -166,14 +233,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i4.Purchase) {
       return _i4.Purchase.fromJson(data, this) as T;
     }
-    if (t == _i5.User) {
-      return _i5.User.fromJson(data, this) as T;
+    if (t == _i5.Purchases) {
+      return _i5.Purchases.fromJson(data, this) as T;
+    }
+    if (t == _i6.User) {
+      return _i6.User.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.Purchase?>()) {
       return (data != null ? _i4.Purchase.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i5.User?>()) {
-      return (data != null ? _i5.User.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i5.Purchases?>()) {
+      return (data != null ? _i5.Purchases.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i6.User?>()) {
+      return (data != null ? _i6.User.fromJson(data, this) : null) as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -194,7 +267,10 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i4.Purchase) {
       return 'Purchase';
     }
-    if (data is _i5.User) {
+    if (data is _i5.Purchases) {
+      return 'Purchases';
+    }
+    if (data is _i6.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -209,8 +285,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Purchase') {
       return deserialize<_i4.Purchase>(data['data']);
     }
+    if (data['className'] == 'Purchases') {
+      return deserialize<_i5.Purchases>(data['data']);
+    }
     if (data['className'] == 'User') {
-      return deserialize<_i5.User>(data['data']);
+      return deserialize<_i6.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -232,8 +311,10 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i4.Purchase:
         return _i4.Purchase.t;
-      case _i5.User:
-        return _i5.User.t;
+      case _i5.Purchases:
+        return _i5.Purchases.t;
+      case _i6.User:
+        return _i6.User.t;
     }
     return null;
   }

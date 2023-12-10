@@ -162,6 +162,41 @@ Map<String, dynamic> _$$LocalizedTextModelImplToJson(
       'ga': instance.ga,
     };
 
+_$RemoteUserModelImpl _$$RemoteUserModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$RemoteUserModelImpl(
+      id: json['id'] == null
+          ? UserModelId.empty
+          : UserModelId.fromJson(json['id'] as String),
+      purchases: json['purchases'] == null
+          ? PurchasesModel.empty
+          : PurchasesModel.fromJson(json['purchases'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$RemoteUserModelImplToJson(
+        _$RemoteUserModelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'purchases': instance.purchases,
+    };
+
+_$PurchasesModelImpl _$$PurchasesModelImplFromJson(Map<String, dynamic> json) =>
+    _$PurchasesModelImpl(
+      hasOneTimePurchase: json['hasOneTimePurchase'] as bool? ?? false,
+      subscriptionEndDate: json['subscriptionEndDate'] == null
+          ? null
+          : DateTime.parse(json['subscriptionEndDate'] as String),
+      purchasedDaysLeft: json['purchasedDaysLeft'] as int? ?? 0,
+    );
+
+Map<String, dynamic> _$$PurchasesModelImplToJson(
+        _$PurchasesModelImpl instance) =>
+    <String, dynamic>{
+      'hasOneTimePurchase': instance.hasOneTimePurchase,
+      'subscriptionEndDate': instance.subscriptionEndDate?.toIso8601String(),
+      'purchasedDaysLeft': instance.purchasedDaysLeft,
+    };
+
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
       settings: json['settings'] == null
@@ -172,6 +207,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               _$LocalDbVersionEnumMap, json['localDbVersion']) ??
           LocalDbVersion.v3_16,
       hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
+      remoteUser: json['remoteUser'] == null
+          ? RemoteUserModel.empty
+          : RemoteUserModel.fromJson(
+              json['remoteUser'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -179,6 +218,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'settings': instance.settings,
       'localDbVersion': _$LocalDbVersionEnumMap[instance.localDbVersion]!,
       'hasCompletedOnboarding': instance.hasCompletedOnboarding,
+      'remoteUser': instance.remoteUser,
     };
 
 const _$LocalDbVersionEnumMap = {

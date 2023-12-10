@@ -13,8 +13,8 @@ class Purchase extends _i1.SerializableEntity {
     this.id,
     required this.source,
     required this.status,
-    required this.purchaseDate,
-    required this.expiryDate,
+    required this.purchase_date,
+    required this.expiry_date,
     required this.userId,
     required this.orderId,
     required this.productId,
@@ -27,13 +27,13 @@ class Purchase extends _i1.SerializableEntity {
     return Purchase(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       source:
-          serializationManager.deserialize<String>(jsonSerialization['source']),
+          serializationManager.deserialize<int>(jsonSerialization['source']),
       status:
-          serializationManager.deserialize<String>(jsonSerialization['status']),
-      purchaseDate: serializationManager
-          .deserialize<DateTime>(jsonSerialization['purchaseDate']),
-      expiryDate: serializationManager
-          .deserialize<DateTime>(jsonSerialization['expiryDate']),
+          serializationManager.deserialize<int>(jsonSerialization['status']),
+      purchase_date: serializationManager
+          .deserialize<DateTime>(jsonSerialization['purchase_date']),
+      expiry_date: serializationManager
+          .deserialize<DateTime>(jsonSerialization['expiry_date']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
       orderId: serializationManager
@@ -48,13 +48,13 @@ class Purchase extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
-  String source;
+  int source;
 
-  String status;
+  int status;
 
-  DateTime purchaseDate;
+  DateTime purchase_date;
 
-  DateTime expiryDate;
+  DateTime expiry_date;
 
   int userId;
 
@@ -68,8 +68,8 @@ class Purchase extends _i1.SerializableEntity {
       'id': id,
       'source': source,
       'status': status,
-      'purchaseDate': purchaseDate,
-      'expiryDate': expiryDate,
+      'purchase_date': purchase_date,
+      'expiry_date': expiry_date,
       'userId': userId,
       'orderId': orderId,
       'productId': productId,

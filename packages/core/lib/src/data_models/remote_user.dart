@@ -1,12 +1,21 @@
+// ignore_for_file: invalid_annotation_target
+
 part of 'data_models.dart';
 
 @freezed
 class RemoteUserModel with _$RemoteUserModel {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory RemoteUserModel({
     @Default(UserModelId.empty) final UserModelId id,
     @Default(PurchasesModel.empty) final PurchasesModel purchases,
   }) = _RemoteUserModel;
-  factory RemoteUserModel.fromJson(final Map<String, dynamic> json) =>
+  factory RemoteUserModel.fromRawJson(final Map<String, dynamic> json) =>
+      _$RemoteUserModelFromJson(json);
+  factory RemoteUserModel.fromJson(
+    final Map<String, dynamic> json,
+    // ignore: avoid_unused_constructor_parameters
+    final SerializationManager serializationManager,
+  ) =>
       _$RemoteUserModelFromJson(json);
   const RemoteUserModel._();
   static const empty = RemoteUserModel();
@@ -15,6 +24,7 @@ class RemoteUserModel with _$RemoteUserModel {
 
 @freezed
 class PurchasesModel with _$PurchasesModel {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory PurchasesModel({
     /// If user purchased the app for one time
     /// he should have all access indefinitely

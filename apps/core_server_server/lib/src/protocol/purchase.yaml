@@ -3,12 +3,12 @@ table: purchases
 fields:
   # TODO: replace to Enum
   # GooglePlay, AppStore, RuStore, Web
-  source: int
+  source: int?
   # TODO: replace to Enum
   # pending, active, expired
-  status: int
-  purchase_date: DateTime
-  expiry_date: DateTime
+  status: int?
+  purchase_date: DateTime?
+  expiry_date: DateTime?
   userId: int, parent=users
-  orderId: String
-  productId: String
+  orderId: String?
+  productId: String?

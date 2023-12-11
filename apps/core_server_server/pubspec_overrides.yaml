@@ -1,0 +1,14 @@
+# melos_managed_dependency_overrides: core,core_server_client,ui_kit,connectivity_plus,google_fonts,http,uuid,flutter_lints,lints
+dependency_overrides:
+  connectivity_plus: ^5.0.2
+  core:
+    path: ../../packages/core
+  core_server_client:
+    path: ../../packages/core_server_client
+  flutter_lints: ^3.0.0
+  google_fonts: ^6.1.0
+  http: ^1.1.2
+  lints: ^3.0.0
+  ui_kit:
+    path: ../../packages/ui_kit
+  uuid: ^4.2.1

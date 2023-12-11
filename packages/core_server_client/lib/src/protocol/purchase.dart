@@ -11,13 +11,13 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 class Purchase extends _i1.SerializableEntity {
   Purchase({
     this.id,
-    required this.source,
-    required this.status,
-    required this.purchase_date,
-    required this.expiry_date,
+    this.source,
+    this.status,
+    this.purchase_date,
+    this.expiry_date,
     required this.userId,
-    required this.orderId,
-    required this.productId,
+    this.orderId,
+    this.productId,
   });
 
   factory Purchase.fromJson(
@@ -27,19 +27,19 @@ class Purchase extends _i1.SerializableEntity {
     return Purchase(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       source:
-          serializationManager.deserialize<int>(jsonSerialization['source']),
+          serializationManager.deserialize<int?>(jsonSerialization['source']),
       status:
-          serializationManager.deserialize<int>(jsonSerialization['status']),
+          serializationManager.deserialize<int?>(jsonSerialization['status']),
       purchase_date: serializationManager
-          .deserialize<DateTime>(jsonSerialization['purchase_date']),
+          .deserialize<DateTime?>(jsonSerialization['purchase_date']),
       expiry_date: serializationManager
-          .deserialize<DateTime>(jsonSerialization['expiry_date']),
+          .deserialize<DateTime?>(jsonSerialization['expiry_date']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
       orderId: serializationManager
-          .deserialize<String>(jsonSerialization['orderId']),
+          .deserialize<String?>(jsonSerialization['orderId']),
       productId: serializationManager
-          .deserialize<String>(jsonSerialization['productId']),
+          .deserialize<String?>(jsonSerialization['productId']),
     );
   }
 
@@ -48,19 +48,19 @@ class Purchase extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
-  int source;
+  int? source;
 
-  int status;
+  int? status;
 
-  DateTime purchase_date;
+  DateTime? purchase_date;
 
-  DateTime expiry_date;
+  DateTime? expiry_date;
 
   int userId;
 
-  String orderId;
+  String? orderId;
 
-  String productId;
+  String? productId;
 
   @override
   Map<String, dynamic> toJson() {

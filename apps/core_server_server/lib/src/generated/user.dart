@@ -11,8 +11,8 @@ import 'package:serverpod/serverpod.dart' as _i1;
 class User extends _i1.TableRow {
   User({
     int? id,
-    required this.created_at,
-    required this.updated_at,
+    this.created_at,
+    this.updated_at,
   }) : super(id);
 
   factory User.fromJson(
@@ -22,17 +22,17 @@ class User extends _i1.TableRow {
     return User(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       created_at: serializationManager
-          .deserialize<DateTime>(jsonSerialization['created_at']),
+          .deserialize<DateTime?>(jsonSerialization['created_at']),
       updated_at: serializationManager
-          .deserialize<DateTime>(jsonSerialization['updated_at']),
+          .deserialize<DateTime?>(jsonSerialization['updated_at']),
     );
   }
 
   static final t = UserTable();
 
-  DateTime created_at;
+  DateTime? created_at;
 
-  DateTime updated_at;
+  DateTime? updated_at;
 
   @override
   String get tableName => 'users';

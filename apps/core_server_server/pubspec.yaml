@@ -7,9 +7,19 @@ environment:
   flutter: ">=3.16.0"
 
 dependencies:
-  serverpod: ^1.1.1
-  serverpod_auth_server: ^1.1.1
+  core:
+    path: ../../packages/core
+  serverpod: 1.1.1
+  serverpod_auth_server: 1.1.1
 
 dev_dependencies:
   flutter_lints: ^3.0.0
   xsoulspace_lints: ^0.0.10
+
+dependency_overrides:
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  google_fonts: ^6.1.0
+  lints: ^3.0.0
+  http: ^1.1.2
+  uuid: ^4.2.1

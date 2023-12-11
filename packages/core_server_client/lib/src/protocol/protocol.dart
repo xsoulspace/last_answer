@@ -11,7 +11,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'purchase.dart' as _i2;
 import 'purchases.dart' as _i3;
 import 'user.dart' as _i4;
-import 'package:serverpod_auth_client/module.dart' as _i5;
+import 'package:core/core.dart' as _i5;
+import 'package:serverpod_auth_client/module.dart' as _i6;
 export 'purchase.dart';
 export 'purchases.dart';
 export 'user.dart';
@@ -53,8 +54,15 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i4.User?>()) {
       return (data != null ? _i4.User.fromJson(data, this) : null) as T;
     }
+    if (t == _i5.RemoteUserModel) {
+      return _i5.RemoteUserModel.fromJson(data, this) as T;
+    }
+    if (t == _i1.getType<_i5.RemoteUserModel?>()) {
+      return (data != null ? _i5.RemoteUserModel.fromJson(data, this) : null)
+          as T;
+    }
     try {
-      return _i5.Protocol().deserialize<T>(data, t);
+      return _i6.Protocol().deserialize<T>(data, t);
     } catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -62,9 +70,12 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i5.Protocol().getClassNameForObject(data);
+    className = _i6.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
+    }
+    if (data is _i5.RemoteUserModel) {
+      return 'RemoteUserModel';
     }
     if (data is _i2.Purchase) {
       return 'Purchase';
@@ -82,7 +93,10 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i5.Protocol().deserializeByClassName(data);
+      return _i6.Protocol().deserializeByClassName(data);
+    }
+    if (data['className'] == 'RemoteUserModel') {
+      return deserialize<_i5.RemoteUserModel>(data['data']);
     }
     if (data['className'] == 'Purchase') {
       return deserialize<_i2.Purchase>(data['data']);

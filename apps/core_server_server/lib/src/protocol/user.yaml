@@ -17,5 +17,5 @@ table: users
 # generated classes. You can also add lists of objects and types have support
 # for null safety. Eg. `List<int>?` or `List<MyOtherClass?>`.
 fields:
-  created_at: DateTime
-  updated_at: DateTime
+  created_at: DateTime?
+  updated_at: DateTime?

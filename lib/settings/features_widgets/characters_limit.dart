@@ -15,7 +15,6 @@ class CharactersLimitSetting extends HookWidget {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
     useListenable(controller);
-
     Widget otherButton;
 
     // TODO(arenukvern): refactor to separate widget

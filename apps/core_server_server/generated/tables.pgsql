@@ -4,8 +4,8 @@
 
 CREATE TABLE "users" (
   "id" serial,
-  "created_at" timestamp without time zone NOT NULL,
-  "updated_at" timestamp without time zone NOT NULL
+  "created_at" timestamp without time zone,
+  "updated_at" timestamp without time zone
 );
 
 ALTER TABLE ONLY "users"
@@ -19,9 +19,9 @@ ALTER TABLE ONLY "users"
 CREATE TABLE "user_purchases" (
   "id" serial,
   "userId" integer NOT NULL,
-  "has_one_time_purchase" boolean NOT NULL,
-  "subscription_end_date" timestamp without time zone NOT NULL,
-  "purchased_days_left" integer NOT NULL
+  "has_one_time_purchase" boolean,
+  "subscription_end_date" timestamp without time zone,
+  "purchased_days_left" integer
 );
 
 ALTER TABLE ONLY "user_purchases"
@@ -39,13 +39,13 @@ ALTER TABLE ONLY "user_purchases"
 
 CREATE TABLE "purchases" (
   "id" serial,
-  "source" integer NOT NULL,
-  "status" integer NOT NULL,
-  "purchase_date" timestamp without time zone NOT NULL,
-  "expiry_date" timestamp without time zone NOT NULL,
+  "source" integer,
+  "status" integer,
+  "purchase_date" timestamp without time zone,
+  "expiry_date" timestamp without time zone,
   "userId" integer NOT NULL,
-  "orderId" text NOT NULL,
-  "productId" text NOT NULL
+  "orderId" text,
+  "productId" text
 );
 
 ALTER TABLE ONLY "purchases"

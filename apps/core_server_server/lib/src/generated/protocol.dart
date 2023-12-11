@@ -13,6 +13,7 @@ import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'purchase.dart' as _i4;
 import 'purchases.dart' as _i5;
 import 'user.dart' as _i6;
+import 'package:core/core.dart' as _i7;
 export 'purchase.dart';
 export 'purchases.dart';
 export 'user.dart';
@@ -41,26 +42,26 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'source',
           columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
+          isNullable: true,
+          dartType: 'int?',
         ),
         _i2.ColumnDefinition(
           name: 'status',
           columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
+          isNullable: true,
+          dartType: 'int?',
         ),
         _i2.ColumnDefinition(
           name: 'purchase_date',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
           name: 'expiry_date',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
           name: 'userId',
@@ -71,14 +72,14 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'orderId',
           columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
+          isNullable: true,
+          dartType: 'String?',
         ),
         _i2.ColumnDefinition(
           name: 'productId',
           columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
+          isNullable: true,
+          dartType: 'String?',
         ),
       ],
       foreignKeys: [
@@ -130,20 +131,20 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'has_one_time_purchase',
           columnType: _i2.ColumnType.boolean,
-          isNullable: false,
-          dartType: 'bool',
+          isNullable: true,
+          dartType: 'bool?',
         ),
         _i2.ColumnDefinition(
           name: 'subscription_end_date',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
           name: 'purchased_days_left',
           columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
+          isNullable: true,
+          dartType: 'int?',
         ),
       ],
       foreignKeys: [
@@ -189,14 +190,14 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'created_at',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
           name: 'updated_at',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'DateTime?',
         ),
       ],
       foreignKeys: [],
@@ -248,6 +249,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i6.User?>()) {
       return (data != null ? _i6.User.fromJson(data, this) : null) as T;
     }
+    if (t == _i7.RemoteUserModel) {
+      return _i7.RemoteUserModel.fromJson(data, this) as T;
+    }
+    if (t == _i1.getType<_i7.RemoteUserModel?>()) {
+      return (data != null ? _i7.RemoteUserModel.fromJson(data, this) : null)
+          as T;
+    }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
     } catch (_) {}
@@ -263,6 +271,9 @@ class Protocol extends _i1.SerializationManagerServer {
     className = _i3.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
+    }
+    if (data is _i7.RemoteUserModel) {
+      return 'RemoteUserModel';
     }
     if (data is _i4.Purchase) {
       return 'Purchase';
@@ -281,6 +292,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
       return _i3.Protocol().deserializeByClassName(data);
+    }
+    if (data['className'] == 'RemoteUserModel') {
+      return deserialize<_i7.RemoteUserModel>(data['data']);
     }
     if (data['className'] == 'Purchase') {
       return deserialize<_i4.Purchase>(data['data']);

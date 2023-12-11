@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:serverpod_client/serverpod_client.dart';
 
 import '../../core.dart';
 

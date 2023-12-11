@@ -12,9 +12,9 @@ class Purchases extends _i1.SerializableEntity {
   Purchases({
     this.id,
     required this.userId,
-    required this.has_one_time_purchase,
-    required this.subscription_end_date,
-    required this.purchased_days_left,
+    this.has_one_time_purchase,
+    this.subscription_end_date,
+    this.purchased_days_left,
   });
 
   factory Purchases.fromJson(
@@ -26,11 +26,11 @@ class Purchases extends _i1.SerializableEntity {
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
       has_one_time_purchase: serializationManager
-          .deserialize<bool>(jsonSerialization['has_one_time_purchase']),
+          .deserialize<bool?>(jsonSerialization['has_one_time_purchase']),
       subscription_end_date: serializationManager
-          .deserialize<DateTime>(jsonSerialization['subscription_end_date']),
+          .deserialize<DateTime?>(jsonSerialization['subscription_end_date']),
       purchased_days_left: serializationManager
-          .deserialize<int>(jsonSerialization['purchased_days_left']),
+          .deserialize<int?>(jsonSerialization['purchased_days_left']),
     );
   }
 
@@ -41,11 +41,11 @@ class Purchases extends _i1.SerializableEntity {
 
   int userId;
 
-  bool has_one_time_purchase;
+  bool? has_one_time_purchase;
 
-  DateTime subscription_end_date;
+  DateTime? subscription_end_date;
 
-  int purchased_days_left;
+  int? purchased_days_left;
 
   @override
   Map<String, dynamic> toJson() {

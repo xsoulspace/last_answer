@@ -26,6 +26,7 @@ dependencies:
   animations: ^2.0.8
   blur: ^3.1.0
   collection: ^1.18.0
+
   core:
     path: ./packages/core
   cupertino_icons: ^1.0.6
@@ -62,6 +63,8 @@ dependencies:
   recase: ^4.1.0
   rxdart: ^0.27.7
   share_plus: ^7.1.0
+  shared_models:
+    path: ./packages/shared_models
   shared_preferences: ^2.2.2
   ui_kit:
     path: ./packages/ui_kit

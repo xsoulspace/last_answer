@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:shared_models/shared_models.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

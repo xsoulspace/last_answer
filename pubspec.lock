@@ -1580,7 +1580,7 @@ packages:
     source: hosted
     version: "3.3.1"
   shared_models:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "packages/shared_models"
       relative: true

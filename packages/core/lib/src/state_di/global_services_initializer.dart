@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 

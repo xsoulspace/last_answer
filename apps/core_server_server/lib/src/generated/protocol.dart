@@ -13,7 +13,7 @@ import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'purchase.dart' as _i4;
 import 'purchases.dart' as _i5;
 import 'user.dart' as _i6;
-import 'package:core/core.dart' as _i7;
+import 'package:shared_models/shared_models.dart' as _i7;
 export 'purchase.dart';
 export 'purchases.dart';
 export 'user.dart';

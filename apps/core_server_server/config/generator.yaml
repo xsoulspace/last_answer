@@ -6,4 +6,4 @@ modules:
   serverpod_auth:
     nickname: auth
 extraClasses:
-  - package:core/core.dart:RemoteUserModel
+  - package:shared_models/shared_models.dart:RemoteUserModel

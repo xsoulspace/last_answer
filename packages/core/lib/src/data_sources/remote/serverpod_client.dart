@@ -2,7 +2,7 @@ import 'package:core_server_client/core_server_client.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 
-import '../interfaces/interfaces.dart';
+import '../../../core.dart';
 
 class RemoteClientServerpodImpl implements RemoteClient {
   RemoteClientServerpodImpl({
@@ -25,8 +25,9 @@ class RemoteClientServerpodImpl implements RemoteClient {
     caller: client.modules.auth,
   );
 
+
   @override
   Future<void> onLoad() async {
-    await sessionManager.initialize();
   }
+
 }

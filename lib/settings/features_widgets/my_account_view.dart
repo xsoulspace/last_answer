@@ -19,17 +19,33 @@ class MyAccountView extends StatelessWidget {
       builder: (final context, final leftColumnWidth) {
         if (!isAuthorized) {
           return [
-            const Text('You are not logged in'),
-            const Text('For authorized users available:'),
-            const Text('Option to purchase app "Supporter version".'),
-            const Text(
-              'Any projects you created will still be saved on your device',
+            Text(
+              'Log In',
+              style: context.textTheme.headlineLarge,
             ),
+            const Gap(24),
+            Text(
+              'For authorized users available:',
+              style: context.textTheme.bodyLarge,
+            ),
+            Text(
+              'Option to purchase "Supporter version" of the app.',
+              style: context.textTheme.bodyMedium,
+            ),
+            Text(
+              'Folders',
+              style: context.textTheme.bodyMedium,
+            ),
+            const Gap(24),
+            const Text(
+              'Any projects you created will still be saved on your device.',
+            ),
+            const Gap(24),
             const GoogleSignInButton(),
           ];
         }
         return [
-          const SizedBox(height: 24),
+          const Gap(24),
           const Text('No active subscription'),
           // SettingsListTile(
           //   title: context.l10n.username,

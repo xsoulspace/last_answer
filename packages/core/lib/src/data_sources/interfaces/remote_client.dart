@@ -1,4 +1,4 @@
-abstract interface class RemoteClient {
-  RemoteClient._();
+abstract class RemoteClient {
+  const RemoteClient._();
   Future<void> onLoad();
 }

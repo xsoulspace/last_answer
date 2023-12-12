@@ -1,5 +1,10 @@
 part of 'state.dart';
 
+enum RemoteUserNotifierStatus {
+  unauthenticated,
+  authenticated,
+}
+
 class UserNotifierDto {
   UserNotifierDto(final BuildContext context) : userRepository = context.read();
 
@@ -16,22 +21,44 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
         dto: UserNotifierDto(context),
       );
   final UserNotifierDto dto;
+  late final _remoteUserNotifier = ValueNotifier(
+    const LoadableContainer(value: RemoteUserModel.empty),
+  )..addListener(notifyListeners);
+  LoadableContainer<RemoteUserModel> get remoteValue =>
+      _remoteUserNotifier.value;
+
   @override
   void dispose() {
     uiLocaleNotifier.dispose();
+    _remoteUserNotifier
+      ..removeListener(notifyListeners)
+      ..dispose();
     return super.dispose();
   }
 
+  bool get isAuthorized => _remoteUserNotifier.value.isLoaded;
+  Future<void> loadRemoteUser() async {
+    final user = await dto.userRepository.getRemoteUser();
+    _remoteUserNotifier.setValue(LoadableContainer.loaded(user));
+  }
+
+  void resetRemoteUser() => _remoteUserNotifier
+      .setValue(const LoadableContainer(value: RemoteUserModel.empty));
+
   bool get isLoaded => value.isLoaded;
   bool get isLoading => value.isLoading;
-  bool get isAuthorized => false;
   UserModel get user => value.value;
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => uiLocaleNotifier;
   bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
-  Future<void> onLoad(final UserInitializer initializer) async {
-    value = LoadableContainer.loaded(await dto.userRepository.getUser());
-    unawaited(initializer.onUserLoad());
+  Future<void> onLoad({
+    required final UserInitializer local,
+    required final RemoteUserInitializer remote,
+  }) async {
+    value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
+
+    unawaited(local.onUserLoad());
+    unawaited(remote.onUserLoad());
   }
 
   void completeOnboarding() => _updateUser(
@@ -81,6 +108,6 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
       );
   void _updateUser(final UserModel Function(UserModel) updateUser) {
     setValue(value.copyWith(value: updateUser(value.value)));
-    unawaited(dto.userRepository.putUser(user: user));
+    unawaited(dto.userRepository.putLocalUser(user: user));
   }
 }

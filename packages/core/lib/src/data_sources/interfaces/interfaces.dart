@@ -1,3 +1,4 @@
+export 'auth.dart';
 export 'complex_local_db.dart';
 export 'dictionaries.dart';
 export 'emoji.dart';

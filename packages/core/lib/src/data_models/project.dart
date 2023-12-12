@@ -14,6 +14,11 @@ class ProjectModelId with _$ProjectModelId {
   String toJson() => value;
 }
 
+enum ProjectTypes {
+  idea,
+  note,
+}
+
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
   @Implements<Archivable>()
@@ -176,4 +181,17 @@ String getLanguageCode(final LanguageName language) {
   }
 
   return lang;
+}
+
+String ideaProjectToShareString({
+  required final ProjectModelIdea projectIdea,
+  required final BuildContext context,
+}) {
+  final buffer = StringBuffer('${projectIdea.title} \n');
+  final resolvedAnswers = projectIdea.answers;
+  for (final answer in resolvedAnswers) {
+    buffer.writeln(answer.toShareString(context));
+  }
+
+  return buffer.toString();
 }

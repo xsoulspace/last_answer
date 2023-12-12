@@ -4,13 +4,12 @@ description: Starting point for a Serverpod server.
 # homepage: https://www.example.com
 environment:
   sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
 
 dependencies:
-  core:
-    path: ../../packages/core
   serverpod: 1.1.1
   serverpod_auth_server: 1.1.1
+  shared_models:
+    path: ../../packages/shared_models
 
 dev_dependencies:
   flutter_lints: ^3.0.0

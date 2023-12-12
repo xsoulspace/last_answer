@@ -1,7 +1,7 @@
-import 'package:core/core.dart';
 import 'package:core_server_server/src/extensions/extensions.dart';
 import 'package:core_server_server/src/generated/purchases.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:shared_models/shared_models.dart';
 
 class PurchasesEndpoint extends Endpoint {
   @override

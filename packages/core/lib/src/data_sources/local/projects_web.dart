@@ -1,3 +1,5 @@
+import 'package:shared_models/shared_models.dart';
+
 import '../../../core.dart';
 
 final class ProjectsLocalDataSourceLocalDbImpl

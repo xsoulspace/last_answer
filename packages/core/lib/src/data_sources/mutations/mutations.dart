@@ -1,16 +1,10 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, unused_field
 
 import 'package:flutter/widgets.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 import '../local_hive/hive_db.dart';
-
-enum LocalDbVersion {
-  v3_16,
-  v3_17;
-
-  static const newestVersion = v3_17;
-}
 
 Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
   final userNotifier = dto.userNotifier;

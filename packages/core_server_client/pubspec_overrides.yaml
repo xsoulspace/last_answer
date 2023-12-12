@@ -1,12 +1,14 @@
-# melos_managed_dependency_overrides: connectivity_plus,core,ui_kit,flutter_lints,google_fonts,lints,http,uuid
+# melos_managed_dependency_overrides: core,shared_models,ui_kit,connectivity_plus,flutter_lints,google_fonts,lints,http,uuid
 dependency_overrides:
-  connectivity_plus: ^5.0.2
   core:
     path: ../core
-  flutter_lints: ^3.0.0
-  google_fonts: ^6.1.0
-  http: ^1.1.2
-  lints: ^3.0.0
+  shared_models:
+    path: ../shared_models
   ui_kit:
     path: ../ui_kit
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  google_fonts: ^6.1.0
+  lints: ^3.0.0
+  http: ^1.1.2
   uuid: ^4.2.1

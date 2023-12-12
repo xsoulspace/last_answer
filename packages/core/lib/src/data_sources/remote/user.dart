@@ -1,4 +1,6 @@
-import '../../data_models/data_models.dart';
+import 'package:core_server_client/core_server_client.dart';
+import 'package:shared_models/shared_models.dart';
+
 import '../interfaces/interfaces.dart';
 import 'serverpod_client.dart';
 
@@ -7,14 +9,16 @@ class UserRemoteDataSourceServerpodImpl implements UserRemoteDataSource {
     required this.client,
   });
   final RemoteClientServerpodImpl client;
-  @override
-  Future<RemoteUserModel> getUser() async => client.client.user.getUser();
+
+  Client get _client => client.client;
 
   @override
-  Future<void> putUser({required final RemoteUserModel user}) async {
-    await client.client.user.putUser(user);
-  }
+  Future<RemoteUserModel> getUser() async => _client.user.getUser();
 
   @override
-  Future<void> deleteUser() => client.client.user.deleteUser();
+  Future<void> putUser({required final RemoteUserModel user}) async =>
+      _client.user.putUser(user);
+
+  @override
+  Future<void> deleteUser() => _client.user.deleteUser();
 }

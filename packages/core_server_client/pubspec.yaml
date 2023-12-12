@@ -10,6 +10,8 @@ dependencies:
     path: ../core
   serverpod_auth_client: ^1.1.0
   serverpod_client: 1.1.1
+  shared_models:
+    path: ../shared_models
 
 dependency_overrides:
   connectivity_plus: ^5.0.2

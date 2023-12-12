@@ -11,7 +11,7 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'purchase.dart' as _i2;
 import 'purchases.dart' as _i3;
 import 'user.dart' as _i4;
-import 'package:core/core.dart' as _i5;
+import 'package:shared_models/shared_models.dart' as _i5;
 import 'package:serverpod_auth_client/module.dart' as _i6;
 export 'purchase.dart';
 export 'purchases.dart';

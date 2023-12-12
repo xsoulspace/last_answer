@@ -1,8 +1,8 @@
-import 'package:core/core.dart';
 import 'package:core_server_server/src/endpoints/purchases_endpoint.dart';
 import 'package:core_server_server/src/extensions/extensions.dart';
 import 'package:core_server_server/src/generated/user.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:shared_models/shared_models.dart';
 
 typedef ServerUserId = int;
 // This is an example endpoint of your server. It's best practice to use the

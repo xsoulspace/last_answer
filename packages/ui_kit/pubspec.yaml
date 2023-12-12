@@ -35,6 +35,8 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
   share_plus: ^7.2.1
+  shared_models:
+    path: ../shared_models
   shared_preferences: ^2.2.2
   universal_io: ^2.2.2
   url_launcher: ^6.1.14

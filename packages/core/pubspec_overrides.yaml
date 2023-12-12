@@ -1,7 +1,9 @@
-# melos_managed_dependency_overrides: core_server_client,ui_kit,analyzer,collection,connectivity_plus,flutter_lints,http,lints,intl,meta,uuid
+# melos_managed_dependency_overrides: core_server_client,shared_models,ui_kit,analyzer,collection,connectivity_plus,flutter_lints,http,lints,intl,meta,uuid
 dependency_overrides:
   core_server_client:
     path: ../core_server_client
+  shared_models:
+    path: ../shared_models
   ui_kit:
     path: ../ui_kit
   analyzer: ^6.3.0

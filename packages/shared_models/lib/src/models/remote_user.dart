@@ -1,6 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
-part of 'data_models.dart';
+part of 'models.dart';
 
 @freezed
 class RemoteUserModel with _$RemoteUserModel {

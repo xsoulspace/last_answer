@@ -1,4 +1,5 @@
-import '../../data_models/data_models.dart';
+import 'package:shared_models/shared_models.dart';
+
 import '../interfaces/interfaces.dart';
 import 'local.dart';
 

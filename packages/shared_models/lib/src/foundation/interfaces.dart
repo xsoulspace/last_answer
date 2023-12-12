@@ -11,6 +11,6 @@ abstract interface class Loadable {
   Future<void> onLoad();
 }
 
-abstract interface class StateInitializer implements Loadable {
+abstract interface class StateInitializer implements Loadable, Disposable {
   StateInitializer._();
 }

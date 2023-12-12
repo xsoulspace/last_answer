@@ -78,19 +78,6 @@ class IdeaProject extends BasicProject with EquatableMixin {
       );
 }
 
-String ideaProjectToShareString({
-  required final ProjectModelIdea projectIdea,
-  required final BuildContext context,
-}) {
-  final buffer = StringBuffer('${projectIdea.title} \n');
-  final resolvedAnswers = projectIdea.answers;
-  for (final answer in resolvedAnswers) {
-    buffer.writeln(answer.toShareString(context));
-  }
-
-  return buffer.toString();
-}
-
 /// A mock for [IdeaProject].
 /// To create use `final mockIdeaProject = MockIdeaProject();`
 // ignore: avoid_implementing_value_types

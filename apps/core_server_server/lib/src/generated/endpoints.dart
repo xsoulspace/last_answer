@@ -12,7 +12,7 @@ import '../endpoints/purchase_endpoint.dart' as _i3;
 import '../endpoints/purchases_endpoint.dart' as _i4;
 import '../endpoints/user_endpoint.dart' as _i5;
 import 'package:core_server_server/src/generated/purchase.dart' as _i6;
-import 'package:core/src/data_models/data_models.dart' as _i7;
+import 'package:shared_models/src/models/models.dart' as _i7;
 import 'package:serverpod_auth_server/module.dart' as _i8;
 
 class Endpoints extends _i1.EndpointDispatch {

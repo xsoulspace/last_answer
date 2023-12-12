@@ -1,0 +1,63 @@
+name: shared_models
+description: Unified data layer & tools
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+  # flutter: ">=3.16.0"
+
+dependencies:
+  collection: ^1.18.0
+  equatable: ^2.0.5
+  form_builder_validators: ^9.1.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  logger: ^2.0.2+1
+  murmur3: ^2.1.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+  path_to_regexp: ^0.4.0
+  quiver: ^3.2.1
+  serverpod_client: 1.1.1
+  universal_io: ^2.2.0
+  uuid: ^4.1.0
+
+dependency_overrides:
+  analyzer: ^6.3.0
+  collection: ^1.18.0
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  http: ^1.1.2
+  lints: ^3.0.0
+  intl: ^0.18.1
+  meta: ^1.11.0
+  uuid: ^4.1.0
+
+dev_dependencies:
+  analyzer: ^6.3.0
+  build_runner: ^2.4.6
+  faker: ^2.1.0
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
+  mocktail_image_network: ^1.0.0
+  xsoulspace_lints: ^0.0.10
+# For information see the following page:
+# https://pub.dev/packages/flutter_gen
+# flutter_gen:
+#   output: lib/src/generated/ # Optional (default: lib/gen/)
+#   lineLength: 80
+#   assets:
+#     enabled: false
+#     outputs:
+#       gen_for_package: true
+#       package_parameter_enabled: true
+#   integrations:
+#     flutter_svg: false
+#   fonts:
+#     enabled: false
+flutter:
+  generate: true

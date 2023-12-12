@@ -1,4 +1,4 @@
-part of 'data_models.dart';
+part of 'models.dart';
 
 @freezed
 class EmojiModel with _$EmojiModel {

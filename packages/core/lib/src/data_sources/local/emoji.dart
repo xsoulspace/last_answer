@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:shared_models/shared_models.dart';
 
-import '../../data_models/data_models.dart';
 import '../../generated/generated.dart';
 import '../interfaces/interfaces.dart';
 

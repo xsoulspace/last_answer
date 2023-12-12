@@ -1,8 +1,8 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_answer_screen_bloc.dart';
 import 'package:lastanswer/idea/widgets/question_dropdown.dart';
-import 'package:lastanswer/pack_app/widgets/widgets.dart';
 
 class IdeaAnswerScreen extends StatelessWidget {
   const IdeaAnswerScreen._({required this.answer});

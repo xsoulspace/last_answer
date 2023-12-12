@@ -28,12 +28,13 @@ class MyAccountView extends StatelessWidget {
               'For authorized users available:',
               style: context.textTheme.bodyLarge,
             ),
+            const Gap(8),
             Text(
-              'Option to purchase "Supporter version" of the app.',
+              '- Folders',
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              'Folders',
+              '- Option to purchase "Supporter version" of the app.',
               style: context.textTheme.bodyMedium,
             ),
             const Gap(24),
@@ -63,19 +64,33 @@ class MyAccountView extends StatelessWidget {
           // TODO(arenukvern): add linked accounts
           // const SizedBox(height: 24),
 
-          const SizedBox(height: 24),
-          DangerZone(
-            onRemove: () async {
-              final shouldProceed = await Modals.of(context).showWarningDialog(
-                title: 'Are you sure?',
-                description:
-                    'Your account will be deleted. \n- All projects will be not deleted since it is stored only your device. \n- Any payment history will be deleted and cannot be restored.',
-              );
-              // TODO(arenukvern): add delete account
-            },
-            removeText: context.l10n.deleteMyAccount,
+          const Gap(24),
+          LoadableWidget(
+            builder: (final context, final setLoading, final isLoading) =>
+                DangerZone(
+              isLoading: isLoading,
+              onRemove: () async {
+                setLoading(true);
+                final shouldProceed =
+                    await Modals.of(context).showWarningDialog(
+                  title: context.l10n.areYouSure,
+                  noActionText: context.l10n.cancel,
+                  yesActionText: context.l10n.delete,
+                  description:
+                      // TODO(arenukvern): add l10n,
+                      // ignore: lines_longer_than_80_chars
+                      'Your account will be deleted. \n\n- All projects will be not deleted since it is stored only your device. \n- Any payment history will be deleted and cannot be restored.',
+                );
+                if (shouldProceed == true) {
+                  await userNotifier.deleteRemoteUser();
+                }
+
+                setLoading(false);
+              },
+              removeText: context.l10n.deleteMyAccount,
+            ),
           ),
-          const SizedBox(height: 24),
+          const Gap(24),
         ];
       },
     );

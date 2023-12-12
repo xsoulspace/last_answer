@@ -124,6 +124,9 @@ class SIt extends S {
   String get yes => 'Si';
 
   @override
+  String get no => 'No';
+
+  @override
   String get noProjectsYet => 'Nessun progetto ancora.';
 
   @override

@@ -121,7 +121,10 @@ class SEn extends S {
   String get wordNew => 'New';
 
   @override
-  String get yes => 'YES';
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
 
   @override
   String get noProjectsYet => 'No projects yet.';

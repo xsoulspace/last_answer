@@ -61,6 +61,10 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     unawaited(remote.onUserLoad());
   }
 
+  Future<void> deleteRemoteUser() async {
+    unawaited(dto.userRepository.deleteRemoteUser());
+  }
+
   void completeOnboarding() => _updateUser(
         (final user) =>
             user.copyWith(hasCompletedOnboarding: hasCompletedOnboarding),

@@ -121,7 +121,10 @@ class SRu extends S {
   String get wordNew => 'Новое';
 
   @override
-  String get yes => 'ДА';
+  String get yes => 'Да';
+
+  @override
+  String get no => 'Нет';
 
   @override
   String get noProjectsYet => 'Тут пока пусто';

@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
+import 'package:lastanswer/settings/features/features.dart';
 
 class GeneralSettingsBlocDto {
   GeneralSettingsBlocDto({

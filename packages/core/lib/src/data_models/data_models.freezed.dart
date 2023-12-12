@@ -2306,13 +2306,13 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? themeMode = freezed,
+    Object? themeMode = null,
     Object? isProjectsListReversed = null,
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
   }) {
     return _then(_value.copyWith(
-      themeMode: freezed == themeMode
+      themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
@@ -2360,13 +2360,13 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? themeMode = freezed,
+    Object? themeMode = null,
     Object? isProjectsListReversed = null,
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
   }) {
     return _then(_$UserSettingsModelImpl(
-      themeMode: freezed == themeMode
+      themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
@@ -2422,7 +2422,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserSettingsModelImpl &&
-            const DeepCollectionEquality().equals(other.themeMode, themeMode) &&
+            (identical(other.themeMode, themeMode) ||
+                other.themeMode == themeMode) &&
             (identical(other.isProjectsListReversed, isProjectsListReversed) ||
                 other.isProjectsListReversed == isProjectsListReversed) &&
             (identical(other.charactersLimitForNewNotes,
@@ -2434,12 +2435,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(themeMode),
-      isProjectsListReversed,
-      charactersLimitForNewNotes,
-      locale);
+  int get hashCode => Object.hash(runtimeType, themeMode,
+      isProjectsListReversed, charactersLimitForNewNotes, locale);
 
   @JsonKey(ignore: true)
   @override

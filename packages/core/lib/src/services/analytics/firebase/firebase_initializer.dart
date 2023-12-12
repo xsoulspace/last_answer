@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-
-import '../../../foundation/foundation.dart';
+import 'package:shared_models/shared_models.dart';
 
 /// Toggle this for testing Crashlytics in your app locally.
 const kTestingCrashlytics = false;

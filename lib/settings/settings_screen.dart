@@ -1,9 +1,7 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
-import 'package:lastanswer/other/other.dart';
-import 'package:lastanswer/settings/features_widgets/general_settings_view.dart';
-import 'package:lastanswer/settings/pack_settings.dart';
+import 'package:lastanswer/settings/views/views.dart';
 
 class SettingsScreen extends HookWidget {
   const SettingsScreen({
@@ -27,9 +25,7 @@ class SettingsScreen extends HookWidget {
     final appbar = AppBar(
       centerTitle: true,
       leading: CupertinoCloseButton(onPressed: onBack),
-      actions: const [
-        FeedbackButton(),
-      ],
+      actions: const [FeedbackButton()],
       title: Text(context.l10n.settings),
       bottom: TabBar(
         tabs: [
@@ -70,34 +66,6 @@ class SettingsScreen extends HookWidget {
       );
     }
     return DefaultTabController(length: 3, child: child);
-  }
-}
-
-class ChangelogView extends StatelessWidget {
-  const ChangelogView({super.key});
-
-  @override
-  Widget build(final BuildContext context) {
-    final notificationController = context.read<NotificationsNotifier>();
-    final updates = notificationController.updates;
-    return ListView.builder(
-      itemCount: updates.length,
-      padding: const EdgeInsets.all(24),
-      itemBuilder: (final context, final i) {
-        final notification = updates[i];
-
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: i == 0 ? 0 : 32, bottom: 24),
-              child: ChangelogTile(notification: notification),
-            ),
-            Text(notification.message.localize(context)),
-          ],
-        );
-      },
-    );
   }
 }
 

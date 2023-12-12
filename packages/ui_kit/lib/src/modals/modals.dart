@@ -23,17 +23,19 @@ class Modals {
   Future<bool?> showWarningDialog({
     required final String title,
     required final String description,
+    final String? yesActionText,
+    final String? noActionText,
   }) async =>
       showUiDialog(
         title: Text(title),
         content: Text(description),
         actionsBuilder: (final context) => [
           ActionButtonItem(
-            title: 'Yes',
+            title: yesActionText ?? context.l10n.yes,
             onPressed: () => Navigator.pop(context, true),
           ),
           ActionButtonItem(
-            title: 'No',
+            title: noActionText ?? context.l10n.no,
             isDefaultAction: true,
             onPressed: () => Navigator.pop(context, false),
           ),

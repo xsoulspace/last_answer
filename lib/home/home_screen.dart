@@ -7,7 +7,7 @@ import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
 import 'package:lastanswer/other/other.dart';
-import 'package:lastanswer/settings/pack_settings.dart';
+import 'package:lastanswer/settings/settings.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

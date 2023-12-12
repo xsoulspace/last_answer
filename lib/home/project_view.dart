@@ -14,7 +14,7 @@ class ProjectView extends StatelessWidget {
       (final c) => c.value,
     );
     if (projectContainer.isLoading) {
-      return const CircularProgressIndicator.adaptive();
+      return const UiCircularProgress();
     }
 
     final id = projectContainer.value.id;

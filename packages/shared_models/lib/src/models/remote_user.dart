@@ -20,6 +20,7 @@ class RemoteUserModel with _$RemoteUserModel {
   const RemoteUserModel._();
   static const empty = RemoteUserModel();
   bool get isEmpty => id.isEmpty;
+  bool get isNotEmpty => !isEmpty;
 }
 
 @freezed

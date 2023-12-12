@@ -36,10 +36,18 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     return super.dispose();
   }
 
-  bool get isAuthorized => _remoteUserNotifier.value.isLoaded;
-  Future<void> loadRemoteUser() async {
+  bool get isAuthorized =>
+      _remoteUserNotifier.value.isLoaded &&
+      _remoteUserNotifier.value.value.isNotEmpty;
+  Future<void> loadRemoteUser({final bool isAfterLogin = false}) async {
+    if (isAfterLogin) await dto.userRepository.completeRemoteLogin();
     final user = await dto.userRepository.getRemoteUser();
     _remoteUserNotifier.setValue(LoadableContainer.loaded(user));
+  }
+
+  void logout() {
+    resetRemoteUser();
+    unawaited(dto.userRepository.logout());
   }
 
   void resetRemoteUser() => _remoteUserNotifier

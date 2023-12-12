@@ -21,6 +21,7 @@ class UserRepository {
   final UserRemoteDataSource _remote;
   final AuthRemoteDataSource _auth;
   Future<UserModel> getLocalUser() async => _local.getUser();
+  Future<void> logout() async => _remote.logout();
   Future<void> putLocalUser({required final UserModel user}) async =>
       _local.putUser(user: user);
   Future<RemoteUserModel> getRemoteUser() => _remote.getUser();

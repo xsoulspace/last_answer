@@ -21,4 +21,7 @@ class UserRemoteDataSourceServerpodImpl implements UserRemoteDataSource {
 
   @override
   Future<void> deleteUser() => _client.user.deleteUser();
+
+  @override
+  Future<void> logout() => client.sessionManager.signOut();
 }

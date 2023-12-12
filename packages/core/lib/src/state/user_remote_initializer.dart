@@ -17,7 +17,7 @@ class RemoteUserInitializer {
 
   void _onSessionChanged() {
     if (_sessionManager.isSignedIn) {
-      unawaited(dto.userNotifier.loadRemoteUser());
+      unawaited(dto.userNotifier.loadRemoteUser(isAfterLogin: true));
     } else {
       dto.userNotifier.resetRemoteUser();
     }

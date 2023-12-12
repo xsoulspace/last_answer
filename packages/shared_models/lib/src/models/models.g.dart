@@ -25,7 +25,7 @@ _$RemoteUserModelImpl _$$RemoteUserModelImplFromJson(
     _$RemoteUserModelImpl(
       id: json['id'] == null
           ? UserModelId.empty
-          : UserModelId.fromJson(json['id'] as String),
+          : UserModelId.fromJson(json['id']),
       purchases: json['purchases'] == null
           ? PurchasesModel.empty
           : PurchasesModel.fromJson(json['purchases'] as Map<String, dynamic>),

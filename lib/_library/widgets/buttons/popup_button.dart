@@ -195,7 +195,7 @@ class MobilePopupButtonDialog extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedPrimaryButton(
-                    onClose: () => close(context),
+                    onPressed: () => close(context),
                   ),
                 ),
               ],
@@ -268,11 +268,11 @@ class RemoveActionButton extends StatelessWidget {
 
 class OutlinedPrimaryButton extends StatelessWidget {
   const OutlinedPrimaryButton({
-    required this.onClose,
+    required this.onPressed,
     this.useIcon = false,
     super.key,
   });
-  final VoidCallback? onClose;
+  final VoidCallback? onPressed;
   final bool useIcon;
   @override
   Widget build(final BuildContext context) {
@@ -289,7 +289,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
         ),
         side: BorderSide(color: primaryColor),
       ),
-      onPressed: onClose,
+      onPressed: onPressed,
       child: useIcon
           ? const Icon(Icons.check)
           : Text(

@@ -62,8 +62,11 @@ class MyAccountView extends StatelessWidget {
           //   child: const Text(''),
           // ),
           // TODO(arenukvern): add linked accounts
-          // const SizedBox(height: 24),
-
+          const Gap(24),
+          TextButton(
+            onPressed: userNotifier.logout,
+            child: const Text('Logout'),
+          ),
           const Gap(24),
           LoadableWidget(
             builder: (final context, final setLoading, final isLoading) =>

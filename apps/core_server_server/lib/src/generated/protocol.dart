@@ -29,7 +29,7 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final targetDatabaseDefinition = _i2.DatabaseDefinition(tables: [
     _i2.TableDefinition(
-      name: 'purchases',
+      name: 'custom_purchases',
       schema: 'public',
       columns: [
         _i2.ColumnDefinition(
@@ -37,7 +37,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'purchases_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'custom_purchases_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'source',
@@ -84,9 +84,9 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
-          constraintName: 'purchases_fk_0',
+          constraintName: 'custom_purchases_fk_0',
           columns: ['userId'],
-          referenceTable: 'users',
+          referenceTable: 'custom_users',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: null,
@@ -96,7 +96,7 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'purchases_pkey',
+          indexName: 'custom_purchases_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -112,7 +112,7 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
-      name: 'user_purchases',
+      name: 'custom_user_purchases',
       schema: 'public',
       columns: [
         _i2.ColumnDefinition(
@@ -120,7 +120,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'user_purchases_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'custom_user_purchases_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'userId',
@@ -149,9 +149,9 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
-          constraintName: 'user_purchases_fk_0',
+          constraintName: 'custom_user_purchases_fk_0',
           columns: ['userId'],
-          referenceTable: 'users',
+          referenceTable: 'custom_users',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: null,
@@ -161,7 +161,7 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'user_purchases_pkey',
+          indexName: 'custom_user_purchases_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -177,7 +177,7 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
-      name: 'users',
+      name: 'custom_users',
       schema: 'public',
       columns: [
         _i2.ColumnDefinition(
@@ -185,7 +185,13 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'users_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'custom_users_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'user_id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'created_at',
@@ -203,7 +209,7 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'users_pkey',
+          indexName: 'custom_users_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(

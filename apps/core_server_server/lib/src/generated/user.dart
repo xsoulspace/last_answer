@@ -11,6 +11,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 class User extends _i1.TableRow {
   User({
     int? id,
+    required this.user_id,
     this.created_at,
     this.updated_at,
   }) : super(id);
@@ -21,6 +22,8 @@ class User extends _i1.TableRow {
   ) {
     return User(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
+      user_id:
+          serializationManager.deserialize<int>(jsonSerialization['user_id']),
       created_at: serializationManager
           .deserialize<DateTime?>(jsonSerialization['created_at']),
       updated_at: serializationManager
@@ -30,17 +33,20 @@ class User extends _i1.TableRow {
 
   static final t = UserTable();
 
+  int user_id;
+
   DateTime? created_at;
 
   DateTime? updated_at;
 
   @override
-  String get tableName => 'users';
+  String get tableName => 'custom_users';
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'user_id': user_id,
       'created_at': created_at,
       'updated_at': updated_at,
     };
@@ -50,6 +56,7 @@ class User extends _i1.TableRow {
   Map<String, dynamic> toJsonForDatabase() {
     return {
       'id': id,
+      'user_id': user_id,
       'created_at': created_at,
       'updated_at': updated_at,
     };
@@ -59,6 +66,7 @@ class User extends _i1.TableRow {
   Map<String, dynamic> allToJson() {
     return {
       'id': id,
+      'user_id': user_id,
       'created_at': created_at,
       'updated_at': updated_at,
     };
@@ -72,6 +80,9 @@ class User extends _i1.TableRow {
     switch (columnName) {
       case 'id':
         id = value;
+        return;
+      case 'user_id':
+        user_id = value;
         return;
       case 'created_at':
         created_at = value;
@@ -196,12 +207,14 @@ class User extends _i1.TableRow {
 typedef UserExpressionBuilder = _i1.Expression Function(UserTable);
 
 class UserTable extends _i1.Table {
-  UserTable() : super(tableName: 'users');
+  UserTable() : super(tableName: 'custom_users');
 
   /// The database id, set if the object has been inserted into the
   /// database or if it has been fetched from the database. Otherwise,
   /// the id will be null.
   final id = _i1.ColumnInt('id');
+
+  final user_id = _i1.ColumnInt('user_id');
 
   final created_at = _i1.ColumnDateTime('created_at');
 
@@ -210,6 +223,7 @@ class UserTable extends _i1.Table {
   @override
   List<_i1.Column> get columns => [
         id,
+        user_id,
         created_at,
         updated_at,
       ];

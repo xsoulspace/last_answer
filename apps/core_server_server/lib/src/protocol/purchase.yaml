@@ -1,5 +1,6 @@
+# Is what defines a purchase.
 class: Purchase
-table: purchases
+table: custom_purchases
 fields:
   # TODO: replace to Enum
   # GooglePlay, AppStore, RuStore, Web
@@ -9,6 +10,6 @@ fields:
   status: int?
   purchase_date: DateTime?
   expiry_date: DateTime?
-  userId: int, parent=users
+  userId: int, parent=custom_users
   orderId: String?
   productId: String?

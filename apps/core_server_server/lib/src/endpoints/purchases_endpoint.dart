@@ -18,8 +18,12 @@ class PurchasesEndpointImpl {
     final Session session,
   ) async {
     final userId = await session.userId;
-    final existedPurchases = await Purchases.findById(session, userId);
-    if (existedPurchases != null) return;
+    final purchases = await Purchases.findSingleRow(
+      session,
+      where: (final p0) => p0.userId.equals(userId),
+      useCache: false,
+    );
+    if (purchases != null) return;
     const initial = PurchasesModel.empty;
     final newPurchases = Purchases(
       has_one_time_purchase: initial.hasOneTimePurchase,

@@ -45,7 +45,7 @@ class Purchases extends _i1.TableRow {
   int? purchased_days_left;
 
   @override
-  String get tableName => 'user_purchases';
+  String get tableName => 'custom_user_purchases';
 
   @override
   Map<String, dynamic> toJson() {
@@ -218,7 +218,7 @@ class Purchases extends _i1.TableRow {
 typedef PurchasesExpressionBuilder = _i1.Expression Function(PurchasesTable);
 
 class PurchasesTable extends _i1.Table {
-  PurchasesTable() : super(tableName: 'user_purchases');
+  PurchasesTable() : super(tableName: 'custom_user_purchases');
 
   /// The database id, set if the object has been inserted into the
   /// database or if it has been fetched from the database. Otherwise,

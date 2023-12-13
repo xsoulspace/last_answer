@@ -20,8 +20,7 @@ class _EndpointAuth extends _i1.EndpointRef {
   @override
   String get name => 'auth';
 
-  _i2.Future<String> signInVkID(String name) =>
-      caller.callServerEndpoint<String>(
+  _i2.Future<void> signInVkID(String name) => caller.callServerEndpoint<void>(
         'auth',
         'signInVkID',
         {'name': name},

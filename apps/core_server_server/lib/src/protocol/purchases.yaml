@@ -1,7 +1,8 @@
+# Availability of purchased products
 class: Purchases
-table: user_purchases
+table: custom_user_purchases
 fields:
-  userId: int, parent=users
+  userId: int, parent=custom_users
   has_one_time_purchase: bool?
   subscription_end_date: DateTime?
   purchased_days_left: int?

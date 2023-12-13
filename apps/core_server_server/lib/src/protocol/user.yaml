@@ -10,12 +10,14 @@
 class: User
 
 # Add the table key, if this class represents a row in the database.
-table: users
+table: custom_users
 
 # The fields (and columns if connected to the database) of the class. Supported
 # types are `bool`, `int`, `double`, `String`, `DateTime`, and any other
 # generated classes. You can also add lists of objects and types have support
 # for null safety. Eg. `List<int>?` or `List<MyOtherClass?>`.
 fields:
+  # should be equal to serverpod_user_info.id
+  user_id: int
   created_at: DateTime?
   updated_at: DateTime?

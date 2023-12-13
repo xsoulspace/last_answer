@@ -17,14 +17,20 @@ import 'package:serverpod/serverpod.dart';
 // supported. The `session` object provides access to the database, logging,
 // passwords, and information about the request being made to the server.
 class AuthEndpoint extends Endpoint {
-  Future<String> signInVkID(final Session session, final String name) async =>
-      'Hello $name';
+  Future<void> signInVkID(final Session session, final String name) async {
+    'Hello $name';
+    // Users.createUser(session, userInfo);
+  }
+
   Future<void> completeSignIn(final Session session) async {
     final isSignedIn = await session.isUserSignedIn;
     if (!isSignedIn) throw Exception('User is unauthorized');
     final userId = await session.auth.authenticatedUserId;
     if (userId == null) throw Exception('User is unauthorized');
-    final user = await User.findById(session, userId);
+    final user = await User.findSingleRow(
+      session,
+      where: (final v) => v.user_id.equals(userId),
+    );
     if (user != null) return;
     await UserEndpointImpl().putUser(session, null);
   }

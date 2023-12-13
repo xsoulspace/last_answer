@@ -54,13 +54,6 @@ class MyAccountView extends StatelessWidget {
           // TODO(arenukvern): add username
           //   child: const Text(''),
           // ),
-          // const SizedBox(height: 24),
-          // SettingsListTile(
-          //   title: context.l10n.email,
-          //   leftColumnWidth: leftColumnWidth,
-          // TODO(arenukvern): add email
-          //   child: const Text(''),
-          // ),
           // TODO(arenukvern): add linked accounts
           const Gap(24),
           TextButton(

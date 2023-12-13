@@ -1,7 +1,9 @@
 import 'package:core_server_server/src/endpoints/purchases_endpoint.dart';
 import 'package:core_server_server/src/extensions/extensions.dart';
-import 'package:core_server_server/src/generated/user.dart';
+import 'package:core_server_server/src/generated/protocol.dart';
+import 'package:serverpod/protocol.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/module.dart';
 import 'package:shared_models/shared_models.dart';
 
 typedef ServerUserId = int;
@@ -37,10 +39,53 @@ class UserEndpoint extends Endpoint {
       UserEndpointImpl().putUser(session, user);
 
   Future<void> deleteUser(final Session session) async {
+    /// ********************************************
+    /// *      CUSTOM RECORDS DELETION
+    /// ********************************************
     final userId = await session.userId;
     final user = await User.findById(session, userId);
-    if (user == null) return;
-    await User.deleteRow(session, user);
+    if (user != null) await User.deleteRow(session, user);
+
+    /// ********************************************
+    /// *      SYSTEM RECORDS DELETION
+    /// ********************************************
+    // TODO(arenukvern): remove after serverpod release,
+    // https://github.com/serverpod/serverpod/discussions/1096
+    final userInfo = await Users.findUserByUserId(session, userId);
+    if (userInfo != null) {
+      await Future.wait([
+        session.db.delete<UserImage>(
+          where: UserImage.t.userId.equals(userId),
+        ),
+        session.db.delete<AuthKey>(
+          where: AuthKey.t.userId.equals(userInfo.id),
+        ),
+        session.db.delete<SessionLogEntry>(
+          where: SessionLogEntry.t.authenticatedUserId.equals(userInfo.id),
+        ),
+        session.db.delete<GoogleRefreshToken>(
+          where: GoogleRefreshToken.t.userId.equals(userInfo.id),
+        ),
+        session.db.delete<EmailReset>(
+          where: EmailReset.t.userId.equals(userInfo.id),
+        ),
+        session.db.delete<EmailCreateAccountRequest>(
+          where: EmailCreateAccountRequest.t.email.equals(userInfo.email),
+        ),
+        session.db.delete<EmailFailedSignIn>(
+          where: EmailFailedSignIn.t.email.equals(userInfo.email),
+        ),
+        session.db.delete<EmailAuth>(
+          where: EmailAuth.t.userId.equals(userInfo.id),
+        ),
+        session.db.delete<AuthKey>(
+          where: AuthKey.t.userId.equals(userInfo.id),
+        ),
+      ]);
+      await session.db.delete<UserInfo>(
+        where: UserInfo.t.userIdentifier.equals(userInfo.userIdentifier),
+      );
+    }
   }
 }
 
@@ -51,16 +96,18 @@ class UserEndpointImpl {
   ) async {
     final userId = await session.userId;
     final existedUser = await User.findById(session, userId);
-    final updatedUser = User(
-      id: userId,
-      created_at: existedUser?.created_at ?? DateTime.now(),
-      updated_at: existedUser?.updated_at ?? DateTime.now(),
-    );
     if (existedUser == null) {
+      final updatedUser = User(
+        user_id: userId,
+        created_at: existedUser?.created_at ?? DateTime.now(),
+        updated_at: existedUser?.updated_at ?? DateTime.now(),
+      );
       await User.insert(session, updatedUser);
-      await PurchasesEndpointImpl().createPurchases(session);
     } else {
-      await User.update(session, updatedUser);
+      existedUser.updated_at = DateTime.now();
+      await User.update(session, existedUser);
     }
+
+    await PurchasesEndpointImpl().createPurchases(session);
   }
 }

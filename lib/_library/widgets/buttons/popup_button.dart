@@ -239,7 +239,7 @@ class RemoveActionButton extends StatelessWidget {
             ? const UiCircularProgress()
             : Text(
                 text ?? context.l10n.delete.sentenceCase,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
       );
     }
@@ -259,7 +259,7 @@ class RemoveActionButton extends StatelessWidget {
               ? const Icon(Icons.delete_forever_rounded)
               : Text(
                   text ?? context.l10n.delete.sentenceCase,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   // ?.copyWith(color: AppColors.accent3),
                 ),
     );

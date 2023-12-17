@@ -10,7 +10,7 @@ class RemoteUserInitializer {
   }
   final GlobalStatesInitializerDto dto;
   SessionManager get _sessionManager =>
-      (dto.remoteClient as RemoteClientServerpodImpl).sessionManager;
+      RemoteClient.ofContextAsServerpodImpl(dto.context).sessionManager;
   Future<void> onUserLoad() async {
     /// add any methods to load remote data
   }

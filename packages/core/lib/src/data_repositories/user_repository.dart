@@ -12,10 +12,10 @@ class UserRepository {
           localDbDataSource: context.read(),
         ),
         _remote = UserRemoteDataSourceServerpodImpl(
-          client: context.read<RemoteClient>() as RemoteClientServerpodImpl,
+          client: RemoteClient.ofContextAsServerpodImpl(context),
         ),
         _auth = AuthRemoteDataSourceServerpodImpl(
-          client: context.read<RemoteClient>() as RemoteClientServerpodImpl,
+          client: RemoteClient.ofContextAsServerpodImpl(context),
         );
   final UserLocalDataSource _local;
   final UserRemoteDataSource _remote;

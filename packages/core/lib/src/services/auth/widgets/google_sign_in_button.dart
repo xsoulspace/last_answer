@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:serverpod_auth_client/module.dart';
 import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
 import 'package:ui_kit/ui_kit.dart';
@@ -33,8 +32,7 @@ class _ServerpodImpl extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final remoteClient =
-        context.read<RemoteClient>() as RemoteClientServerpodImpl;
+    final remoteClient = RemoteClient.ofContextAsServerpodImpl(context);
     return ServerpodSignInWithGoogleButton(
       // clientId: PlatformInfo.isWeb ? null : Envs.googleClientId,
       caller: remoteClient.client.modules.auth,

@@ -28,6 +28,10 @@ class GlobalStatesProvider extends StatelessWidget {
             /// for initialization
             create: (final context) => context.read<ComplexLocalDbIsarImpl>(),
           ),
+          ChangeNotifierProvider<PurchasesIap>(
+            /// for initialization
+            create: (final context) => PurchasesIapGoogleAppleImpl(),
+          ),
           Provider(create: EmojiRepository.provide),
           Provider(create: LastUsedEmojiRepository.provide),
           Provider(create: UserRepository.provide),
@@ -39,6 +43,7 @@ class GlobalStatesProvider extends StatelessWidget {
           ChangeNotifierProvider(create: NotificationsNotifier.provide),
           ChangeNotifierProvider(create: ProjectsNotifier.provide),
           ChangeNotifierProvider(create: UserNotifier.provide),
+          ChangeNotifierProvider(create: PurchasesNotifier.provide),
           ChangeNotifierProvider(create: AppNotifier.provide),
           ChangeNotifierProvider(create: OpenedProjectNotifier.provide),
         ],

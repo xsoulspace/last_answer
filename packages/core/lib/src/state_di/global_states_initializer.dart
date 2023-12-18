@@ -24,6 +24,7 @@ class GlobalStatesInitializerDto {
         complexLocalDb = context.read(),
         localDbDataSource = context.read(),
         remoteClient = context.read(),
+        purchasesNotifier = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
   final BuildContext context;
@@ -39,6 +40,7 @@ class GlobalStatesInitializerDto {
   final NotificationsNotifier notificationController;
   final ProjectsNotifier projectsNotifier;
   final UserNotifier userNotifier;
+  final PurchasesNotifier purchasesNotifier;
   final AppNotifier appNotifier;
   final ProjectsRepository projectsRepository;
 }
@@ -100,6 +102,7 @@ class GlobalStatesInitializer implements StateInitializer {
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
+    await dto.purchasesNotifier.onLoad();
   }
 
   @override

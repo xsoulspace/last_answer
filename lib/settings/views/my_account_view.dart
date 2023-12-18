@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/widgets/settings_list_container.dart';
@@ -65,14 +66,34 @@ class SubscriptionView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final userNotifier = context.watch<UserNotifier>();
+    final purchasesNotifier = context.read<PurchasesNotifier>();
     return ListView(
       primary: false,
-      children: const [
-        Gap(24),
-        Text('No active subscription'),
+      children: [
+        const Gap(24),
+        const Text('No active subscription'),
+        ...purchasesNotifier.value.value.iAppSubscriptions
+            .map((final e) => SubscriptionTile(details: e)),
       ],
     );
   }
+}
+
+class SubscriptionTile extends StatelessWidget {
+  const SubscriptionTile({
+    required this.details,
+    super.key,
+  });
+  final ProductDetails details;
+  @override
+  Widget build(final BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(details.title),
+          Text(details.description),
+          Text(details.price),
+        ],
+      );
 }
 
 class PaymentsHistoryListView extends StatelessWidget {
@@ -140,21 +161,18 @@ class _UnauthorizedView extends StatelessWidget {
   const _UnauthorizedView({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    context.read<PurchasesNotifier>();
-    return SettingsListContainer(
-      builder: (final context, final leftColumnWidth) => [
-        Text(
-          'Log In',
-          style: context.textTheme.headlineLarge,
-        ),
-        const Gap(24),
-        const Text(
-          'Any projects you created will still be saved on your device.',
-        ),
-        const Gap(24),
-        const GoogleSignInButton(),
-      ],
-    );
-  }
+  Widget build(final BuildContext context) => SettingsListContainer(
+        builder: (final context, final leftColumnWidth) => [
+          Text(
+            'Log In',
+            style: context.textTheme.headlineLarge,
+          ),
+          const Gap(24),
+          const Text(
+            'Any projects you created will still be saved on your device.',
+          ),
+          const Gap(24),
+          const GoogleSignInButton(),
+        ],
+      );
 }

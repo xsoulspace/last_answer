@@ -140,18 +140,21 @@ class _UnauthorizedView extends StatelessWidget {
   const _UnauthorizedView({super.key});
 
   @override
-  Widget build(final BuildContext context) => SettingsListContainer(
-        builder: (final context, final leftColumnWidth) => [
-          Text(
-            'Log In',
-            style: context.textTheme.headlineLarge,
-          ),
-          const Gap(24),
-          const Text(
-            'Any projects you created will still be saved on your device.',
-          ),
-          const Gap(24),
-          const GoogleSignInButton(),
-        ],
-      );
+  Widget build(final BuildContext context) {
+    context.read<PurchasesNotifier>();
+    return SettingsListContainer(
+      builder: (final context, final leftColumnWidth) => [
+        Text(
+          'Log In',
+          style: context.textTheme.headlineLarge,
+        ),
+        const Gap(24),
+        const Text(
+          'Any projects you created will still be saved on your device.',
+        ),
+        const Gap(24),
+        const GoogleSignInButton(),
+      ],
+    );
+  }
 }

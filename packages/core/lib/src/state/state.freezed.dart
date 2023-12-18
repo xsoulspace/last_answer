@@ -647,3 +647,149 @@ abstract class _RequestProjectsDto implements RequestProjectsDto {
   _$$RequestProjectsDtoImplCopyWith<_$RequestProjectsDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$PurchasesNotifierState {
+  List<ProductDetails> get iAppSubscriptions =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $PurchasesNotifierStateCopyWith<PurchasesNotifierState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PurchasesNotifierStateCopyWith<$Res> {
+  factory $PurchasesNotifierStateCopyWith(PurchasesNotifierState value,
+          $Res Function(PurchasesNotifierState) then) =
+      _$PurchasesNotifierStateCopyWithImpl<$Res, PurchasesNotifierState>;
+  @useResult
+  $Res call({List<ProductDetails> iAppSubscriptions});
+}
+
+/// @nodoc
+class _$PurchasesNotifierStateCopyWithImpl<$Res,
+        $Val extends PurchasesNotifierState>
+    implements $PurchasesNotifierStateCopyWith<$Res> {
+  _$PurchasesNotifierStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? iAppSubscriptions = null,
+  }) {
+    return _then(_value.copyWith(
+      iAppSubscriptions: null == iAppSubscriptions
+          ? _value.iAppSubscriptions
+          : iAppSubscriptions // ignore: cast_nullable_to_non_nullable
+              as List<ProductDetails>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$PurchasesNotifierStateImplCopyWith<$Res>
+    implements $PurchasesNotifierStateCopyWith<$Res> {
+  factory _$$PurchasesNotifierStateImplCopyWith(
+          _$PurchasesNotifierStateImpl value,
+          $Res Function(_$PurchasesNotifierStateImpl) then) =
+      __$$PurchasesNotifierStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<ProductDetails> iAppSubscriptions});
+}
+
+/// @nodoc
+class __$$PurchasesNotifierStateImplCopyWithImpl<$Res>
+    extends _$PurchasesNotifierStateCopyWithImpl<$Res,
+        _$PurchasesNotifierStateImpl>
+    implements _$$PurchasesNotifierStateImplCopyWith<$Res> {
+  __$$PurchasesNotifierStateImplCopyWithImpl(
+      _$PurchasesNotifierStateImpl _value,
+      $Res Function(_$PurchasesNotifierStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? iAppSubscriptions = null,
+  }) {
+    return _then(_$PurchasesNotifierStateImpl(
+      iAppSubscriptions: null == iAppSubscriptions
+          ? _value._iAppSubscriptions
+          : iAppSubscriptions // ignore: cast_nullable_to_non_nullable
+              as List<ProductDetails>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PurchasesNotifierStateImpl
+    with DiagnosticableTreeMixin
+    implements _PurchasesNotifierState {
+  const _$PurchasesNotifierStateImpl(
+      {final List<ProductDetails> iAppSubscriptions = const []})
+      : _iAppSubscriptions = iAppSubscriptions;
+
+  final List<ProductDetails> _iAppSubscriptions;
+  @override
+  @JsonKey()
+  List<ProductDetails> get iAppSubscriptions {
+    if (_iAppSubscriptions is EqualUnmodifiableListView)
+      return _iAppSubscriptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_iAppSubscriptions);
+  }
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'PurchasesNotifierState(iAppSubscriptions: $iAppSubscriptions)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'PurchasesNotifierState'))
+      ..add(DiagnosticsProperty('iAppSubscriptions', iAppSubscriptions));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PurchasesNotifierStateImpl &&
+            const DeepCollectionEquality()
+                .equals(other._iAppSubscriptions, _iAppSubscriptions));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_iAppSubscriptions));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PurchasesNotifierStateImplCopyWith<_$PurchasesNotifierStateImpl>
+      get copyWith => __$$PurchasesNotifierStateImplCopyWithImpl<
+          _$PurchasesNotifierStateImpl>(this, _$identity);
+}
+
+abstract class _PurchasesNotifierState implements PurchasesNotifierState {
+  const factory _PurchasesNotifierState(
+          {final List<ProductDetails> iAppSubscriptions}) =
+      _$PurchasesNotifierStateImpl;
+
+  @override
+  List<ProductDetails> get iAppSubscriptions;
+  @override
+  @JsonKey(ignore: true)
+  _$$PurchasesNotifierStateImplCopyWith<_$PurchasesNotifierStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

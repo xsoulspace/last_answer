@@ -7,12 +7,9 @@ import '../services.dart';
 
 final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
-  void subscribeToUpdates() {
-    _purchaseSubscription =
-        InAppPurchase.instance.purchaseStream.listen(_onPurchaseUpdate);
-  }
 
-  void _onPurchaseUpdate(final List<PurchaseDetails> event) {}
+  Stream<List<PurchaseDetails>> get stream =>
+      InAppPurchase.instance.purchaseStream;
 
   @override
   Future<bool> buySubscription(final PurchaseParam details) async =>

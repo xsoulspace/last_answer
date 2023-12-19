@@ -6,9 +6,12 @@ enum RemoteUserNotifierStatus {
 }
 
 class UserNotifierDto {
-  UserNotifierDto(final BuildContext context) : userRepository = context.read();
+  UserNotifierDto(final BuildContext context)
+      : userRepository = context.read(),
+        purchasesNotifier = context.read();
 
   final UserRepository userRepository;
+  final PurchasesNotifier purchasesNotifier;
 }
 
 final uiLocaleNotifier = ValueNotifier(Locales.en);
@@ -34,6 +37,11 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
       ..removeListener(notifyListeners)
       ..dispose();
     return super.dispose();
+  }
+
+  Future<void> buySubscription(final ProductDetails details) async {
+    await dto.purchasesNotifier.buySubscription(details);
+    // await dto.userRepository.verifySubscription(details);
   }
 
   bool get isAuthorized =>

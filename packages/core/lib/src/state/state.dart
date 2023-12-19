@@ -12,6 +12,7 @@ import 'package:shared_models/shared_models.dart';
 import 'package:ui_kit/ui_kit.dart';
 
 import '../../core.dart';
+import '../data_repositories/purchases_repository.dart';
 import 'logic/logic.dart';
 import 'user_remote_initializer.dart';
 

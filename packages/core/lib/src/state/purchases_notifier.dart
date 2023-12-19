@@ -11,9 +11,11 @@ class PurchasesNotifierState with _$PurchasesNotifierState {
 class PurchasesNotifierDto {
   PurchasesNotifierDto(final BuildContext context)
       : userNotifier = context.read(),
+        purchasesRepository = context.read(),
         purchasesIapGoogleAppleImpl =
             PurchasesIap.ofContextAsGoogleAppleImpl(context);
   final UserNotifier userNotifier;
+  final PurchasesRepository purchasesRepository;
   final PurchasesIapGoogleAppleImpl purchasesIapGoogleAppleImpl;
 }
 
@@ -40,6 +42,16 @@ class PurchasesNotifier
         );
       }
     }
+  }
+
+  Future<void> buySubscription(final ProductDetails details) async {
+    await dto.purchasesIapGoogleAppleImpl.buySubscription(
+      PurchaseParam(
+        productDetails: details,
+        applicationUserName: dto.userNotifier.remoteValue.value.id.value,
+      ),
+    );
+    await dto.purchasesRepository.verifySubscription(details);
   }
 
   void _emitLoaded(final PurchasesNotifierState state) {

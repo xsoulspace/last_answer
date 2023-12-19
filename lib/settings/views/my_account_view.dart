@@ -24,40 +24,37 @@ class _AuthorizedView extends StatelessWidget {
   const _AuthorizedView({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    final userNotifier = context.watch<UserNotifier>();
-    return DefaultTabController(
-      length: 3,
-      child: NestedScrollView(
-        headerSliverBuilder: (final context, final innerBoxIsScrolled) => [
-          const SliverAppBar(
-            pinned: true,
-            toolbarHeight: 0,
-            automaticallyImplyLeading: false,
-            bottom: TabBar.secondary(
-              isScrollable: true,
-              tabAlignment: TabAlignment.center,
-              tabs: [
-                Tab(text: 'Subscription'),
-                Tab(text: 'Payment History'),
-                Tab(text: 'Profile'),
+  Widget build(final BuildContext context) => DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          headerSliverBuilder: (final context, final innerBoxIsScrolled) => [
+            const SliverAppBar(
+              pinned: true,
+              toolbarHeight: 0,
+              automaticallyImplyLeading: false,
+              bottom: TabBar.secondary(
+                isScrollable: true,
+                tabAlignment: TabAlignment.center,
+                tabs: [
+                  Tab(text: 'Subscription'),
+                  Tab(text: 'Payment History'),
+                  Tab(text: 'Profile'),
+                ],
+              ),
+            ),
+          ],
+          body: const Padding(
+            padding: EdgeInsets.all(24),
+            child: TabBarView(
+              children: [
+                SubscriptionView(),
+                PaymentsHistoryListView(),
+                ProfileView(),
               ],
             ),
           ),
-        ],
-        body: const Padding(
-          padding: EdgeInsets.all(24),
-          child: TabBarView(
-            children: [
-              SubscriptionView(),
-              PaymentsHistoryListView(),
-              ProfileView(),
-            ],
-          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class SubscriptionView extends StatelessWidget {
@@ -71,9 +68,21 @@ class SubscriptionView extends StatelessWidget {
       primary: false,
       children: [
         const Gap(24),
-        const Text('No active subscription'),
-        ...purchasesNotifier.value.value.iAppSubscriptions
-            .map((final e) => SubscriptionTile(details: e)),
+        ...purchasesNotifier.value.value.iAppSubscriptions.map(
+          (final e) => LoadableWidget(
+            builder: (final context, final setLoading, final isLoading) =>
+                SubscriptionTile(
+              details: e,
+              activeDetailsId: '',
+              isLoading: isLoading,
+              onPressed: () async {
+                setLoading(true);
+                await userNotifier.buySubscription(e);
+                setLoading(false);
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -82,17 +91,29 @@ class SubscriptionView extends StatelessWidget {
 class SubscriptionTile extends StatelessWidget {
   const SubscriptionTile({
     required this.details,
+    required this.onPressed,
+    required this.activeDetailsId,
+    required this.isLoading,
     super.key,
   });
+  final bool isLoading;
+  final VoidCallback onPressed;
   final ProductDetails details;
+  final String? activeDetailsId;
   @override
-  Widget build(final BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(details.title),
-          Text(details.description),
-          Text(details.price),
-        ],
+  Widget build(final BuildContext context) => Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(details.title),
+            Text(details.description),
+            Text(details.price),
+            if (activeDetailsId == details.id)
+              const Text('Active')
+            else
+              TextButton(onPressed: onPressed, child: const Text('Purchase')),
+          ],
+        ),
       );
 }
 
@@ -107,6 +128,7 @@ class PaymentsHistoryListView extends StatelessWidget {
       children: const [
         Gap(24),
         Text('No payment history'),
+        Gap(24),
       ],
     );
   }

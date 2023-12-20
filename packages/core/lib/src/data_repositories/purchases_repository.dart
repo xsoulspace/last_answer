@@ -9,6 +9,6 @@ class PurchasesRepository {
     required final BuildContext context,
   }) : _remote = context.read();
   final PurchasesRemoteDataSource _remote;
-  Future<void> verifySubscription(final ProductDetails details) =>
+  Future<bool> verifySubscription(final ProductDetails details) =>
       _remote.verifySubscription(details);
 }

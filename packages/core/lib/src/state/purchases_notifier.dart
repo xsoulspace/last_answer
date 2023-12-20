@@ -45,13 +45,17 @@ class PurchasesNotifier
   }
 
   Future<void> buySubscription(final ProductDetails details) async {
-    await dto.purchasesIapGoogleAppleImpl.buySubscription(
+    final shouldProceed = await dto.purchasesIapGoogleAppleImpl.buySubscription(
       PurchaseParam(
         productDetails: details,
         applicationUserName: dto.userNotifier.remoteValue.value.id.value,
       ),
     );
-    await dto.purchasesRepository.verifySubscription(details);
+    if (shouldProceed != true) return;
+    final isVerified =
+        await dto.purchasesRepository.verifySubscription(details);
+    if (isVerified != true) return;
+    // TODO(arenukvern): description,
   }
 
   void _emitLoaded(final PurchasesNotifierState state) {

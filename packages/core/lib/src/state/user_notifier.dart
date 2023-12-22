@@ -40,7 +40,7 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   }
 
   Future<void> buySubscription(final ProductDetails details) async {
-    await dto.purchasesNotifier.buySubscription(details);
+    await dto.purchasesNotifier.makePurchase(details);
     // await dto.userRepository.verifySubscription(details);
   }
 

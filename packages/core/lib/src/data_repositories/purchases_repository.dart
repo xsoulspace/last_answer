@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
 
@@ -9,6 +9,12 @@ class PurchasesRepository {
     required final BuildContext context,
   }) : _remote = context.read();
   final PurchasesRemoteDataSource _remote;
-  Future<bool> verifySubscription(final ProductDetails details) =>
-      _remote.verifySubscription(details);
+  Future<PurchaseModel?> verifyNativeMobilePurchase({
+    required final ProductModelId productId,
+    required final String verificationData,
+  }) =>
+      _remote.verifyNativeMobilePurchase(
+        productId: productId,
+        verificationData: verificationData,
+      );
 }

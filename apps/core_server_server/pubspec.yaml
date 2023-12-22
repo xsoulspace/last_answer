@@ -19,6 +19,6 @@ dependency_overrides:
   connectivity_plus: ^5.0.2
   flutter_lints: ^3.0.0
   google_fonts: ^6.1.0
-  lints: ^3.0.0
   http: ^1.1.2
+  lints: ^3.0.0
   uuid: ^4.2.1

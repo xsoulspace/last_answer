@@ -1,6 +1,9 @@
-import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_models/shared_models.dart';
 
 abstract class PurchasesRemoteDataSource {
   PurchasesRemoteDataSource._();
-  Future<bool> verifySubscription(final ProductDetails details);
+  Future<PurchaseModel?> verifyNativeMobilePurchase({
+    required final ProductModelId productId,
+    required final String verificationData,
+  });
 }

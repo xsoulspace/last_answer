@@ -258,8 +258,22 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i7.RemoteUserModel) {
       return _i7.RemoteUserModel.fromJson(data, this) as T;
     }
+    if (t == _i7.ProductModelId) {
+      return _i7.ProductModelId.fromJson(data, this) as T;
+    }
+    if (t == _i7.PurchaseModel) {
+      return _i7.PurchaseModel.fromJson(data, this) as T;
+    }
     if (t == _i1.getType<_i7.RemoteUserModel?>()) {
       return (data != null ? _i7.RemoteUserModel.fromJson(data, this) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i7.ProductModelId?>()) {
+      return (data != null ? _i7.ProductModelId.fromJson(data, this) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i7.PurchaseModel?>()) {
+      return (data != null ? _i7.PurchaseModel.fromJson(data, this) : null)
           as T;
     }
     try {
@@ -281,6 +295,12 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i7.RemoteUserModel) {
       return 'RemoteUserModel';
     }
+    if (data is _i7.ProductModelId) {
+      return 'ProductModelId';
+    }
+    if (data is _i7.PurchaseModel) {
+      return 'PurchaseModel';
+    }
     if (data is _i4.Purchase) {
       return 'Purchase';
     }
@@ -301,6 +321,12 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data['className'] == 'RemoteUserModel') {
       return deserialize<_i7.RemoteUserModel>(data['data']);
+    }
+    if (data['className'] == 'ProductModelId') {
+      return deserialize<_i7.ProductModelId>(data['data']);
+    }
+    if (data['className'] == 'PurchaseModel') {
+      return deserialize<_i7.PurchaseModel>(data['data']);
     }
     if (data['className'] == 'Purchase') {
       return deserialize<_i4.Purchase>(data['data']);

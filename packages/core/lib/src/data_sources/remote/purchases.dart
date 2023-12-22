@@ -1,13 +1,19 @@
-import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_models/shared_models.dart';
 
-import '../interfaces/purchases.dart';
+import '../../../core.dart';
 
 class PurchasesRemoteDataSourceServerpodImpl
     implements PurchasesRemoteDataSource {
+  PurchasesRemoteDataSourceServerpodImpl({
+    required this.client,
+  });
+  final RemoteClientServerpodImpl client;
   @override
-  Future<bool> verifySubscription(final ProductDetails details) async {
-    // TODO(username): unimplemented
-    throw UnimplementedError('unimplemented error');
-    return true;
+  Future<PurchaseModel?> verifyNativeMobilePurchase({
+    required final ProductModelId productId,
+    required final String verificationData,
+  }) async {
+    // client.
+    return null;
   }
 }

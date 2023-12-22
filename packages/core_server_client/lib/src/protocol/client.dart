@@ -59,6 +59,19 @@ class _EndpointPurchase extends _i1.EndpointRef {
         'resumeAutorenew',
         {'purchaseId': purchaseId},
       );
+
+  _i2.Future<_i4.PurchaseModel?> verifyNativeMobilePurchase(
+    _i4.ProductModelId productId,
+    String verificationData,
+  ) =>
+      caller.callServerEndpoint<_i4.PurchaseModel?>(
+        'purchase',
+        'verifyNativeMobilePurchase',
+        {
+          'productId': productId,
+          'verificationData': verificationData,
+        },
+      );
 }
 
 class _EndpointPurchases extends _i1.EndpointRef {

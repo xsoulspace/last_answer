@@ -188,6 +188,609 @@ abstract class _EmojiModel implements EmojiModel {
       throw _privateConstructorUsedError;
 }
 
+/// @nodoc
+mixin _$ProductModelId {
+  String get value => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ProductModelIdCopyWith<ProductModelId> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProductModelIdCopyWith<$Res> {
+  factory $ProductModelIdCopyWith(
+          ProductModelId value, $Res Function(ProductModelId) then) =
+      _$ProductModelIdCopyWithImpl<$Res, ProductModelId>;
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class _$ProductModelIdCopyWithImpl<$Res, $Val extends ProductModelId>
+    implements $ProductModelIdCopyWith<$Res> {
+  _$ProductModelIdCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_value.copyWith(
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ProductModelIdImplCopyWith<$Res>
+    implements $ProductModelIdCopyWith<$Res> {
+  factory _$$ProductModelIdImplCopyWith(_$ProductModelIdImpl value,
+          $Res Function(_$ProductModelIdImpl) then) =
+      __$$ProductModelIdImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$$ProductModelIdImplCopyWithImpl<$Res>
+    extends _$ProductModelIdCopyWithImpl<$Res, _$ProductModelIdImpl>
+    implements _$$ProductModelIdImplCopyWith<$Res> {
+  __$$ProductModelIdImplCopyWithImpl(
+      _$ProductModelIdImpl _value, $Res Function(_$ProductModelIdImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_$ProductModelIdImpl(
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ProductModelIdImpl extends _ProductModelId {
+  const _$ProductModelIdImpl({required this.value}) : super._();
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'ProductModelId(value: $value)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProductModelIdImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProductModelIdImplCopyWith<_$ProductModelIdImpl> get copyWith =>
+      __$$ProductModelIdImplCopyWithImpl<_$ProductModelIdImpl>(
+          this, _$identity);
+}
+
+abstract class _ProductModelId extends ProductModelId {
+  const factory _ProductModelId({required final String value}) =
+      _$ProductModelIdImpl;
+  const _ProductModelId._() : super._();
+
+  @override
+  String get value;
+  @override
+  @JsonKey(ignore: true)
+  _$$ProductModelIdImplCopyWith<_$ProductModelIdImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) {
+  return _PurchaseModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PurchaseModel {
+  ProductModelId get productId => throw _privateConstructorUsedError;
+  PurchasePaymentProvider get paymentProvider =>
+      throw _privateConstructorUsedError;
+  String get originalTransactionID => throw _privateConstructorUsedError;
+
+  /// can contain symbol, so it's not double
+  String get price => throw _privateConstructorUsedError;
+  PurchasePeriod get period => throw _privateConstructorUsedError;
+  PurchaseAttributesModel get attributes => throw _privateConstructorUsedError;
+  DateTime? get willExpireAt => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PurchaseModelCopyWith<PurchaseModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PurchaseModelCopyWith<$Res> {
+  factory $PurchaseModelCopyWith(
+          PurchaseModel value, $Res Function(PurchaseModel) then) =
+      _$PurchaseModelCopyWithImpl<$Res, PurchaseModel>;
+  @useResult
+  $Res call(
+      {ProductModelId productId,
+      PurchasePaymentProvider paymentProvider,
+      String originalTransactionID,
+      String price,
+      PurchasePeriod period,
+      PurchaseAttributesModel attributes,
+      DateTime? willExpireAt});
+
+  $ProductModelIdCopyWith<$Res> get productId;
+  $PurchaseAttributesModelCopyWith<$Res> get attributes;
+}
+
+/// @nodoc
+class _$PurchaseModelCopyWithImpl<$Res, $Val extends PurchaseModel>
+    implements $PurchaseModelCopyWith<$Res> {
+  _$PurchaseModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? paymentProvider = null,
+    Object? originalTransactionID = null,
+    Object? price = null,
+    Object? period = null,
+    Object? attributes = null,
+    Object? willExpireAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as ProductModelId,
+      paymentProvider: null == paymentProvider
+          ? _value.paymentProvider
+          : paymentProvider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      originalTransactionID: null == originalTransactionID
+          ? _value.originalTransactionID
+          : originalTransactionID // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      period: null == period
+          ? _value.period
+          : period // ignore: cast_nullable_to_non_nullable
+              as PurchasePeriod,
+      attributes: null == attributes
+          ? _value.attributes
+          : attributes // ignore: cast_nullable_to_non_nullable
+              as PurchaseAttributesModel,
+      willExpireAt: freezed == willExpireAt
+          ? _value.willExpireAt
+          : willExpireAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductModelIdCopyWith<$Res> get productId {
+    return $ProductModelIdCopyWith<$Res>(_value.productId, (value) {
+      return _then(_value.copyWith(productId: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PurchaseAttributesModelCopyWith<$Res> get attributes {
+    return $PurchaseAttributesModelCopyWith<$Res>(_value.attributes, (value) {
+      return _then(_value.copyWith(attributes: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$PurchaseModelImplCopyWith<$Res>
+    implements $PurchaseModelCopyWith<$Res> {
+  factory _$$PurchaseModelImplCopyWith(
+          _$PurchaseModelImpl value, $Res Function(_$PurchaseModelImpl) then) =
+      __$$PurchaseModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {ProductModelId productId,
+      PurchasePaymentProvider paymentProvider,
+      String originalTransactionID,
+      String price,
+      PurchasePeriod period,
+      PurchaseAttributesModel attributes,
+      DateTime? willExpireAt});
+
+  @override
+  $ProductModelIdCopyWith<$Res> get productId;
+  @override
+  $PurchaseAttributesModelCopyWith<$Res> get attributes;
+}
+
+/// @nodoc
+class __$$PurchaseModelImplCopyWithImpl<$Res>
+    extends _$PurchaseModelCopyWithImpl<$Res, _$PurchaseModelImpl>
+    implements _$$PurchaseModelImplCopyWith<$Res> {
+  __$$PurchaseModelImplCopyWithImpl(
+      _$PurchaseModelImpl _value, $Res Function(_$PurchaseModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? paymentProvider = null,
+    Object? originalTransactionID = null,
+    Object? price = null,
+    Object? period = null,
+    Object? attributes = null,
+    Object? willExpireAt = freezed,
+  }) {
+    return _then(_$PurchaseModelImpl(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as ProductModelId,
+      paymentProvider: null == paymentProvider
+          ? _value.paymentProvider
+          : paymentProvider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      originalTransactionID: null == originalTransactionID
+          ? _value.originalTransactionID
+          : originalTransactionID // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      period: null == period
+          ? _value.period
+          : period // ignore: cast_nullable_to_non_nullable
+              as PurchasePeriod,
+      attributes: null == attributes
+          ? _value.attributes
+          : attributes // ignore: cast_nullable_to_non_nullable
+              as PurchaseAttributesModel,
+      willExpireAt: freezed == willExpireAt
+          ? _value.willExpireAt
+          : willExpireAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PurchaseModelImpl extends _PurchaseModel {
+  const _$PurchaseModelImpl(
+      {this.productId = ProductModelId.empty,
+      this.paymentProvider = PurchasePaymentProvider.googlePlay,
+      this.originalTransactionID = '',
+      this.price = '',
+      this.period = PurchasePeriod.monthly,
+      this.attributes = PurchaseAttributesModel.empty,
+      this.willExpireAt})
+      : super._();
+
+  factory _$PurchaseModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PurchaseModelImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final ProductModelId productId;
+  @override
+  @JsonKey()
+  final PurchasePaymentProvider paymentProvider;
+  @override
+  @JsonKey()
+  final String originalTransactionID;
+
+  /// can contain symbol, so it's not double
+  @override
+  @JsonKey()
+  final String price;
+  @override
+  @JsonKey()
+  final PurchasePeriod period;
+  @override
+  @JsonKey()
+  final PurchaseAttributesModel attributes;
+  @override
+  final DateTime? willExpireAt;
+
+  @override
+  String toString() {
+    return 'PurchaseModel(productId: $productId, paymentProvider: $paymentProvider, originalTransactionID: $originalTransactionID, price: $price, period: $period, attributes: $attributes, willExpireAt: $willExpireAt)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PurchaseModelImpl &&
+            (identical(other.productId, productId) ||
+                other.productId == productId) &&
+            (identical(other.paymentProvider, paymentProvider) ||
+                other.paymentProvider == paymentProvider) &&
+            (identical(other.originalTransactionID, originalTransactionID) ||
+                other.originalTransactionID == originalTransactionID) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.period, period) || other.period == period) &&
+            (identical(other.attributes, attributes) ||
+                other.attributes == attributes) &&
+            (identical(other.willExpireAt, willExpireAt) ||
+                other.willExpireAt == willExpireAt));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, productId, paymentProvider,
+      originalTransactionID, price, period, attributes, willExpireAt);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PurchaseModelImplCopyWith<_$PurchaseModelImpl> get copyWith =>
+      __$$PurchaseModelImplCopyWithImpl<_$PurchaseModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PurchaseModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PurchaseModel extends PurchaseModel {
+  const factory _PurchaseModel(
+      {final ProductModelId productId,
+      final PurchasePaymentProvider paymentProvider,
+      final String originalTransactionID,
+      final String price,
+      final PurchasePeriod period,
+      final PurchaseAttributesModel attributes,
+      final DateTime? willExpireAt}) = _$PurchaseModelImpl;
+  const _PurchaseModel._() : super._();
+
+  factory _PurchaseModel.fromJson(Map<String, dynamic> json) =
+      _$PurchaseModelImpl.fromJson;
+
+  @override
+  ProductModelId get productId;
+  @override
+  PurchasePaymentProvider get paymentProvider;
+  @override
+  String get originalTransactionID;
+  @override
+
+  /// can contain symbol, so it's not double
+  String get price;
+  @override
+  PurchasePeriod get period;
+  @override
+  PurchaseAttributesModel get attributes;
+  @override
+  DateTime? get willExpireAt;
+  @override
+  @JsonKey(ignore: true)
+  _$$PurchaseModelImplCopyWith<_$PurchaseModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+PurchaseAttributesModel _$PurchaseAttributesModelFromJson(
+    Map<String, dynamic> json) {
+  return _PurchaseAttributesModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PurchaseAttributesModel {
+  bool get isCancelled => throw _privateConstructorUsedError;
+  UserModelId get customerId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PurchaseAttributesModelCopyWith<PurchaseAttributesModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PurchaseAttributesModelCopyWith<$Res> {
+  factory $PurchaseAttributesModelCopyWith(PurchaseAttributesModel value,
+          $Res Function(PurchaseAttributesModel) then) =
+      _$PurchaseAttributesModelCopyWithImpl<$Res, PurchaseAttributesModel>;
+  @useResult
+  $Res call({bool isCancelled, UserModelId customerId});
+
+  $UserModelIdCopyWith<$Res> get customerId;
+}
+
+/// @nodoc
+class _$PurchaseAttributesModelCopyWithImpl<$Res,
+        $Val extends PurchaseAttributesModel>
+    implements $PurchaseAttributesModelCopyWith<$Res> {
+  _$PurchaseAttributesModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isCancelled = null,
+    Object? customerId = null,
+  }) {
+    return _then(_value.copyWith(
+      isCancelled: null == isCancelled
+          ? _value.isCancelled
+          : isCancelled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customerId: null == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as UserModelId,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelIdCopyWith<$Res> get customerId {
+    return $UserModelIdCopyWith<$Res>(_value.customerId, (value) {
+      return _then(_value.copyWith(customerId: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$PurchaseAttributesModelImplCopyWith<$Res>
+    implements $PurchaseAttributesModelCopyWith<$Res> {
+  factory _$$PurchaseAttributesModelImplCopyWith(
+          _$PurchaseAttributesModelImpl value,
+          $Res Function(_$PurchaseAttributesModelImpl) then) =
+      __$$PurchaseAttributesModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool isCancelled, UserModelId customerId});
+
+  @override
+  $UserModelIdCopyWith<$Res> get customerId;
+}
+
+/// @nodoc
+class __$$PurchaseAttributesModelImplCopyWithImpl<$Res>
+    extends _$PurchaseAttributesModelCopyWithImpl<$Res,
+        _$PurchaseAttributesModelImpl>
+    implements _$$PurchaseAttributesModelImplCopyWith<$Res> {
+  __$$PurchaseAttributesModelImplCopyWithImpl(
+      _$PurchaseAttributesModelImpl _value,
+      $Res Function(_$PurchaseAttributesModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isCancelled = null,
+    Object? customerId = null,
+  }) {
+    return _then(_$PurchaseAttributesModelImpl(
+      isCancelled: null == isCancelled
+          ? _value.isCancelled
+          : isCancelled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customerId: null == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as UserModelId,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PurchaseAttributesModelImpl implements _PurchaseAttributesModel {
+  const _$PurchaseAttributesModelImpl(
+      {this.isCancelled = false, this.customerId = UserModelId.empty});
+
+  factory _$PurchaseAttributesModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PurchaseAttributesModelImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool isCancelled;
+  @override
+  @JsonKey()
+  final UserModelId customerId;
+
+  @override
+  String toString() {
+    return 'PurchaseAttributesModel(isCancelled: $isCancelled, customerId: $customerId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PurchaseAttributesModelImpl &&
+            (identical(other.isCancelled, isCancelled) ||
+                other.isCancelled == isCancelled) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, isCancelled, customerId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PurchaseAttributesModelImplCopyWith<_$PurchaseAttributesModelImpl>
+      get copyWith => __$$PurchaseAttributesModelImplCopyWithImpl<
+          _$PurchaseAttributesModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PurchaseAttributesModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PurchaseAttributesModel implements PurchaseAttributesModel {
+  const factory _PurchaseAttributesModel(
+      {final bool isCancelled,
+      final UserModelId customerId}) = _$PurchaseAttributesModelImpl;
+
+  factory _PurchaseAttributesModel.fromJson(Map<String, dynamic> json) =
+      _$PurchaseAttributesModelImpl.fromJson;
+
+  @override
+  bool get isCancelled;
+  @override
+  UserModelId get customerId;
+  @override
+  @JsonKey(ignore: true)
+  _$$PurchaseAttributesModelImplCopyWith<_$PurchaseAttributesModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 RemoteUserModel _$RemoteUserModelFromJson(Map<String, dynamic> json) {
   return _RemoteUserModel.fromJson(json);
 }

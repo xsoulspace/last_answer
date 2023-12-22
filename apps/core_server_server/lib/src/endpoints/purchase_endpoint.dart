@@ -1,5 +1,6 @@
 import 'package:core_server_server/src/generated/purchase.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:shared_models/shared_models.dart';
 
 class PurchaseEndpoint extends Endpoint {
   Future<bool> setSubscription(
@@ -17,4 +18,10 @@ class PurchaseEndpoint extends Endpoint {
     final int purchaseId,
   ) async =>
       false;
+  Future<PurchaseModel?> verifyNativeMobilePurchase(
+    final Session session,
+    final ProductModelId productId,
+    final String verificationData,
+  ) async =>
+      null;
 }

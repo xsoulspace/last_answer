@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 import '../services.dart';
 
 final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
-  static final _updates = <PurchaseDetails>[];
-  static StreamSubscription<List<PurchaseDetails>>? _subscription;
-
   /// IMPORTANT! You must subscribe to this stream as soon as your
   /// app launches, preferably before returning your main App Widget
   /// in main(). Otherwise you will miss purchase updated made
@@ -19,22 +17,22 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
   /// multiple subscription at the same time, you should be
   /// careful at the fact that each subscription will receive
   /// all the events after they start to listen.
-  static void subscribe() {
-    _subscription = InAppPurchase.instance.purchaseStream.listen(
-      _updates.addAll,
-    );
-  }
-
-  static Future<void> unsubscribe() async => _subscription?.cancel();
-
-  StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
 
   Stream<List<PurchaseDetails>> get stream =>
       InAppPurchase.instance.purchaseStream;
 
   @override
-  Future<bool> buySubscription(final PurchaseParam details) async =>
+  Future<bool> buyNonConsumable(final PurchaseParam details) async =>
       InAppPurchase.instance.buyNonConsumable(purchaseParam: details);
+
+  @override
+  Future<void> completePurchase(final PurchaseDetails details) async =>
+      InAppPurchase.instance.completePurchase(details);
+
+  @override
+  Future<void> restorePurchases(final UserModelId userId) async =>
+      InAppPurchase.instance
+          .restorePurchases(applicationUserName: userId.value);
 
   @override
   Future<List<ProductDetails>> getProducts() async {
@@ -46,13 +44,8 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
   Future<bool> checkIsStoreAvailable() => InAppPurchase.instance.isAvailable();
 
   final _kIds = <String>{
-    'last_answer_annual_subscription_2022',
-    'last_answer_monthly_subscription_2022',
+    // TODO(arenukvern): add one time purchase,
+    // 'last_answer_annual_subscription_2022',
+    // 'last_answer_monthly_subscription_2022',
   };
-
-  @override
-  void dispose() {
-    unawaited(_purchaseSubscription?.cancel());
-    super.dispose();
-  }
 }

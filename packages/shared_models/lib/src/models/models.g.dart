@@ -20,6 +20,66 @@ Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
       'keywords': instance.keywords,
     };
 
+_$PurchaseModelImpl _$$PurchaseModelImplFromJson(Map<String, dynamic> json) =>
+    _$PurchaseModelImpl(
+      productId: json['productId'] == null
+          ? ProductModelId.empty
+          : ProductModelId.fromJson(json['productId']),
+      paymentProvider: $enumDecodeNullable(
+              _$PurchasePaymentProviderEnumMap, json['paymentProvider']) ??
+          PurchasePaymentProvider.googlePlay,
+      originalTransactionID: json['originalTransactionID'] as String? ?? '',
+      price: json['price'] as String? ?? '',
+      period: $enumDecodeNullable(_$PurchasePeriodEnumMap, json['period']) ??
+          PurchasePeriod.monthly,
+      attributes: json['attributes'] == null
+          ? PurchaseAttributesModel.empty
+          : PurchaseAttributesModel.fromJson(
+              json['attributes'] as Map<String, dynamic>),
+      willExpireAt: json['willExpireAt'] == null
+          ? null
+          : DateTime.parse(json['willExpireAt'] as String),
+    );
+
+Map<String, dynamic> _$$PurchaseModelImplToJson(_$PurchaseModelImpl instance) =>
+    <String, dynamic>{
+      'productId': instance.productId,
+      'paymentProvider':
+          _$PurchasePaymentProviderEnumMap[instance.paymentProvider]!,
+      'originalTransactionID': instance.originalTransactionID,
+      'price': instance.price,
+      'period': _$PurchasePeriodEnumMap[instance.period]!,
+      'attributes': instance.attributes,
+      'willExpireAt': instance.willExpireAt?.toIso8601String(),
+    };
+
+const _$PurchasePaymentProviderEnumMap = {
+  PurchasePaymentProvider.googlePlay: 'googlePlay',
+  PurchasePaymentProvider.appStore: 'appStore',
+};
+
+const _$PurchasePeriodEnumMap = {
+  PurchasePeriod.oneTime: 'oneTime',
+  PurchasePeriod.monthly: 'monthly',
+  PurchasePeriod.yearly: 'yearly',
+};
+
+_$PurchaseAttributesModelImpl _$$PurchaseAttributesModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PurchaseAttributesModelImpl(
+      isCancelled: json['isCancelled'] as bool? ?? false,
+      customerId: json['customerId'] == null
+          ? UserModelId.empty
+          : UserModelId.fromJson(json['customerId']),
+    );
+
+Map<String, dynamic> _$$PurchaseAttributesModelImplToJson(
+        _$PurchaseAttributesModelImpl instance) =>
+    <String, dynamic>{
+      'isCancelled': instance.isCancelled,
+      'customerId': instance.customerId,
+    };
+
 _$RemoteUserModelImpl _$$RemoteUserModelImplFromJson(
         Map<String, dynamic> json) =>
     _$RemoteUserModelImpl(

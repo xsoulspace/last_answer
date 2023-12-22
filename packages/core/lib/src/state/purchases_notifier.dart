@@ -30,10 +30,13 @@ class PurchasesNotifier
         dto: PurchasesNotifierDto(context),
       );
   final PurchasesNotifierDto dto;
+  StreamSubscription<List<PurchaseDetails>>? _subscription;
   Future<void> onLoad() async {
     if (PlatformInfo.isNativeMobile) {
       final isStoreAvailable =
           await dto.purchasesIapGoogleAppleImpl.checkIsStoreAvailable();
+      _subscription =
+          dto.purchasesIapGoogleAppleImpl.stream.listen(_applyMobilePurchases);
       if (isStoreAvailable) {
         final subscriptions =
             await dto.purchasesIapGoogleAppleImpl.getProducts();
@@ -44,21 +47,59 @@ class PurchasesNotifier
     }
   }
 
-  Future<void> buySubscription(final ProductDetails details) async {
-    final shouldProceed = await dto.purchasesIapGoogleAppleImpl.buySubscription(
+  Future<void> _applyMobilePurchases(final List<PurchaseDetails> events) async {
+    for (final purchase in events) {
+      switch (purchase.status) {
+        case PurchaseStatus.canceled:
+          break;
+        case PurchaseStatus.error:
+          break;
+        case PurchaseStatus.pending:
+          break;
+        case PurchaseStatus.purchased:
+          final verifiedPurchase =
+              await dto.purchasesRepository.verifyNativeMobilePurchase(
+            productId: ProductModelId.fromRawJson(purchase.productID),
+            verificationData: purchase.verificationData.serverVerificationData,
+          );
+          if (verifiedPurchase == null) {
+            assert(false, 'payment verification failed');
+            break;
+          }
+          await dto.purchasesIapGoogleAppleImpl.completePurchase(purchase);
+        case PurchaseStatus.restored:
+          assert(false, 'not implemented');
+      }
+    }
+  }
+
+  UserModelId get _remoteUserId => dto.userNotifier.remoteValue.value.id;
+  Future<void> restorePurchases() async {
+    await dto.purchasesIapGoogleAppleImpl.restorePurchases(_remoteUserId);
+  }
+
+  Future<void> makePurchase(final ProductDetails details) async {
+    final shouldProceed =
+        await dto.purchasesIapGoogleAppleImpl.buyNonConsumable(
       PurchaseParam(
         productDetails: details,
-        applicationUserName: dto.userNotifier.remoteValue.value.id.value,
+        applicationUserName: _remoteUserId.value,
       ),
     );
-    if (shouldProceed != true) return;
-    final isVerified =
-        await dto.purchasesRepository.verifySubscription(details);
-    if (isVerified != true) return;
-    // TODO(arenukvern): description,
+    if (shouldProceed != true) {
+      debugPrint('Payment aborted');
+      return;
+    }
+    debugPrint('Payment continued');
   }
 
   void _emitLoaded(final PurchasesNotifierState state) {
     value = LoadableContainer.loaded(state);
+  }
+
+  @override
+  void dispose() {
+    unawaited(_subscription?.cancel());
+    super.dispose();
   }
 }

@@ -40,6 +40,12 @@ class PurchasesModel with _$PurchasesModel {
     /// If user purchased certain amount of days
     /// then he should have access until [purchasedDaysLeft] > 0
     @Default(0) final int purchasedDaysLeft,
+
+    /// may be empty, for example in case if there is no payments made,
+    /// or if user canceled subscription
+    @JsonKey(fromJson: PurchaseModel.fromRawJson)
+    @Default(PurchaseModel.empty)
+    final PurchaseModel activePurchase,
   }) = _PurchasesModel;
   factory PurchasesModel.fromJson(final Map<String, dynamic> json) =>
       _$PurchasesModelFromJson(json);

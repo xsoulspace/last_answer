@@ -650,8 +650,9 @@ abstract class _RequestProjectsDto implements RequestProjectsDto {
 
 /// @nodoc
 mixin _$PurchasesNotifierState {
-  List<ProductDetails> get iAppSubscriptions =>
+  List<ProductDetails> get nativeIASubscriptions =>
       throw _privateConstructorUsedError;
+  PurchasesModel get purchases => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PurchasesNotifierStateCopyWith<PurchasesNotifierState> get copyWith =>
@@ -664,7 +665,10 @@ abstract class $PurchasesNotifierStateCopyWith<$Res> {
           $Res Function(PurchasesNotifierState) then) =
       _$PurchasesNotifierStateCopyWithImpl<$Res, PurchasesNotifierState>;
   @useResult
-  $Res call({List<ProductDetails> iAppSubscriptions});
+  $Res call(
+      {List<ProductDetails> nativeIASubscriptions, PurchasesModel purchases});
+
+  $PurchasesModelCopyWith<$Res> get purchases;
 }
 
 /// @nodoc
@@ -681,14 +685,27 @@ class _$PurchasesNotifierStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? iAppSubscriptions = null,
+    Object? nativeIASubscriptions = null,
+    Object? purchases = null,
   }) {
     return _then(_value.copyWith(
-      iAppSubscriptions: null == iAppSubscriptions
-          ? _value.iAppSubscriptions
-          : iAppSubscriptions // ignore: cast_nullable_to_non_nullable
+      nativeIASubscriptions: null == nativeIASubscriptions
+          ? _value.nativeIASubscriptions
+          : nativeIASubscriptions // ignore: cast_nullable_to_non_nullable
               as List<ProductDetails>,
+      purchases: null == purchases
+          ? _value.purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as PurchasesModel,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PurchasesModelCopyWith<$Res> get purchases {
+    return $PurchasesModelCopyWith<$Res>(_value.purchases, (value) {
+      return _then(_value.copyWith(purchases: value) as $Val);
+    });
   }
 }
 
@@ -701,7 +718,11 @@ abstract class _$$PurchasesNotifierStateImplCopyWith<$Res>
       __$$PurchasesNotifierStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ProductDetails> iAppSubscriptions});
+  $Res call(
+      {List<ProductDetails> nativeIASubscriptions, PurchasesModel purchases});
+
+  @override
+  $PurchasesModelCopyWith<$Res> get purchases;
 }
 
 /// @nodoc
@@ -717,13 +738,18 @@ class __$$PurchasesNotifierStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? iAppSubscriptions = null,
+    Object? nativeIASubscriptions = null,
+    Object? purchases = null,
   }) {
     return _then(_$PurchasesNotifierStateImpl(
-      iAppSubscriptions: null == iAppSubscriptions
-          ? _value._iAppSubscriptions
-          : iAppSubscriptions // ignore: cast_nullable_to_non_nullable
+      nativeIASubscriptions: null == nativeIASubscriptions
+          ? _value._nativeIASubscriptions
+          : nativeIASubscriptions // ignore: cast_nullable_to_non_nullable
               as List<ProductDetails>,
+      purchases: null == purchases
+          ? _value.purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as PurchasesModel,
     ));
   }
 }
@@ -734,22 +760,27 @@ class _$PurchasesNotifierStateImpl
     with DiagnosticableTreeMixin
     implements _PurchasesNotifierState {
   const _$PurchasesNotifierStateImpl(
-      {final List<ProductDetails> iAppSubscriptions = const []})
-      : _iAppSubscriptions = iAppSubscriptions;
+      {final List<ProductDetails> nativeIASubscriptions = const [],
+      this.purchases = PurchasesModel.empty})
+      : _nativeIASubscriptions = nativeIASubscriptions;
 
-  final List<ProductDetails> _iAppSubscriptions;
+  final List<ProductDetails> _nativeIASubscriptions;
   @override
   @JsonKey()
-  List<ProductDetails> get iAppSubscriptions {
-    if (_iAppSubscriptions is EqualUnmodifiableListView)
-      return _iAppSubscriptions;
+  List<ProductDetails> get nativeIASubscriptions {
+    if (_nativeIASubscriptions is EqualUnmodifiableListView)
+      return _nativeIASubscriptions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_iAppSubscriptions);
+    return EqualUnmodifiableListView(_nativeIASubscriptions);
   }
 
   @override
+  @JsonKey()
+  final PurchasesModel purchases;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PurchasesNotifierState(iAppSubscriptions: $iAppSubscriptions)';
+    return 'PurchasesNotifierState(nativeIASubscriptions: $nativeIASubscriptions, purchases: $purchases)';
   }
 
   @override
@@ -757,7 +788,8 @@ class _$PurchasesNotifierStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'PurchasesNotifierState'))
-      ..add(DiagnosticsProperty('iAppSubscriptions', iAppSubscriptions));
+      ..add(DiagnosticsProperty('nativeIASubscriptions', nativeIASubscriptions))
+      ..add(DiagnosticsProperty('purchases', purchases));
   }
 
   @override
@@ -766,12 +798,14 @@ class _$PurchasesNotifierStateImpl
         (other.runtimeType == runtimeType &&
             other is _$PurchasesNotifierStateImpl &&
             const DeepCollectionEquality()
-                .equals(other._iAppSubscriptions, _iAppSubscriptions));
+                .equals(other._nativeIASubscriptions, _nativeIASubscriptions) &&
+            (identical(other.purchases, purchases) ||
+                other.purchases == purchases));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_iAppSubscriptions));
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_nativeIASubscriptions), purchases);
 
   @JsonKey(ignore: true)
   @override
@@ -783,11 +817,13 @@ class _$PurchasesNotifierStateImpl
 
 abstract class _PurchasesNotifierState implements PurchasesNotifierState {
   const factory _PurchasesNotifierState(
-          {final List<ProductDetails> iAppSubscriptions}) =
-      _$PurchasesNotifierStateImpl;
+      {final List<ProductDetails> nativeIASubscriptions,
+      final PurchasesModel purchases}) = _$PurchasesNotifierStateImpl;
 
   @override
-  List<ProductDetails> get iAppSubscriptions;
+  List<ProductDetails> get nativeIASubscriptions;
+  @override
+  PurchasesModel get purchases;
   @override
   @JsonKey(ignore: true)
   _$$PurchasesNotifierStateImplCopyWith<_$PurchasesNotifierStateImpl>

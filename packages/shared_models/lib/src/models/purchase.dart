@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 part of 'models.dart';
 
 enum PurchasePaymentProvider {
@@ -39,7 +41,9 @@ class ProductModelId with _$ProductModelId {
 @freezed
 class PurchaseModel with _$PurchaseModel {
   const factory PurchaseModel({
-    @Default(ProductModelId.empty) final ProductModelId productId,
+    @JsonKey(fromJson: ProductModelId.fromRawJson)
+    @Default(ProductModelId.empty)
+    final ProductModelId productId,
     @Default(PurchasePaymentProvider.googlePlay)
     final PurchasePaymentProvider paymentProvider,
     @Default('') final String originalTransactionID,

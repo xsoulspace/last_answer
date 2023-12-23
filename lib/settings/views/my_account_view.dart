@@ -63,43 +63,55 @@ class SubscriptionView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final userNotifier = context.watch<UserNotifier>();
-    final purchasesNotifier = context.read<PurchasesNotifier>();
-    return ListView(
-      primary: false,
-      children: [
-        const Gap(24),
-        ...purchasesNotifier.value.value.iAppSubscriptions.map(
-          (final e) => LoadableWidget(
-            builder: (final context, final setLoading, final isLoading) =>
-                SubscriptionTile(
-              details: e,
-              activeDetailsId: '',
-              isLoading: isLoading,
-              onPressed: () async {
-                setLoading(true);
-                await userNotifier.buySubscription(e);
-                setLoading(false);
-              },
+    final purchasesNotifier = context.watch<PurchasesNotifier>();
+    final purchasesContainer = purchasesNotifier.value;
+
+    if (PlatformInfo.isNativeMobile) {
+      final nativeIASubscriptions =
+          purchasesContainer.value.nativeIASubscriptions;
+      return ListView(
+        primary: false,
+        children: [
+          const Gap(24),
+          if (nativeIASubscriptions.isEmpty)
+            const Text('No plans available.')
+          else
+            ...nativeIASubscriptions.map(
+              (final e) => LoadableWidget(
+                builder: (final context, final setLoading, final isLoading) =>
+                    PurchasableProductTile(
+                  details: e,
+                  activeProductId: purchasesContainer
+                      .value.purchases.activePurchase.productId,
+                  isLoading: isLoading,
+                  onPressed: () async {
+                    setLoading(true);
+                    await userNotifier.buySubscription(e);
+                    setLoading(false);
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return const Text('No plans available.');
+    }
   }
 }
 
-class SubscriptionTile extends StatelessWidget {
-  const SubscriptionTile({
+class PurchasableProductTile extends StatelessWidget {
+  const PurchasableProductTile({
     required this.details,
     required this.onPressed,
-    required this.activeDetailsId,
+    required this.activeProductId,
     required this.isLoading,
     super.key,
   });
   final bool isLoading;
   final VoidCallback onPressed;
   final ProductDetails details;
-  final String? activeDetailsId;
+  final ProductModelId activeProductId;
   @override
   Widget build(final BuildContext context) => Card(
         child: Column(
@@ -108,7 +120,7 @@ class SubscriptionTile extends StatelessWidget {
             Text(details.title),
             Text(details.description),
             Text(details.price),
-            if (activeDetailsId == details.id)
+            if (activeProductId.value == details.id)
               const Text('Active')
             else
               TextButton(onPressed: onPressed, child: const Text('Purchase')),

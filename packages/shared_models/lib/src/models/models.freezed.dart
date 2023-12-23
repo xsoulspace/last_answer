@@ -314,6 +314,7 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PurchaseModel {
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
   ProductModelId get productId => throw _privateConstructorUsedError;
   PurchasePaymentProvider get paymentProvider =>
       throw _privateConstructorUsedError;
@@ -338,7 +339,7 @@ abstract class $PurchaseModelCopyWith<$Res> {
       _$PurchaseModelCopyWithImpl<$Res, PurchaseModel>;
   @useResult
   $Res call(
-      {ProductModelId productId,
+      {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
       PurchasePaymentProvider paymentProvider,
       String originalTransactionID,
       String price,
@@ -429,7 +430,7 @@ abstract class _$$PurchaseModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {ProductModelId productId,
+      {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
       PurchasePaymentProvider paymentProvider,
       String originalTransactionID,
       String price,
@@ -499,7 +500,8 @@ class __$$PurchaseModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PurchaseModelImpl extends _PurchaseModel {
   const _$PurchaseModelImpl(
-      {this.productId = ProductModelId.empty,
+      {@JsonKey(fromJson: ProductModelId.fromRawJson)
+      this.productId = ProductModelId.empty,
       this.paymentProvider = PurchasePaymentProvider.googlePlay,
       this.originalTransactionID = '',
       this.price = '',
@@ -512,7 +514,7 @@ class _$PurchaseModelImpl extends _PurchaseModel {
       _$$PurchaseModelImplFromJson(json);
 
   @override
-  @JsonKey()
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
   final ProductModelId productId;
   @override
   @JsonKey()
@@ -579,7 +581,8 @@ class _$PurchaseModelImpl extends _PurchaseModel {
 
 abstract class _PurchaseModel extends PurchaseModel {
   const factory _PurchaseModel(
-      {final ProductModelId productId,
+      {@JsonKey(fromJson: ProductModelId.fromRawJson)
+      final ProductModelId productId,
       final PurchasePaymentProvider paymentProvider,
       final String originalTransactionID,
       final String price,
@@ -592,6 +595,7 @@ abstract class _PurchaseModel extends PurchaseModel {
       _$PurchaseModelImpl.fromJson;
 
   @override
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
   ProductModelId get productId;
   @override
   PurchasePaymentProvider get paymentProvider;
@@ -997,6 +1001,11 @@ mixin _$PurchasesModel {
   /// then he should have access until [purchasedDaysLeft] > 0
   int get purchasedDaysLeft => throw _privateConstructorUsedError;
 
+  /// may be empty, for example in case if there is no payments made,
+  /// or if user canceled subscription
+  @JsonKey(fromJson: PurchaseModel.fromRawJson)
+  PurchaseModel get activePurchase => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $PurchasesModelCopyWith<PurchasesModel> get copyWith =>
@@ -1012,7 +1021,11 @@ abstract class $PurchasesModelCopyWith<$Res> {
   $Res call(
       {bool hasOneTimePurchase,
       DateTime? subscriptionEndDate,
-      int purchasedDaysLeft});
+      int purchasedDaysLeft,
+      @JsonKey(fromJson: PurchaseModel.fromRawJson)
+      PurchaseModel activePurchase});
+
+  $PurchaseModelCopyWith<$Res> get activePurchase;
 }
 
 /// @nodoc
@@ -1031,6 +1044,7 @@ class _$PurchasesModelCopyWithImpl<$Res, $Val extends PurchasesModel>
     Object? hasOneTimePurchase = null,
     Object? subscriptionEndDate = freezed,
     Object? purchasedDaysLeft = null,
+    Object? activePurchase = null,
   }) {
     return _then(_value.copyWith(
       hasOneTimePurchase: null == hasOneTimePurchase
@@ -1045,7 +1059,19 @@ class _$PurchasesModelCopyWithImpl<$Res, $Val extends PurchasesModel>
           ? _value.purchasedDaysLeft
           : purchasedDaysLeft // ignore: cast_nullable_to_non_nullable
               as int,
+      activePurchase: null == activePurchase
+          ? _value.activePurchase
+          : activePurchase // ignore: cast_nullable_to_non_nullable
+              as PurchaseModel,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PurchaseModelCopyWith<$Res> get activePurchase {
+    return $PurchaseModelCopyWith<$Res>(_value.activePurchase, (value) {
+      return _then(_value.copyWith(activePurchase: value) as $Val);
+    });
   }
 }
 
@@ -1060,7 +1086,12 @@ abstract class _$$PurchasesModelImplCopyWith<$Res>
   $Res call(
       {bool hasOneTimePurchase,
       DateTime? subscriptionEndDate,
-      int purchasedDaysLeft});
+      int purchasedDaysLeft,
+      @JsonKey(fromJson: PurchaseModel.fromRawJson)
+      PurchaseModel activePurchase});
+
+  @override
+  $PurchaseModelCopyWith<$Res> get activePurchase;
 }
 
 /// @nodoc
@@ -1077,6 +1108,7 @@ class __$$PurchasesModelImplCopyWithImpl<$Res>
     Object? hasOneTimePurchase = null,
     Object? subscriptionEndDate = freezed,
     Object? purchasedDaysLeft = null,
+    Object? activePurchase = null,
   }) {
     return _then(_$PurchasesModelImpl(
       hasOneTimePurchase: null == hasOneTimePurchase
@@ -1091,6 +1123,10 @@ class __$$PurchasesModelImplCopyWithImpl<$Res>
           ? _value.purchasedDaysLeft
           : purchasedDaysLeft // ignore: cast_nullable_to_non_nullable
               as int,
+      activePurchase: null == activePurchase
+          ? _value.activePurchase
+          : activePurchase // ignore: cast_nullable_to_non_nullable
+              as PurchaseModel,
     ));
   }
 }
@@ -1102,7 +1138,9 @@ class _$PurchasesModelImpl extends _PurchasesModel {
   const _$PurchasesModelImpl(
       {this.hasOneTimePurchase = false,
       this.subscriptionEndDate,
-      this.purchasedDaysLeft = 0})
+      this.purchasedDaysLeft = 0,
+      @JsonKey(fromJson: PurchaseModel.fromRawJson)
+      this.activePurchase = PurchaseModel.empty})
       : super._();
 
   factory _$PurchasesModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -1127,9 +1165,15 @@ class _$PurchasesModelImpl extends _PurchasesModel {
   @JsonKey()
   final int purchasedDaysLeft;
 
+  /// may be empty, for example in case if there is no payments made,
+  /// or if user canceled subscription
+  @override
+  @JsonKey(fromJson: PurchaseModel.fromRawJson)
+  final PurchaseModel activePurchase;
+
   @override
   String toString() {
-    return 'PurchasesModel(hasOneTimePurchase: $hasOneTimePurchase, subscriptionEndDate: $subscriptionEndDate, purchasedDaysLeft: $purchasedDaysLeft)';
+    return 'PurchasesModel(hasOneTimePurchase: $hasOneTimePurchase, subscriptionEndDate: $subscriptionEndDate, purchasedDaysLeft: $purchasedDaysLeft, activePurchase: $activePurchase)';
   }
 
   @override
@@ -1142,13 +1186,15 @@ class _$PurchasesModelImpl extends _PurchasesModel {
             (identical(other.subscriptionEndDate, subscriptionEndDate) ||
                 other.subscriptionEndDate == subscriptionEndDate) &&
             (identical(other.purchasedDaysLeft, purchasedDaysLeft) ||
-                other.purchasedDaysLeft == purchasedDaysLeft));
+                other.purchasedDaysLeft == purchasedDaysLeft) &&
+            (identical(other.activePurchase, activePurchase) ||
+                other.activePurchase == activePurchase));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, hasOneTimePurchase, subscriptionEndDate, purchasedDaysLeft);
+  int get hashCode => Object.hash(runtimeType, hasOneTimePurchase,
+      subscriptionEndDate, purchasedDaysLeft, activePurchase);
 
   @JsonKey(ignore: true)
   @override
@@ -1169,7 +1215,9 @@ abstract class _PurchasesModel extends PurchasesModel {
   const factory _PurchasesModel(
       {final bool hasOneTimePurchase,
       final DateTime? subscriptionEndDate,
-      final int purchasedDaysLeft}) = _$PurchasesModelImpl;
+      final int purchasedDaysLeft,
+      @JsonKey(fromJson: PurchaseModel.fromRawJson)
+      final PurchaseModel activePurchase}) = _$PurchasesModelImpl;
   const _PurchasesModel._() : super._();
 
   factory _PurchasesModel.fromJson(Map<String, dynamic> json) =
@@ -1192,6 +1240,12 @@ abstract class _PurchasesModel extends PurchasesModel {
   /// If user purchased certain amount of days
   /// then he should have access until [purchasedDaysLeft] > 0
   int get purchasedDaysLeft;
+  @override
+
+  /// may be empty, for example in case if there is no payments made,
+  /// or if user canceled subscription
+  @JsonKey(fromJson: PurchaseModel.fromRawJson)
+  PurchaseModel get activePurchase;
   @override
   @JsonKey(ignore: true)
   _$$PurchasesModelImplCopyWith<_$PurchasesModelImpl> get copyWith =>

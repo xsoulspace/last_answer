@@ -3,7 +3,8 @@ part of 'state.dart';
 @freezed
 class PurchasesNotifierState with _$PurchasesNotifierState {
   const factory PurchasesNotifierState({
-    @Default([]) final List<ProductDetails> iAppSubscriptions,
+    @Default([]) final List<ProductDetails> nativeIASubscriptions,
+    @Default(PurchasesModel.empty) final PurchasesModel purchases,
   }) = _PurchasesNotifierState;
   static const empty = PurchasesNotifierState();
 }
@@ -30,24 +31,48 @@ class PurchasesNotifier
         dto: PurchasesNotifierDto(context),
       );
   final PurchasesNotifierDto dto;
-  StreamSubscription<List<PurchaseDetails>>? _subscription;
+  StreamSubscription<List<PurchaseDetails>>? _nativeIAPSubscription;
   Future<void> onLoad() async {
     if (PlatformInfo.isNativeMobile) {
       final isStoreAvailable =
           await dto.purchasesIapGoogleAppleImpl.checkIsStoreAvailable();
-      _subscription =
-          dto.purchasesIapGoogleAppleImpl.stream.listen(_applyMobilePurchases);
+      _nativeIAPSubscription = dto.purchasesIapGoogleAppleImpl.stream.listen(
+        _handleNativeIAP,
+        onDone: _onNativeIAPDone,
+        onError: _onNativeIAPError,
+      );
       if (isStoreAvailable) {
         final subscriptions =
             await dto.purchasesIapGoogleAppleImpl.getProducts();
         _emitLoaded(
-          value.value.copyWith(iAppSubscriptions: subscriptions),
+          value.value.copyWith(nativeIASubscriptions: subscriptions),
         );
       }
+    } else {
+      _emitLoaded(value.value);
     }
   }
 
-  Future<void> _applyMobilePurchases(final List<PurchaseDetails> events) async {
+  Future<void> onLocalUserLoad() async {
+    // add if needed
+  }
+  Future<void> onRemoteUserLoad() async {
+    final remoteUserContainer = dto.userNotifier.remoteValue;
+    if (remoteUserContainer.isLoading) {
+      throw ArgumentError.value('User should be already loaded');
+    }
+    final user = remoteUserContainer.value;
+    if (PlatformInfo.isNativeMobile) {
+      await dto.purchasesIapGoogleAppleImpl.restorePurchases(user.id);
+    }
+    _emitLoaded(
+      value.value.copyWith(
+        purchases: user.purchases,
+      ),
+    );
+  }
+
+  Future<void> _handleNativeIAP(final List<PurchaseDetails> events) async {
     for (final purchase in events) {
       switch (purchase.status) {
         case PurchaseStatus.canceled:
@@ -71,6 +96,15 @@ class PurchasesNotifier
           assert(false, 'not implemented');
       }
     }
+  }
+
+  Future<void> _onNativeIAPDone() async {
+    await _nativeIAPSubscription?.cancel();
+    _nativeIAPSubscription = null;
+  }
+
+  void _onNativeIAPError(final dynamic error) {
+    //Handle error here
   }
 
   UserModelId get _remoteUserId => dto.userNotifier.remoteValue.value.id;
@@ -99,7 +133,7 @@ class PurchasesNotifier
 
   @override
   void dispose() {
-    unawaited(_subscription?.cancel());
+    unawaited(_onNativeIAPDone());
     super.dispose();
   }
 }

@@ -82,16 +82,19 @@ class PurchasesNotifier
         case PurchaseStatus.pending:
           break;
         case PurchaseStatus.purchased:
-          final verifiedPurchase =
-              await dto.purchasesRepository.verifyNativeMobilePurchase(
-            productId: ProductModelId.fromRawJson(purchase.productID),
-            verificationData: purchase.verificationData.serverVerificationData,
-          );
-          if (verifiedPurchase == null) {
-            assert(false, 'payment verification failed');
-            break;
+          if (purchase.pendingCompletePurchase) {
+            final verifiedPurchase =
+                await dto.purchasesRepository.verifyNativeMobilePurchase(
+              productId: ProductModelId.fromRawJson(purchase.productID),
+              verificationData:
+                  purchase.verificationData.serverVerificationData,
+            );
+            if (verifiedPurchase == null) {
+              assert(false, 'payment verification failed');
+              break;
+            }
+            await dto.purchasesIapGoogleAppleImpl.completePurchase(purchase);
           }
-          await dto.purchasesIapGoogleAppleImpl.completePurchase(purchase);
         case PurchaseStatus.restored:
           assert(false, 'not implemented');
       }
@@ -113,18 +116,23 @@ class PurchasesNotifier
   }
 
   Future<void> makePurchase(final ProductDetails details) async {
-    final shouldProceed =
-        await dto.purchasesIapGoogleAppleImpl.buyNonConsumable(
-      PurchaseParam(
+    if (PlatformInfo.isNativeMobile) {
+      final id = IAPId.byId(details.id);
+      final purchaseParam = PurchaseParam(
         productDetails: details,
         applicationUserName: _remoteUserId.value,
-      ),
-    );
-    if (shouldProceed != true) {
-      debugPrint('Payment aborted');
-      return;
+      );
+      final bool shouldProceed = switch (id) {
+        IAPId.proOneTimePurchase =>
+          await dto.purchasesIapGoogleAppleImpl.buyNonConsumable(purchaseParam)
+      };
+
+      if (shouldProceed != true) {
+        debugPrint('Payment aborted');
+        return;
+      }
+      debugPrint('Payment continued');
     }
-    debugPrint('Payment continued');
   }
 
   void _emitLoaded(final PurchasesNotifierState state) {

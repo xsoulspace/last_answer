@@ -6,6 +6,9 @@ environment:
   sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
+  app_store_server_sdk: ^1.2.5
+  googleapis: ^12.0.0
+  googleapis_auth: ^1.4.1
   serverpod: 1.1.1
   serverpod_auth_server: 1.1.1
   shared_models:

@@ -63,6 +63,7 @@ class _EndpointPurchase extends _i1.EndpointRef {
   _i2.Future<_i4.PurchaseModel?> verifyNativeMobilePurchase(
     _i4.ProductModelId productId,
     String verificationData,
+    _i4.PurchasePaymentProvider provider,
   ) =>
       caller.callServerEndpoint<_i4.PurchaseModel?>(
         'purchase',
@@ -70,6 +71,7 @@ class _EndpointPurchase extends _i1.EndpointRef {
         {
           'productId': productId,
           'verificationData': verificationData,
+          'provider': provider,
         },
       );
 }

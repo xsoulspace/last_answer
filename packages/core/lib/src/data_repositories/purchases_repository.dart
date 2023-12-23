@@ -12,9 +12,11 @@ class PurchasesRepository {
   Future<PurchaseModel?> verifyNativeMobilePurchase({
     required final ProductModelId productId,
     required final String verificationData,
+    required final PurchasePaymentProvider provider,
   }) =>
       _remote.verifyNativeMobilePurchase(
         productId: productId,
         verificationData: verificationData,
+        provider: provider,
       );
 }

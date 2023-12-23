@@ -148,6 +148,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String>(),
               nullable: false,
             ),
+            'provider': _i1.ParameterDescription(
+              name: 'provider',
+              type: _i1.getType<_i7.PurchasePaymentProvider>(),
+              nullable: false,
+            ),
           },
           call: (
             _i1.Session session,
@@ -158,6 +163,7 @@ class Endpoints extends _i1.EndpointDispatch {
             session,
             params['productId'],
             params['verificationData'],
+            params['provider'],
           ),
         ),
       },

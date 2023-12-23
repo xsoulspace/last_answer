@@ -5,6 +5,13 @@ part of 'models.dart';
 enum PurchasePaymentProvider {
   googlePlay,
   appStore;
+
+  factory PurchasePaymentProvider.fromJson(
+    final dynamic json,
+    // ignore: avoid_unused_constructor_parameters
+    final SerializationManager serializationManager,
+  ) =>
+      PurchasePaymentProvider.values.byName(json);
 }
 
 enum PurchasePeriod {

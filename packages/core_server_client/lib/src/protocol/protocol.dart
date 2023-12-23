@@ -63,6 +63,9 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i5.PurchaseModel) {
       return _i5.PurchaseModel.fromJson(data, this) as T;
     }
+    if (t == _i5.PurchasePaymentProvider) {
+      return _i5.PurchasePaymentProvider.fromJson(data, this) as T;
+    }
     if (t == _i1.getType<_i5.RemoteUserModel?>()) {
       return (data != null ? _i5.RemoteUserModel.fromJson(data, this) : null)
           as T;
@@ -74,6 +77,11 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i5.PurchaseModel?>()) {
       return (data != null ? _i5.PurchaseModel.fromJson(data, this) : null)
           as T;
+    }
+    if (t == _i1.getType<_i5.PurchasePaymentProvider?>()) {
+      return (data != null
+          ? _i5.PurchasePaymentProvider.fromJson(data, this)
+          : null) as T;
     }
     try {
       return _i6.Protocol().deserialize<T>(data, t);
@@ -96,6 +104,9 @@ class Protocol extends _i1.SerializationManager {
     }
     if (data is _i5.PurchaseModel) {
       return 'PurchaseModel';
+    }
+    if (data is _i5.PurchasePaymentProvider) {
+      return 'PurchasePaymentProvider';
     }
     if (data is _i2.Purchase) {
       return 'Purchase';
@@ -123,6 +134,9 @@ class Protocol extends _i1.SerializationManager {
     }
     if (data['className'] == 'PurchaseModel') {
       return deserialize<_i5.PurchaseModel>(data['data']);
+    }
+    if (data['className'] == 'PurchasePaymentProvider') {
+      return deserialize<_i5.PurchasePaymentProvider>(data['data']);
     }
     if (data['className'] == 'Purchase') {
       return deserialize<_i2.Purchase>(data['data']);

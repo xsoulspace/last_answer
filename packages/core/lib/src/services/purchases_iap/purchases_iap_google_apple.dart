@@ -36,16 +36,17 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
 
   @override
   Future<List<ProductDetails>> getProducts() async {
-    final response = await InAppPurchase.instance.queryProductDetails(_kIds);
+    final response =
+        await InAppPurchase.instance.queryProductDetails(_kNonConsumingIds);
     return response.notFoundIDs.isEmpty ? response.productDetails : [];
   }
 
   @override
   Future<bool> checkIsStoreAvailable() => InAppPurchase.instance.isAvailable();
 
-  final _kIds = <String>{
-    // TODO(arenukvern): add one time purchase,
+  final _kNonConsumingIds = <String>{
     // 'last_answer_annual_subscription_2022',
     // 'last_answer_monthly_subscription_2022',
+    'pro_one_time_purchase',
   };
 }

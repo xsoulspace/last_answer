@@ -24,7 +24,7 @@ _$PurchaseModelImpl _$$PurchaseModelImplFromJson(Map<String, dynamic> json) =>
     _$PurchaseModelImpl(
       productId: json['productId'] == null
           ? ProductModelId.empty
-          : ProductModelId.fromJson(json['productId']),
+          : ProductModelId.fromRawJson(json['productId']),
       paymentProvider: $enumDecodeNullable(
               _$PurchasePaymentProviderEnumMap, json['paymentProvider']) ??
           PurchasePaymentProvider.googlePlay,
@@ -105,6 +105,10 @@ _$PurchasesModelImpl _$$PurchasesModelImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['subscription_end_date'] as String),
       purchasedDaysLeft: json['purchased_days_left'] as int? ?? 0,
+      activePurchase: json['active_purchase'] == null
+          ? PurchaseModel.empty
+          : PurchaseModel.fromRawJson(
+              json['active_purchase'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PurchasesModelImplToJson(
@@ -113,4 +117,5 @@ Map<String, dynamic> _$$PurchasesModelImplToJson(
       'has_one_time_purchase': instance.hasOneTimePurchase,
       'subscription_end_date': instance.subscriptionEndDate?.toIso8601String(),
       'purchased_days_left': instance.purchasedDaysLeft,
+      'active_purchase': instance.activePurchase,
     };

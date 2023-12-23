@@ -188,6 +188,218 @@ abstract class _EmojiModel implements EmojiModel {
       throw _privateConstructorUsedError;
 }
 
+PurchaseRequestDtoModel _$PurchaseRequestDtoModelFromJson(
+    Map<String, dynamic> json) {
+  return _PurchaseRequestDtoModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PurchaseRequestDtoModel {
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
+  ProductModelId get productId => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+  PurchasePaymentProvider get provider => throw _privateConstructorUsedError;
+  ProductType get type => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PurchaseRequestDtoModelCopyWith<PurchaseRequestDtoModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PurchaseRequestDtoModelCopyWith<$Res> {
+  factory $PurchaseRequestDtoModelCopyWith(PurchaseRequestDtoModel value,
+          $Res Function(PurchaseRequestDtoModel) then) =
+      _$PurchaseRequestDtoModelCopyWithImpl<$Res, PurchaseRequestDtoModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+      PurchasePaymentProvider provider,
+      ProductType type});
+
+  $ProductModelIdCopyWith<$Res> get productId;
+}
+
+/// @nodoc
+class _$PurchaseRequestDtoModelCopyWithImpl<$Res,
+        $Val extends PurchaseRequestDtoModel>
+    implements $PurchaseRequestDtoModelCopyWith<$Res> {
+  _$PurchaseRequestDtoModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? provider = null,
+    Object? type = null,
+  }) {
+    return _then(_value.copyWith(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as ProductModelId,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ProductType,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductModelIdCopyWith<$Res> get productId {
+    return $ProductModelIdCopyWith<$Res>(_value.productId, (value) {
+      return _then(_value.copyWith(productId: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$PurchaseRequestDtoModelImplCopyWith<$Res>
+    implements $PurchaseRequestDtoModelCopyWith<$Res> {
+  factory _$$PurchaseRequestDtoModelImplCopyWith(
+          _$PurchaseRequestDtoModelImpl value,
+          $Res Function(_$PurchaseRequestDtoModelImpl) then) =
+      __$$PurchaseRequestDtoModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+      PurchasePaymentProvider provider,
+      ProductType type});
+
+  @override
+  $ProductModelIdCopyWith<$Res> get productId;
+}
+
+/// @nodoc
+class __$$PurchaseRequestDtoModelImplCopyWithImpl<$Res>
+    extends _$PurchaseRequestDtoModelCopyWithImpl<$Res,
+        _$PurchaseRequestDtoModelImpl>
+    implements _$$PurchaseRequestDtoModelImplCopyWith<$Res> {
+  __$$PurchaseRequestDtoModelImplCopyWithImpl(
+      _$PurchaseRequestDtoModelImpl _value,
+      $Res Function(_$PurchaseRequestDtoModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? provider = null,
+    Object? type = null,
+  }) {
+    return _then(_$PurchaseRequestDtoModelImpl(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as ProductModelId,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ProductType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PurchaseRequestDtoModelImpl implements _PurchaseRequestDtoModel {
+  const _$PurchaseRequestDtoModelImpl(
+      {@JsonKey(fromJson: ProductModelId.fromRawJson) required this.productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+      required this.provider,
+      required this.type});
+
+  factory _$PurchaseRequestDtoModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PurchaseRequestDtoModelImplFromJson(json);
+
+  @override
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
+  final ProductModelId productId;
+  @override
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+  final PurchasePaymentProvider provider;
+  @override
+  final ProductType type;
+
+  @override
+  String toString() {
+    return 'PurchaseRequestDtoModel(productId: $productId, provider: $provider, type: $type)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PurchaseRequestDtoModelImpl &&
+            (identical(other.productId, productId) ||
+                other.productId == productId) &&
+            (identical(other.provider, provider) ||
+                other.provider == provider) &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, productId, provider, type);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PurchaseRequestDtoModelImplCopyWith<_$PurchaseRequestDtoModelImpl>
+      get copyWith => __$$PurchaseRequestDtoModelImplCopyWithImpl<
+          _$PurchaseRequestDtoModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PurchaseRequestDtoModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PurchaseRequestDtoModel implements PurchaseRequestDtoModel {
+  const factory _PurchaseRequestDtoModel(
+      {@JsonKey(fromJson: ProductModelId.fromRawJson)
+      required final ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+      required final PurchasePaymentProvider provider,
+      required final ProductType type}) = _$PurchaseRequestDtoModelImpl;
+
+  factory _PurchaseRequestDtoModel.fromJson(Map<String, dynamic> json) =
+      _$PurchaseRequestDtoModelImpl.fromJson;
+
+  @override
+  @JsonKey(fromJson: ProductModelId.fromRawJson)
+  ProductModelId get productId;
+  @override
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+  PurchasePaymentProvider get provider;
+  @override
+  ProductType get type;
+  @override
+  @JsonKey(ignore: true)
+  _$$PurchaseRequestDtoModelImplCopyWith<_$PurchaseRequestDtoModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 /// @nodoc
 mixin _$ProductModelId {
   String get value => throw _privateConstructorUsedError;
@@ -316,6 +528,7 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) {
 mixin _$PurchaseModel {
   @JsonKey(fromJson: ProductModelId.fromRawJson)
   ProductModelId get productId => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
   PurchasePaymentProvider get paymentProvider =>
       throw _privateConstructorUsedError;
   String get originalTransactionID => throw _privateConstructorUsedError;
@@ -340,6 +553,7 @@ abstract class $PurchaseModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
       PurchasePaymentProvider paymentProvider,
       String originalTransactionID,
       String price,
@@ -431,6 +645,7 @@ abstract class _$$PurchaseModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(fromJson: ProductModelId.fromRawJson) ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
       PurchasePaymentProvider paymentProvider,
       String originalTransactionID,
       String price,
@@ -502,6 +717,7 @@ class _$PurchaseModelImpl extends _PurchaseModel {
   const _$PurchaseModelImpl(
       {@JsonKey(fromJson: ProductModelId.fromRawJson)
       this.productId = ProductModelId.empty,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
       this.paymentProvider = PurchasePaymentProvider.googlePlay,
       this.originalTransactionID = '',
       this.price = '',
@@ -517,7 +733,7 @@ class _$PurchaseModelImpl extends _PurchaseModel {
   @JsonKey(fromJson: ProductModelId.fromRawJson)
   final ProductModelId productId;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
   final PurchasePaymentProvider paymentProvider;
   @override
   @JsonKey()
@@ -583,6 +799,7 @@ abstract class _PurchaseModel extends PurchaseModel {
   const factory _PurchaseModel(
       {@JsonKey(fromJson: ProductModelId.fromRawJson)
       final ProductModelId productId,
+      @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
       final PurchasePaymentProvider paymentProvider,
       final String originalTransactionID,
       final String price,
@@ -598,6 +815,7 @@ abstract class _PurchaseModel extends PurchaseModel {
   @JsonKey(fromJson: ProductModelId.fromRawJson)
   ProductModelId get productId;
   @override
+  @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
   PurchasePaymentProvider get paymentProvider;
   @override
   String get originalTransactionID;

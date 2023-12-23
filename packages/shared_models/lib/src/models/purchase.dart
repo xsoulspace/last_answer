@@ -6,18 +6,49 @@ enum PurchasePaymentProvider {
   googlePlay,
   appStore;
 
+  factory PurchasePaymentProvider.fromRawJson(
+    final dynamic json,
+  ) =>
+      PurchasePaymentProvider.values.byName(json);
+
   factory PurchasePaymentProvider.fromJson(
     final dynamic json,
     // ignore: avoid_unused_constructor_parameters
     final SerializationManager serializationManager,
   ) =>
-      PurchasePaymentProvider.values.byName(json);
+      PurchasePaymentProvider.fromRawJson(json);
+}
+
+enum ProductType {
+  subscription,
+  oneTime,
 }
 
 enum PurchasePeriod {
   oneTime,
   monthly,
   yearly,
+}
+
+@freezed
+class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
+  const factory PurchaseRequestDtoModel({
+    @JsonKey(fromJson: ProductModelId.fromRawJson)
+    required final ProductModelId productId,
+    @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+    required final PurchasePaymentProvider provider,
+    required final ProductType type,
+  }) = _PurchaseRequestDtoModel;
+  factory PurchaseRequestDtoModel.fromJson(
+    final Map<String, dynamic> json,
+    // ignore: avoid_unused_constructor_parameters
+    final SerializationManager serializationManager,
+  ) =>
+      PurchaseRequestDtoModel.fromRawJson(json);
+  factory PurchaseRequestDtoModel.fromRawJson(
+    final Map<String, dynamic> json,
+  ) =>
+      _$PurchaseRequestDtoModelFromJson(json);
 }
 
 /// use for [PurchaseModel.id]
@@ -51,6 +82,7 @@ class PurchaseModel with _$PurchaseModel {
     @JsonKey(fromJson: ProductModelId.fromRawJson)
     @Default(ProductModelId.empty)
     final ProductModelId productId,
+    @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
     @Default(PurchasePaymentProvider.googlePlay)
     final PurchasePaymentProvider paymentProvider,
     @Default('') final String originalTransactionID,

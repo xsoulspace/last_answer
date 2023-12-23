@@ -5,5 +5,6 @@ abstract class PurchasesRemoteDataSource {
   Future<PurchaseModel?> verifyNativeMobilePurchase({
     required final ProductModelId productId,
     required final String verificationData,
+    required final PurchasePaymentProvider provider,
   });
 }

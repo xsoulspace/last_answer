@@ -88,6 +88,9 @@ class PurchasesNotifier
               productId: ProductModelId.fromRawJson(purchase.productID),
               verificationData:
                   purchase.verificationData.serverVerificationData,
+              provider: purchase.verificationData.source == 'googleplay'
+                  ? PurchasePaymentProvider.googlePlay
+                  : PurchasePaymentProvider.appStore,
             );
             if (verifiedPurchase == null) {
               assert(false, 'payment verification failed');

@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  app_store_server_sdk:
+    dependency: "direct main"
+    description:
+      name: app_store_server_sdk
+      sha256: ed596091fc25a8698bb0c531bea85b8b18f2fd819c658b77d162eee7b0502b20
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.8"
   archive:
     dependency: transitive
     description:
@@ -252,7 +260,7 @@ packages:
     source: hosted
     version: "6.1.0"
   googleapis:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: googleapis
       sha256: dfea9984f0785ed445ba78e2aa8c55dadd86d6a60ea9e0ffbadad51edb5e7e36
@@ -260,7 +268,7 @@ packages:
     source: hosted
     version: "9.2.0"
   googleapis_auth:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: googleapis_auth
       sha256: af7c3a3edf9d0de2e1e0a77e994fae0a581c525fa7012af4fa0d4a52ed9484da

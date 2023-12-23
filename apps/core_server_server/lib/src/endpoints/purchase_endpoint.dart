@@ -22,6 +22,7 @@ class PurchaseEndpoint extends Endpoint {
     final Session session,
     final ProductModelId productId,
     final String verificationData,
+    final PurchasePaymentProvider provider,
   ) async =>
       null;
 }

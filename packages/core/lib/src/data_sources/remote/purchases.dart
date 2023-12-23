@@ -12,6 +12,7 @@ class PurchasesRemoteDataSourceServerpodImpl
   Future<PurchaseModel?> verifyNativeMobilePurchase({
     required final ProductModelId productId,
     required final String verificationData,
+    required final PurchasePaymentProvider provider,
   }) async {
     // client.
     return null;

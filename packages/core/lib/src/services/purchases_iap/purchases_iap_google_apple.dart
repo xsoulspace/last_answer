@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 import '../services.dart';
 
+/// Sources:
+/// https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases#9
 final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
   /// IMPORTANT! You must subscribe to this stream as soon as your
   /// app launches, preferably before returning your main App Widget
@@ -37,16 +41,30 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
   @override
   Future<List<ProductDetails>> getProducts() async {
     final response =
-        await InAppPurchase.instance.queryProductDetails(_kNonConsumingIds);
-    return response.notFoundIDs.isEmpty ? response.productDetails : [];
+        await InAppPurchase.instance.queryProductDetails(IAPId.ids);
+    for (final purchase in response.notFoundIDs) {
+      debugPrint('Purchase $purchase not found');
+    }
+    return response.productDetails;
   }
 
   @override
   Future<bool> checkIsStoreAvailable() => InAppPurchase.instance.isAvailable();
+}
 
-  final _kNonConsumingIds = <String>{
-    // 'last_answer_annual_subscription_2022',
-    // 'last_answer_monthly_subscription_2022',
-    'pro_one_time_purchase',
-  };
+enum IAPId {
+  // 'last_answer_annual_subscription_2022',
+  // 'last_answer_monthly_subscription_2022',
+  proOneTimePurchase('pro_one_time_purchase');
+
+  const IAPId(this.id);
+  factory IAPId.byId(final String id) {
+    final maybeId = IAPId.values.firstWhereOrNull((final e) => e.id == id);
+    if (maybeId == null) {
+      throw ArgumentError.value('$id is not a known product');
+    }
+    return maybeId;
+  }
+  final String id;
+  static final ids = IAPId.values.map((final e) => e.id).toSet();
 }

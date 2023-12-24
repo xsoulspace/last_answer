@@ -55,9 +55,10 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
 enum IAPId {
   // 'last_answer_annual_subscription_2022',
   // 'last_answer_monthly_subscription_2022',
-  proOneTimePurchase('pro_one_time_purchase');
+  proOneTimePurchase('pro_one_time_purchase', productType: ProductType.oneTime);
 
-  const IAPId(this.id);
+  // ignore: unused_element
+  const IAPId(this.id, {required this.productType});
   factory IAPId.byId(final String id) {
     final maybeId = IAPId.values.firstWhereOrNull((final e) => e.id == id);
     if (maybeId == null) {
@@ -66,5 +67,6 @@ enum IAPId {
     return maybeId;
   }
   final String id;
+  final ProductType productType;
   static final ids = IAPId.values.map((final e) => e.id).toSet();
 }

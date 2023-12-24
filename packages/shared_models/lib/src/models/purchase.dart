@@ -106,6 +106,7 @@ class PurchaseModel with _$PurchaseModel {
   ) =>
       _$PurchaseModelFromJson(json);
   static const empty = PurchaseModel();
+  String get id => '${paymentProvider.name}_$originalTransactionID';
   bool get isEmpty => productId.isEmpty;
   bool get isNotEmpty => productId.isNotEmpty;
   bool isActive() {

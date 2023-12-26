@@ -2,40 +2,37 @@
 
 part of 'models.dart';
 
-enum PurchasePaymentProvider {
-  googlePlay,
-  appStore;
+enum PurchasePaymentProvider { googlePlay, appStore }
 
-  factory PurchasePaymentProvider.fromRawJson(
-    final dynamic json,
-  ) =>
-      PurchasePaymentProvider.values.byName(json);
+enum OneTimePurchaseStatus { pending, completed, cancelled }
 
-  factory PurchasePaymentProvider.fromJson(
-    final dynamic json,
-    // ignore: avoid_unused_constructor_parameters
-    final SerializationManager serializationManager,
-  ) =>
-      PurchasePaymentProvider.fromRawJson(json);
+enum SubscriptionStatus { pending, active, expired }
+
+enum ProductType { subscription, oneTime }
+
+enum PurchasePeriod { oneTime, monthly, yearly }
+
+enum IAPId {
+  // 'last_answer_annual_subscription_2022',
+  // 'last_answer_monthly_subscription_2022',
+  proOneTimePurchase('pro_one_time_purchase', productType: ProductType.oneTime);
+
+  const IAPId(this.id, {required this.productType});
+  factory IAPId.byId(final String id) {
+    final maybeId = IAPId.values.firstWhereOrNull((final e) => e.id == id);
+    if (maybeId == null) {
+      throw ArgumentError.value('$id is not a known product');
+    }
+    return maybeId;
+  }
+  final String id;
+  final ProductType productType;
+  static final ids = IAPId.values.map((final e) => e.id).toSet();
 }
 
-enum ProductType {
-  subscription,
-  oneTime,
-}
-
-enum PurchasePeriod {
-  oneTime,
-  monthly,
-  yearly,
-}
-
-@freezed
 class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
   const factory PurchaseRequestDtoModel({
-    @JsonKey(fromJson: ProductModelId.fromRawJson)
-    required final ProductModelId productId,
-    @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+    required final IAPId productId,
     required final PurchasePaymentProvider provider,
     required final ProductType type,
   }) = _PurchaseRequestDtoModel;
@@ -51,41 +48,14 @@ class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
       _$PurchaseRequestDtoModelFromJson(json);
 }
 
-/// use for [PurchaseModel.id]
-@Freezed(fromJson: false, toJson: false)
-class ProductModelId with _$ProductModelId {
-  const factory ProductModelId({
-    required final String value,
-  }) = _ProductModelId;
-  const ProductModelId._();
-  factory ProductModelId.fromJson(
-    final dynamic value,
-    // ignore: avoid_unused_constructor_parameters
-    final SerializationManager serializationManager,
-  ) =>
-      ProductModelId.fromRawJson(value);
-  factory ProductModelId.fromRawJson(
-    final dynamic value,
-  ) =>
-      ProductModelId(value: '$value');
-
-  static const empty = ProductModelId(value: '');
-  bool get isEmpty => value.isEmpty;
-  bool get isNotEmpty => value.isNotEmpty;
-  String toJson() => value;
-  int toInt() => int.parse(value);
-}
-
-@freezed
+@Freezed(unionKey: 'type')
 class PurchaseModel with _$PurchaseModel {
-  const factory PurchaseModel({
-    @JsonKey(fromJson: ProductModelId.fromRawJson)
-    @Default(ProductModelId.empty)
-    final ProductModelId productId,
-    @JsonKey(fromJson: PurchasePaymentProvider.fromRawJson)
+  const factory PurchaseModel.oneTime({
+    @Default(IAPId.proOneTimePurchase) final IAPId productId,
     @Default(PurchasePaymentProvider.googlePlay)
     final PurchasePaymentProvider paymentProvider,
     @Default('') final String originalTransactionID,
+    final DateTime? purchasedAt,
 
     /// can contain symbol, so it's not double
     @Default('') final String price,
@@ -93,7 +63,27 @@ class PurchaseModel with _$PurchaseModel {
     @Default(PurchaseAttributesModel.empty)
     final PurchaseAttributesModel attributes,
     final DateTime? willExpireAt,
-  }) = _PurchaseModel;
+    @Default(UserModelId.empty) final UserModelId userId,
+    @Default(ProductType.oneTime) final ProductType type,
+    @Default(OneTimePurchaseStatus.pending) final OneTimePurchaseStatus status,
+  }) = PurchaseModelOneTime;
+  const factory PurchaseModel.subscription({
+    @Default(IAPId.proOneTimePurchase) final IAPId productId,
+    @Default(PurchasePaymentProvider.googlePlay)
+    final PurchasePaymentProvider paymentProvider,
+    @Default('') final String originalTransactionID,
+    final DateTime? purchasedAt,
+
+    /// can contain symbol, so it's not double
+    @Default('') final String price,
+    @Default(PurchasePeriod.monthly) final PurchasePeriod period,
+    @Default(PurchaseAttributesModel.empty)
+    final PurchaseAttributesModel attributes,
+    final DateTime? willExpireAt,
+    @Default(UserModelId.empty) final UserModelId userId,
+    @Default(ProductType.subscription) final ProductType type,
+    @Default(SubscriptionStatus.pending) final SubscriptionStatus status,
+  }) = PurchaseModelSubscription;
   const PurchaseModel._();
   factory PurchaseModel.fromJson(
     final Map<String, dynamic> json,
@@ -105,7 +95,8 @@ class PurchaseModel with _$PurchaseModel {
     final Map<String, dynamic> json,
   ) =>
       _$PurchaseModelFromJson(json);
-  static const empty = PurchaseModel();
+
+  static const empty = PurchaseModel.oneTime();
   String get id => '${paymentProvider.name}_$originalTransactionID';
   bool get isEmpty => productId.isEmpty;
   bool get isNotEmpty => productId.isNotEmpty;
@@ -121,7 +112,8 @@ class PurchaseModel with _$PurchaseModel {
 
   bool get isYearly => period == PurchasePeriod.yearly;
   bool get isMonthly => period == PurchasePeriod.monthly;
-  bool get isOneTime => period == PurchasePeriod.oneTime;
+  bool get isOneTime =>
+      period == PurchasePeriod.oneTime && type == ProductType.oneTime;
 }
 
 @freezed

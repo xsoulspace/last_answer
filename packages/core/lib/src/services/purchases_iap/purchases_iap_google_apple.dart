@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_models/shared_models.dart';
@@ -50,23 +49,4 @@ final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
 
   @override
   Future<bool> checkIsStoreAvailable() => InAppPurchase.instance.isAvailable();
-}
-
-enum IAPId {
-  // 'last_answer_annual_subscription_2022',
-  // 'last_answer_monthly_subscription_2022',
-  proOneTimePurchase('pro_one_time_purchase', productType: ProductType.oneTime);
-
-  // ignore: unused_element
-  const IAPId(this.id, {required this.productType});
-  factory IAPId.byId(final String id) {
-    final maybeId = IAPId.values.firstWhereOrNull((final e) => e.id == id);
-    if (maybeId == null) {
-      throw ArgumentError.value('$id is not a known product');
-    }
-    return maybeId;
-  }
-  final String id;
-  final ProductType productType;
-  static final ids = IAPId.values.map((final e) => e.id).toSet();
 }

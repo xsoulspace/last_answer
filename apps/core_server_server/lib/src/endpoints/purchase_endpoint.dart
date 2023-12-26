@@ -20,7 +20,7 @@ class PurchaseEndpoint extends Endpoint {
       false;
   Future<PurchaseModel?> verifyNativeMobilePurchase(
     final Session session,
-    final ProductModelId productId,
+    final IAPId productId,
     final String verificationData,
     final PurchasePaymentProvider provider,
   ) async =>

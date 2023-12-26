@@ -111,7 +111,7 @@ class PurchasableProductTile extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
   final ProductDetails details;
-  final ProductModelId activeProductId;
+  final IAPId activeProductId;
   @override
   Widget build(final BuildContext context) => Card(
         child: Column(
@@ -120,7 +120,7 @@ class PurchasableProductTile extends StatelessWidget {
             Text(details.title),
             Text(details.description),
             Text(details.price),
-            if (activeProductId.value == details.id)
+            if (activeProductId.id == details.id)
               const Text('Active')
             else
               TextButton(onPressed: onPressed, child: const Text('Purchase')),

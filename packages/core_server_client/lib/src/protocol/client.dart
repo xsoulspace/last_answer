@@ -61,7 +61,7 @@ class _EndpointPurchase extends _i1.EndpointRef {
       );
 
   _i2.Future<_i4.PurchaseModel?> verifyNativeMobilePurchase(
-    _i4.ProductModelId productId,
+    _i4.IAPId productId,
     String verificationData,
     _i4.PurchasePaymentProvider provider,
   ) =>

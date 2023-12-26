@@ -7,6 +7,4 @@ modules:
     nickname: auth
 extraClasses:
   - package:shared_models/shared_models.dart:RemoteUserModel
-  - package:shared_models/shared_models.dart:ProductModelId
   - package:shared_models/shared_models.dart:PurchaseModel
-  - package:shared_models/shared_models.dart:PurchasePaymentProvider

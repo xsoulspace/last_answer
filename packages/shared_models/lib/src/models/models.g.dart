@@ -20,41 +20,18 @@ Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
       'keywords': instance.keywords,
     };
 
-_$PurchaseRequestDtoModelImpl _$$PurchaseRequestDtoModelImplFromJson(
+_$PurchaseModelOneTimeImpl _$$PurchaseModelOneTimeImplFromJson(
         Map<String, dynamic> json) =>
-    _$PurchaseRequestDtoModelImpl(
-      productId: ProductModelId.fromRawJson(json['productId']),
-      provider: PurchasePaymentProvider.fromRawJson(json['provider']),
-      type: $enumDecode(_$ProductTypeEnumMap, json['type']),
-    );
-
-Map<String, dynamic> _$$PurchaseRequestDtoModelImplToJson(
-        _$PurchaseRequestDtoModelImpl instance) =>
-    <String, dynamic>{
-      'productId': instance.productId,
-      'provider': _$PurchasePaymentProviderEnumMap[instance.provider]!,
-      'type': _$ProductTypeEnumMap[instance.type]!,
-    };
-
-const _$ProductTypeEnumMap = {
-  ProductType.subscription: 'subscription',
-  ProductType.oneTime: 'oneTime',
-};
-
-const _$PurchasePaymentProviderEnumMap = {
-  PurchasePaymentProvider.googlePlay: 'googlePlay',
-  PurchasePaymentProvider.appStore: 'appStore',
-};
-
-_$PurchaseModelImpl _$$PurchaseModelImplFromJson(Map<String, dynamic> json) =>
-    _$PurchaseModelImpl(
-      productId: json['productId'] == null
-          ? ProductModelId.empty
-          : ProductModelId.fromRawJson(json['productId']),
-      paymentProvider: json['paymentProvider'] == null
-          ? PurchasePaymentProvider.googlePlay
-          : PurchasePaymentProvider.fromRawJson(json['paymentProvider']),
+    _$PurchaseModelOneTimeImpl(
+      productId: $enumDecodeNullable(_$IAPIdEnumMap, json['productId']) ??
+          IAPId.proOneTimePurchase,
+      paymentProvider: $enumDecodeNullable(
+              _$PurchasePaymentProviderEnumMap, json['paymentProvider']) ??
+          PurchasePaymentProvider.googlePlay,
       originalTransactionID: json['originalTransactionID'] as String? ?? '',
+      purchasedAt: json['purchasedAt'] == null
+          ? null
+          : DateTime.parse(json['purchasedAt'] as String),
       price: json['price'] as String? ?? '',
       period: $enumDecodeNullable(_$PurchasePeriodEnumMap, json['period']) ??
           PurchasePeriod.monthly,
@@ -65,24 +42,112 @@ _$PurchaseModelImpl _$$PurchaseModelImplFromJson(Map<String, dynamic> json) =>
       willExpireAt: json['willExpireAt'] == null
           ? null
           : DateTime.parse(json['willExpireAt'] as String),
+      userId: json['userId'] == null
+          ? UserModelId.empty
+          : UserModelId.fromJson(json['userId']),
+      type: $enumDecodeNullable(_$ProductTypeEnumMap, json['type']) ??
+          ProductType.oneTime,
+      status:
+          $enumDecodeNullable(_$OneTimePurchaseStatusEnumMap, json['status']) ??
+              OneTimePurchaseStatus.pending,
     );
 
-Map<String, dynamic> _$$PurchaseModelImplToJson(_$PurchaseModelImpl instance) =>
+Map<String, dynamic> _$$PurchaseModelOneTimeImplToJson(
+        _$PurchaseModelOneTimeImpl instance) =>
     <String, dynamic>{
-      'productId': instance.productId,
+      'productId': _$IAPIdEnumMap[instance.productId]!,
       'paymentProvider':
           _$PurchasePaymentProviderEnumMap[instance.paymentProvider]!,
       'originalTransactionID': instance.originalTransactionID,
+      'purchasedAt': instance.purchasedAt?.toIso8601String(),
       'price': instance.price,
       'period': _$PurchasePeriodEnumMap[instance.period]!,
       'attributes': instance.attributes,
       'willExpireAt': instance.willExpireAt?.toIso8601String(),
+      'userId': instance.userId,
+      'type': _$ProductTypeEnumMap[instance.type]!,
+      'status': _$OneTimePurchaseStatusEnumMap[instance.status]!,
     };
+
+const _$IAPIdEnumMap = {
+  IAPId.proOneTimePurchase: 'proOneTimePurchase',
+};
+
+const _$PurchasePaymentProviderEnumMap = {
+  PurchasePaymentProvider.googlePlay: 'googlePlay',
+  PurchasePaymentProvider.appStore: 'appStore',
+};
 
 const _$PurchasePeriodEnumMap = {
   PurchasePeriod.oneTime: 'oneTime',
   PurchasePeriod.monthly: 'monthly',
   PurchasePeriod.yearly: 'yearly',
+};
+
+const _$ProductTypeEnumMap = {
+  ProductType.subscription: 'subscription',
+  ProductType.oneTime: 'oneTime',
+};
+
+const _$OneTimePurchaseStatusEnumMap = {
+  OneTimePurchaseStatus.pending: 'pending',
+  OneTimePurchaseStatus.completed: 'completed',
+  OneTimePurchaseStatus.cancelled: 'cancelled',
+};
+
+_$PurchaseModelSubscriptionImpl _$$PurchaseModelSubscriptionImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PurchaseModelSubscriptionImpl(
+      productId: $enumDecodeNullable(_$IAPIdEnumMap, json['productId']) ??
+          IAPId.proOneTimePurchase,
+      paymentProvider: $enumDecodeNullable(
+              _$PurchasePaymentProviderEnumMap, json['paymentProvider']) ??
+          PurchasePaymentProvider.googlePlay,
+      originalTransactionID: json['originalTransactionID'] as String? ?? '',
+      purchasedAt: json['purchasedAt'] == null
+          ? null
+          : DateTime.parse(json['purchasedAt'] as String),
+      price: json['price'] as String? ?? '',
+      period: $enumDecodeNullable(_$PurchasePeriodEnumMap, json['period']) ??
+          PurchasePeriod.monthly,
+      attributes: json['attributes'] == null
+          ? PurchaseAttributesModel.empty
+          : PurchaseAttributesModel.fromJson(
+              json['attributes'] as Map<String, dynamic>),
+      willExpireAt: json['willExpireAt'] == null
+          ? null
+          : DateTime.parse(json['willExpireAt'] as String),
+      userId: json['userId'] == null
+          ? UserModelId.empty
+          : UserModelId.fromJson(json['userId']),
+      type: $enumDecodeNullable(_$ProductTypeEnumMap, json['type']) ??
+          ProductType.subscription,
+      status:
+          $enumDecodeNullable(_$SubscriptionStatusEnumMap, json['status']) ??
+              SubscriptionStatus.pending,
+    );
+
+Map<String, dynamic> _$$PurchaseModelSubscriptionImplToJson(
+        _$PurchaseModelSubscriptionImpl instance) =>
+    <String, dynamic>{
+      'productId': _$IAPIdEnumMap[instance.productId]!,
+      'paymentProvider':
+          _$PurchasePaymentProviderEnumMap[instance.paymentProvider]!,
+      'originalTransactionID': instance.originalTransactionID,
+      'purchasedAt': instance.purchasedAt?.toIso8601String(),
+      'price': instance.price,
+      'period': _$PurchasePeriodEnumMap[instance.period]!,
+      'attributes': instance.attributes,
+      'willExpireAt': instance.willExpireAt?.toIso8601String(),
+      'userId': instance.userId,
+      'type': _$ProductTypeEnumMap[instance.type]!,
+      'status': _$SubscriptionStatusEnumMap[instance.status]!,
+    };
+
+const _$SubscriptionStatusEnumMap = {
+  SubscriptionStatus.pending: 'pending',
+  SubscriptionStatus.active: 'active',
+  SubscriptionStatus.expired: 'expired',
 };
 
 _$PurchaseAttributesModelImpl _$$PurchaseAttributesModelImplFromJson(

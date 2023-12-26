@@ -140,7 +140,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'productId': _i1.ParameterDescription(
               name: 'productId',
-              type: _i1.getType<_i7.ProductModelId>(),
+              type: _i1.getType<_i7.IAPId>(),
               nullable: false,
             ),
             'verificationData': _i1.ParameterDescription(

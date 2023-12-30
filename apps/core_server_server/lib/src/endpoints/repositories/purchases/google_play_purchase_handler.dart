@@ -48,7 +48,7 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
       // Verify purchase with Google
       final response = await androidPublisher.purchases.products.get(
         Envs.androidPackageId,
-        dto.productId.value,
+        dto.productId.id,
         token,
       );
 
@@ -110,7 +110,7 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
       // Verify purchase with Google
       final response = await androidPublisher.purchases.subscriptions.get(
         Envs.androidPackageId,
-        dto.productId.value,
+        dto.productId.id,
         token,
       );
 
@@ -178,6 +178,7 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
     }
   }
 
+  /// will currently handle only subscriptions
   Future<void> _processMessage(final String data64, final String? ackId) async {
     final dataRaw = utf8.decode(base64Decode(data64));
     print('Received data: $dataRaw');
@@ -197,6 +198,8 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
     final subscriptionId = subscriptionNotification['subscriptionId'] as String;
     final purchaseToken = subscriptionNotification['purchaseToken'] as String;
     final iapId = IAPId.values.firstWhere((final e) => e.id == subscriptionId);
+    final session = await Serverpod.instance?.createSession();
+    if (session == null) throw Exception('Could not create session');
     final result = await handleSubscription(
       session: session,
       userId: UserModelId.empty,

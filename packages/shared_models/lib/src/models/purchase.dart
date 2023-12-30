@@ -13,6 +13,7 @@ enum ProductType { subscription, oneTime }
 enum PurchasePeriod { oneTime, monthly, yearly }
 
 enum IAPId {
+  @JsonValue('pro_one_time_purchase')
   // 'last_answer_annual_subscription_2022',
   // 'last_answer_monthly_subscription_2022',
   proOneTimePurchase('pro_one_time_purchase', productType: ProductType.oneTime);
@@ -30,6 +31,7 @@ enum IAPId {
   static final ids = IAPId.values.map((final e) => e.id).toSet();
 }
 
+@Freezed()
 class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
   const factory PurchaseRequestDtoModel({
     required final IAPId productId,
@@ -46,6 +48,7 @@ class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
     final Map<String, dynamic> json,
   ) =>
       _$PurchaseRequestDtoModelFromJson(json);
+  const PurchaseRequestDtoModel._();
 }
 
 @Freezed(unionKey: 'type')
@@ -98,8 +101,8 @@ class PurchaseModel with _$PurchaseModel {
 
   static const empty = PurchaseModel.oneTime();
   String get id => '${paymentProvider.name}_$originalTransactionID';
-  bool get isEmpty => productId.isEmpty;
-  bool get isNotEmpty => productId.isNotEmpty;
+  bool get isEmpty => originalTransactionID.isEmpty;
+  bool get isNotEmpty => originalTransactionID.isNotEmpty;
   bool isActive() {
     if (isOneTime) return true;
     final willExpireAt = this.willExpireAt;

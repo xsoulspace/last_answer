@@ -85,7 +85,9 @@ class PurchasesNotifier
           if (purchase.pendingCompletePurchase) {
             final verifiedPurchase =
                 await dto.purchasesRepository.verifyNativeMobilePurchase(
-              productId: ProductModelId.fromRawJson(purchase.productID),
+              productId: IAPId.values.firstWhere(
+                (final e) => e.id == purchase.productID,
+              ),
               verificationData:
                   purchase.verificationData.serverVerificationData,
               provider: purchase.verificationData.source == 'googleplay'

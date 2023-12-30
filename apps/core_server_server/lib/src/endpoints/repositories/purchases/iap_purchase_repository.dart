@@ -19,6 +19,7 @@ class IapPurchasesRepository {
   }) async {
     print('Updating $purchase');
     final purchaseId = purchase.id;
+
     // TODO(arenukvern): update databse record,
   }
 

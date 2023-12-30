@@ -20,6 +20,36 @@ Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
       'keywords': instance.keywords,
     };
 
+_$PurchaseRequestDtoModelImpl _$$PurchaseRequestDtoModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PurchaseRequestDtoModelImpl(
+      productId: $enumDecode(_$IAPIdEnumMap, json['productId']),
+      provider: $enumDecode(_$PurchasePaymentProviderEnumMap, json['provider']),
+      type: $enumDecode(_$ProductTypeEnumMap, json['type']),
+    );
+
+Map<String, dynamic> _$$PurchaseRequestDtoModelImplToJson(
+        _$PurchaseRequestDtoModelImpl instance) =>
+    <String, dynamic>{
+      'productId': _$IAPIdEnumMap[instance.productId]!,
+      'provider': _$PurchasePaymentProviderEnumMap[instance.provider]!,
+      'type': _$ProductTypeEnumMap[instance.type]!,
+    };
+
+const _$IAPIdEnumMap = {
+  IAPId.proOneTimePurchase: 'pro_one_time_purchase',
+};
+
+const _$PurchasePaymentProviderEnumMap = {
+  PurchasePaymentProvider.googlePlay: 'googlePlay',
+  PurchasePaymentProvider.appStore: 'appStore',
+};
+
+const _$ProductTypeEnumMap = {
+  ProductType.subscription: 'subscription',
+  ProductType.oneTime: 'oneTime',
+};
+
 _$PurchaseModelOneTimeImpl _$$PurchaseModelOneTimeImplFromJson(
         Map<String, dynamic> json) =>
     _$PurchaseModelOneTimeImpl(
@@ -69,24 +99,10 @@ Map<String, dynamic> _$$PurchaseModelOneTimeImplToJson(
       'status': _$OneTimePurchaseStatusEnumMap[instance.status]!,
     };
 
-const _$IAPIdEnumMap = {
-  IAPId.proOneTimePurchase: 'proOneTimePurchase',
-};
-
-const _$PurchasePaymentProviderEnumMap = {
-  PurchasePaymentProvider.googlePlay: 'googlePlay',
-  PurchasePaymentProvider.appStore: 'appStore',
-};
-
 const _$PurchasePeriodEnumMap = {
   PurchasePeriod.oneTime: 'oneTime',
   PurchasePeriod.monthly: 'monthly',
   PurchasePeriod.yearly: 'yearly',
-};
-
-const _$ProductTypeEnumMap = {
-  ProductType.subscription: 'subscription',
-  ProductType.oneTime: 'oneTime',
 };
 
 const _$OneTimePurchaseStatusEnumMap = {

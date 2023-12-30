@@ -188,6 +188,190 @@ abstract class _EmojiModel implements EmojiModel {
       throw _privateConstructorUsedError;
 }
 
+PurchaseRequestDtoModel _$PurchaseRequestDtoModelFromJson(
+    Map<String, dynamic> json) {
+  return _PurchaseRequestDtoModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PurchaseRequestDtoModel {
+  IAPId get productId => throw _privateConstructorUsedError;
+  PurchasePaymentProvider get provider => throw _privateConstructorUsedError;
+  ProductType get type => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PurchaseRequestDtoModelCopyWith<PurchaseRequestDtoModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PurchaseRequestDtoModelCopyWith<$Res> {
+  factory $PurchaseRequestDtoModelCopyWith(PurchaseRequestDtoModel value,
+          $Res Function(PurchaseRequestDtoModel) then) =
+      _$PurchaseRequestDtoModelCopyWithImpl<$Res, PurchaseRequestDtoModel>;
+  @useResult
+  $Res call(
+      {IAPId productId, PurchasePaymentProvider provider, ProductType type});
+}
+
+/// @nodoc
+class _$PurchaseRequestDtoModelCopyWithImpl<$Res,
+        $Val extends PurchaseRequestDtoModel>
+    implements $PurchaseRequestDtoModelCopyWith<$Res> {
+  _$PurchaseRequestDtoModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? provider = null,
+    Object? type = null,
+  }) {
+    return _then(_value.copyWith(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as IAPId,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ProductType,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$PurchaseRequestDtoModelImplCopyWith<$Res>
+    implements $PurchaseRequestDtoModelCopyWith<$Res> {
+  factory _$$PurchaseRequestDtoModelImplCopyWith(
+          _$PurchaseRequestDtoModelImpl value,
+          $Res Function(_$PurchaseRequestDtoModelImpl) then) =
+      __$$PurchaseRequestDtoModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {IAPId productId, PurchasePaymentProvider provider, ProductType type});
+}
+
+/// @nodoc
+class __$$PurchaseRequestDtoModelImplCopyWithImpl<$Res>
+    extends _$PurchaseRequestDtoModelCopyWithImpl<$Res,
+        _$PurchaseRequestDtoModelImpl>
+    implements _$$PurchaseRequestDtoModelImplCopyWith<$Res> {
+  __$$PurchaseRequestDtoModelImplCopyWithImpl(
+      _$PurchaseRequestDtoModelImpl _value,
+      $Res Function(_$PurchaseRequestDtoModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? productId = null,
+    Object? provider = null,
+    Object? type = null,
+  }) {
+    return _then(_$PurchaseRequestDtoModelImpl(
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as IAPId,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as PurchasePaymentProvider,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ProductType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PurchaseRequestDtoModelImpl extends _PurchaseRequestDtoModel {
+  const _$PurchaseRequestDtoModelImpl(
+      {required this.productId, required this.provider, required this.type})
+      : super._();
+
+  factory _$PurchaseRequestDtoModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PurchaseRequestDtoModelImplFromJson(json);
+
+  @override
+  final IAPId productId;
+  @override
+  final PurchasePaymentProvider provider;
+  @override
+  final ProductType type;
+
+  @override
+  String toString() {
+    return 'PurchaseRequestDtoModel(productId: $productId, provider: $provider, type: $type)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PurchaseRequestDtoModelImpl &&
+            (identical(other.productId, productId) ||
+                other.productId == productId) &&
+            (identical(other.provider, provider) ||
+                other.provider == provider) &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, productId, provider, type);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PurchaseRequestDtoModelImplCopyWith<_$PurchaseRequestDtoModelImpl>
+      get copyWith => __$$PurchaseRequestDtoModelImplCopyWithImpl<
+          _$PurchaseRequestDtoModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PurchaseRequestDtoModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PurchaseRequestDtoModel extends PurchaseRequestDtoModel {
+  const factory _PurchaseRequestDtoModel(
+      {required final IAPId productId,
+      required final PurchasePaymentProvider provider,
+      required final ProductType type}) = _$PurchaseRequestDtoModelImpl;
+  const _PurchaseRequestDtoModel._() : super._();
+
+  factory _PurchaseRequestDtoModel.fromJson(Map<String, dynamic> json) =
+      _$PurchaseRequestDtoModelImpl.fromJson;
+
+  @override
+  IAPId get productId;
+  @override
+  PurchasePaymentProvider get provider;
+  @override
+  ProductType get type;
+  @override
+  @JsonKey(ignore: true)
+  _$$PurchaseRequestDtoModelImplCopyWith<_$PurchaseRequestDtoModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
     case 'oneTime':

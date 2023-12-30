@@ -10,7 +10,7 @@ class PurchasesRepository {
   }) : _remote = context.read();
   final PurchasesRemoteDataSource _remote;
   Future<PurchaseModel?> verifyNativeMobilePurchase({
-    required final ProductModelId productId,
+    required final IAPId productId,
     required final String verificationData,
     required final PurchasePaymentProvider provider,
   }) =>

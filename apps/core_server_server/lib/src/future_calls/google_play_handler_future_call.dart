@@ -20,6 +20,7 @@ final class GooglePlayHandlerFutureCall extends ScheduledFutureCall {
   GooglePlayHandlerFutureCall({
     required final GooglePlayClient googlePlayClient,
     required final IapRepository iapRepository,
+    required super.serverpod,
   }) : googlePlayHandler = GooglePlayPurchaseHandler(
           androidPublisher: googlePlayClient.androidPublisher,
           pubsubApi: googlePlayClient.pubsubApi,

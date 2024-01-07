@@ -1,3 +1,4 @@
+import 'package:core_server_server/src/endpoints/modules/modules.dart';
 import 'package:core_server_server/src/generated/endpoints.dart';
 import 'package:core_server_server/src/generated/protocol.dart';
 import 'package:core_server_server/src/web/routes/root.dart';
@@ -28,6 +29,7 @@ Future<void> run(final List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+  await Modules.createModules(pod: pod);
 
   // Start the server.
   await pod.start();

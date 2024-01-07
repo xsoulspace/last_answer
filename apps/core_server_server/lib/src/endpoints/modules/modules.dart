@@ -11,20 +11,25 @@ class Modules {
   Modules({
     required this.googlePlayClient,
     required this.googlePlayHandlerFutureCall,
+    required this.pod,
   });
   final GooglePlayClient googlePlayClient;
   final GooglePlayHandlerFutureCall googlePlayHandlerFutureCall;
-
-  static Future<Modules> createModules() async {
+  final Serverpod pod;
+  static Future<Modules> createModules({
+    required final Serverpod pod,
+  }) async {
     /// Creates the Google Play and Apple Store [PurchaseHandler]
     /// and their dependencies
     final iapRepository = IapRepository();
     final googlePlayClient = await GooglePlayClient.load();
     return Modules(
+      pod: pod,
       googlePlayClient: googlePlayClient,
       googlePlayHandlerFutureCall: GooglePlayHandlerFutureCall(
         googlePlayClient: googlePlayClient,
         iapRepository: iapRepository,
+        serverpod: pod,
       ),
     );
   }
@@ -34,7 +39,7 @@ class Modules {
       googlePlayHandlerFutureCall,
     };
     for (final futureCall in futureCalls) {
-      Serverpod.instance!.registerFutureCall(futureCall, futureCall.name);
+      pod.registerFutureCall(futureCall, futureCall.name);
       unawaited(futureCall.scheduleCall());
     }
   }

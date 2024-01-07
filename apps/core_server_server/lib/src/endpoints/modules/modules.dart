@@ -1,52 +1,41 @@
-import 'dart:io';
+import 'dart:async';
 
+import 'package:core_server_server/src/endpoints/modules/google_play_client.dart';
 import 'package:core_server_server/src/endpoints/repositories/purchases/purchases.dart';
-import 'package:googleapis/androidpublisher/v3.dart' as ap;
-import 'package:googleapis/pubsub/v1.dart' as pubsub;
-import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:core_server_server/src/future_calls/future_calls.dart';
+import 'package:serverpod/serverpod.dart';
 
-class ModulesDiDto {
-  ModulesDiDto({
+export 'google_play_client.dart';
+
+class Modules {
+  Modules({
     required this.googlePlayClient,
+    required this.googlePlayHandlerFutureCall,
   });
   final GooglePlayClient googlePlayClient;
-}
+  final GooglePlayHandlerFutureCall googlePlayHandlerFutureCall;
 
-class GooglePlayClient {
-  GooglePlayClient({
-    required this.androidPublisher,
-    required this.pubsubApi,
-  });
-  final ap.AndroidPublisherApi androidPublisher;
-  final pubsub.PubsubApi pubsubApi;
-
-  static Future<GooglePlayClient> load() async {
-    // Configure Android Publisher API access
-    final serviceAccountGooglePlay =
-        File('assets/service-account-google-play.json').readAsStringSync();
-    final clientCredentialsGooglePlay =
-        auth.ServiceAccountCredentials.fromJson(serviceAccountGooglePlay);
-    final clientGooglePlay =
-        await auth.clientViaServiceAccount(clientCredentialsGooglePlay, [
-      ap.AndroidPublisherApi.androidpublisherScope,
-      pubsub.PubsubApi.cloudPlatformScope,
-    ]);
-    final androidPublisher = ap.AndroidPublisherApi(clientGooglePlay);
-
-    // Pub/Sub API to receive on purchase events from Google Play
-    final pubsubApi = pubsub.PubsubApi(clientGooglePlay);
-
-    return GooglePlayClient(
-      androidPublisher: androidPublisher,
-      pubsubApi: pubsubApi,
+  static Future<Modules> createModules() async {
+    /// Creates the Google Play and Apple Store [PurchaseHandler]
+    /// and their dependencies
+    final iapRepository = IapRepository();
+    final googlePlayClient = await GooglePlayClient.load();
+    return Modules(
+      googlePlayClient: googlePlayClient,
+      googlePlayHandlerFutureCall: GooglePlayHandlerFutureCall(
+        googlePlayClient: googlePlayClient,
+        iapRepository: iapRepository,
+      ),
     );
   }
-}
 
-/// Creates the Google Play and Apple Store [PurchaseHandler]
-/// and their dependencies
-Future<ModulesDiDto> _createPurchaseHandlers() async {
-  final iapPurchasesRepository = IapPurchasesRepository();
-  final googlePlayClient = await GooglePlayClient.load();
-  return ModulesDiDto(googlePlayClient: googlePlayClient);
+  void onLoad() {
+    final futureCalls = <ScheduledFutureCall>{
+      googlePlayHandlerFutureCall,
+    };
+    for (final futureCall in futureCalls) {
+      Serverpod.instance!.registerFutureCall(futureCall, futureCall.name);
+      unawaited(futureCall.scheduleCall());
+    }
+  }
 }

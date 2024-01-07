@@ -3,6 +3,7 @@ import 'package:core_server_server/src/generated/purchases.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:shared_models/shared_models.dart';
 
+/// API to get information about purchases
 class PurchasesEndpoint extends Endpoint {
   @override
   bool get requireLogin => true;
@@ -13,6 +14,8 @@ class PurchasesEndpoint extends Endpoint {
       PurchasesEndpointImpl().createPurchases(session);
 }
 
+/// Standalone implementation to use same logic
+/// in other endpoints
 class PurchasesEndpointImpl {
   Future<void> createPurchases(
     final Session session,

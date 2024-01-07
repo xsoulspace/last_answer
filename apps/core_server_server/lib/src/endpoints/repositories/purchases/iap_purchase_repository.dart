@@ -1,8 +1,8 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:shared_models/shared_models.dart';
 
-class IapPurchasesRepository {
-  IapPurchasesRepository();
+class IapRepository {
+  IapRepository();
 
   Future<void> createOrUpdatePurchase({
     required final Session session,

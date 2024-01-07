@@ -12,19 +12,19 @@ import 'package:serverpod/serverpod.dart';
 import 'package:shared_models/shared_models.dart';
 
 final class GooglePlayPurchaseHandler extends PurchaseHandler {
-  GooglePlayPurchaseHandler(
-    this.androidPublisher,
-    this.iapRepository,
-    this.pubsubApi,
-  ) {
+  GooglePlayPurchaseHandler({
+    required this.androidPublisher,
+    required this.iapRepository,
+    required this.pubsubApi,
+  }) {
     // Poll messages from Pub/Sub every 10 seconds
-    Timer.periodic(
-      const Duration(seconds: 10),
-      (final _) async => _pullMessageFromPubSub(),
-    );
+    // Timer.periodic(
+    //   const Duration(seconds: 10),
+    //   (final _) async => _pullMessageFromPubSub(),
+    // );
   }
   final ap.AndroidPublisherApi androidPublisher;
-  final IapPurchasesRepository iapRepository;
+  final IapRepository iapRepository;
   final pubsub.PubsubApi pubsubApi;
 
   /// Handle non-subscription purchases (one time purchases).
@@ -158,7 +158,11 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
 
   /// Process messages from Google Play
   /// Called every 10 seconds
-  Future<void> _pullMessageFromPubSub() async {
+  ///
+  /// Call this method periodically, in cron or future call or timer
+  Future<void> pullMessageFromPubSub({
+    required final Session session,
+  }) async {
     print('Polling Google Play messages');
     final request = pubsub.PullRequest(
       maxMessages: 1000,
@@ -173,13 +177,21 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
     for (final message in messages) {
       final data64 = message.message?.data;
       if (data64 != null) {
-        await _processMessage(data64, message.ackId);
+        await _processMessage(
+          data64: data64,
+          ackId: message.ackId,
+          session: session,
+        );
       }
     }
   }
 
   /// will currently handle only subscriptions
-  Future<void> _processMessage(final String data64, final String? ackId) async {
+  Future<void> _processMessage({
+    required final String data64,
+    required final String? ackId,
+    required final Session session,
+  }) async {
     final dataRaw = utf8.decode(base64Decode(data64));
     print('Received data: $dataRaw');
     final data = jsonDecode(dataRaw) as Map<String, dynamic>;
@@ -198,8 +210,6 @@ final class GooglePlayPurchaseHandler extends PurchaseHandler {
     final subscriptionId = subscriptionNotification['subscriptionId'] as String;
     final purchaseToken = subscriptionNotification['purchaseToken'] as String;
     final iapId = IAPId.values.firstWhere((final e) => e.id == subscriptionId);
-    final session = await Serverpod.instance?.createSession();
-    if (session == null) throw Exception('Could not create session');
     final result = await handleSubscription(
       session: session,
       userId: UserModelId.empty,

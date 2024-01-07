@@ -18,8 +18,9 @@ import 'package:serverpod/serverpod.dart';
 // passwords, and information about the request being made to the server.
 class AuthEndpoint extends Endpoint {
   Future<void> signInVkID(final Session session, final String name) async {
-    'Hello $name';
     // Users.createUser(session, userInfo);
+    // TODO(arenukvern): unimplemented
+    throw UnimplementedError('unimplemented error');
   }
 
   Future<void> completeSignIn(final Session session) async {

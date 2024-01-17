@@ -40,11 +40,11 @@ class UserEndpoint extends Endpoint {
   ) async =>
       _logic.putUser(session, user);
 
-  Future<void> receiveAdVideoReward(
+  Future<bool> receiveAdVideoReward(
     final Session session,
-    final int daysCount,
+    final int videoLength,
   ) =>
-      _logic.receiveAdVideoReward(session, daysCount);
+      _logic.receiveAdVideoReward(session, videoLength);
 
   Future<void> deleteUser(final Session session) async {
     /// ********************************************
@@ -101,7 +101,7 @@ class UserEndpoint extends Endpoint {
 class UserEndpointImpl {
   Future<bool> receiveAdVideoReward(
     final Session session,
-    final int daysCount,
+    final int videoLength,
   ) async {
     final userId = await session.userId;
     await PurchaseAction.db.insertRow(

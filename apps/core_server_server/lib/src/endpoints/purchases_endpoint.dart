@@ -21,20 +21,19 @@ class PurchasesEndpointImpl {
     final Session session,
   ) async {
     final userId = await session.userId;
-    final purchases = await Purchases.findSingleRow(
+    final purchases = await Purchases.db.findFirstRow(
       session,
       where: (final p0) => p0.userId.equals(userId),
-      useCache: false,
     );
     if (purchases != null) return;
     const initial = PurchasesModel.empty;
     final newPurchases = Purchases(
-      has_one_time_purchase: initial.hasOneTimePurchase,
-      purchased_days_left: initial.purchasedDaysLeft,
-      subscription_end_date: initial.subscriptionEndDate,
+      hasOneTimePurchase: initial.hasOneTimePurchase,
+      purchasedDaysLeft: initial.purchasedDaysLeft,
+      subscriptionEndDate: initial.subscriptionEndDate,
       userId: userId,
     );
 
-    await Purchases.insert(session, newPurchases);
+    await Purchases.db.insert(session, [newPurchases]);
   }
 }

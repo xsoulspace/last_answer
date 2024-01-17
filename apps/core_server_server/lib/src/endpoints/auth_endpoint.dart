@@ -28,9 +28,9 @@ class AuthEndpoint extends Endpoint {
     if (!isSignedIn) throw Exception('User is unauthorized');
     final userId = await session.auth.authenticatedUserId;
     if (userId == null) throw Exception('User is unauthorized');
-    final user = await User.findSingleRow(
+    final user = await User.db.findFirstRow(
       session,
-      where: (final v) => v.user_id.equals(userId),
+      where: (final v) => v.userId.equals(userId),
     );
     if (user != null) return;
     await UserEndpointImpl().putUser(session, null);

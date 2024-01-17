@@ -4,18 +4,28 @@
 // ignore_for_file: library_private_types_in_public_api
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
+// ignore_for_file: use_super_parameters
+// ignore_for_file: type_literal_in_constant_pattern
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-class Purchases extends _i1.SerializableEntity {
-  Purchases({
+abstract class Purchases extends _i1.SerializableEntity {
+  Purchases._({
     this.id,
+    required this.purchasedDaysLeft,
+    required this.hasOneTimePurchase,
+    this.subscriptionEndDate,
     required this.userId,
-    this.has_one_time_purchase,
-    this.subscription_end_date,
-    this.purchased_days_left,
   });
+
+  factory Purchases({
+    int? id,
+    required int purchasedDaysLeft,
+    required bool hasOneTimePurchase,
+    DateTime? subscriptionEndDate,
+    required int userId,
+  }) = _PurchasesImpl;
 
   factory Purchases.fromJson(
     Map<String, dynamic> jsonSerialization,
@@ -23,14 +33,14 @@ class Purchases extends _i1.SerializableEntity {
   ) {
     return Purchases(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
+      purchasedDaysLeft: serializationManager
+          .deserialize<int>(jsonSerialization['purchasedDaysLeft']),
+      hasOneTimePurchase: serializationManager
+          .deserialize<bool>(jsonSerialization['hasOneTimePurchase']),
+      subscriptionEndDate: serializationManager
+          .deserialize<DateTime?>(jsonSerialization['subscriptionEndDate']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
-      has_one_time_purchase: serializationManager
-          .deserialize<bool?>(jsonSerialization['has_one_time_purchase']),
-      subscription_end_date: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['subscription_end_date']),
-      purchased_days_left: serializationManager
-          .deserialize<int?>(jsonSerialization['purchased_days_left']),
     );
   }
 
@@ -39,22 +49,67 @@ class Purchases extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
+  int purchasedDaysLeft;
+
+  bool hasOneTimePurchase;
+
+  DateTime? subscriptionEndDate;
+
   int userId;
 
-  bool? has_one_time_purchase;
-
-  DateTime? subscription_end_date;
-
-  int? purchased_days_left;
-
+  Purchases copyWith({
+    int? id,
+    int? purchasedDaysLeft,
+    bool? hasOneTimePurchase,
+    DateTime? subscriptionEndDate,
+    int? userId,
+  });
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
+      'purchasedDaysLeft': purchasedDaysLeft,
+      'hasOneTimePurchase': hasOneTimePurchase,
+      if (subscriptionEndDate != null)
+        'subscriptionEndDate': subscriptionEndDate,
       'userId': userId,
-      'has_one_time_purchase': has_one_time_purchase,
-      'subscription_end_date': subscription_end_date,
-      'purchased_days_left': purchased_days_left,
     };
+  }
+}
+
+class _Undefined {}
+
+class _PurchasesImpl extends Purchases {
+  _PurchasesImpl({
+    int? id,
+    required int purchasedDaysLeft,
+    required bool hasOneTimePurchase,
+    DateTime? subscriptionEndDate,
+    required int userId,
+  }) : super._(
+          id: id,
+          purchasedDaysLeft: purchasedDaysLeft,
+          hasOneTimePurchase: hasOneTimePurchase,
+          subscriptionEndDate: subscriptionEndDate,
+          userId: userId,
+        );
+
+  @override
+  Purchases copyWith({
+    Object? id = _Undefined,
+    int? purchasedDaysLeft,
+    bool? hasOneTimePurchase,
+    Object? subscriptionEndDate = _Undefined,
+    int? userId,
+  }) {
+    return Purchases(
+      id: id is int? ? id : this.id,
+      purchasedDaysLeft: purchasedDaysLeft ?? this.purchasedDaysLeft,
+      hasOneTimePurchase: hasOneTimePurchase ?? this.hasOneTimePurchase,
+      subscriptionEndDate: subscriptionEndDate is DateTime?
+          ? subscriptionEndDate
+          : this.subscriptionEndDate,
+      userId: userId ?? this.userId,
+    );
   }
 }

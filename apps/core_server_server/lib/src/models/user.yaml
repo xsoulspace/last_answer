@@ -18,6 +18,6 @@ table: custom_users
 # for null safety. Eg. `List<int>?` or `List<MyOtherClass?>`.
 fields:
   # should be equal to serverpod_user_info.id
-  user_id: int
-  created_at: DateTime?
-  updated_at: DateTime?
+  userId: int
+  createdAt: DateTime?
+  updatedAt: DateTime?

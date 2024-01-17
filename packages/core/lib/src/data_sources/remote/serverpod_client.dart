@@ -25,9 +25,8 @@ class RemoteClientServerpodImpl implements RemoteClient {
     caller: client.modules.auth,
   );
 
-
   @override
   Future<void> onLoad() async {
+    await sessionManager.initialize();
   }
-
 }

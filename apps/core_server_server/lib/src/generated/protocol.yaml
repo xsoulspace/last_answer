@@ -1,0 +1,10 @@
+auth:
+  - signInVkID:
+  - completeSignIn:
+purchase:
+  - buySubscription:
+  - cancelSubscriptionAutorenew:
+  - resumeSubscriptionAutorenew:
+  - verifyNativeMobilePurchase:
+purchases:
+  - createPurchases:

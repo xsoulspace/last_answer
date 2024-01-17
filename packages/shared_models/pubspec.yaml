@@ -18,7 +18,7 @@ dependencies:
   path_provider: ^2.1.1
   path_to_regexp: ^0.4.0
   quiver: ^3.2.1
-  serverpod_client: 1.1.1
+  serverpod_client: 1.2.0
   universal_io: ^2.2.0
   uuid: ^4.1.0
 

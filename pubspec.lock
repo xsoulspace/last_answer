@@ -427,10 +427,10 @@ packages:
     dependency: transitive
     description:
       name: file_picker
-      sha256: be325344c1f3070354a1d84a231a1ba75ea85d413774ec4bdf444c023342e030
+      sha256: "4e42aacde3b993c5947467ab640882c56947d9d27342a5b6f2895b23956954a6"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0"
+    version: "6.1.1"
   file_selector_linux:
     dependency: transitive
     description:
@@ -943,34 +943,34 @@ packages:
     dependency: transitive
     description:
       name: image_cropper
-      sha256: "710ab4b7953e9ce1d27d833f741e5f8f3afb0b0ba3556dc0b844741b5f55c2b3"
+      sha256: f4bad5ed2dfff5a7ce0dfbad545b46a945c702bb6182a921488ef01ba7693111
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3"
+    version: "5.0.1"
   image_cropper_for_web:
     dependency: transitive
     description:
       name: image_cropper_for_web
-      sha256: "09e93a8ec0435adcaa23622ac090442872f18145d70b9ff605ffedcf97d56255"
+      sha256: "865d798b5c9d826f1185b32e5d0018c4183ddb77b7b82a931e1a06aa3b74974e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "3.0.0"
   image_cropper_platform_interface:
     dependency: transitive
     description:
       name: image_cropper_platform_interface
-      sha256: "62349e3aab63873ea9b9ab9f69d036ab8a0d74b3004beec4303981386cb9273f"
+      sha256: ee160d686422272aa306125f3b6fb1c1894d9b87a5e20ed33fa008e7285da11e
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3"
+    version: "5.0.0"
   image_picker:
     dependency: transitive
     description:
       name: image_picker
-      sha256: b6951e25b795d053a6ba03af5f710069c99349de9341af95155d52665cb4607c
+      sha256: "26222b01a0c9a2c8fe02fc90b8208bd3325da5ed1f4a2acabf75939031ac0bdd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.9"
+    version: "1.0.7"
   image_picker_android:
     dependency: transitive
     description:
@@ -1559,50 +1559,50 @@ packages:
     dependency: transitive
     description:
       name: serverpod_auth_client
-      sha256: "443f32578b1d338e20b1c0afbea39ed24227f94bb86a81bffe9b7c54bfd6ed95"
+      sha256: "9fb3f67a8b1f9e6c35a792ef64156d54c96730644379692a4d536573bc4cbc60"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   serverpod_auth_google_flutter:
     dependency: transitive
     description:
       name: serverpod_auth_google_flutter
-      sha256: "014f9ca58e50327dc0f07b5307a158d8488b596a96b8f6ccb8a0c5e6b643d34d"
+      sha256: bb3b749b9fd94ad15ad8e6ef21b58b767b60364a94a003f0334af430d755eaf8
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   serverpod_auth_shared_flutter:
     dependency: transitive
     description:
       name: serverpod_auth_shared_flutter
-      sha256: dbd357136e5baadb6a9a90e3368b0acc48c10f8af09e369fd0549951ea5c8118
+      sha256: "54aa2290e614d7e070b11037f5574053749c501e66487e680fdce4eeb8462d7e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   serverpod_client:
     dependency: transitive
     description:
       name: serverpod_client
-      sha256: "27bf49f7f24c029270623030cd9f120f3be99c36c56cb5dac976e5aa78509f28"
+      sha256: "0a0d2b2f4c1fa482d9ace9d18677ba0c6cf10505d4b61dbe49ae64164520f7ba"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   serverpod_flutter:
     dependency: transitive
     description:
       name: serverpod_flutter
-      sha256: ed4c5d33cbd832c2e3b9b5242dbd327444faa0f5d4783650889daccbe0fbe76a
+      sha256: "3026812cf30e6e1ca576da0c1242cac02195f5b8dfb5b40697556014c1490328"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   serverpod_serialization:
     dependency: transitive
     description:
       name: serverpod_serialization
-      sha256: f4ccf17387f6a5a251a0234acca77ce1cb22212987987637668876c394929cb7
+      sha256: "870acee38d697102aaf87ffc5fc174cf58d2cca03b55a4375d3d96e3cad569bb"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   share_plus:
     dependency: "direct main"
     description:

@@ -38,6 +38,12 @@ class UserEndpoint extends Endpoint {
   ) async =>
       UserEndpointImpl().putUser(session, user);
 
+  Future<void> receiveAdVideoReward(
+    final Session session,
+    final int daysCount,
+  ) =>
+      UserEndpointImpl().receiveAdVideoReward(session, daysCount);
+
   Future<void> deleteUser(final Session session) async {
     /// ********************************************
     /// *      CUSTOM RECORDS DELETION
@@ -53,36 +59,37 @@ class UserEndpoint extends Endpoint {
     // https://github.com/serverpod/serverpod/discussions/1096
     final userInfo = await Users.findUserByUserId(session, userId);
     if (userInfo != null) {
+      final deleteWhere = session.dbNext.deleteWhere;
       await Future.wait([
-        session.db.delete<UserImage>(
+        deleteWhere<UserImage>(
           where: UserImage.t.userId.equals(userId),
         ),
-        session.db.delete<AuthKey>(
+        deleteWhere<AuthKey>(
           where: AuthKey.t.userId.equals(userInfo.id),
         ),
-        session.db.delete<SessionLogEntry>(
+        deleteWhere<SessionLogEntry>(
           where: SessionLogEntry.t.authenticatedUserId.equals(userInfo.id),
         ),
-        session.db.delete<GoogleRefreshToken>(
+        deleteWhere<GoogleRefreshToken>(
           where: GoogleRefreshToken.t.userId.equals(userInfo.id),
         ),
-        session.db.delete<EmailReset>(
+        deleteWhere<EmailReset>(
           where: EmailReset.t.userId.equals(userInfo.id),
         ),
-        session.db.delete<EmailCreateAccountRequest>(
+        deleteWhere<EmailCreateAccountRequest>(
           where: EmailCreateAccountRequest.t.email.equals(userInfo.email),
         ),
-        session.db.delete<EmailFailedSignIn>(
+        deleteWhere<EmailFailedSignIn>(
           where: EmailFailedSignIn.t.email.equals(userInfo.email),
         ),
-        session.db.delete<EmailAuth>(
+        deleteWhere<EmailAuth>(
           where: EmailAuth.t.userId.equals(userInfo.id),
         ),
-        session.db.delete<AuthKey>(
+        deleteWhere<AuthKey>(
           where: AuthKey.t.userId.equals(userInfo.id),
         ),
       ]);
-      await session.db.delete<UserInfo>(
+      await deleteWhere<UserInfo>(
         where: UserInfo.t.userIdentifier.equals(userInfo.userIdentifier),
       );
     }
@@ -90,22 +97,34 @@ class UserEndpoint extends Endpoint {
 }
 
 class UserEndpointImpl {
+  Future<bool> receiveAdVideoReward(
+    final Session session,
+    final int daysCount,
+  ) async {
+    final userId = await session.userId;
+    await Purchase.db.insertRow(
+      session,
+      Purchase(daysBought: 7, userId: userId, purchaseDate: DateTime.now()),
+    );
+    return true;
+  }
+
   Future<void> putUser(
     final Session session,
     final RemoteUserModel? user,
   ) async {
     final userId = await session.userId;
-    final existedUser = await User.findById(session, userId);
+    final existedUser = await User.db.findById(session, userId);
     if (existedUser == null) {
       final updatedUser = User(
-        user_id: userId,
-        created_at: existedUser?.created_at ?? DateTime.now(),
-        updated_at: existedUser?.updated_at ?? DateTime.now(),
+        userId: userId,
+        createdAt: existedUser?.createdAt ?? DateTime.now(),
+        updatedAt: existedUser?.updatedAt ?? DateTime.now(),
       );
-      await User.insert(session, updatedUser);
+      await User.db.insertRow(session, updatedUser);
     } else {
-      existedUser.updated_at = DateTime.now();
-      await User.update(session, existedUser);
+      existedUser.updatedAt = DateTime.now();
+      await User.db.updateRow(session, existedUser);
     }
 
     await PurchasesEndpointImpl().createPurchases(session);

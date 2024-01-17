@@ -4,16 +4,17 @@
 // ignore_for_file: library_private_types_in_public_api
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
+// ignore_for_file: use_super_parameters
+// ignore_for_file: type_literal_in_constant_pattern
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/auth_endpoint.dart' as _i2;
 import '../endpoints/purchase_endpoint.dart' as _i3;
 import '../endpoints/purchases_endpoint.dart' as _i4;
-import '../endpoints/user_endpoint.dart' as _i5;
-import 'package:core_server_server/src/generated/purchase.dart' as _i6;
-import 'package:shared_models/src/models/models.dart' as _i7;
-import 'package:serverpod_auth_server/module.dart' as _i8;
+import 'package:core_server_server/src/generated/purchase.dart' as _i5;
+import 'package:shared_models/src/models/models.dart' as _i6;
+import 'package:serverpod_auth_server/module.dart' as _i7;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -35,12 +36,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ..initialize(
           server,
           'purchases',
-          null,
-        ),
-      'user': _i5.UserEndpoint()
-        ..initialize(
-          server,
-          'user',
           null,
         ),
     };
@@ -81,12 +76,12 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'purchase',
       endpoint: endpoints['purchase']!,
       methodConnectors: {
-        'setSubscription': _i1.MethodConnector(
-          name: 'setSubscription',
+        'buySubscription': _i1.MethodConnector(
+          name: 'buySubscription',
           params: {
             'purchaseId': _i1.ParameterDescription(
               name: 'purchaseId',
-              type: _i1.getType<_i6.Purchase>(),
+              type: _i1.getType<_i5.Purchase>(),
               nullable: false,
             )
           },
@@ -94,13 +89,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['purchase'] as _i3.PurchaseEndpoint).setSubscription(
+              (endpoints['purchase'] as _i3.PurchaseEndpoint).buySubscription(
             session,
             params['purchaseId'],
           ),
         ),
-        'cancelAutorenew': _i1.MethodConnector(
-          name: 'cancelAutorenew',
+        'cancelSubscriptionAutorenew': _i1.MethodConnector(
+          name: 'cancelSubscriptionAutorenew',
           params: {
             'purchaseId': _i1.ParameterDescription(
               name: 'purchaseId',
@@ -112,13 +107,14 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['purchase'] as _i3.PurchaseEndpoint).cancelAutorenew(
+              (endpoints['purchase'] as _i3.PurchaseEndpoint)
+                  .cancelSubscriptionAutorenew(
             session,
             params['purchaseId'],
           ),
         ),
-        'resumeAutorenew': _i1.MethodConnector(
-          name: 'resumeAutorenew',
+        'resumeSubscriptionAutorenew': _i1.MethodConnector(
+          name: 'resumeSubscriptionAutorenew',
           params: {
             'purchaseId': _i1.ParameterDescription(
               name: 'purchaseId',
@@ -130,7 +126,8 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['purchase'] as _i3.PurchaseEndpoint).resumeAutorenew(
+              (endpoints['purchase'] as _i3.PurchaseEndpoint)
+                  .resumeSubscriptionAutorenew(
             session,
             params['purchaseId'],
           ),
@@ -140,7 +137,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'productId': _i1.ParameterDescription(
               name: 'productId',
-              type: _i1.getType<_i7.IAPId>(),
+              type: _i1.getType<_i6.IAPId>(),
               nullable: false,
             ),
             'verificationData': _i1.ParameterDescription(
@@ -150,7 +147,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'provider': _i1.ParameterDescription(
               name: 'provider',
-              type: _i1.getType<_i7.PurchasePaymentProvider>(),
+              type: _i1.getType<_i6.PurchasePaymentProvider>(),
               nullable: false,
             ),
           },
@@ -184,48 +181,6 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
-    connectors['user'] = _i1.EndpointConnector(
-      name: 'user',
-      endpoint: endpoints['user']!,
-      methodConnectors: {
-        'getUser': _i1.MethodConnector(
-          name: 'getUser',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).getUser(session),
-        ),
-        'putUser': _i1.MethodConnector(
-          name: 'putUser',
-          params: {
-            'user': _i1.ParameterDescription(
-              name: 'user',
-              type: _i1.getType<_i7.RemoteUserModel?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).putUser(
-            session,
-            params['user'],
-          ),
-        ),
-        'deleteUser': _i1.MethodConnector(
-          name: 'deleteUser',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).deleteUser(session),
-        ),
-      },
-    );
-    modules['serverpod_auth'] = _i8.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i7.Endpoints()..initializeEndpoints(server);
   }
 }

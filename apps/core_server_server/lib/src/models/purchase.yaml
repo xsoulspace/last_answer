@@ -1,0 +1,22 @@
+# Is what defines a one purchase.
+# Used to declare transactions for a user.
+class: Purchase
+table: purchases_history
+fields:
+  # TODO: replace to Enum
+  # GooglePlay, AppStore, RuStore, Web
+  source: int?
+  # TODO: replace to Enum
+  # pending, active, expired
+  status: int?
+  # Ad Video Award, Purchase
+  type:
+  purchaseDate: DateTime
+  expiryDate: DateTime?
+  # the active subscription days countdown
+  daysBought: int
+
+  # Relational
+  userId: int, relation(parent=custom_users)
+  orderId: String?
+  productId: String?

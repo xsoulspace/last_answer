@@ -4,6 +4,8 @@
 // ignore_for_file: library_private_types_in_public_api
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
+// ignore_for_file: use_super_parameters
+// ignore_for_file: type_literal_in_constant_pattern
 
 library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixes
 
@@ -27,158 +29,12 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final Protocol _instance = Protocol._();
 
-  static final targetDatabaseDefinition = _i2.DatabaseDefinition(tables: [
-    _i2.TableDefinition(
-      name: 'custom_purchases',
-      schema: 'public',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'custom_purchases_id_seq\'::regclass)',
-        ),
-        _i2.ColumnDefinition(
-          name: 'source',
-          columnType: _i2.ColumnType.integer,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'status',
-          columnType: _i2.ColumnType.integer,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'purchase_date',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'expiry_date',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'orderId',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'productId',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'custom_purchases_fk_0',
-          columns: ['userId'],
-          referenceTable: 'custom_users',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: null,
-          onDelete: _i2.ForeignKeyAction.cascade,
-          matchType: null,
-        )
-      ],
-      indexes: [
-        _i2.IndexDefinition(
-          indexName: 'custom_purchases_pkey',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        )
-      ],
-      managed: true,
-    ),
-    _i2.TableDefinition(
-      name: 'custom_user_purchases',
-      schema: 'public',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'custom_user_purchases_id_seq\'::regclass)',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'has_one_time_purchase',
-          columnType: _i2.ColumnType.boolean,
-          isNullable: true,
-          dartType: 'bool?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'subscription_end_date',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'purchased_days_left',
-          columnType: _i2.ColumnType.integer,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'custom_user_purchases_fk_0',
-          columns: ['userId'],
-          referenceTable: 'custom_users',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: null,
-          onDelete: _i2.ForeignKeyAction.cascade,
-          matchType: null,
-        )
-      ],
-      indexes: [
-        _i2.IndexDefinition(
-          indexName: 'custom_user_purchases_pkey',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        )
-      ],
-      managed: true,
-    ),
+  static final List<_i2.TableDefinition> targetTableDefinitions = [
     _i2.TableDefinition(
       name: 'custom_users',
+      dartName: 'User',
       schema: 'public',
+      module: 'core_server',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -188,19 +44,19 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'custom_users_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'user_id',
+          name: 'userId',
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
-          name: 'created_at',
+          name: 'createdAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: true,
           dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
-          name: 'updated_at',
+          name: 'updatedAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: true,
           dartType: 'DateTime?',
@@ -224,9 +80,167 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       managed: true,
     ),
-    ..._i3.Protocol.targetDatabaseDefinition.tables,
-    ..._i2.Protocol.targetDatabaseDefinition.tables,
-  ]);
+    _i2.TableDefinition(
+      name: 'purchases_history',
+      dartName: 'Purchase',
+      schema: 'public',
+      module: 'core_server',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'purchases_history_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'source',
+          columnType: _i2.ColumnType.integer,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'status',
+          columnType: _i2.ColumnType.integer,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'purchaseDate',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'expiryDate',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'daysBought',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'orderId',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'productId',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'purchases_history_fk_0',
+          columns: ['userId'],
+          referenceTable: 'custom_users',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'purchases_history_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'user_purchase_info',
+      dartName: 'Purchases',
+      schema: 'public',
+      module: 'core_server',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'user_purchase_info_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'purchasedDaysLeft',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'hasOneTimePurchase',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _i2.ColumnDefinition(
+          name: 'subscriptionEndDate',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'user_purchase_info_fk_0',
+          columns: ['userId'],
+          referenceTable: 'custom_users',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'user_purchase_info_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    ..._i3.Protocol.targetTableDefinitions,
+    ..._i2.Protocol.targetTableDefinitions,
+  ];
 
   @override
   T deserialize<T>(
@@ -353,6 +367,9 @@ class Protocol extends _i1.SerializationManagerServer {
   }
 
   @override
-  _i2.DatabaseDefinition getTargetDatabaseDefinition() =>
-      targetDatabaseDefinition;
+  List<_i2.TableDefinition> getTargetTableDefinitions() =>
+      targetTableDefinitions;
+
+  @override
+  String getModuleName() => 'core_server';
 }

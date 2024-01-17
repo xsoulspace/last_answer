@@ -4,17 +4,26 @@
 // ignore_for_file: library_private_types_in_public_api
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
+// ignore_for_file: use_super_parameters
+// ignore_for_file: type_literal_in_constant_pattern
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-class User extends _i1.SerializableEntity {
-  User({
+abstract class User extends _i1.SerializableEntity {
+  User._({
     this.id,
-    required this.user_id,
-    this.created_at,
-    this.updated_at,
+    required this.userId,
+    this.createdAt,
+    this.updatedAt,
   });
+
+  factory User({
+    int? id,
+    required int userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) = _UserImpl;
 
   factory User.fromJson(
     Map<String, dynamic> jsonSerialization,
@@ -22,12 +31,12 @@ class User extends _i1.SerializableEntity {
   ) {
     return User(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      user_id:
-          serializationManager.deserialize<int>(jsonSerialization['user_id']),
-      created_at: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['created_at']),
-      updated_at: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['updated_at']),
+      userId:
+          serializationManager.deserialize<int>(jsonSerialization['userId']),
+      createdAt: serializationManager
+          .deserialize<DateTime?>(jsonSerialization['createdAt']),
+      updatedAt: serializationManager
+          .deserialize<DateTime?>(jsonSerialization['updatedAt']),
     );
   }
 
@@ -36,19 +45,56 @@ class User extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
-  int user_id;
+  int userId;
 
-  DateTime? created_at;
+  DateTime? createdAt;
 
-  DateTime? updated_at;
+  DateTime? updatedAt;
 
+  User copyWith({
+    int? id,
+    int? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  });
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'user_id': user_id,
-      'created_at': created_at,
-      'updated_at': updated_at,
+      if (id != null) 'id': id,
+      'userId': userId,
+      if (createdAt != null) 'createdAt': createdAt,
+      if (updatedAt != null) 'updatedAt': updatedAt,
     };
+  }
+}
+
+class _Undefined {}
+
+class _UserImpl extends User {
+  _UserImpl({
+    int? id,
+    required int userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) : super._(
+          id: id,
+          userId: userId,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+        );
+
+  @override
+  User copyWith({
+    Object? id = _Undefined,
+    int? userId,
+    Object? createdAt = _Undefined,
+    Object? updatedAt = _Undefined,
+  }) {
+    return User(
+      id: id is int? ? id : this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt is DateTime? ? createdAt : this.createdAt,
+      updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
+    );
   }
 }

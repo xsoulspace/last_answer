@@ -55,8 +55,8 @@ class EndpointUser extends _i1.EndpointRef {
         {'user': user},
       );
 
-  _i2.Future<void> receiveAdVideoReward(int daysCount) =>
-      caller.callServerEndpoint<void>(
+  _i2.Future<bool> receiveAdVideoReward(int daysCount) =>
+      caller.callServerEndpoint<bool>(
         'user',
         'receiveAdVideoReward',
         {'daysCount': daysCount},

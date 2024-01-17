@@ -1,3 +1,4 @@
+import 'package:core_server_client/core_server_client.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
@@ -8,13 +9,18 @@ class PurchasesRemoteDataSourceServerpodImpl
     required this.client,
   });
   final RemoteClientServerpodImpl client;
+  Client get _client => client.client;
+
   @override
   Future<PurchaseActionModel?> verifyNativeMobilePurchase({
     required final IAPId productId,
     required final String verificationData,
     required final PurchasePaymentProvider provider,
   }) async {
-    // client.
-    return null;
+    // TODO(arenukvern): unimplemented
+    throw UnimplementedError('unimplemented error');
   }
+
+  Future<bool> receiveAdVideoReward(final int videoLength) =>
+      _client.user.receiveAdVideoReward(videoLength);
 }

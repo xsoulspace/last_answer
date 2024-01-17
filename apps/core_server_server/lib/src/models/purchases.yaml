@@ -1,0 +1,10 @@
+# Availability of purchased products for user.
+class: Purchases
+table: user_purchase_info
+fields:
+  purchasedDaysLeft: int
+  hasOneTimePurchase: bool
+  subscriptionEndDate: DateTime?
+
+  # Relational
+  userId: int, relation(parent=custom_users)

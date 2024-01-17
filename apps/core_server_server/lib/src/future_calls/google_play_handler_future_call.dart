@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:core_server_server/src/endpoints/modules/modules.dart';
-import 'package:core_server_server/src/endpoints/repositories/purchases/purchases.dart';
 import 'package:core_server_server/src/future_calls/future_calls.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -19,23 +18,24 @@ import 'package:serverpod/serverpod.dart';
 final class GooglePlayHandlerFutureCall extends ScheduledFutureCall {
   GooglePlayHandlerFutureCall({
     required final GooglePlayClient googlePlayClient,
-    required final IapRepository iapRepository,
+    // required final IapRepository iapRepository,
     required super.serverpod,
-  }) : googlePlayHandler = GooglePlayPurchaseHandler(
-          androidPublisher: googlePlayClient.androidPublisher,
-          pubsubApi: googlePlayClient.pubsubApi,
-          iapRepository: iapRepository,
-        );
+  });
+  //  :googlePlayHandler = GooglePlayPurchaseHandler(
+  //         androidPublisher: googlePlayClient.androidPublisher,
+  //         pubsubApi: googlePlayClient.pubsubApi,
+  //         iapRepository: iapRepository,
+  //       );
   @override
   String get name => 'GooglePlayHandlerFutureCall';
 
-  final GooglePlayPurchaseHandler googlePlayHandler;
+  // final GooglePlayPurchaseHandler googlePlayHandler;
   @override
   Future<void> invoke(
     final Session session,
     final SerializableEntity? object,
   ) async {
-    await googlePlayHandler.pullMessageFromPubSub(session: session);
+    // await googlePlayHandler.pullMessageFromPubSub(session: session);
     unawaited(scheduleCall());
   }
 }

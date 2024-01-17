@@ -1,4 +1,4 @@
-import 'package:core_server_server/src/endpoints/purchases_endpoint.dart';
+import 'package:core_server_server/src/endpoints/user_purchase_info_endpoint.dart';
 import 'package:core_server_server/src/extensions/extensions.dart';
 import 'package:core_server_server/src/generated/protocol.dart';
 import 'package:serverpod/protocol.dart';
@@ -27,30 +27,32 @@ class UserEndpoint extends Endpoint {
 
   Future<RemoteUserModel> getUser(final Session session) async {
     final userId = await session.userId;
-    final user = await User.findById(session, userId);
+    final user = await User.db.findById(session, userId);
     if (user == null) throw Exception('User not found');
     return RemoteUserModel.fromRawJson(user.toJson());
   }
+
+  final _logic = UserEndpointImpl();
 
   Future<void> putUser(
     final Session session,
     final RemoteUserModel? user,
   ) async =>
-      UserEndpointImpl().putUser(session, user);
+      _logic.putUser(session, user);
 
   Future<void> receiveAdVideoReward(
     final Session session,
     final int daysCount,
   ) =>
-      UserEndpointImpl().receiveAdVideoReward(session, daysCount);
+      _logic.receiveAdVideoReward(session, daysCount);
 
   Future<void> deleteUser(final Session session) async {
     /// ********************************************
     /// *      CUSTOM RECORDS DELETION
     /// ********************************************
     final userId = await session.userId;
-    final user = await User.findById(session, userId);
-    if (user != null) await User.deleteRow(session, user);
+    final user = await User.db.findById(session, userId);
+    if (user != null) await User.db.deleteRow(session, user);
 
     /// ********************************************
     /// *      SYSTEM RECORDS DELETION
@@ -102,9 +104,14 @@ class UserEndpointImpl {
     final int daysCount,
   ) async {
     final userId = await session.userId;
-    await Purchase.db.insertRow(
+    await PurchaseAction.db.insertRow(
       session,
-      Purchase(daysBought: 7, userId: userId, purchaseDate: DateTime.now()),
+      PurchaseAction(
+        type: PurchaseType.videoAward.name,
+        rewardDaysQuantity: 7,
+        userId: userId,
+        createdAt: DateTime.now(),
+      ),
     );
     return true;
   }
@@ -127,6 +134,6 @@ class UserEndpointImpl {
       await User.db.updateRow(session, existedUser);
     }
 
-    await PurchasesEndpointImpl().createPurchases(session);
+    await UserPurchaseInfoEndpointImpl().createPurchaseInfo(session);
   }
 }

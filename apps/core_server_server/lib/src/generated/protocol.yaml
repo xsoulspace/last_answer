@@ -1,10 +1,10 @@
 auth:
   - signInVkID:
   - completeSignIn:
-purchase:
-  - buySubscription:
-  - cancelSubscriptionAutorenew:
-  - resumeSubscriptionAutorenew:
-  - verifyNativeMobilePurchase:
-purchases:
-  - createPurchases:
+user:
+  - getUser:
+  - putUser:
+  - receiveAdVideoReward:
+  - deleteUser:
+userPurchaseInfo:
+  - create:

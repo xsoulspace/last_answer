@@ -8,15 +8,16 @@ enum OneTimePurchaseStatus { pending, completed, cancelled }
 
 enum SubscriptionStatus { pending, active, expired }
 
-enum ProductType { subscription, oneTime }
-
 enum PurchasePeriod { oneTime, monthly, yearly }
 
 enum IAPId {
-  @JsonValue('pro_one_time_purchase')
   // 'last_answer_annual_subscription_2022',
   // 'last_answer_monthly_subscription_2022',
-  proOneTimePurchase('pro_one_time_purchase', productType: ProductType.oneTime);
+  @JsonValue('pro_one_time_purchase')
+  proOneTimePurchase(
+    'pro_one_time_purchase',
+    productType: PurchaseType.oneTimePurchase,
+  );
 
   const IAPId(this.id, {required this.productType});
   factory IAPId.byId(final String id) {
@@ -27,7 +28,7 @@ enum IAPId {
     return maybeId;
   }
   final String id;
-  final ProductType productType;
+  final PurchaseType productType;
   static final ids = IAPId.values.map((final e) => e.id).toSet();
 }
 
@@ -36,7 +37,7 @@ class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
   const factory PurchaseRequestDtoModel({
     required final IAPId productId,
     required final PurchasePaymentProvider provider,
-    required final ProductType type,
+    required final PurchaseType type,
   }) = _PurchaseRequestDtoModel;
   factory PurchaseRequestDtoModel.fromJson(
     final Map<String, dynamic> json,
@@ -51,82 +52,31 @@ class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
   const PurchaseRequestDtoModel._();
 }
 
+enum PurchaseType { videoAward, subscription, oneTimePurchase }
+
 @Freezed(unionKey: 'type')
-class PurchaseModel with _$PurchaseModel {
-  const factory PurchaseModel.oneTime({
-    @Default(IAPId.proOneTimePurchase) final IAPId productId,
-    @Default(PurchasePaymentProvider.googlePlay)
-    final PurchasePaymentProvider paymentProvider,
-    @Default('') final String originalTransactionID,
-    final DateTime? purchasedAt,
-
-    /// can contain symbol, so it's not double
-    @Default('') final String price,
-    @Default(PurchasePeriod.monthly) final PurchasePeriod period,
-    @Default(PurchaseAttributesModel.empty)
-    final PurchaseAttributesModel attributes,
-    final DateTime? willExpireAt,
+class PurchaseActionModel with _$PurchaseActionModel {
+  @FreezedUnionValue('videoAward')
+  const factory PurchaseActionModel.videoAward({
     @Default(UserModelId.empty) final UserModelId userId,
-    @Default(ProductType.oneTime) final ProductType type,
-    @Default(OneTimePurchaseStatus.pending) final OneTimePurchaseStatus status,
-  }) = PurchaseModelOneTime;
-  const factory PurchaseModel.subscription({
-    @Default(IAPId.proOneTimePurchase) final IAPId productId,
-    @Default(PurchasePaymentProvider.googlePlay)
-    final PurchasePaymentProvider paymentProvider,
-    @Default('') final String originalTransactionID,
-    final DateTime? purchasedAt,
-
-    /// can contain symbol, so it's not double
-    @Default('') final String price,
-    @Default(PurchasePeriod.monthly) final PurchasePeriod period,
-    @Default(PurchaseAttributesModel.empty)
-    final PurchaseAttributesModel attributes,
-    final DateTime? willExpireAt,
-    @Default(UserModelId.empty) final UserModelId userId,
-    @Default(ProductType.subscription) final ProductType type,
-    @Default(SubscriptionStatus.pending) final SubscriptionStatus status,
-  }) = PurchaseModelSubscription;
-  const PurchaseModel._();
-  factory PurchaseModel.fromJson(
+    @Default(PurchaseType.videoAward) final PurchaseType type,
+    @Default(0) final int rewardDaysQuantity,
+    final DateTime? createdAt,
+  }) = PurchaseActionModelVideoAward;
+  const PurchaseActionModel._();
+  factory PurchaseActionModel.fromJson(
     final Map<String, dynamic> json,
     // ignore: avoid_unused_constructor_parameters
     final SerializationManager serializationManager,
   ) =>
-      PurchaseModel.fromRawJson(json);
-  factory PurchaseModel.fromRawJson(
+      PurchaseActionModel.fromRawJson(json);
+  factory PurchaseActionModel.fromRawJson(
     final Map<String, dynamic> json,
   ) =>
-      _$PurchaseModelFromJson(json);
+      _$PurchaseActionModelFromJson(json);
 
-  static const empty = PurchaseModel.oneTime();
-  String get id => '${paymentProvider.name}_$originalTransactionID';
-  bool get isEmpty => originalTransactionID.isEmpty;
-  bool get isNotEmpty => originalTransactionID.isNotEmpty;
-  bool isActive() {
-    if (isOneTime) return true;
-    final willExpireAt = this.willExpireAt;
-    if (willExpireAt == null) {
-      assert(false, 'expiryDateTime cannot be null for subscription');
-      return false;
-    }
-    return willExpireAt.isAfter(DateTime.now()) == true;
-  }
-
-  bool get isYearly => period == PurchasePeriod.yearly;
-  bool get isMonthly => period == PurchasePeriod.monthly;
-  bool get isOneTime =>
-      period == PurchasePeriod.oneTime && type == ProductType.oneTime;
-}
-
-@freezed
-class PurchaseAttributesModel with _$PurchaseAttributesModel {
-  const factory PurchaseAttributesModel({
-    @Default(false) final bool isCancelled,
-    @Default(UserModelId.empty) final UserModelId customerId,
-  }) = _PurchaseAttributesModel;
-  factory PurchaseAttributesModel.fromJson(final Map<String, dynamic> json) =>
-      _$PurchaseAttributesModelFromJson(json);
-
-  static const empty = PurchaseAttributesModel();
+  static const empty = PurchaseActionModel.videoAward();
+  String get id => '${userId.value}_${createdAt?.millisecondsSinceEpoch}';
+  bool get isEmpty => userId.isEmpty || createdAt == null;
+  bool get isNotEmpty => !isEmpty;
 }

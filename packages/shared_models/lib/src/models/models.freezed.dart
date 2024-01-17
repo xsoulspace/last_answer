@@ -197,7 +197,7 @@ PurchaseRequestDtoModel _$PurchaseRequestDtoModelFromJson(
 mixin _$PurchaseRequestDtoModel {
   IAPId get productId => throw _privateConstructorUsedError;
   PurchasePaymentProvider get provider => throw _privateConstructorUsedError;
-  ProductType get type => throw _privateConstructorUsedError;
+  PurchaseType get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -212,7 +212,7 @@ abstract class $PurchaseRequestDtoModelCopyWith<$Res> {
       _$PurchaseRequestDtoModelCopyWithImpl<$Res, PurchaseRequestDtoModel>;
   @useResult
   $Res call(
-      {IAPId productId, PurchasePaymentProvider provider, ProductType type});
+      {IAPId productId, PurchasePaymentProvider provider, PurchaseType type});
 }
 
 /// @nodoc
@@ -245,7 +245,7 @@ class _$PurchaseRequestDtoModelCopyWithImpl<$Res,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ProductType,
+              as PurchaseType,
     ) as $Val);
   }
 }
@@ -260,7 +260,7 @@ abstract class _$$PurchaseRequestDtoModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {IAPId productId, PurchasePaymentProvider provider, ProductType type});
+      {IAPId productId, PurchasePaymentProvider provider, PurchaseType type});
 }
 
 /// @nodoc
@@ -292,7 +292,7 @@ class __$$PurchaseRequestDtoModelImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ProductType,
+              as PurchaseType,
     ));
   }
 }
@@ -312,7 +312,7 @@ class _$PurchaseRequestDtoModelImpl extends _PurchaseRequestDtoModel {
   @override
   final PurchasePaymentProvider provider;
   @override
-  final ProductType type;
+  final PurchaseType type;
 
   @override
   String toString() {
@@ -354,7 +354,7 @@ abstract class _PurchaseRequestDtoModel extends PurchaseRequestDtoModel {
   const factory _PurchaseRequestDtoModel(
       {required final IAPId productId,
       required final PurchasePaymentProvider provider,
-      required final ProductType type}) = _$PurchaseRequestDtoModelImpl;
+      required final PurchaseType type}) = _$PurchaseRequestDtoModelImpl;
   const _PurchaseRequestDtoModel._() : super._();
 
   factory _PurchaseRequestDtoModel.fromJson(Map<String, dynamic> json) =
@@ -365,184 +365,86 @@ abstract class _PurchaseRequestDtoModel extends PurchaseRequestDtoModel {
   @override
   PurchasePaymentProvider get provider;
   @override
-  ProductType get type;
+  PurchaseType get type;
   @override
   @JsonKey(ignore: true)
   _$$PurchaseRequestDtoModelImplCopyWith<_$PurchaseRequestDtoModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
-PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) {
-  switch (json['type']) {
-    case 'oneTime':
-      return PurchaseModelOneTime.fromJson(json);
-    case 'subscription':
-      return PurchaseModelSubscription.fromJson(json);
-
-    default:
-      throw CheckedFromJsonException(json, 'type', 'PurchaseModel',
-          'Invalid union type "${json['type']}"!');
-  }
+PurchaseActionModel _$PurchaseActionModelFromJson(Map<String, dynamic> json) {
+  return PurchaseActionModelVideoAward.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PurchaseModel {
-  IAPId get productId => throw _privateConstructorUsedError;
-  PurchasePaymentProvider get paymentProvider =>
-      throw _privateConstructorUsedError;
-  String get originalTransactionID => throw _privateConstructorUsedError;
-  DateTime? get purchasedAt => throw _privateConstructorUsedError;
-
-  /// can contain symbol, so it's not double
-  String get price => throw _privateConstructorUsedError;
-  PurchasePeriod get period => throw _privateConstructorUsedError;
-  PurchaseAttributesModel get attributes => throw _privateConstructorUsedError;
-  DateTime? get willExpireAt => throw _privateConstructorUsedError;
+mixin _$PurchaseActionModel {
   UserModelId get userId => throw _privateConstructorUsedError;
-  ProductType get type => throw _privateConstructorUsedError;
-  Enum get status => throw _privateConstructorUsedError;
+  PurchaseType get type => throw _privateConstructorUsedError;
+  int get rewardDaysQuantity => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)
-        oneTime,
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)
-        subscription,
+    required TResult Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)
+        videoAward,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
+    TResult? Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)?
+        videoAward,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
+    TResult Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)?
+        videoAward,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(PurchaseModelOneTime value) oneTime,
-    required TResult Function(PurchaseModelSubscription value) subscription,
+    required TResult Function(PurchaseActionModelVideoAward value) videoAward,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(PurchaseModelOneTime value)? oneTime,
-    TResult? Function(PurchaseModelSubscription value)? subscription,
+    TResult? Function(PurchaseActionModelVideoAward value)? videoAward,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(PurchaseModelOneTime value)? oneTime,
-    TResult Function(PurchaseModelSubscription value)? subscription,
+    TResult Function(PurchaseActionModelVideoAward value)? videoAward,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PurchaseModelCopyWith<PurchaseModel> get copyWith =>
+  $PurchaseActionModelCopyWith<PurchaseActionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PurchaseModelCopyWith<$Res> {
-  factory $PurchaseModelCopyWith(
-          PurchaseModel value, $Res Function(PurchaseModel) then) =
-      _$PurchaseModelCopyWithImpl<$Res, PurchaseModel>;
+abstract class $PurchaseActionModelCopyWith<$Res> {
+  factory $PurchaseActionModelCopyWith(
+          PurchaseActionModel value, $Res Function(PurchaseActionModel) then) =
+      _$PurchaseActionModelCopyWithImpl<$Res, PurchaseActionModel>;
   @useResult
   $Res call(
-      {IAPId productId,
-      PurchasePaymentProvider paymentProvider,
-      String originalTransactionID,
-      DateTime? purchasedAt,
-      String price,
-      PurchasePeriod period,
-      PurchaseAttributesModel attributes,
-      DateTime? willExpireAt,
-      UserModelId userId,
-      ProductType type});
+      {UserModelId userId,
+      PurchaseType type,
+      int rewardDaysQuantity,
+      DateTime? createdAt});
 
-  $PurchaseAttributesModelCopyWith<$Res> get attributes;
   $UserModelIdCopyWith<$Res> get userId;
 }
 
 /// @nodoc
-class _$PurchaseModelCopyWithImpl<$Res, $Val extends PurchaseModel>
-    implements $PurchaseModelCopyWith<$Res> {
-  _$PurchaseModelCopyWithImpl(this._value, this._then);
+class _$PurchaseActionModelCopyWithImpl<$Res, $Val extends PurchaseActionModel>
+    implements $PurchaseActionModelCopyWith<$Res> {
+  _$PurchaseActionModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -552,50 +454,12 @@ class _$PurchaseModelCopyWithImpl<$Res, $Val extends PurchaseModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? productId = null,
-    Object? paymentProvider = null,
-    Object? originalTransactionID = null,
-    Object? purchasedAt = freezed,
-    Object? price = null,
-    Object? period = null,
-    Object? attributes = null,
-    Object? willExpireAt = freezed,
     Object? userId = null,
     Object? type = null,
+    Object? rewardDaysQuantity = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
-      productId: null == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as IAPId,
-      paymentProvider: null == paymentProvider
-          ? _value.paymentProvider
-          : paymentProvider // ignore: cast_nullable_to_non_nullable
-              as PurchasePaymentProvider,
-      originalTransactionID: null == originalTransactionID
-          ? _value.originalTransactionID
-          : originalTransactionID // ignore: cast_nullable_to_non_nullable
-              as String,
-      purchasedAt: freezed == purchasedAt
-          ? _value.purchasedAt
-          : purchasedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String,
-      period: null == period
-          ? _value.period
-          : period // ignore: cast_nullable_to_non_nullable
-              as PurchasePeriod,
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as PurchaseAttributesModel,
-      willExpireAt: freezed == willExpireAt
-          ? _value.willExpireAt
-          : willExpireAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -603,16 +467,16 @@ class _$PurchaseModelCopyWithImpl<$Res, $Val extends PurchaseModel>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ProductType,
+              as PurchaseType,
+      rewardDaysQuantity: null == rewardDaysQuantity
+          ? _value.rewardDaysQuantity
+          : rewardDaysQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PurchaseAttributesModelCopyWith<$Res> get attributes {
-    return $PurchaseAttributesModelCopyWith<$Res>(_value.attributes, (value) {
-      return _then(_value.copyWith(attributes: value) as $Val);
-    });
   }
 
   @override
@@ -625,88 +489,43 @@ class _$PurchaseModelCopyWithImpl<$Res, $Val extends PurchaseModel>
 }
 
 /// @nodoc
-abstract class _$$PurchaseModelOneTimeImplCopyWith<$Res>
-    implements $PurchaseModelCopyWith<$Res> {
-  factory _$$PurchaseModelOneTimeImplCopyWith(_$PurchaseModelOneTimeImpl value,
-          $Res Function(_$PurchaseModelOneTimeImpl) then) =
-      __$$PurchaseModelOneTimeImplCopyWithImpl<$Res>;
+abstract class _$$PurchaseActionModelVideoAwardImplCopyWith<$Res>
+    implements $PurchaseActionModelCopyWith<$Res> {
+  factory _$$PurchaseActionModelVideoAwardImplCopyWith(
+          _$PurchaseActionModelVideoAwardImpl value,
+          $Res Function(_$PurchaseActionModelVideoAwardImpl) then) =
+      __$$PurchaseActionModelVideoAwardImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {IAPId productId,
-      PurchasePaymentProvider paymentProvider,
-      String originalTransactionID,
-      DateTime? purchasedAt,
-      String price,
-      PurchasePeriod period,
-      PurchaseAttributesModel attributes,
-      DateTime? willExpireAt,
-      UserModelId userId,
-      ProductType type,
-      OneTimePurchaseStatus status});
+      {UserModelId userId,
+      PurchaseType type,
+      int rewardDaysQuantity,
+      DateTime? createdAt});
 
-  @override
-  $PurchaseAttributesModelCopyWith<$Res> get attributes;
   @override
   $UserModelIdCopyWith<$Res> get userId;
 }
 
 /// @nodoc
-class __$$PurchaseModelOneTimeImplCopyWithImpl<$Res>
-    extends _$PurchaseModelCopyWithImpl<$Res, _$PurchaseModelOneTimeImpl>
-    implements _$$PurchaseModelOneTimeImplCopyWith<$Res> {
-  __$$PurchaseModelOneTimeImplCopyWithImpl(_$PurchaseModelOneTimeImpl _value,
-      $Res Function(_$PurchaseModelOneTimeImpl) _then)
+class __$$PurchaseActionModelVideoAwardImplCopyWithImpl<$Res>
+    extends _$PurchaseActionModelCopyWithImpl<$Res,
+        _$PurchaseActionModelVideoAwardImpl>
+    implements _$$PurchaseActionModelVideoAwardImplCopyWith<$Res> {
+  __$$PurchaseActionModelVideoAwardImplCopyWithImpl(
+      _$PurchaseActionModelVideoAwardImpl _value,
+      $Res Function(_$PurchaseActionModelVideoAwardImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? productId = null,
-    Object? paymentProvider = null,
-    Object? originalTransactionID = null,
-    Object? purchasedAt = freezed,
-    Object? price = null,
-    Object? period = null,
-    Object? attributes = null,
-    Object? willExpireAt = freezed,
     Object? userId = null,
     Object? type = null,
-    Object? status = null,
+    Object? rewardDaysQuantity = null,
+    Object? createdAt = freezed,
   }) {
-    return _then(_$PurchaseModelOneTimeImpl(
-      productId: null == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as IAPId,
-      paymentProvider: null == paymentProvider
-          ? _value.paymentProvider
-          : paymentProvider // ignore: cast_nullable_to_non_nullable
-              as PurchasePaymentProvider,
-      originalTransactionID: null == originalTransactionID
-          ? _value.originalTransactionID
-          : originalTransactionID // ignore: cast_nullable_to_non_nullable
-              as String,
-      purchasedAt: freezed == purchasedAt
-          ? _value.purchasedAt
-          : purchasedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String,
-      period: null == period
-          ? _value.period
-          : period // ignore: cast_nullable_to_non_nullable
-              as PurchasePeriod,
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as PurchaseAttributesModel,
-      willExpireAt: freezed == willExpireAt
-          ? _value.willExpireAt
-          : willExpireAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+    return _then(_$PurchaseActionModelVideoAwardImpl(
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -714,254 +533,107 @@ class __$$PurchaseModelOneTimeImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ProductType,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as OneTimePurchaseStatus,
+              as PurchaseType,
+      rewardDaysQuantity: null == rewardDaysQuantity
+          ? _value.rewardDaysQuantity
+          : rewardDaysQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$PurchaseModelOneTimeImpl extends PurchaseModelOneTime {
-  const _$PurchaseModelOneTimeImpl(
-      {this.productId = IAPId.proOneTimePurchase,
-      this.paymentProvider = PurchasePaymentProvider.googlePlay,
-      this.originalTransactionID = '',
-      this.purchasedAt,
-      this.price = '',
-      this.period = PurchasePeriod.monthly,
-      this.attributes = PurchaseAttributesModel.empty,
-      this.willExpireAt,
-      this.userId = UserModelId.empty,
-      this.type = ProductType.oneTime,
-      this.status = OneTimePurchaseStatus.pending})
+class _$PurchaseActionModelVideoAwardImpl
+    extends PurchaseActionModelVideoAward {
+  const _$PurchaseActionModelVideoAwardImpl(
+      {this.userId = UserModelId.empty,
+      this.type = PurchaseType.videoAward,
+      this.rewardDaysQuantity = 0,
+      this.createdAt})
       : super._();
 
-  factory _$PurchaseModelOneTimeImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PurchaseModelOneTimeImplFromJson(json);
+  factory _$PurchaseActionModelVideoAwardImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$PurchaseActionModelVideoAwardImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final IAPId productId;
-  @override
-  @JsonKey()
-  final PurchasePaymentProvider paymentProvider;
-  @override
-  @JsonKey()
-  final String originalTransactionID;
-  @override
-  final DateTime? purchasedAt;
-
-  /// can contain symbol, so it's not double
-  @override
-  @JsonKey()
-  final String price;
-  @override
-  @JsonKey()
-  final PurchasePeriod period;
-  @override
-  @JsonKey()
-  final PurchaseAttributesModel attributes;
-  @override
-  final DateTime? willExpireAt;
   @override
   @JsonKey()
   final UserModelId userId;
   @override
   @JsonKey()
-  final ProductType type;
+  final PurchaseType type;
   @override
   @JsonKey()
-  final OneTimePurchaseStatus status;
+  final int rewardDaysQuantity;
+  @override
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'PurchaseModel.oneTime(productId: $productId, paymentProvider: $paymentProvider, originalTransactionID: $originalTransactionID, purchasedAt: $purchasedAt, price: $price, period: $period, attributes: $attributes, willExpireAt: $willExpireAt, userId: $userId, type: $type, status: $status)';
+    return 'PurchaseActionModel.videoAward(userId: $userId, type: $type, rewardDaysQuantity: $rewardDaysQuantity, createdAt: $createdAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PurchaseModelOneTimeImpl &&
-            (identical(other.productId, productId) ||
-                other.productId == productId) &&
-            (identical(other.paymentProvider, paymentProvider) ||
-                other.paymentProvider == paymentProvider) &&
-            (identical(other.originalTransactionID, originalTransactionID) ||
-                other.originalTransactionID == originalTransactionID) &&
-            (identical(other.purchasedAt, purchasedAt) ||
-                other.purchasedAt == purchasedAt) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.period, period) || other.period == period) &&
-            (identical(other.attributes, attributes) ||
-                other.attributes == attributes) &&
-            (identical(other.willExpireAt, willExpireAt) ||
-                other.willExpireAt == willExpireAt) &&
+            other is _$PurchaseActionModelVideoAwardImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.rewardDaysQuantity, rewardDaysQuantity) ||
+                other.rewardDaysQuantity == rewardDaysQuantity) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      productId,
-      paymentProvider,
-      originalTransactionID,
-      purchasedAt,
-      price,
-      period,
-      attributes,
-      willExpireAt,
-      userId,
-      type,
-      status);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, type, rewardDaysQuantity, createdAt);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PurchaseModelOneTimeImplCopyWith<_$PurchaseModelOneTimeImpl>
-      get copyWith =>
-          __$$PurchaseModelOneTimeImplCopyWithImpl<_$PurchaseModelOneTimeImpl>(
-              this, _$identity);
+  _$$PurchaseActionModelVideoAwardImplCopyWith<
+          _$PurchaseActionModelVideoAwardImpl>
+      get copyWith => __$$PurchaseActionModelVideoAwardImplCopyWithImpl<
+          _$PurchaseActionModelVideoAwardImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)
-        oneTime,
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)
-        subscription,
+    required TResult Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)
+        videoAward,
   }) {
-    return oneTime(
-        productId,
-        paymentProvider,
-        originalTransactionID,
-        purchasedAt,
-        price,
-        period,
-        attributes,
-        willExpireAt,
-        userId,
-        type,
-        status);
+    return videoAward(userId, type, rewardDaysQuantity, createdAt);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
+    TResult? Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)?
+        videoAward,
   }) {
-    return oneTime?.call(
-        productId,
-        paymentProvider,
-        originalTransactionID,
-        purchasedAt,
-        price,
-        period,
-        attributes,
-        willExpireAt,
-        userId,
-        type,
-        status);
+    return videoAward?.call(userId, type, rewardDaysQuantity, createdAt);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
+    TResult Function(UserModelId userId, PurchaseType type,
+            int rewardDaysQuantity, DateTime? createdAt)?
+        videoAward,
     required TResult orElse(),
   }) {
-    if (oneTime != null) {
-      return oneTime(
-          productId,
-          paymentProvider,
-          originalTransactionID,
-          purchasedAt,
-          price,
-          period,
-          attributes,
-          willExpireAt,
-          userId,
-          type,
-          status);
+    if (videoAward != null) {
+      return videoAward(userId, type, rewardDaysQuantity, createdAt);
     }
     return orElse();
   }
@@ -969,695 +641,62 @@ class _$PurchaseModelOneTimeImpl extends PurchaseModelOneTime {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(PurchaseModelOneTime value) oneTime,
-    required TResult Function(PurchaseModelSubscription value) subscription,
+    required TResult Function(PurchaseActionModelVideoAward value) videoAward,
   }) {
-    return oneTime(this);
+    return videoAward(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(PurchaseModelOneTime value)? oneTime,
-    TResult? Function(PurchaseModelSubscription value)? subscription,
+    TResult? Function(PurchaseActionModelVideoAward value)? videoAward,
   }) {
-    return oneTime?.call(this);
+    return videoAward?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(PurchaseModelOneTime value)? oneTime,
-    TResult Function(PurchaseModelSubscription value)? subscription,
+    TResult Function(PurchaseActionModelVideoAward value)? videoAward,
     required TResult orElse(),
   }) {
-    if (oneTime != null) {
-      return oneTime(this);
+    if (videoAward != null) {
+      return videoAward(this);
     }
     return orElse();
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PurchaseModelOneTimeImplToJson(
+    return _$$PurchaseActionModelVideoAwardImplToJson(
       this,
     );
   }
 }
 
-abstract class PurchaseModelOneTime extends PurchaseModel {
-  const factory PurchaseModelOneTime(
-      {final IAPId productId,
-      final PurchasePaymentProvider paymentProvider,
-      final String originalTransactionID,
-      final DateTime? purchasedAt,
-      final String price,
-      final PurchasePeriod period,
-      final PurchaseAttributesModel attributes,
-      final DateTime? willExpireAt,
-      final UserModelId userId,
-      final ProductType type,
-      final OneTimePurchaseStatus status}) = _$PurchaseModelOneTimeImpl;
-  const PurchaseModelOneTime._() : super._();
+abstract class PurchaseActionModelVideoAward extends PurchaseActionModel {
+  const factory PurchaseActionModelVideoAward(
+      {final UserModelId userId,
+      final PurchaseType type,
+      final int rewardDaysQuantity,
+      final DateTime? createdAt}) = _$PurchaseActionModelVideoAwardImpl;
+  const PurchaseActionModelVideoAward._() : super._();
 
-  factory PurchaseModelOneTime.fromJson(Map<String, dynamic> json) =
-      _$PurchaseModelOneTimeImpl.fromJson;
+  factory PurchaseActionModelVideoAward.fromJson(Map<String, dynamic> json) =
+      _$PurchaseActionModelVideoAwardImpl.fromJson;
 
-  @override
-  IAPId get productId;
-  @override
-  PurchasePaymentProvider get paymentProvider;
-  @override
-  String get originalTransactionID;
-  @override
-  DateTime? get purchasedAt;
-  @override
-
-  /// can contain symbol, so it's not double
-  String get price;
-  @override
-  PurchasePeriod get period;
-  @override
-  PurchaseAttributesModel get attributes;
-  @override
-  DateTime? get willExpireAt;
   @override
   UserModelId get userId;
   @override
-  ProductType get type;
+  PurchaseType get type;
   @override
-  OneTimePurchaseStatus get status;
+  int get rewardDaysQuantity;
   @override
-  @JsonKey(ignore: true)
-  _$$PurchaseModelOneTimeImplCopyWith<_$PurchaseModelOneTimeImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$PurchaseModelSubscriptionImplCopyWith<$Res>
-    implements $PurchaseModelCopyWith<$Res> {
-  factory _$$PurchaseModelSubscriptionImplCopyWith(
-          _$PurchaseModelSubscriptionImpl value,
-          $Res Function(_$PurchaseModelSubscriptionImpl) then) =
-      __$$PurchaseModelSubscriptionImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {IAPId productId,
-      PurchasePaymentProvider paymentProvider,
-      String originalTransactionID,
-      DateTime? purchasedAt,
-      String price,
-      PurchasePeriod period,
-      PurchaseAttributesModel attributes,
-      DateTime? willExpireAt,
-      UserModelId userId,
-      ProductType type,
-      SubscriptionStatus status});
-
-  @override
-  $PurchaseAttributesModelCopyWith<$Res> get attributes;
-  @override
-  $UserModelIdCopyWith<$Res> get userId;
-}
-
-/// @nodoc
-class __$$PurchaseModelSubscriptionImplCopyWithImpl<$Res>
-    extends _$PurchaseModelCopyWithImpl<$Res, _$PurchaseModelSubscriptionImpl>
-    implements _$$PurchaseModelSubscriptionImplCopyWith<$Res> {
-  __$$PurchaseModelSubscriptionImplCopyWithImpl(
-      _$PurchaseModelSubscriptionImpl _value,
-      $Res Function(_$PurchaseModelSubscriptionImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? productId = null,
-    Object? paymentProvider = null,
-    Object? originalTransactionID = null,
-    Object? purchasedAt = freezed,
-    Object? price = null,
-    Object? period = null,
-    Object? attributes = null,
-    Object? willExpireAt = freezed,
-    Object? userId = null,
-    Object? type = null,
-    Object? status = null,
-  }) {
-    return _then(_$PurchaseModelSubscriptionImpl(
-      productId: null == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as IAPId,
-      paymentProvider: null == paymentProvider
-          ? _value.paymentProvider
-          : paymentProvider // ignore: cast_nullable_to_non_nullable
-              as PurchasePaymentProvider,
-      originalTransactionID: null == originalTransactionID
-          ? _value.originalTransactionID
-          : originalTransactionID // ignore: cast_nullable_to_non_nullable
-              as String,
-      purchasedAt: freezed == purchasedAt
-          ? _value.purchasedAt
-          : purchasedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String,
-      period: null == period
-          ? _value.period
-          : period // ignore: cast_nullable_to_non_nullable
-              as PurchasePeriod,
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as PurchaseAttributesModel,
-      willExpireAt: freezed == willExpireAt
-          ? _value.willExpireAt
-          : willExpireAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as ProductType,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as SubscriptionStatus,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PurchaseModelSubscriptionImpl extends PurchaseModelSubscription {
-  const _$PurchaseModelSubscriptionImpl(
-      {this.productId = IAPId.proOneTimePurchase,
-      this.paymentProvider = PurchasePaymentProvider.googlePlay,
-      this.originalTransactionID = '',
-      this.purchasedAt,
-      this.price = '',
-      this.period = PurchasePeriod.monthly,
-      this.attributes = PurchaseAttributesModel.empty,
-      this.willExpireAt,
-      this.userId = UserModelId.empty,
-      this.type = ProductType.subscription,
-      this.status = SubscriptionStatus.pending})
-      : super._();
-
-  factory _$PurchaseModelSubscriptionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PurchaseModelSubscriptionImplFromJson(json);
-
-  @override
-  @JsonKey()
-  final IAPId productId;
-  @override
-  @JsonKey()
-  final PurchasePaymentProvider paymentProvider;
-  @override
-  @JsonKey()
-  final String originalTransactionID;
-  @override
-  final DateTime? purchasedAt;
-
-  /// can contain symbol, so it's not double
-  @override
-  @JsonKey()
-  final String price;
-  @override
-  @JsonKey()
-  final PurchasePeriod period;
-  @override
-  @JsonKey()
-  final PurchaseAttributesModel attributes;
-  @override
-  final DateTime? willExpireAt;
-  @override
-  @JsonKey()
-  final UserModelId userId;
-  @override
-  @JsonKey()
-  final ProductType type;
-  @override
-  @JsonKey()
-  final SubscriptionStatus status;
-
-  @override
-  String toString() {
-    return 'PurchaseModel.subscription(productId: $productId, paymentProvider: $paymentProvider, originalTransactionID: $originalTransactionID, purchasedAt: $purchasedAt, price: $price, period: $period, attributes: $attributes, willExpireAt: $willExpireAt, userId: $userId, type: $type, status: $status)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PurchaseModelSubscriptionImpl &&
-            (identical(other.productId, productId) ||
-                other.productId == productId) &&
-            (identical(other.paymentProvider, paymentProvider) ||
-                other.paymentProvider == paymentProvider) &&
-            (identical(other.originalTransactionID, originalTransactionID) ||
-                other.originalTransactionID == originalTransactionID) &&
-            (identical(other.purchasedAt, purchasedAt) ||
-                other.purchasedAt == purchasedAt) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.period, period) || other.period == period) &&
-            (identical(other.attributes, attributes) ||
-                other.attributes == attributes) &&
-            (identical(other.willExpireAt, willExpireAt) ||
-                other.willExpireAt == willExpireAt) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.status, status) || other.status == status));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      productId,
-      paymentProvider,
-      originalTransactionID,
-      purchasedAt,
-      price,
-      period,
-      attributes,
-      willExpireAt,
-      userId,
-      type,
-      status);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PurchaseModelSubscriptionImplCopyWith<_$PurchaseModelSubscriptionImpl>
-      get copyWith => __$$PurchaseModelSubscriptionImplCopyWithImpl<
-          _$PurchaseModelSubscriptionImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)
-        oneTime,
-    required TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)
-        subscription,
-  }) {
-    return subscription(
-        productId,
-        paymentProvider,
-        originalTransactionID,
-        purchasedAt,
-        price,
-        period,
-        attributes,
-        willExpireAt,
-        userId,
-        type,
-        status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult? Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
-  }) {
-    return subscription?.call(
-        productId,
-        paymentProvider,
-        originalTransactionID,
-        purchasedAt,
-        price,
-        period,
-        attributes,
-        willExpireAt,
-        userId,
-        type,
-        status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            OneTimePurchaseStatus status)?
-        oneTime,
-    TResult Function(
-            IAPId productId,
-            PurchasePaymentProvider paymentProvider,
-            String originalTransactionID,
-            DateTime? purchasedAt,
-            String price,
-            PurchasePeriod period,
-            PurchaseAttributesModel attributes,
-            DateTime? willExpireAt,
-            UserModelId userId,
-            ProductType type,
-            SubscriptionStatus status)?
-        subscription,
-    required TResult orElse(),
-  }) {
-    if (subscription != null) {
-      return subscription(
-          productId,
-          paymentProvider,
-          originalTransactionID,
-          purchasedAt,
-          price,
-          period,
-          attributes,
-          willExpireAt,
-          userId,
-          type,
-          status);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(PurchaseModelOneTime value) oneTime,
-    required TResult Function(PurchaseModelSubscription value) subscription,
-  }) {
-    return subscription(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(PurchaseModelOneTime value)? oneTime,
-    TResult? Function(PurchaseModelSubscription value)? subscription,
-  }) {
-    return subscription?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(PurchaseModelOneTime value)? oneTime,
-    TResult Function(PurchaseModelSubscription value)? subscription,
-    required TResult orElse(),
-  }) {
-    if (subscription != null) {
-      return subscription(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PurchaseModelSubscriptionImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class PurchaseModelSubscription extends PurchaseModel {
-  const factory PurchaseModelSubscription(
-      {final IAPId productId,
-      final PurchasePaymentProvider paymentProvider,
-      final String originalTransactionID,
-      final DateTime? purchasedAt,
-      final String price,
-      final PurchasePeriod period,
-      final PurchaseAttributesModel attributes,
-      final DateTime? willExpireAt,
-      final UserModelId userId,
-      final ProductType type,
-      final SubscriptionStatus status}) = _$PurchaseModelSubscriptionImpl;
-  const PurchaseModelSubscription._() : super._();
-
-  factory PurchaseModelSubscription.fromJson(Map<String, dynamic> json) =
-      _$PurchaseModelSubscriptionImpl.fromJson;
-
-  @override
-  IAPId get productId;
-  @override
-  PurchasePaymentProvider get paymentProvider;
-  @override
-  String get originalTransactionID;
-  @override
-  DateTime? get purchasedAt;
-  @override
-
-  /// can contain symbol, so it's not double
-  String get price;
-  @override
-  PurchasePeriod get period;
-  @override
-  PurchaseAttributesModel get attributes;
-  @override
-  DateTime? get willExpireAt;
-  @override
-  UserModelId get userId;
-  @override
-  ProductType get type;
-  @override
-  SubscriptionStatus get status;
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$$PurchaseModelSubscriptionImplCopyWith<_$PurchaseModelSubscriptionImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-PurchaseAttributesModel _$PurchaseAttributesModelFromJson(
-    Map<String, dynamic> json) {
-  return _PurchaseAttributesModel.fromJson(json);
-}
-
-/// @nodoc
-mixin _$PurchaseAttributesModel {
-  bool get isCancelled => throw _privateConstructorUsedError;
-  UserModelId get customerId => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PurchaseAttributesModelCopyWith<PurchaseAttributesModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PurchaseAttributesModelCopyWith<$Res> {
-  factory $PurchaseAttributesModelCopyWith(PurchaseAttributesModel value,
-          $Res Function(PurchaseAttributesModel) then) =
-      _$PurchaseAttributesModelCopyWithImpl<$Res, PurchaseAttributesModel>;
-  @useResult
-  $Res call({bool isCancelled, UserModelId customerId});
-
-  $UserModelIdCopyWith<$Res> get customerId;
-}
-
-/// @nodoc
-class _$PurchaseAttributesModelCopyWithImpl<$Res,
-        $Val extends PurchaseAttributesModel>
-    implements $PurchaseAttributesModelCopyWith<$Res> {
-  _$PurchaseAttributesModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isCancelled = null,
-    Object? customerId = null,
-  }) {
-    return _then(_value.copyWith(
-      isCancelled: null == isCancelled
-          ? _value.isCancelled
-          : isCancelled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      customerId: null == customerId
-          ? _value.customerId
-          : customerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserModelIdCopyWith<$Res> get customerId {
-    return $UserModelIdCopyWith<$Res>(_value.customerId, (value) {
-      return _then(_value.copyWith(customerId: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$PurchaseAttributesModelImplCopyWith<$Res>
-    implements $PurchaseAttributesModelCopyWith<$Res> {
-  factory _$$PurchaseAttributesModelImplCopyWith(
-          _$PurchaseAttributesModelImpl value,
-          $Res Function(_$PurchaseAttributesModelImpl) then) =
-      __$$PurchaseAttributesModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool isCancelled, UserModelId customerId});
-
-  @override
-  $UserModelIdCopyWith<$Res> get customerId;
-}
-
-/// @nodoc
-class __$$PurchaseAttributesModelImplCopyWithImpl<$Res>
-    extends _$PurchaseAttributesModelCopyWithImpl<$Res,
-        _$PurchaseAttributesModelImpl>
-    implements _$$PurchaseAttributesModelImplCopyWith<$Res> {
-  __$$PurchaseAttributesModelImplCopyWithImpl(
-      _$PurchaseAttributesModelImpl _value,
-      $Res Function(_$PurchaseAttributesModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isCancelled = null,
-    Object? customerId = null,
-  }) {
-    return _then(_$PurchaseAttributesModelImpl(
-      isCancelled: null == isCancelled
-          ? _value.isCancelled
-          : isCancelled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      customerId: null == customerId
-          ? _value.customerId
-          : customerId // ignore: cast_nullable_to_non_nullable
-              as UserModelId,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PurchaseAttributesModelImpl implements _PurchaseAttributesModel {
-  const _$PurchaseAttributesModelImpl(
-      {this.isCancelled = false, this.customerId = UserModelId.empty});
-
-  factory _$PurchaseAttributesModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PurchaseAttributesModelImplFromJson(json);
-
-  @override
-  @JsonKey()
-  final bool isCancelled;
-  @override
-  @JsonKey()
-  final UserModelId customerId;
-
-  @override
-  String toString() {
-    return 'PurchaseAttributesModel(isCancelled: $isCancelled, customerId: $customerId)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PurchaseAttributesModelImpl &&
-            (identical(other.isCancelled, isCancelled) ||
-                other.isCancelled == isCancelled) &&
-            (identical(other.customerId, customerId) ||
-                other.customerId == customerId));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, isCancelled, customerId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PurchaseAttributesModelImplCopyWith<_$PurchaseAttributesModelImpl>
-      get copyWith => __$$PurchaseAttributesModelImplCopyWithImpl<
-          _$PurchaseAttributesModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PurchaseAttributesModelImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _PurchaseAttributesModel implements PurchaseAttributesModel {
-  const factory _PurchaseAttributesModel(
-      {final bool isCancelled,
-      final UserModelId customerId}) = _$PurchaseAttributesModelImpl;
-
-  factory _PurchaseAttributesModel.fromJson(Map<String, dynamic> json) =
-      _$PurchaseAttributesModelImpl.fromJson;
-
-  @override
-  bool get isCancelled;
-  @override
-  UserModelId get customerId;
-  @override
-  @JsonKey(ignore: true)
-  _$$PurchaseAttributesModelImplCopyWith<_$PurchaseAttributesModelImpl>
+  _$$PurchaseActionModelVideoAwardImplCopyWith<
+          _$PurchaseActionModelVideoAwardImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1869,8 +908,8 @@ mixin _$PurchasesModel {
 
   /// may be empty, for example in case if there is no payments made,
   /// or if user canceled subscription
-  @JsonKey(fromJson: PurchaseModel.fromRawJson)
-  PurchaseModel get activePurchase => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+  PurchaseActionModel get activePurchase => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1888,10 +927,10 @@ abstract class $PurchasesModelCopyWith<$Res> {
       {bool hasOneTimePurchase,
       DateTime? subscriptionEndDate,
       int purchasedDaysLeft,
-      @JsonKey(fromJson: PurchaseModel.fromRawJson)
-      PurchaseModel activePurchase});
+      @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+      PurchaseActionModel activePurchase});
 
-  $PurchaseModelCopyWith<$Res> get activePurchase;
+  $PurchaseActionModelCopyWith<$Res> get activePurchase;
 }
 
 /// @nodoc
@@ -1928,14 +967,14 @@ class _$PurchasesModelCopyWithImpl<$Res, $Val extends PurchasesModel>
       activePurchase: null == activePurchase
           ? _value.activePurchase
           : activePurchase // ignore: cast_nullable_to_non_nullable
-              as PurchaseModel,
+              as PurchaseActionModel,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $PurchaseModelCopyWith<$Res> get activePurchase {
-    return $PurchaseModelCopyWith<$Res>(_value.activePurchase, (value) {
+  $PurchaseActionModelCopyWith<$Res> get activePurchase {
+    return $PurchaseActionModelCopyWith<$Res>(_value.activePurchase, (value) {
       return _then(_value.copyWith(activePurchase: value) as $Val);
     });
   }
@@ -1953,11 +992,11 @@ abstract class _$$PurchasesModelImplCopyWith<$Res>
       {bool hasOneTimePurchase,
       DateTime? subscriptionEndDate,
       int purchasedDaysLeft,
-      @JsonKey(fromJson: PurchaseModel.fromRawJson)
-      PurchaseModel activePurchase});
+      @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+      PurchaseActionModel activePurchase});
 
   @override
-  $PurchaseModelCopyWith<$Res> get activePurchase;
+  $PurchaseActionModelCopyWith<$Res> get activePurchase;
 }
 
 /// @nodoc
@@ -1992,7 +1031,7 @@ class __$$PurchasesModelImplCopyWithImpl<$Res>
       activePurchase: null == activePurchase
           ? _value.activePurchase
           : activePurchase // ignore: cast_nullable_to_non_nullable
-              as PurchaseModel,
+              as PurchaseActionModel,
     ));
   }
 }
@@ -2005,8 +1044,8 @@ class _$PurchasesModelImpl extends _PurchasesModel {
       {this.hasOneTimePurchase = false,
       this.subscriptionEndDate,
       this.purchasedDaysLeft = 0,
-      @JsonKey(fromJson: PurchaseModel.fromRawJson)
-      this.activePurchase = PurchaseModel.empty})
+      @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+      this.activePurchase = PurchaseActionModel.empty})
       : super._();
 
   factory _$PurchasesModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -2034,8 +1073,8 @@ class _$PurchasesModelImpl extends _PurchasesModel {
   /// may be empty, for example in case if there is no payments made,
   /// or if user canceled subscription
   @override
-  @JsonKey(fromJson: PurchaseModel.fromRawJson)
-  final PurchaseModel activePurchase;
+  @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+  final PurchaseActionModel activePurchase;
 
   @override
   String toString() {
@@ -2082,8 +1121,8 @@ abstract class _PurchasesModel extends PurchasesModel {
       {final bool hasOneTimePurchase,
       final DateTime? subscriptionEndDate,
       final int purchasedDaysLeft,
-      @JsonKey(fromJson: PurchaseModel.fromRawJson)
-      final PurchaseModel activePurchase}) = _$PurchasesModelImpl;
+      @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+      final PurchaseActionModel activePurchase}) = _$PurchasesModelImpl;
   const _PurchasesModel._() : super._();
 
   factory _PurchasesModel.fromJson(Map<String, dynamic> json) =
@@ -2110,8 +1149,8 @@ abstract class _PurchasesModel extends PurchasesModel {
 
   /// may be empty, for example in case if there is no payments made,
   /// or if user canceled subscription
-  @JsonKey(fromJson: PurchaseModel.fromRawJson)
-  PurchaseModel get activePurchase;
+  @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+  PurchaseActionModel get activePurchase;
   @override
   @JsonKey(ignore: true)
   _$$PurchasesModelImplCopyWith<_$PurchasesModelImpl> get copyWith =>

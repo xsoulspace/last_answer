@@ -10,53 +10,36 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class Purchase extends _i1.SerializableEntity {
-  Purchase._({
+abstract class PurchaseAction extends _i1.SerializableEntity {
+  PurchaseAction._({
     this.id,
-    this.source,
-    this.status,
-    this.purchaseDate,
-    this.expiryDate,
-    required this.daysBought,
     required this.userId,
-    this.orderId,
-    this.productId,
+    required this.type,
+    required this.rewardDaysQuantity,
+    required this.createdAt,
   });
 
-  factory Purchase({
+  factory PurchaseAction({
     int? id,
-    int? source,
-    int? status,
-    DateTime? purchaseDate,
-    DateTime? expiryDate,
-    required int daysBought,
     required int userId,
-    String? orderId,
-    String? productId,
-  }) = _PurchaseImpl;
+    required String type,
+    required int rewardDaysQuantity,
+    required DateTime createdAt,
+  }) = _PurchaseActionImpl;
 
-  factory Purchase.fromJson(
+  factory PurchaseAction.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
   ) {
-    return Purchase(
+    return PurchaseAction(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      source:
-          serializationManager.deserialize<int?>(jsonSerialization['source']),
-      status:
-          serializationManager.deserialize<int?>(jsonSerialization['status']),
-      purchaseDate: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['purchaseDate']),
-      expiryDate: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['expiryDate']),
-      daysBought: serializationManager
-          .deserialize<int>(jsonSerialization['daysBought']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
-      orderId: serializationManager
-          .deserialize<String?>(jsonSerialization['orderId']),
-      productId: serializationManager
-          .deserialize<String?>(jsonSerialization['productId']),
+      type: serializationManager.deserialize<String>(jsonSerialization['type']),
+      rewardDaysQuantity: serializationManager
+          .deserialize<int>(jsonSerialization['rewardDaysQuantity']),
+      createdAt: serializationManager
+          .deserialize<DateTime>(jsonSerialization['createdAt']),
     );
   }
 
@@ -65,97 +48,64 @@ abstract class Purchase extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
-  int? source;
-
-  int? status;
-
-  DateTime? purchaseDate;
-
-  DateTime? expiryDate;
-
-  int daysBought;
-
   int userId;
 
-  String? orderId;
+  String type;
 
-  String? productId;
+  int rewardDaysQuantity;
 
-  Purchase copyWith({
+  DateTime createdAt;
+
+  PurchaseAction copyWith({
     int? id,
-    int? source,
-    int? status,
-    DateTime? purchaseDate,
-    DateTime? expiryDate,
-    int? daysBought,
     int? userId,
-    String? orderId,
-    String? productId,
+    String? type,
+    int? rewardDaysQuantity,
+    DateTime? createdAt,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      if (source != null) 'source': source,
-      if (status != null) 'status': status,
-      if (purchaseDate != null) 'purchaseDate': purchaseDate,
-      if (expiryDate != null) 'expiryDate': expiryDate,
-      'daysBought': daysBought,
       'userId': userId,
-      if (orderId != null) 'orderId': orderId,
-      if (productId != null) 'productId': productId,
+      'type': type,
+      'rewardDaysQuantity': rewardDaysQuantity,
+      'createdAt': createdAt,
     };
   }
 }
 
 class _Undefined {}
 
-class _PurchaseImpl extends Purchase {
-  _PurchaseImpl({
+class _PurchaseActionImpl extends PurchaseAction {
+  _PurchaseActionImpl({
     int? id,
-    int? source,
-    int? status,
-    DateTime? purchaseDate,
-    DateTime? expiryDate,
-    required int daysBought,
     required int userId,
-    String? orderId,
-    String? productId,
+    required String type,
+    required int rewardDaysQuantity,
+    required DateTime createdAt,
   }) : super._(
           id: id,
-          source: source,
-          status: status,
-          purchaseDate: purchaseDate,
-          expiryDate: expiryDate,
-          daysBought: daysBought,
           userId: userId,
-          orderId: orderId,
-          productId: productId,
+          type: type,
+          rewardDaysQuantity: rewardDaysQuantity,
+          createdAt: createdAt,
         );
 
   @override
-  Purchase copyWith({
+  PurchaseAction copyWith({
     Object? id = _Undefined,
-    Object? source = _Undefined,
-    Object? status = _Undefined,
-    Object? purchaseDate = _Undefined,
-    Object? expiryDate = _Undefined,
-    int? daysBought,
     int? userId,
-    Object? orderId = _Undefined,
-    Object? productId = _Undefined,
+    String? type,
+    int? rewardDaysQuantity,
+    DateTime? createdAt,
   }) {
-    return Purchase(
+    return PurchaseAction(
       id: id is int? ? id : this.id,
-      source: source is int? ? source : this.source,
-      status: status is int? ? status : this.status,
-      purchaseDate:
-          purchaseDate is DateTime? ? purchaseDate : this.purchaseDate,
-      expiryDate: expiryDate is DateTime? ? expiryDate : this.expiryDate,
-      daysBought: daysBought ?? this.daysBought,
       userId: userId ?? this.userId,
-      orderId: orderId is String? ? orderId : this.orderId,
-      productId: productId is String? ? productId : this.productId,
+      type: type ?? this.type,
+      rewardDaysQuantity: rewardDaysQuantity ?? this.rewardDaysQuantity,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

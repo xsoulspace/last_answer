@@ -43,9 +43,9 @@ class PurchasesModel with _$PurchasesModel {
 
     /// may be empty, for example in case if there is no payments made,
     /// or if user canceled subscription
-    @JsonKey(fromJson: PurchaseModel.fromRawJson)
-    @Default(PurchaseModel.empty)
-    final PurchaseModel activePurchase,
+    @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
+    @Default(PurchaseActionModel.empty)
+    final PurchaseActionModel activePurchase,
   }) = _PurchasesModel;
   factory PurchasesModel.fromJson(final Map<String, dynamic> json) =>
       _$PurchasesModelFromJson(json);

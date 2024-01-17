@@ -9,7 +9,7 @@ class PurchasesRemoteDataSourceServerpodImpl
   });
   final RemoteClientServerpodImpl client;
   @override
-  Future<PurchaseModel?> verifyNativeMobilePurchase({
+  Future<PurchaseActionModel?> verifyNativeMobilePurchase({
     required final IAPId productId,
     required final String verificationData,
     required final PurchasePaymentProvider provider,

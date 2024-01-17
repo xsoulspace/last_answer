@@ -82,7 +82,7 @@ class Protocol extends _i1.SerializationManagerServer {
     ),
     _i2.TableDefinition(
       name: 'purchases_history',
-      dartName: 'Purchase',
+      dartName: 'PurchaseAction',
       schema: 'public',
       module: 'core_server',
       columns: [
@@ -94,52 +94,28 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'purchases_history_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'source',
-          columnType: _i2.ColumnType.integer,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'status',
-          columnType: _i2.ColumnType.integer,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'purchaseDate',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'expiryDate',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'daysBought',
-          columnType: _i2.ColumnType.integer,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
           name: 'userId',
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
-          name: 'orderId',
+          name: 'type',
           columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
+          isNullable: false,
+          dartType: 'String',
         ),
         _i2.ColumnDefinition(
-          name: 'productId',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
+          name: 'rewardDaysQuantity',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
         ),
       ],
       foreignKeys: [
@@ -173,7 +149,7 @@ class Protocol extends _i1.SerializationManagerServer {
     ),
     _i2.TableDefinition(
       name: 'user_purchase_info',
-      dartName: 'Purchases',
+      dartName: 'UserPurchaseInfo',
       schema: 'public',
       module: 'core_server',
       columns: [
@@ -251,20 +227,22 @@ class Protocol extends _i1.SerializationManagerServer {
     if (customConstructors.containsKey(t)) {
       return customConstructors[t]!(data, this) as T;
     }
-    if (t == _i4.Purchase) {
-      return _i4.Purchase.fromJson(data, this) as T;
+    if (t == _i4.PurchaseAction) {
+      return _i4.PurchaseAction.fromJson(data, this) as T;
     }
-    if (t == _i5.Purchases) {
-      return _i5.Purchases.fromJson(data, this) as T;
+    if (t == _i5.UserPurchaseInfo) {
+      return _i5.UserPurchaseInfo.fromJson(data, this) as T;
     }
     if (t == _i6.User) {
       return _i6.User.fromJson(data, this) as T;
     }
-    if (t == _i1.getType<_i4.Purchase?>()) {
-      return (data != null ? _i4.Purchase.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i4.PurchaseAction?>()) {
+      return (data != null ? _i4.PurchaseAction.fromJson(data, this) : null)
+          as T;
     }
-    if (t == _i1.getType<_i5.Purchases?>()) {
-      return (data != null ? _i5.Purchases.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i5.UserPurchaseInfo?>()) {
+      return (data != null ? _i5.UserPurchaseInfo.fromJson(data, this) : null)
+          as T;
     }
     if (t == _i1.getType<_i6.User?>()) {
       return (data != null ? _i6.User.fromJson(data, this) : null) as T;
@@ -272,16 +250,17 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i7.RemoteUserModel) {
       return _i7.RemoteUserModel.fromJson(data, this) as T;
     }
-    if (t == _i7.PurchaseModel) {
-      return _i7.PurchaseModel.fromJson(data, this) as T;
+    if (t == _i7.PurchaseActionModel) {
+      return _i7.PurchaseActionModel.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i7.RemoteUserModel?>()) {
       return (data != null ? _i7.RemoteUserModel.fromJson(data, this) : null)
           as T;
     }
-    if (t == _i1.getType<_i7.PurchaseModel?>()) {
-      return (data != null ? _i7.PurchaseModel.fromJson(data, this) : null)
-          as T;
+    if (t == _i1.getType<_i7.PurchaseActionModel?>()) {
+      return (data != null
+          ? _i7.PurchaseActionModel.fromJson(data, this)
+          : null) as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -302,14 +281,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i7.RemoteUserModel) {
       return 'RemoteUserModel';
     }
-    if (data is _i7.PurchaseModel) {
-      return 'PurchaseModel';
+    if (data is _i7.PurchaseActionModel) {
+      return 'PurchaseActionModel';
     }
-    if (data is _i4.Purchase) {
-      return 'Purchase';
+    if (data is _i4.PurchaseAction) {
+      return 'PurchaseAction';
     }
-    if (data is _i5.Purchases) {
-      return 'Purchases';
+    if (data is _i5.UserPurchaseInfo) {
+      return 'UserPurchaseInfo';
     }
     if (data is _i6.User) {
       return 'User';
@@ -326,14 +305,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'RemoteUserModel') {
       return deserialize<_i7.RemoteUserModel>(data['data']);
     }
-    if (data['className'] == 'PurchaseModel') {
-      return deserialize<_i7.PurchaseModel>(data['data']);
+    if (data['className'] == 'PurchaseActionModel') {
+      return deserialize<_i7.PurchaseActionModel>(data['data']);
     }
-    if (data['className'] == 'Purchase') {
-      return deserialize<_i4.Purchase>(data['data']);
+    if (data['className'] == 'PurchaseAction') {
+      return deserialize<_i4.PurchaseAction>(data['data']);
     }
-    if (data['className'] == 'Purchases') {
-      return deserialize<_i5.Purchases>(data['data']);
+    if (data['className'] == 'UserPurchaseInfo') {
+      return deserialize<_i5.UserPurchaseInfo>(data['data']);
     }
     if (data['className'] == 'User') {
       return deserialize<_i6.User>(data['data']);
@@ -356,10 +335,10 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i4.Purchase:
-        return _i4.Purchase.t;
-      case _i5.Purchases:
-        return _i5.Purchases.t;
+      case _i4.PurchaseAction:
+        return _i4.PurchaseAction.t;
+      case _i5.UserPurchaseInfo:
+        return _i5.UserPurchaseInfo.t;
       case _i6.User:
         return _i6.User.t;
     }

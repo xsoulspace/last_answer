@@ -10,8 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class Purchases extends _i1.SerializableEntity {
-  Purchases._({
+abstract class UserPurchaseInfo extends _i1.SerializableEntity {
+  UserPurchaseInfo._({
     this.id,
     required this.purchasedDaysLeft,
     required this.hasOneTimePurchase,
@@ -19,19 +19,19 @@ abstract class Purchases extends _i1.SerializableEntity {
     required this.userId,
   });
 
-  factory Purchases({
+  factory UserPurchaseInfo({
     int? id,
     required int purchasedDaysLeft,
     required bool hasOneTimePurchase,
     DateTime? subscriptionEndDate,
     required int userId,
-  }) = _PurchasesImpl;
+  }) = _UserPurchaseInfoImpl;
 
-  factory Purchases.fromJson(
+  factory UserPurchaseInfo.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
   ) {
-    return Purchases(
+    return UserPurchaseInfo(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       purchasedDaysLeft: serializationManager
           .deserialize<int>(jsonSerialization['purchasedDaysLeft']),
@@ -57,7 +57,7 @@ abstract class Purchases extends _i1.SerializableEntity {
 
   int userId;
 
-  Purchases copyWith({
+  UserPurchaseInfo copyWith({
     int? id,
     int? purchasedDaysLeft,
     bool? hasOneTimePurchase,
@@ -79,8 +79,8 @@ abstract class Purchases extends _i1.SerializableEntity {
 
 class _Undefined {}
 
-class _PurchasesImpl extends Purchases {
-  _PurchasesImpl({
+class _UserPurchaseInfoImpl extends UserPurchaseInfo {
+  _UserPurchaseInfoImpl({
     int? id,
     required int purchasedDaysLeft,
     required bool hasOneTimePurchase,
@@ -95,14 +95,14 @@ class _PurchasesImpl extends Purchases {
         );
 
   @override
-  Purchases copyWith({
+  UserPurchaseInfo copyWith({
     Object? id = _Undefined,
     int? purchasedDaysLeft,
     bool? hasOneTimePurchase,
     Object? subscriptionEndDate = _Undefined,
     int? userId,
   }) {
-    return Purchases(
+    return UserPurchaseInfo(
       id: id is int? ? id : this.id,
       purchasedDaysLeft: purchasedDaysLeft ?? this.purchasedDaysLeft,
       hasOneTimePurchase: hasOneTimePurchase ?? this.hasOneTimePurchase,

@@ -1,5 +1,5 @@
 # Availability of purchased products for user.
-class: Purchases
+class: UserPurchaseInfo
 table: user_purchase_info
 fields:
   purchasedDaysLeft: int

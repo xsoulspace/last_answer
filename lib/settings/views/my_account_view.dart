@@ -81,8 +81,9 @@ class SubscriptionView extends StatelessWidget {
                 builder: (final context, final setLoading, final isLoading) =>
                     PurchasableProductTile(
                   details: e,
-                  activeProductId: purchasesContainer
-                      .value.purchases.activePurchase.productId,
+                  activeProductId: IAPId.proOneTimePurchase,
+                  //  purchasesContainer
+                  //     .value.purchases.activePurchase.productId,
                   isLoading: isLoading,
                   onPressed: () async {
                     setLoading(true);

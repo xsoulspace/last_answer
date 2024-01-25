@@ -1,5 +1,5 @@
-import 'package:core_server_server/src/endpoints/user_endpoint.dart';
-import 'package:core_server_server/src/generated/user.dart';
+import 'package:server/src/endpoints/user_endpoint.dart';
+import 'package:server/src/generated/user.dart';
 import 'package:serverpod/serverpod.dart';
 
 // This is an example endpoint of your server. It's best practice to use the

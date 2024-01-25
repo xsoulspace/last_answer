@@ -1,4 +1,4 @@
-name: core_server_server
+name: server
 description: Starting point for a Serverpod server.
 # version: 1.0.0
 # homepage: https://www.example.com

@@ -55,11 +55,11 @@ class EndpointUser extends _i1.EndpointRef {
         {'user': user},
       );
 
-  _i2.Future<bool> receiveAdVideoReward(int daysCount) =>
+  _i2.Future<bool> receiveAdVideoReward(_i3.AdVideoLengthType videoLength) =>
       caller.callServerEndpoint<bool>(
         'user',
         'receiveAdVideoReward',
-        {'daysCount': daysCount},
+        {'videoLength': videoLength},
       );
 
   _i2.Future<void> deleteUser() => caller.callServerEndpoint<void>(

@@ -42,7 +42,7 @@ class UserEndpoint extends Endpoint {
 
   Future<bool> receiveAdVideoReward(
     final Session session,
-    final int videoLength,
+    final AdVideoLengthType videoLength,
   ) =>
       _logic.receiveAdVideoReward(session, videoLength);
 
@@ -101,14 +101,18 @@ class UserEndpoint extends Endpoint {
 class UserEndpointImpl {
   Future<bool> receiveAdVideoReward(
     final Session session,
-    final int videoLength,
+    final AdVideoLengthType videoLength,
   ) async {
     final userId = await session.userId;
     await PurchaseAction.db.insertRow(
       session,
       PurchaseAction(
         type: PurchaseType.videoAward.name,
-        rewardDaysQuantity: 7,
+        rewardDaysQuantity: switch (videoLength) {
+          AdVideoLengthType.l => 14,
+          AdVideoLengthType.m => 7,
+          AdVideoLengthType.s => 3,
+        },
         userId: userId,
         createdAt: DateTime.now(),
       ),

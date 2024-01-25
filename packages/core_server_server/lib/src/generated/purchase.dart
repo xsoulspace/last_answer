@@ -10,62 +10,69 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class User extends _i1.TableRow {
-  User._({
+abstract class PurchaseAction extends _i1.TableRow {
+  PurchaseAction._({
     int? id,
     required this.userId,
-    this.createdAt,
-    this.updatedAt,
+    required this.type,
+    required this.rewardDaysQuantity,
+    required this.createdAt,
   }) : super(id);
 
-  factory User({
+  factory PurchaseAction({
     int? id,
     required int userId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) = _UserImpl;
+    required String type,
+    required int rewardDaysQuantity,
+    required DateTime createdAt,
+  }) = _PurchaseActionImpl;
 
-  factory User.fromJson(
+  factory PurchaseAction.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
   ) {
-    return User(
+    return PurchaseAction(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       userId:
           serializationManager.deserialize<int>(jsonSerialization['userId']),
+      type: serializationManager.deserialize<String>(jsonSerialization['type']),
+      rewardDaysQuantity: serializationManager
+          .deserialize<int>(jsonSerialization['rewardDaysQuantity']),
       createdAt: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['createdAt']),
-      updatedAt: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['updatedAt']),
+          .deserialize<DateTime>(jsonSerialization['createdAt']),
     );
   }
 
-  static final t = UserTable();
+  static final t = PurchaseActionTable();
 
-  static const db = UserRepository._();
+  static const db = PurchaseActionRepository._();
 
   int userId;
 
-  DateTime? createdAt;
+  String type;
 
-  DateTime? updatedAt;
+  int rewardDaysQuantity;
+
+  DateTime createdAt;
 
   @override
   _i1.Table get table => t;
 
-  User copyWith({
+  PurchaseAction copyWith({
     int? id,
     int? userId,
+    String? type,
+    int? rewardDaysQuantity,
     DateTime? createdAt,
-    DateTime? updatedAt,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
       'userId': userId,
-      if (createdAt != null) 'createdAt': createdAt,
-      if (updatedAt != null) 'updatedAt': updatedAt,
+      'type': type,
+      'rewardDaysQuantity': rewardDaysQuantity,
+      'createdAt': createdAt,
     };
   }
 
@@ -73,20 +80,22 @@ abstract class User extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0')
   Map<String, dynamic> toJsonForDatabase() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'userId': userId,
+      'type': type,
+      'rewardDaysQuantity': rewardDaysQuantity,
       'createdAt': createdAt,
-      'updatedAt': updatedAt,
     };
   }
 
   @override
   Map<String, dynamic> allToJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'userId': userId,
+      'type': type,
+      'rewardDaysQuantity': rewardDaysQuantity,
       'createdAt': createdAt,
-      'updatedAt': updatedAt,
     };
   }
 
@@ -102,11 +111,14 @@ abstract class User extends _i1.TableRow {
       case 'userId':
         userId = value;
         return;
+      case 'type':
+        type = value;
+        return;
+      case 'rewardDaysQuantity':
+        rewardDaysQuantity = value;
+        return;
       case 'createdAt':
         createdAt = value;
-        return;
-      case 'updatedAt':
-        updatedAt = value;
         return;
       default:
         throw UnimplementedError();
@@ -114,9 +126,9 @@ abstract class User extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<User>> find(
+  static Future<List<PurchaseAction>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? limit,
     int? offset,
     _i1.Column? orderBy,
@@ -125,8 +137,8 @@ abstract class User extends _i1.TableRow {
     bool useCache = true,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.find<User>(
-      where: where != null ? where(User.t) : null,
+    return session.db.find<PurchaseAction>(
+      where: where != null ? where(PurchaseAction.t) : null,
       limit: limit,
       offset: offset,
       orderBy: orderBy,
@@ -138,17 +150,17 @@ abstract class User extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<User?> findSingleRow(
+  static Future<PurchaseAction?> findSingleRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? offset,
     _i1.Column? orderBy,
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findSingleRow<User>(
-      where: where != null ? where(User.t) : null,
+    return session.db.findSingleRow<PurchaseAction>(
+      where: where != null ? where(PurchaseAction.t) : null,
       offset: offset,
       orderBy: orderBy,
       orderDescending: orderDescending,
@@ -158,21 +170,21 @@ abstract class User extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<User?> findById(
+  static Future<PurchaseAction?> findById(
     _i1.Session session,
     int id,
   ) async {
-    return session.db.findById<User>(id);
+    return session.db.findById<PurchaseAction>(id);
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
   static Future<int> delete(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<UserTable> where,
+    required _i1.WhereExpressionBuilder<PurchaseActionTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<User>(
-      where: where(User.t),
+    return session.db.delete<PurchaseAction>(
+      where: where(PurchaseAction.t),
       transaction: transaction,
     );
   }
@@ -180,7 +192,7 @@ abstract class User extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
   static Future<bool> deleteRow(
     _i1.Session session,
-    User row, {
+    PurchaseAction row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.deleteRow(
@@ -192,7 +204,7 @@ abstract class User extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
   static Future<bool> update(
     _i1.Session session,
-    User row, {
+    PurchaseAction row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.update(
@@ -205,7 +217,7 @@ abstract class User extends _i1.TableRow {
       'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
   static Future<void> insert(
     _i1.Session session,
-    User row, {
+    PurchaseAction row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.insert(
@@ -217,39 +229,39 @@ abstract class User extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
   static Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? limit,
     bool useCache = true,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<User>(
-      where: where != null ? where(User.t) : null,
+    return session.db.count<PurchaseAction>(
+      where: where != null ? where(PurchaseAction.t) : null,
       limit: limit,
       useCache: useCache,
       transaction: transaction,
     );
   }
 
-  static UserInclude include() {
-    return UserInclude._();
+  static PurchaseActionInclude include() {
+    return PurchaseActionInclude._();
   }
 
-  static UserIncludeList includeList({
-    _i1.WhereExpressionBuilder<UserTable>? where,
+  static PurchaseActionIncludeList includeList({
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<UserTable>? orderBy,
+    _i1.OrderByBuilder<PurchaseActionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<UserTable>? orderByList,
-    UserInclude? include,
+    _i1.OrderByListBuilder<PurchaseActionTable>? orderByList,
+    PurchaseActionInclude? include,
   }) {
-    return UserIncludeList._(
+    return PurchaseActionIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(User.t),
+      orderBy: orderBy?.call(PurchaseAction.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(User.t),
+      orderByList: orderByList?.call(PurchaseAction.t),
       include: include,
     );
   }
@@ -257,82 +269,94 @@ abstract class User extends _i1.TableRow {
 
 class _Undefined {}
 
-class _UserImpl extends User {
-  _UserImpl({
+class _PurchaseActionImpl extends PurchaseAction {
+  _PurchaseActionImpl({
     int? id,
     required int userId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    required String type,
+    required int rewardDaysQuantity,
+    required DateTime createdAt,
   }) : super._(
           id: id,
           userId: userId,
+          type: type,
+          rewardDaysQuantity: rewardDaysQuantity,
           createdAt: createdAt,
-          updatedAt: updatedAt,
         );
 
   @override
-  User copyWith({
+  PurchaseAction copyWith({
     Object? id = _Undefined,
     int? userId,
-    Object? createdAt = _Undefined,
-    Object? updatedAt = _Undefined,
+    String? type,
+    int? rewardDaysQuantity,
+    DateTime? createdAt,
   }) {
-    return User(
+    return PurchaseAction(
       id: id is int? ? id : this.id,
       userId: userId ?? this.userId,
-      createdAt: createdAt is DateTime? ? createdAt : this.createdAt,
-      updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
+      type: type ?? this.type,
+      rewardDaysQuantity: rewardDaysQuantity ?? this.rewardDaysQuantity,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }
 
-class UserTable extends _i1.Table {
-  UserTable({super.tableRelation}) : super(tableName: 'custom_users') {
+class PurchaseActionTable extends _i1.Table {
+  PurchaseActionTable({super.tableRelation})
+      : super(tableName: 'purchases_history') {
     userId = _i1.ColumnInt(
       'userId',
+      this,
+    );
+    type = _i1.ColumnString(
+      'type',
+      this,
+    );
+    rewardDaysQuantity = _i1.ColumnInt(
+      'rewardDaysQuantity',
       this,
     );
     createdAt = _i1.ColumnDateTime(
       'createdAt',
       this,
     );
-    updatedAt = _i1.ColumnDateTime(
-      'updatedAt',
-      this,
-    );
   }
 
   late final _i1.ColumnInt userId;
 
-  late final _i1.ColumnDateTime createdAt;
+  late final _i1.ColumnString type;
 
-  late final _i1.ColumnDateTime updatedAt;
+  late final _i1.ColumnInt rewardDaysQuantity;
+
+  late final _i1.ColumnDateTime createdAt;
 
   @override
   List<_i1.Column> get columns => [
         id,
         userId,
+        type,
+        rewardDaysQuantity,
         createdAt,
-        updatedAt,
       ];
 }
 
-@Deprecated('Use UserTable.t instead.')
-UserTable tUser = UserTable();
+@Deprecated('Use PurchaseActionTable.t instead.')
+PurchaseActionTable tPurchaseAction = PurchaseActionTable();
 
-class UserInclude extends _i1.IncludeObject {
-  UserInclude._();
+class PurchaseActionInclude extends _i1.IncludeObject {
+  PurchaseActionInclude._();
 
   @override
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table get table => User.t;
+  _i1.Table get table => PurchaseAction.t;
 }
 
-class UserIncludeList extends _i1.IncludeList {
-  UserIncludeList._({
-    _i1.WhereExpressionBuilder<UserTable>? where,
+class PurchaseActionIncludeList extends _i1.IncludeList {
+  PurchaseActionIncludeList._({
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -340,33 +364,33 @@ class UserIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(User.t);
+    super.where = where?.call(PurchaseAction.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => User.t;
+  _i1.Table get table => PurchaseAction.t;
 }
 
-class UserRepository {
-  const UserRepository._();
+class PurchaseActionRepository {
+  const PurchaseActionRepository._();
 
-  Future<List<User>> find(
+  Future<List<PurchaseAction>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<UserTable>? orderBy,
+    _i1.OrderByBuilder<PurchaseActionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<UserTable>? orderByList,
+    _i1.OrderByListBuilder<PurchaseActionTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.find<User>(
-      where: where?.call(User.t),
-      orderBy: orderBy?.call(User.t),
-      orderByList: orderByList?.call(User.t),
+    return session.dbNext.find<PurchaseAction>(
+      where: where?.call(PurchaseAction.t),
+      orderBy: orderBy?.call(PurchaseAction.t),
+      orderByList: orderByList?.call(PurchaseAction.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -374,90 +398,90 @@ class UserRepository {
     );
   }
 
-  Future<User?> findFirstRow(
+  Future<PurchaseAction?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? offset,
-    _i1.OrderByBuilder<UserTable>? orderBy,
+    _i1.OrderByBuilder<PurchaseActionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<UserTable>? orderByList,
+    _i1.OrderByListBuilder<PurchaseActionTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findFirstRow<User>(
-      where: where?.call(User.t),
-      orderBy: orderBy?.call(User.t),
-      orderByList: orderByList?.call(User.t),
+    return session.dbNext.findFirstRow<PurchaseAction>(
+      where: where?.call(PurchaseAction.t),
+      orderBy: orderBy?.call(PurchaseAction.t),
+      orderByList: orderByList?.call(PurchaseAction.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
     );
   }
 
-  Future<User?> findById(
+  Future<PurchaseAction?> findById(
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findById<User>(
+    return session.dbNext.findById<PurchaseAction>(
       id,
       transaction: transaction,
     );
   }
 
-  Future<List<User>> insert(
+  Future<List<PurchaseAction>> insert(
     _i1.Session session,
-    List<User> rows, {
+    List<PurchaseAction> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<User>(
+    return session.dbNext.insert<PurchaseAction>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<User> insertRow(
+  Future<PurchaseAction> insertRow(
     _i1.Session session,
-    User row, {
+    PurchaseAction row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<User>(
+    return session.dbNext.insertRow<PurchaseAction>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<User>> update(
+  Future<List<PurchaseAction>> update(
     _i1.Session session,
-    List<User> rows, {
-    _i1.ColumnSelections<UserTable>? columns,
+    List<PurchaseAction> rows, {
+    _i1.ColumnSelections<PurchaseActionTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<User>(
+    return session.dbNext.update<PurchaseAction>(
       rows,
-      columns: columns?.call(User.t),
+      columns: columns?.call(PurchaseAction.t),
       transaction: transaction,
     );
   }
 
-  Future<User> updateRow(
+  Future<PurchaseAction> updateRow(
     _i1.Session session,
-    User row, {
-    _i1.ColumnSelections<UserTable>? columns,
+    PurchaseAction row, {
+    _i1.ColumnSelections<PurchaseActionTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<User>(
+    return session.dbNext.updateRow<PurchaseAction>(
       row,
-      columns: columns?.call(User.t),
+      columns: columns?.call(PurchaseAction.t),
       transaction: transaction,
     );
   }
 
   Future<List<int>> delete(
     _i1.Session session,
-    List<User> rows, {
+    List<PurchaseAction> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<User>(
+    return session.dbNext.delete<PurchaseAction>(
       rows,
       transaction: transaction,
     );
@@ -465,10 +489,10 @@ class UserRepository {
 
   Future<int> deleteRow(
     _i1.Session session,
-    User row, {
+    PurchaseAction row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<User>(
+    return session.dbNext.deleteRow<PurchaseAction>(
       row,
       transaction: transaction,
     );
@@ -476,23 +500,23 @@ class UserRepository {
 
   Future<List<int>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<UserTable> where,
+    required _i1.WhereExpressionBuilder<PurchaseActionTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<User>(
-      where: where(User.t),
+    return session.dbNext.deleteWhere<PurchaseAction>(
+      where: where(PurchaseAction.t),
       transaction: transaction,
     );
   }
 
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
+    _i1.WhereExpressionBuilder<PurchaseActionTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<User>(
-      where: where?.call(User.t),
+    return session.dbNext.count<PurchaseAction>(
+      where: where?.call(PurchaseAction.t),
       limit: limit,
       transaction: transaction,
     );

@@ -599,54 +599,54 @@ packages:
     dependency: "direct main"
     description:
       name: serverpod
-      sha256: cce2621460bbeffdddff71704be496366627dc222bc15a49cfa3c2724716e3ef
+      sha256: "145c503494176c61bb29130dfbf82f94d63bf61a1de9c08d9363c29e024fd6e8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   serverpod_auth_server:
     dependency: "direct main"
     description:
       name: serverpod_auth_server
-      sha256: "0b57aff8cc99a8444fa7a175f9c70cd21cdb757b31e02f92ce06dcadfd47b82e"
+      sha256: f277d6eb9bbc18611117f6c18ea2a6c4d7314c92f83ffaaea5e8559ed1da25b2
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   serverpod_client:
     dependency: transitive
     description:
       name: serverpod_client
-      sha256: "0a0d2b2f4c1fa482d9ace9d18677ba0c6cf10505d4b61dbe49ae64164520f7ba"
+      sha256: "49762c593e7d21b8752ec32bd63c0ed85e5934e4c5f5e77372a8e883de24817f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   serverpod_serialization:
     dependency: transitive
     description:
       name: serverpod_serialization
-      sha256: "870acee38d697102aaf87ffc5fc174cf58d2cca03b55a4375d3d96e3cad569bb"
+      sha256: bffcb836e71c2485025adefece1ffe10ca454c77987e03fe115e69a4724354f2
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   serverpod_service_client:
     dependency: transitive
     description:
       name: serverpod_service_client
-      sha256: "7090ba178f504f017f9d04e6fb064289a023f479187639225a3e41b3d675de0b"
+      sha256: e1c92ace7147792fa9e273741ef5880b74a3ebbc7d2d063af524c17cabd9919e
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   serverpod_shared:
     dependency: transitive
     description:
       name: serverpod_shared
-      sha256: ab3b569478a87349ea4a38e58cd9c0130237f6a7ff94e3da1a81e2cfe75a7a51
+      sha256: e771e3502d667f32b0b1e2c7959ce42a36814f77bac5bbbbbb160bc1a5478922
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   shared_models:
     dependency: "direct main"
     description:
-      path: "../../packages/shared_models"
+      path: "../shared_models"
       relative: true
     source: path
     version: "0.0.1"

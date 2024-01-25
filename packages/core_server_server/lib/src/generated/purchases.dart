@@ -82,10 +82,11 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0')
   Map<String, dynamic> toJsonForDatabase() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'purchasedDaysLeft': purchasedDaysLeft,
       'hasOneTimePurchase': hasOneTimePurchase,
-      'subscriptionEndDate': subscriptionEndDate,
+      if (subscriptionEndDate != null)
+        'subscriptionEndDate': subscriptionEndDate,
       'userId': userId,
     };
   }
@@ -93,10 +94,11 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   @override
   Map<String, dynamic> allToJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'purchasedDaysLeft': purchasedDaysLeft,
       'hasOneTimePurchase': hasOneTimePurchase,
-      'subscriptionEndDate': subscriptionEndDate,
+      if (subscriptionEndDate != null)
+        'subscriptionEndDate': subscriptionEndDate,
       'userId': userId,
     };
   }

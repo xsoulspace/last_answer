@@ -1,6 +1,6 @@
-import 'package:core_server_server/src/endpoints/user_purchase_info_endpoint.dart';
-import 'package:core_server_server/src/extensions/extensions.dart';
-import 'package:core_server_server/src/generated/protocol.dart';
+import 'package:server/src/endpoints/user_purchase_info_endpoint.dart';
+import 'package:server/src/extensions/extensions.dart';
+import 'package:server/src/generated/protocol.dart';
 import 'package:serverpod/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';

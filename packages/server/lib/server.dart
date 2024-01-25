@@ -1,7 +1,7 @@
-import 'package:core_server_server/src/endpoints/modules/modules.dart';
-import 'package:core_server_server/src/generated/endpoints.dart';
-import 'package:core_server_server/src/generated/protocol.dart';
-import 'package:core_server_server/src/web/routes/root.dart';
+import 'package:server/src/endpoints/modules/modules.dart';
+import 'package:server/src/generated/endpoints.dart';
+import 'package:server/src/generated/protocol.dart';
+import 'package:server/src/web/routes/root.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart' as auth;
 

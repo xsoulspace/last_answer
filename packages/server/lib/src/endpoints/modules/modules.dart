@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:core_server_server/src/endpoints/modules/google_play_client.dart';
-import 'package:core_server_server/src/future_calls/future_calls.dart';
+import 'package:server/src/endpoints/modules/google_play_client.dart';
+import 'package:server/src/future_calls/future_calls.dart';
 import 'package:serverpod/serverpod.dart';
 
 export 'google_play_client.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:core_server_server/src/endpoints/modules/modules.dart';
-import 'package:core_server_server/src/future_calls/future_calls.dart';
+import 'package:server/src/endpoints/modules/modules.dart';
+import 'package:server/src/future_calls/future_calls.dart';
 import 'package:serverpod/serverpod.dart';
 
 // Future calls are calls that will be invoked at a later time. An example is if

@@ -1,4 +1,4 @@
-import 'package:core_server_server/src/endpoints/user_endpoint.dart';
+import 'package:server/src/endpoints/user_endpoint.dart';
 import 'package:serverpod/serverpod.dart';
 
 extension SessionExtension on Session {

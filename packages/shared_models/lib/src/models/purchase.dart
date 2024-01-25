@@ -10,6 +10,8 @@ enum SubscriptionStatus { pending, active, expired }
 
 enum PurchasePeriod { oneTime, monthly, yearly }
 
+enum AdVideoLengthType { s, m, l }
+
 enum IAPId {
   // 'last_answer_annual_subscription_2022',
   // 'last_answer_monthly_subscription_2022',

@@ -1,6 +1,6 @@
 type: server
 
-client_package_path: ../../packages/core_server_client
+client_package_path: ../core_server_client
 
 modules:
   serverpod_auth:

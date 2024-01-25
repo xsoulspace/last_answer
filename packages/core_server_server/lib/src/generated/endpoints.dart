@@ -105,9 +105,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'receiveAdVideoReward': _i1.MethodConnector(
           name: 'receiveAdVideoReward',
           params: {
-            'daysCount': _i1.ParameterDescription(
-              name: 'daysCount',
-              type: _i1.getType<int>(),
+            'videoLength': _i1.ParameterDescription(
+              name: 'videoLength',
+              type: _i1.getType<_i5.AdVideoLengthType>(),
               nullable: false,
             )
           },
@@ -117,7 +117,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['user'] as _i3.UserEndpoint).receiveAdVideoReward(
             session,
-            params['daysCount'],
+            params['videoLength'],
           ),
         ),
         'deleteUser': _i1.MethodConnector(

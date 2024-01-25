@@ -21,6 +21,7 @@ class PurchasesRemoteDataSourceServerpodImpl
     throw UnimplementedError('unimplemented error');
   }
 
-  Future<bool> receiveAdVideoReward(final int videoLength) =>
+  @override
+  Future<bool> receiveAdVideoReward(final AdVideoLengthType videoLength) =>
       _client.user.receiveAdVideoReward(videoLength);
 }

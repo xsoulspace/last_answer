@@ -7,5 +7,5 @@ abstract class PurchasesRemoteDataSource {
     required final String verificationData,
     required final PurchasePaymentProvider provider,
   });
-  Future<bool> receiveAdVideoReward(final int videoLength);
+  Future<bool> receiveAdVideoReward(final AdVideoLengthType videoLength);
 }

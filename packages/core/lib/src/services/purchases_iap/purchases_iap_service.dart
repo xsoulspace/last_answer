@@ -7,7 +7,7 @@ import 'purchases_iap_google_apple.dart';
 
 export 'purchases_iap_google_apple.dart';
 
-abstract base class PurchasesIap extends ChangeNotifier {
+abstract base class PurchasesIapService extends ChangeNotifier {
   Future<bool> checkIsStoreAvailable();
   Future<void> completePurchase(final PurchaseDetails details);
   Future<bool> buyNonConsumable(final PurchaseParam details);
@@ -16,5 +16,5 @@ abstract base class PurchasesIap extends ChangeNotifier {
   static PurchasesIapGoogleAppleImpl ofContextAsGoogleAppleImpl(
     final BuildContext context,
   ) =>
-      context.read<PurchasesIap>() as PurchasesIapGoogleAppleImpl;
+      context.read<PurchasesIapService>() as PurchasesIapGoogleAppleImpl;
 }

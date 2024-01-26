@@ -28,7 +28,7 @@ class GlobalStatesProvider extends StatelessWidget {
             /// for initialization
             create: (final context) => context.read<ComplexLocalDbIsarImpl>(),
           ),
-          ChangeNotifierProvider<PurchasesIap>(
+          ChangeNotifierProvider<PurchasesIapService>(
             /// for initialization
             create: (final context) => PurchasesIapGoogleAppleImpl(),
           ),

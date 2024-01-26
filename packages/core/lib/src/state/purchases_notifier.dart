@@ -14,7 +14,7 @@ class PurchasesNotifierDto {
       : userNotifier = context.read(),
         purchasesRepository = context.read(),
         purchasesIapGoogleAppleImpl =
-            PurchasesIap.ofContextAsGoogleAppleImpl(context);
+            PurchasesIapService.ofContextAsGoogleAppleImpl(context);
   final UserNotifier userNotifier;
   final PurchasesRepository purchasesRepository;
   final PurchasesIapGoogleAppleImpl purchasesIapGoogleAppleImpl;

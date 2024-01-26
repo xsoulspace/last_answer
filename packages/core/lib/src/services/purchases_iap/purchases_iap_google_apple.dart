@@ -9,7 +9,7 @@ import '../services.dart';
 
 /// Sources:
 /// https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases#9
-final class PurchasesIapGoogleAppleImpl extends PurchasesIap {
+final class PurchasesIapGoogleAppleImpl extends PurchasesIapService {
   /// IMPORTANT! You must subscribe to this stream as soon as your
   /// app launches, preferably before returning your main App Widget
   /// in main(). Otherwise you will miss purchase updated made

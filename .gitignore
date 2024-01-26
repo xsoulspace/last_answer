@@ -56,9 +56,9 @@ android/app/google-services.json
 ios/firebase_app_id_file.json
 ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
-apps/core_server_server/config/google_client_secret.json
-apps/core_server_server/config/prod.json
-apps/core_server_server/config/passwords.yaml
+*/google_client_secret.json
+*/prod.json
+*/passwords.yaml
 packages/core_server_client/pubspec.lock
 macos/Runner/GoogleService-Info.plist
 macos/firebase_app_id_file.json

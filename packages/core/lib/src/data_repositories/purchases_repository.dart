@@ -19,4 +19,8 @@ class PurchasesRepository {
         verificationData: verificationData,
         provider: provider,
       );
+  Future<bool> receiveAdVideoReward({
+    required final AdVideoLengthType videoLength,
+  }) =>
+      _remote.receiveAdVideoReward(videoLength);
 }

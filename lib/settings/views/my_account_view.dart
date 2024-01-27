@@ -87,7 +87,7 @@ class SubscriptionView extends StatelessWidget {
                   isLoading: isLoading,
                   onPressed: () async {
                     setLoading(true);
-                    await userNotifier.buySubscription(e);
+                    // await userNotifier.buySubscription(e);
                     setLoading(false);
                   },
                 ),

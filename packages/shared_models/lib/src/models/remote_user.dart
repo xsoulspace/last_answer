@@ -40,20 +40,14 @@ class PurchasesModel with _$PurchasesModel {
     /// If user purchased certain amount of days
     /// then he should have access until [purchasedDaysLeft] > 0
     @Default(0) final int purchasedDaysLeft,
-
-    /// may be empty, for example in case if there is no payments made,
-    /// or if user canceled subscription
-    @JsonKey(fromJson: PurchaseActionModel.fromRawJson)
-    @Default(PurchaseActionModel.empty)
-    final PurchaseActionModel activePurchase,
   }) = _PurchasesModel;
   factory PurchasesModel.fromJson(final Map<String, dynamic> json) =>
       _$PurchasesModelFromJson(json);
   const PurchasesModel._();
   static const empty = PurchasesModel();
-  bool get hasSubscription =>
+  bool get hasActiveSubscription =>
       subscriptionEndDate != null &&
       subscriptionEndDate?.isAfter(DateTime.now()) == true;
-  bool get isPurchased =>
-      hasOneTimePurchase || hasSubscription || purchasedDaysLeft > 0;
+  bool get isActive =>
+      hasOneTimePurchase || hasActiveSubscription || purchasedDaysLeft > 0;
 }

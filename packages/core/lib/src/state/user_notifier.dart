@@ -39,11 +39,6 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     return super.dispose();
   }
 
-  Future<void> buySubscription(final ProductDetails details) async {
-    await dto.purchasesNotifier.makePurchase(details);
-    // await dto.userRepository.verifySubscription(details);
-  }
-
   bool get isAuthorized =>
       _remoteUserNotifier.value.isLoaded &&
       _remoteUserNotifier.value.value.isNotEmpty;

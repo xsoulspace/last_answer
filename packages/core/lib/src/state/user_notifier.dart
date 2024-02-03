@@ -20,21 +20,16 @@ final uiLocaleNotifier = ValueNotifier(Locales.en);
 @stateDistributor
 class RemoteUserNotifier
     extends ValueNotifier<LoadableContainer<RemoteUserModel>> {
-  RemoteUserNotifier()
-      : super(const LoadableContainer(value: RemoteUserModel.empty));
   // ignore: avoid_unused_constructor_parameters
-  factory RemoteUserNotifier.provide(final BuildContext context) =>
-      RemoteUserNotifier();
-
+  RemoteUserNotifier(final BuildContext context)
+      : super(const LoadableContainer(value: RemoteUserModel.empty));
   bool get isAuthorized => value.isLoaded && value.value.isNotEmpty;
 }
 
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
-  UserNotifier({
-    required this.dto,
-  }) : super(const LoadableContainer(value: UserModel.empty));
-  factory UserNotifier.provide(final BuildContext context) =>
-      UserNotifier(dto: UserNotifierDto(context));
+  UserNotifier(final BuildContext context)
+      : dto = UserNotifierDto(context),
+        super(const LoadableContainer(value: UserModel.empty));
   final UserNotifierDto dto;
 
   @override

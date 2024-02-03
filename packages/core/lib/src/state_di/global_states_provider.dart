@@ -19,18 +19,14 @@ class GlobalStatesProvider extends StatelessWidget {
               host: Envs.serverHost,
             ),
           ),
-          Provider<ComplexLocalDbIsarImpl>(
-            create: (final context) => ComplexLocalDbIsarImpl(),
-          ),
+          Provider(create: ComplexLocalDbIsarImpl.new),
           Provider<LocalDbDataSource>(
             create: (final context) => SharedPreferencesDbDataSourceImpl(),
           ),
           Provider<ComplexLocalDb>(
-            /// for initialization
             create: (final context) => context.read<ComplexLocalDbIsarImpl>(),
           ),
           ChangeNotifierProvider<PurchasesIapService>(
-            /// for initialization
             create: (final context) => PurchasesIapGoogleAppleImpl(),
           ),
           Provider(create: PurchasesRepository.new),
@@ -40,15 +36,15 @@ class GlobalStatesProvider extends StatelessWidget {
           Provider(create: NotificationsRepository.new),
           Provider(create: ProjectsRepository.new),
           ChangeNotifierProvider(create: RemoteUserNotifier.new),
-          ChangeNotifierProvider(create: EmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: LastEmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: SpecialEmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: NotificationsNotifier.provide),
-          ChangeNotifierProvider(create: ProjectsNotifier.provide),
-          ChangeNotifierProvider(create: PurchasesNotifier.provide),
+          ChangeNotifierProvider(create: EmojiStateNotifier.new),
+          ChangeNotifierProvider(create: LastEmojiStateNotifier.new),
+          ChangeNotifierProvider(create: SpecialEmojiStateNotifier.new),
+          ChangeNotifierProvider(create: NotificationsNotifier.new),
+          ChangeNotifierProvider(create: ProjectsNotifier.new),
+          ChangeNotifierProvider(create: PurchasesNotifier.new),
           ChangeNotifierProvider(create: UserNotifier.new),
-          ChangeNotifierProvider(create: AppNotifier.provide),
-          ChangeNotifierProvider(create: OpenedProjectNotifier.provide),
+          ChangeNotifierProvider(create: AppNotifier.new),
+          ChangeNotifierProvider(create: OpenedProjectNotifier.new),
         ],
         child: Builder(builder: builder),
       );

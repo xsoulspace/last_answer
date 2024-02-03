@@ -11,13 +11,9 @@ class NotificationsNotifierState with _$NotificationsNotifierState {
 
 class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
     implements Loadable {
-  NotificationsNotifier({
-    required this.notificationRepository,
-  }) : super(const NotificationsNotifierState());
-  factory NotificationsNotifier.provide(final BuildContext context) =>
-      NotificationsNotifier(
-        notificationRepository: context.read(),
-      );
+  NotificationsNotifier(final BuildContext context)
+      : notificationRepository = context.read(),
+        super(const NotificationsNotifierState());
   final NotificationsRepository notificationRepository;
 
   Future<void> readAllUpdates() async {

@@ -19,13 +19,10 @@ class AppNotifierDto {
 }
 
 class AppNotifier extends ValueNotifier<AppNotifierState> {
-  AppNotifier({
-    required this.dto,
-  }) : super(const AppNotifierState());
+  AppNotifier(final BuildContext context)
+      : dto = AppNotifierDto(context),
+        super(const AppNotifierState());
 
-  factory AppNotifier.provide(final BuildContext context) => AppNotifier(
-        dto: AppNotifierDto(context),
-      );
   final AppNotifierDto dto;
 
   // TODO(arenukvern): add logic for connection change,

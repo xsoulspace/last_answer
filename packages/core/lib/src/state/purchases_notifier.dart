@@ -18,14 +18,10 @@ class PurchasesNotifierDto {
 
 class PurchasesNotifier
     extends ValueNotifier<LoadableContainer<PurchasesNotifierState>> {
-  PurchasesNotifier({
-    required this.dto,
-  }) : super(const LoadableContainer(value: PurchasesNotifierState.empty));
+  PurchasesNotifier(BuildContext context)
+      : dto = PurchasesNotifierDto(context),
+        super(const LoadableContainer(value: PurchasesNotifierState.empty));
 
-  factory PurchasesNotifier.provide(final BuildContext context) =>
-      PurchasesNotifier(
-        dto: PurchasesNotifierDto(context),
-      );
   final PurchasesNotifierDto dto;
   Future<void> onLoad() async {
     if (PlatformInfo.isNativeMobile) {

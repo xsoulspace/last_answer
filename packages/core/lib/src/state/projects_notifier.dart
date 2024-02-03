@@ -15,14 +15,10 @@ class ProjectsNotifierDto {
 }
 
 class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
-  ProjectsNotifier({
-    required this.dto,
-  }) : super(const ProjectsNotifierState());
+  ProjectsNotifier(BuildContext context)
+      : dto = ProjectsNotifierDto(context),
+        super(const ProjectsNotifierState());
 
-  factory ProjectsNotifier.provide(final BuildContext context) =>
-      ProjectsNotifier(
-        dto: ProjectsNotifierDto(context),
-      );
   final ProjectsNotifierDto dto;
   late final ProjectsPagedController projectsPagedController =
       ProjectsPagedController(

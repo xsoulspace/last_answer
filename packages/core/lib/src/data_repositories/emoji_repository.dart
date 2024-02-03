@@ -9,7 +9,7 @@ import '../../core.dart';
 final class LastUsedEmojiRepository
     extends MapBasedRepository<String, EmojiModel>
     implements LastUsedEmojiLocalDataSource {
-  LastUsedEmojiRepository.provide(final BuildContext context)
+  LastUsedEmojiRepository(final BuildContext context)
       : _datasource = LastUsedEmojiLocalDataSourceImpl(
           localDbDataSource: context.read(),
         );
@@ -22,7 +22,7 @@ final class LastUsedEmojiRepository
 }
 
 final class EmojiRepository {
-  EmojiRepository.provide(final BuildContext context)
+  EmojiRepository(final BuildContext context)
       : _datasource = EmojiLocalDataSourceImpl(
           assetBundle: DefaultAssetBundle.of(context),
         );

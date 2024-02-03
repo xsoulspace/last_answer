@@ -6,7 +6,7 @@ import 'package:shared_models/shared_models.dart';
 import '../../core.dart';
 
 class ProjectsRepository {
-  ProjectsRepository.provide(final BuildContext context)
+  ProjectsRepository(final BuildContext context)
       : _datasource = kIsWeb
             ? ProjectsLocalDataSourceLocalDbImpl(localDb: context.read())
             : ProjectsLocalDataSourceIsarImpl(isarDb: context.read());

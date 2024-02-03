@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core.dart';
 
 class NotificationsRepository implements NotificationsDataSource {
-  NotificationsRepository.provide(final BuildContext context)
+  NotificationsRepository(final BuildContext context)
       : _datasource = NotificationDataSourceImpl(
           localDbDataSource: context.read(),
           assetBundle: DefaultAssetBundle.of(context),

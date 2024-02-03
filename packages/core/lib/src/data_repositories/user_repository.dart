@@ -7,7 +7,7 @@ import '../data_sources/remote/auth.dart';
 import '../data_sources/remote/user.dart';
 
 class UserRepository {
-  UserRepository.provide(final BuildContext context)
+  UserRepository(final BuildContext context)
       : _local = UserLocalDataSourceImpl(
           localDbDataSource: context.read(),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core.dart';
+import '../data_repositories/purchases_repository.dart';
 
 class GlobalStatesProvider extends StatelessWidget {
   const GlobalStatesProvider({
@@ -32,19 +33,20 @@ class GlobalStatesProvider extends StatelessWidget {
             /// for initialization
             create: (final context) => PurchasesIapGoogleAppleImpl(),
           ),
-          Provider(create: EmojiRepository.provide),
-          Provider(create: LastUsedEmojiRepository.provide),
-          Provider(create: UserRepository.provide),
-          Provider(create: NotificationsRepository.provide),
-          Provider(create: ProjectsRepository.provide),
+          Provider(create: PurchasesRepository.new),
+          Provider(create: EmojiRepository.new),
+          Provider(create: LastUsedEmojiRepository.new),
+          Provider(create: UserRepository.new),
+          Provider(create: NotificationsRepository.new),
+          Provider(create: ProjectsRepository.new),
+          ChangeNotifierProvider(create: RemoteUserNotifier.new),
           ChangeNotifierProvider(create: EmojiStateNotifier.provide),
           ChangeNotifierProvider(create: LastEmojiStateNotifier.provide),
           ChangeNotifierProvider(create: SpecialEmojiStateNotifier.provide),
           ChangeNotifierProvider(create: NotificationsNotifier.provide),
           ChangeNotifierProvider(create: ProjectsNotifier.provide),
           ChangeNotifierProvider(create: PurchasesNotifier.provide),
-          ChangeNotifierProvider(create: RemoteUserNotifier.provide),
-          ChangeNotifierProvider(create: UserNotifier.provide),
+          ChangeNotifierProvider(create: UserNotifier.new),
           ChangeNotifierProvider(create: AppNotifier.provide),
           ChangeNotifierProvider(create: OpenedProjectNotifier.provide),
         ],

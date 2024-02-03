@@ -8,44 +8,45 @@ enum RemoteUserNotifierStatus {
 class UserNotifierDto {
   UserNotifierDto(final BuildContext context)
       : userRepository = context.read(),
-        purchasesNotifier = context.read();
-
+        purchasesNotifier = context.read(),
+        remoteUserNotifier = context.read();
   final UserRepository userRepository;
   final PurchasesNotifier purchasesNotifier;
+  final RemoteUserNotifier remoteUserNotifier;
 }
 
 final uiLocaleNotifier = ValueNotifier(Locales.en);
+
+@stateDistributor
+class RemoteUserNotifier
+    extends ValueNotifier<LoadableContainer<RemoteUserModel>> {
+  RemoteUserNotifier()
+      : super(const LoadableContainer(value: RemoteUserModel.empty));
+  // ignore: avoid_unused_constructor_parameters
+  factory RemoteUserNotifier.provide(final BuildContext context) =>
+      RemoteUserNotifier();
+
+  bool get isAuthorized => value.isLoaded && value.value.isNotEmpty;
+}
 
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserNotifier({
     required this.dto,
   }) : super(const LoadableContainer(value: UserModel.empty));
-  factory UserNotifier.provide(final BuildContext context) => UserNotifier(
-        dto: UserNotifierDto(context),
-      );
+  factory UserNotifier.provide(final BuildContext context) =>
+      UserNotifier(dto: UserNotifierDto(context));
   final UserNotifierDto dto;
-  late final _remoteUserNotifier = ValueNotifier(
-    const LoadableContainer(value: RemoteUserModel.empty),
-  )..addListener(notifyListeners);
-  LoadableContainer<RemoteUserModel> get remoteValue =>
-      _remoteUserNotifier.value;
 
   @override
   void dispose() {
     uiLocaleNotifier.dispose();
-    _remoteUserNotifier
-      ..removeListener(notifyListeners)
-      ..dispose();
     return super.dispose();
   }
 
-  bool get isAuthorized =>
-      _remoteUserNotifier.value.isLoaded &&
-      _remoteUserNotifier.value.value.isNotEmpty;
   Future<void> loadRemoteUser({final bool isAfterLogin = false}) async {
     if (isAfterLogin) await dto.userRepository.completeRemoteLogin();
     final user = await dto.userRepository.getRemoteUser();
-    _remoteUserNotifier.setValue(LoadableContainer.loaded(user));
+    dto.remoteUserNotifier.setValue(LoadableContainer.loaded(user));
   }
 
   void logout() {
@@ -53,7 +54,7 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     unawaited(dto.userRepository.logout());
   }
 
-  void resetRemoteUser() => _remoteUserNotifier
+  void resetRemoteUser() => dto.remoteUserNotifier
       .setValue(const LoadableContainer(value: RemoteUserModel.empty));
 
   bool get isLoaded => value.isLoaded;

@@ -10,9 +10,9 @@ class PurchasesNotifierState with _$PurchasesNotifierState {
 
 class PurchasesNotifierDto {
   PurchasesNotifierDto(final BuildContext context)
-      : userNotifier = context.read(),
+      : remoteUserNotifier = context.read(),
         purchasesRepository = context.read();
-  final UserNotifier userNotifier;
+  final RemoteUserNotifier remoteUserNotifier;
   final PurchasesRepository purchasesRepository;
 }
 
@@ -38,7 +38,7 @@ class PurchasesNotifier
     // add if needed
   }
   Future<void> onRemoteUserLoad() async {
-    final remoteUserContainer = dto.userNotifier.remoteValue;
+    final remoteUserContainer = dto.remoteUserNotifier.value;
     if (remoteUserContainer.isLoading) {
       throw ArgumentError.value('User should be already loaded');
     }
@@ -51,7 +51,7 @@ class PurchasesNotifier
     );
   }
 
-  UserModelId get _remoteUserId => dto.userNotifier.remoteValue.value.id;
+  UserModelId get _remoteUserId => dto.remoteUserNotifier.value.value.id;
 
   void _emitLoaded(final PurchasesNotifierState state) {
     value = LoadableContainer.loaded(state);

@@ -12,7 +12,7 @@ class MyAccountView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final userNotifier = context.watch<UserNotifier>();
+    final userNotifier = context.watch<RemoteUserNotifier>();
     final isAuthorized = userNotifier.isAuthorized;
     return isAuthorized || kDebugMode
         ? const _AuthorizedView()

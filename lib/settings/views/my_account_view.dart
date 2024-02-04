@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/settings/views/become_pro_view_noop.dart';
 import 'package:lastanswer/settings/widgets/settings_list_container.dart';
 
 class MyAccountView extends StatelessWidget {
@@ -22,39 +23,42 @@ class MyAccountView extends StatelessWidget {
 
 class _AuthorizedView extends StatelessWidget {
   const _AuthorizedView({super.key});
+  static const isPaymentsAvailable = false;
 
   @override
-  Widget build(final BuildContext context) => DefaultTabController(
-        length: 3,
-        child: NestedScrollView(
-          headerSliverBuilder: (final context, final innerBoxIsScrolled) => [
-            const SliverAppBar(
-              pinned: true,
-              toolbarHeight: 0,
-              automaticallyImplyLeading: false,
-              bottom: TabBar.secondary(
-                isScrollable: true,
-                tabAlignment: TabAlignment.center,
-                tabs: [
-                  Tab(text: 'Subscription'),
-                  Tab(text: 'Payment History'),
-                  Tab(text: 'Profile'),
-                ],
-              ),
-            ),
-          ],
-          body: const Padding(
-            padding: EdgeInsets.all(24),
-            child: TabBarView(
-              children: [
-                SubscriptionView(),
-                PaymentsHistoryListView(),
-                ProfileView(),
-              ],
+  Widget build(final BuildContext context) {
+    final tabs = {
+      if (isPaymentsAvailable)
+        const Tab(text: 'Subscription'): const SubscriptionView(),
+      if (isPaymentsAvailable)
+        const Tab(text: 'Payment History'): const PaymentsHistoryListView(),
+      const Tab(text: 'Become Pro'): const BecomeProView(),
+      const Tab(text: 'Profile'): const ProfileView(),
+    };
+    return DefaultTabController(
+      length: tabs.length,
+      child: NestedScrollView(
+        headerSliverBuilder: (final context, final innerBoxIsScrolled) => [
+          SliverAppBar(
+            pinned: true,
+            toolbarHeight: 0,
+            automaticallyImplyLeading: false,
+            bottom: TabBar.secondary(
+              isScrollable: true,
+              tabAlignment: TabAlignment.center,
+              tabs: tabs.keys.toList(),
             ),
           ),
+        ],
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: TabBarView(
+            children: tabs.values.toList(),
+          ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class SubscriptionView extends StatelessWidget {
@@ -157,6 +161,9 @@ class ProfileView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Text(
+          'Any information you creating are still be saved on your device.',
+        ),
         const Gap(24),
         TextButton(
           onPressed: userNotifier.logout,

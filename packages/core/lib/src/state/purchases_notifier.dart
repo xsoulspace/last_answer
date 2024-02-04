@@ -1,13 +1,5 @@
 part of 'state.dart';
 
-@freezed
-class PurchasesNotifierState with _$PurchasesNotifierState {
-  const factory PurchasesNotifierState({
-    @Default(PurchasesModel.empty) final PurchasesModel purchases,
-  }) = _PurchasesNotifierState;
-  static const empty = PurchasesNotifierState();
-}
-
 class PurchasesNotifierDto {
   PurchasesNotifierDto(final BuildContext context)
       : remoteUserNotifier = context.read(),
@@ -17,10 +9,10 @@ class PurchasesNotifierDto {
 }
 
 class PurchasesNotifier
-    extends ValueNotifier<LoadableContainer<PurchasesNotifierState>> {
-  PurchasesNotifier(BuildContext context)
+    extends ValueNotifier<LoadableContainer<PurchasesModel>> {
+  PurchasesNotifier(final BuildContext context)
       : dto = PurchasesNotifierDto(context),
-        super(const LoadableContainer(value: PurchasesNotifierState.empty));
+        super(const LoadableContainer(value: PurchasesModel.empty));
 
   final PurchasesNotifierDto dto;
   Future<void> onLoad() async {
@@ -40,16 +32,12 @@ class PurchasesNotifier
     }
     final user = remoteUserContainer.value;
     if (PlatformInfo.isNativeMobile) {}
-    _emitLoaded(
-      value.value.copyWith(
-        purchases: user.purchases,
-      ),
-    );
+    _emitLoaded(user.purchases);
   }
 
   UserModelId get _remoteUserId => dto.remoteUserNotifier.value.value.id;
 
-  void _emitLoaded(final PurchasesNotifierState state) {
+  void _emitLoaded(final PurchasesModel state) {
     value = LoadableContainer.loaded(state);
   }
 

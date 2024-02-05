@@ -2046,6 +2046,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  yandex_mobileads:
+    dependency: transitive
+    description:
+      name: yandex_mobileads
+      sha256: "4f9ed847394c77b7c8aa691fe9a1ed68b521efc3a8de633dac3c0c7ebd9f48c9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.0"
 sdks:
   dart: ">=3.2.3 <4.0.0"
   flutter: ">=3.16.4"

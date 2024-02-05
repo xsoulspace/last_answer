@@ -60,6 +60,7 @@ dependencies:
   universal_io: ^2.2.0
   url_launcher: ^6.1.14
   uuid: ^4.1.0
+  yandex_mobileads: ^6.2.0
 
 dependency_overrides:
   analyzer: ^6.3.0

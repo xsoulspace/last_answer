@@ -70,7 +70,7 @@ abstract class PurchaseAction extends _i1.SerializableEntity {
       'userId': userId,
       'type': type,
       'rewardDaysQuantity': rewardDaysQuantity,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toJson(),
     };
   }
 }

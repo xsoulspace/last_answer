@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
@@ -6,10 +7,15 @@ import '../data_sources/remote/remote.dart';
 
 class PurchasesRepository {
   PurchasesRepository(final BuildContext context)
-      : _remote = PurchasesRemoteDataSourceServerpodImpl(
+      : _remoteUserNotifier = context.read(),
+        _remote = PurchasesRemoteDataSourceServerpodImpl(
           client: RemoteClient.ofContextAsServerpodImpl(context),
-        );
+        ),
+        _local = PurchasesLocalDataSourceImpl(context);
   final PurchasesRemoteDataSource _remote;
+  final PurchasesLocalDataSource _local;
+  final RemoteUserNotifier _remoteUserNotifier;
+  bool get _isAuthorized => _remoteUserNotifier.isAuthorized;
   Future<PurchaseActionModel?> verifyNativeMobilePurchase({
     required final IAPId productId,
     required final String verificationData,
@@ -20,8 +26,29 @@ class PurchasesRepository {
         verificationData: verificationData,
         provider: provider,
       );
-  Future<bool> receiveAdVideoReward({
+
+  Future<PurchasesModel> receiveAdVideoReward({
     required final AdVideoLengthType videoLength,
   }) =>
-      _remote.receiveAdVideoReward(videoLength);
+      _local.receiveAdVideoReward(videoLength);
+
+  Future<PurchasesModel> getRemotePurchases() => _remote.getPurchases();
+  Future<PurchasesModel> getLocalPurchases() => _local.getPurchases();
+  Future<PurchasesModel> mergePurchases({
+    required final PurchasesModel localPurchases,
+  }) async {
+    final remotePurchases = await getRemotePurchases();
+    PurchasesModel updatedPurchase = remotePurchases.mergeWith(localPurchases);
+    updatedPurchase = await _remote.mergeLocalPurchases(updatedPurchase);
+    return _local.setPurchases(updatedPurchase);
+  }
+
+  Future<PurchasesModel> recordNewDay() async {
+    await _local.consumeSupporterDay();
+    PurchasesModel purchases = await _local.increaseSupporterDaysCount();
+    if (_isAuthorized) {
+      purchases = await _remote.mergeLocalPurchases(purchases);
+    }
+    return purchases;
+  }
 }

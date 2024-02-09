@@ -7,4 +7,5 @@ enum SharedPreferencesKeys {
   lastUsedEmojis,
   charactersLimitForNewNotes,
   user,
+  purchases,
 }

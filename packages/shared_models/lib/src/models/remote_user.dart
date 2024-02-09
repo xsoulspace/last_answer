@@ -7,7 +7,6 @@ class RemoteUserModel with _$RemoteUserModel {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory RemoteUserModel({
     @Default(UserModelId.empty) final UserModelId id,
-    @Default(PurchasesModel.empty) final PurchasesModel purchases,
   }) = _RemoteUserModel;
   factory RemoteUserModel.fromRawJson(final Map<String, dynamic> json) =>
       _$RemoteUserModelFromJson(json);
@@ -31,15 +30,21 @@ class PurchasesModel with _$PurchasesModel {
     /// he should have all access indefinitely
     ///
     /// Priority one to develop.
-    @Default(false) final bool hasOneTimePurchase,
+    @Default(false) final bool isOneTimePurchased,
 
     /// If user purchased the app for subscription
     /// then he should have access until the end of subscription
     final DateTime? subscriptionEndDate,
 
     /// If user purchased certain amount of days
-    /// then he should have access until [purchasedDaysLeft] > 0
-    @Default(0) final int purchasedDaysLeft,
+    /// then he should have access until [daysOfSupporterLeft] > 0
+    @Default(0) final int daysOfSupporterLeft,
+
+    /// Summary of any supporter days that user had.
+    /// This is a sum of all [daysOfSupporterLeft] or
+    /// received by subscription [subscriptionEndDate] that
+    /// was used.
+    @Default(0) final int supporterDaysCount,
   }) = _PurchasesModel;
   factory PurchasesModel.fromJson(final Map<String, dynamic> json) =>
       _$PurchasesModelFromJson(json);
@@ -49,5 +54,26 @@ class PurchasesModel with _$PurchasesModel {
       subscriptionEndDate != null &&
       subscriptionEndDate?.isAfter(DateTime.now()) == true;
   bool get isActive =>
-      hasOneTimePurchase || hasActiveSubscription || purchasedDaysLeft > 0;
+      isOneTimePurchased || hasActiveSubscription || daysOfSupporterLeft > 0;
+  PurchasesModel mergeWith(final PurchasesModel other) {
+    final thisDate = subscriptionEndDate;
+    final otherDate = other.subscriptionEndDate;
+    final DateTime? newDate;
+    if (otherDate != null) {
+      if (thisDate != null) {
+        newDate = thisDate.isAfter(otherDate) ? thisDate : otherDate;
+      } else {
+        newDate = otherDate;
+      }
+    } else {
+      newDate = thisDate;
+    }
+
+    return PurchasesModel(
+      isOneTimePurchased: isOneTimePurchased || other.isOneTimePurchased,
+      subscriptionEndDate: newDate,
+      daysOfSupporterLeft: daysOfSupporterLeft + other.daysOfSupporterLeft,
+      supporterDaysCount: supporterDaysCount + other.supporterDaysCount,
+    );
+  }
 }

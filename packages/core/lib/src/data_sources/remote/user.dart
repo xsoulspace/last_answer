@@ -16,10 +16,6 @@ class UserRemoteDataSourceServerpodImpl implements UserRemoteDataSource {
   Future<RemoteUserModel> getUser() async => _client.user.getUser();
 
   @override
-  Future<void> putUser({required final RemoteUserModel user}) async =>
-      _client.user.putUser(user);
-
-  @override
   Future<void> deleteUser() => _client.user.deleteUser();
 
   @override

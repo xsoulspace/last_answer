@@ -17,7 +17,7 @@ class SettingsScreen extends HookWidget {
         physics: SpeedyPageViewScrollPhysics(),
         children: [
           GeneralSettingsView(),
-          MyAccountView(),
+          MyAccountViewRemoteImpl(),
           ChangelogView(),
         ],
       ),

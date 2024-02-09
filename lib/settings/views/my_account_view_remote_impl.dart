@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/views/become_pro_view/become_pro_view.dart';
 import 'package:lastanswer/settings/views/iap_views.dart';
+import 'package:lastanswer/settings/views/supporter_view/supporter_view.dart';
 import 'package:lastanswer/settings/widgets/settings_list_container.dart';
 
-class MyAccountView extends StatelessWidget {
-  const MyAccountView({
-    super.key,
-  });
+class MyAccountViewRemoteImpl extends StatelessWidget {
+  const MyAccountViewRemoteImpl({super.key});
 
   @override
   Widget build(final BuildContext context) {

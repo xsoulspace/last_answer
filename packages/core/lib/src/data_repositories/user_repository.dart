@@ -26,7 +26,5 @@ class UserRepository {
       _local.putUser(user: user);
   Future<RemoteUserModel> getRemoteUser() => _remote.getUser();
   Future<void> completeRemoteLogin() => _auth.completeUserLogin();
-  Future<void> putRemoteUser({required final RemoteUserModel user}) =>
-      _remote.putUser(user: user);
   Future<void> deleteRemoteUser() => _remote.deleteUser();
 }

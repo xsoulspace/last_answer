@@ -62,8 +62,8 @@ abstract class User extends _i1.SerializableEntity {
     return {
       if (id != null) 'id': id,
       'userId': userId,
-      if (createdAt != null) 'createdAt': createdAt,
-      if (updatedAt != null) 'updatedAt': updatedAt,
+      if (createdAt != null) 'createdAt': createdAt?.toJson(),
+      if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
     };
   }
 }

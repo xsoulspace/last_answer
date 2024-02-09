@@ -34,6 +34,21 @@ class EndpointAuth extends _i1.EndpointRef {
       );
 }
 
+/// API to get information about purchases
+/// {@category Endpoint}
+class EndpointPurchases extends _i1.EndpointRef {
+  EndpointPurchases(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'purchases';
+
+  _i2.Future<void> create() => caller.callServerEndpoint<void>(
+        'purchases',
+        'create',
+        {},
+      );
+}
+
 /// {@category Endpoint}
 class EndpointUser extends _i1.EndpointRef {
   EndpointUser(_i1.EndpointCaller caller) : super(caller);
@@ -48,13 +63,6 @@ class EndpointUser extends _i1.EndpointRef {
         {},
       );
 
-  _i2.Future<void> putUser(_i3.RemoteUserModel? user) =>
-      caller.callServerEndpoint<void>(
-        'user',
-        'putUser',
-        {'user': user},
-      );
-
   _i2.Future<bool> receiveAdVideoReward(_i3.AdVideoLengthType videoLength) =>
       caller.callServerEndpoint<bool>(
         'user',
@@ -65,21 +73,6 @@ class EndpointUser extends _i1.EndpointRef {
   _i2.Future<void> deleteUser() => caller.callServerEndpoint<void>(
         'user',
         'deleteUser',
-        {},
-      );
-}
-
-/// API to get information about purchases
-/// {@category Endpoint}
-class EndpointUserPurchaseInfo extends _i1.EndpointRef {
-  EndpointUserPurchaseInfo(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'userPurchaseInfo';
-
-  _i2.Future<void> create() => caller.callServerEndpoint<void>(
-        'userPurchaseInfo',
-        'create',
         {},
       );
 }
@@ -108,24 +101,24 @@ class Client extends _i1.ServerpodClient {
           connectionTimeout: connectionTimeout,
         ) {
     auth = EndpointAuth(this);
+    purchases = EndpointPurchases(this);
     user = EndpointUser(this);
-    userPurchaseInfo = EndpointUserPurchaseInfo(this);
     modules = _Modules(this);
   }
 
   late final EndpointAuth auth;
 
-  late final EndpointUser user;
+  late final EndpointPurchases purchases;
 
-  late final EndpointUserPurchaseInfo userPurchaseInfo;
+  late final EndpointUser user;
 
   late final _Modules modules;
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'auth': auth,
+        'purchases': purchases,
         'user': user,
-        'userPurchaseInfo': userPurchaseInfo,
       };
 
   @override

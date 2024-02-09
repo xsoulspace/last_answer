@@ -15,7 +15,7 @@ class ProjectsNotifierDto {
 }
 
 class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
-  ProjectsNotifier(BuildContext context)
+  ProjectsNotifier(final BuildContext context)
       : dto = ProjectsNotifierDto(context),
         super(const ProjectsNotifierState());
 
@@ -29,7 +29,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   )..onLoad();
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
 
-  Future<void> onLoad() async {
+  Future<void> onLocalUserLoad() async {
     projectsPagedController.loadFirstPage();
   }
 

@@ -1,23 +1,25 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 
 import '../../core.dart';
 
 class RemoteUserInitializer {
-  RemoteUserInitializer({required this.dto}) {
+  RemoteUserInitializer(final BuildContext context)
+      : dto = GlobalStatesInitializerDto(context: context) {
     _sessionManager.addListener(_onSessionChanged);
   }
   final GlobalStatesInitializerDto dto;
   SessionManager get _sessionManager =>
       RemoteClient.ofContextAsServerpodImpl(dto.context).sessionManager;
   Future<void> onUserLoad() async {
-    /// add any methods to load remote data
+    await dto.purchasesNotifier.onRemoteUserLoad();
   }
 
-  void _onSessionChanged() {
+  Future<void> _onSessionChanged() async {
     if (_sessionManager.isSignedIn) {
-      unawaited(dto.userNotifier.loadRemoteUser(isAfterLogin: true));
+      await dto.userNotifier.loadRemoteUser(isAfterLogin: true);
     } else {
       dto.userNotifier.resetRemoteUser();
     }

@@ -34,7 +34,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'custom_users',
       dartName: 'User',
       schema: 'public',
-      module: 'core_server',
+      module: 'server',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -84,7 +84,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'purchases_history',
       dartName: 'PurchaseAction',
       schema: 'public',
-      module: 'core_server',
+      module: 'server',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -151,7 +151,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'user_purchase_info',
       dartName: 'UserPurchaseInfo',
       schema: 'public',
-      module: 'core_server',
+      module: 'server',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -161,13 +161,13 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'user_purchase_info_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'purchasedDaysLeft',
+          name: 'daysOfSupporterLeft',
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
-          name: 'hasOneTimePurchase',
+          name: 'isOneTimePurchased',
           columnType: _i2.ColumnType.boolean,
           isNullable: false,
           dartType: 'bool',
@@ -350,5 +350,5 @@ class Protocol extends _i1.SerializationManagerServer {
       targetTableDefinitions;
 
   @override
-  String getModuleName() => 'core_server';
+  String getModuleName() => 'server';
 }

@@ -10,6 +10,5 @@ abstract interface class UserLocalDataSource {
 abstract interface class UserRemoteDataSource {
   Future<RemoteUserModel> getUser();
   Future<void> logout();
-  Future<void> putUser({required final RemoteUserModel user});
   Future<void> deleteUser();
 }

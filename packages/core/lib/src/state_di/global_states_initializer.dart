@@ -52,24 +52,20 @@ class GlobalStatesInitializer implements StateInitializer {
   });
   final GlobalStatesInitializerDto dto;
   final GoRouter router;
-  late final _userInitializer = UserInitializer(
-    dto: GlobalStatesInitializerDto(context: dto.context),
-  );
-  late final _remoteUserInitializer = RemoteUserInitializer(
-    dto: GlobalStatesInitializerDto(context: dto.context),
-  );
+  late final _localUserInitializer = LocalUserInitializer(dto.context);
+  late final _remoteUserInitializer = RemoteUserInitializer(dto.context);
   @override
   Future<void> onLoad() async {
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
     await dto.remoteClient.onLoad();
     await dto.userNotifier.onLoad(
-      local: _userInitializer,
+      local: _localUserInitializer,
       remote: _remoteUserInitializer,
     );
     // final isConnected = await PlatformInfo.isConnected;
     dto.appNotifier.updateAppStatus(
-      AppStatus.online,
+      AppStatus.offline,
       // isConnected ? AppStatus.online : AppStatus.offline,
     );
     if (dto.userNotifier.hasCompletedOnboarding) {
@@ -102,7 +98,6 @@ class GlobalStatesInitializer implements StateInitializer {
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
-    await dto.purchasesNotifier.onLoad();
   }
 
   @override

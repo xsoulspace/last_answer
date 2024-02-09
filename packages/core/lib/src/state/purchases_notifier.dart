@@ -15,34 +15,24 @@ class PurchasesNotifier
         super(const LoadableContainer(value: PurchasesModel.empty));
 
   final PurchasesNotifierDto dto;
-  Future<void> onLoad() async {
-    if (PlatformInfo.isNativeMobile) {
-    } else {
-      _emitLoaded(value.value);
-    }
-  }
 
   Future<void> onLocalUserLoad() async {
-    // add if needed
-  }
-  Future<void> onRemoteUserLoad() async {
-    final remoteUserContainer = dto.remoteUserNotifier.value;
-    if (remoteUserContainer.isLoading) {
-      throw ArgumentError.value('User should be already loaded');
-    }
-    final user = remoteUserContainer.value;
-    if (PlatformInfo.isNativeMobile) {}
-    _emitLoaded(user.purchases);
+    final localPurchases = await dto.purchasesRepository.getLocalPurchases();
+    _emitLoaded(localPurchases);
   }
 
-  UserModelId get _remoteUserId => dto.remoteUserNotifier.value.value.id;
+  Future<void> onRemoteUserLoad() async {
+    final purchases = await dto.purchasesRepository
+        .mergePurchases(localPurchases: value.value);
+    _emitLoaded(purchases);
+  }
+
+  Future<void> recordNewDay() async {
+    final purchases = await dto.purchasesRepository.recordNewDay();
+    _emitLoaded(purchases);
+  }
 
   void _emitLoaded(final PurchasesModel state) {
     value = LoadableContainer.loaded(state);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

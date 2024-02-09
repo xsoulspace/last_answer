@@ -80,36 +80,29 @@ _$RemoteUserModelImpl _$$RemoteUserModelImplFromJson(
       id: json['id'] == null
           ? UserModelId.empty
           : UserModelId.fromJson(json['id']),
-      purchases: json['purchases'] == null
-          ? PurchasesModel.empty
-          : PurchasesModel.fromJson(json['purchases'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$RemoteUserModelImplToJson(
         _$RemoteUserModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'purchases': instance.purchases,
     };
 
 _$PurchasesModelImpl _$$PurchasesModelImplFromJson(Map<String, dynamic> json) =>
     _$PurchasesModelImpl(
-      hasOneTimePurchase: json['has_one_time_purchase'] as bool? ?? false,
+      isOneTimePurchased: json['is_one_time_purchased'] as bool? ?? false,
       subscriptionEndDate: json['subscription_end_date'] == null
           ? null
           : DateTime.parse(json['subscription_end_date'] as String),
-      purchasedDaysLeft: json['purchased_days_left'] as int? ?? 0,
-      activePurchase: json['active_purchase'] == null
-          ? PurchaseActionModel.empty
-          : PurchaseActionModel.fromRawJson(
-              json['active_purchase'] as Map<String, dynamic>),
+      daysOfSupporterLeft: json['days_of_supporter_left'] as int? ?? 0,
+      supporterDaysCount: json['supporter_days_count'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$PurchasesModelImplToJson(
         _$PurchasesModelImpl instance) =>
     <String, dynamic>{
-      'has_one_time_purchase': instance.hasOneTimePurchase,
+      'is_one_time_purchased': instance.isOneTimePurchased,
       'subscription_end_date': instance.subscriptionEndDate?.toIso8601String(),
-      'purchased_days_left': instance.purchasedDaysLeft,
-      'active_purchase': instance.activePurchase,
+      'days_of_supporter_left': instance.daysOfSupporterLeft,
+      'supporter_days_count': instance.supporterDaysCount,
     };

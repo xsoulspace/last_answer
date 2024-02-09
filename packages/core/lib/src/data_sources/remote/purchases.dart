@@ -1,4 +1,6 @@
 import 'package:core_server_client/core_server_client.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
@@ -22,6 +24,69 @@ class PurchasesRemoteDataSourceServerpodImpl
   }
 
   @override
-  Future<bool> receiveAdVideoReward(final AdVideoLengthType videoLength) =>
-      _client.user.receiveAdVideoReward(videoLength);
+  Future<PurchasesModel> getPurchases() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<PurchasesModel> mergeLocalPurchases(final PurchasesModel purchase) {
+    throw UnimplementedError();
+  }
+}
+
+class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
+  PurchasesLocalDataSourceImpl(final BuildContext context)
+      : db = context.read();
+  final LocalDbDataSource db;
+
+  @override
+  Future<PurchasesModel> receiveAdVideoReward(
+    final AdVideoLengthType videoLength,
+  ) async {
+    final purchases = await getPurchases();
+    final updatedPurchases = purchases.copyWith(
+      daysOfSupporterLeft: purchases.daysOfSupporterLeft + 7,
+    );
+    await setPurchases(updatedPurchases);
+    return increaseSupporterDaysCount();
+  }
+
+  @override
+  Future<PurchasesModel> setPurchases(final PurchasesModel value) async {
+    db.setItem(
+      value: value,
+      key: SharedPreferencesKeys.purchases.name,
+      convertToJson: (final v) => v.toJson(),
+    );
+    return value;
+  }
+
+  @override
+  Future<PurchasesModel> getPurchases() async {
+    final item = db.getItem(
+      key: SharedPreferencesKeys.purchases.name,
+      convertFromJson: PurchasesModel.fromJson,
+    );
+    return item ?? PurchasesModel.empty;
+  }
+
+  @override
+  Future<PurchasesModel> increaseSupporterDaysCount() async {
+    final purchases = await getPurchases();
+    final updatedPurchases = purchases.copyWith(
+      supporterDaysCount: purchases.supporterDaysCount + 1,
+    );
+    return setPurchases(updatedPurchases);
+  }
+
+  @override
+  Future<PurchasesModel> consumeSupporterDay() async {
+    final purchases = await getPurchases();
+    int daysLeft = purchases.daysOfSupporterLeft - 1;
+    daysLeft = daysLeft < 0 ? 0 : daysLeft;
+    final updatedPurchases = purchases.copyWith(
+      daysOfSupporterLeft: daysLeft,
+    );
+    return setPurchases(updatedPurchases);
+  }
 }

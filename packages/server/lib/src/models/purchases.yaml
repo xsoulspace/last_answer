@@ -2,8 +2,8 @@
 class: UserPurchaseInfo
 table: user_purchase_info
 fields:
-  purchasedDaysLeft: int
-  hasOneTimePurchase: bool
+  daysOfSupporterLeft: int
+  isOneTimePurchased: bool
   subscriptionEndDate: DateTime?
 
   # Relational

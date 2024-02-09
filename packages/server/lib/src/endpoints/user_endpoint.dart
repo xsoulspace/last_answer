@@ -1,4 +1,4 @@
-import 'package:server/src/endpoints/user_purchase_info_endpoint.dart';
+import 'package:server/src/endpoints/purchases_endpoint.dart';
 import 'package:server/src/extensions/extensions.dart';
 import 'package:server/src/generated/protocol.dart';
 import 'package:serverpod/protocol.dart';
@@ -33,12 +33,6 @@ class UserEndpoint extends Endpoint {
   }
 
   final _logic = UserEndpointImpl();
-
-  Future<void> putUser(
-    final Session session,
-    final RemoteUserModel? user,
-  ) async =>
-      _logic.putUser(session, user);
 
   Future<bool> receiveAdVideoReward(
     final Session session,
@@ -99,6 +93,7 @@ class UserEndpoint extends Endpoint {
 }
 
 class UserEndpointImpl {
+  final _impl = PurchasesEndpointImpl();
   Future<bool> receiveAdVideoReward(
     final Session session,
     final AdVideoLengthType videoLength,
@@ -120,10 +115,7 @@ class UserEndpointImpl {
     return true;
   }
 
-  Future<void> putUser(
-    final Session session,
-    final RemoteUserModel? user,
-  ) async {
+  Future<void> createUser(final Session session) async {
     final userId = await session.userId;
     final existedUser = await User.db.findById(session, userId);
     if (existedUser == null) {
@@ -138,6 +130,6 @@ class UserEndpointImpl {
       await User.db.updateRow(session, existedUser);
     }
 
-    await UserPurchaseInfoEndpointImpl().createPurchaseInfo(session);
+    await _impl.createPurchaseInfo(session);
   }
 }

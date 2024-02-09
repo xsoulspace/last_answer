@@ -59,13 +59,12 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   ValueListenable<Locale> get locale => uiLocaleNotifier;
   bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
   Future<void> onLoad({
-    required final UserInitializer local,
+    required final LocalUserInitializer local,
     required final RemoteUserInitializer remote,
   }) async {
     value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
-
+    await loadRemoteUser();
     unawaited(local.onUserLoad());
-    unawaited(remote.onUserLoad());
   }
 
   Future<void> deleteRemoteUser() async {

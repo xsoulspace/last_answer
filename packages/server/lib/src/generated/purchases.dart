@@ -9,20 +9,21 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class UserPurchaseInfo extends _i1.TableRow {
   UserPurchaseInfo._({
     int? id,
-    required this.purchasedDaysLeft,
-    required this.hasOneTimePurchase,
+    required this.daysOfSupporterLeft,
+    required this.isOneTimePurchased,
     this.subscriptionEndDate,
     required this.userId,
   }) : super(id);
 
   factory UserPurchaseInfo({
     int? id,
-    required int purchasedDaysLeft,
-    required bool hasOneTimePurchase,
+    required int daysOfSupporterLeft,
+    required bool isOneTimePurchased,
     DateTime? subscriptionEndDate,
     required int userId,
   }) = _UserPurchaseInfoImpl;
@@ -33,10 +34,10 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   ) {
     return UserPurchaseInfo(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      purchasedDaysLeft: serializationManager
-          .deserialize<int>(jsonSerialization['purchasedDaysLeft']),
-      hasOneTimePurchase: serializationManager
-          .deserialize<bool>(jsonSerialization['hasOneTimePurchase']),
+      daysOfSupporterLeft: serializationManager
+          .deserialize<int>(jsonSerialization['daysOfSupporterLeft']),
+      isOneTimePurchased: serializationManager
+          .deserialize<bool>(jsonSerialization['isOneTimePurchased']),
       subscriptionEndDate: serializationManager
           .deserialize<DateTime?>(jsonSerialization['subscriptionEndDate']),
       userId:
@@ -48,9 +49,9 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
 
   static const db = UserPurchaseInfoRepository._();
 
-  int purchasedDaysLeft;
+  int daysOfSupporterLeft;
 
-  bool hasOneTimePurchase;
+  bool isOneTimePurchased;
 
   DateTime? subscriptionEndDate;
 
@@ -61,8 +62,8 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
 
   UserPurchaseInfo copyWith({
     int? id,
-    int? purchasedDaysLeft,
-    bool? hasOneTimePurchase,
+    int? daysOfSupporterLeft,
+    bool? isOneTimePurchased,
     DateTime? subscriptionEndDate,
     int? userId,
   });
@@ -70,10 +71,10 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'purchasedDaysLeft': purchasedDaysLeft,
-      'hasOneTimePurchase': hasOneTimePurchase,
+      'daysOfSupporterLeft': daysOfSupporterLeft,
+      'isOneTimePurchased': isOneTimePurchased,
       if (subscriptionEndDate != null)
-        'subscriptionEndDate': subscriptionEndDate,
+        'subscriptionEndDate': subscriptionEndDate?.toJson(),
       'userId': userId,
     };
   }
@@ -82,11 +83,10 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0')
   Map<String, dynamic> toJsonForDatabase() {
     return {
-      if (id != null) 'id': id,
-      'purchasedDaysLeft': purchasedDaysLeft,
-      'hasOneTimePurchase': hasOneTimePurchase,
-      if (subscriptionEndDate != null)
-        'subscriptionEndDate': subscriptionEndDate,
+      'id': id,
+      'daysOfSupporterLeft': daysOfSupporterLeft,
+      'isOneTimePurchased': isOneTimePurchased,
+      'subscriptionEndDate': subscriptionEndDate,
       'userId': userId,
     };
   }
@@ -95,15 +95,16 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   Map<String, dynamic> allToJson() {
     return {
       if (id != null) 'id': id,
-      'purchasedDaysLeft': purchasedDaysLeft,
-      'hasOneTimePurchase': hasOneTimePurchase,
+      'daysOfSupporterLeft': daysOfSupporterLeft,
+      'isOneTimePurchased': isOneTimePurchased,
       if (subscriptionEndDate != null)
-        'subscriptionEndDate': subscriptionEndDate,
+        'subscriptionEndDate': subscriptionEndDate?.toJson(),
       'userId': userId,
     };
   }
 
   @override
+  @Deprecated('Will be removed in 2.0.0')
   void setColumn(
     String columnName,
     value,
@@ -112,11 +113,11 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
       case 'id':
         id = value;
         return;
-      case 'purchasedDaysLeft':
-        purchasedDaysLeft = value;
+      case 'daysOfSupporterLeft':
+        daysOfSupporterLeft = value;
         return;
-      case 'hasOneTimePurchase':
-        hasOneTimePurchase = value;
+      case 'isOneTimePurchased':
+        isOneTimePurchased = value;
         return;
       case 'subscriptionEndDate':
         subscriptionEndDate = value;
@@ -276,14 +277,14 @@ class _Undefined {}
 class _UserPurchaseInfoImpl extends UserPurchaseInfo {
   _UserPurchaseInfoImpl({
     int? id,
-    required int purchasedDaysLeft,
-    required bool hasOneTimePurchase,
+    required int daysOfSupporterLeft,
+    required bool isOneTimePurchased,
     DateTime? subscriptionEndDate,
     required int userId,
   }) : super._(
           id: id,
-          purchasedDaysLeft: purchasedDaysLeft,
-          hasOneTimePurchase: hasOneTimePurchase,
+          daysOfSupporterLeft: daysOfSupporterLeft,
+          isOneTimePurchased: isOneTimePurchased,
           subscriptionEndDate: subscriptionEndDate,
           userId: userId,
         );
@@ -291,15 +292,15 @@ class _UserPurchaseInfoImpl extends UserPurchaseInfo {
   @override
   UserPurchaseInfo copyWith({
     Object? id = _Undefined,
-    int? purchasedDaysLeft,
-    bool? hasOneTimePurchase,
+    int? daysOfSupporterLeft,
+    bool? isOneTimePurchased,
     Object? subscriptionEndDate = _Undefined,
     int? userId,
   }) {
     return UserPurchaseInfo(
       id: id is int? ? id : this.id,
-      purchasedDaysLeft: purchasedDaysLeft ?? this.purchasedDaysLeft,
-      hasOneTimePurchase: hasOneTimePurchase ?? this.hasOneTimePurchase,
+      daysOfSupporterLeft: daysOfSupporterLeft ?? this.daysOfSupporterLeft,
+      isOneTimePurchased: isOneTimePurchased ?? this.isOneTimePurchased,
       subscriptionEndDate: subscriptionEndDate is DateTime?
           ? subscriptionEndDate
           : this.subscriptionEndDate,
@@ -311,12 +312,12 @@ class _UserPurchaseInfoImpl extends UserPurchaseInfo {
 class UserPurchaseInfoTable extends _i1.Table {
   UserPurchaseInfoTable({super.tableRelation})
       : super(tableName: 'user_purchase_info') {
-    purchasedDaysLeft = _i1.ColumnInt(
-      'purchasedDaysLeft',
+    daysOfSupporterLeft = _i1.ColumnInt(
+      'daysOfSupporterLeft',
       this,
     );
-    hasOneTimePurchase = _i1.ColumnBool(
-      'hasOneTimePurchase',
+    isOneTimePurchased = _i1.ColumnBool(
+      'isOneTimePurchased',
       this,
     );
     subscriptionEndDate = _i1.ColumnDateTime(
@@ -329,9 +330,9 @@ class UserPurchaseInfoTable extends _i1.Table {
     );
   }
 
-  late final _i1.ColumnInt purchasedDaysLeft;
+  late final _i1.ColumnInt daysOfSupporterLeft;
 
-  late final _i1.ColumnBool hasOneTimePurchase;
+  late final _i1.ColumnBool isOneTimePurchased;
 
   late final _i1.ColumnDateTime subscriptionEndDate;
 
@@ -340,8 +341,8 @@ class UserPurchaseInfoTable extends _i1.Table {
   @override
   List<_i1.Column> get columns => [
         id,
-        purchasedDaysLeft,
-        hasOneTimePurchase,
+        daysOfSupporterLeft,
+        isOneTimePurchased,
         subscriptionEndDate,
         userId,
       ];

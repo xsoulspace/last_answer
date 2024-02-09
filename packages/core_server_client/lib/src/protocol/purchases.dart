@@ -13,16 +13,16 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 abstract class UserPurchaseInfo extends _i1.SerializableEntity {
   UserPurchaseInfo._({
     this.id,
-    required this.purchasedDaysLeft,
-    required this.hasOneTimePurchase,
+    required this.daysOfSupporterLeft,
+    required this.isOneTimePurchased,
     this.subscriptionEndDate,
     required this.userId,
   });
 
   factory UserPurchaseInfo({
     int? id,
-    required int purchasedDaysLeft,
-    required bool hasOneTimePurchase,
+    required int daysOfSupporterLeft,
+    required bool isOneTimePurchased,
     DateTime? subscriptionEndDate,
     required int userId,
   }) = _UserPurchaseInfoImpl;
@@ -33,10 +33,10 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
   ) {
     return UserPurchaseInfo(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      purchasedDaysLeft: serializationManager
-          .deserialize<int>(jsonSerialization['purchasedDaysLeft']),
-      hasOneTimePurchase: serializationManager
-          .deserialize<bool>(jsonSerialization['hasOneTimePurchase']),
+      daysOfSupporterLeft: serializationManager
+          .deserialize<int>(jsonSerialization['daysOfSupporterLeft']),
+      isOneTimePurchased: serializationManager
+          .deserialize<bool>(jsonSerialization['isOneTimePurchased']),
       subscriptionEndDate: serializationManager
           .deserialize<DateTime?>(jsonSerialization['subscriptionEndDate']),
       userId:
@@ -49,9 +49,9 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
   /// the id will be null.
   int? id;
 
-  int purchasedDaysLeft;
+  int daysOfSupporterLeft;
 
-  bool hasOneTimePurchase;
+  bool isOneTimePurchased;
 
   DateTime? subscriptionEndDate;
 
@@ -59,8 +59,8 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
 
   UserPurchaseInfo copyWith({
     int? id,
-    int? purchasedDaysLeft,
-    bool? hasOneTimePurchase,
+    int? daysOfSupporterLeft,
+    bool? isOneTimePurchased,
     DateTime? subscriptionEndDate,
     int? userId,
   });
@@ -68,10 +68,10 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'purchasedDaysLeft': purchasedDaysLeft,
-      'hasOneTimePurchase': hasOneTimePurchase,
+      'daysOfSupporterLeft': daysOfSupporterLeft,
+      'isOneTimePurchased': isOneTimePurchased,
       if (subscriptionEndDate != null)
-        'subscriptionEndDate': subscriptionEndDate,
+        'subscriptionEndDate': subscriptionEndDate?.toJson(),
       'userId': userId,
     };
   }
@@ -82,14 +82,14 @@ class _Undefined {}
 class _UserPurchaseInfoImpl extends UserPurchaseInfo {
   _UserPurchaseInfoImpl({
     int? id,
-    required int purchasedDaysLeft,
-    required bool hasOneTimePurchase,
+    required int daysOfSupporterLeft,
+    required bool isOneTimePurchased,
     DateTime? subscriptionEndDate,
     required int userId,
   }) : super._(
           id: id,
-          purchasedDaysLeft: purchasedDaysLeft,
-          hasOneTimePurchase: hasOneTimePurchase,
+          daysOfSupporterLeft: daysOfSupporterLeft,
+          isOneTimePurchased: isOneTimePurchased,
           subscriptionEndDate: subscriptionEndDate,
           userId: userId,
         );
@@ -97,15 +97,15 @@ class _UserPurchaseInfoImpl extends UserPurchaseInfo {
   @override
   UserPurchaseInfo copyWith({
     Object? id = _Undefined,
-    int? purchasedDaysLeft,
-    bool? hasOneTimePurchase,
+    int? daysOfSupporterLeft,
+    bool? isOneTimePurchased,
     Object? subscriptionEndDate = _Undefined,
     int? userId,
   }) {
     return UserPurchaseInfo(
       id: id is int? ? id : this.id,
-      purchasedDaysLeft: purchasedDaysLeft ?? this.purchasedDaysLeft,
-      hasOneTimePurchase: hasOneTimePurchase ?? this.hasOneTimePurchase,
+      daysOfSupporterLeft: daysOfSupporterLeft ?? this.daysOfSupporterLeft,
+      isOneTimePurchased: isOneTimePurchased ?? this.isOneTimePurchased,
       subscriptionEndDate: subscriptionEndDate is DateTime?
           ? subscriptionEndDate
           : this.subscriptionEndDate,

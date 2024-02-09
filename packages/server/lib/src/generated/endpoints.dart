@@ -10,8 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/auth_endpoint.dart' as _i2;
-import '../endpoints/user_endpoint.dart' as _i3;
-import '../endpoints/user_purchase_info_endpoint.dart' as _i4;
+import '../endpoints/purchases_endpoint.dart' as _i3;
+import '../endpoints/user_endpoint.dart' as _i4;
 import 'package:shared_models/src/models/models.dart' as _i5;
 import 'package:serverpod_auth_server/module.dart' as _i6;
 
@@ -25,16 +25,16 @@ class Endpoints extends _i1.EndpointDispatch {
           'auth',
           null,
         ),
-      'user': _i3.UserEndpoint()
+      'purchases': _i3.PurchasesEndpoint()
+        ..initialize(
+          server,
+          'purchases',
+          null,
+        ),
+      'user': _i4.UserEndpoint()
         ..initialize(
           server,
           'user',
-          null,
-        ),
-      'userPurchaseInfo': _i4.UserPurchaseInfoEndpoint()
-        ..initialize(
-          server,
-          'userPurchaseInfo',
           null,
         ),
     };
@@ -71,6 +71,21 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['purchases'] = _i1.EndpointConnector(
+      name: 'purchases',
+      endpoint: endpoints['purchases']!,
+      methodConnectors: {
+        'create': _i1.MethodConnector(
+          name: 'create',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['purchases'] as _i3.PurchasesEndpoint).create(session),
+        )
+      },
+    );
     connectors['user'] = _i1.EndpointConnector(
       name: 'user',
       endpoint: endpoints['user']!,
@@ -82,25 +97,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i3.UserEndpoint).getUser(session),
-        ),
-        'putUser': _i1.MethodConnector(
-          name: 'putUser',
-          params: {
-            'user': _i1.ParameterDescription(
-              name: 'user',
-              type: _i1.getType<_i5.RemoteUserModel?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i3.UserEndpoint).putUser(
-            session,
-            params['user'],
-          ),
+              (endpoints['user'] as _i4.UserEndpoint).getUser(session),
         ),
         'receiveAdVideoReward': _i1.MethodConnector(
           name: 'receiveAdVideoReward',
@@ -115,7 +112,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i3.UserEndpoint).receiveAdVideoReward(
+              (endpoints['user'] as _i4.UserEndpoint).receiveAdVideoReward(
             session,
             params['videoLength'],
           ),
@@ -127,24 +124,8 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i3.UserEndpoint).deleteUser(session),
+              (endpoints['user'] as _i4.UserEndpoint).deleteUser(session),
         ),
-      },
-    );
-    connectors['userPurchaseInfo'] = _i1.EndpointConnector(
-      name: 'userPurchaseInfo',
-      endpoint: endpoints['userPurchaseInfo']!,
-      methodConnectors: {
-        'create': _i1.MethodConnector(
-          name: 'create',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['userPurchaseInfo'] as _i4.UserPurchaseInfoEndpoint)
-                  .create(session),
-        )
       },
     );
     modules['serverpod_auth'] = _i6.Endpoints()..initializeEndpoints(server);

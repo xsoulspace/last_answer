@@ -7,7 +7,11 @@ final class PurchasesAdsService extends PurchasesAdsBase {
   /// https://yandex.ru/support/partner/web/units/types/rewarded.html
   @override
   Future<AdInstance> watchRewardedAd({required final String adUnitId}) {
-    // TODO: implement watchRewardedAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onLoad() {
     throw UnimplementedError();
   }
 }

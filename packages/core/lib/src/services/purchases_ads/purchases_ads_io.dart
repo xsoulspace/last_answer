@@ -22,6 +22,9 @@ final class PurchasesAdsService extends PurchasesAdsBase {
 final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   late final Future<RewardedAdLoader> _adLoader;
   bool _isLoaded = false;
+  bool get isLoaded => _isLoaded;
+  Completer<RewardedAd>? _adCompleter = Completer();
+
   @override
   Future<void> onLoad() async {
     await MobileAds.initialize();
@@ -29,32 +32,45 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
       await MobileAds.setLogging(true);
       await MobileAds.setDebugErrorIndicator(true);
     }
-    _adLoader = _createRewardedAdLoader();
+    _adLoader = RewardedAdLoader.create(
+      onAdLoaded: (final ad) {
+        _adCompleter?.complete(ad);
+      },
+      onAdFailedToLoad: (final error) {
+        _adCompleter?.completeError(error);
+        _adCompleter = null;
+        // Ad failed to load with AdRequestError.
+        // Attempting to load a new ad from the onAdFailedToLoad()
+        //  method is strongly discouraged.
+        if (kDebugMode) print(error);
+        _isLoaded = false;
+      },
+    );
     _isLoaded = true;
   }
-
-  Future<RewardedAdLoader> _createRewardedAdLoader() => RewardedAdLoader.create(
-        onAdLoaded: (final ad) {},
-        onAdFailedToLoad: (final error) {
-          // Ad failed to load with AdRequestError.
-          // Attempting to load a new ad from the onAdFailedToLoad()
-          //  method is strongly discouraged.
-          if (kDebugMode) print(error);
-          _isLoaded = false;
-        },
-      );
 
   /// https://yandex.ru/support2/mobile-ads/en/dev/flutter/rewarded
   @override
   Future<AdInstance> watchRewardedAd({required final String adUnitId}) async {
     final adLoader = await _adLoader;
-    await adLoader.loadAd(
-      adRequestConfiguration: AdRequestConfiguration(
-        adUnitId: 'R-M-$adUnitId-Y',
-      ),
+    Future<void> preload() => adLoader.loadAd(
+          adRequestConfiguration: AdRequestConfiguration(
+            adUnitId: 'R-M-$adUnitId-Y',
+          ),
+        );
+    Completer<RewardedAd>? adCompleter = _adCompleter;
+    if (adCompleter == null) {
+      _adCompleter = adCompleter = Completer();
+      await preload();
+    }
+    final ad = await adCompleter.future;
+    return AdInstanceYaMobileImpl(
+      ad: ad,
+      onDispose: () async {
+        _adCompleter = Completer();
+        await preload();
+      },
     );
-    
-    return AdInstanceYaMobileImpl(ad: );
   }
 }
 

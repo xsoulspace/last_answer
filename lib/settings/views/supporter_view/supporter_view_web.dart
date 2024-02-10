@@ -1,8 +1,8 @@
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/views/supporter_view/supporter_base_view.dart';
 
-class BecomeProView extends StatelessWidget {
-  const BecomeProView({super.key});
+class SupportAppView extends StatelessWidget {
+  const SupportAppView({super.key});
 
   @override
   Widget build(final BuildContext context) {

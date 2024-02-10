@@ -13,6 +13,7 @@ class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({
     required this.context,
   })  : emojiRepository = context.read(),
+        appFeaturesNotifier = context.read(),
         lastUsedEmojiRepository = context.read(),
         lastEmojiState = context.read(),
         specialEmojiState = context.read(),
@@ -27,7 +28,9 @@ class GlobalStatesInitializerDto {
         purchasesNotifier = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
+
   final BuildContext context;
+  final AppFeaturesNotifier appFeaturesNotifier;
   final RemoteClient remoteClient;
   final LocalDbDataSource localDbDataSource;
   final ComplexLocalDb complexLocalDb;
@@ -58,7 +61,9 @@ class GlobalStatesInitializer implements StateInitializer {
   Future<void> onLoad() async {
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
-    await dto.remoteClient.onLoad();
+    if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
+      await dto.remoteClient.onLoad();
+    }
     await dto.userNotifier.onLoad(
       local: _localUserInitializer,
       remote: _remoteUserInitializer,

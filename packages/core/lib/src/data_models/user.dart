@@ -13,7 +13,7 @@ enum LocalDbVersion {
 class UserModel with _$UserModel {
   const factory UserModel({
     @Default(UserSettingsModel.initial) final UserSettingsModel settings,
-    @Default(LocalDbVersion.v3_16) final LocalDbVersion localDbVersion,
+    @Default(LocalDbVersion.newestVersion) final LocalDbVersion localDbVersion,
     @Default(false) final bool hasCompletedOnboarding,
   }) = _UserModel;
   factory UserModel.fromJson(final Map<String, dynamic> json) =>

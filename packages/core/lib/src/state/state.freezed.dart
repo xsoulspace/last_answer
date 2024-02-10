@@ -15,6 +15,139 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
+mixin _$AppFeaturesModel {
+  bool get isRemoteServicesEnabled => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $AppFeaturesModelCopyWith<AppFeaturesModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AppFeaturesModelCopyWith<$Res> {
+  factory $AppFeaturesModelCopyWith(
+          AppFeaturesModel value, $Res Function(AppFeaturesModel) then) =
+      _$AppFeaturesModelCopyWithImpl<$Res, AppFeaturesModel>;
+  @useResult
+  $Res call({bool isRemoteServicesEnabled});
+}
+
+/// @nodoc
+class _$AppFeaturesModelCopyWithImpl<$Res, $Val extends AppFeaturesModel>
+    implements $AppFeaturesModelCopyWith<$Res> {
+  _$AppFeaturesModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isRemoteServicesEnabled = null,
+  }) {
+    return _then(_value.copyWith(
+      isRemoteServicesEnabled: null == isRemoteServicesEnabled
+          ? _value.isRemoteServicesEnabled
+          : isRemoteServicesEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AppFeaturesModelImplCopyWith<$Res>
+    implements $AppFeaturesModelCopyWith<$Res> {
+  factory _$$AppFeaturesModelImplCopyWith(_$AppFeaturesModelImpl value,
+          $Res Function(_$AppFeaturesModelImpl) then) =
+      __$$AppFeaturesModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool isRemoteServicesEnabled});
+}
+
+/// @nodoc
+class __$$AppFeaturesModelImplCopyWithImpl<$Res>
+    extends _$AppFeaturesModelCopyWithImpl<$Res, _$AppFeaturesModelImpl>
+    implements _$$AppFeaturesModelImplCopyWith<$Res> {
+  __$$AppFeaturesModelImplCopyWithImpl(_$AppFeaturesModelImpl _value,
+      $Res Function(_$AppFeaturesModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isRemoteServicesEnabled = null,
+  }) {
+    return _then(_$AppFeaturesModelImpl(
+      isRemoteServicesEnabled: null == isRemoteServicesEnabled
+          ? _value.isRemoteServicesEnabled
+          : isRemoteServicesEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AppFeaturesModelImpl
+    with DiagnosticableTreeMixin
+    implements _AppFeaturesModel {
+  const _$AppFeaturesModelImpl({this.isRemoteServicesEnabled = false});
+
+  @override
+  @JsonKey()
+  final bool isRemoteServicesEnabled;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AppFeaturesModel(isRemoteServicesEnabled: $isRemoteServicesEnabled)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AppFeaturesModel'))
+      ..add(DiagnosticsProperty(
+          'isRemoteServicesEnabled', isRemoteServicesEnabled));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AppFeaturesModelImpl &&
+            (identical(
+                    other.isRemoteServicesEnabled, isRemoteServicesEnabled) ||
+                other.isRemoteServicesEnabled == isRemoteServicesEnabled));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, isRemoteServicesEnabled);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AppFeaturesModelImplCopyWith<_$AppFeaturesModelImpl> get copyWith =>
+      __$$AppFeaturesModelImplCopyWithImpl<_$AppFeaturesModelImpl>(
+          this, _$identity);
+}
+
+abstract class _AppFeaturesModel implements AppFeaturesModel {
+  const factory _AppFeaturesModel({final bool isRemoteServicesEnabled}) =
+      _$AppFeaturesModelImpl;
+
+  @override
+  bool get isRemoteServicesEnabled;
+  @override
+  @JsonKey(ignore: true)
+  _$$AppFeaturesModelImplCopyWith<_$AppFeaturesModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$AppNotifierState {
   AppStatus get status => throw _privateConstructorUsedError;
 

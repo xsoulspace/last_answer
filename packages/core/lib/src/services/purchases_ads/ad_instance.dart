@@ -1,7 +1,7 @@
 import 'package:shared_models/shared_models.dart';
 
 abstract base class AdInstance implements Disposable {
-  void show();
+  Future<RewardModel> show();
   @override
   void dispose();
 }

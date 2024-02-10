@@ -73,6 +73,8 @@ class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
   @override
   Future<PurchasesModel> increaseSupporterDaysCount() async {
     final purchases = await getPurchases();
+    if (!purchases.isActive) return purchases;
+
     final updatedPurchases = purchases.copyWith(
       supporterDaysCount: purchases.supporterDaysCount + 1,
     );
@@ -88,5 +90,21 @@ class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
       daysOfSupporterLeft: daysLeft,
     );
     return setPurchases(updatedPurchases);
+  }
+
+  @override
+  Future<bool> verifyDayRecord() async {
+    final millisecondsSinceEpoch =
+        db.getInt(key: SharedPreferencesKeys.supporterDayRecordMs.name);
+    final recordedDate =
+        DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch).onlyDate;
+    final isSameDay = recordedDate == todayDate;
+    if (!isSameDay) {
+      db.setInt(
+        key: SharedPreferencesKeys.supporterDayRecordMs.name,
+        value: todayDate.millisecondsSinceEpoch,
+      );
+    }
+    return isSameDay;
   }
 }

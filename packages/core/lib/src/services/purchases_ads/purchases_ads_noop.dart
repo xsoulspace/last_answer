@@ -1,12 +1,16 @@
+import 'package:flutter/widgets.dart';
+
 import 'ad_instance.dart';
 import 'purchases_ads_base.dart';
 
 final class PurchasesAdsService extends PurchasesAdsBase {
+  // ignore: avoid_unused_constructor_parameters
+  PurchasesAdsService(final BuildContext context);
   @override
   Future<void> onLoad() async {}
 
   @override
-  Future<AdInstance> watchRewardedAd({required final String adUnitId}) {
+  Future<AdInstance> prepareAdInstance({required final String adUnitId}) {
     throw UnsupportedError('watchRewardedAd');
   }
 }

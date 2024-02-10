@@ -34,6 +34,7 @@ class GlobalStatesProvider extends StatelessWidget {
           ChangeNotifierProvider<PurchasesIapService>(
             create: PurchasesIapGoogleAppleImpl.new,
           ),
+          Provider(create: PurchasesAdsService.new),
           Provider(create: PurchasesRepository.new),
           Provider(create: EmojiRepository.new),
           Provider(create: LastUsedEmojiRepository.new),

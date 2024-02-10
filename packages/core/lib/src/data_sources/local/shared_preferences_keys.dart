@@ -8,4 +8,7 @@ enum SharedPreferencesKeys {
   charactersLimitForNewNotes,
   user,
   purchases,
+
+  /// when supporter day record was set in miliseconds
+  supporterDayRecordMs,
 }

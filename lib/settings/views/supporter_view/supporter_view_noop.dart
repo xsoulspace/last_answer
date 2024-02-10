@@ -8,7 +8,8 @@ class SupportAppView extends StatelessWidget {
   Widget build(final BuildContext context) => const SupportAppBaseView(
         children: [
           Text(
-            'Unfortunately this platform is not supporting Pro upgrade. Please use website to upgrade.',
+            // ignore: lines_longer_than_80_chars
+            'Unfortunately this platform has no abilities to support the app:). But you can go to the website:)',
           ),
         ],
       );

@@ -12,13 +12,17 @@ class SettingsScreen extends HookWidget {
   Widget build(final BuildContext context) {
     void onBack() => Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
-    Widget child = const SelectionArea(
+    final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
+    Widget child = SelectionArea(
       child: TabBarView(
-        physics: SpeedyPageViewScrollPhysics(),
+        physics: const SpeedyPageViewScrollPhysics(),
         children: [
-          GeneralSettingsView(),
-          MyAccountViewRemoteImpl(),
-          ChangelogView(),
+          const GeneralSettingsView(),
+          if (appFeaturesNotifier.value.isRemoteServicesEnabled)
+            const MyAccountViewRemoteImpl()
+          else
+            const MyAccountViewLocalImpl(),
+          const ChangelogView(),
         ],
       ),
     );

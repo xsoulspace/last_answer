@@ -45,6 +45,7 @@ class PurchasesModel with _$PurchasesModel {
     /// received by subscription [subscriptionEndDate] that
     /// was used.
     @Default(0) final int supporterDaysCount,
+    @Default(0) final int usedDaysCount,
   }) = _PurchasesModel;
   factory PurchasesModel.fromJson(final Map<String, dynamic> json) =>
       _$PurchasesModelFromJson(json);

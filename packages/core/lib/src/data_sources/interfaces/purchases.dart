@@ -18,6 +18,7 @@ abstract class PurchasesLocalDataSource {
   );
   Future<PurchasesModel> getPurchases();
   Future<bool> verifyDayRecord();
+  Future<PurchasesModel> increaseUsedDaysCount();
   Future<PurchasesModel> setPurchases(final PurchasesModel value);
   Future<PurchasesModel> increaseSupporterDaysCount();
   Future<PurchasesModel> consumeSupporterDay();

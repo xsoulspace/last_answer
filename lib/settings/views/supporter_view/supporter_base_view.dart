@@ -11,10 +11,6 @@ class SupportAppBaseView extends StatelessWidget {
     final purchasesNotifier = context.watch<PurchasesNotifier>();
     final state = purchasesNotifier.value.value;
     final supporterDaysCount = state.supporterDaysCount;
-    String text = 'You are supporting the app for $supporterDaysCount days!';
-    if (supporterDaysCount > 0) {
-      text += '\n 🎉🎉🎉 Thank you for your support! 🎉🎉🎉';
-    }
     final String supporterDaysText;
     if (state.daysOfSupporterLeft > 0) {
       supporterDaysText = 'Supporter days left:  ${state.daysOfSupporterLeft}';
@@ -27,7 +23,10 @@ class SupportAppBaseView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (purchasesNotifier.value.isLoading) const UiCircularProgress(),
-        Text(text),
+        Text(
+          // ignore: lines_longer_than_80_chars
+          'You used this app for ${state.usedDaysCount} days${supporterDaysCount > 0 ? ' and have supported $supporterDaysCount days!' : ''}',
+        ),
         const Gap(24),
         Text(supporterDaysText),
         const Gap(24),

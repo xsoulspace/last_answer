@@ -107,4 +107,13 @@ class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
     }
     return isSameDay;
   }
+
+  @override
+  Future<PurchasesModel> increaseUsedDaysCount() async {
+    final purchases = await getPurchases();
+    final updatedPurchases = purchases.copyWith(
+      usedDaysCount: purchases.usedDaysCount + 1,
+    );
+    return setPurchases(updatedPurchases);
+  }
 }

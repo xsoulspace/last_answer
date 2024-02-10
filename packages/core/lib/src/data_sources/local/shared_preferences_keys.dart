@@ -11,4 +11,5 @@ enum SharedPreferencesKeys {
 
   /// when supporter day record was set in miliseconds
   supporterDayRecordMs,
+  usageDayCount,
 }

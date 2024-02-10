@@ -879,6 +879,7 @@ mixin _$PurchasesModel {
   /// received by subscription [subscriptionEndDate] that
   /// was used.
   int get supporterDaysCount => throw _privateConstructorUsedError;
+  int get usedDaysCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -896,7 +897,8 @@ abstract class $PurchasesModelCopyWith<$Res> {
       {bool isOneTimePurchased,
       DateTime? subscriptionEndDate,
       int daysOfSupporterLeft,
-      int supporterDaysCount});
+      int supporterDaysCount,
+      int usedDaysCount});
 }
 
 /// @nodoc
@@ -916,6 +918,7 @@ class _$PurchasesModelCopyWithImpl<$Res, $Val extends PurchasesModel>
     Object? subscriptionEndDate = freezed,
     Object? daysOfSupporterLeft = null,
     Object? supporterDaysCount = null,
+    Object? usedDaysCount = null,
   }) {
     return _then(_value.copyWith(
       isOneTimePurchased: null == isOneTimePurchased
@@ -934,6 +937,10 @@ class _$PurchasesModelCopyWithImpl<$Res, $Val extends PurchasesModel>
           ? _value.supporterDaysCount
           : supporterDaysCount // ignore: cast_nullable_to_non_nullable
               as int,
+      usedDaysCount: null == usedDaysCount
+          ? _value.usedDaysCount
+          : usedDaysCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -950,7 +957,8 @@ abstract class _$$PurchasesModelImplCopyWith<$Res>
       {bool isOneTimePurchased,
       DateTime? subscriptionEndDate,
       int daysOfSupporterLeft,
-      int supporterDaysCount});
+      int supporterDaysCount,
+      int usedDaysCount});
 }
 
 /// @nodoc
@@ -968,6 +976,7 @@ class __$$PurchasesModelImplCopyWithImpl<$Res>
     Object? subscriptionEndDate = freezed,
     Object? daysOfSupporterLeft = null,
     Object? supporterDaysCount = null,
+    Object? usedDaysCount = null,
   }) {
     return _then(_$PurchasesModelImpl(
       isOneTimePurchased: null == isOneTimePurchased
@@ -986,6 +995,10 @@ class __$$PurchasesModelImplCopyWithImpl<$Res>
           ? _value.supporterDaysCount
           : supporterDaysCount // ignore: cast_nullable_to_non_nullable
               as int,
+      usedDaysCount: null == usedDaysCount
+          ? _value.usedDaysCount
+          : usedDaysCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -998,7 +1011,8 @@ class _$PurchasesModelImpl extends _PurchasesModel {
       {this.isOneTimePurchased = false,
       this.subscriptionEndDate,
       this.daysOfSupporterLeft = 0,
-      this.supporterDaysCount = 0})
+      this.supporterDaysCount = 0,
+      this.usedDaysCount = 0})
       : super._();
 
   factory _$PurchasesModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -1030,10 +1044,13 @@ class _$PurchasesModelImpl extends _PurchasesModel {
   @override
   @JsonKey()
   final int supporterDaysCount;
+  @override
+  @JsonKey()
+  final int usedDaysCount;
 
   @override
   String toString() {
-    return 'PurchasesModel(isOneTimePurchased: $isOneTimePurchased, subscriptionEndDate: $subscriptionEndDate, daysOfSupporterLeft: $daysOfSupporterLeft, supporterDaysCount: $supporterDaysCount)';
+    return 'PurchasesModel(isOneTimePurchased: $isOneTimePurchased, subscriptionEndDate: $subscriptionEndDate, daysOfSupporterLeft: $daysOfSupporterLeft, supporterDaysCount: $supporterDaysCount, usedDaysCount: $usedDaysCount)';
   }
 
   @override
@@ -1048,13 +1065,20 @@ class _$PurchasesModelImpl extends _PurchasesModel {
             (identical(other.daysOfSupporterLeft, daysOfSupporterLeft) ||
                 other.daysOfSupporterLeft == daysOfSupporterLeft) &&
             (identical(other.supporterDaysCount, supporterDaysCount) ||
-                other.supporterDaysCount == supporterDaysCount));
+                other.supporterDaysCount == supporterDaysCount) &&
+            (identical(other.usedDaysCount, usedDaysCount) ||
+                other.usedDaysCount == usedDaysCount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isOneTimePurchased,
-      subscriptionEndDate, daysOfSupporterLeft, supporterDaysCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isOneTimePurchased,
+      subscriptionEndDate,
+      daysOfSupporterLeft,
+      supporterDaysCount,
+      usedDaysCount);
 
   @JsonKey(ignore: true)
   @override
@@ -1076,7 +1100,8 @@ abstract class _PurchasesModel extends PurchasesModel {
       {final bool isOneTimePurchased,
       final DateTime? subscriptionEndDate,
       final int daysOfSupporterLeft,
-      final int supporterDaysCount}) = _$PurchasesModelImpl;
+      final int supporterDaysCount,
+      final int usedDaysCount}) = _$PurchasesModelImpl;
   const _PurchasesModel._() : super._();
 
   factory _PurchasesModel.fromJson(Map<String, dynamic> json) =
@@ -1106,6 +1131,8 @@ abstract class _PurchasesModel extends PurchasesModel {
   /// received by subscription [subscriptionEndDate] that
   /// was used.
   int get supporterDaysCount;
+  @override
+  int get usedDaysCount;
   @override
   @JsonKey(ignore: true)
   _$$PurchasesModelImplCopyWith<_$PurchasesModelImpl> get copyWith =>

@@ -44,14 +44,18 @@ class PurchasesRepository {
   }
 
   Future<PurchasesModel> recordNewDay() async {
-    final isRecorded = await _local.verifyDayRecord();
-    if (isRecorded) return _local.getPurchases();
+    PurchasesModel purchases = await _local.increaseUsedDaysCount();
 
-    await _local.consumeSupporterDay();
-    PurchasesModel purchases = await _local.increaseSupporterDaysCount();
-    if (_isAuthorized) {
-      purchases = await _remote.mergeLocalPurchases(purchases);
+    final isRecorded = await _local.verifyDayRecord();
+    if (!isRecorded) {
+      await _local.consumeSupporterDay();
+      purchases = await _local.increaseSupporterDaysCount();
     }
-    return purchases;
+
+    if (_isAuthorized) {
+      return _remote.mergeLocalPurchases(purchases);
+    } else {
+      return purchases;
+    }
   }
 }

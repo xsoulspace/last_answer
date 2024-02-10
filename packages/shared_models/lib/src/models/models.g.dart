@@ -96,6 +96,7 @@ _$PurchasesModelImpl _$$PurchasesModelImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['subscription_end_date'] as String),
       daysOfSupporterLeft: json['days_of_supporter_left'] as int? ?? 0,
       supporterDaysCount: json['supporter_days_count'] as int? ?? 0,
+      usedDaysCount: json['used_days_count'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$PurchasesModelImplToJson(
@@ -105,4 +106,5 @@ Map<String, dynamic> _$$PurchasesModelImplToJson(
       'subscription_end_date': instance.subscriptionEndDate?.toIso8601String(),
       'days_of_supporter_left': instance.daysOfSupporterLeft,
       'supporter_days_count': instance.supporterDaysCount,
+      'used_days_count': instance.usedDaysCount,
     };

@@ -34,7 +34,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
     if (str.isEmpty) return {};
 
     return Map.castFrom<dynamic, dynamic, String, dynamic>(
-      jsonDecode(str),
+      jsonDecode(str) as Map,
     );
   }
 
@@ -94,7 +94,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
 
     return strings.map(
       (final e) =>
-          Map.castFrom<dynamic, dynamic, String, dynamic>(jsonDecode(e)),
+          Map.castFrom<dynamic, dynamic, String, dynamic>(jsonDecode(e) as Map),
     );
   }
 

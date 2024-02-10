@@ -21,4 +21,17 @@ class Envs {
       String.fromEnvironment('WIREDASH_PROJECT_ID');
   static const wiredashProjectSecret =
       String.fromEnvironment('WIREDASH_PROJECT_SECRET');
+  static final store = StoreType.fromEnv();
+}
+
+enum StoreType {
+  googlePlay,
+  rustore,
+  huawaiStore,
+  appleStore,
+  xsoulspaceWebsite,
+  snapstore;
+
+  static StoreType fromEnv() =>
+      values.byName(const String.fromEnvironment('STORE'));
 }

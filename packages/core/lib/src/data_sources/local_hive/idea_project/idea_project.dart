@@ -64,7 +64,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
       );
 
   @override
-  List get props => [id];
+  List<dynamic> get props => [id];
 
   @override
   bool? get stringify => true;

@@ -27,6 +27,7 @@
       "type": "dart",
       "args": [
         "--dart-define-from-file=configs/envs/prod.json",
+        "--dart-define=STORE=xsoulspaceWebsite",
         "-d",
         "chrome",
         "--web-port=49660"
@@ -40,6 +41,7 @@
       "type": "dart",
       "args": [
         "--dart-define-from-file=configs/envs/local.json",
+        "--dart-define=STORE=xsoulspaceWebsite",
         "-d",
         "chrome",
         "--web-port=49660"

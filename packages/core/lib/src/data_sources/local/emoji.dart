@@ -20,7 +20,7 @@ final class EmojiLocalDataSourceImpl implements EmojiLocalDataSource {
       Assets.json.emojis,
     );
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
-      jsonDecode(emojisStr),
+      jsonDecode(emojisStr) as List<dynamic>,
     );
 
     return emojiList.map(EmojiModel.fromJson);
@@ -30,7 +30,7 @@ final class EmojiLocalDataSourceImpl implements EmojiLocalDataSource {
   Future<Iterable<EmojiModel>> getSpecialEmoji() async {
     final emojisStr = await assetBundle.loadString(Assets.json.specialEmoji);
     final emojiList = List.castFrom<dynamic, Map<String, dynamic>>(
-      jsonDecode(emojisStr),
+      jsonDecode(emojisStr) as List<dynamic>,
     );
 
     return emojiList.map(EmojiModel.fromJson);

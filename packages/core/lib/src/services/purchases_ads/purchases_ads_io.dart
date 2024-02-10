@@ -15,8 +15,8 @@ final class PurchasesAdsService extends PurchasesAdsBase {
       ? PurchasesAdsServiceMobileYaImpl()
       : PurchasesAdsServiceDesktop();
   @override
-  Future<AdInstance> prepareAdInstance({required final String adUnitId}) =>
-      _instance.prepareAdInstance(adUnitId: adUnitId);
+  Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) =>
+      _instance.prepareAdInstance(unitIds: unitIds);
   @override
   Future<void> onLoad() => _instance.onLoad();
 }
@@ -53,11 +53,13 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   ///
   /// can look like 'R-M-$adUnitId-Y'
   @override
-  Future<AdInstance> prepareAdInstance({required final String adUnitId}) async {
+  Future<AdInstance> prepareAdInstance({
+    required final AdUnitTuple unitIds,
+  }) async {
     final adLoader = await _adLoader;
     Future<void> preload() => adLoader.loadAd(
           adRequestConfiguration: AdRequestConfiguration(
-            adUnitId: adUnitId,
+            adUnitId: unitIds.mobile,
           ),
         );
     Completer<RewardedAd>? adCompleter = _adCompleter;
@@ -84,7 +86,7 @@ final class PurchasesAdsServiceDesktop extends PurchasesAdsBase {
   }
 
   @override
-  Future<AdInstance> prepareAdInstance({required final String adUnitId}) {
+  Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) {
     // TODO(arenukvern): implement,
     throw UnimplementedError();
   }
@@ -105,7 +107,7 @@ final class AdInstanceYaMobileImpl extends AdInstance {
   }
 
   @override
-  Future<RewardModel> show() async {
+  Future<AdRewardModel> show() async {
     await ad.setAdEventListener(
       eventListener: RewardedAdEventListener(
         onAdFailedToShow: (final e) => dispose(),
@@ -116,9 +118,9 @@ final class AdInstanceYaMobileImpl extends AdInstance {
     final reward = await ad.waitForDismiss();
     final amount = reward?.amount ?? 0;
     if (amount >= 0) {
-      return RewardModel(amount: amount, isRewarded: true);
+      return AdRewardModel(amount: amount, isRewarded: true);
     } else {
-      return RewardModel(amount: 0, isRewarded: false);
+      return AdRewardModel(amount: 0, isRewarded: false);
     }
   }
 }

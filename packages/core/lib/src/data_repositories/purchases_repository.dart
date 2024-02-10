@@ -28,7 +28,7 @@ class PurchasesRepository {
       );
 
   Future<PurchasesModel> receiveAdVideoReward({
-    required final AdVideoLengthType videoLength,
+    final AdVideoLengthType videoLength = AdVideoLengthType.s,
   }) =>
       _local.receiveAdVideoReward(videoLength);
 
@@ -44,6 +44,9 @@ class PurchasesRepository {
   }
 
   Future<PurchasesModel> recordNewDay() async {
+    final isRecorded = await _local.verifyDayRecord();
+    if (isRecorded) return _local.getPurchases();
+
     await _local.consumeSupporterDay();
     PurchasesModel purchases = await _local.increaseSupporterDaysCount();
     if (_isAuthorized) {

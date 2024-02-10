@@ -10,8 +10,8 @@ class SupportAppView extends StatelessWidget {
     return SupportAppBaseView(
       children: [
         TextButton(
-          onPressed: () {},
-          child: const Text(''),
+          onPressed: () async => purhasesNotifier.watchAd(context),
+          child: const Text('Watch ad'),
         ),
       ],
     );

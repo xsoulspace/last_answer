@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:yandex_mobileads/mobile_ads.dart';
 
 import '../../../core.dart';
@@ -8,13 +9,14 @@ import 'ad_instance.dart';
 import 'purchases_ads_base.dart';
 
 final class PurchasesAdsService extends PurchasesAdsBase {
-  PurchasesAdsService();
+  // ignore: avoid_unused_constructor_parameters
+  PurchasesAdsService(final BuildContext context);
   final _instance = PlatformInfo.isNativeMobile
       ? PurchasesAdsServiceMobileYaImpl()
       : PurchasesAdsServiceDesktop();
   @override
-  Future<AdInstance> watchRewardedAd({required final String adUnitId}) =>
-      _instance.watchRewardedAd(adUnitId: adUnitId);
+  Future<AdInstance> prepareAdInstance({required final String adUnitId}) =>
+      _instance.prepareAdInstance(adUnitId: adUnitId);
   @override
   Future<void> onLoad() => _instance.onLoad();
 }
@@ -33,9 +35,7 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
       await MobileAds.setDebugErrorIndicator(true);
     }
     _adLoader = RewardedAdLoader.create(
-      onAdLoaded: (final ad) {
-        _adCompleter?.complete(ad);
-      },
+      onAdLoaded: (final ad) => _adCompleter?.complete(ad),
       onAdFailedToLoad: (final error) {
         _adCompleter?.completeError(error);
         _adCompleter = null;
@@ -50,12 +50,14 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   }
 
   /// https://yandex.ru/support2/mobile-ads/en/dev/flutter/rewarded
+  ///
+  /// can look like 'R-M-$adUnitId-Y'
   @override
-  Future<AdInstance> watchRewardedAd({required final String adUnitId}) async {
+  Future<AdInstance> prepareAdInstance({required final String adUnitId}) async {
     final adLoader = await _adLoader;
     Future<void> preload() => adLoader.loadAd(
           adRequestConfiguration: AdRequestConfiguration(
-            adUnitId: 'R-M-$adUnitId-Y',
+            adUnitId: adUnitId,
           ),
         );
     Completer<RewardedAd>? adCompleter = _adCompleter;
@@ -82,7 +84,7 @@ final class PurchasesAdsServiceDesktop extends PurchasesAdsBase {
   }
 
   @override
-  Future<AdInstance> watchRewardedAd({required final String adUnitId}) {
+  Future<AdInstance> prepareAdInstance({required final String adUnitId}) {
     // TODO(arenukvern): implement,
     throw UnimplementedError();
   }

@@ -17,6 +17,7 @@ abstract class PurchasesLocalDataSource {
     final AdVideoLengthType videoLength,
   );
   Future<PurchasesModel> getPurchases();
+  Future<bool> verifyDayRecord();
   Future<PurchasesModel> setPurchases(final PurchasesModel value);
   Future<PurchasesModel> increaseSupporterDaysCount();
   Future<PurchasesModel> consumeSupporterDay();

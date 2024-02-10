@@ -2185,7 +2185,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
       {this.settings = UserSettingsModel.initial,
-      this.localDbVersion = LocalDbVersion.v3_16,
+      this.localDbVersion = LocalDbVersion.newestVersion,
       this.hasCompletedOnboarding = false});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>

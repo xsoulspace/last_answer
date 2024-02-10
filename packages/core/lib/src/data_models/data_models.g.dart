@@ -156,7 +156,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               json['settings'] as Map<String, dynamic>),
       localDbVersion: $enumDecodeNullable(
               _$LocalDbVersionEnumMap, json['localDbVersion']) ??
-          LocalDbVersion.v3_16,
+          LocalDbVersion.newestVersion,
       hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
     );
 

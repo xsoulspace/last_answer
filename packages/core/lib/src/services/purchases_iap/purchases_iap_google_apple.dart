@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_models/shared_models.dart';
 
@@ -10,6 +10,9 @@ import '../services.dart';
 /// Sources:
 /// https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases#9
 final class PurchasesIapGoogleAppleImpl extends PurchasesIapService {
+  // ignore: avoid_unused_constructor_parameters
+  PurchasesIapGoogleAppleImpl(final BuildContext context);
+
   /// IMPORTANT! You must subscribe to this stream as soon as your
   /// app launches, preferably before returning your main App Widget
   /// in main(). Otherwise you will miss purchase updated made

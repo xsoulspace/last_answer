@@ -14,6 +14,11 @@ class GlobalStatesProvider extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => MultiProvider(
         providers: [
+          /// dependentless state distributors
+          ChangeNotifierProvider(create: RemoteUserNotifier.new),
+          ChangeNotifierProvider(create: AppFeaturesNotifier.new),
+
+          /// services, repos
           Provider<RemoteClient>(
             create: (final context) => RemoteClientServerpodImpl(
               host: Envs.serverHost,
@@ -21,13 +26,13 @@ class GlobalStatesProvider extends StatelessWidget {
           ),
           Provider(create: ComplexLocalDbIsarImpl.new),
           Provider<LocalDbDataSource>(
-            create: (final context) => SharedPreferencesDbDataSourceImpl(),
+            create: SharedPreferencesDbDataSourceImpl.new,
           ),
           Provider<ComplexLocalDb>(
             create: (final context) => context.read<ComplexLocalDbIsarImpl>(),
           ),
           ChangeNotifierProvider<PurchasesIapService>(
-            create: (final context) => PurchasesIapGoogleAppleImpl(),
+            create: PurchasesIapGoogleAppleImpl.new,
           ),
           Provider(create: PurchasesRepository.new),
           Provider(create: EmojiRepository.new),
@@ -35,7 +40,8 @@ class GlobalStatesProvider extends StatelessWidget {
           Provider(create: UserRepository.new),
           Provider(create: NotificationsRepository.new),
           Provider(create: ProjectsRepository.new),
-          ChangeNotifierProvider(create: RemoteUserNotifier.new),
+
+          /// notifiers & blocs
           ChangeNotifierProvider(create: EmojiStateNotifier.new),
           ChangeNotifierProvider(create: LastEmojiStateNotifier.new),
           ChangeNotifierProvider(create: SpecialEmojiStateNotifier.new),

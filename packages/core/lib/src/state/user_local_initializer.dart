@@ -12,9 +12,10 @@ class LocalUserInitializer {
   }
 
   Future<void> _onLoadData() async {
+    dto.projectsNotifier.onReset();
+
     /// refreshing data, just to make sure all is loaded correctly
     await Future.delayed(const Duration(seconds: 1));
-    dto.projectsNotifier.onReset();
     await dto.projectsNotifier.onLocalUserLoad();
     await dto.purchasesNotifier.onLocalUserLoad();
   }

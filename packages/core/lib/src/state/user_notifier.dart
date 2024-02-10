@@ -9,10 +9,12 @@ class UserNotifierDto {
   UserNotifierDto(final BuildContext context)
       : userRepository = context.read(),
         purchasesNotifier = context.read(),
-        remoteUserNotifier = context.read();
+        remoteUserNotifier = context.read(),
+        appFeaturesNotifier = context.read();
   final UserRepository userRepository;
   final PurchasesNotifier purchasesNotifier;
   final RemoteUserNotifier remoteUserNotifier;
+  final AppFeaturesNotifier appFeaturesNotifier;
 }
 
 final uiLocaleNotifier = ValueNotifier(Locales.en);
@@ -63,8 +65,10 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     required final RemoteUserInitializer remote,
   }) async {
     value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
-    await loadRemoteUser();
     unawaited(local.onUserLoad());
+    if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
+      await loadRemoteUser();
+    }
   }
 
   Future<void> deleteRemoteUser() async {

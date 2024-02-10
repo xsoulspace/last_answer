@@ -30,7 +30,7 @@ class _AuthorizedView extends StatelessWidget {
         const Tab(text: 'Subscription'): const SubscriptionView(),
       if (isPaymentsAvailable)
         const Tab(text: 'Payment History'): const PaymentsHistoryListView(),
-      const Tab(text: 'Become Pro'): const BecomeProView(),
+      const Tab(text: 'Become Pro'): const SupportAppView(),
       const Tab(text: 'Profile'): const ProfileView(),
     };
     return DefaultTabController(

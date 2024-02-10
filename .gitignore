@@ -50,7 +50,6 @@ app.*.map.json
 
 # Monarch related
 .monarch/
-.fvm/flutter_sdk
 configs/envs/prod.json
 android/app/google-services.json
 ios/firebase_app_id_file.json
@@ -65,3 +64,6 @@ macos/firebase_app_id_file.json
 configs/envs/test.json
 configs/envs/local.json
 apps/core_server_server/assets/service-account-google-play.json
+
+# FVM Version Cache
+.fvm/

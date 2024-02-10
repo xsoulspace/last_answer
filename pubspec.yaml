@@ -19,7 +19,7 @@ version: 3.17.3+35
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
-  flutter: ">=3.16.4"
+  flutter: ">=3.16.9"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -85,7 +85,7 @@ dev_dependencies:
   melos: ^3.1.1
   mockito: ^5.4.2
   mocktail: ^1.0.1
-  msix: ^3.16.4
+  msix: ^3.16.7
   xsoulspace_lints: ^0.0.10
 
 dependency_overrides:

@@ -6,11 +6,6 @@ class SupportAppView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => const SupportAppBaseView(
-        children: [
-          Text(
-            // ignore: lines_longer_than_80_chars
-            'Unfortunately this platform has no abilities to support the app:). But you can go to the website:)',
-          ),
-        ],
+        children: [],
       );
 }

@@ -1,16 +1,18 @@
 import 'package:shared_models/shared_models.dart';
 
 abstract base class AdInstance implements Disposable {
-  Future<RewardModel> show();
+  Future<AdRewardModel> show();
   @override
   void dispose();
 }
 
-class RewardModel {
-  RewardModel({
+class AdRewardModel {
+  AdRewardModel({
     required this.amount,
     required this.isRewarded,
   });
   final int amount;
   final bool isRewarded;
 }
+
+typedef AdUnitTuple = ({String desktop, String mobile, bool isDarkMode});

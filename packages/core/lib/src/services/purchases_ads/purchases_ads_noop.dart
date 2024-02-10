@@ -10,7 +10,7 @@ final class PurchasesAdsService extends PurchasesAdsBase {
   Future<void> onLoad() async {}
 
   @override
-  Future<AdInstance> prepareAdInstance({required final String adUnitId}) {
+  Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) {
     throw UnsupportedError('watchRewardedAd');
   }
 }

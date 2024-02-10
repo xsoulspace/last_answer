@@ -8,12 +8,14 @@ class SupportAppView extends StatelessWidget {
   Widget build(final BuildContext context) {
     final purhasesNotifier = context.watch<PurchasesNotifier>();
     return SupportAppBaseView(
-      children: [
-        TextButton(
-          onPressed: () async => purhasesNotifier.watchAd(context),
-          child: const Text('Watch ad'),
-        ),
-      ],
+      children: purhasesNotifier.isAdSupported
+          ? [
+              TextButton(
+                onPressed: () async => purhasesNotifier.watchAd(context),
+                child: const Text('Watch ad'),
+              ),
+            ]
+          : [],
     );
   }
 }

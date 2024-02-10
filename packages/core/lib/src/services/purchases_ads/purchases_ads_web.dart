@@ -1,7 +1,13 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
+import 'dart:async';
+import 'dart:html';
+
 import 'package:flutter/widgets.dart';
 
 import 'ad_instance.dart';
 import 'purchases_ads_base.dart';
+import 'yandex/yandex.dart';
 
 final class PurchasesAdsService extends PurchasesAdsBase {
   // ignore: avoid_unused_constructor_parameters
@@ -9,53 +15,50 @@ final class PurchasesAdsService extends PurchasesAdsBase {
 
   /// https://yandex.ru/support/partner/web/units/types/rewarded.html
   @override
-  Future<AdInstance> prepareAdInstance({required final String adUnitId}) {
-    throw UnimplementedError();
-  }
+  Future<AdInstance> prepareAdInstance({
+    required final AdUnitTuple unitIds,
+  }) async =>
+      AdInstanceYaWebImpl(unitIds: unitIds);
 
   @override
-  Future<void> onLoad() {}
+  Future<void> onLoad() async {}
 }
 
 final class AdInstanceYaWebImpl extends AdInstance {
+  AdInstanceYaWebImpl({required this.unitIds});
+  final AdUnitTuple unitIds;
   @override
   void dispose() {}
 
   /// https://yandex.ru/support/partner/web/units/types/rewarded.html
   @override
-  Future<RewardModel> show() async {
-// window.yaContextCb.push(() => {
-//       if (Ya.Context.AdvManager.getPlatform() === 'desktop') {
-//         // вызов блока Rewarded для десктопной версии
-//         Ya.Context.AdvManager.render({
-//           blockId: 'R-A-588461-68',
-//           type: 'rewarded',
-//           platform: 'desktop',
-//           onRewarded: (isRewarded) => {
-//               if (isRewarded) {
-//                   // условие получения награды выполнено
-//               } else {
-//                   // условие получения награды не выполнено
-//               }
-//           }
-//         });
-//       } else {
-//         // вызов блока Rewarded для мобильной версии
-//         Ya.Context.AdvManager.render({
-//           blockId: 'R-A-588461-69',
-//           type: 'rewarded',
-//           platform: 'touch',
-//           onRewarded: (isRewarded) => {
-//               if (isRewarded) {
-//                   // условие получения награды выполнено
-//               } else {
-//                   // условие получения награды не выполнено
-//               }
-//           }
-//         });
-//       }
-//   });
+  Future<AdRewardModel> show() async {
+    final completer = Completer<bool>();
 
-    return RewardModel(amount: 0, isRewarded: false);
+    /// [platform] = 'desktop' or 'touch'
+    void render({
+      required final String unitId,
+      required final String platform,
+    }) =>
+        Ya.Context.AdvManager.render(
+          YaContextAdvManagerRender(
+            blockId: unitId,
+            onRewarded: completer.complete,
+            platform: platform,
+            darkTheme: unitIds.isDarkMode,
+            type: 'rewarded',
+          ),
+        );
+
+    window.yaContextCb.push(() {
+      switch (Ya.Context.AdvManager.getPlatform()) {
+        case 'desktop':
+          render(unitId: unitIds.desktop, platform: 'desktop');
+        default:
+          render(unitId: unitIds.mobile, platform: 'touch');
+      }
+    });
+    final isRewarded = await completer.future;
+    return AdRewardModel(amount: 1, isRewarded: isRewarded);
   }
 }

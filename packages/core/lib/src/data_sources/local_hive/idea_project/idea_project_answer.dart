@@ -53,7 +53,7 @@ class IdeaProjectAnswer extends HiveObject
       '${question.toShareString(context)} \n $text';
 
   @override
-  List get props => [id];
+  List<dynamic> get props => [id];
 
   @override
   bool? get stringify => true;

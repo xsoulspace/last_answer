@@ -30,7 +30,14 @@ class SupportAppBaseView extends StatelessWidget {
         const Gap(24),
         Text(supporterDaysText),
         const Gap(24),
-        ...children,
+        ...children.isEmpty
+            ? [
+                const Text(
+                  // ignore: lines_longer_than_80_chars
+                  'Unfortunately this platform has no abilities to support the app:). But you can go to the website:)',
+                ),
+              ]
+            : children,
       ],
     );
   }

@@ -26,6 +26,7 @@
       "request": "launch",
       "type": "dart",
       "args": [
+        "--enable-experiment=inline-class",
         "--dart-define-from-file=configs/envs/prod.json",
         "--dart-define=STORE=xsoulspaceWebsite",
         "-d",

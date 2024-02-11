@@ -20,7 +20,9 @@ final class PurchasesAdsService extends PurchasesAdsBase {
       AdInstanceYaWebImpl(unitIds: unitIds);
 
   @override
-  Future<void> onLoad() async {}
+  Future<void> onLoad() async {
+    await super.onLoad();
+  }
 }
 
 final class AdInstanceYaWebImpl extends AdInstance {

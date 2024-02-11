@@ -18,13 +18,14 @@ final class PurchasesAdsService extends PurchasesAdsBase {
   Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) =>
       _instance.prepareAdInstance(unitIds: unitIds);
   @override
-  Future<void> onLoad() => _instance.onLoad();
+  Future<void> onLoad() {
+    _instance.onLoad();
+    return super.onLoad();
+  }
 }
 
 final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   late final Future<RewardedAdLoader> _adLoader;
-  bool _isLoaded = false;
-  bool get isLoaded => _isLoaded;
   Completer<RewardedAd>? _adCompleter = Completer();
 
   @override
@@ -43,10 +44,10 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
         // Attempting to load a new ad from the onAdFailedToLoad()
         //  method is strongly discouraged.
         if (kDebugMode) print(error);
-        _isLoaded = false;
+        onLoadingFailed();
       },
     );
-    _isLoaded = true;
+    return super.onLoad();
   }
 
   /// https://yandex.ru/support2/mobile-ads/en/dev/flutter/rewarded
@@ -80,9 +81,9 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
 
 final class PurchasesAdsServiceDesktop extends PurchasesAdsBase {
   @override
-  Future<void> onLoad() {
-    // TODO(arenukvern): implement,
-    throw UnimplementedError();
+  Future<void> onLoad() async {
+    await super.onLoad();
+    onLoadingFailed();
   }
 
   @override

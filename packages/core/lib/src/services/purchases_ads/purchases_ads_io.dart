@@ -11,12 +11,16 @@ import 'purchases_ads_base.dart';
 final class PurchasesAdsService extends PurchasesAdsBase {
   // ignore: avoid_unused_constructor_parameters
   PurchasesAdsService(final BuildContext context);
-  final _instance = PlatformInfo.isNativeMobile
+  late final _instance = (PlatformInfo.isNativeMobile
       ? PurchasesAdsServiceMobileYaImpl()
-      : PurchasesAdsServiceDesktop();
+      : PurchasesAdsServiceDesktop())
+    ..addListener(notifyListeners);
   @override
   Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) =>
       _instance.prepareAdInstance(unitIds: unitIds);
+  @override
+  bool get isLoaded => _instance.isLoaded;
+
   @override
   Future<void> onLoad() {
     _instance.onLoad();
@@ -26,7 +30,7 @@ final class PurchasesAdsService extends PurchasesAdsBase {
 
 final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   late final Future<RewardedAdLoader> _adLoader;
-  Completer<RewardedAd>? _adCompleter = Completer();
+  Completer<RewardedAd>? _adCompleter;
 
   @override
   Future<void> onLoad() async {
@@ -36,7 +40,9 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
       await MobileAds.setDebugErrorIndicator(true);
     }
     _adLoader = RewardedAdLoader.create(
-      onAdLoaded: (final ad) => _adCompleter?.complete(ad),
+      onAdLoaded: (final ad) {
+        _adCompleter!.complete(ad);
+      },
       onAdFailedToLoad: (final error) {
         _adCompleter?.completeError(error);
         _adCompleter = null;
@@ -60,7 +66,9 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
     final adLoader = await _adLoader;
     Future<void> preload() => adLoader.loadAd(
           adRequestConfiguration: AdRequestConfiguration(
+            // adUnitId: 'demo-rewarded-yandex',
             adUnitId: unitIds.mobile,
+            preferredTheme: unitIds.isDarkMode ? AdTheme.dark : AdTheme.light,
           ),
         );
     Completer<RewardedAd>? adCompleter = _adCompleter;
@@ -72,6 +80,11 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
     return AdInstanceYaMobileImpl(
       ad: ad,
       onDispose: () async {
+        final oldCompleter = _adCompleter;
+        if (oldCompleter != null && oldCompleter.isCompleted) {
+          final oldAd = await oldCompleter.future;
+          await oldAd.destroy();
+        }
         _adCompleter = Completer();
         await preload();
       },
@@ -111,9 +124,9 @@ final class AdInstanceYaMobileImpl extends AdInstance {
   Future<AdRewardModel> show() async {
     await ad.setAdEventListener(
       eventListener: RewardedAdEventListener(
-        onAdFailedToShow: (final e) => dispose(),
-        onAdDismissed: dispose,
-      ),
+          // onAdFailedToShow: (final e) => dispose(),
+          // onAdDismissed: dispose,
+          ),
     );
     await ad.show();
     final reward = await ad.waitForDismiss();

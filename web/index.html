@@ -46,6 +46,7 @@
     <!-- Yandex Context End -->
   </head>
   <body>
+    <div id="flutter_app"></div>
     <main class="container">
       <div id="loading">
         <img src="icons/icon-512.png" width="128" />
@@ -55,7 +56,7 @@
     <script>
       window.addEventListener("load", function (ev) {
         var loading = document.querySelector("#loading");
-
+        var hostElement = document.querySelector("#flutter_app");
         // Download main.dart.js
         _flutter.loader.loadEntrypoint({
           serviceWorker: {
@@ -63,7 +64,9 @@
           },
           onEntrypointLoaded: async function (engineInitializer) {
             loading.classList.add("main_done");
-            let appRunner = await engineInitializer.initializeEngine();
+            let appRunner = await engineInitializer.initializeEngine({
+              hostElement: hostElement,
+            });
 
             loading.classList.add("init_done");
             await appRunner.runApp();

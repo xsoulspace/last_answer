@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
 import 'dart:async';
-import 'dart:html';
+import 'dart:js_interop';
 
 import 'package:flutter/widgets.dart';
+import 'package:web/web.dart';
 
 import 'ad_instance.dart';
 import 'purchases_ads_base.dart';
@@ -43,21 +42,25 @@ final class AdInstanceYaWebImpl extends AdInstance {
         Ya.Context.AdvManager.render(
           YaContextAdvManagerRender(
             blockId: unitId,
-            onRewarded: completer.complete,
+            // ignore: avoid_types_on_closure_parameters
+            onRewarded: (final JSBoolean jsIsRewarded) {
+              completer.complete(jsIsRewarded.toDart);
+            }.toJS,
             platform: platform,
             darkTheme: unitIds.isDarkMode,
             type: 'rewarded',
           ),
         );
-
-    window.yaContextCb.push(() {
-      switch (Ya.Context.AdvManager.getPlatform()) {
-        case 'desktop':
-          render(unitId: unitIds.desktop, platform: 'desktop');
-        default:
-          render(unitId: unitIds.mobile, platform: 'touch');
-      }
-    });
+    window.yaContextCb.push(
+      () {
+        switch (Ya.Context.AdvManager.getPlatform()) {
+          case 'desktop':
+            render(unitId: unitIds.desktop, platform: 'desktop');
+          default:
+            render(unitId: unitIds.mobile, platform: 'touch');
+        }
+      }.toJS,
+    );
     final isRewarded = await completer.future;
     return AdRewardModel(amount: 1, isRewarded: isRewarded);
   }

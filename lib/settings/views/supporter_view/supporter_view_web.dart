@@ -10,6 +10,9 @@ class SupportAppView extends StatelessWidget {
     return SupportAppBaseView(
       children: purhasesNotifier.isAdSupported
           ? [
+              const Text(
+                'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.',
+              ),
               TextButton(
                 onPressed: () async => purhasesNotifier.watchAd(context),
                 child: const Text('Watch ad'),

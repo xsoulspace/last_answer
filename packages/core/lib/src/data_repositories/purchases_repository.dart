@@ -44,11 +44,13 @@ class PurchasesRepository {
   }
 
   Future<PurchasesModel> recordNewDay() async {
-    PurchasesModel purchases = await _local.increaseUsedDaysCount();
-
+    PurchasesModel purchases;
     final isRecorded = await _local.verifyDayRecord();
-    if (!isRecorded) {
+    if (isRecorded) {
+      purchases = await _local.getPurchases();
+    } else {
       await _local.consumeSupporterDay();
+      await _local.increaseUsedDaysCount();
       purchases = await _local.increaseSupporterDaysCount();
     }
 

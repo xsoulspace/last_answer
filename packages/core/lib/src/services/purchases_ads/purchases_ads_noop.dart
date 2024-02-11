@@ -7,7 +7,10 @@ final class PurchasesAdsService extends PurchasesAdsBase {
   // ignore: avoid_unused_constructor_parameters
   PurchasesAdsService(final BuildContext context);
   @override
-  Future<void> onLoad() async {}
+  Future<void> onLoad() async {
+    await super.onLoad();
+    onLoadingFailed();
+  }
 
   @override
   Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) {

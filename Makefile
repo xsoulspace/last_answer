@@ -36,3 +36,6 @@ start-server-dart:
 
 start-server:
 	make start-server-docker && make start-server-dart
+
+build-web:
+	fvm flutter build web --csp --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core.dart';
+import '../data_repositories/purchases_repository.dart';
 
 class GlobalStatesProvider extends StatelessWidget {
   const GlobalStatesProvider({
@@ -13,29 +14,44 @@ class GlobalStatesProvider extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => MultiProvider(
         providers: [
-          Provider<ComplexLocalDbIsarImpl>(
-            create: (final context) => ComplexLocalDbIsarImpl(),
+          /// dependentless state distributors
+          ChangeNotifierProvider(create: RemoteUserNotifier.new),
+          ChangeNotifierProvider(create: AppFeaturesNotifier.new),
+
+          /// services, repos
+          Provider<RemoteClient>(
+            create: (final context) => RemoteClientServerpodImpl(
+              host: Envs.serverHost,
+            ),
           ),
+          Provider(create: ComplexLocalDbIsarImpl.new),
           Provider<LocalDbDataSource>(
-            create: (final context) => SharedPreferencesDbDataSourceImpl(),
+            create: SharedPreferencesDbDataSourceImpl.new,
           ),
           Provider<ComplexLocalDb>(
-            /// for initialization
             create: (final context) => context.read<ComplexLocalDbIsarImpl>(),
           ),
-          Provider(create: EmojiRepository.provide),
-          Provider(create: LastUsedEmojiRepository.provide),
-          Provider(create: UserRepository.provide),
-          Provider(create: NotificationsRepository.provide),
-          Provider(create: ProjectsRepository.provide),
-          ChangeNotifierProvider(create: EmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: LastEmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: SpecialEmojiStateNotifier.provide),
-          ChangeNotifierProvider(create: NotificationsNotifier.provide),
-          ChangeNotifierProvider(create: ProjectsNotifier.provide),
-          ChangeNotifierProvider(create: UserNotifier.provide),
-          ChangeNotifierProvider(create: AppNotifier.provide),
-          ChangeNotifierProvider(create: OpenedProjectNotifier.provide),
+          ChangeNotifierProvider<PurchasesIapService>(
+            create: PurchasesIapGoogleAppleImpl.new,
+          ),
+          Provider(create: PurchasesAdsService.new),
+          Provider(create: PurchasesRepository.new),
+          Provider(create: EmojiRepository.new),
+          Provider(create: LastUsedEmojiRepository.new),
+          Provider(create: UserRepository.new),
+          Provider(create: NotificationsRepository.new),
+          Provider(create: ProjectsRepository.new),
+
+          /// notifiers & blocs
+          ChangeNotifierProvider(create: EmojiStateNotifier.new),
+          ChangeNotifierProvider(create: LastEmojiStateNotifier.new),
+          ChangeNotifierProvider(create: SpecialEmojiStateNotifier.new),
+          ChangeNotifierProvider(create: NotificationsNotifier.new),
+          ChangeNotifierProvider(create: ProjectsNotifier.new),
+          ChangeNotifierProvider(create: PurchasesNotifier.new),
+          ChangeNotifierProvider(create: UserNotifier.new),
+          ChangeNotifierProvider(create: AppNotifier.new),
+          ChangeNotifierProvider(create: OpenedProjectNotifier.new),
         ],
         child: Builder(builder: builder),
       );

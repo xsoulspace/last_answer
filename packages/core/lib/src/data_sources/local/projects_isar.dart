@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 
@@ -50,7 +51,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final resultItems = items
         .map(
           (final e) => ProjectModel.fromJson(
-            jsonDecode(e.jsonContent),
+            jsonDecode(e.jsonContent) as Map<String, dynamic>,
           ),
         )
         .toList();

@@ -6,18 +6,47 @@
   "configurations": [
     {
       "program": "lib/main.dart",
-      "name": "dev",
+      "name": "mobile prod",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "configs/envs/dev.json"],
+      "args": ["--dart-define-from-file=configs/envs/prod.json"],
       "flutterMode": "debug"
     },
     {
       "program": "lib/main.dart",
-      "name": "prod dev",
+      "name": "mobile local",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"],
+      "args": ["--dart-define-from-file=configs/envs/local.json"],
+      "flutterMode": "debug"
+    },
+    {
+      "program": "lib/main.dart",
+      "name": "web prod",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--enable-experiment=inline-class",
+        "--dart-define-from-file=configs/envs/prod.json",
+        "--dart-define=STORE=xsoulspaceWebsite",
+        "-d",
+        "chrome",
+        "--web-port=49660"
+      ],
+      "flutterMode": "debug"
+    },
+    {
+      "program": "lib/main.dart",
+      "name": "web local",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define-from-file=configs/envs/local.json",
+        "--dart-define=STORE=xsoulspaceWebsite",
+        "-d",
+        "chrome",
+        "--web-port=49660"
+      ],
       "flutterMode": "debug"
     },
     {
@@ -26,7 +55,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"]
+      "args": ["--dart-define-from-file=configs/envs/prod.json"]
     },
     {
       "program": "lib/main.dart",
@@ -34,7 +63,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": ["--dart-define-from-file", "configs/envs/prod.json"]
+      "args": ["--dart-define-from-file=configs/envs/prod.json"]
     }
   ]
 }

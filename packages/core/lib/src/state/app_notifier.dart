@@ -7,6 +7,20 @@ enum AppStatus {
 }
 
 @freezed
+class AppFeaturesModel with _$AppFeaturesModel {
+  const factory AppFeaturesModel({
+    @Default(false) final bool isRemoteServicesEnabled,
+  }) = _AppFeaturesModel;
+}
+
+@stateDistributor
+class AppFeaturesNotifier extends ValueNotifier<AppFeaturesModel> {
+  // ignore: avoid_unused_constructor_parameters
+  AppFeaturesNotifier(final BuildContext context)
+      : super(const AppFeaturesModel());
+}
+
+@freezed
 class AppNotifierState with _$AppNotifierState {
   const factory AppNotifierState({
     @Default(AppStatus.loading) final AppStatus status,
@@ -19,13 +33,10 @@ class AppNotifierDto {
 }
 
 class AppNotifier extends ValueNotifier<AppNotifierState> {
-  AppNotifier({
-    required this.dto,
-  }) : super(const AppNotifierState());
+  AppNotifier(final BuildContext context)
+      : dto = AppNotifierDto(context),
+        super(const AppNotifierState());
 
-  factory AppNotifier.provide(final BuildContext context) => AppNotifier(
-        dto: AppNotifierDto(context),
-      );
   final AppNotifierDto dto;
 
   // TODO(arenukvern): add logic for connection change,

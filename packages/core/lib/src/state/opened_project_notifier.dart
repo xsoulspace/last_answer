@@ -10,13 +10,9 @@ class OpenedProjectNotifierDto {
 
 class OpenedProjectNotifier
     extends ValueNotifier<LoadableContainer<ProjectModel>> {
-  OpenedProjectNotifier({required this.dto})
-      : super(LoadableContainer(value: ProjectModel.emptyNote));
-
-  factory OpenedProjectNotifier.provide(final BuildContext context) =>
-      OpenedProjectNotifier(
-        dto: OpenedProjectNotifierDto(context),
-      );
+  OpenedProjectNotifier(final BuildContext context)
+      : dto = OpenedProjectNotifierDto(context),
+        super(LoadableContainer(value: ProjectModel.emptyNote));
 
   final OpenedProjectNotifierDto dto;
 

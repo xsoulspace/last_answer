@@ -195,7 +195,7 @@ class MobilePopupButtonDialog extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedPrimaryButton(
-                    onClose: () => close(context),
+                    onPressed: () => close(context),
                   ),
                 ),
               ],
@@ -212,6 +212,7 @@ class RemoveActionButton extends StatelessWidget {
     required this.onTap,
     this.useIcon = false,
     this.filled = false,
+    this.isLoading = false,
     this.text,
     super.key,
   });
@@ -219,9 +220,10 @@ class RemoveActionButton extends StatelessWidget {
   final bool useIcon;
   final String? text;
   final bool filled;
-
+  final bool isLoading;
   @override
   Widget build(final BuildContext context) {
+    final onTap = isLoading ? () {} : this.onTap;
     if (filled) {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -229,14 +231,16 @@ class RemoveActionButton extends StatelessWidget {
           backgroundColor: AppColors.accent3,
           padding: const EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
-            borderRadius: defaultBorderRadius,
+            borderRadius: defaultPopupBorderRadius,
           ),
         ),
         onPressed: onTap,
-        child: Text(
-          text ?? context.l10n.delete.sentenceCase,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        child: isLoading
+            ? const UiCircularProgress()
+            : Text(
+                text ?? context.l10n.delete.sentenceCase,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
       );
     }
 
@@ -246,27 +250,29 @@ class RemoveActionButton extends StatelessWidget {
         foregroundColor: AppColors.accent3,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: defaultBorderRadius,
+          borderRadius: defaultPopupBorderRadius,
         ),
       ),
-      child: useIcon
-          ? const Icon(Icons.delete_forever_rounded)
-          : Text(
-              text ?? context.l10n.delete.sentenceCase,
-              style: Theme.of(context).textTheme.titleLarge,
-              // ?.copyWith(color: AppColors.accent3),
-            ),
+      child: isLoading
+          ? const UiCircularProgress()
+          : useIcon
+              ? const Icon(Icons.delete_forever_rounded)
+              : Text(
+                  text ?? context.l10n.delete.sentenceCase,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  // ?.copyWith(color: AppColors.accent3),
+                ),
     );
   }
 }
 
 class OutlinedPrimaryButton extends StatelessWidget {
   const OutlinedPrimaryButton({
-    required this.onClose,
+    required this.onPressed,
     this.useIcon = false,
     super.key,
   });
-  final VoidCallback? onClose;
+  final VoidCallback? onPressed;
   final bool useIcon;
   @override
   Widget build(final BuildContext context) {
@@ -283,7 +289,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
         ),
         side: BorderSide(color: primaryColor),
       ),
-      onPressed: onClose,
+      onPressed: onPressed,
       child: useIcon
           ? const Icon(Icons.check)
           : Text(

@@ -19,6 +19,7 @@ class SettingsListContainer extends StatelessWidget {
     return SingleChildScrollView(
       padding: padding ?? const EdgeInsets.all(18),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: builder(
           context,
           leftColumnWidth,

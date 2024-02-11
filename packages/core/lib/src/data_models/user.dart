@@ -2,23 +2,18 @@
 
 part of 'data_models.dart';
 
-@Freezed(fromJson: false, toJson: false)
-class UserModelId with _$UserModelId {
-  const factory UserModelId({
-    required final String value,
-  }) = _UserModelId;
-  const UserModelId._();
-  factory UserModelId.fromJson(final String value) => UserModelId(value: value);
-  static const empty = UserModelId(value: '');
-  bool get isEmpty => value.isEmpty;
-  String toJson() => value;
+enum LocalDbVersion {
+  v3_16,
+  v3_17;
+
+  static const newestVersion = v3_17;
 }
 
 @freezed
 class UserModel with _$UserModel {
   const factory UserModel({
     @Default(UserSettingsModel.initial) final UserSettingsModel settings,
-    @Default(LocalDbVersion.v3_16) final LocalDbVersion localDbVersion,
+    @Default(LocalDbVersion.newestVersion) final LocalDbVersion localDbVersion,
     @Default(false) final bool hasCompletedOnboarding,
   }) = _UserModel;
   factory UserModel.fromJson(final Map<String, dynamic> json) =>

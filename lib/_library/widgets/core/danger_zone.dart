@@ -5,11 +5,13 @@ class DangerZone extends StatelessWidget {
     required this.onRemove,
     this.removeText,
     this.dangerBackgroundColor,
+    this.isLoading = false,
     super.key,
   });
   final VoidCallback onRemove;
   final Color? dangerBackgroundColor;
   final String? removeText;
+  final bool isLoading;
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -44,18 +46,12 @@ class DangerZone extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: defaultPopupBorderRadius,
-            ),
-            height: 50,
-            child: RemoveActionButton(
-              onTap: onRemove,
-              text: removeText,
-            ),
+        Positioned.fill(
+          top: 15,
+          child: RemoveActionButton(
+            onTap: onRemove,
+            text: removeText,
+            isLoading: isLoading,
           ),
         ),
       ],

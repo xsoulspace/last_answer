@@ -1,26 +1,6 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../core.dart';
-
-class Locales {
-  Locales._();
-  static const en = Locale('en', 'EN');
-  static const ru = Locale('ru', 'RU');
-  static const it = Locale('it', 'IT');
-
-  /// Irland Language
-  // static const ga = Locale('ga', 'GA');
-
-  /// Turkey Language
-  static const values = <Locale>[en, ru, it];
-  // ga];
-  static Locale byLanguage(final Languages language) => switch (language) {
-        Languages.en => en,
-        Languages.ru => ru,
-        Languages.it => it,
-        // Languages.ga => ga,
-      };
-}
 
 typedef LanguageName = String;
 
@@ -43,6 +23,26 @@ enum Languages {
   }
 
   static const all = <Languages>[ru, en, it];
+}
+
+class Locales {
+  Locales._();
+  static const en = Locale('en', 'EN');
+  static const ru = Locale('ru', 'RU');
+  static const it = Locale('it', 'IT');
+
+  /// Irland Language
+  // static const ga = Locale('ga', 'GA');
+
+  /// Turkey Language
+  static const values = <Locale>[en, ru, it];
+  // ga];
+  static Locale byLanguage(final Languages language) => switch (language) {
+        Languages.en => en,
+        Languages.ru => ru,
+        Languages.it => it,
+        // Languages.ga => ga,
+      };
 }
 
 final Map<Languages, NamedLocale> namedLocalesMap = {

@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
+import '../state/user_remote_initializer.dart';
 
 class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({
     required this.context,
   })  : emojiRepository = context.read(),
+        appFeaturesNotifier = context.read(),
         lastUsedEmojiRepository = context.read(),
         lastEmojiState = context.read(),
         specialEmojiState = context.read(),
@@ -21,9 +24,14 @@ class GlobalStatesInitializerDto {
         appNotifier = context.read(),
         complexLocalDb = context.read(),
         localDbDataSource = context.read(),
+        remoteClient = context.read(),
+        purchasesNotifier = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
+
   final BuildContext context;
+  final AppFeaturesNotifier appFeaturesNotifier;
+  final RemoteClient remoteClient;
   final LocalDbDataSource localDbDataSource;
   final ComplexLocalDb complexLocalDb;
   final EmojiRepository emojiRepository;
@@ -35,6 +43,7 @@ class GlobalStatesInitializerDto {
   final NotificationsNotifier notificationController;
   final ProjectsNotifier projectsNotifier;
   final UserNotifier userNotifier;
+  final PurchasesNotifier purchasesNotifier;
   final AppNotifier appNotifier;
   final ProjectsRepository projectsRepository;
 }
@@ -46,19 +55,22 @@ class GlobalStatesInitializer implements StateInitializer {
   });
   final GlobalStatesInitializerDto dto;
   final GoRouter router;
+  late final _localUserInitializer = LocalUserInitializer(dto.context);
+  late final _remoteUserInitializer = RemoteUserInitializer(dto.context);
   @override
   Future<void> onLoad() async {
-    final initializer = UserInitializer(
-      dto: GlobalStatesInitializerDto(context: dto.context),
-    );
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
-
-    await dto.userNotifier.onLoad(initializer);
-
+    if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
+      await dto.remoteClient.onLoad();
+    }
+    await dto.userNotifier.onLoad(
+      local: _localUserInitializer,
+      remote: _remoteUserInitializer,
+    );
     // final isConnected = await PlatformInfo.isConnected;
     dto.appNotifier.updateAppStatus(
-      AppStatus.online,
+      AppStatus.offline,
       // isConnected ? AppStatus.online : AppStatus.offline,
     );
     if (dto.userNotifier.hasCompletedOnboarding) {
@@ -91,5 +103,10 @@ class GlobalStatesInitializer implements StateInitializer {
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
+  }
+
+  @override
+  void dispose() {
+    _remoteUserInitializer.dispose();
   }
 }

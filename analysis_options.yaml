@@ -1,6 +1,8 @@
 include: package:xsoulspace_lints/app.yaml
 
 analyzer:
+  enable-experiment:
+    - inline-class
   exclude:
     - lib/**.*.dart
     - lib/l10n/l10n.dart

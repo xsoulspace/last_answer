@@ -1,6 +1,8 @@
 plugins {
     id "com.android.application"
+    id 'com.google.gms.google-services'
     id "kotlin-android"
+    id 'com.google.firebase.crashlytics'
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -31,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "dev.xsoulspace.lastanswer"
-    compileSdkVersion 34
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -65,6 +67,9 @@ android {
        }
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
         release {
             signingConfig signingConfigs.release
         }
@@ -84,7 +89,18 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation "com.google.firebase:firebase-crashlytics"
+    implementation "com.google.firebase:firebase-analytics"
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+
     // def billing_version = "4.0.0"
+    implementation 'com.yandex.android:mobileads-mediation:6.3.0.0'
 
     // implementation "com.android.billingclient:billing:$billing_version"
 

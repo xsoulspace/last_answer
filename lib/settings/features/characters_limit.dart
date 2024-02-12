@@ -12,30 +12,20 @@ class CharactersLimitSetting extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
     final dark = theme.brightness == Brightness.dark;
     useListenable(controller);
     Widget otherButton;
 
     // TODO(arenukvern): refactor to separate widget
-    if (controller.noLimitIsSet) {
-      otherButton = Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: HoverableButton(
-          onPressed: () => controller.setLimit(
-            0,
-            zeroEqualNull: false,
-          ),
-          child: Text(context.l10n.charactersUnlimited),
-        ),
-      );
-    } else {
+    if (controller.isEditing) {
       otherButton = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(width: 12),
+          const Gap(12),
           UiTextField(
-            value: controller.value,
+            value: controller.limit,
+            focusNode: controller.focusNode,
             onChanged: controller.onLimitChanged,
             keyboardType: TextInputType.number,
             autocorrect: false,
@@ -48,16 +38,23 @@ class CharactersLimitSetting extends HookWidget {
                   constraints: const BoxConstraints(maxWidth: 60),
                 ),
           ),
-          const SizedBox(width: 2),
+          const Gap(2),
           HoverableButton(
-            onPressed:
-                controller.value.isEmpty ? null : controller.onClearLimit,
+            onPressed: controller.isEditing ? controller.onClearLimit : null,
             child: const Icon(
               CupertinoIcons.clear,
               size: 14,
             ),
           ),
         ],
+      );
+    } else {
+      otherButton = Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: HoverableButton(
+          onPressed: () => controller.setIsEditing(true),
+          child: Text(context.l10n.charactersUnlimited),
+        ),
       );
     }
     // TODO(arenukvern): refactor to separate widget

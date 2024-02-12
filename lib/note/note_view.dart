@@ -58,7 +58,7 @@ class NoteViewBody extends StatelessWidget {
                       filled: false,
                       hasBorder: false,
                       contentPadding: const EdgeInsets.only(left: 24),
-                      limit: int.tryParse(bloc.characterLimitController.value),
+                      limit: int.tryParse(bloc.characterLimitController.limit),
                       focusNode: bloc.focusNode,
                       endlessLines: true,
                       focusOnInit: bloc.dto.initialNote.note.isEmpty,

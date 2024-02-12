@@ -14,6 +14,7 @@ class SupportAppView extends StatelessWidget {
       children: purhasesNotifier.isAdSupported
           ? [
               Text(l10n.adPleaseNote),
+              const Gap(24),
               FilledButton.tonal(
                 onPressed: isAdLoaded
                     ? () async => purhasesNotifier.watchAd(context)

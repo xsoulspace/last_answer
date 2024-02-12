@@ -46,7 +46,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   void _onChanged() {
     final updatedNote = value.copyWith(
       note: noteController.text,
-      charactersLimit: int.tryParse(characterLimitController.value) ?? 0,
+      charactersLimit: int.tryParse(characterLimitController.limit) ?? 0,
     );
     setValue(updatedNote);
     dto.openedProjectNotifier.updateProject(updatedNote);

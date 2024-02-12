@@ -140,13 +140,13 @@ abstract class S {
   /// No description provided for @myAccount.
   ///
   /// In en, this message translates to:
-  /// **'My Account'**
+  /// **'Account'**
   String get myAccount;
 
   /// No description provided for @changeLog.
   ///
   /// In en, this message translates to:
-  /// **'Change Log'**
+  /// **'What\'s new'**
   String get changeLog;
 
   /// No description provided for @username.
@@ -490,6 +490,90 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Ideas Improvements Bugs?'**
   String get aboutAbstractIdeasImprovementsBugs;
+
+  /// No description provided for @supporterDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter days left'**
+  String get supporterDaysLeft;
+
+  /// No description provided for @youCanSupportAppDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.'**
+  String get youCanSupportAppDevelopment;
+
+  /// No description provided for @youUsedThisAppFor.
+  ///
+  /// In en, this message translates to:
+  /// **'You used this app for'**
+  String get youUsedThisAppFor;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @andHaveSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'and have supported'**
+  String get andHaveSupported;
+
+  /// No description provided for @unfortunatelyThisPlatformHasNoAbilitiesToSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfortunately, this platform has no abilities to support the app, yet:)'**
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport;
+
+  /// No description provided for @butYouCanGoTo.
+  ///
+  /// In en, this message translates to:
+  /// **'But you can go'**
+  String get butYouCanGoTo;
+
+  /// No description provided for @toTheWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'to the website:)'**
+  String get toTheWebsite;
+
+  /// No description provided for @whatSupporterDaysMeans.
+  ///
+  /// In en, this message translates to:
+  /// **'What \"Suppoter Days\" means?'**
+  String get whatSupporterDaysMeans;
+
+  /// No description provided for @supporterDaysAre.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)'**
+  String get supporterDaysAre;
+
+  /// No description provided for @supporterDaysMainFunctionality.
+  ///
+  /// In en, this message translates to:
+  /// **'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)'**
+  String get supporterDaysMainFunctionality;
+
+  /// No description provided for @toGetSupporterDays.
+  ///
+  /// In en, this message translates to:
+  /// **'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.'**
+  String get toGetSupporterDays;
+
+  /// No description provided for @watchAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad'**
+  String get watchAd;
+
+  /// No description provided for @adPleaseNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.'**
+  String get adPleaseNote;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

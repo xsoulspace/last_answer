@@ -17,7 +17,7 @@ class SupportAppView extends StatelessWidget {
                     ? () async => purhasesNotifier.watchAd(context)
                     : null,
                 child: isAdLoaded
-                    ? const Text('Watch ad')
+                    ? Text(context.l10n.watchAd)
                     : const UiCircularProgress(),
               ),
             ]

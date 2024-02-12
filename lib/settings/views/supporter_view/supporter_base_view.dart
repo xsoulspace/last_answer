@@ -12,14 +12,14 @@ class SupportAppBaseView extends StatelessWidget {
   Widget build(final BuildContext context) {
     final purchasesNotifier = context.watch<PurchasesNotifier>();
     final state = purchasesNotifier.value.value;
+    final l10n = context.l10n;
     final supporterDaysCount = state.supporterDaysCount;
     final String supporterDaysText;
     if (state.daysOfSupporterLeft > 0) {
-      supporterDaysText = 'Supporter days left:  ${state.daysOfSupporterLeft}';
-    } else {
       supporterDaysText =
-          // ignore: lines_longer_than_80_chars
-          'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.';
+          '${l10n.supporterDaysLeft}:  ${state.daysOfSupporterLeft}';
+    } else {
+      supporterDaysText = l10n.youCanSupportAppDevelopment;
     }
 
     return Column(
@@ -28,7 +28,7 @@ class SupportAppBaseView extends StatelessWidget {
         if (purchasesNotifier.value.isLoading) const UiCircularProgress(),
         Text(
           // ignore: lines_longer_than_80_chars
-          'You used this app for ${state.usedDaysCount} days${supporterDaysCount > 0 ? ' and have supported $supporterDaysCount days!' : ''}',
+          '${l10n.youUsedThisAppFor} ${state.usedDaysCount} ${l10n.days}${supporterDaysCount > 0 ? ' ${l10n.andHaveSupported} $supporterDaysCount ${l10n.days}!' : ''}',
         ).animate().fadeIn(),
         const Gap(24),
         Text(supporterDaysText),
@@ -38,14 +38,13 @@ class SupportAppBaseView extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     children: [
-                      const TextSpan(
-                        text:
-                            // ignore: lines_longer_than_80_chars
-                            'Unfortunately this platform has no abilities to support the app, yet:)',
-                      ),
-                      const TextSpan(text: 'But you can go'),
                       TextSpan(
-                        text: 'to the website:)',
+                        text: l10n
+                            .unfortunatelyThisPlatformHasNoAbilitiesToSupport,
+                      ),
+                      TextSpan(text: l10n.butYouCanGoTo),
+                      TextSpan(
+                        text: l10n.toTheWebsite,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             await launchUrlString(
@@ -61,24 +60,15 @@ class SupportAppBaseView extends StatelessWidget {
         const Divider(),
         const Gap(18),
         Text(
-          'What "Suppoter Days" means?',
+          l10n.whatSupporterDaysMeans,
           style: context.textTheme.titleSmall,
         ),
         const Gap(18),
-        const Text(
-          // ignore: lines_longer_than_80_chars
-          'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)',
-        ).animate().fadeIn(),
+        Text(l10n.supporterDaysAre).animate().fadeIn(),
         const Gap(24),
-        const Text(
-          // ignore: lines_longer_than_80_chars
-          'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)',
-        ).animate().fadeIn(),
+        Text(l10n.supporterDaysMainFunctionality).animate().fadeIn(),
         const Gap(24),
-        const Text(
-          // ignore: lines_longer_than_80_chars
-          'To get Supporter Days, the user can press the "watch ad" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), they will be given 7 Supporter Days.',
-        ).animate().fadeIn(),
+        Text(l10n.toGetSupporterDays).animate().fadeIn(),
         const Gap(48),
       ],
     );

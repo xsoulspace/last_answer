@@ -9,19 +9,17 @@ class SupportAppView extends StatelessWidget {
     final purhasesNotifier = context.watch<PurchasesNotifier>();
     final purchasesAdsService = context.watch<PurchasesAdsService>();
     final isAdLoaded = purchasesAdsService.isLoaded;
+    final l10n = context.l10n;
     return SupportAppBaseView(
       children: purhasesNotifier.isAdSupported
           ? [
-              const Text(
-                // ignore: lines_longer_than_80_chars
-                'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.',
-              ),
+              Text(l10n.adPleaseNote),
               FilledButton.tonal(
                 onPressed: isAdLoaded
                     ? () async => purhasesNotifier.watchAd(context)
                     : null,
                 child: isAdLoaded
-                    ? const Text('Watch ad')
+                    ? Text(l10n.watchAd)
                     : const UiCircularProgress(),
               ),
             ]

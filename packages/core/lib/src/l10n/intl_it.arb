@@ -64,5 +64,19 @@
   "aboutAbstractWhatFor": "Per che cosa?",
   "aboutAbstractWhatForDescription": "Questa app è progettata per risolvere l'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.",
   "aboutAbstractHowDescription": "Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.",
-  "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?"
+  "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?",
+  "supporterDaysLeft": "Giorni di supporto rimasti",
+  "youCanSupportAppDevelopment": "Puoi iniziare a sostenere lo sviluppo dell'app guardando la breve pubblicità qui sotto. Questo mi aiuterà a migliorare l'app e renderla migliore.",
+  "youUsedThisAppFor": "Hai usato questa app per",
+  "days": "giorni",
+  "andHaveSupported": "e ha supportato",
+  "unfortunatelyThisPlatformHasNoAbilitiesToSupport": "Purtroppo, questa piattaforma al momento non ha la possibilità di supportare l'app:)",
+  "butYouCanGoTo": "Ma tu puoi andare",
+  "toTheWebsite": "sul sito web:)",
+  "whatSupporterDaysMeans": "Cosa significa \"Supporter Days\"?",
+  "supporterDaysAre": "Supporter Days sono i giorni dati all'utente dell'applicazione per sostenere il progetto. Ogni volta che l'utente utilizza l'applicazione, viene detratto un Supporter Day (solo una volta al giorno, indipendentemente da quante volte l'utente apre l'applicazione in un giorno) e aggiunto ai Giorni supportati (il numero totale di giorni in cui la persona ha supportato il progetto). Se l'utente non ha mai aperto l'applicazione, i giorni non vengono detratti. :)",
+  "supporterDaysMainFunctionality": "La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l'opportunità di utilizzare funzionalità aggiuntive dell'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)",
+  "toGetSupporterDays": "Per ottenere i Supporter Days, l'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.",
+  "watchAd": "Guarda la pubblicità",
+  "adPleaseNote": "Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona."
 }

@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "program": "lib/main.dart",
+      "program": "lib/main_prod.dart",
       "name": "mobile prod",
       "request": "launch",
       "type": "dart",
@@ -21,7 +21,7 @@
       "flutterMode": "debug"
     },
     {
-      "program": "lib/main.dart",
+      "program": "lib/main_prod.dart",
       "name": "web prod",
       "request": "launch",
       "type": "dart",
@@ -50,7 +50,7 @@
       "flutterMode": "debug"
     },
     {
-      "program": "lib/main.dart",
+      "program": "lib/main_prod.dart",
       "name": "prod (profile mode)",
       "request": "launch",
       "type": "dart",
@@ -58,7 +58,7 @@
       "args": ["--dart-define-from-file=configs/envs/prod.json"]
     },
     {
-      "program": "lib/main.dart",
+      "program": "lib/main_prod.dart",
       "name": "prod (release mode)",
       "request": "launch",
       "type": "dart",

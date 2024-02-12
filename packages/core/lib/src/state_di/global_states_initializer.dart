@@ -26,9 +26,10 @@ class GlobalStatesInitializerDto {
         localDbDataSource = context.read(),
         remoteClient = context.read(),
         purchasesNotifier = context.read(),
+        purchasesAdsService = context.read(),
         projectsRepository = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
-
+  final PurchasesAdsService purchasesAdsService;
   final BuildContext context;
   final AppFeaturesNotifier appFeaturesNotifier;
   final RemoteClient remoteClient;

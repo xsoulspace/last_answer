@@ -5,8 +5,10 @@ class UiCircularProgress extends StatelessWidget {
   const UiCircularProgress({super.key});
 
   @override
-  Widget build(final BuildContext context) =>
-      const Center(child: CircularProgressIndicator.adaptive())
-          .animate()
-          .fadeIn();
+  Widget build(final BuildContext context) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+          child: const CircularProgressIndicator.adaptive(),
+        ),
+      ).animate().fadeIn();
 }

@@ -7,12 +7,18 @@ class SupportAppView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final purhasesNotifier = context.watch<PurchasesNotifier>();
+    final purchasesAdsService = context.watch<PurchasesAdsService>();
+    final isAdLoaded = purchasesAdsService.isLoaded;
     return SupportAppBaseView(
       children: purhasesNotifier.isAdSupported
           ? [
-              TextButton(
-                onPressed: () async => purhasesNotifier.watchAd(context),
-                child: const Text('Watch ad'),
+              FilledButton.tonal(
+                onPressed: isAdLoaded
+                    ? () async => purhasesNotifier.watchAd(context)
+                    : null,
+                child: isAdLoaded
+                    ? Text(context.l10n.watchAd)
+                    : const UiCircularProgress(),
               ),
             ]
           : [],

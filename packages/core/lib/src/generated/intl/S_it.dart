@@ -26,10 +26,10 @@ class SIt extends S {
   String get patronSubscription => 'Patron';
 
   @override
-  String get myAccount => 'Il mio account';
+  String get myAccount => 'Account';
 
   @override
-  String get changeLog => 'Change Log';
+  String get changeLog => 'Cosa c\'è di nuovo';
 
   @override
   String get username => 'Nome utente';
@@ -205,4 +205,46 @@ class SIt extends S {
 
   @override
   String get aboutAbstractIdeasImprovementsBugs => 'Idee Miglioramenti Bug?';
+
+  @override
+  String get supporterDaysLeft => 'Giorni di supporto rimasti';
+
+  @override
+  String get youCanSupportAppDevelopment => 'Puoi iniziare a sostenere lo sviluppo dell\'app guardando la breve pubblicità qui sotto. Questo mi aiuterà a migliorare l\'app e renderla migliore.';
+
+  @override
+  String get youUsedThisAppFor => 'Hai usato questa app per';
+
+  @override
+  String get days => 'giorni';
+
+  @override
+  String get andHaveSupported => 'e ha supportato';
+
+  @override
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport => 'Purtroppo, questa piattaforma al momento non ha la possibilità di supportare l\'app:)';
+
+  @override
+  String get butYouCanGoTo => 'Ma tu puoi andare';
+
+  @override
+  String get toTheWebsite => 'sul sito web:)';
+
+  @override
+  String get whatSupporterDaysMeans => 'Cosa significa \"Supporter Days\"?';
+
+  @override
+  String get supporterDaysAre => 'Supporter Days sono i giorni dati all\'utente dell\'applicazione per sostenere il progetto. Ogni volta che l\'utente utilizza l\'applicazione, viene detratto un Supporter Day (solo una volta al giorno, indipendentemente da quante volte l\'utente apre l\'applicazione in un giorno) e aggiunto ai Giorni supportati (il numero totale di giorni in cui la persona ha supportato il progetto). Se l\'utente non ha mai aperto l\'applicazione, i giorni non vengono detratti. :)';
+
+  @override
+  String get supporterDaysMainFunctionality => 'La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l\'opportunità di utilizzare funzionalità aggiuntive dell\'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)';
+
+  @override
+  String get toGetSupporterDays => 'Per ottenere i Supporter Days, l\'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.';
+
+  @override
+  String get watchAd => 'Guarda la pubblicità';
+
+  @override
+  String get adPleaseNote => 'Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.';
 }

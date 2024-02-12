@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="./styles.css" />
     <script>
       // The value below is injected by flutter build, do not touch.
-      const serviceWorkerVersion = "2426763403";
+      const serviceWorkerVersion = "28972331";
     </script>
     <!-- This script adds the flutter initialization JS code -->
     <script src="flutter.js" defer></script>
@@ -46,16 +46,17 @@
     <!-- Yandex Context End -->
   </head>
   <body>
-    <div id="flutter_app" style="width: 100%; height: 100%"></div>
-    <main class="container">
+    <div class="container" id="loading_container">
       <div id="loading">
         <img src="icons/icon-512.png" width="128" />
       </div>
       <span class="loader" alt="Loading indicator..."></span>
-    </main>
+    </div>
+    <div id="flutter_app" style="width: 100%; height: 100%"></div>
     <script>
       window.addEventListener("load", function (ev) {
         var loading = document.querySelector("#loading");
+        var loadingContainer = document.querySelector("#loading_container");
         var hostElement = document.querySelector("#flutter_app");
         // Download main.dart.js
         _flutter.loader.loadEntrypoint({
@@ -67,11 +68,13 @@
             let appRunner = await engineInitializer.initializeEngine({
               hostElement: hostElement,
             });
-
+            console.log("appRunner");
             loading.classList.add("init_done");
             await appRunner.runApp();
+            console.log("runApp - done");
             window.setTimeout(function () {
-              loading.remove();
+              console.log("removing");
+              loadingContainer.remove();
             }, 200);
           },
         });

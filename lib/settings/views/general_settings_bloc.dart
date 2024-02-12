@@ -21,7 +21,7 @@ class GeneralSettingsBloc with ChangeNotifier {
 
   void _onChanged() {
     dto.userNotifier.updateCharactersLimitForNewNotes(
-      int.tryParse(characterLimitController.value) ?? 0,
+      int.tryParse(characterLimitController.limit) ?? 0,
     );
   }
 

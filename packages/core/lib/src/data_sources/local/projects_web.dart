@@ -34,7 +34,12 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> put({required final ProjectModel project}) async {
-    _cache.insert(0, project);
+    final index = _cache.indexWhere((final e) => e.id == project.id);
+    if (index >= 0) {
+      _cache[index] = project;
+    } else {
+      _cache.insert(0, project);
+    }
     _saveCache();
   }
 

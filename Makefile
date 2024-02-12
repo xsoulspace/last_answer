@@ -39,3 +39,7 @@ start-server:
 
 build-web:
 	fvm flutter build web --csp --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite
+build-google-play:
+	fvm flutter build appbundle --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay
+build-rustore:
+	fvm flutter build apk --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json 

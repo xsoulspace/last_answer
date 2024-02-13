@@ -33,6 +33,9 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     projectsPagedController.loadFirstPage();
   }
 
+  Future<void> saveToFile() async {}
+  Future<void> loadFromFile() async {}
+
   void onReset() {
     projectsPagedController.refresh();
   }

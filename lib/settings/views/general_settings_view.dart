@@ -71,6 +71,11 @@ class GeneralSettingsViewBody extends StatelessWidget {
           leftColumnWidth: leftColumnWidth,
           child: const ProjectsDirectionSwitch(),
         ),
+        SettingsListTile(
+          title: context.l10n.exportImportData,
+          leftColumnWidth: leftColumnWidth,
+          child: const ProjectsExportImportButtons(),
+        ),
 
         Divider(
           color: theme.highlightColor,

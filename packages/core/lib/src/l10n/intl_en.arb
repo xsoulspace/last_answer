@@ -78,5 +78,6 @@
   "supporterDaysMainFunctionality": "The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)",
   "toGetSupporterDays": "To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it's 60 seconds), and it will reward as 7 Supporter Days.",
   "watchAd": "Watch Ad",
-  "adPleaseNote": "Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working."
+  "adPleaseNote": "Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.",
+  "exportImportData": "All Data"
 }

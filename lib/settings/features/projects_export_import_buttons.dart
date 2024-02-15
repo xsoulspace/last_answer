@@ -9,13 +9,14 @@ class ProjectsExportImportButtons extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final projectsNotifier = context.watch<ProjectsNotifier>();
-
+    final isFileLoading = projectsNotifier.value.isAllProjectsFileLoading;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
+          if (isFileLoading) const UiCircularProgress(),
           HoverableButton(
-            onPressed: projectsNotifier.saveToFile,
+            onPressed: isFileLoading ? () {} : projectsNotifier.saveToFile,
             child: const Row(
               children: [
                 Icon(Icons.file_download),
@@ -24,7 +25,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
             ),
           ),
           HoverableButton(
-            onPressed: projectsNotifier.loadFromFile,
+            onPressed: isFileLoading ? () {} : projectsNotifier.loadFromFile,
             child: const Row(
               children: [
                 Icon(Icons.file_upload),

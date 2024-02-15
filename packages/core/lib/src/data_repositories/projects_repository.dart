@@ -17,6 +17,7 @@ class ProjectsRepository {
       _datasource.put(project: project);
   Future<void> remove({required final ProjectModelId id}) async =>
       _datasource.remove(id: id);
+  Future<List<ProjectModel>> getAll() async => _datasource.getAll();
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,

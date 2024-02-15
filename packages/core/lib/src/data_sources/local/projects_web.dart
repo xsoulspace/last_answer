@@ -62,4 +62,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
         convertToJson: (final v) => v.toJson(),
         value: _cache,
       );
+
+  @override
+  Future<List<ProjectModel>> getAll() async => _cache;
 }

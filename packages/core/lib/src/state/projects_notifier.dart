@@ -5,6 +5,7 @@ class ProjectsNotifierState with _$ProjectsNotifierState {
   const factory ProjectsNotifierState({
     @Default(RequestProjectsDto.empty)
     final RequestProjectsDto requestProjectsDto,
+    @Default(false) final bool isAllProjectsFileLoading,
   }) = _ProjectsNotifierState;
 }
 
@@ -33,12 +34,36 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     projectsPagedController.loadFirstPage();
   }
 
-  Future<void> saveToFile() async {}
-  Future<void> loadFromFile() async {}
-
-  void onReset() {
-    projectsPagedController.refresh();
+  final _fileService = FileService();
+  void _setFileLoading(final bool isLoading) => setValue(
+        value.copyWith(isAllProjectsFileLoading: isLoading),
+      );
+  Future<void> saveToFile() async {
+    _setFileLoading(true);
+    try {
+      final allProjects = await dto.projectsRepository.getAll();
+      final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
+      await _fileService.saveFile(allProjectsJson);
+    } finally {
+      _setFileLoading(false);
+    }
   }
+
+  Future<void> loadFromFile() async {
+    _setFileLoading(true);
+    try {
+      final jsonList = await _fileService.openFile();
+      if (jsonList.isEmpty) return;
+      final allProjects = jsonList.map(ProjectModel.fromJson).toList();
+      await dto.projectsRepository.putAll(projects: allProjects);
+      onReset();
+      await onLocalUserLoad();
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  void onReset() => projectsPagedController.refresh();
 
   void updateProject(final ProjectModel project) {
     _projectsUpdatesController.add(project.copyWith(updatedAt: DateTime.now()));

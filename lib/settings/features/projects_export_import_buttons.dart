@@ -12,7 +12,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
     final isFileLoading = projectsNotifier.value.isAllProjectsFileLoading;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
+      child: Wrap(
         children: [
           if (isFileLoading) const UiCircularProgress(),
           HoverableButton(

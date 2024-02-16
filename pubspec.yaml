@@ -18,8 +18,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.18.1+37
 
 environment:
-  sdk: ">=3.2.6 <4.0.0"
-  flutter: ">=3.16.9"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -71,7 +71,7 @@ dependencies:
   universal_io: ^2.2.2
   url_launcher: ^6.1.14
   uuid: ^4.1.0
-  wiredash: ^1.8.0
+  wiredash: ^1.9.0
 
 dev_dependencies:
   analyzer: ^6.3.0

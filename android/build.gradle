@@ -1,15 +1,4 @@
-buildscript {
-    ext.kotlin_version = '1.8.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
+// migration guide https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply 
 allprojects {
     repositories {
         google()

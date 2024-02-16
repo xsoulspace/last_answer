@@ -8,7 +8,7 @@
       80
     ]
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.16.9",
+  "dart.flutterSdkPath": ".fvm/versions/3.19.0",
   "search.exclude": {
     "**/.fvm": true
   },

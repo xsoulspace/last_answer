@@ -249,5 +249,5 @@ class SEn extends S {
   String get adPleaseNote => 'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.';
 
   @override
-  String get exportImportData => 'All Data';
+  String get exportImportData => 'Backup';
 }

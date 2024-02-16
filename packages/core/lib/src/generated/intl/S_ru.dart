@@ -249,5 +249,5 @@ class SRu extends S {
   String get adPleaseNote => 'Реклама в настоящее время работает только в Google Chrome и Firefox. Safari блокирует рекламу, поэтому в настоящее время она не работает.';
 
   @override
-  String get exportImportData => 'Все данные';
+  String get exportImportData => 'Бекап';
 }

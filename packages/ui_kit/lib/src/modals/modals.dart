@@ -20,27 +20,29 @@ class Modals {
           content: content,
         ),
       );
-  Future<bool?> showWarningDialog({
+  Future<bool> showWarningDialog({
     required final String title,
     required final String description,
     final String? yesActionText,
     final String? noActionText,
-  }) async =>
-      showUiDialog(
-        title: Text(title),
-        content: Text(description),
-        actionsBuilder: (final context) => [
-          ActionButtonItem(
-            title: yesActionText ?? context.l10n.yes,
-            onPressed: () => Navigator.pop(context, true),
-          ),
-          ActionButtonItem(
-            title: noActionText ?? context.l10n.no,
-            isDefaultAction: true,
-            onPressed: () => Navigator.pop(context, false),
-          ),
-        ],
-      );
+  }) async {
+    final result = await showUiDialog(
+      title: Text(title),
+      content: Text(description),
+      actionsBuilder: (final context) => [
+        ActionButtonItem(
+          title: yesActionText ?? context.l10n.yes,
+          onPressed: () => Navigator.pop(context, true),
+        ),
+        ActionButtonItem(
+          title: noActionText ?? context.l10n.no,
+          isDefaultAction: true,
+          onPressed: () => Navigator.pop(context, false),
+        ),
+      ],
+    );
+    return result == true;
+  }
 }
 
 class ActionButtonItem {

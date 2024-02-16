@@ -578,7 +578,7 @@ abstract class S {
   /// No description provided for @exportImportData.
   ///
   /// In en, this message translates to:
-  /// **'All Data'**
+  /// **'Backup'**
   String get exportImportData;
 }
 

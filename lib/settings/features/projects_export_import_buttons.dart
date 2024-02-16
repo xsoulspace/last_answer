@@ -10,29 +10,40 @@ class ProjectsExportImportButtons extends StatelessWidget {
   Widget build(final BuildContext context) {
     final projectsNotifier = context.watch<ProjectsNotifier>();
     final isFileLoading = projectsNotifier.value.isAllProjectsFileLoading;
+    final saveToButton = HoverableButton(
+      isLoading: isFileLoading,
+      onPressed: projectsNotifier.saveToFile,
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.file_download),
+          Flexible(child: Text('Save to file')),
+        ],
+      ),
+    );
+    final loadFromButton = HoverableButton(
+      isLoading: isFileLoading,
+      onPressed: () async => projectsNotifier.loadFromFile(context),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.file_upload),
+          Flexible(child: Text('Load from file')),
+        ],
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          if (isFileLoading) const UiCircularProgress(),
-          HoverableButton(
-            onPressed: isFileLoading ? () {} : projectsNotifier.saveToFile,
-            child: const Row(
-              children: [
-                Icon(Icons.file_download),
-                Text('Save to file'),
-              ],
-            ),
-          ),
-          HoverableButton(
-            onPressed: isFileLoading ? () {} : projectsNotifier.loadFromFile,
-            child: const Row(
-              children: [
-                Icon(Icons.file_upload),
-                Text('Load from file'),
-              ],
-            ),
-          ),
+          if (isFileLoading)
+            const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [UiCircularProgress()],
+            ).animate().fadeIn(),
+          saveToButton,
+          loadFromButton,
         ],
       ),
     );

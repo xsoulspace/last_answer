@@ -44,7 +44,7 @@ confinement: strict
 # https://snapcraft.io/docs/base-snaps
 # snap22 not yet supported by flutter extension
 # https://snapcraft.io/docs/flutter-extension
-base: core20
+base: core18
 grade: stable
 
 slots:

@@ -54,13 +54,12 @@ slots:
 apps:
   last-answer:
     command: lastanswer
-    # extensions: [gnome]
-
     # snap22 not yet supported by flutter extension,
     # only via plugin (see below)
     # https://snapcraft.io/docs/flutter-extension
-    # extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
+    extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
+    # extensions: [gnome]
     plugs:
       - home
       - network

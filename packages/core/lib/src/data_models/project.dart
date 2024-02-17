@@ -44,8 +44,8 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(0) final int charactersLimit,
     final DateTime? archivedAt,
   }) = ProjectModelNote;
-  factory ProjectModel.fromJson(final Map<String, dynamic> json) =>
-      _$ProjectModelFromJson(json);
+  factory ProjectModel.fromJson(final dynamic json) =>
+      _$ProjectModelFromJson(json as Map<String, dynamic>);
   const ProjectModel._();
   static const titleLimit = 90;
   String get title => switch (this) {

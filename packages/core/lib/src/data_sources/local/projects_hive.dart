@@ -52,4 +52,9 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async =>
       throw UnsupportedError('');
+
+  @override
+  Future<List<ProjectModel>> getAll() {
+    throw UnsupportedError('');
+  }
 }

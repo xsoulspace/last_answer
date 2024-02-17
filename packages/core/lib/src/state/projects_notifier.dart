@@ -5,6 +5,7 @@ class ProjectsNotifierState with _$ProjectsNotifierState {
   const factory ProjectsNotifierState({
     @Default(RequestProjectsDto.empty)
     final RequestProjectsDto requestProjectsDto,
+    @Default(false) final bool isAllProjectsFileLoading,
   }) = _ProjectsNotifierState;
 }
 
@@ -33,9 +34,57 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     projectsPagedController.loadFirstPage();
   }
 
-  void onReset() {
-    projectsPagedController.refresh();
+  final _fileService = FileService();
+  void _setFileLoading(final bool isLoading) => setValue(
+        value.copyWith(isAllProjectsFileLoading: isLoading),
+      );
+  Future<void> saveToFile() async {
+    _setFileLoading(true);
+
+    try {
+      final allProjects = await dto.projectsRepository.getAll();
+      final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
+      await _fileService.saveFile(allProjectsJson);
+    } finally {
+      _setFileLoading(false);
+    }
   }
+
+  Future<void> loadFromFile(final BuildContext context) async {
+    _setFileLoading(true);
+    final modals = Modals.of(context);
+    try {
+      final l10n = context.l10n;
+      bool shouldContinue = await modals.showWarningDialog(
+        title: l10n.areYouSure,
+        noActionText: 'Cancel',
+        yesActionText: 'Load',
+        description:
+            'By loading the file you will overwrite all current projects in the app. \nBe careful, as it is not reversable action!',
+      );
+      if (!shouldContinue) return;
+      final jsonList = await _fileService.openFile();
+      if (jsonList.isEmpty) return;
+
+      shouldContinue = await modals.showWarningDialog(
+        title: 'Confirm projects owerwrite',
+        noActionText: 'Cancel',
+        yesActionText: 'Confirm',
+        description: 'Be careful, as it is not reversable action!',
+      );
+      if (!shouldContinue) return;
+      final allProjects = jsonList.map(ProjectModel.fromJson).toList();
+
+      await dto.projectsRepository.putAll(projects: allProjects);
+      onReset();
+      await onLocalUserLoad();
+      // TODO(arenukvern): add success toast,
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  void onReset() => projectsPagedController.refresh();
 
   void updateProject(final ProjectModel project) {
     _projectsUpdatesController.add(project.copyWith(updatedAt: DateTime.now()));

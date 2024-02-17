@@ -1,8 +1,6 @@
 include: package:xsoulspace_lints/library.yaml
 
 analyzer:
-  enable-experiment:
-    - inline-class
   exclude:
     - bin/cache/*
     # Please do not change this to lib wide

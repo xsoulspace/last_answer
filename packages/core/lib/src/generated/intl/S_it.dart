@@ -247,4 +247,7 @@ class SIt extends S {
 
   @override
   String get adPleaseNote => 'Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.';
+
+  @override
+  String get exportImportData => 'Backup';
 }

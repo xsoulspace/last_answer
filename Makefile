@@ -17,9 +17,9 @@ get:
 	fvm flutter pub get
 
 gen: 
-	fvm dart run build_runner build
+	fvm dart run build_runner build 
 gen-rewrite:
-	fvm dart run build_runner build --delete-conflicting-outputs
+	fvm dart run build_runner build --delete-conflicting-outputs 
 gen-rewrite-core:
 	cd packages/core && make gen-rewrite
 
@@ -38,8 +38,8 @@ start-server:
 	make start-server-docker && make start-server-dart
 
 build-web:
-	fvm flutter build web --csp --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite -t lib/main_prod.dart
+	fvm flutter build web --csp --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite -t lib/main_prod.dart
 build-google-play:
-	fvm flutter build appbundle --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay -t lib/main_prod.dart
+	fvm flutter build appbundle --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay -t lib/main_prod.dart
 build-rustore:
-	fvm flutter build apk --enable-experiment=inline-class --dart-define-from-file=configs/envs/prod.json -t lib/main_prod.dart
+	fvm flutter build apk --dart-define-from-file=configs/envs/prod.json -t lib/main_prod.dart

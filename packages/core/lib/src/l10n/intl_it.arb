@@ -78,5 +78,6 @@
   "supporterDaysMainFunctionality": "La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l'opportunità di utilizzare funzionalità aggiuntive dell'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)",
   "toGetSupporterDays": "Per ottenere i Supporter Days, l'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.",
   "watchAd": "Guarda la pubblicità",
-  "adPleaseNote": "Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona."
+  "adPleaseNote": "Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.",
+  "exportImportData": "Backup"
 }

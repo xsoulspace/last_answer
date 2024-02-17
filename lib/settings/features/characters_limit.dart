@@ -65,6 +65,7 @@ class CharactersLimitSetting extends HookWidget {
     } else {
       vkIcon = dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack;
     }
+
     // TODO(arenukvern): refactor to separate widget
 
     AssetGenImage instagramIcon;

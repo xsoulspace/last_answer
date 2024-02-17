@@ -574,6 +574,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.'**
   String get adPleaseNote;
+
+  /// No description provided for @exportImportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get exportImportData;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

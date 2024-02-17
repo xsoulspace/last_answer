@@ -42,7 +42,9 @@ icon: snap/gui/last-answer.png
 
 confinement: strict
 # https://snapcraft.io/docs/base-snaps
-base: core22
+# snap22 not yet supported by flutter extension
+# https://snapcraft.io/docs/flutter-extension
+base: core20
 grade: stable
 
 slots:

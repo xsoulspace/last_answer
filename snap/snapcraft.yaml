@@ -54,7 +54,7 @@ slots:
 apps:
   last-answer:
     command: lastanswer
-    extensions: [gnome]
+    # extensions: [gnome]
 
     # snap22 not yet supported by flutter extension,
     # only via plugin (see below)

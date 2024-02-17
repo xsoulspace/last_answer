@@ -30,7 +30,8 @@ enum StoreType {
   huawaiStore,
   appleStore,
   xsoulspaceWebsite,
-  snapstore;
+  snapstore,
+  windowsStore;
 
   static StoreType fromEnv() =>
       values.byName(const String.fromEnvironment('STORE'));

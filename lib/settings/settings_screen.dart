@@ -12,15 +12,18 @@ class SettingsScreen extends HookWidget {
   Widget build(final BuildContext context) {
     void onBack() => Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
+    final isAccountViewVisible =
+        context.read<PurchasesNotifier>().isAdSupported;
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
     Widget child = TabBarView(
       physics: const SpeedyPageViewScrollPhysics(),
       children: [
         const GeneralSettingsView(),
-        if (appFeaturesNotifier.value.isRemoteServicesEnabled)
-          const MyAccountViewRemoteImpl()
-        else
-          const MyAccountViewLocalImpl(),
+        if (isAccountViewVisible)
+          if (appFeaturesNotifier.value.isRemoteServicesEnabled)
+            const MyAccountViewRemoteImpl()
+          else
+            const MyAccountViewLocalImpl(),
         const ChangelogView(),
       ],
     );
@@ -32,7 +35,7 @@ class SettingsScreen extends HookWidget {
       bottom: TabBar(
         tabs: [
           Tab(text: context.l10n.generalSettingsShortTitle),
-          Tab(text: context.l10n.myAccount),
+          if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
           Tab(text: context.l10n.changeLog),
         ],
       ),

@@ -33,6 +33,7 @@ enum StoreType {
   snapstore,
   windowsStore;
 
-  static StoreType fromEnv() =>
-      values.byName(const String.fromEnvironment('STORE'));
+  static StoreType fromEnv() => values.byName(
+        String.fromEnvironment('STORE', defaultValue: StoreType.snapstore.name),
+      );
 }

@@ -40,8 +40,9 @@ class PurchasesNotifier
         desktop: '',
         mobile: ''
       ),
+    StoreType.snapstore || StoreType.windowsStore => (mobile: '', desktop: ''),
     StoreType.googlePlay => (mobile: 'R-M-5944898-1', desktop: ''),
-    StoreType.snapstore || StoreType.xsoulspaceWebsite => (
+    StoreType.xsoulspaceWebsite => (
         desktop: 'R-A-5804060-1',
         mobile: 'R-A-5804060-2',
       ),

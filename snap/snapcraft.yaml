@@ -41,7 +41,8 @@ description: |
 icon: snap/gui/last-answer.png
 
 confinement: strict
-base: core18
+# https://snapcraft.io/docs/base-snaps
+base: core22
 grade: stable
 
 slots:

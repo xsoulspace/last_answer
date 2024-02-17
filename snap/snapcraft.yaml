@@ -42,7 +42,7 @@ icon: snap/gui/last-answer.png
 # new template - https://snapcraft.io/docs/flutter-applications
 confinement: strict
 # https://snapcraft.io/docs/base-snaps
-base: core22
+base: core18
 grade: stable
 
 slots:

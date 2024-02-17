@@ -4,14 +4,14 @@
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
-    "editor.rulers": [80]
+    "editor.rulers": [
+      80
+    ]
   },
-  "dart.flutterSdkPath": ".fvm/flutter_sdk",
-  // Remove .fvm files from search
+  "dart.flutterSdkPath": ".fvm/versions/3.19.0",
   "search.exclude": {
     "**/.fvm": true
   },
-  // Remove from file watching
   "files.watcherExclude": {
     "**/.fvm": true
   },

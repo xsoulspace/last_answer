@@ -61,8 +61,7 @@ import 'S_ru.dart';
 /// be consistent with the languages listed in the S.supportedLocales
 /// property.
 abstract class S {
-  S(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  S(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -82,8 +81,7 @@ abstract class S {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -142,13 +140,13 @@ abstract class S {
   /// No description provided for @myAccount.
   ///
   /// In en, this message translates to:
-  /// **'My Account'**
+  /// **'Account'**
   String get myAccount;
 
   /// No description provided for @changeLog.
   ///
   /// In en, this message translates to:
-  /// **'Change Log'**
+  /// **'What\'s new'**
   String get changeLog;
 
   /// No description provided for @username.
@@ -328,8 +326,14 @@ abstract class S {
   /// No description provided for @yes.
   ///
   /// In en, this message translates to:
-  /// **'YES'**
+  /// **'Yes'**
   String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
 
   /// No description provided for @noProjectsYet.
   ///
@@ -486,6 +490,96 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Ideas Improvements Bugs?'**
   String get aboutAbstractIdeasImprovementsBugs;
+
+  /// No description provided for @supporterDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter days left'**
+  String get supporterDaysLeft;
+
+  /// No description provided for @youCanSupportAppDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.'**
+  String get youCanSupportAppDevelopment;
+
+  /// No description provided for @youUsedThisAppFor.
+  ///
+  /// In en, this message translates to:
+  /// **'You used this app for'**
+  String get youUsedThisAppFor;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @andHaveSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'and have supported'**
+  String get andHaveSupported;
+
+  /// No description provided for @unfortunatelyThisPlatformHasNoAbilitiesToSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfortunately, this platform has no abilities to support the app, yet:)'**
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport;
+
+  /// No description provided for @butYouCanGoTo.
+  ///
+  /// In en, this message translates to:
+  /// **'But you can go'**
+  String get butYouCanGoTo;
+
+  /// No description provided for @toTheWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'to the website:)'**
+  String get toTheWebsite;
+
+  /// No description provided for @whatSupporterDaysMeans.
+  ///
+  /// In en, this message translates to:
+  /// **'What \"Suppoter Days\" means?'**
+  String get whatSupporterDaysMeans;
+
+  /// No description provided for @supporterDaysAre.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)'**
+  String get supporterDaysAre;
+
+  /// No description provided for @supporterDaysMainFunctionality.
+  ///
+  /// In en, this message translates to:
+  /// **'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)'**
+  String get supporterDaysMainFunctionality;
+
+  /// No description provided for @toGetSupporterDays.
+  ///
+  /// In en, this message translates to:
+  /// **'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.'**
+  String get toGetSupporterDays;
+
+  /// No description provided for @watchAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad'**
+  String get watchAd;
+
+  /// No description provided for @adPleaseNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.'**
+  String get adPleaseNote;
+
+  /// No description provided for @exportImportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get exportImportData;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
@@ -497,27 +591,26 @@ class _SDelegate extends LocalizationsDelegate<S> {
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'it', 'ru'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'it', 'ru'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_SDelegate old) => false;
 }
 
 S lookupS(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return SEn();
-    case 'it':
-      return SIt();
-    case 'ru':
-      return SRu();
+    case 'en': return SEn();
+    case 'it': return SIt();
+    case 'ru': return SRu();
   }
 
   throw FlutterError(
-      'S.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'S.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.'
+  );
 }

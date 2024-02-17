@@ -80,6 +80,7 @@ Thank you for your support and have a great day! 🌄
 
 ## Huge thank you for all contributions!
 
+[@Aleksey070 for insights about AI and testing](https://github.com/Aleksey070)
 [@albanobattistella for initial Italian translation](https://github.com/albanobattistella)
 
 ## Other

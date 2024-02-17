@@ -1,6 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/home/widgets/widgets.dart';
+import 'package:lastanswer/home/project_widgets/project_widgets.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
 
@@ -14,7 +14,7 @@ class ProjectView extends StatelessWidget {
       (final c) => c.value,
     );
     if (projectContainer.isLoading) {
-      return const CircularProgressIndicator.adaptive();
+      return const UiCircularProgress();
     }
 
     final id = projectContainer.value.id;

@@ -1,0 +1,13 @@
+# Is what defines a one purchase.
+# Used to declare transactions for a user.
+class: PurchaseAction
+table: purchases_history
+fields:
+  # Relational
+  userId: int, relation(parent=custom_users)
+
+  # other
+  # PurchaseType videoAward, subscription, oneTimePurchase
+  type: String
+  rewardDaysQuantity: int
+  createdAt: DateTime

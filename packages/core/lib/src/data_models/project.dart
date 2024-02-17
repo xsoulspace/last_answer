@@ -14,6 +14,11 @@ class ProjectModelId with _$ProjectModelId {
   String toJson() => value;
 }
 
+enum ProjectTypes {
+  idea,
+  note,
+}
+
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
   @Implements<Archivable>()
@@ -39,8 +44,8 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(0) final int charactersLimit,
     final DateTime? archivedAt,
   }) = ProjectModelNote;
-  factory ProjectModel.fromJson(final Map<String, dynamic> json) =>
-      _$ProjectModelFromJson(json);
+  factory ProjectModel.fromJson(final dynamic json) =>
+      _$ProjectModelFromJson(json as Map<String, dynamic>);
   const ProjectModel._();
   static const titleLimit = 90;
   String get title => switch (this) {
@@ -176,4 +181,17 @@ String getLanguageCode(final LanguageName language) {
   }
 
   return lang;
+}
+
+String ideaProjectToShareString({
+  required final ProjectModelIdea projectIdea,
+  required final BuildContext context,
+}) {
+  final buffer = StringBuffer('${projectIdea.title} \n');
+  final resolvedAnswers = projectIdea.answers;
+  for (final answer in resolvedAnswers) {
+    buffer.writeln(answer.toShareString(context));
+  }
+
+  return buffer.toString();
 }

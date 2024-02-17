@@ -6,20 +6,6 @@ part of 'data_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$EmojiModelImpl _$$EmojiModelImplFromJson(Map<String, dynamic> json) =>
-    _$EmojiModelImpl(
-      category: json['category'] as String,
-      emoji: json['emoji'] as String,
-      keywords: json['keywords'] as String,
-    );
-
-Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
-    <String, dynamic>{
-      'category': instance.category,
-      'emoji': instance.emoji,
-      'keywords': instance.keywords,
-    };
-
 _$NotificationMessageModelImpl _$$NotificationMessageModelImplFromJson(
         Map<String, dynamic> json) =>
     _$NotificationMessageModelImpl(
@@ -170,7 +156,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               json['settings'] as Map<String, dynamic>),
       localDbVersion: $enumDecodeNullable(
               _$LocalDbVersionEnumMap, json['localDbVersion']) ??
-          LocalDbVersion.v3_16,
+          LocalDbVersion.newestVersion,
       hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
     );
 

@@ -11,10 +11,10 @@ Future<void> bootstrap({
   final GlobalServicesInitializer initializer = GlobalServicesInitializerImpl(
     firebaseOptions: firebaseOptions,
   );
-  unawaited(initializer.onLoad());
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      unawaited(initializer.onLoad());
       runApp(const LastAnswerApp());
     },
     initializer.analyticsService.recordError,

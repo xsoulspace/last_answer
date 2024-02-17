@@ -1,8 +1,8 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
-import 'package:lastanswer/pack_app/widgets/project_text_field.dart';
 
 class NoteView extends StatefulWidget {
   const NoteView({
@@ -58,7 +58,7 @@ class NoteViewBody extends StatelessWidget {
                       filled: false,
                       hasBorder: false,
                       contentPadding: const EdgeInsets.only(left: 24),
-                      limit: int.tryParse(bloc.characterLimitController.value),
+                      limit: int.tryParse(bloc.characterLimitController.limit),
                       focusNode: bloc.focusNode,
                       endlessLines: true,
                       focusOnInit: bloc.dto.initialNote.note.isEmpty,

@@ -1,0 +1,27 @@
+name: server
+description: Starting point for a Serverpod server.
+# version: 1.0.0
+# homepage: https://www.example.com
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  app_store_server_sdk: ^1.2.5
+  googleapis: ^11.0.0
+  googleapis_auth: ^1.4.1
+  serverpod: 1.2.3
+  serverpod_auth_server: 1.2.3
+  shared_models:
+    path: ../../packages/shared_models
+
+dev_dependencies:
+  flutter_lints: ^3.0.0
+  xsoulspace_lints: ^0.0.10
+
+dependency_overrides:
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  google_fonts: ^6.1.0
+  http: ^1.1.2
+  lints: ^3.0.0
+  uuid: ^4.2.1

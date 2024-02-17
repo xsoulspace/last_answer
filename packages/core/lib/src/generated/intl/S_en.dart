@@ -26,10 +26,10 @@ class SEn extends S {
   String get patronSubscription => 'Patron';
 
   @override
-  String get myAccount => 'My Account';
+  String get myAccount => 'Account';
 
   @override
-  String get changeLog => 'Change Log';
+  String get changeLog => 'What\'s new';
 
   @override
   String get username => 'Username';
@@ -121,7 +121,10 @@ class SEn extends S {
   String get wordNew => 'New';
 
   @override
-  String get yes => 'YES';
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
 
   @override
   String get noProjectsYet => 'No projects yet.';
@@ -202,4 +205,49 @@ class SEn extends S {
 
   @override
   String get aboutAbstractIdeasImprovementsBugs => 'Ideas Improvements Bugs?';
+
+  @override
+  String get supporterDaysLeft => 'Supporter days left';
+
+  @override
+  String get youCanSupportAppDevelopment => 'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.';
+
+  @override
+  String get youUsedThisAppFor => 'You used this app for';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get andHaveSupported => 'and have supported';
+
+  @override
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport => 'Unfortunately, this platform has no abilities to support the app, yet:)';
+
+  @override
+  String get butYouCanGoTo => 'But you can go';
+
+  @override
+  String get toTheWebsite => 'to the website:)';
+
+  @override
+  String get whatSupporterDaysMeans => 'What \"Suppoter Days\" means?';
+
+  @override
+  String get supporterDaysAre => 'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)';
+
+  @override
+  String get supporterDaysMainFunctionality => 'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)';
+
+  @override
+  String get toGetSupporterDays => 'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.';
+
+  @override
+  String get watchAd => 'Watch Ad';
+
+  @override
+  String get adPleaseNote => 'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.';
+
+  @override
+  String get exportImportData => 'Backup';
 }

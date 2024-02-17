@@ -8,8 +8,10 @@ class DiscordButton extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => TextButton(
         onPressed: () async {
-          if (await url_launcher.canLaunch(discordLink)) {
-            await url_launcher.launch(discordLink);
+          final uri = Uri.tryParse(discordLink);
+          if (uri == null) return;
+          if (await url_launcher.canLaunchUrl(uri)) {
+            await url_launcher.launchUrl(uri);
           }
         },
         child: Text(

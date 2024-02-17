@@ -4,18 +4,18 @@ version: 0.0.1
 publish_to: "none"
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   collection: ^1.18.0
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^5.0.2
   core:
     path: ../core
   equatable: ^2.0.5
   firebase_analytics: ^10.6.1
   firebase_core: ^2.19.0
-  firebase_crashlytics: ^3.4.1
+  firebase_crashlytics: ^3.4.6
   firebase_messaging: ^14.7.1
   flutter:
     sdk: flutter
@@ -35,6 +35,8 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
   share_plus: ^7.2.1
+  shared_models:
+    path: ../shared_models
   shared_preferences: ^2.2.2
   universal_io: ^2.2.2
   url_launcher: ^6.1.14
@@ -43,7 +45,11 @@ dependencies:
 dependency_overrides:
   analyzer: ^6.3.0
   collection: ^1.18.0
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  http: ^1.1.2
   intl: ^0.18.1
+  lints: ^3.0.0
   meta: ^1.11.0
   uuid: ^4.1.0
 

@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-import '../../data_sources.dart';
+import '../../../../core.dart';
 
 part 'collections.g.dart';
 part 'project.dart';

@@ -1,26 +1,58 @@
 part of 'state.dart';
 
-class UserNotifierDto {
-  UserNotifierDto(final BuildContext context) : userRepository = context.read();
+enum RemoteUserNotifierStatus {
+  unauthenticated,
+  authenticated,
+}
 
+class UserNotifierDto {
+  UserNotifierDto(final BuildContext context)
+      : userRepository = context.read(),
+        purchasesNotifier = context.read(),
+        remoteUserNotifier = context.read(),
+        appFeaturesNotifier = context.read();
   final UserRepository userRepository;
+  final PurchasesNotifier purchasesNotifier;
+  final RemoteUserNotifier remoteUserNotifier;
+  final AppFeaturesNotifier appFeaturesNotifier;
 }
 
 final uiLocaleNotifier = ValueNotifier(Locales.en);
 
+@stateDistributor
+class RemoteUserNotifier
+    extends ValueNotifier<LoadableContainer<RemoteUserModel>> {
+  // ignore: avoid_unused_constructor_parameters
+  RemoteUserNotifier(final BuildContext context)
+      : super(const LoadableContainer(value: RemoteUserModel.empty));
+  bool get isAuthorized => value.isLoaded && value.value.isNotEmpty;
+}
+
 class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
-  UserNotifier({
-    required this.dto,
-  }) : super(const LoadableContainer(value: UserModel.empty));
-  factory UserNotifier.provide(final BuildContext context) => UserNotifier(
-        dto: UserNotifierDto(context),
-      );
+  UserNotifier(final BuildContext context)
+      : dto = UserNotifierDto(context),
+        super(const LoadableContainer(value: UserModel.empty));
   final UserNotifierDto dto;
+
   @override
   void dispose() {
     uiLocaleNotifier.dispose();
     return super.dispose();
   }
+
+  Future<void> loadRemoteUser({final bool isAfterLogin = false}) async {
+    if (isAfterLogin) await dto.userRepository.completeRemoteLogin();
+    final user = await dto.userRepository.getRemoteUser();
+    dto.remoteUserNotifier.setValue(LoadableContainer.loaded(user));
+  }
+
+  void logout() {
+    resetRemoteUser();
+    unawaited(dto.userRepository.logout());
+  }
+
+  void resetRemoteUser() => dto.remoteUserNotifier
+      .setValue(const LoadableContainer(value: RemoteUserModel.empty));
 
   bool get isLoaded => value.isLoaded;
   bool get isLoading => value.isLoading;
@@ -28,9 +60,20 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
   UserSettingsModel get settings => user.settings;
   ValueListenable<Locale> get locale => uiLocaleNotifier;
   bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
-  Future<void> onLoad(final UserInitializer initializer) async {
-    value = LoadableContainer.loaded(await dto.userRepository.getUser());
-    unawaited(initializer.onUserLoad());
+  Future<void> onLoad({
+    required final LocalUserInitializer local,
+    required final RemoteUserInitializer remote,
+  }) async {
+    value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
+    unawaited(local.onUserLoad());
+    if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
+      await loadRemoteUser();
+    }
+  }
+
+  Future<void> deleteRemoteUser() async {
+    await dto.userRepository.deleteRemoteUser();
+    resetRemoteUser();
   }
 
   void completeOnboarding() => _updateUser(
@@ -80,6 +123,6 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
       );
   void _updateUser(final UserModel Function(UserModel) updateUser) {
     setValue(value.copyWith(value: updateUser(value.value)));
-    unawaited(dto.userRepository.putUser(user: user));
+    unawaited(dto.userRepository.putLocalUser(user: user));
   }
 }

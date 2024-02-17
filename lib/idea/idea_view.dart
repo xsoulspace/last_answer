@@ -1,9 +1,9 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_view_bloc.dart';
 import 'package:lastanswer/idea/widgets/answer_creator.dart';
 import 'package:lastanswer/idea/widgets/answer_tile.dart';
-import 'package:lastanswer/pack_app/widgets/project_title_field.dart';
 
 class IdeaView extends StatelessWidget {
   const IdeaView({

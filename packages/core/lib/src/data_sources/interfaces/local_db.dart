@@ -1,4 +1,4 @@
-import '../../foundation/foundation.dart';
+import 'package:shared_models/shared_models.dart';
 
 abstract interface class LocalDbDataSource implements Loadable {
   void setMap({

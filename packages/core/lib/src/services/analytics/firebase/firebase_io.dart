@@ -109,11 +109,12 @@ class FirebaseCrashlyticsPlugin extends AnalyticsServicePlugin {
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(isEnabled);
       Isolate.current.addErrorListener(
-        RawReceivePort((final pair) async {
+        // ignore: avoid_types_on_closure_parameters
+        RawReceivePort((final List<dynamic> pair) async {
           final List<dynamic> errorAndStacktrace = pair;
           await FirebaseCrashlytics.instance.recordError(
             errorAndStacktrace.first,
-            errorAndStacktrace.last,
+            errorAndStacktrace.lastOrNull as StackTrace?,
             fatal: true,
           );
         }).sendPort,

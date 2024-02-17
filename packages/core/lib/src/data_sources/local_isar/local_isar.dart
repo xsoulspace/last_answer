@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_io/io.dart';
@@ -9,6 +10,8 @@ export 'collections/collections.dart';
 export 'utils.dart';
 
 final class ComplexLocalDbIsarImpl implements ComplexLocalDb {
+  // ignore: avoid_unused_constructor_parameters
+  ComplexLocalDbIsarImpl(final BuildContext context);
   Isar? _db;
   Isar get db => _db == null
       ? throw ArgumentError.value('db is not initialzed. Call open first.')

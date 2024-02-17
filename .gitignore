@@ -62,7 +62,7 @@ macos/Runner/GoogleService-Info.plist
 macos/firebase_app_id_file.json
 configs/envs/test.json
 configs/envs/local.json
-apps/core_server_server/assets/service-account-google-play.json
+*/service-account-google-play.json
 
 # FVM Version Cache
 .fvm/

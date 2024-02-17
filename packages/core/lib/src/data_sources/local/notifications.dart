@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 
 import '../../../core.dart';
-import '../interfaces/notifications.dart';
 
 class NotificationDataSourceImpl implements NotificationsDataSource {
   NotificationDataSourceImpl({
@@ -38,8 +37,9 @@ class NotificationDataSourceImpl implements NotificationsDataSource {
     final jsonStr =
         await assetBundle.loadString(Assets.json.updatesNotifications);
     if (jsonStr.isEmpty) return [];
-    final jsonList =
-        List.castFrom<dynamic, Map<String, dynamic>>(jsonDecode(jsonStr));
+    final jsonList = List.castFrom<dynamic, Map<String, dynamic>>(
+      jsonDecode(jsonStr) as List<dynamic>,
+    );
 
     return jsonList.map(NotificationMessageModel.fromJson).toList();
   }

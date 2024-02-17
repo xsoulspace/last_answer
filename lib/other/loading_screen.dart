@@ -14,9 +14,7 @@ class LoadingScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator.adaptive(
-                  valueColor: AlwaysStoppedAnimation(AppColors.primary2),
-                ),
+                const UiCircularProgress(),
                 const SizedBox(height: 5),
                 Text(S.of(context).loading),
               ],

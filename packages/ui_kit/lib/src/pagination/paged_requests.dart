@@ -1,5 +1,5 @@
-import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_models/shared_models.dart';
 
 import 'pagination.dart';
 

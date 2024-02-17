@@ -1,4 +1,5 @@
-import '../../data_models/data_models.dart';
+import 'package:shared_models/shared_models.dart';
+
 import '../interfaces/interfaces.dart';
 import 'local.dart';
 
@@ -17,7 +18,10 @@ final class LastUsedEmojiLocalDataSourceImpl
     try {
       return Map.fromEntries(
         map.entries.map(
-          (final e) => MapEntry(e.key, EmojiModel.fromJson(e.value)),
+          (final e) => MapEntry(
+            e.key,
+            EmojiModel.fromJson(e.value as Map<String, dynamic>),
+          ),
         ),
       );
       // ignore: avoid_catches_without_on_clauses

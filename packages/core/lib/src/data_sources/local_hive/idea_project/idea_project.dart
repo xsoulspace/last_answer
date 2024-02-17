@@ -64,7 +64,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
       );
 
   @override
-  List get props => [id];
+  List<dynamic> get props => [id];
 
   @override
   bool? get stringify => true;
@@ -76,19 +76,6 @@ class IdeaProject extends BasicProject with EquatableMixin {
         answers: answers?.map((final e) => e.toModel()).toList() ?? [],
         title: title,
       );
-}
-
-String ideaProjectToShareString({
-  required final ProjectModelIdea projectIdea,
-  required final BuildContext context,
-}) {
-  final buffer = StringBuffer('${projectIdea.title} \n');
-  final resolvedAnswers = projectIdea.answers;
-  for (final answer in resolvedAnswers) {
-    buffer.writeln(answer.toShareString(context));
-  }
-
-  return buffer.toString();
 }
 
 /// A mock for [IdeaProject].

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';
 
@@ -41,17 +42,19 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
   }
 
   @override
-  Future<void> put({required final ProjectModel project}) async {
-    throw UnsupportedError('');
-  }
+  Future<void> put({required final ProjectModel project}) async =>
+      throw UnsupportedError('');
 
   @override
-  Future<void> remove({required final ProjectModelId id}) async {
-    throw UnsupportedError('');
-  }
+  Future<void> remove({required final ProjectModelId id}) async =>
+      throw UnsupportedError('');
 
   @override
-  Future<void> putAll({required final List<ProjectModel> projects}) async {
+  Future<void> putAll({required final List<ProjectModel> projects}) async =>
+      throw UnsupportedError('');
+
+  @override
+  Future<List<ProjectModel>> getAll() {
     throw UnsupportedError('');
   }
 }

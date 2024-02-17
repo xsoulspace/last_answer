@@ -15,6 +15,139 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
+mixin _$AppFeaturesModel {
+  bool get isRemoteServicesEnabled => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $AppFeaturesModelCopyWith<AppFeaturesModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AppFeaturesModelCopyWith<$Res> {
+  factory $AppFeaturesModelCopyWith(
+          AppFeaturesModel value, $Res Function(AppFeaturesModel) then) =
+      _$AppFeaturesModelCopyWithImpl<$Res, AppFeaturesModel>;
+  @useResult
+  $Res call({bool isRemoteServicesEnabled});
+}
+
+/// @nodoc
+class _$AppFeaturesModelCopyWithImpl<$Res, $Val extends AppFeaturesModel>
+    implements $AppFeaturesModelCopyWith<$Res> {
+  _$AppFeaturesModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isRemoteServicesEnabled = null,
+  }) {
+    return _then(_value.copyWith(
+      isRemoteServicesEnabled: null == isRemoteServicesEnabled
+          ? _value.isRemoteServicesEnabled
+          : isRemoteServicesEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AppFeaturesModelImplCopyWith<$Res>
+    implements $AppFeaturesModelCopyWith<$Res> {
+  factory _$$AppFeaturesModelImplCopyWith(_$AppFeaturesModelImpl value,
+          $Res Function(_$AppFeaturesModelImpl) then) =
+      __$$AppFeaturesModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool isRemoteServicesEnabled});
+}
+
+/// @nodoc
+class __$$AppFeaturesModelImplCopyWithImpl<$Res>
+    extends _$AppFeaturesModelCopyWithImpl<$Res, _$AppFeaturesModelImpl>
+    implements _$$AppFeaturesModelImplCopyWith<$Res> {
+  __$$AppFeaturesModelImplCopyWithImpl(_$AppFeaturesModelImpl _value,
+      $Res Function(_$AppFeaturesModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isRemoteServicesEnabled = null,
+  }) {
+    return _then(_$AppFeaturesModelImpl(
+      isRemoteServicesEnabled: null == isRemoteServicesEnabled
+          ? _value.isRemoteServicesEnabled
+          : isRemoteServicesEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AppFeaturesModelImpl
+    with DiagnosticableTreeMixin
+    implements _AppFeaturesModel {
+  const _$AppFeaturesModelImpl({this.isRemoteServicesEnabled = false});
+
+  @override
+  @JsonKey()
+  final bool isRemoteServicesEnabled;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AppFeaturesModel(isRemoteServicesEnabled: $isRemoteServicesEnabled)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AppFeaturesModel'))
+      ..add(DiagnosticsProperty(
+          'isRemoteServicesEnabled', isRemoteServicesEnabled));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AppFeaturesModelImpl &&
+            (identical(
+                    other.isRemoteServicesEnabled, isRemoteServicesEnabled) ||
+                other.isRemoteServicesEnabled == isRemoteServicesEnabled));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, isRemoteServicesEnabled);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AppFeaturesModelImplCopyWith<_$AppFeaturesModelImpl> get copyWith =>
+      __$$AppFeaturesModelImplCopyWithImpl<_$AppFeaturesModelImpl>(
+          this, _$identity);
+}
+
+abstract class _AppFeaturesModel implements AppFeaturesModel {
+  const factory _AppFeaturesModel({final bool isRemoteServicesEnabled}) =
+      _$AppFeaturesModelImpl;
+
+  @override
+  bool get isRemoteServicesEnabled;
+  @override
+  @JsonKey(ignore: true)
+  _$$AppFeaturesModelImplCopyWith<_$AppFeaturesModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$AppNotifierState {
   AppStatus get status => throw _privateConstructorUsedError;
 
@@ -321,6 +454,7 @@ abstract class _NotificationsNotifierState
 mixin _$ProjectsNotifierState {
   RequestProjectsDto get requestProjectsDto =>
       throw _privateConstructorUsedError;
+  bool get isAllProjectsFileLoading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProjectsNotifierStateCopyWith<ProjectsNotifierState> get copyWith =>
@@ -333,7 +467,8 @@ abstract class $ProjectsNotifierStateCopyWith<$Res> {
           $Res Function(ProjectsNotifierState) then) =
       _$ProjectsNotifierStateCopyWithImpl<$Res, ProjectsNotifierState>;
   @useResult
-  $Res call({RequestProjectsDto requestProjectsDto});
+  $Res call(
+      {RequestProjectsDto requestProjectsDto, bool isAllProjectsFileLoading});
 
   $RequestProjectsDtoCopyWith<$Res> get requestProjectsDto;
 }
@@ -353,12 +488,17 @@ class _$ProjectsNotifierStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? requestProjectsDto = null,
+    Object? isAllProjectsFileLoading = null,
   }) {
     return _then(_value.copyWith(
       requestProjectsDto: null == requestProjectsDto
           ? _value.requestProjectsDto
           : requestProjectsDto // ignore: cast_nullable_to_non_nullable
               as RequestProjectsDto,
+      isAllProjectsFileLoading: null == isAllProjectsFileLoading
+          ? _value.isAllProjectsFileLoading
+          : isAllProjectsFileLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -381,7 +521,8 @@ abstract class _$$ProjectsNotifierStateImplCopyWith<$Res>
       __$$ProjectsNotifierStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({RequestProjectsDto requestProjectsDto});
+  $Res call(
+      {RequestProjectsDto requestProjectsDto, bool isAllProjectsFileLoading});
 
   @override
   $RequestProjectsDtoCopyWith<$Res> get requestProjectsDto;
@@ -400,12 +541,17 @@ class __$$ProjectsNotifierStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? requestProjectsDto = null,
+    Object? isAllProjectsFileLoading = null,
   }) {
     return _then(_$ProjectsNotifierStateImpl(
       requestProjectsDto: null == requestProjectsDto
           ? _value.requestProjectsDto
           : requestProjectsDto // ignore: cast_nullable_to_non_nullable
               as RequestProjectsDto,
+      isAllProjectsFileLoading: null == isAllProjectsFileLoading
+          ? _value.isAllProjectsFileLoading
+          : isAllProjectsFileLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -416,15 +562,19 @@ class _$ProjectsNotifierStateImpl
     with DiagnosticableTreeMixin
     implements _ProjectsNotifierState {
   const _$ProjectsNotifierStateImpl(
-      {this.requestProjectsDto = RequestProjectsDto.empty});
+      {this.requestProjectsDto = RequestProjectsDto.empty,
+      this.isAllProjectsFileLoading = false});
 
   @override
   @JsonKey()
   final RequestProjectsDto requestProjectsDto;
+  @override
+  @JsonKey()
+  final bool isAllProjectsFileLoading;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProjectsNotifierState(requestProjectsDto: $requestProjectsDto)';
+    return 'ProjectsNotifierState(requestProjectsDto: $requestProjectsDto, isAllProjectsFileLoading: $isAllProjectsFileLoading)';
   }
 
   @override
@@ -432,7 +582,9 @@ class _$ProjectsNotifierStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ProjectsNotifierState'))
-      ..add(DiagnosticsProperty('requestProjectsDto', requestProjectsDto));
+      ..add(DiagnosticsProperty('requestProjectsDto', requestProjectsDto))
+      ..add(DiagnosticsProperty(
+          'isAllProjectsFileLoading', isAllProjectsFileLoading));
   }
 
   @override
@@ -441,11 +593,15 @@ class _$ProjectsNotifierStateImpl
         (other.runtimeType == runtimeType &&
             other is _$ProjectsNotifierStateImpl &&
             (identical(other.requestProjectsDto, requestProjectsDto) ||
-                other.requestProjectsDto == requestProjectsDto));
+                other.requestProjectsDto == requestProjectsDto) &&
+            (identical(
+                    other.isAllProjectsFileLoading, isAllProjectsFileLoading) ||
+                other.isAllProjectsFileLoading == isAllProjectsFileLoading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, requestProjectsDto);
+  int get hashCode =>
+      Object.hash(runtimeType, requestProjectsDto, isAllProjectsFileLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -457,11 +613,13 @@ class _$ProjectsNotifierStateImpl
 
 abstract class _ProjectsNotifierState implements ProjectsNotifierState {
   const factory _ProjectsNotifierState(
-          {final RequestProjectsDto requestProjectsDto}) =
-      _$ProjectsNotifierStateImpl;
+      {final RequestProjectsDto requestProjectsDto,
+      final bool isAllProjectsFileLoading}) = _$ProjectsNotifierStateImpl;
 
   @override
   RequestProjectsDto get requestProjectsDto;
+  @override
+  bool get isAllProjectsFileLoading;
   @override
   @JsonKey(ignore: true)
   _$$ProjectsNotifierStateImplCopyWith<_$ProjectsNotifierStateImpl>

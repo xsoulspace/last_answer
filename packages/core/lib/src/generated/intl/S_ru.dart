@@ -26,10 +26,10 @@ class SRu extends S {
   String get patronSubscription => 'Patron';
 
   @override
-  String get myAccount => 'Мой аккаунт';
+  String get myAccount => 'Аккаунт';
 
   @override
-  String get changeLog => 'Change Log';
+  String get changeLog => 'Что нового';
 
   @override
   String get username => 'Имя пользователя';
@@ -121,7 +121,10 @@ class SRu extends S {
   String get wordNew => 'Новое';
 
   @override
-  String get yes => 'ДА';
+  String get yes => 'Да';
+
+  @override
+  String get no => 'Нет';
 
   @override
   String get noProjectsYet => 'Тут пока пусто';
@@ -202,4 +205,49 @@ class SRu extends S {
 
   @override
   String get aboutAbstractIdeasImprovementsBugs => 'Идеи Улучшения Баги?';
+
+  @override
+  String get supporterDaysLeft => 'Осталось дней Поддерживателя';
+
+  @override
+  String get youCanSupportAppDevelopment => 'Вы можете поддержать разработку приложения, посмотрев короткую рекламу ниже. Это поможет мне улучшить приложение и сделать его лучше.';
+
+  @override
+  String get youUsedThisAppFor => 'Вы пользуетесь приложением уже';
+
+  @override
+  String get days => 'дней';
+
+  @override
+  String get andHaveSupported => 'и поддержали';
+
+  @override
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport => 'К сожалению, на этой платформе пока нет возможности поддержать приложение:)';
+
+  @override
+  String get butYouCanGoTo => 'Но вы можете перейти';
+
+  @override
+  String get toTheWebsite => 'на вебсайт:)';
+
+  @override
+  String get whatSupporterDaysMeans => 'Что такое \"Дни Поддерживателя\"?';
+
+  @override
+  String get supporterDaysAre => 'Дни Поддерживателя - это дни, которые даются пользователю приложения за поддержку проекта. Каждый раз, когда пользователь использует приложение, у него списывается один День Поддерживателя (всего один раз за день, не зависит тот того, сколько раз за день пользователь открывал приложение) и также добавляется 1 день в общее кол-во дней, которое человек поддерживал проект). Если пользователь ни разу не открыл приложение, то дни не списываются:)';
+
+  @override
+  String get supporterDaysMainFunctionality => 'Основной функционал Дней Поддерживателя никак не влияет на что-либо, однако в будущем они будут давать возможность использовать дополнительные фичи приложения - для меня самое важное, чтобы ни при каких условиях основной функционал добавления/редактирования заметок и идей не был заблокирован, а все остальное - это просто бонусы, если человек решит поддержать проект :)';
+
+  @override
+  String get toGetSupporterDays => 'Чтобы получить Дни Поддерживателя, пользователь может нажать кнопку \"смотреть рекламу\", и после просмотра (буду экспериментировать, но пока это 60 секунд), ему будут начислены 7 Дней Поддерживателя.';
+
+  @override
+  String get watchAd => 'Смотреть рекламу';
+
+  @override
+  String get adPleaseNote => 'Реклама в настоящее время работает только в Google Chrome и Firefox. Safari блокирует рекламу, поэтому в настоящее время она не работает.';
+
+  @override
+  String get exportImportData => 'Бекап';
 }

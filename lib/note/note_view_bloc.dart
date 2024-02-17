@@ -1,7 +1,7 @@
 import 'package:lastanswer/_library/hooks/hooks.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/features_widgets/characters_limit_state.dart';
+import 'package:lastanswer/settings/settings.dart';
 
 class NoteViewBlocDto {
   NoteViewBlocDto({
@@ -46,7 +46,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   void _onChanged() {
     final updatedNote = value.copyWith(
       note: noteController.text,
-      charactersLimit: int.tryParse(characterLimitController.value) ?? 0,
+      charactersLimit: int.tryParse(characterLimitController.limit) ?? 0,
     );
     setValue(updatedNote);
     dto.openedProjectNotifier.updateProject(updatedNote);

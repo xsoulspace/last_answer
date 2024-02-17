@@ -15,17 +15,18 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 3.17.3+35
+version: 3.18.2+38
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
   animations: ^2.0.8
   blur: ^3.1.0
   collection: ^1.18.0
+
   core:
     path: ./packages/core
   cupertino_icons: ^1.0.6
@@ -33,6 +34,7 @@ dependencies:
   equatable: ^2.0.5
   extra_alignments: ^1.0.0+1
   firebase_core: ^2.24.0
+  firebase_crashlytics: ^3.4.6
   flextras: ^1.0.0
   flutter:
     sdk: flutter
@@ -61,13 +63,15 @@ dependencies:
   recase: ^4.1.0
   rxdart: ^0.27.7
   share_plus: ^7.1.0
+  shared_models:
+    path: ./packages/shared_models
   shared_preferences: ^2.2.2
   ui_kit:
     path: ./packages/ui_kit
   universal_io: ^2.2.2
   url_launcher: ^6.1.14
   uuid: ^4.1.0
-  wiredash: ^1.8.0
+  wiredash: ^1.9.0
 
 dev_dependencies:
   analyzer: ^6.3.0
@@ -81,13 +85,17 @@ dev_dependencies:
   melos: ^3.1.1
   mockito: ^5.4.2
   mocktail: ^1.0.1
-  msix: ^3.16.4
+  msix: ^3.16.7
   xsoulspace_lints: ^0.0.10
 
 dependency_overrides:
   analyzer: ^6.3.0
   collection: ^1.18.0
+  connectivity_plus: ^5.0.2
+  flutter_lints: ^3.0.0
+  http: ^1.1.2
   intl: ^0.18.1
+  lints: ^3.0.0
   meta: ^1.11.0
   uuid: ^4.1.0
 

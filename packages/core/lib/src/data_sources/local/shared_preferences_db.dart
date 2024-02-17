@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core.dart';
 
 /// This service purpose to manage shared preferences only
 class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
+  // ignore: avoid_unused_constructor_parameters
+  SharedPreferencesDbDataSourceImpl(final BuildContext context);
   // cached SharedPreferences instance
   late final SharedPreferences _sharedPreferences;
   SharedPreferences get _prefs => _sharedPreferences;
@@ -30,7 +34,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
     if (str.isEmpty) return {};
 
     return Map.castFrom<dynamic, dynamic, String, dynamic>(
-      jsonDecode(str),
+      jsonDecode(str) as Map,
     );
   }
 
@@ -90,7 +94,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
 
     return strings.map(
       (final e) =>
-          Map.castFrom<dynamic, dynamic, String, dynamic>(jsonDecode(e)),
+          Map.castFrom<dynamic, dynamic, String, dynamic>(jsonDecode(e) as Map),
     );
   }
 

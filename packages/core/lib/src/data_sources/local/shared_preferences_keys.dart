@@ -7,4 +7,10 @@ enum SharedPreferencesKeys {
   lastUsedEmojis,
   charactersLimitForNewNotes,
   user,
+  purchases,
+
+  /// when supporter day record was set in miliseconds
+  supporterDayRecordMs,
+  usageDayCount,
+  webProjects,
 }

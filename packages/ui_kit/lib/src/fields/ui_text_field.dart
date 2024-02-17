@@ -13,6 +13,7 @@ class UiTextField extends StatefulWidget {
     this.controller,
     this.inputFormatters,
     this.keyboardType,
+    this.focusNode,
     this.style,
     super.key,
   });
@@ -20,6 +21,7 @@ class UiTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final bool autocorrect;
+  final FocusNode? focusNode;
   final bool enableSuggestions;
   final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
@@ -51,6 +53,7 @@ class _UiTextFieldState extends State<UiTextField> {
   @override
   Widget build(final BuildContext context) => TextFormField(
         controller: _controller,
+        focusNode: widget.focusNode,
         onChanged: widget.onChanged,
         keyboardType: widget.keyboardType,
         style: widget.style,

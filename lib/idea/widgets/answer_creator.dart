@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_view_bloc.dart';
 import 'package:lastanswer/idea/widgets/questions_chips.dart';
-import 'package:lastanswer/pack_app/widgets/widgets.dart';
 
 part 'answer_creator.freezed.dart';
 

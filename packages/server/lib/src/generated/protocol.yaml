@@ -1,0 +1,9 @@
+auth:
+  - signInVkID:
+  - completeSignIn:
+purchases:
+  - create:
+user:
+  - getUser:
+  - receiveAdVideoReward:
+  - deleteUser:

@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
 
 class ProjectsRepository {
-  ProjectsRepository.provide(final BuildContext context)
+  ProjectsRepository(final BuildContext context)
       : _datasource = kIsWeb
             ? ProjectsLocalDataSourceLocalDbImpl(localDb: context.read())
             : ProjectsLocalDataSourceIsarImpl(isarDb: context.read());
@@ -16,6 +17,7 @@ class ProjectsRepository {
       _datasource.put(project: project);
   Future<void> remove({required final ProjectModelId id}) async =>
       _datasource.remove(id: id);
+  Future<List<ProjectModel>> getAll() async => _datasource.getAll();
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,

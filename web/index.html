@@ -43,6 +43,13 @@
       window.yaContextCb = window.yaContextCb || [];
     </script>
     <script src="https://yandex.ru/ads/system/context.js" async></script>
+    <style>
+      body {
+        margin: 0px;
+        height: 100vh;
+        overflow: hidden;
+      }
+    </style>
     <!-- Yandex Context End -->
   </head>
   <body>
@@ -55,6 +62,20 @@
     <div id="flutter_app" style="width: 100%; height: 100%"></div>
     <script>
       window.addEventListener("load", function (ev) {
+        // https://stackoverflow.com/a/73731646/9908821
+        function isMobile() {
+          if ("maxTouchPoints" in navigator)
+            return navigator.maxTouchPoints > 0;
+
+          const mQ = matchMedia?.("(pointer:coarse)");
+          if (mQ?.media === "(pointer:coarse)") return !!mQ.matches;
+
+          if ("orientation" in window) return true;
+
+          return /\b(Android|Windows Phone|iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini)\b/i.test(
+            navigator.userAgent
+          );
+        }
         var loading = document.querySelector("#loading");
         var loadingContainer = document.querySelector("#loading_container");
         var hostElement = document.querySelector("#flutter_app");
@@ -65,9 +86,13 @@
           },
           onEntrypointLoaded: async function (engineInitializer) {
             loading.classList.add("main_done");
-            let appRunner = await engineInitializer.initializeEngine({
-              hostElement: hostElement,
-            });
+            /// temporary fix, as mobile somehow doesn't work with hostElement
+            let appRunner = isMobile()
+              ? await engineInitializer.initializeEngine()
+              : await engineInitializer.initializeEngine({
+                  hostElement: hostElement,
+                });
+
             console.log("appRunner");
             loading.classList.add("init_done");
             await appRunner.runApp();

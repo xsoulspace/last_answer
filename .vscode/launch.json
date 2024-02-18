@@ -6,10 +6,21 @@
   "configurations": [
     {
       "program": "lib/main_prod.dart",
-      "name": "mobile prod",
+      "name": "desktop prod",
       "request": "launch",
       "type": "dart",
       "args": ["--dart-define-from-file=configs/envs/prod.json"],
+      "flutterMode": "debug"
+    },
+    {
+      "program": "lib/main_prod.dart",
+      "name": "mobile prod",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define-from-file=configs/envs/prod.json",
+        "--dart-define=STORE=googlePlay"
+      ],
       "flutterMode": "debug"
     },
     {
@@ -26,7 +37,6 @@
       "request": "launch",
       "type": "dart",
       "args": [
-        "--enable-experiment=inline-class",
         "--dart-define-from-file=configs/envs/prod.json",
         "--dart-define=STORE=xsoulspaceWebsite",
         "-d",

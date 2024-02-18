@@ -14,6 +14,7 @@ dependencies:
     path: ../core_server_client
   equatable: ^2.0.5
   file_picker: ^6.1.1
+  file_saver: ^0.2.9
   firebase_analytics: ^10.6.1
   firebase_core: ^2.19.0
   firebase_crashlytics: ^3.4.6

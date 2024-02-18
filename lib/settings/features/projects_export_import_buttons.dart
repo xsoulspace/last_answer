@@ -12,7 +12,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
     final isFileLoading = projectsNotifier.value.isAllProjectsFileLoading;
     final saveToButton = HoverableButton(
       isLoading: isFileLoading,
-      onPressed: projectsNotifier.saveToFile,
+      onPressed: () async => projectsNotifier.saveToFile(context),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -28,7 +28,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.file_upload),
-          Flexible(child: Text('Load from file')),
+          Flexible(child: Text('Restore from file')),
         ],
       ),
     );

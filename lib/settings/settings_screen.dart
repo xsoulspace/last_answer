@@ -15,17 +15,18 @@ class SettingsScreen extends HookWidget {
     final isAccountViewVisible =
         context.read<PurchasesNotifier>().isAdSupported;
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
+    final tabsViews = [
+      const GeneralSettingsView(),
+      if (isAccountViewVisible)
+        if (appFeaturesNotifier.value.isRemoteServicesEnabled)
+          const MyAccountViewRemoteImpl()
+        else
+          const MyAccountViewLocalImpl(),
+      const ChangelogView(),
+    ];
     Widget child = TabBarView(
       physics: const SpeedyPageViewScrollPhysics(),
-      children: [
-        const GeneralSettingsView(),
-        if (isAccountViewVisible)
-          if (appFeaturesNotifier.value.isRemoteServicesEnabled)
-            const MyAccountViewRemoteImpl()
-          else
-            const MyAccountViewLocalImpl(),
-        const ChangelogView(),
-      ],
+      children: tabsViews,
     );
     final appbar = AppBar(
       centerTitle: true,
@@ -70,7 +71,7 @@ class SettingsScreen extends HookWidget {
         ),
       );
     }
-    return DefaultTabController(length: 3, child: child);
+    return DefaultTabController(length: tabsViews.length, child: child);
   }
 }
 

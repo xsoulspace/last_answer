@@ -27,7 +27,7 @@ class FileService implements FileServiceI {
     if (result == null) return;
     final str = jsonEncode(data);
     final uint8List = const Utf8Encoder().convert(str);
-    const String mimeType = 'text/plain';
+    const String mimeType = 'text/json';
     final XFile textFile =
         XFile.fromData(uint8List, mimeType: mimeType, name: fileName);
     await textFile.saveTo(result.path);

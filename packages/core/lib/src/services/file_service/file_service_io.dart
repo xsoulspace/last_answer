@@ -40,7 +40,7 @@ class FileServiceMobile implements FileServiceI {
     final dir = Directory(path);
     if (!dir.existsSync()) dir.createSync();
 
-    _saveFileData(filePath: '$path/${FileServiceI.filename}', data: data);
+    saveFileData(filePath: '$path/${FileServiceI.filename}', data: data);
   }
 }
 
@@ -67,23 +67,6 @@ class FileServiceDesktop implements FileServiceI {
       allowedExtensions: ['json'],
       fileName: FileServiceI.filename,
     );
-    _saveFileData(filePath: filePath, data: data);
-  }
-}
-
-extension _FileServiceIX on FileServiceI {
-  void _saveFileData({
-    required final String? filePath,
-    required final List<Map<String, dynamic>> data,
-  }) {
-    // User canceled the picker
-    if (filePath == null) return;
-    final file = File(filePath);
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-    file
-      ..createSync()
-      ..writeAsStringSync(jsonEncode(data));
+    saveFileData(filePath: filePath, data: data);
   }
 }

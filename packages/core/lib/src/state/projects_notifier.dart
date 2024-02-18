@@ -38,13 +38,16 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   void _setFileLoading(final bool isLoading) => setValue(
         value.copyWith(isAllProjectsFileLoading: isLoading),
       );
-  Future<void> saveToFile() async {
+  Future<void> saveToFile(final BuildContext context) async {
     _setFileLoading(true);
 
     try {
+      final toasts = Toasts.of(context);
+
       final allProjects = await dto.projectsRepository.getAll();
       final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
       await _fileService.saveFile(allProjectsJson);
+      await toasts.showBottomToast(message: 'File saved!');
     } finally {
       _setFileLoading(false);
     }
@@ -52,6 +55,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   Future<void> loadFromFile(final BuildContext context) async {
     _setFileLoading(true);
+    final toasts = Toasts.of(context);
     final modals = Modals.of(context);
     try {
       final l10n = context.l10n;
@@ -78,7 +82,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       await dto.projectsRepository.putAll(projects: allProjects);
       onReset();
       await onLocalUserLoad();
-      // TODO(arenukvern): add success toast,
+      await toasts.showBottomToast(message: 'Projects restored!');
     } finally {
       _setFileLoading(false);
     }

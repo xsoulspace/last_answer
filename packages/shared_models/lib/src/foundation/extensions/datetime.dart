@@ -3,4 +3,5 @@ extension DateTimeX on DateTime {
   String get yyyyMMDD => '$year.$month.${day}_h$hour-m$minute';
 }
 
-final todayDate = DateTime.now().onlyDate;
+final todayDate = todayDateTime.onlyDate;
+final todayDateTime = DateTime.now();

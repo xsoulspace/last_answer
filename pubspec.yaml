@@ -33,8 +33,9 @@ dependencies:
   dio: ^5.3.3
   equatable: ^2.0.5
   extra_alignments: ^1.0.0+1
-  firebase_core: ^2.24.0
-  firebase_crashlytics: ^3.4.6
+  firebase_core: ^2.25.4
+  firebase_core_web: ^2.11.4
+  firebase_crashlytics: ^3.4.14
   flextras: ^1.0.0
   flutter:
     sdk: flutter

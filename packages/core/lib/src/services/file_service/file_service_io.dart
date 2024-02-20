@@ -24,10 +24,9 @@ class FileServiceMobile implements FileServiceI {
   @override
   Future<List> openFile() async {
     await FilePicker.platform.clearTemporaryFiles();
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-    );
+
+    /// json extension is not working on android
+    final result = await FilePicker.platform.pickFiles();
     if (result == null || result.files.isEmpty) return [];
     final file = result.files.first;
     final dataStr = File(file.path!).readAsStringSync();

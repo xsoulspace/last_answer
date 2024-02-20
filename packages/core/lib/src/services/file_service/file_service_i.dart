@@ -8,19 +8,19 @@ abstract interface class FileServiceI {
       'last_answer_${todayDateTime.yyyyMMDD}.json';
   static const filename = 'last_answer.json';
   Future<List> openFile();
-  Future<void> saveFile({
+  Future<bool> saveFile({
     required final List<Map<String, dynamic>> data,
     required final String filename,
   });
 }
 
 extension FileServiceIX on FileServiceI {
-  void saveFileData({
+  bool saveFileData({
     required final String? filePath,
     required final List<Map<String, dynamic>> data,
   }) {
     // User canceled the picker
-    if (filePath == null) return;
+    if (filePath == null) return false;
     final file = File(filePath);
     if (file.existsSync()) {
       file.deleteSync();
@@ -28,5 +28,6 @@ extension FileServiceIX on FileServiceI {
     file
       ..createSync()
       ..writeAsStringSync(jsonEncode(data));
+    return true;
   }
 }

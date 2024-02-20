@@ -52,7 +52,11 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       final filename = useTimestampForBackupFilename
           ? FileServiceI.filenameWithTimestamp
           : FileServiceI.filename;
-      await _fileService.saveFile(data: allProjectsJson, filename: filename);
+      final wasSaved = await _fileService.saveFile(
+        data: allProjectsJson,
+        filename: filename,
+      );
+      if (!wasSaved) return;
       await toasts.showBottomToast(message: 'File saved!');
     } finally {
       _setFileLoading(false);
@@ -70,7 +74,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
         noActionText: 'Cancel',
         yesActionText: 'Load',
         description:
-            'By loading the file you will overwrite all current projects in the app. \nBe careful, as it is not reversable action!',
+            'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action!',
       );
       if (!shouldContinue) return;
       final jsonList = await _fileService.openFile();
@@ -88,7 +92,9 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       await dto.projectsRepository.putAll(projects: allProjects);
       onReset();
       await onLocalUserLoad();
-      await toasts.showBottomToast(message: 'Projects restored!');
+      await toasts.showBottomToast(
+        message: 'Projects from file restored.',
+      );
     } finally {
       _setFileLoading(false);
     }

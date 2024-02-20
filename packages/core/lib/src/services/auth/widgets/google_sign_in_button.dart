@@ -16,7 +16,7 @@ class GoogleSignInButton extends StatelessWidget {
 }
 
 class _CustomImpl extends StatelessWidget {
-  const _CustomImpl({super.key});
+  const _CustomImpl();
 
   @override
   Widget build(final BuildContext context) => TextButton(

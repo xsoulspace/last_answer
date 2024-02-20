@@ -31,6 +31,7 @@ class UserSettingsModel with _$UserSettingsModel {
     @Default(0) final int charactersLimitForNewNotes,
     @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
     final Locale? locale,
+    @Default(true) final bool useTimestampForBackupFilename,
   }) = _UserSettingsModel;
   factory UserSettingsModel.fromJson(final Map<String, dynamic> json) =>
       _$UserSettingsModelFromJson(json);

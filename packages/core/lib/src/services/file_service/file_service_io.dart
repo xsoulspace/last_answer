@@ -13,8 +13,11 @@ class FileService implements FileServiceI {
   @override
   Future<List> openFile() => _instance.openFile();
   @override
-  Future<void> saveFile(final List<Map<String, dynamic>> data) =>
-      _instance.saveFile(data);
+  Future<void> saveFile({
+    required final List<Map<String, dynamic>> data,
+    required final String filename,
+  }) =>
+      _instance.saveFile(data: data, filename: filename);
 }
 
 class FileServiceMobile implements FileServiceI {
@@ -32,7 +35,10 @@ class FileServiceMobile implements FileServiceI {
   }
 
   @override
-  Future<void> saveFile(final List<Map<String, dynamic>> data) async {
+  Future<void> saveFile({
+    required final List<Map<String, dynamic>> data,
+    required final String filename,
+  }) async {
     final path = await FilePicker.platform.getDirectoryPath(
       dialogTitle: 'Select directory to save file',
     );
@@ -40,7 +46,7 @@ class FileServiceMobile implements FileServiceI {
     final dir = Directory(path);
     if (!dir.existsSync()) dir.createSync();
 
-    saveFileData(filePath: '$path/${FileServiceI.filename}', data: data);
+    saveFileData(filePath: '$path/$filename', data: data);
   }
 }
 
@@ -60,12 +66,15 @@ class FileServiceDesktop implements FileServiceI {
   }
 
   @override
-  Future<void> saveFile(final List<Map<String, dynamic>> data) async {
+  Future<void> saveFile({
+    required final List<Map<String, dynamic>> data,
+    required final String filename,
+  }) async {
     final String? filePath = await FilePicker.platform.saveFile(
       dialogTitle: 'Select directory to save file',
       type: FileType.custom,
       allowedExtensions: ['json'],
-      fileName: FileServiceI.filename,
+      fileName: filename,
     );
     saveFileData(filePath: filePath, data: data);
   }

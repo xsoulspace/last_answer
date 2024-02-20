@@ -12,10 +12,10 @@ class PlatformInfo {
     TargetPlatform.linux,
   ];
   static const _mobilePlatforms = [TargetPlatform.android, TargetPlatform.iOS];
-  static bool get isNativeDesktop => isNativeWebDesktop && !kIsWeb;
+  static bool get isNativeDesktop => isNativeWebDesktop && isNative;
   static bool get isNativeWebDesktop =>
       _desktopPlatforms.contains(defaultTargetPlatform);
-  static bool get isNativeMobile => isNativeWebMobile && !kIsWeb;
+  static bool get isNativeMobile => isNativeWebMobile && isNative;
   static bool get isNativeWebMobile =>
       _mobilePlatforms.contains(defaultTargetPlatform);
 

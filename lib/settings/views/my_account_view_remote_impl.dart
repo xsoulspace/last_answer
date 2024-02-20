@@ -22,7 +22,7 @@ class MyAccountViewRemoteImpl extends StatelessWidget {
 }
 
 class _AuthorizedView extends StatelessWidget {
-  const _AuthorizedView({super.key});
+  const _AuthorizedView();
   static const isPaymentsAvailable = false;
 
   @override
@@ -110,7 +110,7 @@ class ProfileView extends StatelessWidget {
 }
 
 class _UnauthorizedView extends StatelessWidget {
-  const _UnauthorizedView({super.key});
+  const _UnauthorizedView();
 
   @override
   Widget build(final BuildContext context) => SettingsListContainer(

@@ -2271,6 +2271,7 @@ mixin _$UserSettingsModel {
   int get charactersLimitForNewNotes => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
   Locale? get locale => throw _privateConstructorUsedError;
+  bool get useTimestampForBackupFilename => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2289,8 +2290,8 @@ abstract class $UserSettingsModelCopyWith<$Res> {
       ThemeMode themeMode,
       bool isProjectsListReversed,
       int charactersLimitForNewNotes,
-      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
-      Locale? locale});
+      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) Locale? locale,
+      bool useTimestampForBackupFilename});
 }
 
 /// @nodoc
@@ -2310,6 +2311,7 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
     Object? isProjectsListReversed = null,
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
+    Object? useTimestampForBackupFilename = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -2328,6 +2330,10 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
+      useTimestampForBackupFilename: null == useTimestampForBackupFilename
+          ? _value.useTimestampForBackupFilename
+          : useTimestampForBackupFilename // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -2345,8 +2351,8 @@ abstract class _$$UserSettingsModelImplCopyWith<$Res>
       ThemeMode themeMode,
       bool isProjectsListReversed,
       int charactersLimitForNewNotes,
-      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
-      Locale? locale});
+      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) Locale? locale,
+      bool useTimestampForBackupFilename});
 }
 
 /// @nodoc
@@ -2364,6 +2370,7 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
     Object? isProjectsListReversed = null,
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
+    Object? useTimestampForBackupFilename = null,
   }) {
     return _then(_$UserSettingsModelImpl(
       themeMode: null == themeMode
@@ -2382,6 +2389,10 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
+      useTimestampForBackupFilename: null == useTimestampForBackupFilename
+          ? _value.useTimestampForBackupFilename
+          : useTimestampForBackupFilename // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2394,7 +2405,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
       this.themeMode = ThemeMode.system,
       this.isProjectsListReversed = true,
       this.charactersLimitForNewNotes = 0,
-      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) this.locale});
+      @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) this.locale,
+      this.useTimestampForBackupFilename = true});
 
   factory _$UserSettingsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserSettingsModelImplFromJson(json);
@@ -2411,10 +2423,13 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
   @override
   @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
   final Locale? locale;
+  @override
+  @JsonKey()
+  final bool useTimestampForBackupFilename;
 
   @override
   String toString() {
-    return 'UserSettingsModel(themeMode: $themeMode, isProjectsListReversed: $isProjectsListReversed, charactersLimitForNewNotes: $charactersLimitForNewNotes, locale: $locale)';
+    return 'UserSettingsModel(themeMode: $themeMode, isProjectsListReversed: $isProjectsListReversed, charactersLimitForNewNotes: $charactersLimitForNewNotes, locale: $locale, useTimestampForBackupFilename: $useTimestampForBackupFilename)';
   }
 
   @override
@@ -2430,13 +2445,22 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
                     charactersLimitForNewNotes) ||
                 other.charactersLimitForNewNotes ==
                     charactersLimitForNewNotes) &&
-            (identical(other.locale, locale) || other.locale == locale));
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.useTimestampForBackupFilename,
+                    useTimestampForBackupFilename) ||
+                other.useTimestampForBackupFilename ==
+                    useTimestampForBackupFilename));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, themeMode,
-      isProjectsListReversed, charactersLimitForNewNotes, locale);
+  int get hashCode => Object.hash(
+      runtimeType,
+      themeMode,
+      isProjectsListReversed,
+      charactersLimitForNewNotes,
+      locale,
+      useTimestampForBackupFilename);
 
   @JsonKey(ignore: true)
   @override
@@ -2460,7 +2484,8 @@ abstract class _UserSettingsModel implements UserSettingsModel {
       final bool isProjectsListReversed,
       final int charactersLimitForNewNotes,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
-      final Locale? locale}) = _$UserSettingsModelImpl;
+      final Locale? locale,
+      final bool useTimestampForBackupFilename}) = _$UserSettingsModelImpl;
 
   factory _UserSettingsModel.fromJson(Map<String, dynamic> json) =
       _$UserSettingsModelImpl.fromJson;
@@ -2475,6 +2500,8 @@ abstract class _UserSettingsModel implements UserSettingsModel {
   @override
   @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
   Locale? get locale;
+  @override
+  bool get useTimestampForBackupFilename;
   @override
   @JsonKey(ignore: true)
   _$$UserSettingsModelImplCopyWith<_$UserSettingsModelImpl> get copyWith =>

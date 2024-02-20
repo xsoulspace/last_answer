@@ -13,6 +13,7 @@ import 'package:ui_kit/ui_kit.dart';
 
 import '../../core.dart';
 import '../data_repositories/purchases_repository.dart';
+import '../services/file_service/file_service_i.dart';
 import 'logic/logic.dart';
 import 'user_remote_initializer.dart';
 

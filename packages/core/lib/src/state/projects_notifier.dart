@@ -38,7 +38,10 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   void _setFileLoading(final bool isLoading) => setValue(
         value.copyWith(isAllProjectsFileLoading: isLoading),
       );
-  Future<void> saveToFile(final BuildContext context) async {
+  Future<void> saveToFile(
+    final BuildContext context, {
+    required final bool useTimestampForBackupFilename,
+  }) async {
     _setFileLoading(true);
 
     try {
@@ -46,7 +49,10 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
       final allProjects = await dto.projectsRepository.getAll();
       final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
-      await _fileService.saveFile(allProjectsJson);
+      final filename = useTimestampForBackupFilename
+          ? FileServiceI.filenameWithTimestamp
+          : FileServiceI.filename;
+      await _fileService.saveFile(data: allProjectsJson, filename: filename);
       await toasts.showBottomToast(message: 'File saved!');
     } finally {
       _setFileLoading(false);

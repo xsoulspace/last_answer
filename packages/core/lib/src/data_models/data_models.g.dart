@@ -182,6 +182,8 @@ _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
       charactersLimitForNewNotes:
           json['charactersLimitForNewNotes'] as int? ?? 0,
       locale: _localeFromJson(json['locale'] as String),
+      useTimestampForBackupFilename:
+          json['useTimestampForBackupFilename'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$UserSettingsModelImplToJson(
@@ -191,4 +193,5 @@ Map<String, dynamic> _$$UserSettingsModelImplToJson(
       'isProjectsListReversed': instance.isProjectsListReversed,
       'charactersLimitForNewNotes': instance.charactersLimitForNewNotes,
       'locale': _localeToJson(instance.locale),
+      'useTimestampForBackupFilename': instance.useTimestampForBackupFilename,
     };

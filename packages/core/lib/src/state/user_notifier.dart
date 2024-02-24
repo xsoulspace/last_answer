@@ -84,6 +84,13 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
         (final settings) =>
             settings.copyWith(charactersLimitForNewNotes: newLimit),
       );
+  // ignore: avoid_positional_boolean_parameters
+  void updateUseTimestampForBackupFilename(final bool isEnabled) =>
+      _updateSettings(
+        (final settings) =>
+            settings.copyWith(useTimestampForBackupFilename: isEnabled),
+      );
+
   void updateThemeMode(final ThemeMode? themeMode) {
     if (themeMode == null) return;
     _updateSettings(

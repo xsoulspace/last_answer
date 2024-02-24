@@ -48,7 +48,7 @@ dependencies:
   path: ^1.8.3
   path_provider: ^2.1.1
   path_to_regexp: ^0.4.0
-  permission_handler: ^11.0.1
+  permission_handler: ^11.3.0
   provider: ^6.1.1
   quiver: ^3.2.1
   rxdart: ^0.27.7

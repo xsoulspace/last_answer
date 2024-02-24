@@ -79,5 +79,20 @@
   "toGetSupporterDays": "To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it's 60 seconds), and it will reward as 7 Supporter Days.",
   "watchAd": "Watch Ad",
   "adPleaseNote": "Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.",
-  "exportImportData": "Backup"
+  "exportImportData": "Backup",
+  "fileSaved": "File saved 🎉",
+  "load": "Load",
+  "confirm": "Confirm",
+  "confirmProjectsOwerwrite": "Confirm projects owerwrite",
+  "projectsFromFileRestored": "Projects from file restored 🎉",
+  "beCarefulItsInreversableAction": "Be careful, it is not reversable action",
+  "byLoadingFileWarning": "By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action",
+  "rewardForAdThankYou": "🎉🎉🎉 Congratulations - ${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!",
+  "yourProjectWasCopiedToClipboard": "Your project was copied to clipboard 🎉",
+  "allProjectsWereCopiedToClipboard": "All projects were copied to clipboard 🎉",
+  "applyTimestamp": "Apply timestamp",
+  "restoreFromFile": "Restore from file",
+  "saveToFile": "Save to file",
+  "copyAllProjectsToClipboard": "Copy to clipboard",
+  "getAllProjectsFromClipboard": "Restore from clipboard"
 }

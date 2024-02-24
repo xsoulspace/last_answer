@@ -250,4 +250,30 @@ class SEn extends S {
 
   @override
   String get exportImportData => 'Backup';
+
+  @override
+  String get fileSaved => 'File saved 🎉';
+
+  @override
+  String get load => 'Load';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get confirmProjectsOwerwrite => 'Confirm projects owerwrite';
+
+  @override
+  String get projectsFromFileRestored => 'Projects from file restored 🎉';
+
+  @override
+  String get beCarefulItsInreversableAction => 'Be careful, it is not reversable action';
+
+  @override
+  String get byLoadingFileWarning => 'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action';
+
+  @override
+  String rewardForAdThankYou(Object days) {
+    return '🎉🎉🎉 Congratulations - \$$days days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!';
+  }
 }

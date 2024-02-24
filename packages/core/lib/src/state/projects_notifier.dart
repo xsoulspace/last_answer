@@ -46,6 +46,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
     try {
       final toasts = Toasts.of(context);
+      final l10n = context.l10n;
 
       final allProjects = await dto.projectsRepository.getAll();
       final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
@@ -57,7 +58,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
         filename: filename,
       );
       if (!wasSaved) return;
-      await toasts.showBottomToast(message: 'File saved!');
+      await toasts.showBottomToast(message: l10n.fileSaved);
     } finally {
       _setFileLoading(false);
     }
@@ -71,20 +72,19 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       final l10n = context.l10n;
       bool shouldContinue = await modals.showWarningDialog(
         title: l10n.areYouSure,
-        noActionText: 'Cancel',
-        yesActionText: 'Load',
-        description:
-            'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action!',
+        noActionText: l10n.cancel,
+        yesActionText: l10n.load,
+        description: l10n.byLoadingFileWarning,
       );
       if (!shouldContinue) return;
       final jsonList = await _fileService.openFile();
       if (jsonList.isEmpty) return;
 
       shouldContinue = await modals.showWarningDialog(
-        title: 'Confirm projects owerwrite',
-        noActionText: 'Cancel',
-        yesActionText: 'Confirm',
-        description: 'Be careful, as it is not reversable action!',
+        title: l10n.confirmProjectsOwerwrite,
+        noActionText: l10n.cancel,
+        yesActionText: l10n.confirm,
+        description: l10n.beCarefulItsInreversableAction,
       );
       if (!shouldContinue) return;
       final allProjects = jsonList.map(ProjectModel.fromJson).toList();
@@ -93,7 +93,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       onReset();
       await onLocalUserLoad();
       await toasts.showBottomToast(
-        message: 'Projects from file restored.',
+        message: l10n.projectsFromFileRestored,
       );
     } finally {
       _setFileLoading(false);

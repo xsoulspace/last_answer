@@ -38,6 +38,11 @@ class FileServiceMobile implements FileServiceI {
     required final List<Map<String, dynamic>> data,
     required final String filename,
   }) async {
+    // TODO(arenukvern): improve file saving dialog
+    /// using "Save File Dialog" / "Document Chooser" in Android
+    /// https://gist.github.com/MSVCode/9ccedfa6692f8bc3b82fdc74fad65bc6
+    ///
+    /// Also there will be a need to write similar thing for iOS
     final path = await FilePicker.platform.getDirectoryPath(
       dialogTitle: 'Select directory to save file',
     );

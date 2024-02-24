@@ -580,6 +580,54 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Backup'**
   String get exportImportData;
+
+  /// No description provided for @fileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved 🎉'**
+  String get fileSaved;
+
+  /// No description provided for @load.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get load;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmProjectsOwerwrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm projects owerwrite'**
+  String get confirmProjectsOwerwrite;
+
+  /// No description provided for @projectsFromFileRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects from file restored 🎉'**
+  String get projectsFromFileRestored;
+
+  /// No description provided for @beCarefulItsInreversableAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Be careful, it is not reversable action'**
+  String get beCarefulItsInreversableAction;
+
+  /// No description provided for @byLoadingFileWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action'**
+  String get byLoadingFileWarning;
+
+  /// No description provided for @rewardForAdThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉🎉🎉 Congratulations - \${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!'**
+  String rewardForAdThankYou(Object days);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

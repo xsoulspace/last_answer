@@ -250,4 +250,30 @@ class SRu extends S {
 
   @override
   String get exportImportData => 'Бекап';
+
+  @override
+  String get fileSaved => 'Файл сохранен 🎉';
+
+  @override
+  String get load => 'Загрузить';
+
+  @override
+  String get confirm => 'Подтвердить';
+
+  @override
+  String get confirmProjectsOwerwrite => 'Подтвердить перезапись проектов';
+
+  @override
+  String get projectsFromFileRestored => 'Проекты из файла восстановлены 🎉';
+
+  @override
+  String get beCarefulItsInreversableAction => 'Осторожно, это не обратимое действие!';
+
+  @override
+  String get byLoadingFileWarning => 'Загружая файл вы перезапишете все текущие проекты в приложении. \nБудьте осторожным, это не обратимое действие!';
+
+  @override
+  String rewardForAdThankYou(Object days) {
+    return '🎉🎉🎉 Поздравляю - добавлены $days Дней Поддерживателя:) 🎉🎉🎉 Спасибо за поддержку!';
+  }
 }

@@ -79,5 +79,13 @@
   "toGetSupporterDays": "Per ottenere i Supporter Days, l'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.",
   "watchAd": "Guarda la pubblicità",
   "adPleaseNote": "Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.",
-  "exportImportData": "Backup"
+  "exportImportData": "Backup",
+  "fileSaved": "File salvato 🎉",
+  "load": "Carica",
+  "confirm": "Conferma",
+  "confirmProjectsOwerwrite": "Conferma sovrascrittura progetti",
+  "projectsFromFileRestored": "Progetti ripristinati dal file 🎉",
+  "beCarefulItsInreversableAction": "Attenzione, è un'azione non reversibile",
+  "byLoadingFileWarning": "Caricando questo file sovrascriverai tutti i progetti attuali nell'app. \nAttenzione, è un'azione non reversibile",
+  "rewardForAdThankYou": "🎉🎉🎉 Congratulazioni - ${days} giorni di Supporter Days sono stati aggiunti:) 🎉🎉🎉 Grazie per il tuo supporto!"
 }

@@ -46,6 +46,10 @@ _$ProjectModelIdeaImpl _$$ProjectModelIdeaImplFromJson(
           ? null
           : IdeaProjectAnswerModel.fromJson(
               json['draftAnswer'] as Map<String, dynamic>),
+      tagsIds: (json['tagsIds'] as List<dynamic>?)
+              ?.map((e) => ProjectTagModelId.fromJson(e as String))
+              .toList() ??
+          const [],
       $type: json['runtimeType'] as String?,
     );
 
@@ -60,6 +64,7 @@ Map<String, dynamic> _$$ProjectModelIdeaImplToJson(
       'archivedAt': instance.archivedAt?.toIso8601String(),
       'answers': instance.answers,
       'draftAnswer': instance.draftAnswer,
+      'tagsIds': instance.tagsIds,
       'runtimeType': instance.$type,
     };
 
@@ -81,6 +86,10 @@ _$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
       archivedAt: json['archivedAt'] == null
           ? null
           : DateTime.parse(json['archivedAt'] as String),
+      tagsIds: (json['tagsIds'] as List<dynamic>?)
+              ?.map((e) => ProjectTagModelId.fromJson(e as String))
+              .toList() ??
+          const [],
       $type: json['runtimeType'] as String?,
     );
 
@@ -94,6 +103,7 @@ Map<String, dynamic> _$$ProjectModelNoteImplToJson(
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'charactersLimit': instance.charactersLimit,
       'archivedAt': instance.archivedAt?.toIso8601String(),
+      'tagsIds': instance.tagsIds,
       'runtimeType': instance.$type,
     };
 
@@ -146,6 +156,20 @@ Map<String, dynamic> _$$LocalizedTextModelImplToJson(
       'en': instance.en,
       'it': instance.it,
       'ga': instance.ga,
+    };
+
+_$ProjectTagModelImpl _$$ProjectTagModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ProjectTagModelImpl(
+      id: ProjectTagModelId.fromJson(json['id'] as String),
+      title: json['title'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$$ProjectTagModelImplToJson(
+        _$ProjectTagModelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
     };
 
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>

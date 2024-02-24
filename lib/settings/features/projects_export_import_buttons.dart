@@ -13,6 +13,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
     final useTimestampForBackupFilename =
         userNotifier.settings.useTimestampForBackupFilename;
     final isFileLoading = projectsNotifier.value.isAllProjectsFileLoading;
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Wrap(
@@ -29,29 +30,42 @@ class ProjectsExportImportButtons extends StatelessWidget {
               context,
               useTimestampForBackupFilename: useTimestampForBackupFilename,
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.file_download),
-                Flexible(child: Text('Save to file')),
+                const Icon(Icons.file_download),
+                Flexible(child: Text(l10n.saveToFile)),
               ],
             ),
           ),
           HoverableButton(
             isLoading: isFileLoading,
             onPressed: () async => projectsNotifier.loadFromFile(context),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.file_upload),
-                Flexible(child: Text('Restore from file')),
+                const Icon(Icons.file_upload),
+                Flexible(child: Text(l10n.restoreFromFile)),
               ],
             ),
           ),
           SwitchListTile.adaptive(
             onChanged: userNotifier.updateUseTimestampForBackupFilename,
             value: useTimestampForBackupFilename,
-            title: const Text('Apply timestamp'),
+            title: Text(l10n.applyTimestamp),
+          ),
+          const Divider(),
+          HoverableButton(
+            isLoading: isFileLoading,
+            onPressed: () async =>
+                projectsNotifier.copyAllProjectsToClipboard(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.copy_all_rounded),
+                Flexible(child: Text(l10n.copyAllProjectsToClipboard)),
+              ],
+            ),
           ),
         ],
       ),

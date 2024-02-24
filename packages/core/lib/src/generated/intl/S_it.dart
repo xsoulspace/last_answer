@@ -276,4 +276,22 @@ class SIt extends S {
   String rewardForAdThankYou(Object days) {
     return '🎉🎉🎉 Congratulazioni - \$$days giorni di Supporter Days sono stati aggiunti:) 🎉🎉🎉 Grazie per il tuo supporto!';
   }
+
+  @override
+  String get yourProjectWasCopiedToClipboard => 'Your project was copied to clipboard 🎉';
+
+  @override
+  String get allProjectsWereCopiedToClipboard => 'All projects were copied to clipboard 🎉';
+
+  @override
+  String get applyTimestamp => 'Apply timestamp';
+
+  @override
+  String get restoreFromFile => 'Restore from file';
+
+  @override
+  String get saveToFile => 'Save to file';
+
+  @override
+  String get copyAllProjectsToClipboard => 'Copy to clipboard';
 }

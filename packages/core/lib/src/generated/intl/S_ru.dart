@@ -276,4 +276,22 @@ class SRu extends S {
   String rewardForAdThankYou(Object days) {
     return '🎉🎉🎉 Поздравляю - добавлены $days Дней Поддерживателя:) 🎉🎉🎉 Спасибо за поддержку!';
   }
+
+  @override
+  String get yourProjectWasCopiedToClipboard => 'Проект скопирован в буфер обмена (Copyboard) 🎉';
+
+  @override
+  String get allProjectsWereCopiedToClipboard => 'Все проекты скопированы в буфер обмена (Copyboard)🎉';
+
+  @override
+  String get applyTimestamp => 'Применить timestamp';
+
+  @override
+  String get restoreFromFile => 'Восстановить из файла';
+
+  @override
+  String get saveToFile => 'Сохранить в файл';
+
+  @override
+  String get copyAllProjectsToClipboard => 'Скопировать в буфер обмена';
 }

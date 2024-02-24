@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_io/io.dart';
 
 import '../../../core.dart';
@@ -31,6 +32,26 @@ class FileServiceMobile implements FileServiceI {
     final file = result.files.first;
     final dataStr = File(file.path!).readAsStringSync();
     return jsonDecode(dataStr);
+  }
+
+  Future<bool> requestPermissions() async {
+    // The user opted to never again see the permission request dialog for this
+    // app. The only way to change the permission's status now is to let the
+    // user manually enables it in the system settings.
+    if (await Permission.storage.isPermanentlyDenied) {
+      await openAppSettings();
+    }
+
+    final status = await Permission.storage.request();
+
+    final isGranted = switch (status) {
+      PermissionStatus.denied ||
+      PermissionStatus.permanentlyDenied ||
+      PermissionStatus.restricted =>
+        false,
+      _ => true,
+    };
+    return isGranted;
   }
 
   @override

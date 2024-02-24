@@ -250,4 +250,51 @@ class SIt extends S {
 
   @override
   String get exportImportData => 'Backup';
+
+  @override
+  String get fileSaved => 'File salvato 🎉';
+
+  @override
+  String get load => 'Carica';
+
+  @override
+  String get confirm => 'Conferma';
+
+  @override
+  String get confirmProjectsOwerwrite => 'Conferma sovrascrittura progetti';
+
+  @override
+  String get projectsFromFileRestored => 'Progetti ripristinati dal file 🎉';
+
+  @override
+  String get beCarefulItsInreversableAction => 'Attenzione, è un\'azione non reversibile';
+
+  @override
+  String get byLoadingFileWarning => 'Caricando questo file sovrascriverai tutti i progetti attuali nell\'app. \nAttenzione, è un\'azione non reversibile';
+
+  @override
+  String rewardForAdThankYou(Object days) {
+    return '🎉🎉🎉 Congratulazioni - \$$days giorni di Supporter Days sono stati aggiunti:) 🎉🎉🎉 Grazie per il tuo supporto!';
+  }
+
+  @override
+  String get yourProjectWasCopiedToClipboard => 'Your project was copied to clipboard 🎉';
+
+  @override
+  String get allProjectsWereCopiedToClipboard => 'All projects were copied to clipboard 🎉';
+
+  @override
+  String get applyTimestamp => 'Apply timestamp';
+
+  @override
+  String get restoreFromFile => 'Restore from file';
+
+  @override
+  String get saveToFile => 'Save to file';
+
+  @override
+  String get copyAllProjectsToClipboard => 'Copy to clipboard';
+
+  @override
+  String get getAllProjectsFromClipboard => 'Restore from clipboard';
 }

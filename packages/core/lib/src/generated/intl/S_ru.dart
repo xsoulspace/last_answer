@@ -250,4 +250,51 @@ class SRu extends S {
 
   @override
   String get exportImportData => 'Бекап';
+
+  @override
+  String get fileSaved => 'Файл сохранен 🎉';
+
+  @override
+  String get load => 'Загрузить';
+
+  @override
+  String get confirm => 'Подтвердить';
+
+  @override
+  String get confirmProjectsOwerwrite => 'Подтвердить перезапись проектов';
+
+  @override
+  String get projectsFromFileRestored => 'Проекты из файла восстановлены 🎉';
+
+  @override
+  String get beCarefulItsInreversableAction => 'Осторожно, это не обратимое действие!';
+
+  @override
+  String get byLoadingFileWarning => 'Загружая файл вы перезапишете все текущие проекты в приложении. \nБудьте осторожным, это не обратимое действие!';
+
+  @override
+  String rewardForAdThankYou(Object days) {
+    return '🎉🎉🎉 Поздравляю - добавлены $days Дней Поддерживателя:) 🎉🎉🎉 Спасибо за поддержку!';
+  }
+
+  @override
+  String get yourProjectWasCopiedToClipboard => 'Проект скопирован в буфер обмена (Copyboard) 🎉';
+
+  @override
+  String get allProjectsWereCopiedToClipboard => 'Все проекты скопированы в буфер обмена (Copyboard)🎉';
+
+  @override
+  String get applyTimestamp => 'Применить timestamp';
+
+  @override
+  String get restoreFromFile => 'Восстановить из файла';
+
+  @override
+  String get saveToFile => 'Сохранить в файл';
+
+  @override
+  String get copyAllProjectsToClipboard => 'Скопировать в буфер обмена';
+
+  @override
+  String get getAllProjectsFromClipboard => 'Восстановить из буфера обмена';
 }

@@ -20,16 +20,19 @@ class FileService implements FileServiceI {
   }
 
   @override
-  Future<void> saveFile(final List<Map<String, dynamic>> data) async {
-    final fileName = FileServiceI.filename;
-    final result = await getSaveLocation(suggestedName: fileName);
+  Future<bool> saveFile({
+    required final List<Map<String, dynamic>> data,
+    required final String filename,
+  }) async {
+    final result = await getSaveLocation(suggestedName: filename);
     // Operation was canceled by the user.
-    if (result == null) return;
+    if (result == null) return false;
     final str = jsonEncode(data);
     final uint8List = const Utf8Encoder().convert(str);
     const String mimeType = 'text/json';
     final XFile textFile =
-        XFile.fromData(uint8List, mimeType: mimeType, name: fileName);
+        XFile.fromData(uint8List, mimeType: mimeType, name: filename);
     await textFile.saveTo(result.path);
+    return true;
   }
 }

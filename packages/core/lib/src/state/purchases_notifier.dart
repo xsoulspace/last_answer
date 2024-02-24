@@ -50,6 +50,8 @@ class PurchasesNotifier
   bool get isAdSupported =>
       adUnits.mobile.isNotEmpty || adUnits.desktop.isNotEmpty;
   Future<void> watchAd(final BuildContext context) async {
+    final toasts = Toasts.of(context);
+    final l10n = context.l10n;
     final userNotifier = context.read<UserNotifier>();
     final isDark = userNotifier.settings.themeMode == ThemeMode.dark;
 
@@ -65,7 +67,9 @@ class PurchasesNotifier
       final updatedPurchases =
           await dto.purchasesRepository.receiveAdVideoReward();
       _emitLoaded(updatedPurchases);
-      // TODO(arenukvern): show TADA/ popup
+      unawaited(
+        toasts.showBottomToast(message: l10n.rewardForAdThankYou(7)),
+      );
     }
     adInstance.dispose();
   }

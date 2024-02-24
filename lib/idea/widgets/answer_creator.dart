@@ -57,7 +57,7 @@ class AnswerCreatorController
   final FocusNode focusNode = FocusNode();
   final AnswerCreatorControllerDto dto;
   Future<void> onShare(final BuildContext context) async {
-    await ProjectSharer.of(context).share(sharable: dto.ideaViewBloc.idea);
+    await ProjectSharer.of(context).share(dto.ideaViewBloc.idea);
   }
 
   void changeQuestion(final IdeaProjectQuestionModel newQuestion) {

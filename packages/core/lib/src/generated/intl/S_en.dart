@@ -294,4 +294,7 @@ class SEn extends S {
 
   @override
   String get copyAllProjectsToClipboard => 'Copy to clipboard';
+
+  @override
+  String get getAllProjectsFromClipboard => 'Restore from clipboard';
 }

@@ -117,7 +117,7 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
           question: question,
         ) ??
         IdeaProjectAnswerModel(
-          id: IdeaProjectAnswerModelId(value: createId()),
+          id: IdeaProjectAnswerModelId.generate(),
           createdAt: DateTime.now(),
           question: question,
         );

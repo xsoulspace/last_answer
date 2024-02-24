@@ -96,5 +96,6 @@
   "applyTimestamp": "Применить timestamp",
   "restoreFromFile": "Восстановить из файла",
   "saveToFile": "Сохранить в файл",
-  "copyAllProjectsToClipboard": "Скопировать в буфер обмена"
+  "copyAllProjectsToClipboard": "Скопировать в буфер обмена",
+  "getAllProjectsFromClipboard": "Восстановить из буфера обмена"
 }

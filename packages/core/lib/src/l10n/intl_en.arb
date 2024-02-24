@@ -87,5 +87,11 @@
   "projectsFromFileRestored": "Projects from file restored 🎉",
   "beCarefulItsInreversableAction": "Be careful, it is not reversable action",
   "byLoadingFileWarning": "By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action",
-  "rewardForAdThankYou": "🎉🎉🎉 Congratulations - ${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!"
+  "rewardForAdThankYou": "🎉🎉🎉 Congratulations - ${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!",
+  "yourProjectWasCopiedToClipboard": "Your project was copied to clipboard 🎉",
+  "allProjectsWereCopiedToClipboard": "All projects were copied to clipboard 🎉",
+  "applyTimestamp": "Apply timestamp",
+  "restoreFromFile": "Restore from file",
+  "saveToFile": "Save to file",
+  "copyAllProjectsToClipboard": "Copy to clipboard"
 }

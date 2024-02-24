@@ -628,6 +628,42 @@ abstract class S {
   /// In en, this message translates to:
   /// **'🎉🎉🎉 Congratulations - \${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!'**
   String rewardForAdThankYou(Object days);
+
+  /// No description provided for @yourProjectWasCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Your project was copied to clipboard 🎉'**
+  String get yourProjectWasCopiedToClipboard;
+
+  /// No description provided for @allProjectsWereCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'All projects were copied to clipboard 🎉'**
+  String get allProjectsWereCopiedToClipboard;
+
+  /// No description provided for @applyTimestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply timestamp'**
+  String get applyTimestamp;
+
+  /// No description provided for @restoreFromFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from file'**
+  String get restoreFromFile;
+
+  /// No description provided for @saveToFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to file'**
+  String get saveToFile;
+
+  /// No description provided for @copyAllProjectsToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy to clipboard'**
+  String get copyAllProjectsToClipboard;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

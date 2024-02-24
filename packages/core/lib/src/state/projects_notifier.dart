@@ -38,6 +38,22 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   void _setFileLoading(final bool isLoading) => setValue(
         value.copyWith(isAllProjectsFileLoading: isLoading),
       );
+  Future<void> copyAllProjectsToClipboard(final BuildContext context) async {
+    _setFileLoading(true);
+    try {
+      final sharer = ProjectSharer.of(context);
+      final allProjectsJson = await _getAllProjectsJson();
+      await sharer.shareProjects(allProjectsJson);
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> _getAllProjectsJson() async {
+    final allProjects = await dto.projectsRepository.getAll();
+    return allProjects.map((final e) => e.toJson()).toList();
+  }
+
   Future<void> saveToFile(
     final BuildContext context, {
     required final bool useTimestampForBackupFilename,
@@ -48,8 +64,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       final toasts = Toasts.of(context);
       final l10n = context.l10n;
 
-      final allProjects = await dto.projectsRepository.getAll();
-      final allProjectsJson = allProjects.map((final e) => e.toJson()).toList();
+      final allProjectsJson = await _getAllProjectsJson();
       final filename = useTimestampForBackupFilename
           ? FileServiceI.filenameWithTimestamp
           : FileServiceI.filename;

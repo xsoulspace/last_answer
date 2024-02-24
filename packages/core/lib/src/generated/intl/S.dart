@@ -664,6 +664,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Copy to clipboard'**
   String get copyAllProjectsToClipboard;
+
+  /// No description provided for @getAllProjectsFromClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from clipboard'**
+  String get getAllProjectsFromClipboard;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -294,4 +294,7 @@ class SRu extends S {
 
   @override
   String get copyAllProjectsToClipboard => 'Скопировать в буфер обмена';
+
+  @override
+  String get getAllProjectsFromClipboard => 'Восстановить из буфера обмена';
 }

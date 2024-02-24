@@ -49,6 +49,27 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     }
   }
 
+  Future<void> getAllProjectsFromClipboard(final BuildContext context) async {
+    _setFileLoading(true);
+    try {
+      final modals = Modals.of(context);
+      final l10n = context.l10n;
+      final sharer = ProjectSharer.of(context);
+      final allProjects = await sharer.getFromClipboard(context);
+      if (allProjects.isEmpty) return;
+      final shouldContinue = await modals.showWarningDialog(
+        title: l10n.confirmProjectsOwerwrite,
+        noActionText: l10n.cancel,
+        yesActionText: l10n.confirm,
+        description: l10n.beCarefulItsInreversableAction,
+      );
+      if (!shouldContinue) return;
+      await _restoreProjectsBy(allProjects: allProjects, context: context);
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
   Future<List<Map<String, dynamic>>> _getAllProjectsJson() async {
     final allProjects = await dto.projectsRepository.getAll();
     return allProjects.map((final e) => e.toJson()).toList();
@@ -81,7 +102,6 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   Future<void> loadFromFile(final BuildContext context) async {
     _setFileLoading(true);
-    final toasts = Toasts.of(context);
     final modals = Modals.of(context);
     try {
       final l10n = context.l10n;
@@ -103,16 +123,25 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
       );
       if (!shouldContinue) return;
       final allProjects = jsonList.map(ProjectModel.fromJson).toList();
-
-      await dto.projectsRepository.putAll(projects: allProjects);
-      onReset();
-      await onLocalUserLoad();
-      await toasts.showBottomToast(
-        message: l10n.projectsFromFileRestored,
-      );
+      await _restoreProjectsBy(allProjects: allProjects, context: context);
     } finally {
       _setFileLoading(false);
     }
+  }
+
+  Future<void> _restoreProjectsBy({
+    required final List<ProjectModel> allProjects,
+    required final BuildContext context,
+  }) async {
+    final toasts = Toasts.of(context);
+    final l10n = context.l10n;
+
+    await dto.projectsRepository.putAll(projects: allProjects);
+    onReset();
+    await onLocalUserLoad();
+    await toasts.showBottomToast(
+      message: l10n.projectsFromFileRestored,
+    );
   }
 
   void onReset() => projectsPagedController.refresh();

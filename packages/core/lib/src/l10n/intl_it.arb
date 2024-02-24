@@ -93,5 +93,6 @@
   "applyTimestamp": "Apply timestamp",
   "restoreFromFile": "Restore from file",
   "saveToFile": "Save to file",
-  "copyAllProjectsToClipboard": "Copy to clipboard"
+  "copyAllProjectsToClipboard": "Copy to clipboard",
+  "getAllProjectsFromClipboard": "Restore from clipboard"
 }

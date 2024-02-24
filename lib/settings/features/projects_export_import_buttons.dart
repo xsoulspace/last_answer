@@ -67,6 +67,18 @@ class ProjectsExportImportButtons extends StatelessWidget {
               ],
             ),
           ),
+          HoverableButton(
+            isLoading: isFileLoading,
+            onPressed: () async =>
+                projectsNotifier.getAllProjectsFromClipboard(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.content_paste_go_rounded),
+                Flexible(child: Text(l10n.getAllProjectsFromClipboard)),
+              ],
+            ),
+          ),
         ],
       ),
     );

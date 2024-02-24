@@ -24,7 +24,7 @@ class NoteProjectSideActionBar extends HookWidget {
           width: 48,
           child: IconShareButton(
             onTap: () {
-              unawaited(ProjectSharer.of(context).share(sharable: bloc.note));
+              unawaited(ProjectSharer.of(context).share(bloc.note));
             },
           ),
         ),

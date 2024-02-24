@@ -580,6 +580,96 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Backup'**
   String get exportImportData;
+
+  /// No description provided for @fileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved 🎉'**
+  String get fileSaved;
+
+  /// No description provided for @load.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get load;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmProjectsOwerwrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm projects owerwrite'**
+  String get confirmProjectsOwerwrite;
+
+  /// No description provided for @projectsFromFileRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects from file restored 🎉'**
+  String get projectsFromFileRestored;
+
+  /// No description provided for @beCarefulItsInreversableAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Be careful, it is not reversable action'**
+  String get beCarefulItsInreversableAction;
+
+  /// No description provided for @byLoadingFileWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action'**
+  String get byLoadingFileWarning;
+
+  /// No description provided for @rewardForAdThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉🎉🎉 Congratulations - \${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!'**
+  String rewardForAdThankYou(Object days);
+
+  /// No description provided for @yourProjectWasCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Your project was copied to clipboard 🎉'**
+  String get yourProjectWasCopiedToClipboard;
+
+  /// No description provided for @allProjectsWereCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'All projects were copied to clipboard 🎉'**
+  String get allProjectsWereCopiedToClipboard;
+
+  /// No description provided for @applyTimestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply timestamp'**
+  String get applyTimestamp;
+
+  /// No description provided for @restoreFromFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from file'**
+  String get restoreFromFile;
+
+  /// No description provided for @saveToFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to file'**
+  String get saveToFile;
+
+  /// No description provided for @copyAllProjectsToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy to clipboard'**
+  String get copyAllProjectsToClipboard;
+
+  /// No description provided for @getAllProjectsFromClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from clipboard'**
+  String get getAllProjectsFromClipboard;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

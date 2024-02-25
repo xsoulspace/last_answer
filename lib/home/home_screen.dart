@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
+import 'package:lastanswer/home/tags/tags.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
 import 'package:lastanswer/other/other.dart';
@@ -96,8 +97,15 @@ class TagsVerticalBar extends StatelessWidget {
       children: [
         const Gap(8),
         IconButton.outlined(
-          onPressed: () async => tagsNotifier.createTag(context),
-          icon: const Icon(Icons.folder),
+          onPressed: () async => showAdaptiveDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (final context) => const AlertDialog.adaptive(
+              content: TagsScreen(),
+            ),
+          ),
+          icon: const Icon(Icons.edit_square),
+          tooltip: 'Click to edit Folders',
         ),
         const Gap(8),
         Expanded(

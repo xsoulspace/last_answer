@@ -8,4 +8,5 @@ part 'data_models.freezed.dart';
 part 'data_models.g.dart';
 part 'notification.dart';
 part 'project.dart';
+part 'save.dart';
 part 'user.dart';

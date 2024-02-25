@@ -17,6 +17,8 @@ import '../services/file_service/file_service_i.dart';
 import 'logic/logic.dart';
 import 'user_remote_initializer.dart';
 
+export 'tags_notifier.dart';
+
 part 'app_notifier.dart';
 part 'emoji_state_notifier.dart';
 part 'map_state_notifier.dart';

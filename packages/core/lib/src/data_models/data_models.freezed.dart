@@ -1884,6 +1884,208 @@ abstract class _ProjectTagModel implements ProjectTagModel {
       throw _privateConstructorUsedError;
 }
 
+DbSaveModel _$DbSaveModelFromJson(Map<String, dynamic> json) {
+  return _DbSaveModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DbSaveModel {
+  DbSaveVersion get version => throw _privateConstructorUsedError;
+  List<ProjectModel> get projects => throw _privateConstructorUsedError;
+  List<ProjectTagModel> get tags => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DbSaveModelCopyWith<DbSaveModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DbSaveModelCopyWith<$Res> {
+  factory $DbSaveModelCopyWith(
+          DbSaveModel value, $Res Function(DbSaveModel) then) =
+      _$DbSaveModelCopyWithImpl<$Res, DbSaveModel>;
+  @useResult
+  $Res call(
+      {DbSaveVersion version,
+      List<ProjectModel> projects,
+      List<ProjectTagModel> tags});
+}
+
+/// @nodoc
+class _$DbSaveModelCopyWithImpl<$Res, $Val extends DbSaveModel>
+    implements $DbSaveModelCopyWith<$Res> {
+  _$DbSaveModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? version = null,
+    Object? projects = null,
+    Object? tags = null,
+  }) {
+    return _then(_value.copyWith(
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as DbSaveVersion,
+      projects: null == projects
+          ? _value.projects
+          : projects // ignore: cast_nullable_to_non_nullable
+              as List<ProjectModel>,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModel>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DbSaveModelImplCopyWith<$Res>
+    implements $DbSaveModelCopyWith<$Res> {
+  factory _$$DbSaveModelImplCopyWith(
+          _$DbSaveModelImpl value, $Res Function(_$DbSaveModelImpl) then) =
+      __$$DbSaveModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {DbSaveVersion version,
+      List<ProjectModel> projects,
+      List<ProjectTagModel> tags});
+}
+
+/// @nodoc
+class __$$DbSaveModelImplCopyWithImpl<$Res>
+    extends _$DbSaveModelCopyWithImpl<$Res, _$DbSaveModelImpl>
+    implements _$$DbSaveModelImplCopyWith<$Res> {
+  __$$DbSaveModelImplCopyWithImpl(
+      _$DbSaveModelImpl _value, $Res Function(_$DbSaveModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? version = null,
+    Object? projects = null,
+    Object? tags = null,
+  }) {
+    return _then(_$DbSaveModelImpl(
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as DbSaveVersion,
+      projects: null == projects
+          ? _value._projects
+          : projects // ignore: cast_nullable_to_non_nullable
+              as List<ProjectModel>,
+      tags: null == tags
+          ? _value._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModel>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DbSaveModelImpl extends _DbSaveModel {
+  const _$DbSaveModelImpl(
+      {this.version = DbSaveVersion.v1,
+      final List<ProjectModel> projects = const [],
+      final List<ProjectTagModel> tags = const []})
+      : _projects = projects,
+        _tags = tags,
+        super._();
+
+  factory _$DbSaveModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DbSaveModelImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final DbSaveVersion version;
+  final List<ProjectModel> _projects;
+  @override
+  @JsonKey()
+  List<ProjectModel> get projects {
+    if (_projects is EqualUnmodifiableListView) return _projects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_projects);
+  }
+
+  final List<ProjectTagModel> _tags;
+  @override
+  @JsonKey()
+  List<ProjectTagModel> get tags {
+    if (_tags is EqualUnmodifiableListView) return _tags;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tags);
+  }
+
+  @override
+  String toString() {
+    return 'DbSaveModel(version: $version, projects: $projects, tags: $tags)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DbSaveModelImpl &&
+            (identical(other.version, version) || other.version == version) &&
+            const DeepCollectionEquality().equals(other._projects, _projects) &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      version,
+      const DeepCollectionEquality().hash(_projects),
+      const DeepCollectionEquality().hash(_tags));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DbSaveModelImplCopyWith<_$DbSaveModelImpl> get copyWith =>
+      __$$DbSaveModelImplCopyWithImpl<_$DbSaveModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DbSaveModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DbSaveModel extends DbSaveModel {
+  const factory _DbSaveModel(
+      {final DbSaveVersion version,
+      final List<ProjectModel> projects,
+      final List<ProjectTagModel> tags}) = _$DbSaveModelImpl;
+  const _DbSaveModel._() : super._();
+
+  factory _DbSaveModel.fromJson(Map<String, dynamic> json) =
+      _$DbSaveModelImpl.fromJson;
+
+  @override
+  DbSaveVersion get version;
+  @override
+  List<ProjectModel> get projects;
+  @override
+  List<ProjectTagModel> get tags;
+  @override
+  @JsonKey(ignore: true)
+  _$$DbSaveModelImplCopyWith<_$DbSaveModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 UserModel _$UserModelFromJson(Map<String, dynamic> json) {
   return _UserModel.fromJson(json);
 }

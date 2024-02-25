@@ -12,7 +12,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   final ComplexLocalDbIsarImpl isarDb;
 
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
+  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
     final getDto = dto.data;

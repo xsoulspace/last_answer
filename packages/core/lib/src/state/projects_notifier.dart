@@ -11,8 +11,10 @@ class ProjectsNotifierState with _$ProjectsNotifierState {
 
 class ProjectsNotifierDto {
   ProjectsNotifierDto(final BuildContext context)
-      : projectsRepository = context.read();
+      : projectsRepository = context.read(),
+        tagsRepository = context.read();
   final ProjectsRepository projectsRepository;
+  final TagsRepository tagsRepository;
 }
 
 class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
@@ -30,119 +32,8 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   )..onLoad();
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
 
-  Future<void> onLocalUserLoad() async {
-    projectsPagedController.loadFirstPage();
-  }
-
-  final _fileService = FileService();
-  void _setFileLoading(final bool isLoading) => setValue(
-        value.copyWith(isAllProjectsFileLoading: isLoading),
-      );
-  Future<void> copyAllProjectsToClipboard(final BuildContext context) async {
-    _setFileLoading(true);
-    try {
-      final sharer = ProjectSharer.of(context);
-      final allProjectsJson = await _getAllProjectsJson();
-      await sharer.shareProjects(allProjectsJson);
-    } finally {
-      _setFileLoading(false);
-    }
-  }
-
-  Future<void> getAllProjectsFromClipboard(final BuildContext context) async {
-    _setFileLoading(true);
-    try {
-      final modals = Modals.of(context);
-      final l10n = context.l10n;
-      final sharer = ProjectSharer.of(context);
-      final allProjects = await sharer.getFromClipboard(context);
-      if (allProjects.isEmpty) return;
-      final shouldContinue = await modals.showWarningDialog(
-        title: l10n.confirmProjectsOwerwrite,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.confirm,
-        description: l10n.beCarefulItsInreversableAction,
-      );
-      if (!shouldContinue) return;
-      await _restoreProjectsBy(allProjects: allProjects, context: context);
-    } finally {
-      _setFileLoading(false);
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> _getAllProjectsJson() async {
-    final allProjects = await dto.projectsRepository.getAll();
-    return allProjects.map((final e) => e.toJson()).toList();
-  }
-
-  Future<void> saveToFile(
-    final BuildContext context, {
-    required final bool useTimestampForBackupFilename,
-  }) async {
-    _setFileLoading(true);
-
-    try {
-      final toasts = Toasts.of(context);
-      final l10n = context.l10n;
-
-      final allProjectsJson = await _getAllProjectsJson();
-      final filename = useTimestampForBackupFilename
-          ? FileServiceI.filenameWithTimestamp
-          : FileServiceI.filename;
-      final wasSaved = await _fileService.saveFile(
-        data: allProjectsJson,
-        filename: filename,
-      );
-      if (!wasSaved) return;
-      await toasts.showBottomToast(message: l10n.fileSaved);
-    } finally {
-      _setFileLoading(false);
-    }
-  }
-
-  Future<void> loadFromFile(final BuildContext context) async {
-    _setFileLoading(true);
-    final modals = Modals.of(context);
-    try {
-      final l10n = context.l10n;
-      bool shouldContinue = await modals.showWarningDialog(
-        title: l10n.areYouSure,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.load,
-        description: l10n.byLoadingFileWarning,
-      );
-      if (!shouldContinue) return;
-      final jsonList = await _fileService.openFile();
-      if (jsonList.isEmpty) return;
-
-      shouldContinue = await modals.showWarningDialog(
-        title: l10n.confirmProjectsOwerwrite,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.confirm,
-        description: l10n.beCarefulItsInreversableAction,
-      );
-      if (!shouldContinue) return;
-      final allProjects = jsonList.map(ProjectModel.fromJson).toList();
-      await _restoreProjectsBy(allProjects: allProjects, context: context);
-    } finally {
-      _setFileLoading(false);
-    }
-  }
-
-  Future<void> _restoreProjectsBy({
-    required final List<ProjectModel> allProjects,
-    required final BuildContext context,
-  }) async {
-    final toasts = Toasts.of(context);
-    final l10n = context.l10n;
-
-    await dto.projectsRepository.putAll(projects: allProjects);
-    onReset();
-    await onLocalUserLoad();
-    await toasts.showBottomToast(
-      message: l10n.projectsFromFileRestored,
-    );
-  }
+  Future<void> onLocalUserLoad() async =>
+      projectsPagedController.loadFirstPage();
 
   void onReset() => projectsPagedController.refresh();
 
@@ -175,5 +66,109 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     unawaited(_projectsUpdatesController.close());
     projectsPagedController.dispose();
     super.dispose();
+  }
+
+  final _fileService = FileService();
+}
+
+extension ProjectsNotifierX on ProjectsNotifier {
+  void _setFileLoading(final bool isLoading) => setValue(
+        value.copyWith(isAllProjectsFileLoading: isLoading),
+      );
+  Future<void> copyDbSaveToClipboard(final BuildContext context) async {
+    _setFileLoading(true);
+    try {
+      final sharer = ProjectSharer.of(context);
+      final dbSave = await _getDbSave();
+      await sharer.shareSave(dbSave);
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  Future<void> getDbSaveFromClipboard(final BuildContext context) async {
+    _setFileLoading(true);
+    try {
+      final appNotifier = context.read<AppNotifier>();
+      final modals = Modals.of(context);
+      final l10n = context.l10n;
+      final sharer = ProjectSharer.of(context);
+      final dbSave = await sharer.getFromClipboard(context);
+      if (dbSave.isEmpty) return;
+      final shouldContinue = await modals.showWarningDialog(
+        title: l10n.confirmProjectsOwerwrite,
+        noActionText: l10n.cancel,
+        yesActionText: l10n.confirm,
+        description: l10n.beCarefulItsInreversableAction,
+      );
+      if (!shouldContinue) return;
+      await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  Future<DbSaveModel> _getDbSave() async {
+    final allProjects = await dto.projectsRepository.getAll();
+    final allTags = dto.tagsRepository.getAll();
+    return DbSaveModel(
+      projects: allProjects,
+      tags: allTags.values.toList(),
+    );
+  }
+
+  Future<void> saveToFile(
+    final BuildContext context, {
+    required final bool useTimestampForBackupFilename,
+  }) async {
+    _setFileLoading(true);
+
+    try {
+      final toasts = Toasts.of(context);
+      final l10n = context.l10n;
+      final dbSave = await _getDbSave();
+      final filename = useTimestampForBackupFilename
+          ? FileServiceI.filenameWithTimestamp
+          : FileServiceI.filename;
+      final wasSaved = await _fileService.saveFile(
+        data: dbSave.toJson(),
+        filename: filename,
+      );
+      if (!wasSaved) return;
+      await toasts.showBottomToast(message: l10n.fileSaved);
+    } finally {
+      _setFileLoading(false);
+    }
+  }
+
+  Future<void> loadFromFile(final BuildContext context) async {
+    _setFileLoading(true);
+    final appNotifier = context.read<AppNotifier>();
+    final modals = Modals.of(context);
+    try {
+      final l10n = context.l10n;
+      bool shouldContinue = await modals.showWarningDialog(
+        title: l10n.areYouSure,
+        noActionText: l10n.cancel,
+        yesActionText: l10n.load,
+        description: l10n.byLoadingFileWarning,
+      );
+      if (!shouldContinue) return;
+      final dbJson = await _fileService.openFile();
+      if (dbJson.isEmpty) return;
+
+      shouldContinue = await modals.showWarningDialog(
+        title: l10n.confirmProjectsOwerwrite,
+        noActionText: l10n.cancel,
+        yesActionText: l10n.confirm,
+        description: l10n.beCarefulItsInreversableAction,
+      );
+      if (!shouldContinue) return;
+      final dbSave = DbSaveModel.fromJson(dbJson);
+      if (dbSave.isEmpty) return;
+      await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
+    } finally {
+      _setFileLoading(false);
+    }
   }
 }

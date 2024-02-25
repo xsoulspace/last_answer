@@ -22,7 +22,7 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
   ProjectsLocalDataSourceHiveImpl();
 
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
+  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
     await _openAnyway<IdeaProjectAnswer>(HiveBoxesIds.ideaProjectAnswerKey);

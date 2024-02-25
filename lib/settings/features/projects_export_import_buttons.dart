@@ -58,7 +58,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
           HoverableButton(
             isLoading: isFileLoading,
             onPressed: () async =>
-                projectsNotifier.copyAllProjectsToClipboard(context),
+                projectsNotifier.copyDbSaveToClipboard(context),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -70,7 +70,7 @@ class ProjectsExportImportButtons extends StatelessWidget {
           HoverableButton(
             isLoading: isFileLoading,
             onPressed: () async =>
-                projectsNotifier.getAllProjectsFromClipboard(context),
+                projectsNotifier.getDbSaveFromClipboard(context),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

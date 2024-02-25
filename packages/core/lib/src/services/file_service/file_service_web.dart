@@ -7,13 +7,13 @@ import 'file_service_i.dart';
 
 class FileService implements FileServiceI {
   @override
-  Future<List> openFile() async {
+  Future<Map<String, dynamic>> openFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
       withData: true,
     );
-    if (result == null || result.files.isEmpty) return [];
+    if (result == null || result.files.isEmpty) return {};
     final file = result.files.first;
     final s = const Utf8Decoder().convert(file.bytes!.toList());
     return jsonDecode(s);
@@ -21,7 +21,7 @@ class FileService implements FileServiceI {
 
   @override
   Future<bool> saveFile({
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
     required final String filename,
   }) async {
     final result = await getSaveLocation(suggestedName: filename);

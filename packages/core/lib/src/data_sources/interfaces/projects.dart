@@ -7,7 +7,7 @@ abstract interface class ProjectsLocalDataSource {
   Future<void> put({required final ProjectModel project});
   Future<void> remove({required final ProjectModelId id});
   Future<List<ProjectModel>> getAll();
-  Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
+  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   });
 }

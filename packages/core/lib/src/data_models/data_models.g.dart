@@ -172,6 +172,31 @@ Map<String, dynamic> _$$ProjectTagModelImplToJson(
       'title': instance.title,
     };
 
+_$DbSaveModelImpl _$$DbSaveModelImplFromJson(Map<String, dynamic> json) =>
+    _$DbSaveModelImpl(
+      version: $enumDecodeNullable(_$DbSaveVersionEnumMap, json['version']) ??
+          DbSaveVersion.v1,
+      projects: (json['projects'] as List<dynamic>?)
+              ?.map(ProjectModel.fromJson)
+              .toList() ??
+          const [],
+      tags: (json['tags'] as List<dynamic>?)
+              ?.map((e) => ProjectTagModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$$DbSaveModelImplToJson(_$DbSaveModelImpl instance) =>
+    <String, dynamic>{
+      'version': _$DbSaveVersionEnumMap[instance.version]!,
+      'projects': instance.projects,
+      'tags': instance.tags,
+    };
+
+const _$DbSaveVersionEnumMap = {
+  DbSaveVersion.v1: 'v1',
+};
+
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
       settings: json['settings'] == null

@@ -10,7 +10,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   final LocalDbDataSource localDb;
   final List<ProjectModel> _cache = [];
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
+  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
     if (_cache.isEmpty) {

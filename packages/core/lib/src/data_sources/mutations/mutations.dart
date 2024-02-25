@@ -36,7 +36,7 @@ Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
 
 Future<void> _mutate_3_16_up_3_17(final GlobalStatesInitializerDto dto) async {
   final hiveDataSource = ProjectsLocalDataSourceHiveImpl();
-  final projectsResponse = await hiveDataSource.getProjects(
+  final projectsResponse = await hiveDataSource.getPaginated(
     dto: PaginatedPageRequestModel(),
   );
   final actualDataSource = dto.projectsRepository;

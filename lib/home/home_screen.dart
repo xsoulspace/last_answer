@@ -57,25 +57,66 @@ class _VerticalBar extends StatelessWidget {
   const _VerticalBar();
 
   @override
-  Widget build(final BuildContext context) => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          VerticalProjectsBar(
-            onIdeaTap: () async {
-              await Navigator.push<bool>(
-                context,
-                MaterialPageRoute(
-                  builder: (final context) => const CreateIdeaProjectScreen(),
-                  fullscreenDialog: true,
-                ),
+  Widget build(final BuildContext context) => ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 48),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Expanded(child: TagsVerticalBar()),
+            VerticalProjectsBar(
+              onIdeaTap: () async {
+                await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (final context) => const CreateIdeaProjectScreen(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              onNoteTap: () {
+                context
+                    .read<OpenedProjectNotifier>()
+                    .createNoteProject(context);
+              },
+            ),
+          ],
+        ),
+      );
+}
+
+class TagsVerticalBar extends StatelessWidget {
+  const TagsVerticalBar({super.key});
+
+  @override
+  Widget build(final BuildContext context) {
+    final tagsNotifier = context.watch<TagsNotifier>();
+    final tags = tagsNotifier.values;
+
+    return Column(
+      children: [
+        const Gap(8),
+        IconButton.outlined(
+          onPressed: () async => tagsNotifier.createTag(context),
+          icon: const Icon(Icons.folder),
+        ),
+        const Gap(8),
+        Expanded(
+          child: ListView.separated(
+            itemCount: tags.length,
+            shrinkWrap: true,
+            separatorBuilder: (final context, final index) => const Gap(8),
+            itemBuilder: (final context, final index) {
+              final tag = tags[index];
+              return Container(
+                key: ValueKey(tag.id),
+                child: Text(tag.title),
               );
             },
-            onNoteTap: () {
-              context.read<OpenedProjectNotifier>().createNoteProject(context);
-            },
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }
 
 class ProjectsListScreen extends StatelessWidget {
@@ -190,6 +231,7 @@ class _ProjectsListView extends StatelessWidget {
             appBar,
             Expanded(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Flexible(child: child),

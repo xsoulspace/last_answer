@@ -325,7 +325,7 @@ class DialogTopBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: textTheme.titleLarge),
+              Flexible(child: Text(title, style: textTheme.titleLarge)),
               CloseButton(onPressed: onClose),
             ],
           ),

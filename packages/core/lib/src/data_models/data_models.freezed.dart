@@ -1821,8 +1821,8 @@ class __$$ProjectTagModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ProjectTagModelImpl implements _ProjectTagModel {
-  const _$ProjectTagModelImpl({required this.id, this.title = ''});
+class _$ProjectTagModelImpl extends _ProjectTagModel {
+  const _$ProjectTagModelImpl({required this.id, this.title = ''}) : super._();
 
   factory _$ProjectTagModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectTagModelImplFromJson(json);
@@ -1866,10 +1866,11 @@ class _$ProjectTagModelImpl implements _ProjectTagModel {
   }
 }
 
-abstract class _ProjectTagModel implements ProjectTagModel {
+abstract class _ProjectTagModel extends ProjectTagModel {
   const factory _ProjectTagModel(
       {required final ProjectTagModelId id,
       final String title}) = _$ProjectTagModelImpl;
+  const _ProjectTagModel._() : super._();
 
   factory _ProjectTagModel.fromJson(Map<String, dynamic> json) =
       _$ProjectTagModelImpl.fromJson;

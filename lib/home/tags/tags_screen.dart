@@ -38,35 +38,56 @@ class _TagsListView extends StatelessWidget {
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
     final textTheme = context.textTheme;
 
-    return CustomScrollView(
-      shrinkWrap: true,
-      slivers: [
-        const DialogTopBar(title: 'Folders').sliver(),
-        const Card(
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Text(
-              'Use 🗂️Folders for Notes and Ideas to quickly organize them. ',
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: CustomScrollView(
+            shrinkWrap: true,
+            slivers: [
+              const DialogTopBar(title: 'Folders').sliver(),
+              const Card(
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'Use 🗂️Folders for Notes and Ideas to quickly organize them. ',
+                  ),
+                ),
+              ).sliver(),
+              const SliverGap(16),
+              SliverList.builder(
+                itemCount: tags.length,
+                itemBuilder: (final context, final index) {
+                  final tag = tags[index];
+                  return EditableTagListTile(
+                    key: ValueKey(tag.id),
+                    tag: tag,
+                    onTap: () => tagsScreenNotifier.onEditTag(tag: tag),
+                  );
+                },
+              ),
+              const SliverGap(8),
+            ],
           ),
-        ).sliver(),
-        const SliverGap(16),
-        TextButton(
-          onPressed: tagsScreenNotifier.onCreateTagManagement,
-          child: const Text('Create folder'),
-        ).sliver(),
-        SliverList.builder(
-          itemCount: tags.length,
-          itemBuilder: (final context, final index) {
-            final tag = tags[index];
-            return EditableTagListTile(
-              key: ValueKey(tag.id),
-              tag: tag,
-              onTap: () => tagsScreenNotifier.onEditTag(tag: tag),
-            );
-          },
         ),
-        const SliverGap(8),
+        const Divider(),
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+            ),
+            Expanded(
+              child: FilledButton.tonal(
+                onPressed: tagsScreenNotifier.onCreateTagManagement,
+                child: const Text('Create folder'),
+              ),
+            ),
+          ],
+        ),
+        const Gap(6),
       ],
     );
   }

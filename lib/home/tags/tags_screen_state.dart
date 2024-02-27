@@ -44,7 +44,7 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
   void onEditTag({required final ProjectTagModel tag}) =>
       value = value.copyWith(selectedTag: FieldContainer(value: tag));
 
-  /// open tag creation
+  void onCreateTagManagement() => onOpenTagManagement(tag: null);
   void onOpenTagManagement({required final ProjectTagModel? tag}) =>
       value = value.copyWith(
         screenType: TagsScreenType.editingTag,
@@ -87,13 +87,29 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
     }
   }
 
-  void removeProject(final ProjectModel project) {
+  void _removeProject(final ProjectModel project) {
     final projects = value.projects.value;
     final updatedProjects = [...projects]
-      ..removeWhere((final e) => e.id != project.id);
+      ..removeWhere((final e) => e.id == project.id);
     value = value.copyWith(
       projects: LoadableContainer.loaded(updatedProjects),
     );
+  }
+
+  void onSelectedProjectChanged(
+    // ignore: avoid_positional_boolean_parameters
+    final bool isSelected,
+    final ProjectModel project,
+  ) {
+    if (isSelected) {
+      value = value.copyWith(
+        projects: LoadableContainer.loaded(
+          [...value.projects.value, project],
+        ),
+      );
+    } else {
+      _removeProject(project);
+    }
   }
 
   // ignore: avoid_positional_boolean_parameters

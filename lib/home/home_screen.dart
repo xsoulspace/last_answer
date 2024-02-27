@@ -100,8 +100,16 @@ class TagsVerticalBar extends StatelessWidget {
           onPressed: () async => showAdaptiveDialog(
             context: context,
             barrierDismissible: true,
-            builder: (final context) => const AlertDialog.adaptive(
-              content: TagsScreen(),
+            builder: (final context) => Dialog(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 450,
+                  maxWidth: 300,
+                  minWidth: 200,
+                  minHeight: 150,
+                ),
+                child: const TagsScreen(),
+              ),
             ),
           ),
           icon: const Icon(Icons.edit_square),

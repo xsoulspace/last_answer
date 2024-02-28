@@ -5,6 +5,7 @@ class UiTextField extends StatefulWidget {
   const UiTextField({
     this.autocorrect = true,
     this.enableSuggestions = true,
+    this.validator,
     this.value,
     this.onChanged,
     this.decoration,
@@ -28,6 +29,7 @@ class UiTextField extends StatefulWidget {
   final InputDecoration? decoration;
   final TextStyle? style;
   final TextAlignVertical? textAlignVertical;
+  final FormFieldValidator<String?>? validator;
   final int? maxLines;
   @override
   State<UiTextField> createState() => _UiTextFieldState();
@@ -56,6 +58,7 @@ class _UiTextFieldState extends State<UiTextField> {
         focusNode: widget.focusNode,
         onChanged: widget.onChanged,
         keyboardType: widget.keyboardType,
+        validator: widget.validator,
         style: widget.style,
         autocorrect: widget.autocorrect,
         textAlignVertical: widget.textAlignVertical,

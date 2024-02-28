@@ -65,6 +65,7 @@ class _TagsListView extends StatelessWidget {
                     tag: tag,
                     onTap: () =>
                         tagsScreenNotifier.onEditTagManagement(tag: tag),
+                    onDelete: () => tagsScreenNotifier.onDeleteTag(tag: tag),
                   );
                 },
               ),
@@ -99,15 +100,22 @@ class EditableTagListTile extends StatelessWidget {
   const EditableTagListTile({
     required this.tag,
     required this.onTap,
+    required this.onDelete,
     super.key,
   });
   final ProjectTagModel tag;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(final BuildContext context) => ListTile(
         onTap: onTap,
         title: Text(tag.title),
+        trailing: IconButton(
+          onPressed: onDelete,
+          iconSize: 14,
+          icon: const Icon(CupertinoIcons.trash),
+        ),
       );
 }
 

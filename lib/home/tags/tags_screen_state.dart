@@ -55,7 +55,7 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
           ),
         ),
       );
-
+  void onDeleteTag({required final ProjectTagModel tag}) {}
   void onCreateTagManagement() => onEditTagManagement(tag: null);
   void onEditTagManagement({required final ProjectTagModel? tag}) =>
       value = value.copyWith(

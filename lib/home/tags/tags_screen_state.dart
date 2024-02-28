@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:life_hooks/life_hooks.dart';
 
 part 'tags_screen_state.freezed.dart';
 
@@ -40,12 +41,23 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
       : dto = TagsScreenNotifierDto.of(context),
         super(const TagsScreenState());
   final TagsScreenNotifierDto dto;
+  final folderFieldFormHelper = FormHelper();
+  @override
+  void dispose() {
+    folderFieldFormHelper.dispose();
+    super.dispose();
+  }
 
-  void onEditTag({required final ProjectTagModel tag}) =>
-      value = value.copyWith(selectedTag: FieldContainer(value: tag));
+  void onFolderTitleChanged(final String newTitle) => value = value.copyWith(
+        selectedTag: value.selectedTag.copyWith(
+          value: value.selectedTag.value.copyWith(
+            title: newTitle,
+          ),
+        ),
+      );
 
-  void onCreateTagManagement() => onOpenTagManagement(tag: null);
-  void onOpenTagManagement({required final ProjectTagModel? tag}) =>
+  void onCreateTagManagement() => onEditTagManagement(tag: null);
+  void onEditTagManagement({required final ProjectTagModel? tag}) =>
       value = value.copyWith(
         screenType: TagsScreenType.editingTag,
         selectedTag: FieldContainer(value: tag ?? ProjectTagModel.empty),
@@ -63,6 +75,9 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
   Future<void> onSaveTag() async {
     setTagLoading(true);
     try {
+      final isValid = folderFieldFormHelper.validate();
+      if (!isValid) return;
+
       ProjectTagModel tag = value.selectedTag.value;
       if (tag.id.isEmpty) {
         tag = tag.copyWith(id: ProjectTagModelId.generate());

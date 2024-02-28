@@ -796,7 +796,7 @@ packages:
     source: sdk
     version: "0.0.0"
   form_builder_validators:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: form_builder_validators
       sha256: "19aa5282b7cede82d0025ab031a98d0554b84aa2ba40f12013471a3b3e22bf02"

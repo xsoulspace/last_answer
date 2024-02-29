@@ -38,7 +38,7 @@ class _TagsListView extends StatelessWidget {
     final tags = context.watch<TagsNotifier>().values;
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
     final textTheme = context.textTheme;
-
+    final l10n = context.l10n;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -65,7 +65,10 @@ class _TagsListView extends StatelessWidget {
                     tag: tag,
                     onTap: () =>
                         tagsScreenNotifier.onEditTagManagement(tag: tag),
-                    onDelete: () => tagsScreenNotifier.onDeleteTag(tag: tag),
+                    onDelete: () async => tagsScreenNotifier.onDeleteTag(
+                      context: context,
+                      tag: tag,
+                    ),
                   );
                 },
               ),
@@ -79,7 +82,7 @@ class _TagsListView extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                child: Text(l10n.cancel),
               ),
             ),
             Expanded(
@@ -311,9 +314,11 @@ class _AddProjectsView extends StatelessWidget {
           ),
         ),
         SearchBar(
-          leading: BackButton(
-            onPressed: tagsScreenNotifier.onCloseAddProjects,
-          ),
+          trailing: [
+            BackButton(
+              onPressed: tagsScreenNotifier.onCloseAddProjects,
+            ),
+          ],
           elevation: const MaterialStatePropertyAll(8),
           hintText: 'Search projects',
           padding: const MaterialStatePropertyAll(

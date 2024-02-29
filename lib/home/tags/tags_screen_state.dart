@@ -68,9 +68,27 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
           ),
         ),
       );
-  void onDeleteTag({required final ProjectTagModel tag}) {
-    // TODO(arenukvern): description,
+  Future<void> onDeleteTag({
+    required final BuildContext context,
+    required final ProjectTagModel tag,
+  }) async {
+    final l10n = context.l10n;
+    final shouldBeDeleted = await Modals.of(context).showWarningDialog(
+      description: l10n.beCarefulItsInreversableAction,
+      title: 'Delete folder?',
+      noActionText: l10n.cancel,
+      yesActionText: l10n.delete,
+    );
+
+    if (shouldBeDeleted) {
+      final tagId = tag.id;
+      _removedProjects.addAll(value.projects.value);
+      _updateProjects([]);
+      await _assignTagToProjects(tagId);
+      dto._.tagsNotifier.remove(key: tagId);
+    }
   }
+
   void onCreateTagManagement() => onEditTagManagement(tag: null);
   void onEditTagManagement({required final ProjectTagModel? tag}) {
     value = value.copyWith(
@@ -78,7 +96,11 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
       selectedTag: FieldContainer(value: tag ?? ProjectTagModel.empty),
       projects: const LoadableContainer(value: []),
     );
-    unawaited(_loadTagProjects());
+    if (tag != null) {
+      unawaited(_loadTagProjects());
+    } else {
+      _updateProjects([]);
+    }
   }
 
   void onCloseTagManagement() => value = value.copyWith(

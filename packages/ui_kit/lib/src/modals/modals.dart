@@ -7,8 +7,28 @@ export 'toasts.dart';
 class Modals {
   Modals.of(this.context);
   final BuildContext context;
-  Future<T?> showUiDialog<T>({
-    required final List<ActionButtonItem> Function(BuildContext) actionsBuilder,
+  Future<T?> showConstrainedDialog<T>({
+    required final WidgetBuilder builder,
+  }) =>
+      showAdaptiveDialog<T>(
+        context: context,
+        barrierDismissible: true,
+        builder: (final context) => Dialog(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 450,
+              maxWidth: 300,
+              minWidth: 200,
+              minHeight: 150,
+            ),
+            child: builder(context),
+          ),
+        ),
+      );
+
+  Future<T?> showActionDialog<T>({
+    required final List<ActionButtonItem> Function(BuildContext context)
+        actionsBuilder,
     required final Widget? title,
     required final Widget? content,
   }) async =>
@@ -28,7 +48,7 @@ class Modals {
     final String? yesActionText,
     final String? noActionText,
   }) async {
-    final result = await showUiDialog(
+    final result = await showActionDialog(
       title: Text(title),
       content: Text(description),
       actionsBuilder: (final context) => [

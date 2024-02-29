@@ -15,18 +15,15 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
-    final getDto = dto.data;
+    final dtoData = dto.data;
     final int itemsCount;
-    final types = getDto?.types ?? [];
+    final types = dtoData?.types ?? [];
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterFilterCondition> basicQuery;
-    if (getDto != null && getDto.search.isNotEmpty) {
+    if (dtoData != null && dtoData.search.isNotEmpty) {
       basicQuery = isarDb.projects
           .where()
-          .jsonContentContains(
-            '*${getDto.search}*',
-            caseSensitive: false,
-          )
+          .jsonContentContains('*${dtoData.search}*', caseSensitive: false)
           .and()
           .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     } else {
@@ -36,7 +33,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     }
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterSortBy> sortedBasicQuery;
-    if (getDto?.isReversed == true) {
+    if (dtoData?.isReversed == true) {
       sortedBasicQuery = basicQuery.sortByUpdatedAt();
     } else {
       sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();
@@ -68,6 +65,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final isarProject = ProjectIsarCollection()
       ..type = project.type.name
       ..updatedAt = project.updatedAt
+      ..tags = project.tagsIds.map((final e) => e.value).toList()
       ..jsonContent = jsonEncode(project.toJson())
       ..modelIdStr = project.id.value;
 
@@ -93,6 +91,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
             ..jsonContent = jsonEncode(project.toJson())
             ..type = project.type.name
             ..updatedAt = project.updatedAt
+            ..tags = project.tagsIds.map((final e) => e.value).toList()
             ..modelIdStr = project.id.value;
 
           isarProjects.add(isarProject);
@@ -104,13 +103,52 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   }
 
   @override
-  Future<List<ProjectModel>> getAll() async {
-    final items = isarDb.projects.where().findAll();
+  Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
+    final types = dto?.types ?? [];
+
+    QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
+            QAfterFilterCondition> basicQuery =
+        isarDb.projects
+            .where()
+            .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    if (dto != null) {
+      if (dto.search.isNotEmpty) {
+        basicQuery = basicQuery
+            .and()
+            .jsonContentContains('*${dto.search}*', caseSensitive: false);
+      }
+      if (!dto.tagId.isEmpty) {
+        basicQuery = basicQuery.and().tagsElementContains(dto.tagId.value);
+      }
+    }
+
+    final items = basicQuery.findAll();
     return items
         .map(
-          (final e) => ProjectModel.fromJson(
-            jsonDecode(e.jsonContent) as Map<String, dynamic>,
-          ),
+          (final e) => ProjectModel.fromJson(e.jsonMap),
+        )
+        .toList();
+  }
+
+  @override
+  Future<ProjectModel?> getById({required final ProjectModelId id}) async {
+    final project =
+        isarDb.projects.where().modelIdStrEqualTo(id.value).findFirst();
+    if (project == null) return null;
+    return ProjectModel.fromJson(project.jsonMap);
+  }
+
+  @override
+  Future<List<ProjectModel>> getByIds({
+    required final Iterable<ProjectModelId> ids,
+  }) async {
+    final projects = isarDb.projects
+        .where()
+        .anyOf(ids, (final q, final e) => q.modelIdStrEqualTo(e.value))
+        .findAll();
+    return projects
+        .map(
+          (final e) => ProjectModel.fromJson(e.jsonMap),
         )
         .toList();
   }

@@ -37,9 +37,15 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   void onReset() => projectsPagedController.refresh();
 
-  void updateProject(final ProjectModel project) {
-    _projectsUpdatesController.add(project.copyWith(updatedAt: DateTime.now()));
-  }
+  void updateEditingProject(
+    final ProjectModel project, {
+    final bool shouldMarkAsUpdated = true,
+  }) =>
+      _editingProjectUpdatesController.add(
+        project.copyWith(
+          updatedAt: shouldMarkAsUpdated ? DateTime.now() : project.updatedAt,
+        ),
+      );
 
   void deleteProject(final ProjectModel project) {
     projectsPagedController.pager.removeElement(
@@ -49,21 +55,42 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     unawaited(dto.projectsRepository.remove(id: project.id));
   }
 
-  late final _projectsUpdatesController = StreamController<ProjectModel>()
-    ..stream.sampleTime(1.seconds).listen(_updateProject);
-  void _updateProject(final ProjectModel project) {
+  late final _editingProjectUpdatesController = StreamController<ProjectModel>()
+    ..stream.sampleTime(1.seconds).listen(updateProject);
+  Future<void> updateProject(final ProjectModel project) async {
+    final oldProject = await dto.projectsRepository.getById(id: project.id);
+    final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
     projectsPagedController.pager.replaceElement(
       element: project,
       equals: (final e, final e2) => e.id == e2.id,
       shouldAddOnNotFound: true,
-      shouldMoveToFirst: true,
+      shouldMoveToFirst: shouldMoveToFirst,
     );
     unawaited(dto.projectsRepository.put(project: project));
   }
 
+  Future<void> updateProjects(final Iterable<ProjectModel> projects) async {
+    final oldProjects = await dto.projectsRepository
+        .getByIds(ids: projects.map((final e) => e.id));
+    final oldProjectsMap =
+        oldProjects.toMap(toKey: (final v) => v.id, toValue: (final v) => v);
+    for (final project in projects) {
+      final oldProject = oldProjectsMap[project.id];
+      final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
+      projectsPagedController.pager.replaceElement(
+        element: project,
+        equals: (final e, final e2) => e.id == e2.id,
+        shouldAddOnNotFound: true,
+        shouldMoveToFirst: shouldMoveToFirst,
+      );
+    }
+
+    unawaited(dto.projectsRepository.putAll(projects: projects.toList()));
+  }
+
   @override
   void dispose() {
-    unawaited(_projectsUpdatesController.close());
+    unawaited(_editingProjectUpdatesController.close());
     projectsPagedController.dispose();
     super.dispose();
   }

@@ -23,7 +23,8 @@ class TagsScreenState with _$TagsScreenState {
 
 typedef _DtoDeclaration = ({
   TagsNotifier tagsNotifier,
-  ProjectsNotifier projectsNotifier
+  ProjectsNotifier projectsNotifier,
+  ProjectsRepository projectsRepository
 });
 
 extension type TagsScreenNotifierDto._(_DtoDeclaration _) {
@@ -32,6 +33,7 @@ extension type TagsScreenNotifierDto._(_DtoDeclaration _) {
           (
             tagsNotifier: context.read(),
             projectsNotifier: context.read(),
+            projectsRepository: context.read(),
           ),
         );
 }
@@ -42,9 +44,20 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
         super(const TagsScreenState());
   final TagsScreenNotifierDto dto;
   final folderFieldFormHelper = FormHelper();
+  final _removedProjects = <ProjectModel>{};
+
+  late final allProjectsPagedController = ProjectsPagedController(
+    requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
+      projectsRepository: dto._.projectsRepository,
+      getDto: RequestProjectsDto.new,
+    ),
+  )..onLoad();
+
+  ProjectTagModel get selectedTag => value.selectedTag.value;
   @override
   void dispose() {
     folderFieldFormHelper.dispose();
+    allProjectsPagedController.dispose();
     super.dispose();
   }
 
@@ -55,23 +68,35 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
           ),
         ),
       );
-  void onDeleteTag({required final ProjectTagModel tag}) {}
+  void onDeleteTag({required final ProjectTagModel tag}) {
+    // TODO(arenukvern): description,
+  }
   void onCreateTagManagement() => onEditTagManagement(tag: null);
-  void onEditTagManagement({required final ProjectTagModel? tag}) =>
-      value = value.copyWith(
-        screenType: TagsScreenType.editingTag,
-        selectedTag: FieldContainer(value: tag ?? ProjectTagModel.empty),
-      );
+  void onEditTagManagement({required final ProjectTagModel? tag}) {
+    value = value.copyWith(
+      screenType: TagsScreenType.editingTag,
+      selectedTag: FieldContainer(value: tag ?? ProjectTagModel.empty),
+      projects: const LoadableContainer(value: []),
+    );
+    unawaited(_loadTagProjects());
+  }
+
   void onCloseTagManagement() => value = value.copyWith(
         screenType: TagsScreenType.allTags,
         selectedTag: const FieldContainer(value: ProjectTagModel.empty),
-      );
-  void onCloseAddProjects() => value = value.copyWith(
-        screenType: TagsScreenType.editingTag,
+        projects: const LoadableContainer(value: []),
       );
 
-  void onOpenAddProjects() =>
-      value = value.copyWith(screenType: TagsScreenType.addProjects);
+  void onCloseAddProjects() {
+    value = value.copyWith(screenType: TagsScreenType.editingTag);
+    allProjectsPagedController.refresh();
+  }
+
+  void onOpenAddProjects() {
+    value = value.copyWith(screenType: TagsScreenType.addProjects);
+    allProjectsPagedController.loadFirstPage();
+  }
+
   Future<void> onSaveTag() async {
     setTagLoading(true);
     try {
@@ -84,32 +109,57 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
       }
       final tagId = tag.id;
       dto._.tagsNotifier.put(key: tagId, value: tag);
-      await assignTagToProjects(tagId);
+      await _assignTagToProjects(tagId);
       onCloseTagManagement();
     } finally {
       setTagLoading(false);
     }
   }
 
-  Future<void> assignTagToProjects(final ProjectTagModelId tagId) async {
-    final projects = value.projects.value;
-    for (final project in projects) {
-      final updatedProject = project.copyWith(
-        tagsIds: [...project.tagsIds, tagId],
-      );
+  Future<void> _loadTagProjects() async {
+    final tagProjects = await dto._.projectsRepository.getAll(
+      dto: RequestProjectsDto(tagId: selectedTag.id),
+    );
+    print('loaded projects: ${tagProjects.length}');
+    _updateProjects(tagProjects);
+  }
 
-      dto._.projectsNotifier.updateProject(updatedProject);
-    }
+  Future<void> _assignTagToProjects(final ProjectTagModelId tagId) async {
+    final projects = value.projects.value.toSet();
+    final projectsToRemove = _removedProjects.difference(projects);
+    print('will be added: ${projects.map((final e) => e.title).toList()}');
+    print(
+      'will be removed: ${projectsToRemove.map((final e) => e.title).toList()}',
+    );
+    final updatedProjects = {
+      ...projects.map(
+        (final e) => e.copyWith(
+          tagsIds: {...e.tagsIds, tagId}.toList(),
+        ),
+      ),
+      ...projectsToRemove.map(
+        (final e) => e.copyWith(
+          tagsIds: [...e.tagsIds]..remove(tagId),
+        ),
+      ),
+    };
+    unawaited(dto._.projectsNotifier.updateProjects(updatedProjects));
+
+    _removedProjects.clear();
   }
 
   void _removeProject(final ProjectModel project) {
     final projects = value.projects.value;
     final updatedProjects = [...projects]
       ..removeWhere((final e) => e.id == project.id);
-    value = value.copyWith(
-      projects: LoadableContainer.loaded(updatedProjects),
-    );
+    _removedProjects.add(project);
+    _updateProjects(updatedProjects);
   }
+
+  void _updateProjects(final List<ProjectModel> updatedProjects) =>
+      value = value.copyWith(
+        projects: LoadableContainer.loaded(updatedProjects.toSet().toList()),
+      );
 
   void onSelectedProjectChanged(
     // ignore: avoid_positional_boolean_parameters
@@ -117,11 +167,8 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
     final ProjectModel project,
   ) {
     if (isSelected) {
-      value = value.copyWith(
-        projects: LoadableContainer.loaded(
-          [...value.projects.value, project],
-        ),
-      );
+      _removedProjects.remove(project);
+      _updateProjects([...value.projects.value, project]);
     } else {
       _removeProject(project);
     }

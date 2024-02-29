@@ -54,7 +54,19 @@ final class ProjectsLocalDataSourceHiveImpl implements ProjectsLocalDataSource {
       throw UnsupportedError('');
 
   @override
-  Future<List<ProjectModel>> getAll() {
+  Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) {
+    throw UnsupportedError('');
+  }
+
+  @override
+  Future<ProjectModel> getById({required final ProjectModelId id}) {
+    throw UnsupportedError('');
+  }
+
+  @override
+  Future<List<ProjectModel>> getByIds({
+    required final Iterable<ProjectModelId> ids,
+  }) {
     throw UnsupportedError('');
   }
 }

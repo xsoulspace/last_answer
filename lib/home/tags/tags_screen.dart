@@ -236,6 +236,7 @@ class SelectableProjectListTile extends StatelessWidget {
   });
   final ProjectModel project;
   final bool selected;
+  // ignore: avoid_positional_boolean_parameters
   final void Function(bool isSelected, ProjectModel project) onTap;
   @override
   Widget build(final BuildContext context) => ListTile(
@@ -275,7 +276,6 @@ class _AddProjectsView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final projectsNotifier = context.watch<ProjectsNotifier>();
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
 
     final projects = tagsScreenNotifier.value.projects;
@@ -294,10 +294,11 @@ class _AddProjectsView extends StatelessWidget {
               ),
               PagedSliverList<int, ProjectModel>(
                 pagingController:
-                    projectsNotifier.projectsPagedController.pager,
+                    tagsScreenNotifier.allProjectsPagedController.pager,
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (final context, final item, final index) =>
                       SelectableProjectListTile(
+                    key: ValueKey(item.id),
                     selected: projects.value
                             .firstWhereOrNull((final e) => e.id == item.id) !=
                         null,

@@ -51,7 +51,7 @@ class _TagsListView extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: Text(
-                    'Use 🗂️Folders for Notes and Ideas to quickly organize them. ',
+                    "Use 🗂️Folders for Notes and Ideas to quickly organize them. Deletion of any Folders doesn't delete any Note or Idea.",
                   ),
                 ),
               ).sliver(),

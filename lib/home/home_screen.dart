@@ -112,8 +112,8 @@ class TagsVerticalBar extends StatelessWidget {
             builder: (final context) => Dialog(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
-                  maxHeight: 450,
-                  maxWidth: 450,
+                  maxHeight: 600,
+                  maxWidth: 400,
                   minWidth: 200,
                   minHeight: 150,
                 ),

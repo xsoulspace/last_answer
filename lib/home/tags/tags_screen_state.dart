@@ -165,6 +165,7 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
         ),
       ),
     };
+    // FIXME(antmalofeev): should not add projects or even should delete projects from notifier,
     unawaited(dto._.projectsNotifier.updateProjects(updatedProjects));
 
     _removedProjects.clear();

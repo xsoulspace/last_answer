@@ -15,25 +15,27 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
-    final dtoData = dto.data;
+    final data = dto.data;
     final int itemsCount;
-    final types = dtoData?.types ?? [];
-    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-        QAfterFilterCondition> basicQuery;
-    if (dtoData != null && dtoData.search.isNotEmpty) {
-      basicQuery = isarDb.projects
-          .where()
-          .jsonContentContains('*${dtoData.search}*', caseSensitive: false)
-          .and()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
-    } else {
-      basicQuery = isarDb.projects
-          .where()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    final types = data?.types ?? [];
+    QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
+            QAfterFilterCondition> basicQuery =
+        isarDb.projects
+            .where()
+            .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    if (data != null) {
+      if (data.search.isNotEmpty) {
+        basicQuery = basicQuery
+            .and()
+            .jsonContentContains('*${data.search}*', caseSensitive: false);
+      }
+      if (!data.tagId.isEmpty) {
+        basicQuery = basicQuery.and().tagsElementContains(data.tagId.value);
+      }
     }
     final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
         QAfterSortBy> sortedBasicQuery;
-    if (dtoData?.isReversed == true) {
+    if (data?.isReversed == true) {
       sortedBasicQuery = basicQuery.sortByUpdatedAt();
     } else {
       sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();

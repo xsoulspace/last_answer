@@ -90,8 +90,17 @@ class TagsVerticalBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final projectsNotifier = context.read<ProjectsNotifier>();
+    final selectedTagId = context.select<ProjectsNotifier, ProjectTagModelId>(
+      (final c) => c.selectedTagId,
+    );
     final tagsNotifier = context.watch<TagsNotifier>();
     final tags = tagsNotifier.values;
+    void chooseTag([final ProjectTagModel? tag]) => projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: tag?.id ?? ProjectTagModelId.empty,
+          ),
+        );
 
     return Column(
       children: [
@@ -104,7 +113,7 @@ class TagsVerticalBar extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
                   maxHeight: 450,
-                  maxWidth: 300,
+                  maxWidth: 450,
                   minWidth: 200,
                   minHeight: 150,
                 ),
@@ -117,15 +126,25 @@ class TagsVerticalBar extends StatelessWidget {
         ),
         const Gap(8),
         Expanded(
-          child: ListView.separated(
-            itemCount: tags.length,
+          child: ListView.builder(
+            itemCount: tags.length + 1,
             shrinkWrap: true,
-            separatorBuilder: (final context, final index) => const Gap(8),
             itemBuilder: (final context, final index) {
-              final tag = tags[index];
-              return Container(
+              final isFirst = index == 0;
+              final correctedIndex = index - 1;
+              if (isFirst) {
+                return _TagListTile(
+                  selectedTagId: selectedTagId,
+                  onTap: chooseTag,
+                  tag: ProjectTagModel.empty,
+                );
+              }
+              final tag = tags[correctedIndex];
+              return _TagListTile(
                 key: ValueKey(tag.id),
-                child: Text(tag.title),
+                tag: tag,
+                selectedTagId: selectedTagId,
+                onTap: () => chooseTag(tag),
               );
             },
           ),
@@ -133,6 +152,29 @@ class TagsVerticalBar extends StatelessWidget {
       ],
     );
   }
+}
+
+class _TagListTile extends StatelessWidget {
+  const _TagListTile({
+    required this.tag,
+    required this.onTap,
+    required this.selectedTagId,
+    super.key,
+  });
+  final ProjectTagModel tag;
+  final VoidCallback onTap;
+  final ProjectTagModelId selectedTagId;
+
+  @override
+  Widget build(final BuildContext context) => ListTile(
+        contentPadding: const EdgeInsets.symmetric(vertical: 4),
+        titleTextStyle: context.textTheme.labelSmall,
+        title:
+            Text(tag.isEmpty ? 'All' : tag.title, textAlign: TextAlign.center),
+        // ignore: avoid_bool_literals_in_conditional_expressions
+        selected: selectedTagId.isEmpty ? true : tag.id == selectedTagId,
+        onTap: onTap,
+      );
 }
 
 class ProjectsListScreen extends StatelessWidget {

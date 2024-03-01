@@ -7,7 +7,7 @@ part of 'models.dart';
 class PaginatedPageRequestModel<TData> {
   PaginatedPageRequestModel({
     this.page = 0,
-    this.limit = 5,
+    this.limit = 10,
     this.data,
   });
   Map<String, dynamic> toJson(

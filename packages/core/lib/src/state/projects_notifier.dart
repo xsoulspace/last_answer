@@ -31,11 +31,24 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     ),
   )..onLoad();
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
+  ProjectTagModelId get selectedTagId => value.requestProjectsDto.tagId;
 
   Future<void> onLocalUserLoad() async =>
       projectsPagedController.loadFirstPage();
-
   void onReset() => projectsPagedController.refresh();
+
+  void updateDto(
+    final RequestProjectsDto Function(RequestProjectsDto dto) updater,
+  ) {
+    final updatedDto = updater(value.requestProjectsDto);
+    if (updatedDto == value.requestProjectsDto) return;
+    value = value.copyWith(
+      requestProjectsDto: updatedDto,
+    );
+    projectsPagedController
+      ..refresh()
+      ..loadFirstPage();
+  }
 
   void updateEditingProject(
     final ProjectModel project, {

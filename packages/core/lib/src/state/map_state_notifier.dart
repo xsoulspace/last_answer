@@ -39,39 +39,37 @@ base class MapStateNotifier<TKey, TValue> extends ChangeNotifier {
   }
 
   void _save() => repository?.putAll(state.value);
-  void setState(final Map<TKey, TValue> value) =>
-      state = LoadableContainer.loaded(value);
+  void setState(final Map<TKey, TValue> value, {final bool notify = false}) {
+    state = LoadableContainer.loaded(value);
+    if (notify) notifyListeners();
+  }
+
   void put({required final TKey key, required final TValue value}) {
-    setState({...state.value}..[key] = value);
-    notifyListeners();
+    setState({...state.value}..[key] = value, notify: true);
     _save();
   }
 
   void putAll(final Map<TKey, TValue> map) {
-    setState({...state.value}..addAll(map));
-    notifyListeners();
+    setState({...state.value}..addAll(map), notify: true);
     _save();
   }
 
   void putEntries(final Iterable<MapEntry<TKey, TValue>> newEntries) {
-    setState({...state.value}..addEntries(newEntries));
-    notifyListeners();
+    setState({...state.value}..addEntries(newEntries), notify: true);
     _save();
   }
 
   void remove({required final TKey key}) {
-    setState({...state.value}..remove(key));
-    notifyListeners();
+    setState({...state.value}..remove(key), notify: true);
     _save();
   }
 
   void assignAll(final Map<TKey, TValue> map) {
-    setState({...map});
+    setState({...map}, notify: true);
   }
 
   void assignEntries(final Iterable<MapEntry<TKey, TValue>> newEntries) {
-    setState(Map.fromEntries(newEntries));
-    notifyListeners();
+    setState(Map.fromEntries(newEntries), notify: true);
     _save();
   }
 

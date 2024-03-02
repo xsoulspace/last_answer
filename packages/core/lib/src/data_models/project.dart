@@ -203,4 +203,7 @@ class ProjectTagModel with _$ProjectTagModel {
   }) = _ProjectTagModel;
   factory ProjectTagModel.fromJson(final Map<String, dynamic> json) =>
       _$ProjectTagModelFromJson(json);
+  const ProjectTagModel._();
+  static const empty = ProjectTagModel(id: ProjectTagModelId.empty);
+  bool get isEmpty => id.isEmpty;
 }

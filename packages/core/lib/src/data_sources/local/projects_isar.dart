@@ -12,35 +12,29 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   final ComplexLocalDbIsarImpl isarDb;
 
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getProjects({
+  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
-    final getDto = dto.data;
+    final data = dto.data;
     final int itemsCount;
-    final types = getDto?.types ?? [];
-    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-        QAfterFilterCondition> basicQuery;
-    if (getDto != null && getDto.search.isNotEmpty) {
-      basicQuery = isarDb.projects
-          .where()
-          .jsonContentContains(
-            '*${getDto.search}*',
-            caseSensitive: false,
-          )
-          .and()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
-    } else {
-      basicQuery = isarDb.projects
-          .where()
-          .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    final types = data?.types ?? [];
+    var basicQuery = isarDb.projects
+        .where()
+        .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    if (data != null) {
+      if (data.search.isNotEmpty) {
+        basicQuery = basicQuery
+            .and()
+            .jsonContentMatches('*${data.search}*', caseSensitive: false);
+      }
+      if (!data.tagId.isEmpty) {
+        basicQuery = basicQuery.and().tagsElementContains(data.tagId.value);
+      }
     }
-    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-        QAfterSortBy> sortedBasicQuery;
-    if (getDto?.isReversed == true) {
-      sortedBasicQuery = basicQuery.sortByUpdatedAt();
-    } else {
-      sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();
-    }
+    final sortedBasicQuery = switch (data?.isReversed) {
+      true => basicQuery.sortByUpdatedAt(),
+      null || false => basicQuery.sortByUpdatedAtDesc(),
+    };
     itemsCount = await sortedBasicQuery.countAsync();
     final pagesCount = (itemsCount / dto.limit).ceil();
     final items = await sortedBasicQuery.findAllAsync(
@@ -68,6 +62,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final isarProject = ProjectIsarCollection()
       ..type = project.type.name
       ..updatedAt = project.updatedAt
+      ..tags = project.tagsIds.map((final e) => e.value).toList()
       ..jsonContent = jsonEncode(project.toJson())
       ..modelIdStr = project.id.value;
 
@@ -93,6 +88,7 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
             ..jsonContent = jsonEncode(project.toJson())
             ..type = project.type.name
             ..updatedAt = project.updatedAt
+            ..tags = project.tagsIds.map((final e) => e.value).toList()
             ..modelIdStr = project.id.value;
 
           isarProjects.add(isarProject);
@@ -104,13 +100,50 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   }
 
   @override
-  Future<List<ProjectModel>> getAll() async {
-    final items = isarDb.projects.where().findAll();
+  Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
+    final types = dto?.types ?? [];
+
+    var basicQuery = isarDb.projects
+        .where()
+        .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    if (dto != null) {
+      if (dto.search.isNotEmpty) {
+        basicQuery = basicQuery
+            .and()
+            .jsonContentContains('*${dto.search}*', caseSensitive: false);
+      }
+      if (!dto.tagId.isEmpty) {
+        basicQuery = basicQuery.and().tagsElementContains(dto.tagId.value);
+      }
+    }
+
+    final items = basicQuery.findAll();
     return items
         .map(
-          (final e) => ProjectModel.fromJson(
-            jsonDecode(e.jsonContent) as Map<String, dynamic>,
-          ),
+          (final e) => ProjectModel.fromJson(e.jsonMap),
+        )
+        .toList();
+  }
+
+  @override
+  Future<ProjectModel?> getById({required final ProjectModelId id}) async {
+    final project =
+        isarDb.projects.where().modelIdStrEqualTo(id.value).findFirst();
+    if (project == null) return null;
+    return ProjectModel.fromJson(project.jsonMap);
+  }
+
+  @override
+  Future<List<ProjectModel>> getByIds({
+    required final Iterable<ProjectModelId> ids,
+  }) async {
+    final projects = isarDb.projects
+        .where()
+        .anyOf(ids, (final q, final e) => q.modelIdStrEqualTo(e.value))
+        .findAll();
+    return projects
+        .map(
+          (final e) => ProjectModel.fromJson(e.jsonMap),
         )
         .toList();
   }

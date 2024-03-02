@@ -18,6 +18,7 @@ class LocalUserInitializer {
     /// refreshing data, just to make sure all is loaded correctly
     await Future.delayed(const Duration(seconds: 1));
     await dto.projectsNotifier.onLocalUserLoad();
+    await dto.tagsNotifier.onLocalUserLoad();
     await dto.purchasesNotifier.onLocalUserLoad();
   }
 

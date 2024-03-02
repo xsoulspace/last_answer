@@ -12,10 +12,10 @@ class FileService implements FileServiceI {
       PlatformInfo.isNativeDesktop ? FileServiceDesktop() : FileServiceMobile();
 
   @override
-  Future<List> openFile() => _instance.openFile();
+  Future<Map<String, dynamic>> openFile() => _instance.openFile();
   @override
   Future<bool> saveFile({
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
     required final String filename,
   }) =>
       _instance.saveFile(data: data, filename: filename);
@@ -23,12 +23,12 @@ class FileService implements FileServiceI {
 
 class FileServiceMobile implements FileServiceI {
   @override
-  Future<List> openFile() async {
+  Future<Map<String, dynamic>> openFile() async {
     await FilePicker.platform.clearTemporaryFiles();
 
     /// json extension is not working on android
     final result = await FilePicker.platform.pickFiles();
-    if (result == null || result.files.isEmpty) return [];
+    if (result == null || result.files.isEmpty) return {};
     final file = result.files.first;
     final dataStr = File(file.path!).readAsStringSync();
     return jsonDecode(dataStr);
@@ -56,7 +56,7 @@ class FileServiceMobile implements FileServiceI {
 
   @override
   Future<bool> saveFile({
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
     required final String filename,
   }) async {
     // TODO(arenukvern): improve file saving dialog
@@ -77,14 +77,14 @@ class FileServiceMobile implements FileServiceI {
 
 class FileServiceDesktop implements FileServiceI {
   @override
-  Future<List> openFile() async {
+  Future<Map<String, dynamic>> openFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
     );
 
     // User canceled the picker
-    if (result == null) return [];
+    if (result == null) return {};
 
     final dataStr = File(result.files.single.path!).readAsStringSync();
     return jsonDecode(dataStr);
@@ -92,7 +92,7 @@ class FileServiceDesktop implements FileServiceI {
 
   @override
   Future<bool> saveFile({
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
     required final String filename,
   }) async {
     final String? filePath = await FilePicker.platform.saveFile(

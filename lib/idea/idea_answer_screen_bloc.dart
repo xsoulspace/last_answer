@@ -41,7 +41,7 @@ class IdeaAnswerScreenBloc extends ValueNotifier<IdeaProjectAnswerModel> {
     final idea = dto.idea.copyWith(
       answers: [...dto.idea.answers]..[dto.index] = answer,
     );
-    dto.projectsNotifier.updateProject(idea);
+    dto.projectsNotifier.updateEditingProject(idea);
   }
 
   void onBack(final BuildContext context) {

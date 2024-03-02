@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
+import 'package:lastanswer/home/tags/tags.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
 import 'package:lastanswer/other/other.dart';
@@ -57,24 +58,126 @@ class _VerticalBar extends StatelessWidget {
   const _VerticalBar();
 
   @override
-  Widget build(final BuildContext context) => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          VerticalProjectsBar(
-            onIdeaTap: () async {
-              await Navigator.push<bool>(
-                context,
-                MaterialPageRoute(
-                  builder: (final context) => const CreateIdeaProjectScreen(),
-                  fullscreenDialog: true,
+  Widget build(final BuildContext context) => ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 48),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Expanded(child: TagsVerticalBar()),
+            VerticalProjectsBar(
+              onIdeaTap: () async {
+                await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (final context) => const CreateIdeaProjectScreen(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              onNoteTap: () {
+                context
+                    .read<OpenedProjectNotifier>()
+                    .createNoteProject(context);
+              },
+            ),
+          ],
+        ),
+      );
+}
+
+class TagsVerticalBar extends StatelessWidget {
+  const TagsVerticalBar({super.key});
+
+  @override
+  Widget build(final BuildContext context) {
+    final projectsNotifier = context.read<ProjectsNotifier>();
+    final selectedTagId = context.select<ProjectsNotifier, ProjectTagModelId>(
+      (final c) => c.selectedTagId,
+    );
+    final tagsNotifier = context.watch<TagsNotifier>();
+    final tags = tagsNotifier.values;
+    void chooseTag([final ProjectTagModel? tag]) => projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: tag?.id ?? ProjectTagModelId.empty,
+          ),
+        );
+
+    return Column(
+      children: [
+        const Gap(8),
+        IconButton.outlined(
+          onPressed: () async => showAdaptiveDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (final context) => Dialog(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 600,
+                  maxWidth: 400,
+                  minWidth: 200,
+                  minHeight: 150,
                 ),
+                child: const TagsScreen(),
+              ),
+            ),
+          ),
+          icon: const Icon(Icons.edit_square),
+          tooltip: 'Click to edit Folders',
+        ),
+        const Gap(8),
+        Expanded(
+          child: ListView.builder(
+            itemCount: tags.length + 1,
+            shrinkWrap: true,
+            itemBuilder: (final context, final index) {
+              final isFirst = index == 0;
+              final correctedIndex = index - 1;
+              if (isFirst) {
+                return _TagListTile(
+                  selectedTagId: selectedTagId,
+                  onTap: chooseTag,
+                  tag: ProjectTagModel.empty,
+                );
+              }
+              final tag = tags[correctedIndex];
+              return _TagListTile(
+                key: ValueKey(tag.id),
+                tag: tag,
+                selectedTagId: selectedTagId,
+                onTap: () => chooseTag(tag),
               );
             },
-            onNoteTap: () {
-              context.read<OpenedProjectNotifier>().createNoteProject(context);
-            },
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TagListTile extends StatelessWidget {
+  const _TagListTile({
+    required this.tag,
+    required this.onTap,
+    required this.selectedTagId,
+    super.key,
+  });
+  final ProjectTagModel tag;
+  final VoidCallback onTap;
+  final ProjectTagModelId selectedTagId;
+
+  @override
+  Widget build(final BuildContext context) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        minVerticalPadding: 0,
+        dense: true,
+        titleTextStyle: context.textTheme.labelSmall,
+        title:
+            Text(tag.isEmpty ? 'All' : tag.title, textAlign: TextAlign.center),
+        // ignore: avoid_bool_literals_in_conditional_expressions
+        selected: tag.isEmpty && selectedTagId.isEmpty
+            ? true
+            : tag.id == selectedTagId,
+        onTap: onTap,
       );
 }
 
@@ -114,6 +217,14 @@ class _ProjectsListView extends StatelessWidget {
               pagingController: projectsController.pager,
               reverse: isReversed,
               builderDelegate: PagedChildBuilderDelegate(
+                animateTransitions: true,
+                transitionDuration: 100.ms,
+                firstPageProgressIndicatorBuilder: (final context) =>
+                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
+                noItemsFoundIndicatorBuilder: (final context) =>
+                    Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                newPageProgressIndicatorBuilder: (final context) =>
+                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
                 itemBuilder: (final context, final item, final index) =>
                     ProjectTile(
                   onRemove: (final _) async {
@@ -190,6 +301,7 @@ class _ProjectsListView extends StatelessWidget {
             appBar,
             Expanded(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Flexible(child: child),

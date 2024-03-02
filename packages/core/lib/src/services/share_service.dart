@@ -18,25 +18,24 @@ class ProjectSharer {
         content: sharable.toShareString(context),
         successTitle: context.l10n.yourProjectWasCopiedToClipboard,
       );
-  Future<void> shareProjects(final List<Map<String, dynamic>> json) async =>
+  Future<void> shareSave(final DbSaveModel json) async =>
       ShareService.of(context).share(
         title: 'Last Answer: ${FileServiceI.filenameWithTimestamp}',
-        content: jsonEncode(json),
+        content: jsonEncode(json.toJson()),
         successTitle: context.l10n.allProjectsWereCopiedToClipboard,
       );
-  Future<List<ProjectModel>> getFromClipboard(
+  Future<DbSaveModel> getFromClipboard(
     final BuildContext context,
   ) async {
     final jsonStr = await ShareService.of(context).getFromClipboard();
-    if (jsonStr.isEmpty) return [];
+    if (jsonStr.isEmpty) return DbSaveModel.empty;
     final json = jsonDecode(jsonStr);
+    if (json case final Map<String, dynamic> jsonMap) {
+      if (jsonMap.isEmpty) return DbSaveModel.empty;
 
-    if (json case final List jsonList) {
-      if (jsonList.isEmpty) return [];
-      final allProjects = json.map(ProjectModel.fromJson).toList();
-      return allProjects;
+      return DbSaveModel.fromJson(jsonMap);
     } else {
-      return [];
+      return DbSaveModel.empty;
     }
   }
 }

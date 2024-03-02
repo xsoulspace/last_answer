@@ -35,32 +35,32 @@
 
 ## Getting Started
 
-Do you have a cool idea and need to get it down quickly? Or do you blog / write articles on social media?
+You have a cool idea or you need to write a post/article for your blog.
+You need to write it down as fast as possible.
 
 Then this app is for you.
 
-In "ideas" answer the questions, write as many answers as you can to get a brief description of the idea and an understanding of how to implement it.
-In "notes" write posts and articles.
+**FEATURES**
 
-That's all ! :)
+- Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
+- Quick note limit - limit characters length by social network.
 
-## Main features
+- Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
-"Notes" - for bloggers and those who like to write in social networks:
+- Messanger style writing - from down to up, the same way as you write in any messanger - just try it and you will like it:)
+- Auto sorting - all projects just feels like "chats" in messanger, so what you write recent - is what you will see as first:)
 
-- Write a note by adding a character limit for the chosen social network.
-- Share it on social networks or messengers.
+**NEW & EXPERIMENTAL**:
 
-"Ideas" - for developers and anyone with ideas to do something new:
+- Folders - now you can organize your ideas and notes in folders.
+- Backup & Restore - now you can backup and restore data from/to files or from/to clipboard. You control your data.
 
-- start with an idea topic, pick questions and answers and share it.
-  P.s.: you can become a super ninja if you use techniques such as Five Why's, PDSA, Six Sigma.
+**EXTRA FEATURES**:
 
-## Extra features
-
-- Dark and light themes.
-- English, Italian, Russian.
-- Adaptive layout: you can work on laptop as well as on smartphone.
+- Unique & Custom app layout - primary goal is to achive most convenient writing & note orginizing experience.
+- Responsive layout - nice to you if you use it on full screen or in a small window.
+- Dark & Light themes
+- English, Italian, Russian languages
 
 I hope you find the application useful :)
 Have a nice day!

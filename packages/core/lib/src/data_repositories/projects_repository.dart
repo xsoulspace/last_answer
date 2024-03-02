@@ -17,10 +17,35 @@ class ProjectsRepository {
       _datasource.put(project: project);
   Future<void> remove({required final ProjectModelId id}) async =>
       _datasource.remove(id: id);
-  Future<List<ProjectModel>> getAll() async => _datasource.getAll();
+  Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async =>
+      _datasource.getAll(dto: dto);
+  Future<ProjectModel?> getById({required final ProjectModelId id}) async =>
+      _datasource.getById(id: id);
+  Future<List<ProjectModel>> getByIds({
+    required final Iterable<ProjectModelId> ids,
+  }) async =>
+      _datasource.getByIds(ids: ids);
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,
   }) async =>
-      _datasource.getProjects(dto: request);
+      _datasource.getPaginated(dto: request);
+}
+
+final class TagsRepository
+    extends MapBasedRepository<ProjectTagModelId, ProjectTagModel>
+    implements TagsLocalDataSource {
+  TagsRepository(final BuildContext context)
+      : _datasource = TagsLocalDataSourceImpl(
+          localDb: context.read(),
+        );
+  final TagsLocalDataSource _datasource;
+
+  @override
+  void putAll(
+    final Map<ProjectTagModelId, ProjectTagModel> map,
+  ) =>
+      _datasource.putAll(map);
+  @override
+  Map<ProjectTagModelId, ProjectTagModel> getAll() => _datasource.getAll();
 }

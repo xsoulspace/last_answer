@@ -167,12 +167,16 @@ class _TagListTile extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 4),
+        contentPadding: EdgeInsets.zero,
+        minVerticalPadding: 0,
+        dense: true,
         titleTextStyle: context.textTheme.labelSmall,
         title:
             Text(tag.isEmpty ? 'All' : tag.title, textAlign: TextAlign.center),
         // ignore: avoid_bool_literals_in_conditional_expressions
-        selected: selectedTagId.isEmpty ? true : tag.id == selectedTagId,
+        selected: tag.isEmpty && selectedTagId.isEmpty
+            ? true
+            : tag.id == selectedTagId,
         onTap: onTap,
       );
 }
@@ -213,6 +217,14 @@ class _ProjectsListView extends StatelessWidget {
               pagingController: projectsController.pager,
               reverse: isReversed,
               builderDelegate: PagedChildBuilderDelegate(
+                animateTransitions: true,
+                transitionDuration: 100.ms,
+                firstPageProgressIndicatorBuilder: (final context) =>
+                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
+                noItemsFoundIndicatorBuilder: (final context) =>
+                    Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                newPageProgressIndicatorBuilder: (final context) =>
+                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
                 itemBuilder: (final context, final item, final index) =>
                     ProjectTile(
                   onRemove: (final _) async {

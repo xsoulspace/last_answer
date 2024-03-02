@@ -3,6 +3,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/tags/tags.dart';
+import 'package:lastanswer/home/tags/tags_screen_state.dart';
 
 class TagsScreen extends StatelessWidget {
   const TagsScreen({super.key});
@@ -36,9 +37,14 @@ class _TagsListView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final tags = context.watch<TagsNotifier>().values;
+    final isPurchased =
+        context.select<PurchasesNotifier, bool>((final c) => c.isActive);
+    final foldersLimit = isPurchased ? 20 : 10;
+    final isLimitReached = tags.length >= foldersLimit;
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
     final textTheme = context.textTheme;
     final l10n = context.l10n;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -47,11 +53,24 @@ class _TagsListView extends StatelessWidget {
             shrinkWrap: true,
             slivers: [
               const DialogTopBar(title: 'Folders').sliver(),
-              const Card(
+              Card(
                 child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    "Use 🗂️Folders for Notes and Ideas to quickly organize them. Deletion of any Folders doesn't delete any Note or Idea.",
+                  padding: const EdgeInsets.all(8),
+                  child: RichText(
+                    text: TextSpan(
+                      style: textTheme.bodyMedium,
+                      children: [
+                        const TextSpan(
+                          text:
+                              'Use 🗂️Folders for Notes and Ideas to quickly organize them.',
+                        ),
+                        TextSpan(
+                          style: textTheme.bodySmall,
+                          text:
+                              '\n\nYou can create up to $foldersLimit Folders.',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ).sliver(),
@@ -87,8 +106,10 @@ class _TagsListView extends StatelessWidget {
             ),
             Expanded(
               child: FilledButton.tonal(
-                onPressed: tagsScreenNotifier.onCreateTagManagement,
-                child: const Text('Create folder'),
+                onPressed: isLimitReached
+                    ? null
+                    : tagsScreenNotifier.onCreateTagManagement,
+                child: Text(isLimitReached ? 'Limit reached' : 'Create folder'),
               ),
             ),
           ],
@@ -155,6 +176,7 @@ class _ManageTagView extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: 'Folder name',
                     ),
+                    maxLength: 12,
                     value: selectedTag.value.title,
                     onChanged: stateNotifier.onFolderTitleChanged,
                     validator: FormBuilderValidators.compose([
@@ -288,6 +310,9 @@ class _AddProjectsView extends StatelessWidget {
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
                 automaticallyImplyLeading: false,
                 floating: true,
                 title: const Text('Add projects'),
@@ -297,8 +322,20 @@ class _AddProjectsView extends StatelessWidget {
               ),
               PagedSliverList<int, ProjectModel>(
                 pagingController:
-                    tagsScreenNotifier.allProjectsPagedController.pager,
+                    tagsScreenNotifier.addProjectsPagedController.pager,
                 builderDelegate: PagedChildBuilderDelegate(
+                  animateTransitions: true,
+                  transitionDuration: 100.ms,
+                  firstPageProgressIndicatorBuilder: (final context) =>
+                      const UiCircularProgress()
+                          .animate(delay: 1500.ms)
+                          .fadeIn(),
+                  noItemsFoundIndicatorBuilder: (final context) =>
+                      Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                  newPageProgressIndicatorBuilder: (final context) =>
+                      const UiCircularProgress()
+                          .animate(delay: 1500.ms)
+                          .fadeIn(),
                   itemBuilder: (final context, final item, final index) =>
                       SelectableProjectListTile(
                     key: ValueKey(item.id),
@@ -321,6 +358,7 @@ class _AddProjectsView extends StatelessWidget {
           ],
           elevation: const MaterialStatePropertyAll(8),
           hintText: 'Search projects',
+          onChanged: tagsScreenNotifier.onSearchAddProjects,
           padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16),
           ),

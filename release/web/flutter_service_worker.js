@@ -258,6 +258,7 @@ self.addEventListener("fetch", (event) => {
     if (
       event.request.url == origin ||
       event.request.url.startsWith(origin + "/#") ||
+      event.request.url.startsWith(origin + "/#/home") ||
       key == ""
     ) {
       key = "/";

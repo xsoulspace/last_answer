@@ -48,7 +48,7 @@ class OpenedProjectNotifier
 
   void updateProject(final ProjectModel item) {
     setValue(value.copyWith(value: item));
-    dto.projectsNotifier.updateProject(item);
+    dto.projectsNotifier.updateEditingProject(item);
   }
 
   void createNoteProject(final BuildContext context) {
@@ -71,7 +71,7 @@ class OpenedProjectNotifier
       updatedAt: DateTime.now(),
       title: title,
     );
-    if (title.isNotEmpty) dto.projectsNotifier.updateProject(idea);
+    if (title.isNotEmpty) dto.projectsNotifier.updateEditingProject(idea);
     loadProject(context: context, project: idea);
   }
 

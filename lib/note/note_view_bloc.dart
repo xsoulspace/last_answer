@@ -44,6 +44,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
   }
 
   void _onChanged() {
+    if (value.note == noteController.text) return;
     final updatedNote = value.copyWith(
       note: noteController.text,
       charactersLimit: int.tryParse(characterLimitController.limit) ?? 0,

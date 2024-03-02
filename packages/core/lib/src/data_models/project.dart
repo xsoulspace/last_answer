@@ -1,15 +1,9 @@
 part of 'data_models.dart';
 
-@Freezed(fromJson: false, toJson: false)
-class ProjectModelId with _$ProjectModelId {
-  const factory ProjectModelId({
-    required final String value,
-  }) = _ProjectModelId;
-  const ProjectModelId._();
-  factory ProjectModelId.fromJson(final String value) =>
-      ProjectModelId(value: value);
-  factory ProjectModelId.generate() => ProjectModelId(value: createId());
-  static const empty = ProjectModelId(value: '');
+extension type const ProjectModelId(String value) {
+  factory ProjectModelId.fromJson(final String value) => ProjectModelId(value);
+  factory ProjectModelId.generate() => ProjectModelId(createId());
+  static const empty = ProjectModelId('');
   bool get isEmpty => value.isEmpty;
   String toJson() => value;
 }
@@ -32,6 +26,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     final DateTime? archivedAt,
     @Default([]) final List<IdeaProjectAnswerModel> answers,
     final IdeaProjectAnswerModel? draftAnswer,
+    @Default([]) final List<ProjectTagModelId> tagsIds,
   }) = ProjectModelIdea;
   @Implements<Archivable>()
   @Implements<Sharable>()
@@ -43,6 +38,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(ProjectTypes.note) final ProjectTypes type,
     @Default(0) final int charactersLimit,
     final DateTime? archivedAt,
+    @Default([]) final List<ProjectTagModelId> tagsIds,
   }) = ProjectModelNote;
   factory ProjectModel.fromJson(final dynamic json) =>
       _$ProjectModelFromJson(json as Map<String, dynamic>);
@@ -84,15 +80,12 @@ String _getTitle(
   return text.substring(0, titleLimit);
 }
 
-@Freezed(fromJson: false, toJson: false)
-class IdeaProjectAnswerModelId with _$IdeaProjectAnswerModelId {
-  const factory IdeaProjectAnswerModelId({
-    required final String value,
-  }) = _IdeaProjectAnswerModelId;
-  const IdeaProjectAnswerModelId._();
+extension type const IdeaProjectAnswerModelId(String value) {
   factory IdeaProjectAnswerModelId.fromJson(final String value) =>
-      IdeaProjectAnswerModelId(value: value);
-  static const empty = IdeaProjectAnswerModelId(value: '');
+      IdeaProjectAnswerModelId(value);
+  factory IdeaProjectAnswerModelId.generate() =>
+      IdeaProjectAnswerModelId(createId());
+  static const empty = IdeaProjectAnswerModelId('');
   bool get isEmpty => value.isEmpty;
   String toJson() => value;
 }
@@ -116,15 +109,12 @@ class IdeaProjectAnswerModel with _$IdeaProjectAnswerModel implements Sharable {
       '${question.toShareString(context)} \n $text';
 }
 
-@Freezed(fromJson: false, toJson: false)
-class IdeaProjectQuestionModelId with _$IdeaProjectQuestionModelId {
-  const factory IdeaProjectQuestionModelId({
-    required final String value,
-  }) = _IdeaProjectQuestionModelId;
-  const IdeaProjectQuestionModelId._();
+extension type const IdeaProjectQuestionModelId(String value) {
   factory IdeaProjectQuestionModelId.fromJson(final String value) =>
-      IdeaProjectQuestionModelId(value: value);
-  static const empty = IdeaProjectQuestionModelId(value: '');
+      IdeaProjectQuestionModelId(value);
+  factory IdeaProjectQuestionModelId.generate() =>
+      IdeaProjectQuestionModelId(createId());
+  static const empty = IdeaProjectQuestionModelId('');
   bool get isEmpty => value.isEmpty;
   String toJson() => value;
 }
@@ -194,4 +184,26 @@ String ideaProjectToShareString({
   }
 
   return buffer.toString();
+}
+
+extension type const ProjectTagModelId(String value) {
+  factory ProjectTagModelId.generate() => ProjectTagModelId(createId());
+  factory ProjectTagModelId.fromJson(final String json) =>
+      ProjectTagModelId(json);
+  static const empty = ProjectTagModelId('');
+  bool get isEmpty => value.isEmpty;
+  String toJson() => value;
+}
+
+@freezed
+class ProjectTagModel with _$ProjectTagModel {
+  const factory ProjectTagModel({
+    required final ProjectTagModelId id,
+    @Default('') final String title,
+  }) = _ProjectTagModel;
+  factory ProjectTagModel.fromJson(final Map<String, dynamic> json) =>
+      _$ProjectTagModelFromJson(json);
+  const ProjectTagModel._();
+  static const empty = ProjectTagModel(id: ProjectTagModelId.empty);
+  bool get isEmpty => id.isEmpty;
 }

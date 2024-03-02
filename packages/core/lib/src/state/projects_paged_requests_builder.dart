@@ -6,8 +6,11 @@ class RequestProjectsDto with _$RequestProjectsDto {
     @Default('') final String search,
     @Default([]) final List<ProjectTypes> types,
     @Default(false) final bool isReversed,
+    @Default(ProjectTagModelId.empty) final ProjectTagModelId tagId,
   }) = _RequestProjectsDto;
+  const RequestProjectsDto._();
   static const empty = RequestProjectsDto();
+  bool get isEmpty => search.isEmpty && types.isEmpty && tagId.isEmpty;
 }
 
 class ProjectsPagedDataRequestsBuilder

@@ -244,126 +244,6 @@ abstract class _NotificationMessageModel implements NotificationMessageModel {
       get copyWith => throw _privateConstructorUsedError;
 }
 
-/// @nodoc
-mixin _$ProjectModelId {
-  String get value => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $ProjectModelIdCopyWith<ProjectModelId> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProjectModelIdCopyWith<$Res> {
-  factory $ProjectModelIdCopyWith(
-          ProjectModelId value, $Res Function(ProjectModelId) then) =
-      _$ProjectModelIdCopyWithImpl<$Res, ProjectModelId>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$ProjectModelIdCopyWithImpl<$Res, $Val extends ProjectModelId>
-    implements $ProjectModelIdCopyWith<$Res> {
-  _$ProjectModelIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ProjectModelIdImplCopyWith<$Res>
-    implements $ProjectModelIdCopyWith<$Res> {
-  factory _$$ProjectModelIdImplCopyWith(_$ProjectModelIdImpl value,
-          $Res Function(_$ProjectModelIdImpl) then) =
-      __$$ProjectModelIdImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class __$$ProjectModelIdImplCopyWithImpl<$Res>
-    extends _$ProjectModelIdCopyWithImpl<$Res, _$ProjectModelIdImpl>
-    implements _$$ProjectModelIdImplCopyWith<$Res> {
-  __$$ProjectModelIdImplCopyWithImpl(
-      _$ProjectModelIdImpl _value, $Res Function(_$ProjectModelIdImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_$ProjectModelIdImpl(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ProjectModelIdImpl extends _ProjectModelId {
-  const _$ProjectModelIdImpl({required this.value}) : super._();
-
-  @override
-  final String value;
-
-  @override
-  String toString() {
-    return 'ProjectModelId(value: $value)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProjectModelIdImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProjectModelIdImplCopyWith<_$ProjectModelIdImpl> get copyWith =>
-      __$$ProjectModelIdImplCopyWithImpl<_$ProjectModelIdImpl>(
-          this, _$identity);
-}
-
-abstract class _ProjectModelId extends ProjectModelId {
-  const factory _ProjectModelId({required final String value}) =
-      _$ProjectModelIdImpl;
-  const _ProjectModelId._() : super._();
-
-  @override
-  String get value;
-  @override
-  @JsonKey(ignore: true)
-  _$$ProjectModelIdImplCopyWith<_$ProjectModelIdImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
 ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'idea':
@@ -384,6 +264,7 @@ mixin _$ProjectModel {
   DateTime get updatedAt => throw _privateConstructorUsedError;
   ProjectTypes get type => throw _privateConstructorUsedError;
   DateTime? get archivedAt => throw _privateConstructorUsedError;
+  List<ProjectTagModelId> get tagsIds => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -394,7 +275,8 @@ mixin _$ProjectModel {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -403,7 +285,8 @@ mixin _$ProjectModel {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)
         note,
   }) =>
       throw _privateConstructorUsedError;
@@ -417,7 +300,8 @@ mixin _$ProjectModel {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -426,7 +310,8 @@ mixin _$ProjectModel {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
   }) =>
       throw _privateConstructorUsedError;
@@ -440,7 +325,8 @@ mixin _$ProjectModel {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult Function(
             ProjectModelId id,
@@ -449,7 +335,8 @@ mixin _$ProjectModel {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
     required TResult orElse(),
   }) =>
@@ -490,9 +377,8 @@ abstract class $ProjectModelCopyWith<$Res> {
       DateTime createdAt,
       DateTime updatedAt,
       ProjectTypes type,
-      DateTime? archivedAt});
-
-  $ProjectModelIdCopyWith<$Res> get id;
+      DateTime? archivedAt,
+      List<ProjectTagModelId> tagsIds});
 }
 
 /// @nodoc
@@ -513,6 +399,7 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
     Object? updatedAt = null,
     Object? type = null,
     Object? archivedAt = freezed,
+    Object? tagsIds = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -535,15 +422,11 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      tagsIds: null == tagsIds
+          ? _value.tagsIds
+          : tagsIds // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModelId>,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProjectModelIdCopyWith<$Res> get id {
-    return $ProjectModelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
   }
 }
 
@@ -563,10 +446,9 @@ abstract class _$$ProjectModelIdeaImplCopyWith<$Res>
       ProjectTypes type,
       DateTime? archivedAt,
       List<IdeaProjectAnswerModel> answers,
-      IdeaProjectAnswerModel? draftAnswer});
+      IdeaProjectAnswerModel? draftAnswer,
+      List<ProjectTagModelId> tagsIds});
 
-  @override
-  $ProjectModelIdCopyWith<$Res> get id;
   $IdeaProjectAnswerModelCopyWith<$Res>? get draftAnswer;
 }
 
@@ -589,6 +471,7 @@ class __$$ProjectModelIdeaImplCopyWithImpl<$Res>
     Object? archivedAt = freezed,
     Object? answers = null,
     Object? draftAnswer = freezed,
+    Object? tagsIds = null,
   }) {
     return _then(_$ProjectModelIdeaImpl(
       id: null == id
@@ -623,6 +506,10 @@ class __$$ProjectModelIdeaImplCopyWithImpl<$Res>
           ? _value.draftAnswer
           : draftAnswer // ignore: cast_nullable_to_non_nullable
               as IdeaProjectAnswerModel?,
+      tagsIds: null == tagsIds
+          ? _value._tagsIds
+          : tagsIds // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModelId>,
     ));
   }
 
@@ -651,8 +538,10 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
       this.archivedAt,
       final List<IdeaProjectAnswerModel> answers = const [],
       this.draftAnswer,
+      final List<ProjectTagModelId> tagsIds = const [],
       final String? $type})
       : _answers = answers,
+        _tagsIds = tagsIds,
         $type = $type ?? 'idea',
         super._();
 
@@ -684,13 +573,21 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
 
   @override
   final IdeaProjectAnswerModel? draftAnswer;
+  final List<ProjectTagModelId> _tagsIds;
+  @override
+  @JsonKey()
+  List<ProjectTagModelId> get tagsIds {
+    if (_tagsIds is EqualUnmodifiableListView) return _tagsIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tagsIds);
+  }
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ProjectModel.idea(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, title: $title, type: $type, archivedAt: $archivedAt, answers: $answers, draftAnswer: $draftAnswer)';
+    return 'ProjectModel.idea(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, title: $title, type: $type, archivedAt: $archivedAt, answers: $answers, draftAnswer: $draftAnswer, tagsIds: $tagsIds)';
   }
 
   @override
@@ -709,7 +606,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
                 other.archivedAt == archivedAt) &&
             const DeepCollectionEquality().equals(other._answers, _answers) &&
             (identical(other.draftAnswer, draftAnswer) ||
-                other.draftAnswer == draftAnswer));
+                other.draftAnswer == draftAnswer) &&
+            const DeepCollectionEquality().equals(other._tagsIds, _tagsIds));
   }
 
   @JsonKey(ignore: true)
@@ -723,7 +621,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
       type,
       archivedAt,
       const DeepCollectionEquality().hash(_answers),
-      draftAnswer);
+      draftAnswer,
+      const DeepCollectionEquality().hash(_tagsIds));
 
   @JsonKey(ignore: true)
   @override
@@ -743,7 +642,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -752,11 +652,12 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)
         note,
   }) {
     return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
-        draftAnswer);
+        draftAnswer, tagsIds);
   }
 
   @override
@@ -770,7 +671,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -779,11 +681,12 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
   }) {
     return idea?.call(id, createdAt, updatedAt, title, type, archivedAt,
-        answers, draftAnswer);
+        answers, draftAnswer, tagsIds);
   }
 
   @override
@@ -797,7 +700,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult Function(
             ProjectModelId id,
@@ -806,13 +710,14 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
     required TResult orElse(),
   }) {
     if (idea != null) {
       return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
-          draftAnswer);
+          draftAnswer, tagsIds);
     }
     return orElse();
   }
@@ -866,7 +771,8 @@ abstract class ProjectModelIdea extends ProjectModel
       final ProjectTypes type,
       final DateTime? archivedAt,
       final List<IdeaProjectAnswerModel> answers,
-      final IdeaProjectAnswerModel? draftAnswer}) = _$ProjectModelIdeaImpl;
+      final IdeaProjectAnswerModel? draftAnswer,
+      final List<ProjectTagModelId> tagsIds}) = _$ProjectModelIdeaImpl;
   const ProjectModelIdea._() : super._();
 
   factory ProjectModelIdea.fromJson(Map<String, dynamic> json) =
@@ -885,6 +791,8 @@ abstract class ProjectModelIdea extends ProjectModel
   DateTime? get archivedAt;
   List<IdeaProjectAnswerModel> get answers;
   IdeaProjectAnswerModel? get draftAnswer;
+  @override
+  List<ProjectTagModelId> get tagsIds;
   @override
   @JsonKey(ignore: true)
   _$$ProjectModelIdeaImplCopyWith<_$ProjectModelIdeaImpl> get copyWith =>
@@ -906,10 +814,8 @@ abstract class _$$ProjectModelNoteImplCopyWith<$Res>
       String note,
       ProjectTypes type,
       int charactersLimit,
-      DateTime? archivedAt});
-
-  @override
-  $ProjectModelIdCopyWith<$Res> get id;
+      DateTime? archivedAt,
+      List<ProjectTagModelId> tagsIds});
 }
 
 /// @nodoc
@@ -930,6 +836,7 @@ class __$$ProjectModelNoteImplCopyWithImpl<$Res>
     Object? type = null,
     Object? charactersLimit = null,
     Object? archivedAt = freezed,
+    Object? tagsIds = null,
   }) {
     return _then(_$ProjectModelNoteImpl(
       id: null == id
@@ -960,6 +867,10 @@ class __$$ProjectModelNoteImplCopyWithImpl<$Res>
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      tagsIds: null == tagsIds
+          ? _value._tagsIds
+          : tagsIds // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModelId>,
     ));
   }
 }
@@ -975,8 +886,10 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
       this.type = ProjectTypes.note,
       this.charactersLimit = 0,
       this.archivedAt,
+      final List<ProjectTagModelId> tagsIds = const [],
       final String? $type})
-      : $type = $type ?? 'note',
+      : _tagsIds = tagsIds,
+        $type = $type ?? 'note',
         super._();
 
   factory _$ProjectModelNoteImpl.fromJson(Map<String, dynamic> json) =>
@@ -999,13 +912,21 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
   final int charactersLimit;
   @override
   final DateTime? archivedAt;
+  final List<ProjectTagModelId> _tagsIds;
+  @override
+  @JsonKey()
+  List<ProjectTagModelId> get tagsIds {
+    if (_tagsIds is EqualUnmodifiableListView) return _tagsIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tagsIds);
+  }
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ProjectModel.note(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, note: $note, type: $type, charactersLimit: $charactersLimit, archivedAt: $archivedAt)';
+    return 'ProjectModel.note(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, note: $note, type: $type, charactersLimit: $charactersLimit, archivedAt: $archivedAt, tagsIds: $tagsIds)';
   }
 
   @override
@@ -1023,13 +944,22 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             (identical(other.charactersLimit, charactersLimit) ||
                 other.charactersLimit == charactersLimit) &&
             (identical(other.archivedAt, archivedAt) ||
-                other.archivedAt == archivedAt));
+                other.archivedAt == archivedAt) &&
+            const DeepCollectionEquality().equals(other._tagsIds, _tagsIds));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt, note,
-      type, charactersLimit, archivedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      createdAt,
+      updatedAt,
+      note,
+      type,
+      charactersLimit,
+      archivedAt,
+      const DeepCollectionEquality().hash(_tagsIds));
 
   @JsonKey(ignore: true)
   @override
@@ -1049,7 +979,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)
         idea,
     required TResult Function(
             ProjectModelId id,
@@ -1058,11 +989,12 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)
         note,
   }) {
-    return note(
-        id, createdAt, updatedAt, this.note, type, charactersLimit, archivedAt);
+    return note(id, createdAt, updatedAt, this.note, type, charactersLimit,
+        archivedAt, tagsIds);
   }
 
   @override
@@ -1076,7 +1008,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult? Function(
             ProjectModelId id,
@@ -1085,11 +1018,12 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
   }) {
-    return note?.call(
-        id, createdAt, updatedAt, this.note, type, charactersLimit, archivedAt);
+    return note?.call(id, createdAt, updatedAt, this.note, type,
+        charactersLimit, archivedAt, tagsIds);
   }
 
   @override
@@ -1103,7 +1037,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             ProjectTypes type,
             DateTime? archivedAt,
             List<IdeaProjectAnswerModel> answers,
-            IdeaProjectAnswerModel? draftAnswer)?
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
         idea,
     TResult Function(
             ProjectModelId id,
@@ -1112,13 +1047,14 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             String note,
             ProjectTypes type,
             int charactersLimit,
-            DateTime? archivedAt)?
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
         note,
     required TResult orElse(),
   }) {
     if (note != null) {
       return note(id, createdAt, updatedAt, this.note, type, charactersLimit,
-          archivedAt);
+          archivedAt, tagsIds);
     }
     return orElse();
   }
@@ -1171,7 +1107,8 @@ abstract class ProjectModelNote extends ProjectModel
       final String note,
       final ProjectTypes type,
       final int charactersLimit,
-      final DateTime? archivedAt}) = _$ProjectModelNoteImpl;
+      final DateTime? archivedAt,
+      final List<ProjectTagModelId> tagsIds}) = _$ProjectModelNoteImpl;
   const ProjectModelNote._() : super._();
 
   factory ProjectModelNote.fromJson(Map<String, dynamic> json) =
@@ -1190,133 +1127,11 @@ abstract class ProjectModelNote extends ProjectModel
   @override
   DateTime? get archivedAt;
   @override
+  List<ProjectTagModelId> get tagsIds;
+  @override
   @JsonKey(ignore: true)
   _$$ProjectModelNoteImplCopyWith<_$ProjectModelNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$IdeaProjectAnswerModelId {
-  String get value => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $IdeaProjectAnswerModelIdCopyWith<IdeaProjectAnswerModelId> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $IdeaProjectAnswerModelIdCopyWith<$Res> {
-  factory $IdeaProjectAnswerModelIdCopyWith(IdeaProjectAnswerModelId value,
-          $Res Function(IdeaProjectAnswerModelId) then) =
-      _$IdeaProjectAnswerModelIdCopyWithImpl<$Res, IdeaProjectAnswerModelId>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$IdeaProjectAnswerModelIdCopyWithImpl<$Res,
-        $Val extends IdeaProjectAnswerModelId>
-    implements $IdeaProjectAnswerModelIdCopyWith<$Res> {
-  _$IdeaProjectAnswerModelIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$IdeaProjectAnswerModelIdImplCopyWith<$Res>
-    implements $IdeaProjectAnswerModelIdCopyWith<$Res> {
-  factory _$$IdeaProjectAnswerModelIdImplCopyWith(
-          _$IdeaProjectAnswerModelIdImpl value,
-          $Res Function(_$IdeaProjectAnswerModelIdImpl) then) =
-      __$$IdeaProjectAnswerModelIdImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class __$$IdeaProjectAnswerModelIdImplCopyWithImpl<$Res>
-    extends _$IdeaProjectAnswerModelIdCopyWithImpl<$Res,
-        _$IdeaProjectAnswerModelIdImpl>
-    implements _$$IdeaProjectAnswerModelIdImplCopyWith<$Res> {
-  __$$IdeaProjectAnswerModelIdImplCopyWithImpl(
-      _$IdeaProjectAnswerModelIdImpl _value,
-      $Res Function(_$IdeaProjectAnswerModelIdImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_$IdeaProjectAnswerModelIdImpl(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$IdeaProjectAnswerModelIdImpl extends _IdeaProjectAnswerModelId {
-  const _$IdeaProjectAnswerModelIdImpl({required this.value}) : super._();
-
-  @override
-  final String value;
-
-  @override
-  String toString() {
-    return 'IdeaProjectAnswerModelId(value: $value)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IdeaProjectAnswerModelIdImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$IdeaProjectAnswerModelIdImplCopyWith<_$IdeaProjectAnswerModelIdImpl>
-      get copyWith => __$$IdeaProjectAnswerModelIdImplCopyWithImpl<
-          _$IdeaProjectAnswerModelIdImpl>(this, _$identity);
-}
-
-abstract class _IdeaProjectAnswerModelId extends IdeaProjectAnswerModelId {
-  const factory _IdeaProjectAnswerModelId({required final String value}) =
-      _$IdeaProjectAnswerModelIdImpl;
-  const _IdeaProjectAnswerModelId._() : super._();
-
-  @override
-  String get value;
-  @override
-  @JsonKey(ignore: true)
-  _$$IdeaProjectAnswerModelIdImplCopyWith<_$IdeaProjectAnswerModelIdImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(
@@ -1349,7 +1164,6 @@ abstract class $IdeaProjectAnswerModelCopyWith<$Res> {
       IdeaProjectQuestionModel question,
       String text});
 
-  $IdeaProjectAnswerModelIdCopyWith<$Res> get id;
   $IdeaProjectQuestionModelCopyWith<$Res> get question;
 }
 
@@ -1394,14 +1208,6 @@ class _$IdeaProjectAnswerModelCopyWithImpl<$Res,
 
   @override
   @pragma('vm:prefer-inline')
-  $IdeaProjectAnswerModelIdCopyWith<$Res> get id {
-    return $IdeaProjectAnswerModelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
   $IdeaProjectQuestionModelCopyWith<$Res> get question {
     return $IdeaProjectQuestionModelCopyWith<$Res>(_value.question, (value) {
       return _then(_value.copyWith(question: value) as $Val);
@@ -1424,8 +1230,6 @@ abstract class _$$IdeaProjectAnswerModelImplCopyWith<$Res>
       IdeaProjectQuestionModel question,
       String text});
 
-  @override
-  $IdeaProjectAnswerModelIdCopyWith<$Res> get id;
   @override
   $IdeaProjectQuestionModelCopyWith<$Res> get question;
 }
@@ -1554,131 +1358,6 @@ abstract class _IdeaProjectAnswerModel extends IdeaProjectAnswerModel {
       get copyWith => throw _privateConstructorUsedError;
 }
 
-/// @nodoc
-mixin _$IdeaProjectQuestionModelId {
-  String get value => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $IdeaProjectQuestionModelIdCopyWith<IdeaProjectQuestionModelId>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $IdeaProjectQuestionModelIdCopyWith<$Res> {
-  factory $IdeaProjectQuestionModelIdCopyWith(IdeaProjectQuestionModelId value,
-          $Res Function(IdeaProjectQuestionModelId) then) =
-      _$IdeaProjectQuestionModelIdCopyWithImpl<$Res,
-          IdeaProjectQuestionModelId>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$IdeaProjectQuestionModelIdCopyWithImpl<$Res,
-        $Val extends IdeaProjectQuestionModelId>
-    implements $IdeaProjectQuestionModelIdCopyWith<$Res> {
-  _$IdeaProjectQuestionModelIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$IdeaProjectQuestionModelIdImplCopyWith<$Res>
-    implements $IdeaProjectQuestionModelIdCopyWith<$Res> {
-  factory _$$IdeaProjectQuestionModelIdImplCopyWith(
-          _$IdeaProjectQuestionModelIdImpl value,
-          $Res Function(_$IdeaProjectQuestionModelIdImpl) then) =
-      __$$IdeaProjectQuestionModelIdImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class __$$IdeaProjectQuestionModelIdImplCopyWithImpl<$Res>
-    extends _$IdeaProjectQuestionModelIdCopyWithImpl<$Res,
-        _$IdeaProjectQuestionModelIdImpl>
-    implements _$$IdeaProjectQuestionModelIdImplCopyWith<$Res> {
-  __$$IdeaProjectQuestionModelIdImplCopyWithImpl(
-      _$IdeaProjectQuestionModelIdImpl _value,
-      $Res Function(_$IdeaProjectQuestionModelIdImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_$IdeaProjectQuestionModelIdImpl(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$IdeaProjectQuestionModelIdImpl extends _IdeaProjectQuestionModelId {
-  const _$IdeaProjectQuestionModelIdImpl({required this.value}) : super._();
-
-  @override
-  final String value;
-
-  @override
-  String toString() {
-    return 'IdeaProjectQuestionModelId(value: $value)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IdeaProjectQuestionModelIdImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$IdeaProjectQuestionModelIdImplCopyWith<_$IdeaProjectQuestionModelIdImpl>
-      get copyWith => __$$IdeaProjectQuestionModelIdImplCopyWithImpl<
-          _$IdeaProjectQuestionModelIdImpl>(this, _$identity);
-}
-
-abstract class _IdeaProjectQuestionModelId extends IdeaProjectQuestionModelId {
-  const factory _IdeaProjectQuestionModelId({required final String value}) =
-      _$IdeaProjectQuestionModelIdImpl;
-  const _IdeaProjectQuestionModelId._() : super._();
-
-  @override
-  String get value;
-  @override
-  @JsonKey(ignore: true)
-  _$$IdeaProjectQuestionModelIdImplCopyWith<_$IdeaProjectQuestionModelIdImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
 IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
     Map<String, dynamic> json) {
   return _IdeaProjectQuestionModel.fromJson(json);
@@ -1703,7 +1382,6 @@ abstract class $IdeaProjectQuestionModelCopyWith<$Res> {
   @useResult
   $Res call({IdeaProjectQuestionModelId id, LocalizedTextModel title});
 
-  $IdeaProjectQuestionModelIdCopyWith<$Res> get id;
   $LocalizedTextModelCopyWith<$Res> get title;
 }
 
@@ -1738,14 +1416,6 @@ class _$IdeaProjectQuestionModelCopyWithImpl<$Res,
 
   @override
   @pragma('vm:prefer-inline')
-  $IdeaProjectQuestionModelIdCopyWith<$Res> get id {
-    return $IdeaProjectQuestionModelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
   $LocalizedTextModelCopyWith<$Res> get title {
     return $LocalizedTextModelCopyWith<$Res>(_value.title, (value) {
       return _then(_value.copyWith(title: value) as $Val);
@@ -1764,8 +1434,6 @@ abstract class _$$IdeaProjectQuestionModelImplCopyWith<$Res>
   @useResult
   $Res call({IdeaProjectQuestionModelId id, LocalizedTextModel title});
 
-  @override
-  $IdeaProjectQuestionModelIdCopyWith<$Res> get id;
   @override
   $LocalizedTextModelCopyWith<$Res> get title;
 }
@@ -2057,6 +1725,365 @@ abstract class _LocalizedTextModel extends LocalizedTextModel {
   @override
   @JsonKey(ignore: true)
   _$$LocalizedTextModelImplCopyWith<_$LocalizedTextModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ProjectTagModel _$ProjectTagModelFromJson(Map<String, dynamic> json) {
+  return _ProjectTagModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ProjectTagModel {
+  ProjectTagModelId get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ProjectTagModelCopyWith<ProjectTagModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProjectTagModelCopyWith<$Res> {
+  factory $ProjectTagModelCopyWith(
+          ProjectTagModel value, $Res Function(ProjectTagModel) then) =
+      _$ProjectTagModelCopyWithImpl<$Res, ProjectTagModel>;
+  @useResult
+  $Res call({ProjectTagModelId id, String title});
+}
+
+/// @nodoc
+class _$ProjectTagModelCopyWithImpl<$Res, $Val extends ProjectTagModel>
+    implements $ProjectTagModelCopyWith<$Res> {
+  _$ProjectTagModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as ProjectTagModelId,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ProjectTagModelImplCopyWith<$Res>
+    implements $ProjectTagModelCopyWith<$Res> {
+  factory _$$ProjectTagModelImplCopyWith(_$ProjectTagModelImpl value,
+          $Res Function(_$ProjectTagModelImpl) then) =
+      __$$ProjectTagModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({ProjectTagModelId id, String title});
+}
+
+/// @nodoc
+class __$$ProjectTagModelImplCopyWithImpl<$Res>
+    extends _$ProjectTagModelCopyWithImpl<$Res, _$ProjectTagModelImpl>
+    implements _$$ProjectTagModelImplCopyWith<$Res> {
+  __$$ProjectTagModelImplCopyWithImpl(
+      _$ProjectTagModelImpl _value, $Res Function(_$ProjectTagModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+  }) {
+    return _then(_$ProjectTagModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as ProjectTagModelId,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ProjectTagModelImpl extends _ProjectTagModel {
+  const _$ProjectTagModelImpl({required this.id, this.title = ''}) : super._();
+
+  factory _$ProjectTagModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProjectTagModelImplFromJson(json);
+
+  @override
+  final ProjectTagModelId id;
+  @override
+  @JsonKey()
+  final String title;
+
+  @override
+  String toString() {
+    return 'ProjectTagModel(id: $id, title: $title)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProjectTagModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProjectTagModelImplCopyWith<_$ProjectTagModelImpl> get copyWith =>
+      __$$ProjectTagModelImplCopyWithImpl<_$ProjectTagModelImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ProjectTagModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ProjectTagModel extends ProjectTagModel {
+  const factory _ProjectTagModel(
+      {required final ProjectTagModelId id,
+      final String title}) = _$ProjectTagModelImpl;
+  const _ProjectTagModel._() : super._();
+
+  factory _ProjectTagModel.fromJson(Map<String, dynamic> json) =
+      _$ProjectTagModelImpl.fromJson;
+
+  @override
+  ProjectTagModelId get id;
+  @override
+  String get title;
+  @override
+  @JsonKey(ignore: true)
+  _$$ProjectTagModelImplCopyWith<_$ProjectTagModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DbSaveModel _$DbSaveModelFromJson(Map<String, dynamic> json) {
+  return _DbSaveModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DbSaveModel {
+  DbSaveVersion get version => throw _privateConstructorUsedError;
+  List<ProjectModel> get projects => throw _privateConstructorUsedError;
+  List<ProjectTagModel> get tags => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DbSaveModelCopyWith<DbSaveModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DbSaveModelCopyWith<$Res> {
+  factory $DbSaveModelCopyWith(
+          DbSaveModel value, $Res Function(DbSaveModel) then) =
+      _$DbSaveModelCopyWithImpl<$Res, DbSaveModel>;
+  @useResult
+  $Res call(
+      {DbSaveVersion version,
+      List<ProjectModel> projects,
+      List<ProjectTagModel> tags});
+}
+
+/// @nodoc
+class _$DbSaveModelCopyWithImpl<$Res, $Val extends DbSaveModel>
+    implements $DbSaveModelCopyWith<$Res> {
+  _$DbSaveModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? version = null,
+    Object? projects = null,
+    Object? tags = null,
+  }) {
+    return _then(_value.copyWith(
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as DbSaveVersion,
+      projects: null == projects
+          ? _value.projects
+          : projects // ignore: cast_nullable_to_non_nullable
+              as List<ProjectModel>,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModel>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DbSaveModelImplCopyWith<$Res>
+    implements $DbSaveModelCopyWith<$Res> {
+  factory _$$DbSaveModelImplCopyWith(
+          _$DbSaveModelImpl value, $Res Function(_$DbSaveModelImpl) then) =
+      __$$DbSaveModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {DbSaveVersion version,
+      List<ProjectModel> projects,
+      List<ProjectTagModel> tags});
+}
+
+/// @nodoc
+class __$$DbSaveModelImplCopyWithImpl<$Res>
+    extends _$DbSaveModelCopyWithImpl<$Res, _$DbSaveModelImpl>
+    implements _$$DbSaveModelImplCopyWith<$Res> {
+  __$$DbSaveModelImplCopyWithImpl(
+      _$DbSaveModelImpl _value, $Res Function(_$DbSaveModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? version = null,
+    Object? projects = null,
+    Object? tags = null,
+  }) {
+    return _then(_$DbSaveModelImpl(
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as DbSaveVersion,
+      projects: null == projects
+          ? _value._projects
+          : projects // ignore: cast_nullable_to_non_nullable
+              as List<ProjectModel>,
+      tags: null == tags
+          ? _value._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModel>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DbSaveModelImpl extends _DbSaveModel {
+  const _$DbSaveModelImpl(
+      {this.version = DbSaveVersion.v1,
+      final List<ProjectModel> projects = const [],
+      final List<ProjectTagModel> tags = const []})
+      : _projects = projects,
+        _tags = tags,
+        super._();
+
+  factory _$DbSaveModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DbSaveModelImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final DbSaveVersion version;
+  final List<ProjectModel> _projects;
+  @override
+  @JsonKey()
+  List<ProjectModel> get projects {
+    if (_projects is EqualUnmodifiableListView) return _projects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_projects);
+  }
+
+  final List<ProjectTagModel> _tags;
+  @override
+  @JsonKey()
+  List<ProjectTagModel> get tags {
+    if (_tags is EqualUnmodifiableListView) return _tags;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tags);
+  }
+
+  @override
+  String toString() {
+    return 'DbSaveModel(version: $version, projects: $projects, tags: $tags)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DbSaveModelImpl &&
+            (identical(other.version, version) || other.version == version) &&
+            const DeepCollectionEquality().equals(other._projects, _projects) &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      version,
+      const DeepCollectionEquality().hash(_projects),
+      const DeepCollectionEquality().hash(_tags));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DbSaveModelImplCopyWith<_$DbSaveModelImpl> get copyWith =>
+      __$$DbSaveModelImplCopyWithImpl<_$DbSaveModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DbSaveModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DbSaveModel extends DbSaveModel {
+  const factory _DbSaveModel(
+      {final DbSaveVersion version,
+      final List<ProjectModel> projects,
+      final List<ProjectTagModel> tags}) = _$DbSaveModelImpl;
+  const _DbSaveModel._() : super._();
+
+  factory _DbSaveModel.fromJson(Map<String, dynamic> json) =
+      _$DbSaveModelImpl.fromJson;
+
+  @override
+  DbSaveVersion get version;
+  @override
+  List<ProjectModel> get projects;
+  @override
+  List<ProjectTagModel> get tags;
+  @override
+  @JsonKey(ignore: true)
+  _$$DbSaveModelImplCopyWith<_$DbSaveModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

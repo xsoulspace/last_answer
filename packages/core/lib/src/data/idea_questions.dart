@@ -7,7 +7,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Почему?',
       it: 'Come mai?',
     ),
-    id: IdeaProjectQuestionModelId(value: '1'),
+    id: IdeaProjectQuestionModelId('1'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -15,7 +15,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Как?',
       it: 'Come?',
     ),
-    id: IdeaProjectQuestionModelId(value: '2'),
+    id: IdeaProjectQuestionModelId('2'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -23,7 +23,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Где?',
       it: 'In cui si?',
     ),
-    id: IdeaProjectQuestionModelId(value: '3'),
+    id: IdeaProjectQuestionModelId('3'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -31,7 +31,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Зачем?',
       it: 'Per che cosa?',
     ),
-    id: IdeaProjectQuestionModelId(value: '4'),
+    id: IdeaProjectQuestionModelId('4'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -39,7 +39,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Для чего?',
       it: 'Per quello?',
     ),
-    id: IdeaProjectQuestionModelId(value: '5'),
+    id: IdeaProjectQuestionModelId('5'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -47,7 +47,7 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Что?',
       it: 'Che cosa?',
     ),
-    id: IdeaProjectQuestionModelId(value: '6'),
+    id: IdeaProjectQuestionModelId('6'),
   ),
   IdeaProjectQuestionModel(
     title: LocalizedTextModel(
@@ -55,6 +55,6 @@ const ideaQuestionsData = <IdeaProjectQuestionModel>[
       ru: 'Для кого?',
       it: 'Per chi?',
     ),
-    id: IdeaProjectQuestionModelId(value: '7'),
+    id: IdeaProjectQuestionModelId('7'),
   ),
 ];

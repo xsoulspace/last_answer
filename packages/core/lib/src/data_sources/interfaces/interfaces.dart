@@ -7,4 +7,5 @@ export 'notifications.dart';
 export 'projects.dart';
 export 'purchases.dart';
 export 'remote_client.dart';
+export 'tags.dart';
 export 'user.dart';

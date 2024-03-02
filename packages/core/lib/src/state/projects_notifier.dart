@@ -11,8 +11,10 @@ class ProjectsNotifierState with _$ProjectsNotifierState {
 
 class ProjectsNotifierDto {
   ProjectsNotifierDto(final BuildContext context)
-      : projectsRepository = context.read();
+      : projectsRepository = context.read(),
+        tagsRepository = context.read();
   final ProjectsRepository projectsRepository;
+  final TagsRepository tagsRepository;
 }
 
 class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
@@ -29,34 +31,115 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     ),
   )..onLoad();
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
+  ProjectTagModelId get selectedTagId => value.requestProjectsDto.tagId;
 
-  Future<void> onLocalUserLoad() async {
-    projectsPagedController.loadFirstPage();
+  Future<void> onLocalUserLoad() async =>
+      projectsPagedController.loadFirstPage();
+  void onReset() => projectsPagedController.refresh();
+
+  void updateDto(
+    final RequestProjectsDto Function(RequestProjectsDto dto) updater,
+  ) {
+    final updatedDto = updater(value.requestProjectsDto);
+    if (updatedDto == value.requestProjectsDto) return;
+    value = value.copyWith(
+      requestProjectsDto: updatedDto,
+    );
+    projectsPagedController
+      ..refresh()
+      ..loadFirstPage();
+  }
+
+  void updateEditingProject(
+    final ProjectModel project, {
+    final bool shouldMarkAsUpdated = true,
+  }) =>
+      _editingProjectUpdatesController.add(
+        project.copyWith(
+          updatedAt: shouldMarkAsUpdated ? DateTime.now() : project.updatedAt,
+        ),
+      );
+
+  void deleteProject(final ProjectModel project) {
+    projectsPagedController.pager.removeElement(
+      element: project,
+      test: (final e) => e.id == project.id,
+    );
+    unawaited(dto.projectsRepository.remove(id: project.id));
+  }
+
+  late final _editingProjectUpdatesController = StreamController<ProjectModel>()
+    ..stream.sampleTime(1.seconds).listen(updateProject);
+  Future<void> updateProject(final ProjectModel project) async {
+    final oldProject = await dto.projectsRepository.getById(id: project.id);
+    final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
+    projectsPagedController.pager.replaceElement(
+      element: project,
+      equals: (final e, final e2) => e.id == e2.id,
+      shouldAddOnNotFound: true,
+      shouldMoveToFirst: shouldMoveToFirst,
+    );
+    unawaited(dto.projectsRepository.put(project: project));
+  }
+
+  Future<void> updateProjects(
+    final Iterable<ProjectModel> projects, {
+    final bool shouldUpdatePager = true,
+  }) async {
+    final oldProjects = await dto.projectsRepository
+        .getByIds(ids: projects.map((final e) => e.id));
+    final oldProjectsMap =
+        oldProjects.toMap(toKey: (final v) => v.id, toValue: (final v) => v);
+    if (shouldUpdatePager) {
+      for (final project in projects) {
+        final oldProject = oldProjectsMap[project.id];
+        final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
+        projectsPagedController.pager.replaceElement(
+          element: project,
+          equals: (final e, final e2) => e.id == e2.id,
+          shouldAddOnNotFound: true,
+          shouldMoveToFirst: shouldMoveToFirst,
+        );
+      }
+    }
+
+    await dto.projectsRepository.putAll(projects: projects.toList());
+  }
+
+  @override
+  void dispose() {
+    unawaited(_editingProjectUpdatesController.close());
+    projectsPagedController.dispose();
+    super.dispose();
   }
 
   final _fileService = FileService();
+}
+
+extension ProjectsNotifierX on ProjectsNotifier {
   void _setFileLoading(final bool isLoading) => setValue(
         value.copyWith(isAllProjectsFileLoading: isLoading),
       );
-  Future<void> copyAllProjectsToClipboard(final BuildContext context) async {
+  Future<void> copyDbSaveToClipboard(final BuildContext context) async {
     _setFileLoading(true);
     try {
       final sharer = ProjectSharer.of(context);
-      final allProjectsJson = await _getAllProjectsJson();
-      await sharer.shareProjects(allProjectsJson);
+      final dbSave = await _getDbSave();
+      await sharer.shareSave(dbSave);
     } finally {
       _setFileLoading(false);
     }
   }
 
-  Future<void> getAllProjectsFromClipboard(final BuildContext context) async {
+  Future<void> getDbSaveFromClipboard(final BuildContext context) async {
     _setFileLoading(true);
     try {
+      final appNotifier = context.read<AppNotifier>();
       final modals = Modals.of(context);
       final l10n = context.l10n;
       final sharer = ProjectSharer.of(context);
-      final allProjects = await sharer.getFromClipboard(context);
-      if (allProjects.isEmpty) return;
+      final dbSave = await sharer.getFromClipboard(context);
+      if (dbSave.isEmpty) return;
       final shouldContinue = await modals.showWarningDialog(
         title: l10n.confirmProjectsOwerwrite,
         noActionText: l10n.cancel,
@@ -64,15 +147,19 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
         description: l10n.beCarefulItsInreversableAction,
       );
       if (!shouldContinue) return;
-      await _restoreProjectsBy(allProjects: allProjects, context: context);
+      await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
     } finally {
       _setFileLoading(false);
     }
   }
 
-  Future<List<Map<String, dynamic>>> _getAllProjectsJson() async {
+  Future<DbSaveModel> _getDbSave() async {
     final allProjects = await dto.projectsRepository.getAll();
-    return allProjects.map((final e) => e.toJson()).toList();
+    final allTags = dto.tagsRepository.getAll();
+    return DbSaveModel(
+      projects: allProjects,
+      tags: allTags.values.toList(),
+    );
   }
 
   Future<void> saveToFile(
@@ -84,13 +171,12 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     try {
       final toasts = Toasts.of(context);
       final l10n = context.l10n;
-
-      final allProjectsJson = await _getAllProjectsJson();
+      final dbSave = await _getDbSave();
       final filename = useTimestampForBackupFilename
           ? FileServiceI.filenameWithTimestamp
           : FileServiceI.filename;
       final wasSaved = await _fileService.saveFile(
-        data: allProjectsJson,
+        data: dbSave.toJson(),
         filename: filename,
       );
       if (!wasSaved) return;
@@ -102,6 +188,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
 
   Future<void> loadFromFile(final BuildContext context) async {
     _setFileLoading(true);
+    final appNotifier = context.read<AppNotifier>();
     final modals = Modals.of(context);
     try {
       final l10n = context.l10n;
@@ -112,8 +199,8 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
         description: l10n.byLoadingFileWarning,
       );
       if (!shouldContinue) return;
-      final jsonList = await _fileService.openFile();
-      if (jsonList.isEmpty) return;
+      final dbJson = await _fileService.openFile();
+      if (dbJson.isEmpty) return;
 
       shouldContinue = await modals.showWarningDialog(
         title: l10n.confirmProjectsOwerwrite,
@@ -122,58 +209,11 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
         description: l10n.beCarefulItsInreversableAction,
       );
       if (!shouldContinue) return;
-      final allProjects = jsonList.map(ProjectModel.fromJson).toList();
-      await _restoreProjectsBy(allProjects: allProjects, context: context);
+      final dbSave = DbSaveModel.fromJson(dbJson);
+      if (dbSave.isEmpty) return;
+      await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
     } finally {
       _setFileLoading(false);
     }
-  }
-
-  Future<void> _restoreProjectsBy({
-    required final List<ProjectModel> allProjects,
-    required final BuildContext context,
-  }) async {
-    final toasts = Toasts.of(context);
-    final l10n = context.l10n;
-
-    await dto.projectsRepository.putAll(projects: allProjects);
-    onReset();
-    await onLocalUserLoad();
-    await toasts.showBottomToast(
-      message: l10n.projectsFromFileRestored,
-    );
-  }
-
-  void onReset() => projectsPagedController.refresh();
-
-  void updateProject(final ProjectModel project) {
-    _projectsUpdatesController.add(project.copyWith(updatedAt: DateTime.now()));
-  }
-
-  void deleteProject(final ProjectModel project) {
-    projectsPagedController.pager.removeElement(
-      element: project,
-      test: (final e) => e.id == project.id,
-    );
-    unawaited(dto.projectsRepository.remove(id: project.id));
-  }
-
-  late final _projectsUpdatesController = StreamController<ProjectModel>()
-    ..stream.sampleTime(1.seconds).listen(_updateProject);
-  void _updateProject(final ProjectModel project) {
-    projectsPagedController.pager.replaceElement(
-      element: project,
-      equals: (final e, final e2) => e.id == e2.id,
-      shouldAddOnNotFound: true,
-      shouldMoveToFirst: true,
-    );
-    unawaited(dto.projectsRepository.put(project: project));
-  }
-
-  @override
-  void dispose() {
-    unawaited(_projectsUpdatesController.close());
-    projectsPagedController.dispose();
-    super.dispose();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class UiCircularProgress extends StatelessWidget {
@@ -8,7 +8,7 @@ class UiCircularProgress extends StatelessWidget {
   Widget build(final BuildContext context) => Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-          child: const CircularProgressIndicator.adaptive(),
+          child: const CupertinoActivityIndicator(),
         ),
       ).animate().fadeIn();
 }

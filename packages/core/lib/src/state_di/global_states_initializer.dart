@@ -28,6 +28,7 @@ class GlobalStatesInitializerDto {
         purchasesNotifier = context.read(),
         purchasesAdsService = context.read(),
         projectsRepository = context.read(),
+        tagsNotifier = context.read(),
         assetBundle = DefaultAssetBundle.of(context);
   final PurchasesAdsService purchasesAdsService;
   final BuildContext context;
@@ -43,6 +44,7 @@ class GlobalStatesInitializerDto {
   final EmojiStateNotifier emojiProvider;
   final NotificationsNotifier notificationController;
   final ProjectsNotifier projectsNotifier;
+  final TagsNotifier tagsNotifier;
   final UserNotifier userNotifier;
   final PurchasesNotifier purchasesNotifier;
   final AppNotifier appNotifier;

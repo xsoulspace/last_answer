@@ -1,3 +1,12 @@
+## 3.19
+
+🪄 Scourgify update!:)
+
+- feat(🗂️): new option to group projects into folders (experimental)
+- feat(💾): many options to backup and restore data (experimental)
+
+- fix: update project just for clicking to it
+
 ## 3.17.1+33
 
 - fix: move updated project to first index

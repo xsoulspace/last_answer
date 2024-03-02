@@ -7,9 +7,9 @@ abstract interface class FileServiceI {
   static String get filenameWithTimestamp =>
       'last_answer_${todayDateTime.yyyyMMDD}.json';
   static const filename = 'last_answer.json';
-  Future<List> openFile();
+  Future<Map<String, dynamic>> openFile();
   Future<bool> saveFile({
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
     required final String filename,
   });
 }
@@ -17,7 +17,7 @@ abstract interface class FileServiceI {
 extension FileServiceIX on FileServiceI {
   bool saveFileData({
     required final String? filePath,
-    required final List<Map<String, dynamic>> data,
+    required final Map<String, dynamic> data,
   }) {
     // User canceled the picker
     if (filePath == null) return false;

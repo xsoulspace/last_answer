@@ -8,9 +8,9 @@ class AppInfoScreen extends StatefulWidget {
     super.key,
   });
   static const privacyPolicyLink =
-      'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md';
+      'https://xsoulspace.dev/#/home/p/Ly08SUzbm9IbHg1aiHLp/privacy';
   static const termsAndConditions =
-      'https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md';
+      'https://xsoulspace.dev/#/home/p/Ly08SUzbm9IbHg1aiHLp/terms';
 
   @override
   State<AppInfoScreen> createState() => _AppInfoScreenState();
@@ -87,10 +87,10 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                       children: [
                         TextButton(
                           onPressed: () async {
-                            if (await url_launcher
-                                .canLaunch(AppInfoScreen.privacyPolicyLink)) {
-                              await url_launcher
-                                  .launch(AppInfoScreen.privacyPolicyLink);
+                            const url = AppInfoScreen.privacyPolicyLink;
+                            final uri = Uri.parse(url);
+                            if (await url_launcher.canLaunchUrl(uri)) {
+                              await url_launcher.launchUrl(uri);
                             }
                           },
                           child: Text(
@@ -100,10 +100,10 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            if (await url_launcher
-                                .canLaunch(AppInfoScreen.termsAndConditions)) {
-                              await url_launcher
-                                  .launch(AppInfoScreen.termsAndConditions);
+                            const url = AppInfoScreen.termsAndConditions;
+                            final uri = Uri.parse(url);
+                            if (await url_launcher.canLaunchUrl(uri)) {
+                              await url_launcher.launchUrl(uri);
                             }
                           },
                           child: Text(

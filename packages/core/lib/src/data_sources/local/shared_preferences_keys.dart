@@ -13,4 +13,5 @@ enum SharedPreferencesKeys {
   supporterDayRecordMs,
   usageDayCount,
   webProjects,
+  tags,
 }

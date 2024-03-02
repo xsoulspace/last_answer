@@ -18,28 +18,23 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
     final data = dto.data;
     final int itemsCount;
     final types = data?.types ?? [];
-    QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-            QAfterFilterCondition> basicQuery =
-        isarDb.projects
-            .where()
-            .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    var basicQuery = isarDb.projects
+        .where()
+        .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     if (data != null) {
       if (data.search.isNotEmpty) {
         basicQuery = basicQuery
             .and()
-            .jsonContentContains('*${data.search}*', caseSensitive: false);
+            .jsonContentMatches('*${data.search}*', caseSensitive: false);
       }
       if (!data.tagId.isEmpty) {
         basicQuery = basicQuery.and().tagsElementContains(data.tagId.value);
       }
     }
-    final QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-        QAfterSortBy> sortedBasicQuery;
-    if (data?.isReversed == true) {
-      sortedBasicQuery = basicQuery.sortByUpdatedAt();
-    } else {
-      sortedBasicQuery = basicQuery.sortByUpdatedAtDesc();
-    }
+    final sortedBasicQuery = switch (data?.isReversed) {
+      true => basicQuery.sortByUpdatedAt(),
+      null || false => basicQuery.sortByUpdatedAtDesc(),
+    };
     itemsCount = await sortedBasicQuery.countAsync();
     final pagesCount = (itemsCount / dto.limit).ceil();
     final items = await sortedBasicQuery.findAllAsync(
@@ -108,11 +103,9 @@ final class ProjectsLocalDataSourceIsarImpl implements ProjectsLocalDataSource {
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
     final types = dto?.types ?? [];
 
-    QueryBuilder<ProjectIsarCollection, ProjectIsarCollection,
-            QAfterFilterCondition> basicQuery =
-        isarDb.projects
-            .where()
-            .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
+    var basicQuery = isarDb.projects
+        .where()
+        .anyOf(types, (final q, final type) => q.typeEqualTo(type.name));
     if (dto != null) {
       if (dto.search.isNotEmpty) {
         basicQuery = basicQuery

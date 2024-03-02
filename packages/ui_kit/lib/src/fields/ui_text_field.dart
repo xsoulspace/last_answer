@@ -16,6 +16,7 @@ class UiTextField extends StatefulWidget {
     this.keyboardType,
     this.focusNode,
     this.style,
+    this.maxLength,
     super.key,
   });
   final String? value;
@@ -29,6 +30,7 @@ class UiTextField extends StatefulWidget {
   final InputDecoration? decoration;
   final TextStyle? style;
   final TextAlignVertical? textAlignVertical;
+  final int? maxLength;
   final FormFieldValidator<String?>? validator;
   final int? maxLines;
   @override
@@ -60,6 +62,7 @@ class _UiTextFieldState extends State<UiTextField> {
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         style: widget.style,
+        maxLength: widget.maxLength,
         autocorrect: widget.autocorrect,
         textAlignVertical: widget.textAlignVertical,
         maxLines: widget.maxLines,

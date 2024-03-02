@@ -35,6 +35,7 @@ class PurchasesNotifier
     _emitLoaded(purchases);
   }
 
+  bool get isActive => value.value.isActive;
   late final ({String mobile, String desktop}) adUnits = switch (Envs.store) {
     StoreType.appleStore || StoreType.huawaiStore || StoreType.rustore => (
         desktop: '',

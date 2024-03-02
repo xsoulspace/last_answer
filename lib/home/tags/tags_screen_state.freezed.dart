@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TagsScreenState {
   FieldContainer<ProjectTagModel> get selectedTag =>
       throw _privateConstructorUsedError;
+  String? get addProjectsSearch => throw _privateConstructorUsedError;
   LoadableContainer<List<ProjectModel>> get projects =>
       throw _privateConstructorUsedError;
   TagsScreenType get screenType => throw _privateConstructorUsedError;
@@ -35,6 +36,7 @@ abstract class $TagsScreenStateCopyWith<$Res> {
   @useResult
   $Res call(
       {FieldContainer<ProjectTagModel> selectedTag,
+      String? addProjectsSearch,
       LoadableContainer<List<ProjectModel>> projects,
       TagsScreenType screenType});
 
@@ -56,6 +58,7 @@ class _$TagsScreenStateCopyWithImpl<$Res, $Val extends TagsScreenState>
   @override
   $Res call({
     Object? selectedTag = null,
+    Object? addProjectsSearch = freezed,
     Object? projects = null,
     Object? screenType = null,
   }) {
@@ -64,6 +67,10 @@ class _$TagsScreenStateCopyWithImpl<$Res, $Val extends TagsScreenState>
           ? _value.selectedTag
           : selectedTag // ignore: cast_nullable_to_non_nullable
               as FieldContainer<ProjectTagModel>,
+      addProjectsSearch: freezed == addProjectsSearch
+          ? _value.addProjectsSearch
+          : addProjectsSearch // ignore: cast_nullable_to_non_nullable
+              as String?,
       projects: null == projects
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
@@ -104,6 +111,7 @@ abstract class _$$TagsScreenStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {FieldContainer<ProjectTagModel> selectedTag,
+      String? addProjectsSearch,
       LoadableContainer<List<ProjectModel>> projects,
       TagsScreenType screenType});
 
@@ -125,6 +133,7 @@ class __$$TagsScreenStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedTag = null,
+    Object? addProjectsSearch = freezed,
     Object? projects = null,
     Object? screenType = null,
   }) {
@@ -133,6 +142,10 @@ class __$$TagsScreenStateImplCopyWithImpl<$Res>
           ? _value.selectedTag
           : selectedTag // ignore: cast_nullable_to_non_nullable
               as FieldContainer<ProjectTagModel>,
+      addProjectsSearch: freezed == addProjectsSearch
+          ? _value.addProjectsSearch
+          : addProjectsSearch // ignore: cast_nullable_to_non_nullable
+              as String?,
       projects: null == projects
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
@@ -150,12 +163,15 @@ class __$$TagsScreenStateImplCopyWithImpl<$Res>
 class _$TagsScreenStateImpl implements _TagsScreenState {
   const _$TagsScreenStateImpl(
       {this.selectedTag = const FieldContainer(value: ProjectTagModel.empty),
+      this.addProjectsSearch,
       this.projects = const LoadableContainer(value: []),
       this.screenType = TagsScreenType.allTags});
 
   @override
   @JsonKey()
   final FieldContainer<ProjectTagModel> selectedTag;
+  @override
+  final String? addProjectsSearch;
   @override
   @JsonKey()
   final LoadableContainer<List<ProjectModel>> projects;
@@ -165,7 +181,7 @@ class _$TagsScreenStateImpl implements _TagsScreenState {
 
   @override
   String toString() {
-    return 'TagsScreenState(selectedTag: $selectedTag, projects: $projects, screenType: $screenType)';
+    return 'TagsScreenState(selectedTag: $selectedTag, addProjectsSearch: $addProjectsSearch, projects: $projects, screenType: $screenType)';
   }
 
   @override
@@ -175,6 +191,8 @@ class _$TagsScreenStateImpl implements _TagsScreenState {
             other is _$TagsScreenStateImpl &&
             (identical(other.selectedTag, selectedTag) ||
                 other.selectedTag == selectedTag) &&
+            (identical(other.addProjectsSearch, addProjectsSearch) ||
+                other.addProjectsSearch == addProjectsSearch) &&
             (identical(other.projects, projects) ||
                 other.projects == projects) &&
             (identical(other.screenType, screenType) ||
@@ -182,8 +200,8 @@ class _$TagsScreenStateImpl implements _TagsScreenState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, selectedTag, projects, screenType);
+  int get hashCode => Object.hash(
+      runtimeType, selectedTag, addProjectsSearch, projects, screenType);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +214,14 @@ class _$TagsScreenStateImpl implements _TagsScreenState {
 abstract class _TagsScreenState implements TagsScreenState {
   const factory _TagsScreenState(
       {final FieldContainer<ProjectTagModel> selectedTag,
+      final String? addProjectsSearch,
       final LoadableContainer<List<ProjectModel>> projects,
       final TagsScreenType screenType}) = _$TagsScreenStateImpl;
 
   @override
   FieldContainer<ProjectTagModel> get selectedTag;
+  @override
+  String? get addProjectsSearch;
   @override
   LoadableContainer<List<ProjectModel>> get projects;
   @override

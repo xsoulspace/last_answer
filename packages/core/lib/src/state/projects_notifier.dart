@@ -82,23 +82,28 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     unawaited(dto.projectsRepository.put(project: project));
   }
 
-  Future<void> updateProjects(final Iterable<ProjectModel> projects) async {
+  Future<void> updateProjects(
+    final Iterable<ProjectModel> projects, {
+    final bool shouldUpdatePager = true,
+  }) async {
     final oldProjects = await dto.projectsRepository
         .getByIds(ids: projects.map((final e) => e.id));
     final oldProjectsMap =
         oldProjects.toMap(toKey: (final v) => v.id, toValue: (final v) => v);
-    for (final project in projects) {
-      final oldProject = oldProjectsMap[project.id];
-      final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
-      projectsPagedController.pager.replaceElement(
-        element: project,
-        equals: (final e, final e2) => e.id == e2.id,
-        shouldAddOnNotFound: true,
-        shouldMoveToFirst: shouldMoveToFirst,
-      );
+    if (shouldUpdatePager) {
+      for (final project in projects) {
+        final oldProject = oldProjectsMap[project.id];
+        final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
+        projectsPagedController.pager.replaceElement(
+          element: project,
+          equals: (final e, final e2) => e.id == e2.id,
+          shouldAddOnNotFound: true,
+          shouldMoveToFirst: shouldMoveToFirst,
+        );
+      }
     }
 
-    unawaited(dto.projectsRepository.putAll(projects: projects.toList()));
+    await dto.projectsRepository.putAll(projects: projects.toList());
   }
 
   @override

@@ -244,60 +244,51 @@ self.addEventListener("activate", function (event) {
 // The fetch handler redirects requests for RESOURCE files to the service
 // worker cache.
 self.addEventListener("fetch", (event) => {
-  try {
-    console.log({ "dTADA fetch": event.request.method });
-    if (event.request.method !== "GET") {
-      return;
-    }
-    var origin = self.location.origin;
-    var key = event.request.url.substring(origin.length + 1);
-    // Redirect URLs to the index.html
-    if (key.indexOf("?v=") != -1) {
-      key = key.split("?v=")[0];
-    }
-    if (
-      event.request.url == origin ||
-      event.request.url.startsWith(origin + "/#") ||
-      event.request.url.startsWith(origin + "/#/home") ||
-      key == ""
-    ) {
-      key = "/";
-    }
-    console.log({ "TADA: resource ": !RESOURCES[key] });
-    // If the URL is not the RESOURCE list then return to signal that the
-    // browser should take over.
-    if (!RESOURCES[key]) {
-      return;
-    }
-    // If the URL is the index.html, perform an online-first request.
-    if (key == "/") {
-      console.log("key / ");
-      return onlineFirst(event);
-    }
-    event.respondWith(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(event.request).then((response) => {
-          console.log({ "cache resopnse / ": response != null });
-          // Either respond with the cached resource, or perform a fetch and
-          // lazily populate the cache only if the resource was successfully fetched.
-          return (
-            response ||
-            fetch(event.request).then((response) => {
-              if (response && Boolean(response.ok)) {
-                cache.put(event.request, response.clone());
-              }
-              return response;
-            })
-          );
-        });
-      })
-    );
-  } catch (error) {
-    console.error("OOOPES", error);
+  if (event.request.method !== "GET") {
+    return;
   }
+  var origin = self.location.origin;
+  var key = event.request.url.substring(origin.length + 1);
+  // Redirect URLs to the index.html
+  if (key.indexOf("?v=") != -1) {
+    key = key.split("?v=")[0];
+  }
+  if (
+    event.request.url == origin ||
+    event.request.url.startsWith(origin + "/#") ||
+    key == ""
+  ) {
+    key = "/";
+  }
+  // If the URL is not the RESOURCE list then return to signal that the
+  // browser should take over.
+  if (!RESOURCES[key]) {
+    return;
+  }
+  // If the URL is the index.html, perform an online-first request.
+  if (key == "/") {
+    return onlineFirst(event);
+  }
+  event.respondWith(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then((response) => {
+        console.log({ "cache resopnse / ": response != null });
+        // Either respond with the cached resource, or perform a fetch and
+        // lazily populate the cache only if the resource was successfully fetched.
+        return (
+          response ||
+          fetch(event.request).then((response) => {
+            if (response && Boolean(response.ok)) {
+              cache.put(event.request, response.clone());
+            }
+            return response;
+          })
+        );
+      });
+    })
+  );
 });
 self.addEventListener("message", (event) => {
-  console.log({ "TADA: message": event.data });
   // SkipWaiting can be used to immediately activate a waiting service worker.
   // This will also require a page refresh triggered by the main worker.
   if (event.data === "skipWaiting") {

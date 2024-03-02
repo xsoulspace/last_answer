@@ -1,28 +1,30 @@
 name: last-answer
-version: 3.18.6+42
+version: 3.19.1+43
 summary: Fast ideas brainstorming tool with quick notes
 description: |
   You have a cool idea or you need to write a post/article for your blog.
-  You need to write it down fast.
+  You need to write it down as fast as possible.
 
   Then this app is for you.
 
-  Follow questions, write as many answers as you can.
-  As a result, you will get a quick description of the idea.
-
-  Or just write a quick note.
-
-  That's it!:)
-
-  **Features**
+  **FEATURES**
   - Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
   - Quick note limit - limit characters length by social network. 
 
   - Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
 
+  - Messanger style writing - from down to up, the same way as you write in any messanger -  just try it and you will like it:)
+  - Auto sorting - all projects just feels like "chats" in messanger, so what you write recent - is what you will see as first:)
+
+  **NEW & EXPERIMENTAL**:
+  - Folders - now you can organize your ideas and notes in folders.
+  - Backup & Restore - now you can backup and restore data from/to files or from/to clipboard. You control your data.
+
+  **EXTRA FEATURES**: 
+  - Unique & Custom app layout - primary goal is to achive most convenient writing & note orginizing experience.
+  - Responsive layout - nice to you if you use it on full screen or in a small window.
   - Dark & Light themes
   - English, Italian, Russian languages
-  - Responsive layout - nice to you if you use it on full screen or in a small window
 
   Hope this app will be useful for you :)
   Thank you and have a nice day.

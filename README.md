@@ -75,7 +75,7 @@ Have a nice day!
 
 Last Answer does not send your projects to a server, all data stored on your device.
 
-However, Last Answer utilizes Google Analytics, Firebase Crashlytics may collect some application data, such as Device Type and OS type etc. For more information see [Privacy Policy](https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md) and [Terms and Conditions](https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md).
+However, to improve quality and just not give up on app development:), Last Answer utilizes Google Analytics, Firebase Crashlytics may collect some application data, such as Device Type and OS type etc. For more information see [Privacy Policy](https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md) and [Terms and Conditions](https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md).
 
 ## Support Development
 

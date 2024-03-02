@@ -71,6 +71,12 @@ Have a nice day!
 
 [Join Discord](https://discord.gg/y54DpJwmAn) or send a message to idea@xsoulspace.dev
 
+## Privacy
+
+Last Answer does not send your projects to a server, all data stored on your device.
+
+However, Last Answer utilizes Google Analytics, Firebase Crashlytics may collect some application data, such as Device Type and OS type etc. For more information see [Privacy Policy](https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md) and [Terms and Conditions](https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md).
+
 ## Support Development
 
 You can support this app development by [giving a star its GitHub repository](https://github.com/xsoulspace/last_answer) or
@@ -91,3 +97,8 @@ Flutter & Dart 💙
 
 melos to manage packages
 https://melos.invertase.dev
+
+### PWA Manifest links:
+
+https://github.com/w3c/manifest/wiki/Categories
+https://developer.chrome.com/blog/richer-install-ui-desktop

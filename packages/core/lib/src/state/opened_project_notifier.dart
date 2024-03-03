@@ -51,11 +51,13 @@ class OpenedProjectNotifier
     dto.projectsNotifier.updateEditingProject(item);
   }
 
+  List<ProjectTagModelId> get _tagsIds => [dto.projectsNotifier.selectedTagId];
   void createNoteProject(final BuildContext context) {
     final note = ProjectModelNote(
       id: ProjectModelId.generate(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      tagsIds: _tagsIds,
       charactersLimit: dto.userNotifier.settings.charactersLimitForNewNotes,
     );
     loadProject(context: context, project: note);
@@ -69,6 +71,7 @@ class OpenedProjectNotifier
       id: ProjectModelId.generate(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      tagsIds: _tagsIds,
       title: title,
     );
     if (title.isNotEmpty) dto.projectsNotifier.updateEditingProject(idea);

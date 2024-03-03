@@ -76,6 +76,13 @@
             navigator.userAgent
           );
         }
+        if (navigator.serviceWorker) {
+          console.log("SW found");
+          navigator.serviceWorker.ready.then((registration) => {
+            console.log("requesting offline resources");
+            registration.active.postMessage("downloadOffline");
+          });
+        }
         var loading = document.querySelector("#loading");
         var loadingContainer = document.querySelector("#loading_container");
         var hostElement = document.querySelector("#flutter_app");

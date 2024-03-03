@@ -42,4 +42,4 @@ build-web-pwa:
 build-google-play:
 	fvm flutter build appbundle --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay -t lib/main_prod.dart
 build-rustore:
-	fvm flutter build apk --dart-define-from-file=configs/envs/prod.json -t lib/main_prod.dart
+	fvm flutter build apk --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=rustore -t lib/main_prod.dart

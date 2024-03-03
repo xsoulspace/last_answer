@@ -171,11 +171,29 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
 
     if (!shouldBeDeleted) return;
 
+    final isDeletingAppWideTag = tag.id == dto._.projectsNotifier.selectedTagId;
+
     final tagId = tag.id;
     _removedProjects.addAll(value.projects.value);
     _updateProjects([]);
     await _assignTagToProjects(tagId);
     dto._.tagsNotifier.remove(key: tagId);
+    if (isDeletingAppWideTag) {
+      final tags = dto._.tagsNotifier.values;
+      if (tags.isNotEmpty) {
+        dto._.projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: tags.first.id,
+          ),
+        );
+      } else {
+        dto._.projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: ProjectTagModelId.empty,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> onSaveTag() async {

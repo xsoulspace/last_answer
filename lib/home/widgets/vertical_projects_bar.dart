@@ -16,14 +16,11 @@ class VerticalProjectsBar extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(
-        left: 6,
-        right: 6,
         bottom: 22,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 16,
-          horizontal: 6,
         ),
         // TODO(arenukvern): add gradient
         decoration: BoxDecoration(

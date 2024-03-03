@@ -1,5 +1,21 @@
 [
   {
+    "id": "5",
+    "message": {
+      "ru": "- feat(🗂️): новая опция группировки проектов в папки (экспериментальная)\n- feat(💾): множество вариантов резервного копирования и восстановления данных (экспериментальная)\nfix: обновление проекта просто кликнув по нему",
+      "en": "- feat(🗂️): new option to group projects into folders (experimental)\n- feat(💾): many options to backup and restore data (experimental)\n - fix: update project just for clicking to it",
+      "it": "- feat(🗂️): nuova opzione per raggruppare i progetti in cartelle (sperimentale)\n- feat(💾): molte opzioni per eseguire il backup e ripristinare i dati (sperimentale)\nfix: aggiornare il progetto semplicemente cliccandoci sopra",
+      "ga": ""
+    },
+    "title": {
+      "ru": "🪄 Scourgify update!:)",
+      "en": "🪄 Scourgify update!:)",
+      "it": "🪄 Scourgify update!:)",
+      "ga": "🪄 Scourgify update!:)"
+    },
+    "created": "2024-03-01"
+  },
+  {
     "id": "4",
     "message": {
       "ru": " Приложение полностью переписано и обновлено до Material 3. Теперь с новой архитектурой должно запускаться и работать быстрее чем раньше + пофикшены некоторые баги для landscape layout. Некотрые баги возможны, но как всегда - это будет фикситься позже:) \n\nДружелюбной и уютной погоды:)\nАнтон ",

@@ -40,7 +40,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
               final info = snapshot.data;
               final version = S
                   .of(context)
-                  .appVersion(info?.version ?? '', info?.buildNumber ?? '');
+                  .appVersion(info?.buildNumber ?? '', info?.version ?? '');
 
               return ListView(
                 shrinkWrap: true,

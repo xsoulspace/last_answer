@@ -59,6 +59,10 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
   void onSearchAddProjects(final String? search) =>
       _addProjectsSearchUpdatesController.add(search);
   ProjectTagModel get selectedTag => value.selectedTag.value;
+  ProjectTagModelId get _appWideSelectedTagId =>
+      dto._.projectsNotifier.selectedTagId;
+  bool get _isEditingAppWideTag => _appWideSelectedTagId == selectedTag.id;
+
   @override
   void dispose() {
     unawaited(_addProjectsSearchUpdatesController.close());
@@ -167,11 +171,29 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
 
     if (!shouldBeDeleted) return;
 
+    final isDeletingAppWideTag = tag.id == dto._.projectsNotifier.selectedTagId;
+
     final tagId = tag.id;
     _removedProjects.addAll(value.projects.value);
     _updateProjects([]);
     await _assignTagToProjects(tagId);
     dto._.tagsNotifier.remove(key: tagId);
+    if (isDeletingAppWideTag) {
+      final tags = dto._.tagsNotifier.values;
+      if (tags.isNotEmpty) {
+        dto._.projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: tags.first.id,
+          ),
+        );
+      } else {
+        dto._.projectsNotifier.updateDto(
+          (final dto) => dto.copyWith(
+            tagId: ProjectTagModelId.empty,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> onSaveTag() async {
@@ -211,7 +233,10 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
         ),
       ),
     };
-    await dto._.projectsNotifier.updateProjects(updatedProjects);
+    await dto._.projectsNotifier.updateProjects(
+      updatedProjects,
+      shouldUpdatePager: _isEditingAppWideTag,
+    );
 
     /// removed
     final projectsToRemove = _removedProjects.difference(projects);
@@ -222,12 +247,14 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     );
     await dto._.projectsNotifier
         .updateProjects(updatedRemovedProjects, shouldUpdatePager: false);
-    final map = updatedRemovedProjects.toMap(
-      toKey: (final i) => i.id,
-      toValue: (final i) => i,
-    );
-    dto._.projectsNotifier.projectsPagedController
-        .deleteItemsWhere((final e) => map.containsKey(e.id));
+    if (_isEditingAppWideTag) {
+      final map = updatedRemovedProjects.toMap(
+        toKey: (final i) => i.id,
+        toValue: (final i) => i,
+      );
+      dto._.projectsNotifier.projectsPagedController
+          .deleteItemsWhere((final e) => map.containsKey(e.id));
+    }
 
     _removedProjects.clear();
   }

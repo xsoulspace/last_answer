@@ -44,7 +44,12 @@ class _UiTextFieldState extends State<UiTextField> {
 
   @override
   void didUpdateWidget(covariant final UiTextField oldWidget) {
-    _controller.text = widget.value ?? '';
+    if (_isInnerControllerUsed) {
+      final newValue = widget.value ?? '';
+      if (newValue != _controller.text) {
+        _controller.text = newValue;
+      }
+    }
     super.didUpdateWidget(oldWidget);
   }
 

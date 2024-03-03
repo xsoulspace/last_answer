@@ -31,11 +31,11 @@ class FeedbackProvider extends StatelessWidget {
       // Take the label ids from your project console
       // https://console.wiredash.io/ -> Settings -> Labels
       Label(
-        id: 'label-mlxjl2sa6f',
+        id: 'label-i53blm87an',
         title: 'Bug',
       ),
       Label(
-        id: 'label-qu10qzqcf2',
+        id: 'label-r9rtjoszji',
         title: 'Feature request',
       ),
     ],

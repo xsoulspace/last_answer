@@ -14,48 +14,46 @@ class VerticalProjectsBar extends StatelessWidget {
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(
+    return Container(
+      margin: const EdgeInsets.only(
         bottom: 22,
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-        ),
-        // TODO(arenukvern): add gradient
-        decoration: BoxDecoration(
-          borderRadius: defaultBorderRadius,
-          color: themeDefiner.themeToUse == ThemeToUse.fromContext
-              ? Theme.of(context).splashColor.withOpacity(0.05)
-              : null,
-        ),
-        child: Wrap(
-          direction: Axis.vertical,
-          spacing: 16,
-          children: [
-            if (Envs.isFeedbackAvailable)
-              BarItem(
-                onTap: () => FeedbackProvider.show(context),
-                label: 'Bugs',
-                child: const FeedbackButton(),
-              ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 16,
+      ),
+      // TODO(arenukvern): add gradient
+      decoration: BoxDecoration(
+        borderRadius: defaultBorderRadius,
+        color: themeDefiner.themeToUse == ThemeToUse.fromContext
+            ? Theme.of(context).splashColor.withOpacity(0.05)
+            : null,
+      ),
+      child: Wrap(
+        direction: Axis.vertical,
+        spacing: 16,
+        children: [
+          if (Envs.isFeedbackAvailable)
             BarItem(
+              onTap: () => FeedbackProvider.show(context),
+              label: 'Bugs',
+              child: const FeedbackButton(),
+            ),
+          BarItem(
+            onTap: onIdeaTap,
+            label: context.l10n.idea,
+            child: IconIdeaButton(
               onTap: onIdeaTap,
-              label: context.l10n.idea,
-              child: IconIdeaButton(
-                onTap: onIdeaTap,
-              ),
             ),
-            BarItem(
-              onTap: onNoteTap,
-              label: context.l10n.note,
-              child: IconButton(
-                onPressed: onNoteTap,
-                icon: const Icon(Icons.book),
-              ),
+          ),
+          BarItem(
+            onTap: onNoteTap,
+            label: context.l10n.note,
+            child: IconButton(
+              onPressed: onNoteTap,
+              icon: const Icon(Icons.book),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

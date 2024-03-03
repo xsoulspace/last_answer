@@ -64,10 +64,22 @@ final class ProjectsLocalDataSourceLocalDbImpl
     reverse();
     final items = [..._cache];
     if (data != null) {
+      final conditions = <bool Function(SearchableContainer<ProjectModel> e)>[];
       if (data.search.isNotEmpty) {
         final search = data.search;
-        items.retainWhere((final e) => e.jsonContent.contains(search));
+        conditions.add((final e) => e.jsonContent.contains(search));
       }
+      if (!data.tagId.isEmpty) {
+        conditions.add((final e) => e.value.tagsIds.contains(data.tagId));
+      }
+      items.retainWhere((final e) {
+        for (final condition in conditions) {
+          if (!condition(e)) {
+            return false;
+          }
+        }
+        return true;
+      });
     }
 
     final int itemsCount = items.length;
@@ -112,8 +124,9 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async {
-    _putAll(projects: projects);
-    _saveCache();
+    for (final project in projects) {
+      await put(project: project);
+    }
   }
 
   void _saveCache() => localDb.setItemsList(
@@ -136,7 +149,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
         );
       }
       if (!dto.tagId.isEmpty) {
-        items.removeWhere((final e) => e.value.tagsIds.contains(dto.tagId));
+        items.removeWhere((final e) => !e.value.tagsIds.contains(dto.tagId));
       }
     }
 

@@ -670,6 +670,108 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Restore from clipboard'**
   String get getAllProjectsFromClipboard;
+
+  /// No description provided for @searchProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Search projects'**
+  String get searchProjects;
+
+  /// No description provided for @addProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Add projects'**
+  String get addProjects;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder'**
+  String get folder;
+
+  /// No description provided for @folderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder name'**
+  String get folderName;
+
+  /// No description provided for @projects.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get projects;
+
+  /// No description provided for @folders.
+  ///
+  /// In en, this message translates to:
+  /// **'Folders'**
+  String get folders;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @limitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit reached'**
+  String get limitReached;
+
+  /// No description provided for @createFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create folder'**
+  String get createFolder;
+
+  /// No description provided for @deleteFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete folder?'**
+  String get deleteFolder;
+
+  /// No description provided for @folderDeletionWillNotDeleteProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'\nDeletion of this Folder doesn\'t delete any Note or Idea.'**
+  String get folderDeletionWillNotDeleteProjects;
+
+  /// No description provided for @useFoldersForNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 🗂️Folders for Notes and Ideas to quickly organize them.'**
+  String get useFoldersForNotes;
+
+  /// No description provided for @youCanCreateUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'\n\nYou can create up to {foldersLimit} Folders.'**
+  String youCanCreateUpTo(Object foldersLimit);
+
+  /// No description provided for @clickToEditFolders.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to edit Folders'**
+  String get clickToEditFolders;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

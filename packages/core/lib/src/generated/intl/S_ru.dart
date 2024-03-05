@@ -311,7 +311,7 @@ class SRu extends S {
   String get edit => 'Править';
 
   @override
-  String get folder => 'Папка';
+  String get folder => 'Папку';
 
   @override
   String get folderName => 'Имя папки';

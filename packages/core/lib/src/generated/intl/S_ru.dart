@@ -297,4 +297,57 @@ class SRu extends S {
 
   @override
   String get getAllProjectsFromClipboard => 'Восстановить из буфера обмена';
+
+  @override
+  String get searchProjects => 'Искать проекты';
+
+  @override
+  String get addProjects => 'Добавить';
+
+  @override
+  String get create => 'Создать';
+
+  @override
+  String get edit => 'Править';
+
+  @override
+  String get folder => 'Папка';
+
+  @override
+  String get folderName => 'Имя папки';
+
+  @override
+  String get projects => 'Проекты';
+
+  @override
+  String get folders => 'Папки';
+
+  @override
+  String get save => 'Сохранить';
+
+  @override
+  String get limitReached => 'Лимит достигнут';
+
+  @override
+  String get createFolder => 'Создать папку';
+
+  @override
+  String get deleteFolder => 'Удалить папку?';
+
+  @override
+  String get folderDeletionWillNotDeleteProjects => '\nУдаление этой папки не удаляет никакую заметку или идею.';
+
+  @override
+  String get useFoldersForNotes => 'Используйте 🗂️ Папки для заметок и идей, чтобы быстро организовать их.  ';
+
+  @override
+  String youCanCreateUpTo(Object foldersLimit) {
+    return '\n\nВы можете создать до $foldersLimit папок.';
+  }
+
+  @override
+  String get clickToEditFolders => 'Редактировать папки';
+
+  @override
+  String get all => 'Все';
 }

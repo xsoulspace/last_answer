@@ -101,6 +101,7 @@ class TagsVerticalBar extends StatelessWidget {
             tagId: tag?.id ?? ProjectTagModelId.empty,
           ),
         );
+    final l10n = context.l10n;
 
     return Column(
       children: [
@@ -122,7 +123,7 @@ class TagsVerticalBar extends StatelessWidget {
             ),
           ),
           icon: const Icon(Icons.edit_square),
-          tooltip: 'Click to edit Folders',
+          tooltip: l10n.clickToEditFolders,
         ),
         const Gap(8),
         Expanded(
@@ -166,19 +167,21 @@ class _TagListTile extends StatelessWidget {
   final ProjectTagModelId selectedTagId;
 
   @override
-  Widget build(final BuildContext context) => ListTile(
-        contentPadding: EdgeInsets.zero,
-        minVerticalPadding: 0,
-        dense: true,
-        titleTextStyle: context.textTheme.labelSmall,
-        title:
-            Text(tag.isEmpty ? 'All' : tag.title, textAlign: TextAlign.center),
-        // ignore: avoid_bool_literals_in_conditional_expressions
-        selected: tag.isEmpty && selectedTagId.isEmpty
-            ? true
-            : tag.id == selectedTagId,
-        onTap: onTap,
-      );
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      minVerticalPadding: 0,
+      dense: true,
+      titleTextStyle: context.textTheme.labelSmall,
+      title:
+          Text(tag.isEmpty ? l10n.all : tag.title, textAlign: TextAlign.center),
+      // ignore: avoid_bool_literals_in_conditional_expressions
+      selected:
+          tag.isEmpty && selectedTagId.isEmpty ? true : tag.id == selectedTagId,
+      onTap: onTap,
+    );
+  }
 }
 
 class ProjectsListScreen extends StatelessWidget {

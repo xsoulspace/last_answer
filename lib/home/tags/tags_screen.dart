@@ -52,7 +52,7 @@ class _TagsListView extends StatelessWidget {
           child: CustomScrollView(
             shrinkWrap: true,
             slivers: [
-              const DialogTopBar(title: 'Folders').sliver(),
+              DialogTopBar(title: l10n.folders).sliver(),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8),
@@ -60,14 +60,12 @@ class _TagsListView extends StatelessWidget {
                     text: TextSpan(
                       style: textTheme.bodyMedium,
                       children: [
-                        const TextSpan(
-                          text:
-                              'Use 🗂️Folders for Notes and Ideas to quickly organize them.',
+                        TextSpan(
+                          text: l10n.useFoldersForNotes,
                         ),
                         TextSpan(
                           style: textTheme.bodySmall,
-                          text:
-                              '\n\nYou can create up to $foldersLimit Folders.',
+                          text: l10n.youCanCreateUpTo(foldersLimit),
                         ),
                       ],
                     ),
@@ -109,7 +107,9 @@ class _TagsListView extends StatelessWidget {
                 onPressed: isLimitReached
                     ? null
                     : tagsScreenNotifier.onCreateTagManagement,
-                child: Text(isLimitReached ? 'Limit reached' : 'Create folder'),
+                child: Text(
+                  isLimitReached ? l10n.limitReached : l10n.createFolder,
+                ),
               ),
             ),
           ],
@@ -156,6 +156,7 @@ class _ManageTagView extends StatelessWidget {
     final textTheme = context.textTheme;
     final formHelper = stateNotifier.folderFieldFormHelper;
     final isSaving = selectedTag.isLoading;
+    final l10n = context.l10n;
 
     return Form(
       key: formHelper.formKey,
@@ -165,7 +166,8 @@ class _ManageTagView extends StatelessWidget {
             child: CustomScrollView(
               slivers: [
                 DialogTopBar(
-                  title: '${tagId.isEmpty ? 'Create' : 'Edit'} Folder',
+                  title:
+                      '${tagId.isEmpty ? l10n.create : l10n.edit} ${l10n.folder}',
                   onClose: stateNotifier.onCloseTagManagement,
                   isBottomBorderVisible: false,
                 ).sliver(),
@@ -173,8 +175,8 @@ class _ManageTagView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: UiTextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Folder name',
+                    decoration: InputDecoration(
+                      labelText: l10n.folderName,
                     ),
                     maxLength: 12,
                     value: selectedTag.value.title,
@@ -190,7 +192,7 @@ class _ManageTagView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    'Projects',
+                    l10n.projects,
                     style: textTheme.titleMedium,
                   ),
                 ).sliver(),
@@ -200,7 +202,7 @@ class _ManageTagView extends StatelessWidget {
                   child: FilledButton.icon(
                     onPressed: stateNotifier.onOpenAddProjects,
                     icon: const Icon(Icons.add),
-                    label: const Text('Add projects'),
+                    label: Text(l10n.addProjects),
                   ),
                 ).sliver(),
                 const SliverGap(16),
@@ -232,7 +234,7 @@ class _ManageTagView extends StatelessWidget {
               Expanded(
                 child: TextButton(
                   onPressed: stateNotifier.onCloseTagManagement,
-                  child: const Text('Cancel'),
+                  child: Text(l10n.cancel),
                 ),
               ),
               Expanded(
@@ -240,7 +242,7 @@ class _ManageTagView extends StatelessWidget {
                   onPressed: isSaving ? () {} : stateNotifier.onSaveTag,
                   child: isSaving
                       ? const UiCircularProgress()
-                      : Text(tagId.isEmpty ? 'Create' : 'Save'),
+                      : Text(tagId.isEmpty ? l10n.create : l10n.save),
                 ),
               ),
             ],
@@ -302,7 +304,7 @@ class _AddProjectsView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
-
+    final l10n = context.l10n;
     final projects = tagsScreenNotifier.value.projects;
     return Column(
       children: [
@@ -315,7 +317,7 @@ class _AddProjectsView extends StatelessWidget {
                 ),
                 automaticallyImplyLeading: false,
                 floating: true,
-                title: const Text('Add projects'),
+                title: Text(l10n.addProjects),
                 actions: [
                   CloseButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
                 ],
@@ -357,7 +359,7 @@ class _AddProjectsView extends StatelessWidget {
             ),
           ],
           elevation: const MaterialStatePropertyAll(8),
-          hintText: 'Search projects',
+          hintText: l10n.searchProjects,
           onChanged: tagsScreenNotifier.onSearchAddProjects,
           padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16),

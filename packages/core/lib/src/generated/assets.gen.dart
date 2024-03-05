@@ -194,18 +194,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logo_64.png
   AssetGenImage get logo64 => const AssetGenImage('assets/icons/logo_64.png');
 
-  /// File path: assets/icons/twitter_logo_black.svg
-  SvgGenImage get twitterLogoBlack =>
-      const SvgGenImage('assets/icons/twitter_logo_black.svg');
-
-  /// File path: assets/icons/twitter_logo_blue.svg
-  SvgGenImage get twitterLogoBlue =>
-      const SvgGenImage('assets/icons/twitter_logo_blue.svg');
-
-  /// File path: assets/icons/twitter_logo_white.svg
-  SvgGenImage get twitterLogoWhite =>
-      const SvgGenImage('assets/icons/twitter_logo_white.svg');
-
   /// File path: assets/icons/vk_logo_black.svg
   SvgGenImage get vkLogoBlack =>
       const SvgGenImage('assets/icons/vk_logo_black.svg');
@@ -217,6 +205,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/vk_logo_white.svg
   SvgGenImage get vkLogoWhite =>
       const SvgGenImage('assets/icons/vk_logo_white.svg');
+
+  /// File path: assets/icons/x_logo_black.png
+  AssetGenImage get xLogoBlack =>
+      const AssetGenImage('assets/icons/x_logo_black.png');
+
+  /// File path: assets/icons/x_logo_white.png
+  AssetGenImage get xLogoWhite =>
+      const AssetGenImage('assets/icons/x_logo_white.png');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -242,12 +238,11 @@ class $AssetsIconsGen {
         logo48,
         logo512,
         logo64,
-        twitterLogoBlack,
-        twitterLogoBlue,
-        twitterLogoWhite,
         vkLogoBlack,
         vkLogoBlue,
-        vkLogoWhite
+        vkLogoWhite,
+        xLogoBlack,
+        xLogoWhite
       ];
 }
 

@@ -62,7 +62,4 @@ class AppColors {
 
   /// #FFBFBD
   static const accent5 = Color(0xFFFFBFBD);
-
-  /// #1D9BF0
-  static const twitterBlue = Color(0xFF1D9BF0);
 }

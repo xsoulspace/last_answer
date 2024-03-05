@@ -41,6 +41,10 @@ const ProjectIsarCollectionSchema = IsarGeneratedSchema(
         name: 'modelIdStr',
         type: IsarType.string,
       ),
+      IsarPropertySchema(
+        name: 'jsonMap',
+        type: IsarType.json,
+      ),
     ],
     indexes: [],
   ),
@@ -68,6 +72,7 @@ int serializeProjectIsarCollection(
   IsarCore.writeString(writer, 3, object.type);
   IsarCore.writeString(writer, 4, object.jsonContent);
   IsarCore.writeString(writer, 5, object.modelIdStr);
+  IsarCore.writeString(writer, 6, isarJsonEncode(object.jsonMap));
   return Isar.fastHash(object.modelIdStr);
 }
 
@@ -141,6 +146,15 @@ dynamic deserializeProjectIsarCollectionProp(IsarReader reader, int property) {
       return IsarCore.readString(reader, 4) ?? '';
     case 5:
       return IsarCore.readString(reader, 5) ?? '';
+    case 6:
+      {
+        final json = isarJsonDecode(IsarCore.readString(reader, 6) ?? 'null');
+        if (json is Map<String, dynamic>) {
+          return json;
+        } else {
+          return const <String, dynamic>{};
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
@@ -1216,6 +1230,20 @@ extension ProjectIsarCollectionQuerySortBy
       );
     });
   }
+
+  QueryBuilder<ProjectIsarCollection, ProjectIsarCollection, QAfterSortBy>
+      sortByJsonMap() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(6);
+    });
+  }
+
+  QueryBuilder<ProjectIsarCollection, ProjectIsarCollection, QAfterSortBy>
+      sortByJsonMapDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(6, sort: Sort.desc);
+    });
+  }
 }
 
 extension ProjectIsarCollectionQuerySortThenBy
@@ -1275,6 +1303,20 @@ extension ProjectIsarCollectionQuerySortThenBy
       return query.addSortBy(5, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<ProjectIsarCollection, ProjectIsarCollection, QAfterSortBy>
+      thenByJsonMap() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(6);
+    });
+  }
+
+  QueryBuilder<ProjectIsarCollection, ProjectIsarCollection, QAfterSortBy>
+      thenByJsonMapDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(6, sort: Sort.desc);
+    });
+  }
 }
 
 extension ProjectIsarCollectionQueryWhereDistinct
@@ -1304,6 +1346,13 @@ extension ProjectIsarCollectionQueryWhereDistinct
       distinctByJsonContent({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ProjectIsarCollection, ProjectIsarCollection, QAfterDistinct>
+      distinctByJsonMap() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(6);
     });
   }
 }
@@ -1341,6 +1390,13 @@ extension ProjectIsarCollectionQueryProperty1
       modelIdStrProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
+    });
+  }
+
+  QueryBuilder<ProjectIsarCollection, Map<String, dynamic>, QAfterProperty>
+      jsonMapProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(6);
     });
   }
 }
@@ -1381,6 +1437,13 @@ extension ProjectIsarCollectionQueryProperty2<R>
       return query.addProperty(5);
     });
   }
+
+  QueryBuilder<ProjectIsarCollection, (R, Map<String, dynamic>), QAfterProperty>
+      jsonMapProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(6);
+    });
+  }
 }
 
 extension ProjectIsarCollectionQueryProperty3<R1, R2>
@@ -1417,6 +1480,13 @@ extension ProjectIsarCollectionQueryProperty3<R1, R2>
       modelIdStrProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
+    });
+  }
+
+  QueryBuilder<ProjectIsarCollection, (R1, R2, Map<String, dynamic>),
+      QOperations> jsonMapProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(6);
     });
   }
 }

@@ -120,9 +120,12 @@ class CharactersLimitSetting extends HookWidget {
           child: twitterIcon.svg(
             width: 16,
             height: 16,
-            color: controller.isTwitterLimit
-                ? AppColors.twitterBlue
-                : theme.textTheme.bodyMedium?.color,
+            colorFilter: ColorFilter.mode(
+              controller.isTwitterLimit
+                  ? AppColors.twitterBlue
+                  : theme.textTheme.bodyMedium?.color ?? AppColors.twitterBlue,
+              BlendMode.src,
+            ),
           ),
         ),
         CharactersLimitButton(

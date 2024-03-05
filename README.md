@@ -35,12 +35,16 @@
 
 ## Getting Started
 
-You have a cool idea or you need to write a post/article for your blog.
-You need to write it down as fast as possible.
+Do you have a cool idea and need to get it down quickly? Or do you blog / write articles on social media?
 
 Then this app is for you.
 
-**FEATURES**
+In "ideas" answer the questions, write as many answers as you can to get a brief description of the idea and an understanding of how to implement it.
+In "notes" write posts and articles.
+
+That's all ! :)
+
+FEATURES
 
 "Notes" - for bloggers and those who like to write in social networks:
 
@@ -55,12 +59,12 @@ Then this app is for you.
 - Messanger style writing - from down to up, the same way as you write in any messanger - just try it and you will like it:)
 - Auto sorting - all projects just feels like "chats" in messanger, so what you write recent - is what you will see as first:)
 
-**NEW & EXPERIMENTAL**:
+NEW & EXPERIMENTAL
 
 - Folders - now you can organize your ideas and notes in folders.
 - Backup & Restore - now you can backup and restore data from/to files or from/to clipboard. You control your data.
 
-**EXTRA FEATURES**:
+EXTRA FEATURES
 
 - Unique & Custom app layout - primary goal is to achive most convenient writing & note orginizing experience.
 - Responsive layout - nice to you if you use it on full screen or in a small window.

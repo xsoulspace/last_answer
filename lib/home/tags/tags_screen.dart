@@ -167,6 +167,7 @@ class _ManageTagView extends StatelessWidget {
               slivers: [
                 DialogTopBar(
                   title:
+                      // ignore: lines_longer_than_80_chars
                       '${tagId.isEmpty ? l10n.create : l10n.edit} ${l10n.folder}',
                   onClose: stateNotifier.onCloseTagManagement,
                   isBottomBorderVisible: false,

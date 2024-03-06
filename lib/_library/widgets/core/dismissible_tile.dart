@@ -5,9 +5,11 @@ class DismissibleTile extends StatelessWidget {
     required this.child,
     required this.dismissibleKey,
     required this.onDismissed,
+    this.canDismiss = true,
     // final this.confirmDismiss,
     super.key,
   });
+  final bool canDismiss;
   final VoidCallback onDismissed;
   // final ConfirmDismissCallback? confirmDismiss;
   final Widget child;
@@ -15,6 +17,7 @@ class DismissibleTile extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => slidable.Slidable(
         key: dismissibleKey,
+        enabled: canDismiss,
         startActionPane: slidable.ActionPane(
           motion: const slidable.BehindMotion(),
           children: [

@@ -633,6 +633,9 @@ mixin _$RequestProjectsDto {
   bool get isReversed => throw _privateConstructorUsedError;
   ProjectTagModelId get tagId => throw _privateConstructorUsedError;
 
+  /// Enabled to include changelog and other system "notes"
+  bool get shouldAddChangelog => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $RequestProjectsDtoCopyWith<RequestProjectsDto> get copyWith =>
       throw _privateConstructorUsedError;
@@ -648,7 +651,8 @@ abstract class $RequestProjectsDtoCopyWith<$Res> {
       {String search,
       List<ProjectTypes> types,
       bool isReversed,
-      ProjectTagModelId tagId});
+      ProjectTagModelId tagId,
+      bool shouldAddChangelog});
 }
 
 /// @nodoc
@@ -668,6 +672,7 @@ class _$RequestProjectsDtoCopyWithImpl<$Res, $Val extends RequestProjectsDto>
     Object? types = null,
     Object? isReversed = null,
     Object? tagId = null,
+    Object? shouldAddChangelog = null,
   }) {
     return _then(_value.copyWith(
       search: null == search
@@ -686,6 +691,10 @@ class _$RequestProjectsDtoCopyWithImpl<$Res, $Val extends RequestProjectsDto>
           ? _value.tagId
           : tagId // ignore: cast_nullable_to_non_nullable
               as ProjectTagModelId,
+      shouldAddChangelog: null == shouldAddChangelog
+          ? _value.shouldAddChangelog
+          : shouldAddChangelog // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -702,7 +711,8 @@ abstract class _$$RequestProjectsDtoImplCopyWith<$Res>
       {String search,
       List<ProjectTypes> types,
       bool isReversed,
-      ProjectTagModelId tagId});
+      ProjectTagModelId tagId,
+      bool shouldAddChangelog});
 }
 
 /// @nodoc
@@ -720,6 +730,7 @@ class __$$RequestProjectsDtoImplCopyWithImpl<$Res>
     Object? types = null,
     Object? isReversed = null,
     Object? tagId = null,
+    Object? shouldAddChangelog = null,
   }) {
     return _then(_$RequestProjectsDtoImpl(
       search: null == search
@@ -738,6 +749,10 @@ class __$$RequestProjectsDtoImplCopyWithImpl<$Res>
           ? _value.tagId
           : tagId // ignore: cast_nullable_to_non_nullable
               as ProjectTagModelId,
+      shouldAddChangelog: null == shouldAddChangelog
+          ? _value.shouldAddChangelog
+          : shouldAddChangelog // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -750,7 +765,8 @@ class _$RequestProjectsDtoImpl extends _RequestProjectsDto
       {this.search = '',
       final List<ProjectTypes> types = const [],
       this.isReversed = false,
-      this.tagId = ProjectTagModelId.empty})
+      this.tagId = ProjectTagModelId.empty,
+      this.shouldAddChangelog = false})
       : _types = types,
         super._();
 
@@ -773,9 +789,14 @@ class _$RequestProjectsDtoImpl extends _RequestProjectsDto
   @JsonKey()
   final ProjectTagModelId tagId;
 
+  /// Enabled to include changelog and other system "notes"
+  @override
+  @JsonKey()
+  final bool shouldAddChangelog;
+
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RequestProjectsDto(search: $search, types: $types, isReversed: $isReversed, tagId: $tagId)';
+    return 'RequestProjectsDto(search: $search, types: $types, isReversed: $isReversed, tagId: $tagId, shouldAddChangelog: $shouldAddChangelog)';
   }
 
   @override
@@ -786,7 +807,8 @@ class _$RequestProjectsDtoImpl extends _RequestProjectsDto
       ..add(DiagnosticsProperty('search', search))
       ..add(DiagnosticsProperty('types', types))
       ..add(DiagnosticsProperty('isReversed', isReversed))
-      ..add(DiagnosticsProperty('tagId', tagId));
+      ..add(DiagnosticsProperty('tagId', tagId))
+      ..add(DiagnosticsProperty('shouldAddChangelog', shouldAddChangelog));
   }
 
   @override
@@ -798,12 +820,19 @@ class _$RequestProjectsDtoImpl extends _RequestProjectsDto
             const DeepCollectionEquality().equals(other._types, _types) &&
             (identical(other.isReversed, isReversed) ||
                 other.isReversed == isReversed) &&
-            (identical(other.tagId, tagId) || other.tagId == tagId));
+            (identical(other.tagId, tagId) || other.tagId == tagId) &&
+            (identical(other.shouldAddChangelog, shouldAddChangelog) ||
+                other.shouldAddChangelog == shouldAddChangelog));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, search,
-      const DeepCollectionEquality().hash(_types), isReversed, tagId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      search,
+      const DeepCollectionEquality().hash(_types),
+      isReversed,
+      tagId,
+      shouldAddChangelog);
 
   @JsonKey(ignore: true)
   @override
@@ -818,7 +847,8 @@ abstract class _RequestProjectsDto extends RequestProjectsDto {
       {final String search,
       final List<ProjectTypes> types,
       final bool isReversed,
-      final ProjectTagModelId tagId}) = _$RequestProjectsDtoImpl;
+      final ProjectTagModelId tagId,
+      final bool shouldAddChangelog}) = _$RequestProjectsDtoImpl;
   const _RequestProjectsDto._() : super._();
 
   @override
@@ -829,6 +859,10 @@ abstract class _RequestProjectsDto extends RequestProjectsDto {
   bool get isReversed;
   @override
   ProjectTagModelId get tagId;
+  @override
+
+  /// Enabled to include changelog and other system "notes"
+  bool get shouldAddChangelog;
   @override
   @JsonKey(ignore: true)
   _$$RequestProjectsDtoImplCopyWith<_$RequestProjectsDtoImpl> get copyWith =>

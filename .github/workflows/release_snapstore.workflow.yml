@@ -1,4 +1,4 @@
-name: Snapstore Build
+name: snap amd64
 on:
   release:
     types: [created]
@@ -11,26 +11,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform:
-          - amd64
-          - arm64
+    # strategy:
+    #   matrix:
+    #     platform:
+    #       - amd64
+    #       - arm64
+    env:
+      WIREDASH_PROJECT_ID: ${{ secrets.WIREDASH_PROJECT_ID }}
+      WIREDASH_PROJECT_SECRET: ${{ secrets.WIREDASH_PROJECT_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-      # - uses: snapcore/action-build@v1
-      #   id: snapcraft
-      - uses: diddlesnaps/snapcraft-multiarch-action@v1
+      - uses: snapcore/action-build@v1
         id: snapcraft
-        with:
-          architecture: ${{ matrix.platform }}
-          environment: |
-            WIREDASH_PROJECT_ID=${{ secrets.WIREDASH_PROJECT_ID }}
-            WIREDASH_PROJECT_SECRET=${{ secrets.WIREDASH_PROJECT_SECRET }}}}
+      # - uses: diddlesnaps/snapcraft-multiarch-action@v1
+      # id: snapcraft
+      # with:
+      #   architecture: ${{ matrix.platform }}
+      #   environment: |
       - name: Test installation
         run: |
           sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}

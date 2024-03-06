@@ -78,9 +78,10 @@ apps:
       - dbus-last-answer
 
 # https://forum.snapcraft.io/t/failed-to-install-or-refresh-a-snap-flutter-does-not-exist/25623
+# https://snapcraft.io/docs/architectures
 architectures:
-  - build-on: amd64
-  - build-on: arm64
+  - build-on: [amd64]
+  - build-on: [arm64]
 
 parts:
   last-answer:

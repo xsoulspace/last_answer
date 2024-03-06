@@ -54,6 +54,7 @@ class ProjectTile extends StatelessWidget {
     );
 
     return DismissibleTile(
+      canDismiss: project.type != ProjectTypes.systemChangelog,
       dismissibleKey: ValueKey(project.id),
       // confirmDismiss: (final direction) async {
       //   if (direction != DismissDirection.startToEnd) return false;

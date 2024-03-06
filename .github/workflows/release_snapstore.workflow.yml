@@ -1,0 +1,51 @@
+name: Snapstore Build
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - release/snapstore
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v2
+      - name: Building snap
+        run: |
+          snapcraft
+      # Make sure the snap is installable
+      - name: Test snap installation
+        run: |
+          sudo snap install ./last-answer.snap –dangerous
+      - name: Save snap for reuse
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-answer-snap
+          path: ./last-answer.snap
+
+  publish:
+    # if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download snap
+        uses: actions/download-artifact@v3
+        with:
+          name: last-answer-snap
+          path: .
+      - name: Publish to Snapstore Edge
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_LOGIN }}
+        with:
+          snap: ./last-answer.snap
+          release: edge

@@ -22,7 +22,6 @@ class SettingsScreen extends HookWidget {
           const MyAccountViewRemoteImpl()
         else
           const MyAccountViewLocalImpl(),
-      const ChangelogView(),
     ];
     Widget child = TabBarView(
       physics: const SpeedyPageViewScrollPhysics(),
@@ -37,7 +36,6 @@ class SettingsScreen extends HookWidget {
         tabs: [
           Tab(text: context.l10n.generalSettingsShortTitle),
           if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
-          Tab(text: context.l10n.changeLog),
         ],
       ),
     );

@@ -125,6 +125,9 @@ _$ProjectModelChangelogImpl _$$ProjectModelChangelogImplFromJson(
               ?.map((e) => ProjectTagModelId.fromJson(e as String))
               .toList() ??
           const [],
+      archivedAt: json['archivedAt'] == null
+          ? null
+          : DateTime.parse(json['archivedAt'] as String),
       $type: json['runtimeType'] as String?,
     );
 
@@ -137,6 +140,7 @@ Map<String, dynamic> _$$ProjectModelChangelogImplToJson(
       'id': instance.id,
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'tagsIds': instance.tagsIds,
+      'archivedAt': instance.archivedAt?.toIso8601String(),
       'runtimeType': instance.$type,
     };
 

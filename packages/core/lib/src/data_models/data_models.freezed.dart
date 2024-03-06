@@ -265,6 +265,7 @@ mixin _$ProjectModel {
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   ProjectTypes get type => throw _privateConstructorUsedError;
+  DateTime? get archivedAt => throw _privateConstructorUsedError;
   List<ProjectTagModelId> get tagsIds => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -295,7 +296,8 @@ mixin _$ProjectModel {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)
         changelog,
   }) =>
       throw _privateConstructorUsedError;
@@ -328,7 +330,8 @@ mixin _$ProjectModel {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
   }) =>
       throw _privateConstructorUsedError;
@@ -361,7 +364,8 @@ mixin _$ProjectModel {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
     required TResult orElse(),
   }) =>
@@ -405,6 +409,7 @@ abstract class $ProjectModelCopyWith<$Res> {
       DateTime createdAt,
       DateTime updatedAt,
       ProjectTypes type,
+      DateTime? archivedAt,
       List<ProjectTagModelId> tagsIds});
 }
 
@@ -425,6 +430,7 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? type = null,
+    Object? archivedAt = freezed,
     Object? tagsIds = null,
   }) {
     return _then(_value.copyWith(
@@ -444,6 +450,10 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ProjectTypes,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       tagsIds: null == tagsIds
           ? _value.tagsIds
           : tagsIds // ignore: cast_nullable_to_non_nullable
@@ -683,7 +693,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)
         changelog,
   }) {
     return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
@@ -720,7 +731,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
   }) {
     return idea?.call(id, createdAt, updatedAt, title, type, archivedAt,
@@ -757,7 +769,8 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
     required TResult orElse(),
   }) {
@@ -836,6 +849,7 @@ abstract class ProjectModelIdea extends ProjectModel
   String get title;
   @override
   ProjectTypes get type;
+  @override
   DateTime? get archivedAt;
   List<IdeaProjectAnswerModel> get answers;
   IdeaProjectAnswerModel? get draftAnswer;
@@ -1046,7 +1060,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)
         changelog,
   }) {
     return note(id, createdAt, updatedAt, this.note, type, charactersLimit,
@@ -1083,7 +1098,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
   }) {
     return note?.call(id, createdAt, updatedAt, this.note, type,
@@ -1120,7 +1136,8 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
     required TResult orElse(),
   }) {
@@ -1199,6 +1216,7 @@ abstract class ProjectModelNote extends ProjectModel
   @override
   ProjectTypes get type;
   int get charactersLimit;
+  @override
   DateTime? get archivedAt;
   @override
   List<ProjectTagModelId> get tagsIds;
@@ -1223,7 +1241,8 @@ abstract class _$$ProjectModelChangelogImplCopyWith<$Res>
       LocalizedTextModel title,
       ProjectModelId id,
       ProjectTypes type,
-      List<ProjectTagModelId> tagsIds});
+      List<ProjectTagModelId> tagsIds,
+      DateTime? archivedAt});
 
   $LocalizedTextModelCopyWith<$Res> get title;
 }
@@ -1245,6 +1264,7 @@ class __$$ProjectModelChangelogImplCopyWithImpl<$Res>
     Object? id = null,
     Object? type = null,
     Object? tagsIds = null,
+    Object? archivedAt = freezed,
   }) {
     return _then(_$ProjectModelChangelogImpl(
       createdAt: null == createdAt
@@ -1271,6 +1291,10 @@ class __$$ProjectModelChangelogImplCopyWithImpl<$Res>
           ? _value._tagsIds
           : tagsIds // ignore: cast_nullable_to_non_nullable
               as List<ProjectTagModelId>,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 
@@ -1293,6 +1317,7 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
       this.id = ProjectModelId.systemChangelog,
       this.type = ProjectTypes.systemChangelog,
       final List<ProjectTagModelId> tagsIds = const [],
+      this.archivedAt,
       final String? $type})
       : _tagsIds = tagsIds,
         $type = $type ?? 'changelog',
@@ -1323,12 +1348,15 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
     return EqualUnmodifiableListView(_tagsIds);
   }
 
+  @override
+  final DateTime? archivedAt;
+
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ProjectModel.changelog(createdAt: $createdAt, updatedAt: $updatedAt, title: $title, id: $id, type: $type, tagsIds: $tagsIds)';
+    return 'ProjectModel.changelog(createdAt: $createdAt, updatedAt: $updatedAt, title: $title, id: $id, type: $type, tagsIds: $tagsIds, archivedAt: $archivedAt)';
   }
 
   @override
@@ -1343,13 +1371,15 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.type, type) || other.type == type) &&
-            const DeepCollectionEquality().equals(other._tagsIds, _tagsIds));
+            const DeepCollectionEquality().equals(other._tagsIds, _tagsIds) &&
+            (identical(other.archivedAt, archivedAt) ||
+                other.archivedAt == archivedAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, createdAt, updatedAt, title, id,
-      type, const DeepCollectionEquality().hash(_tagsIds));
+      type, const DeepCollectionEquality().hash(_tagsIds), archivedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -1388,10 +1418,12 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)
         changelog,
   }) {
-    return changelog(createdAt, updatedAt, title, id, type, tagsIds);
+    return changelog(
+        createdAt, updatedAt, title, id, type, tagsIds, archivedAt);
   }
 
   @override
@@ -1424,10 +1456,12 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
   }) {
-    return changelog?.call(createdAt, updatedAt, title, id, type, tagsIds);
+    return changelog?.call(
+        createdAt, updatedAt, title, id, type, tagsIds, archivedAt);
   }
 
   @override
@@ -1460,12 +1494,14 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
             LocalizedTextModel title,
             ProjectModelId id,
             ProjectTypes type,
-            List<ProjectTagModelId> tagsIds)?
+            List<ProjectTagModelId> tagsIds,
+            DateTime? archivedAt)?
         changelog,
     required TResult orElse(),
   }) {
     if (changelog != null) {
-      return changelog(createdAt, updatedAt, title, id, type, tagsIds);
+      return changelog(
+          createdAt, updatedAt, title, id, type, tagsIds, archivedAt);
     }
     return orElse();
   }
@@ -1512,14 +1548,16 @@ class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
   }
 }
 
-abstract class ProjectModelChangelog extends ProjectModel implements Sharable {
+abstract class ProjectModelChangelog extends ProjectModel
+    implements Sharable, Archivable {
   const factory ProjectModelChangelog(
       {required final DateTime createdAt,
       required final DateTime updatedAt,
       final LocalizedTextModel title,
       final ProjectModelId id,
       final ProjectTypes type,
-      final List<ProjectTagModelId> tagsIds}) = _$ProjectModelChangelogImpl;
+      final List<ProjectTagModelId> tagsIds,
+      final DateTime? archivedAt}) = _$ProjectModelChangelogImpl;
   const ProjectModelChangelog._() : super._();
 
   factory ProjectModelChangelog.fromJson(Map<String, dynamic> json) =
@@ -1536,6 +1574,8 @@ abstract class ProjectModelChangelog extends ProjectModel implements Sharable {
   ProjectTypes get type;
   @override
   List<ProjectTagModelId> get tagsIds;
+  @override
+  DateTime? get archivedAt;
   @override
   @JsonKey(ignore: true)
   _$$ProjectModelChangelogImplCopyWith<_$ProjectModelChangelogImpl>

@@ -1,3 +1,11 @@
+## 3.20 (next)
+
+🧩 Puzzle update 🧩
+
+- feat: app updates now visible in projects
+
+- fix: characters limit layout made more compact and cozy
+
 ## 3.19
 
 🪄 Scourgify update!:)

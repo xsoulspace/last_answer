@@ -45,6 +45,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
 
   /// keeps only position of system changelog whithout any content
   @Implements<Sharable>()
+  @Implements<Archivable>()
   const factory ProjectModel.changelog({
     required final DateTime createdAt,
     required final DateTime updatedAt,
@@ -52,12 +53,12 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(ProjectModelId.systemChangelog) final ProjectModelId id,
     @Default(ProjectTypes.systemChangelog) final ProjectTypes type,
     @Default([]) final List<ProjectTagModelId> tagsIds,
+    final DateTime? archivedAt,
   }) = ProjectModelChangelog;
   factory ProjectModel.fromJson(final dynamic json) =>
       _$ProjectModelFromJson(json as Map<String, dynamic>);
   const ProjectModel._();
-  static ProjectModelChangelog getSystemChangelogFromNotifications({
-    required final ProjectModelChangelog project,
+  factory ProjectModel.getSystemChangelogFromNotifications({
     required final List<NotificationMessageModel> notifications,
   }) {
     final newest = notifications.first;
@@ -66,9 +67,7 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     return ProjectModelChangelog(
       createdAt: oldest.created,
       title: newest.title,
-      updatedAt: project.updatedAt.isAfter(newest.created)
-          ? project.updatedAt
-          : newest.created,
+      updatedAt: newest.created,
     );
   }
 

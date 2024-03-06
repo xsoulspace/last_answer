@@ -178,7 +178,7 @@ class _TagListTile extends StatelessWidget {
           Text(tag.isEmpty ? l10n.all : tag.title, textAlign: TextAlign.center),
       // ignore: avoid_bool_literals_in_conditional_expressions
       selected:
-          tag.isEmpty && selectedTagId.isEmpty ? true : tag.id == selectedTagId,
+          (tag.isEmpty && selectedTagId.isEmpty) || tag.id == selectedTagId,
       onTap: onTap,
     );
   }

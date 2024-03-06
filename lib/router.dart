@@ -40,6 +40,10 @@ final appRouter = GoRouter(
               '/home/i/:ideaId',
               (final _) => const ProjectView(),
             ),
+            AppRoute(
+              ScreenPaths.changelog,
+              (final _) => const ProjectView(),
+            ),
           ],
         ),
       ],

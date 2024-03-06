@@ -16,11 +16,11 @@ dependencies:
   file_picker: ^6.1.1
   file_saver: ^0.2.9
   file_selector: ^1.0.3
-  firebase_analytics: ^10.8.5
-  firebase_core: ^2.25.4
-  firebase_core_web: ^2.11.4
-  firebase_crashlytics: ^3.4.14
-  firebase_messaging: ^14.7.15
+  firebase_analytics: ^10.8.8
+  firebase_analytics_web: ^0.5.5+20
+  firebase_core: ^2.26.0
+  firebase_core_web: ^2.11.5
+  firebase_crashlytics: ^3.4.17
   flutter:
     sdk: flutter
   flutter_animate: ^4.2.0+1

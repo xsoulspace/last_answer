@@ -110,17 +110,36 @@ class TagsVerticalBar extends StatelessWidget {
           onPressed: () async => showAdaptiveDialog(
             context: context,
             barrierDismissible: true,
-            builder: (final context) => Dialog(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 600,
-                  maxWidth: 400,
-                  minWidth: 200,
-                  minHeight: 150,
+            builder: (final context) {
+              final screenLayout = ScreenLayout.of(context);
+              return AnimatedContainer(
+                duration: 350.milliseconds,
+                padding: screenLayout.small
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 24,
+                      ),
+                child: Dialog(
+                  insetPadding: EdgeInsets.zero,
+                  child: ConstrainedBox(
+                    constraints: screenLayout.small
+                        ? const BoxConstraints()
+                        : const BoxConstraints(
+                            maxHeight: 600,
+                            maxWidth: 400,
+                            minWidth: 200,
+                            minHeight: 150,
+                          ),
+                    child: AnimatedSize(
+                      curve: Curves.easeIn,
+                      duration: 150.milliseconds,
+                      child: const TagsScreen(),
+                    ),
+                  ),
                 ),
-                child: const TagsScreen(),
-              ),
-            ),
+              );
+            },
           ),
           icon: const Icon(Icons.edit_square),
           tooltip: l10n.clickToEditFolders,

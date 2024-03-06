@@ -11,14 +11,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - amd64
+          - arm64
     steps:
       - uses: actions/checkout@v4
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-      - uses: snapcore/action-build@v1
+      # - uses: snapcore/action-build@v1
+      #   id: snapcraft
+      - uses: diddlesnaps/snapcraft-multiarch-action@v1
         id: snapcraft
+        with:
+          architecture: ${{ matrix.platform }}
+          environment: |
+            WIREDASH_PROJECT_ID=${{ secrets.WIREDASH_PROJECT_ID }}
+            WIREDASH_PROJECT_SECRET=${{ secrets.WIREDASH_PROJECT_SECRET }}}}
+      - name: Test installation
+        run: |
+          sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
       - name: Publish to Snapstore Edge
         uses: snapcore/action-publish@v1
         env:

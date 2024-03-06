@@ -297,4 +297,57 @@ class SEn extends S {
 
   @override
   String get getAllProjectsFromClipboard => 'Restore from clipboard';
+
+  @override
+  String get searchProjects => 'Search projects';
+
+  @override
+  String get addProjects => 'Add projects';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get folder => 'Folder';
+
+  @override
+  String get folderName => 'Folder name';
+
+  @override
+  String get projects => 'Projects';
+
+  @override
+  String get folders => 'Folders';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get limitReached => 'Limit reached';
+
+  @override
+  String get createFolder => 'Create folder';
+
+  @override
+  String get deleteFolder => 'Delete folder?';
+
+  @override
+  String get folderDeletionWillNotDeleteProjects => '\nDeletion of this Folder doesn\'t delete any Note or Idea.';
+
+  @override
+  String get useFoldersForNotes => 'Use 🗂️Folders for Notes and Ideas to quickly organize them.';
+
+  @override
+  String youCanCreateUpTo(Object foldersLimit) {
+    return '\n\nYou can create up to $foldersLimit Folders.';
+  }
+
+  @override
+  String get clickToEditFolders => 'Click to edit Folders';
+
+  @override
+  String get all => 'All';
 }

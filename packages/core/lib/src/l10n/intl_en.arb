@@ -94,5 +94,22 @@
   "restoreFromFile": "Restore from file",
   "saveToFile": "Save to file",
   "copyAllProjectsToClipboard": "Copy to clipboard",
-  "getAllProjectsFromClipboard": "Restore from clipboard"
+  "getAllProjectsFromClipboard": "Restore from clipboard",
+  "searchProjects": "Search projects",
+  "addProjects": "Add projects",
+  "create": "Create",
+  "edit": "Edit",
+  "folder": "Folder",
+  "folderName": "Folder name",
+  "projects": "Projects",
+  "folders": "Folders",
+  "save": "Save",
+  "limitReached": "Limit reached",
+  "createFolder": "Create folder",
+  "deleteFolder": "Delete folder?",
+  "folderDeletionWillNotDeleteProjects": "\nDeletion of this Folder doesn't delete any Note or Idea.",
+  "useFoldersForNotes": "Use 🗂️Folders for Notes and Ideas to quickly organize them.",
+  "youCanCreateUpTo": "\n\nYou can create up to {foldersLimit} Folders.",
+  "clickToEditFolders": "Click to edit Folders",
+  "all": "All"
 }

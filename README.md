@@ -35,27 +35,36 @@
 
 ## Getting Started
 
-You have a cool idea or you need to write a post/article for your blog.
-You need to write it down as fast as possible.
+Do you have a cool idea and need to get it down quickly? Or do you blog / write articles on social media?
 
 Then this app is for you.
 
-**FEATURES**
+In "ideas" answer the questions, write as many answers as you can to get a brief description of the idea and an understanding of how to implement it.
+In "notes" write posts and articles.
 
-- Quick note - just write a simple note and share it. Useful for Instagram Creators, Bloggers
-- Quick note limit - limit characters length by social network.
+That's all ! :)
 
-- Idea note - start with an idea, choose questions and answers and share it. Useful for Product/Project managers, developers and anyone with ideas to develop something. You can become a super ninja if you use techniques as 'Five whys', 'PDSA', 'Six Sigma'.
+FEATURES
+
+"Notes" - for bloggers and those who like to write in social networks:
+
+- Write a note by adding a character limit for the chosen social network.
+- Share it on social networks or messengers.
+
+"Ideas" - for developers and anyone with ideas to do something new:
+
+- start with an idea topic, pick questions and answers and share it.
+  P.s.: you can become a super ninja if you use techniques such as Five Why's, PDSA, Six Sigma.
 
 - Messanger style writing - from down to up, the same way as you write in any messanger - just try it and you will like it:)
 - Auto sorting - all projects just feels like "chats" in messanger, so what you write recent - is what you will see as first:)
 
-**NEW & EXPERIMENTAL**:
+NEW & EXPERIMENTAL
 
 - Folders - now you can organize your ideas and notes in folders.
 - Backup & Restore - now you can backup and restore data from/to files or from/to clipboard. You control your data.
 
-**EXTRA FEATURES**:
+EXTRA FEATURES
 
 - Unique & Custom app layout - primary goal is to achive most convenient writing & note orginizing experience.
 - Responsive layout - nice to you if you use it on full screen or in a small window.

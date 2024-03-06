@@ -94,9 +94,9 @@ class CharactersLimitController extends ValueNotifier<CharacterLimitState> {
 
   static const int twitterLimit = 280;
   static const String twitterLimitStr = '$twitterLimit';
-  bool get isTwitterLimit => limit == twitterLimitStr;
+  bool get isXLimit => limit == twitterLimitStr;
   void onSetTwitterLimit() {
-    final newLimit = isTwitterLimit ? 0 : twitterLimit;
+    final newLimit = isXLimit ? 0 : twitterLimit;
     setLimit(newLimit);
   }
 

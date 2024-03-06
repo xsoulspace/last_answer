@@ -26,6 +26,7 @@ class OpenedProjectNotifier
     final path = switch (project.type) {
       ProjectTypes.note => ScreenPaths.note(noteId: project.id),
       ProjectTypes.idea => ScreenPaths.idea(ideaId: project.id),
+      ProjectTypes.systemChangelog => ScreenPaths.changelog,
     };
     unawaited(context.push(path));
   }
@@ -42,6 +43,9 @@ class OpenedProjectNotifier
       note: (final note) {
         if (note.note.isNotEmpty) return;
         dto.projectsNotifier.deleteProject(note);
+      },
+      changelog: (final value) {
+        // noop
       },
     );
   }

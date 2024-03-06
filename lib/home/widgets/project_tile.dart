@@ -19,7 +19,7 @@ class ProjectTile extends StatelessWidget {
   final ValueChanged<ProjectModel> onTap;
   final ValueChanged<ProjectModel> onRemove;
 
-  String createTitle() => project.title;
+  String createTitle(final BuildContext context) => project.getTitle(context);
 
   @override
   Widget build(final BuildContext context) {
@@ -31,6 +31,14 @@ class ProjectTile extends StatelessWidget {
           dimension: 14,
           child: IconIdea(
             size: 14,
+            color: theme.colorScheme.primary.withOpacity(0.5),
+          ),
+        ),
+        changelog: (final changelog) => SizedBox.square(
+          dimension: 14,
+          child: Icon(
+            Icons.newspaper,
+            size: 12.5,
             color: theme.colorScheme.primary.withOpacity(0.5),
           ),
         ),
@@ -64,7 +72,7 @@ class ProjectTile extends StatelessWidget {
               id: project.id.value,
               type: HeroIdTypes.projectTitle,
               child: Text(
-                '      ${createTitle()}',
+                '      ${createTitle(context)}',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
               ),

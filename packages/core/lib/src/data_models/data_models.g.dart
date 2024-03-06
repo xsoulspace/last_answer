@@ -71,6 +71,7 @@ Map<String, dynamic> _$$ProjectModelIdeaImplToJson(
 const _$ProjectTypesEnumMap = {
   ProjectTypes.idea: 'idea',
   ProjectTypes.note: 'note',
+  ProjectTypes.systemChangelog: 'systemChangelog',
 };
 
 _$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
@@ -103,6 +104,38 @@ Map<String, dynamic> _$$ProjectModelNoteImplToJson(
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'charactersLimit': instance.charactersLimit,
       'archivedAt': instance.archivedAt?.toIso8601String(),
+      'tagsIds': instance.tagsIds,
+      'runtimeType': instance.$type,
+    };
+
+_$ProjectModelChangelogImpl _$$ProjectModelChangelogImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ProjectModelChangelogImpl(
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      title: json['title'] == null
+          ? LocalizedTextModel.empty
+          : LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
+      id: json['id'] == null
+          ? ProjectModelId.systemChangelog
+          : ProjectModelId.fromJson(json['id'] as String),
+      type: $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+          ProjectTypes.systemChangelog,
+      tagsIds: (json['tagsIds'] as List<dynamic>?)
+              ?.map((e) => ProjectTagModelId.fromJson(e as String))
+              .toList() ??
+          const [],
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$ProjectModelChangelogImplToJson(
+        _$ProjectModelChangelogImpl instance) =>
+    <String, dynamic>{
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'title': instance.title,
+      'id': instance.id,
+      'type': _$ProjectTypesEnumMap[instance.type]!,
       'tagsIds': instance.tagsIds,
       'runtimeType': instance.$type,
     };

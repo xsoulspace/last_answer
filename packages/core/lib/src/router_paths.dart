@@ -5,6 +5,7 @@ class ScreenPaths {
   static const bootstrap = '/';
   static const home = '/home';
   static const intro = '/intro';
+  static const changelog = '$home/changelog';
   static String idea({required final ProjectModelId ideaId}) =>
       '$home/i/${ideaId.value}';
   static String ideaAnswer({

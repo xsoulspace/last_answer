@@ -12,19 +12,21 @@ class NotificationsNotifierState with _$NotificationsNotifierState {
 class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
     implements Loadable {
   NotificationsNotifier(final BuildContext context)
-      : notificationRepository = context.read(),
+      : _notificationRepository = context.read(),
+        _projectsRepository = context.read(),
         super(const NotificationsNotifierState());
-  final NotificationsRepository notificationRepository;
+  final NotificationsRepository _notificationRepository;
+  final ProjectsRepository _projectsRepository;
 
   Future<void> readAllUpdates() async {
     setValue(value.copyWith(hasUnreadUpdates: false));
-    await notificationRepository.setLastReadTime();
+    await _notificationRepository.setLastReadTime();
   }
 
   List<NotificationMessageModel> get updates => value.updates;
   bool get hasUnreadUpdates => value.hasUnreadUpdates;
   Future<void> determineUnreadUpdates() async {
-    final lastReadTime = await notificationRepository.getLastReadDateTime();
+    final lastReadTime = await _notificationRepository.getLastReadDateTime();
     if (lastReadTime == null) {
       setValue(value.copyWith(hasUnreadUpdates: true));
     } else {
@@ -42,8 +44,16 @@ class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
   @override
   Future<void> onLoad() async {
     final notifications =
-        await notificationRepository.getUpdatesNotifications();
+        await _notificationRepository.getUpdatesNotifications();
     await determineUnreadUpdates();
     setValue(value.copyWith(updates: notifications));
+
+    /// always update project, to make sure, it is up to date
+    /// That's absolutely okay if project is not created yet
+    /// or it is different in projects
+    final project = ProjectModel.getSystemChangelogFromNotifications(
+      notifications: notifications,
+    );
+    await _projectsRepository.put(project: project);
   }
 }

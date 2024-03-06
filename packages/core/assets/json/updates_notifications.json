@@ -2,9 +2,9 @@
   {
     "id": "5",
     "message": {
-      "ru": "- feat(🗂️): новая опция группировки проектов в папки (экспериментальная)\n- feat(💾): множество вариантов резервного копирования и восстановления данных (экспериментальная)\nfix: обновление проекта просто кликнув по нему",
-      "en": "- feat(🗂️): new option to group projects into folders (experimental)\n- feat(💾): many options to backup and restore data (experimental)\n - fix: update project just for clicking to it",
-      "it": "- feat(🗂️): nuova opzione per raggruppare i progetti in cartelle (sperimentale)\n- feat(💾): molte opzioni per eseguire il backup e ripristinare i dati (sperimentale)\nfix: aggiornare il progetto semplicemente cliccandoci sopra",
+      "ru": "- feat(🗂️): новая опция группировки проектов в папки (экспериментальная)\n- feat(💾): множество вариантов резервного копирования и восстановления данных (экспериментальная)\n- fix: обновление проекта просто кликнув по нему.  \n\nПотрясающих идей и настроения 🏞️\nАнтон",
+      "en": "- feat(🗂️): new option to group projects into folders (experimental)\n- feat(💾): many options to backup and restore data (experimental)\n- fix: update project just for clicking to it. \n\nHave great ideas and mood 🏞️\nAnton",
+      "it": "- feat(🗂️): nuova opzione per raggruppare i progetti in cartelle (sperimentale)\n- feat(💾): molte opzioni per eseguire il backup e ripristinare i dati (sperimentale)\n- fix: aggiornare il progetto semplicemente cliccandoci sopra \n\nHai delle ottime idee e umore 🏞️\nAnton",
       "ga": ""
     },
     "title": {

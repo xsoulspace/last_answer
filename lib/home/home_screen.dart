@@ -110,17 +110,36 @@ class TagsVerticalBar extends StatelessWidget {
           onPressed: () async => showAdaptiveDialog(
             context: context,
             barrierDismissible: true,
-            builder: (final context) => Dialog(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 600,
-                  maxWidth: 400,
-                  minWidth: 200,
-                  minHeight: 150,
+            builder: (final context) {
+              final screenLayout = ScreenLayout.of(context);
+              return AnimatedContainer(
+                duration: 350.milliseconds,
+                padding: screenLayout.small
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 24,
+                      ),
+                child: Dialog(
+                  insetPadding: EdgeInsets.zero,
+                  child: ConstrainedBox(
+                    constraints: screenLayout.small
+                        ? const BoxConstraints()
+                        : const BoxConstraints(
+                            maxHeight: 600,
+                            maxWidth: 400,
+                            minWidth: 200,
+                            minHeight: 150,
+                          ),
+                    child: AnimatedSize(
+                      curve: Curves.easeIn,
+                      duration: 150.milliseconds,
+                      child: const TagsScreen(),
+                    ),
+                  ),
                 ),
-                child: const TagsScreen(),
-              ),
-            ),
+              );
+            },
           ),
           icon: const Icon(Icons.edit_square),
           tooltip: l10n.clickToEditFolders,
@@ -178,7 +197,7 @@ class _TagListTile extends StatelessWidget {
           Text(tag.isEmpty ? l10n.all : tag.title, textAlign: TextAlign.center),
       // ignore: avoid_bool_literals_in_conditional_expressions
       selected:
-          tag.isEmpty && selectedTagId.isEmpty ? true : tag.id == selectedTagId,
+          (tag.isEmpty && selectedTagId.isEmpty) || tag.id == selectedTagId,
       onTap: onTap,
     );
   }
@@ -233,7 +252,7 @@ class _ProjectsListView extends StatelessWidget {
                   onRemove: (final _) async {
                     final shouldProceed = await showRemoveTitleDialog(
                       context: context,
-                      title: item.title,
+                      title: item.getTitle(context),
                     );
                     if (shouldProceed) {
                       projectsNotifier.deleteProject(item);

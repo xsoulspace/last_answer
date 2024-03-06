@@ -27,7 +27,9 @@ class TagsScreenBody extends StatelessWidget {
       TagsScreenType.allTags => const _TagsListView(),
       TagsScreenType.editingTag => const _ManageTagView(),
       TagsScreenType.addProjects => const _AddProjectsView(),
-    };
+    }
+        .animate()
+        .fadeIn();
   }
 }
 
@@ -268,7 +270,7 @@ class SelectableProjectListTile extends StatelessWidget {
   final void Function(bool isSelected, ProjectModel project) onTap;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.title),
+        title: Text(project.getTitle(context)),
         selected: selected,
         trailing: Icon(
           Icons.check,
@@ -290,7 +292,7 @@ class ClosableProjectListTile extends StatelessWidget {
   final ValueChanged<ProjectModel> onDelete;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.title, maxLines: 2),
+        title: Text(project.getTitle(context), maxLines: 2),
         trailing: IconButton(
           iconSize: 16,
           onPressed: () => onDelete(project),
@@ -365,7 +367,7 @@ class _AddProjectsView extends StatelessWidget {
           padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16),
           ),
-          autoFocus: true,
+          autoFocus: PlatformInfo.isNativeWebDesktop,
         ),
       ],
     );

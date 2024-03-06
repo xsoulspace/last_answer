@@ -16,6 +16,7 @@ class ChangelogView extends StatelessWidget {
 
         return Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: EdgeInsets.only(top: i == 0 ? 0 : 32, bottom: 24),

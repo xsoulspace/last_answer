@@ -4,6 +4,7 @@ extension type const ProjectModelId(String value) {
   factory ProjectModelId.fromJson(final String value) => ProjectModelId(value);
   factory ProjectModelId.generate() => ProjectModelId(createId());
   static const empty = ProjectModelId('');
+  static const systemChangelog = ProjectModelId('changelog');
   bool get isEmpty => value.isEmpty;
   String toJson() => value;
 }
@@ -11,6 +12,7 @@ extension type const ProjectModelId(String value) {
 enum ProjectTypes {
   idea,
   note,
+  systemChangelog,
 }
 
 @freezed
@@ -40,13 +42,42 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     final DateTime? archivedAt,
     @Default([]) final List<ProjectTagModelId> tagsIds,
   }) = ProjectModelNote;
+
+  /// keeps only position of system changelog whithout any content
+  @Implements<Sharable>()
+  const factory ProjectModel.changelog({
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
+    @Default(LocalizedTextModel.empty) final LocalizedTextModel title,
+    @Default(ProjectModelId.systemChangelog) final ProjectModelId id,
+    @Default(ProjectTypes.systemChangelog) final ProjectTypes type,
+    @Default([]) final List<ProjectTagModelId> tagsIds,
+  }) = ProjectModelChangelog;
   factory ProjectModel.fromJson(final dynamic json) =>
       _$ProjectModelFromJson(json as Map<String, dynamic>);
   const ProjectModel._();
+  static ProjectModelChangelog getSystemChangelogFromNotifications({
+    required final ProjectModelChangelog project,
+    required final List<NotificationMessageModel> notifications,
+  }) {
+    final newest = notifications.first;
+    final oldest = notifications.last;
+
+    return ProjectModelChangelog(
+      createdAt: oldest.created,
+      title: newest.title,
+      updatedAt: project.updatedAt.isAfter(newest.created)
+          ? project.updatedAt
+          : newest.created,
+    );
+  }
+
   static const titleLimit = 90;
-  String get title => switch (this) {
+  String getTitle(final BuildContext context) => switch (this) {
         ProjectModelIdea(title: final titleStr) => titleStr,
         ProjectModelNote(:final note) => _getTitle(note),
+        ProjectModelChangelog(:final title) =>
+          _getTitle(title.localize(context)),
       };
 
   @override
@@ -54,10 +85,13 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
         idea: (final value) =>
             ideaProjectToShareString(context: context, projectIdea: value),
         note: (final value) => value.note,
+
+        /// maybe share newest changelog, but not sure
+        changelog: (final value) => '',
       );
 
   @override
-  String toSharableTitle(final BuildContext context) => title;
+  String toSharableTitle(final BuildContext context) => getTitle(context);
 
   static final emptyNote = ProjectModelNote(
     id: ProjectModelId.empty,

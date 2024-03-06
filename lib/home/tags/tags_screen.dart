@@ -268,7 +268,7 @@ class SelectableProjectListTile extends StatelessWidget {
   final void Function(bool isSelected, ProjectModel project) onTap;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.title),
+        title: Text(project.getTitle(context)),
         selected: selected,
         trailing: Icon(
           Icons.check,
@@ -290,7 +290,7 @@ class ClosableProjectListTile extends StatelessWidget {
   final ValueChanged<ProjectModel> onDelete;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.title, maxLines: 2),
+        title: Text(project.getTitle(context), maxLines: 2),
         trailing: IconButton(
           iconSize: 16,
           onPressed: () => onDelete(project),

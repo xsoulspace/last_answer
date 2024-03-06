@@ -3,6 +3,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_widgets/project_widgets.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
+import 'package:lastanswer/settings/views/changelog_view.dart';
 
 class ProjectView extends StatelessWidget {
   const ProjectView({super.key});
@@ -27,6 +28,8 @@ class ProjectView extends StatelessWidget {
           Expanded(child: NoteView(note: note, key: ValueKey(id))),
         ],
       ),
+      // TODO(arenukvern): description,
+      changelog: (final changelog) => const ChangelogView(),
     );
   }
 }

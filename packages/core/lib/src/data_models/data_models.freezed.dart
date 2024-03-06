@@ -250,6 +250,8 @@ ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) {
       return ProjectModelIdea.fromJson(json);
     case 'note':
       return ProjectModelNote.fromJson(json);
+    case 'changelog':
+      return ProjectModelChangelog.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'ProjectModel',
@@ -263,7 +265,6 @@ mixin _$ProjectModel {
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   ProjectTypes get type => throw _privateConstructorUsedError;
-  DateTime? get archivedAt => throw _privateConstructorUsedError;
   List<ProjectTagModelId> get tagsIds => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -288,6 +289,14 @@ mixin _$ProjectModel {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)
         note,
+    required TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)
+        changelog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -313,6 +322,14 @@ mixin _$ProjectModel {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult? Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -338,6 +355,14 @@ mixin _$ProjectModel {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -345,18 +370,21 @@ mixin _$ProjectModel {
   TResult map<TResult extends Object?>({
     required TResult Function(ProjectModelIdea value) idea,
     required TResult Function(ProjectModelNote value) note,
+    required TResult Function(ProjectModelChangelog value) changelog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ProjectModelIdea value)? idea,
     TResult? Function(ProjectModelNote value)? note,
+    TResult? Function(ProjectModelChangelog value)? changelog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ProjectModelIdea value)? idea,
     TResult Function(ProjectModelNote value)? note,
+    TResult Function(ProjectModelChangelog value)? changelog,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -377,7 +405,6 @@ abstract class $ProjectModelCopyWith<$Res> {
       DateTime createdAt,
       DateTime updatedAt,
       ProjectTypes type,
-      DateTime? archivedAt,
       List<ProjectTagModelId> tagsIds});
 }
 
@@ -398,7 +425,6 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? type = null,
-    Object? archivedAt = freezed,
     Object? tagsIds = null,
   }) {
     return _then(_value.copyWith(
@@ -418,10 +444,6 @@ class _$ProjectModelCopyWithImpl<$Res, $Val extends ProjectModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ProjectTypes,
-      archivedAt: freezed == archivedAt
-          ? _value.archivedAt
-          : archivedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       tagsIds: null == tagsIds
           ? _value.tagsIds
           : tagsIds // ignore: cast_nullable_to_non_nullable
@@ -655,6 +677,14 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)
         note,
+    required TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)
+        changelog,
   }) {
     return idea(id, createdAt, updatedAt, title, type, archivedAt, answers,
         draftAnswer, tagsIds);
@@ -684,6 +714,14 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult? Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
   }) {
     return idea?.call(id, createdAt, updatedAt, title, type, archivedAt,
         answers, draftAnswer, tagsIds);
@@ -713,6 +751,14 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
     required TResult orElse(),
   }) {
     if (idea != null) {
@@ -727,6 +773,7 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
   TResult map<TResult extends Object?>({
     required TResult Function(ProjectModelIdea value) idea,
     required TResult Function(ProjectModelNote value) note,
+    required TResult Function(ProjectModelChangelog value) changelog,
   }) {
     return idea(this);
   }
@@ -736,6 +783,7 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ProjectModelIdea value)? idea,
     TResult? Function(ProjectModelNote value)? note,
+    TResult? Function(ProjectModelChangelog value)? changelog,
   }) {
     return idea?.call(this);
   }
@@ -745,6 +793,7 @@ class _$ProjectModelIdeaImpl extends ProjectModelIdea {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ProjectModelIdea value)? idea,
     TResult Function(ProjectModelNote value)? note,
+    TResult Function(ProjectModelChangelog value)? changelog,
     required TResult orElse(),
   }) {
     if (idea != null) {
@@ -787,7 +836,6 @@ abstract class ProjectModelIdea extends ProjectModel
   String get title;
   @override
   ProjectTypes get type;
-  @override
   DateTime? get archivedAt;
   List<IdeaProjectAnswerModel> get answers;
   IdeaProjectAnswerModel? get draftAnswer;
@@ -992,6 +1040,14 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)
         note,
+    required TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)
+        changelog,
   }) {
     return note(id, createdAt, updatedAt, this.note, type, charactersLimit,
         archivedAt, tagsIds);
@@ -1021,6 +1077,14 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult? Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
   }) {
     return note?.call(id, createdAt, updatedAt, this.note, type,
         charactersLimit, archivedAt, tagsIds);
@@ -1050,6 +1114,14 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
             DateTime? archivedAt,
             List<ProjectTagModelId> tagsIds)?
         note,
+    TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
     required TResult orElse(),
   }) {
     if (note != null) {
@@ -1064,6 +1136,7 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
   TResult map<TResult extends Object?>({
     required TResult Function(ProjectModelIdea value) idea,
     required TResult Function(ProjectModelNote value) note,
+    required TResult Function(ProjectModelChangelog value) changelog,
   }) {
     return note(this);
   }
@@ -1073,6 +1146,7 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ProjectModelIdea value)? idea,
     TResult? Function(ProjectModelNote value)? note,
+    TResult? Function(ProjectModelChangelog value)? changelog,
   }) {
     return note?.call(this);
   }
@@ -1082,6 +1156,7 @@ class _$ProjectModelNoteImpl extends ProjectModelNote {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ProjectModelIdea value)? idea,
     TResult Function(ProjectModelNote value)? note,
+    TResult Function(ProjectModelChangelog value)? changelog,
     required TResult orElse(),
   }) {
     if (note != null) {
@@ -1124,7 +1199,6 @@ abstract class ProjectModelNote extends ProjectModel
   @override
   ProjectTypes get type;
   int get charactersLimit;
-  @override
   DateTime? get archivedAt;
   @override
   List<ProjectTagModelId> get tagsIds;
@@ -1132,6 +1206,340 @@ abstract class ProjectModelNote extends ProjectModel
   @JsonKey(ignore: true)
   _$$ProjectModelNoteImplCopyWith<_$ProjectModelNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ProjectModelChangelogImplCopyWith<$Res>
+    implements $ProjectModelCopyWith<$Res> {
+  factory _$$ProjectModelChangelogImplCopyWith(
+          _$ProjectModelChangelogImpl value,
+          $Res Function(_$ProjectModelChangelogImpl) then) =
+      __$$ProjectModelChangelogImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {DateTime createdAt,
+      DateTime updatedAt,
+      LocalizedTextModel title,
+      ProjectModelId id,
+      ProjectTypes type,
+      List<ProjectTagModelId> tagsIds});
+
+  $LocalizedTextModelCopyWith<$Res> get title;
+}
+
+/// @nodoc
+class __$$ProjectModelChangelogImplCopyWithImpl<$Res>
+    extends _$ProjectModelCopyWithImpl<$Res, _$ProjectModelChangelogImpl>
+    implements _$$ProjectModelChangelogImplCopyWith<$Res> {
+  __$$ProjectModelChangelogImplCopyWithImpl(_$ProjectModelChangelogImpl _value,
+      $Res Function(_$ProjectModelChangelogImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? title = null,
+    Object? id = null,
+    Object? type = null,
+    Object? tagsIds = null,
+  }) {
+    return _then(_$ProjectModelChangelogImpl(
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as LocalizedTextModel,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as ProjectModelId,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ProjectTypes,
+      tagsIds: null == tagsIds
+          ? _value._tagsIds
+          : tagsIds // ignore: cast_nullable_to_non_nullable
+              as List<ProjectTagModelId>,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $LocalizedTextModelCopyWith<$Res> get title {
+    return $LocalizedTextModelCopyWith<$Res>(_value.title, (value) {
+      return _then(_value.copyWith(title: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ProjectModelChangelogImpl extends ProjectModelChangelog {
+  const _$ProjectModelChangelogImpl(
+      {required this.createdAt,
+      required this.updatedAt,
+      this.title = LocalizedTextModel.empty,
+      this.id = ProjectModelId.systemChangelog,
+      this.type = ProjectTypes.systemChangelog,
+      final List<ProjectTagModelId> tagsIds = const [],
+      final String? $type})
+      : _tagsIds = tagsIds,
+        $type = $type ?? 'changelog',
+        super._();
+
+  factory _$ProjectModelChangelogImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProjectModelChangelogImplFromJson(json);
+
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
+  @override
+  @JsonKey()
+  final LocalizedTextModel title;
+  @override
+  @JsonKey()
+  final ProjectModelId id;
+  @override
+  @JsonKey()
+  final ProjectTypes type;
+  final List<ProjectTagModelId> _tagsIds;
+  @override
+  @JsonKey()
+  List<ProjectTagModelId> get tagsIds {
+    if (_tagsIds is EqualUnmodifiableListView) return _tagsIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tagsIds);
+  }
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ProjectModel.changelog(createdAt: $createdAt, updatedAt: $updatedAt, title: $title, id: $id, type: $type, tagsIds: $tagsIds)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProjectModelChangelogImpl &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality().equals(other._tagsIds, _tagsIds));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, createdAt, updatedAt, title, id,
+      type, const DeepCollectionEquality().hash(_tagsIds));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProjectModelChangelogImplCopyWith<_$ProjectModelChangelogImpl>
+      get copyWith => __$$ProjectModelChangelogImplCopyWithImpl<
+          _$ProjectModelChangelogImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String title,
+            ProjectTypes type,
+            DateTime? archivedAt,
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)
+        idea,
+    required TResult Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String note,
+            ProjectTypes type,
+            int charactersLimit,
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)
+        note,
+    required TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)
+        changelog,
+  }) {
+    return changelog(createdAt, updatedAt, title, id, type, tagsIds);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String title,
+            ProjectTypes type,
+            DateTime? archivedAt,
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
+        idea,
+    TResult? Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String note,
+            ProjectTypes type,
+            int charactersLimit,
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
+        note,
+    TResult? Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
+  }) {
+    return changelog?.call(createdAt, updatedAt, title, id, type, tagsIds);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String title,
+            ProjectTypes type,
+            DateTime? archivedAt,
+            List<IdeaProjectAnswerModel> answers,
+            IdeaProjectAnswerModel? draftAnswer,
+            List<ProjectTagModelId> tagsIds)?
+        idea,
+    TResult Function(
+            ProjectModelId id,
+            DateTime createdAt,
+            DateTime updatedAt,
+            String note,
+            ProjectTypes type,
+            int charactersLimit,
+            DateTime? archivedAt,
+            List<ProjectTagModelId> tagsIds)?
+        note,
+    TResult Function(
+            DateTime createdAt,
+            DateTime updatedAt,
+            LocalizedTextModel title,
+            ProjectModelId id,
+            ProjectTypes type,
+            List<ProjectTagModelId> tagsIds)?
+        changelog,
+    required TResult orElse(),
+  }) {
+    if (changelog != null) {
+      return changelog(createdAt, updatedAt, title, id, type, tagsIds);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ProjectModelIdea value) idea,
+    required TResult Function(ProjectModelNote value) note,
+    required TResult Function(ProjectModelChangelog value) changelog,
+  }) {
+    return changelog(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ProjectModelIdea value)? idea,
+    TResult? Function(ProjectModelNote value)? note,
+    TResult? Function(ProjectModelChangelog value)? changelog,
+  }) {
+    return changelog?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ProjectModelIdea value)? idea,
+    TResult Function(ProjectModelNote value)? note,
+    TResult Function(ProjectModelChangelog value)? changelog,
+    required TResult orElse(),
+  }) {
+    if (changelog != null) {
+      return changelog(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ProjectModelChangelogImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class ProjectModelChangelog extends ProjectModel implements Sharable {
+  const factory ProjectModelChangelog(
+      {required final DateTime createdAt,
+      required final DateTime updatedAt,
+      final LocalizedTextModel title,
+      final ProjectModelId id,
+      final ProjectTypes type,
+      final List<ProjectTagModelId> tagsIds}) = _$ProjectModelChangelogImpl;
+  const ProjectModelChangelog._() : super._();
+
+  factory ProjectModelChangelog.fromJson(Map<String, dynamic> json) =
+      _$ProjectModelChangelogImpl.fromJson;
+
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
+  LocalizedTextModel get title;
+  @override
+  ProjectModelId get id;
+  @override
+  ProjectTypes get type;
+  @override
+  List<ProjectTagModelId> get tagsIds;
+  @override
+  @JsonKey(ignore: true)
+  _$$ProjectModelChangelogImplCopyWith<_$ProjectModelChangelogImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(

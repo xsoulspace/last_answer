@@ -1,0 +1,28 @@
+name: Snapstore Build
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - release/snapstore
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+      - name: Publish to Snapstore Edge
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_LOGIN }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: edge

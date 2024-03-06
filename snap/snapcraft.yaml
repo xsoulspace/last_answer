@@ -51,7 +51,7 @@ icon: snap/gui/last-answer.png
 # new template - https://snapcraft.io/docs/flutter-applications
 confinement: strict
 # https://snapcraft.io/docs/base-snaps
-base: core18
+base: core22
 grade: stable
 
 slots:
@@ -66,7 +66,7 @@ apps:
     # snap22 not yet supported by flutter extension,
     # only via plugin (see below)
     # https://snapcraft.io/docs/flutter-extension
-    extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
+    extensions: [gnome] # Where "master" defines which Flutter channel to use for the build
     # using dev as it is the one channel that supports linux
     # extensions: [gnome]
     plugs:

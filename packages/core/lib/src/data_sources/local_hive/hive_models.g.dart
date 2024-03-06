@@ -270,4 +270,5 @@ Map<String, dynamic> _$SerializableProjectIdToJson(
 const _$ProjectTypesEnumMap = {
   ProjectTypes.idea: 'idea',
   ProjectTypes.note: 'note',
+  ProjectTypes.systemChangelog: 'systemChangelog',
 };

@@ -28,8 +28,13 @@ class ProjectsRepository {
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,
-  }) async =>
-      _datasource.getPaginated(dto: request);
+  }) async {
+    final response = _datasource.getPaginated(dto: request);
+
+    /// hack to inject changelog
+    if (request.data?.shouldAddChangelog == true) {}
+    return response;
+  }
 }
 
 final class TagsRepository

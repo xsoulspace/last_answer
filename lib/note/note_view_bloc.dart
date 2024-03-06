@@ -55,7 +55,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
 
   Future<void> onRemove(final BuildContext context) async {
     final remove = await showRemoveTitleDialog(
-      title: note.title,
+      title: note.getTitle(context),
       context: context,
     );
     if (!remove) return;

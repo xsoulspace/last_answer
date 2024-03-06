@@ -23,6 +23,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: borderPadding),
         HovarableListTile(
@@ -38,8 +39,8 @@ class DesktopNoteSettingsMenu extends HookWidget {
             ),
           ),
         ),
-        const SizedBox(height: borderPadding * 2),
-        divider,
+        const Gap(borderPadding * 2),
+        const Divider(height: 4, thickness: 4),
         Expanded(
           child: HoverableArea(
             clickable: false,
@@ -48,25 +49,26 @@ class DesktopNoteSettingsMenu extends HookWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: borderPadding),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: borderPadding * 2),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '${context.l10n.charactersLimit}:',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleLarge,
+                        Flexible(
+                          child: Text(
+                            '${context.l10n.charactersLimit}:',
+                            textAlign: TextAlign.left,
+                            style: theme.textTheme.titleMedium,
+                          ),
                         ),
                       ],
                     ),
-                    const Divider(),
+                    const Gap(2),
                     Expanded(
                       child: CharactersLimitSetting(
                         controller: characterLimitController,
                       ),
                     ),
-                    const Divider(),
                   ],
                 ),
               ),

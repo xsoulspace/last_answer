@@ -22,23 +22,24 @@ class CharactersLimitSetting extends HookWidget {
       otherButton = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Gap(12),
-          UiTextField(
-            value: controller.limit,
-            focusNode: controller.focusNode,
-            onChanged: controller.onLimitChanged,
-            keyboardType: TextInputType.number,
-            autocorrect: false,
-            enableSuggestions: false,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration()
-                .applyDefaults(theme.inputDecorationTheme)
-                .copyWith(
-                  hintText: context.l10n.charactersUnlimited,
-                  constraints: const BoxConstraints(maxWidth: 60),
-                ),
+          Flexible(
+            child: UiTextField(
+              value: controller.limit,
+              focusNode: controller.focusNode,
+              onChanged: controller.onLimitChanged,
+              keyboardType: TextInputType.number,
+              autocorrect: false,
+              enableSuggestions: false,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: const InputDecoration()
+                  .applyDefaults(theme.inputDecorationTheme)
+                  .copyWith(
+                    isDense: true,
+                    hintText: context.l10n.charactersUnlimited,
+                    constraints: const BoxConstraints(maxWidth: 60),
+                  ),
+            ),
           ),
-          const Gap(2),
           HoverableButton(
             onPressed: controller.isEditing ? controller.onClearLimit : null,
             child: const Icon(
@@ -49,12 +50,9 @@ class CharactersLimitSetting extends HookWidget {
         ],
       );
     } else {
-      otherButton = Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: HoverableButton(
-          onPressed: () => controller.setIsEditing(true),
-          child: Text(context.l10n.charactersUnlimited),
-        ),
+      otherButton = HoverableButton(
+        onPressed: () => controller.setIsEditing(true),
+        child: Text(context.l10n.charactersUnlimited),
       );
     }
     // TODO(arenukvern): refactor to separate widget
@@ -100,8 +98,8 @@ class CharactersLimitSetting extends HookWidget {
     }
 
     return Wrap(
-      spacing: 14,
-      runSpacing: 14,
+      spacing: 8,
+      runSpacing: 8,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         CharactersLimitButton(

@@ -4,7 +4,7 @@ on:
     types: [created]
   push:
     branches:
-      - master-web
+      - release/web
 jobs:
   build:
     name: Build Web

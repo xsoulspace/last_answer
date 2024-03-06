@@ -43,3 +43,8 @@ build-google-play:
 	fvm flutter build appbundle --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay -t lib/main_prod.dart
 build-rustore:
 	fvm flutter build apk --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=rustore -t lib/main_prod.dart
+# pass 
+# as argument: make v="3.19." run
+# or be defined as environment: wid="" wis="" v="3.19." make run build-snap
+deploy-snap:		
+	snapcraft upload --release=edge last-answer_$(v)_arm64.snap

@@ -22,23 +22,24 @@ class CharactersLimitSetting extends HookWidget {
       otherButton = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Gap(12),
-          UiTextField(
-            value: controller.limit,
-            focusNode: controller.focusNode,
-            onChanged: controller.onLimitChanged,
-            keyboardType: TextInputType.number,
-            autocorrect: false,
-            enableSuggestions: false,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration()
-                .applyDefaults(theme.inputDecorationTheme)
-                .copyWith(
-                  hintText: context.l10n.charactersUnlimited,
-                  constraints: const BoxConstraints(maxWidth: 60),
-                ),
+          Flexible(
+            child: UiTextField(
+              value: controller.limit,
+              focusNode: controller.focusNode,
+              onChanged: controller.onLimitChanged,
+              keyboardType: TextInputType.number,
+              autocorrect: false,
+              enableSuggestions: false,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: const InputDecoration()
+                  .applyDefaults(theme.inputDecorationTheme)
+                  .copyWith(
+                    isDense: true,
+                    hintText: context.l10n.charactersUnlimited,
+                    constraints: const BoxConstraints(maxWidth: 60),
+                  ),
+            ),
           ),
-          const Gap(2),
           HoverableButton(
             onPressed: controller.isEditing ? controller.onClearLimit : null,
             child: const Icon(
@@ -49,12 +50,9 @@ class CharactersLimitSetting extends HookWidget {
         ],
       );
     } else {
-      otherButton = Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: HoverableButton(
-          onPressed: () => controller.setIsEditing(true),
-          child: Text(context.l10n.charactersUnlimited),
-        ),
+      otherButton = HoverableButton(
+        onPressed: () => controller.setIsEditing(true),
+        child: Text(context.l10n.charactersUnlimited),
       );
     }
     // TODO(arenukvern): refactor to separate widget
@@ -76,12 +74,11 @@ class CharactersLimitSetting extends HookWidget {
     }
     // TODO(arenukvern): refactor to separate widget
 
-    SvgGenImage twitterIcon;
-    if (controller.isTwitterLimit) {
-      twitterIcon = Assets.icons.twitterLogoBlue;
+    AssetGenImage xIcon;
+    if (controller.isXLimit) {
+      xIcon = dark ? Assets.icons.xLogoBlack : Assets.icons.xLogoWhite;
     } else {
-      twitterIcon =
-          dark ? Assets.icons.twitterLogoWhite : Assets.icons.twitterLogoBlack;
+      xIcon = dark ? Assets.icons.xLogoWhite : Assets.icons.xLogoBlack;
     }
     // TODO(arenukvern): refactor to separate widget
 
@@ -101,15 +98,16 @@ class CharactersLimitSetting extends HookWidget {
     }
 
     return Wrap(
-      spacing: 14,
-      runSpacing: 14,
+      spacing: 8,
+      runSpacing: 8,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         CharactersLimitButton(
           onTap: controller.onSetInstagramLimit,
-          child: ImageGenIcon(
-            genImage: instagramIcon,
-            dimension: 18,
+          child: instagramIcon.image(
+            colorBlendMode: BlendMode.srcIn,
+            width: 18,
+            height: 18,
             color: controller.isInstagramLimit
                 ? null
                 : theme.textTheme.bodyMedium?.color,
@@ -117,12 +115,9 @@ class CharactersLimitSetting extends HookWidget {
         ),
         CharactersLimitButton(
           onTap: controller.onSetTwitterLimit,
-          child: twitterIcon.svg(
-            width: 16,
-            height: 16,
-            color: controller.isTwitterLimit
-                ? AppColors.twitterBlue
-                : theme.textTheme.bodyMedium?.color,
+          child: ImageGenIcon(
+            genImage: xIcon,
+            dimension: 18,
           ),
         ),
         CharactersLimitButton(
@@ -162,14 +157,17 @@ class CharactersLimitButton extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) => HoverableButton(
-        onPressed: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 3,
-            horizontal: 3,
+  Widget build(final BuildContext context) => Card(
+        color: context.colorScheme.primaryContainer,
+        child: HoverableButton(
+          onPressed: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 3,
+              horizontal: 3,
+            ),
+            child: child,
           ),
-          child: child,
         ),
       );
 }

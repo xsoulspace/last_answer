@@ -284,17 +284,70 @@ class SIt extends S {
   String get allProjectsWereCopiedToClipboard => 'All projects were copied to clipboard 🎉';
 
   @override
-  String get applyTimestamp => 'Apply timestamp';
+  String get applyTimestamp => 'Applica timestamp';
 
   @override
-  String get restoreFromFile => 'Restore from file';
+  String get restoreFromFile => 'Ripristina da file';
 
   @override
-  String get saveToFile => 'Save to file';
+  String get saveToFile => 'Salva su file';
 
   @override
   String get copyAllProjectsToClipboard => 'Copy to clipboard';
 
   @override
   String get getAllProjectsFromClipboard => 'Restore from clipboard';
+
+  @override
+  String get searchProjects => 'Search projects';
+
+  @override
+  String get addProjects => 'Add projects';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get folder => 'Folder';
+
+  @override
+  String get folderName => 'Folder name';
+
+  @override
+  String get projects => 'Projects';
+
+  @override
+  String get folders => 'Folders';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get limitReached => 'Limit reached';
+
+  @override
+  String get createFolder => 'Create folder';
+
+  @override
+  String get deleteFolder => 'Delete folder?';
+
+  @override
+  String get folderDeletionWillNotDeleteProjects => '\nL\'eliminazione di questa cartella non elimina alcuna Nota o Idea.';
+
+  @override
+  String get useFoldersForNotes => 'Usa 🗂️ Cartelle per Note e Idee per organizzarle rapidamente.';
+
+  @override
+  String youCanCreateUpTo(Object foldersLimit) {
+    return '\n\nPuoi creare fino a $foldersLimit cartelle.';
+  }
+
+  @override
+  String get clickToEditFolders => 'Fai clic per modificare le cartelle';
+
+  @override
+  String get all => 'All';
 }

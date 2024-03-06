@@ -163,8 +163,8 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     final l10n = context.l10n;
     final shouldBeDeleted = await Modals.of(context).showWarningDialog(
       description:
-          "${l10n.beCarefulItsInreversableAction}. \nDeletion of this Folder doesn't delete any Note or Idea.",
-      title: 'Delete folder?',
+          '${l10n.beCarefulItsInreversableAction}. ${l10n.folderDeletionWillNotDeleteProjects}',
+      title: l10n.deleteFolder,
       noActionText: l10n.cancel,
       yesActionText: l10n.delete,
     );

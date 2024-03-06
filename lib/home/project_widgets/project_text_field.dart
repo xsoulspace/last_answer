@@ -127,11 +127,13 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
       child: FocusBubbleContainer(
         onFocus: widget.onFocus,
         onUnfocus: widget.onUnfocus,
-        child: RawKeyboardListener(
+        child: KeyboardListener(
           focusNode: _keyboardFocusNode,
-          onKey: (final event) {
-            if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
-                (event.isMetaPressed || event.isControlPressed)) {
+          onKeyEvent: (final event) {
+            if ((HardwareKeyboard.instance.isMetaPressed ||
+                    HardwareKeyboard.instance.isControlPressed) &&
+                HardwareKeyboard.instance
+                    .isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
               widget.onSubmit();
             }
           },

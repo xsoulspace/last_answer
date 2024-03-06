@@ -17,20 +17,14 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v2
-      - name: Building snap
-        run: |
-          snapcraft
+      - uses: snapcore/action-build@v1
+        id: snapcraft
       # Make sure the snap is installable
-      - name: Test snap installation
-        run: |
-          sudo snap install ./last-answer.snap –dangerous
       - name: Save snap for reuse
         uses: actions/upload-artifact@v4
         with:
           name: last-answer-snap
-          path: ./last-answer.snap
+          path: ${{ steps.snapcraft.outputs.snap }}
 
   publish:
     # if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')

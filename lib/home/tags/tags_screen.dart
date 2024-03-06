@@ -27,7 +27,9 @@ class TagsScreenBody extends StatelessWidget {
       TagsScreenType.allTags => const _TagsListView(),
       TagsScreenType.editingTag => const _ManageTagView(),
       TagsScreenType.addProjects => const _AddProjectsView(),
-    };
+    }
+        .animate()
+        .fadeIn();
   }
 }
 
@@ -365,7 +367,7 @@ class _AddProjectsView extends StatelessWidget {
           padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16),
           ),
-          autoFocus: true,
+          autoFocus: PlatformInfo.isNativeWebDesktop,
         ),
       ],
     );

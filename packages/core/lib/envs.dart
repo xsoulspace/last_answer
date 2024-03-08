@@ -22,6 +22,7 @@ class Envs {
   static const wiredashProjectSecret =
       String.fromEnvironment('WIREDASH_PROJECT_SECRET');
   static final store = StoreType.fromEnv();
+  static const telegramBotToken = String.fromEnvironment('TELEGRAM_BOT_TOKEN');
 }
 
 enum StoreType {

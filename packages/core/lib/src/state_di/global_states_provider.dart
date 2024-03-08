@@ -42,6 +42,7 @@ class GlobalStatesProvider extends StatelessWidget {
           Provider(create: UserRepository.new),
           Provider(create: NotificationsRepository.new),
           Provider(create: ProjectsRepository.new),
+          Provider(create: AdsRepository.new),
 
           /// notifiers & blocs
           ChangeNotifierProvider(create: EmojiStateNotifier.new),
@@ -49,6 +50,7 @@ class GlobalStatesProvider extends StatelessWidget {
           ChangeNotifierProvider(create: SpecialEmojiStateNotifier.new),
           ChangeNotifierProvider(create: NotificationsNotifier.new),
           ChangeNotifierProvider(create: TagsNotifier.new),
+          ChangeNotifierProvider(create: AdsNotifier.new),
           ChangeNotifierProvider(create: ProjectsNotifier.new),
           ChangeNotifierProvider(create: PurchasesNotifier.new),
           ChangeNotifierProvider(create: UserNotifier.new),

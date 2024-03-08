@@ -78,3 +78,12 @@ class PurchasesModel with _$PurchasesModel {
     );
   }
 }
+
+@freezed
+class AdsStateModel with _$AdsStateModel {
+  const factory AdsStateModel({
+    final DateTime? lastDateWhenAdRewardReceived,
+  }) = _AdsStateModel;
+  factory AdsStateModel.fromJson(final Map<String, dynamic> json) =>
+      _$AdsStateModelFromJson(json);
+}

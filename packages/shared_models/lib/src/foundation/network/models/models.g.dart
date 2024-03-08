@@ -12,7 +12,7 @@ PaginatedPageRequestModel<TData> _$PaginatedPageRequestModelFromJson<TData>(
 ) =>
     PaginatedPageRequestModel<TData>(
       page: json['page'] as int? ?? 0,
-      limit: json['limit'] as int? ?? 5,
+      limit: json['limit'] as int? ?? 10,
       data: _$nullableGenericFromJson(json['data'], fromJsonTData),
     );
 

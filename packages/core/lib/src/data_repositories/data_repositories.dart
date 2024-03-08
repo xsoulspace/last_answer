@@ -1,3 +1,4 @@
+export 'ads_repository.dart';
 export 'emoji_repository.dart';
 export 'interfaces/interfaces.dart';
 export 'notifications_repository.dart';

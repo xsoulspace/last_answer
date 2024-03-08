@@ -7,6 +7,7 @@ class SupportAppView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final purhasesNotifier = context.watch<PurchasesNotifier>();
+    final adsNotifier = context.watch<AdsNotifier>();
     final purchasesAdsService = context.watch<PurchasesAdsService>();
     final isAdLoaded = purchasesAdsService.isLoaded;
     final l10n = context.l10n;
@@ -15,14 +16,17 @@ class SupportAppView extends StatelessWidget {
           ? [
               Text(l10n.adPleaseNote),
               const Gap(24),
-              FilledButton.tonal(
-                onPressed: isAdLoaded
-                    ? () async => purhasesNotifier.watchAd(context)
-                    : null,
-                child: isAdLoaded
-                    ? Text(l10n.watchAd)
-                    : const UiCircularProgress(),
-              ),
+              if (adsNotifier.isAllowedToWatchRewarded)
+                FilledButton.tonal(
+                  onPressed: isAdLoaded
+                      ? () async => purhasesNotifier.watchAd(context)
+                      : null,
+                  child: isAdLoaded
+                      ? Text(l10n.watchAd)
+                      : const UiCircularProgress(),
+                )
+              else
+                const Text('Rewards ended. But, please come back tomorrow:)'),
             ]
           : [],
     );

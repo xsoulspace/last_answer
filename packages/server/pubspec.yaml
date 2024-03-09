@@ -13,7 +13,6 @@ dependencies:
   serverpod_auth_server: 1.2.5
   shared_models:
     path: ../../packages/shared_models
-  televerse: ^1.13.2
 
 dev_dependencies:
   flutter_lints: ^3.0.0

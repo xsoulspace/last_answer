@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:server/src/endpoints/modules/modules.dart';
 import 'package:server/src/generated/endpoints.dart';
 import 'package:server/src/generated/protocol.dart';
-import 'package:server/src/services/services.dart';
 import 'package:server/src/web/routes/root.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart' as auth;
@@ -33,7 +32,6 @@ Future<void> run(final List<String> args) async {
     '/*',
   );
   await Modules.createModules(pod: pod);
-  await TelegramBotService().onLoad();
 
   // Start the server.
   await pod.start();

@@ -9,10 +9,11 @@ dependencies:
   app_store_server_sdk: ^1.2.5
   googleapis: ^11.0.0
   googleapis_auth: ^1.4.1
-  serverpod: 1.2.3
-  serverpod_auth_server: 1.2.3
+  serverpod: 1.2.5
+  serverpod_auth_server: 1.2.5
   shared_models:
     path: ../../packages/shared_models
+  televerse: ^1.13.2
 
 dev_dependencies:
   flutter_lints: ^3.0.0

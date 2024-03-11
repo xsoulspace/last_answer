@@ -62,9 +62,29 @@ class SlideOne extends StatelessComponent {
         ),
         Spacer.y('8'),
       ],
-          classes:
-              'relative mx-auto max-w-5xl p-4 pb-20 pt-16 text-center md:p-28')
+          classes: 'relative mx-auto max-w-5xl text-center '
+              'px-4 pb-4 pt-16 md:py-28 md:pt-28 md:pb-18')
     ]);
+
+    yield div([
+      section([
+        BentoGrid(
+          cards: [
+            ...[
+              (title: 'Note writing'),
+              (title: 'Post limits'),
+              (title: 'Idea brainstorming'),
+              (title: 'Sharing'),
+            ].map((e) => Card([
+                  h3([text(e.title)],
+                      classes: 'font-semibold text-md md:text-2xl'),
+                ]))
+          ],
+        ),
+      ], classes: 'relative mx-auto max-w-4xl px-4 py-16 md:p-24 text-center'),
+    ], classes: 'bg-zinc-300/10 rounded-[28px] shadow');
+
+    yield Spacer.y('16 md:mt-32');
   }
 }
 

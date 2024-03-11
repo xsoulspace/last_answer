@@ -1,8 +1,5 @@
-import 'dart:async';
-
-import 'package:core/core.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/other.dart';
 
 Future<void> bootstrap({

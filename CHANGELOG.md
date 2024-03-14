@@ -1,10 +1,15 @@
-## 3.20 (next)
+## 3.21 (next)
+
+## 3.20
 
 🧩 Puzzle update 🧩
 
 - feat: app updates now visible in projects
+- feat: new website launched!🚀 https://la.xsoulspace.dev Currently have only two pages, but now it fast, convenient and completely written with Dart with [Jaspr framework](https://github.com/schultek/jaspr) and [Tailwind](https://tailwindcss.com):)
 
-- fix: characters limit layout made more compact and cozy
+- fix: characters limit layout made more compact and cozy.
+- fix: language switcher (didn't work after reloading).
+- fix: vertical bar buttons adapted to fit languages.
 
 ## 3.19
 

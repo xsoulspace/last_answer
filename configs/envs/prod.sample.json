@@ -4,5 +4,6 @@
   "WIREDASH_PROJECT_ID": "",
   "WIREDASH_PROJECT_SECRET": "",
   "GOOGLE_CLIENT_ID": "",
-  "STORE": "snapstore"
+  "STORE": "snapstore",
+  "TELEGRAM_BOT_TOKEN": ""
 }

@@ -72,26 +72,25 @@ class BarItem extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => GestureDetector(
         onTap: onTap,
-        child: SizedBox(
-          height: 56,
-          child: Stack(
-            children: [
-              SizedBox(
-                height: 50,
-                child: child,
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 50,
+              child: child,
+            ),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 40),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
                 child: Text(
                   label,
                   textAlign: TextAlign.center,
                   style: context.textTheme.bodySmall,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }

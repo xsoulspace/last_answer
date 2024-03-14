@@ -1607,50 +1607,50 @@ packages:
     dependency: transitive
     description:
       name: serverpod_auth_client
-      sha256: "5d413353ded9b5875c97af0925efb5bdecd2c5f59d62c51cb569906fb0e16400"
+      sha256: a169b0ed8492404e29ef2ac9dfdd481726440e770037950be484de0d44b18368
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   serverpod_auth_google_flutter:
     dependency: transitive
     description:
       name: serverpod_auth_google_flutter
-      sha256: "3205c46947afb6583b44c899c6857e2eabc6a0690f61d54947f1e7665e41cb8b"
+      sha256: aa254359a0f3131918dc7323cc2f88c26ac9385607c661375e3cfef3c944e2af
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   serverpod_auth_shared_flutter:
     dependency: transitive
     description:
       name: serverpod_auth_shared_flutter
-      sha256: "0121480c8b91955015ceca0c5c6871788b47f9807119124a3b5cf0e3ec4d5dc2"
+      sha256: beef46ad7b3b7704a84b30101af97708560e38a08fef8f00194b53e9245cc782
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   serverpod_client:
     dependency: transitive
     description:
       name: serverpod_client
-      sha256: a796409e777c0ebba3dafc62b68f6f4597e454ce1b96f3d66255176f9fe34150
+      sha256: fab1200137b18bc1f8a7cae79491245fe9391a931a0db13a56cab1a9116b56a1
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   serverpod_flutter:
     dependency: transitive
     description:
       name: serverpod_flutter
-      sha256: f9af6e3302abc142c7120dbd97d094abb2bcb1f34501aa617dfd6b0cdb2a8a9b
+      sha256: "5e117b028c669f159966c436483bd12670668d86e2bf0a5c8f4b4b0a84b1963d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   serverpod_serialization:
     dependency: transitive
     description:
       name: serverpod_serialization
-      sha256: e1bc1ac697ac5afe6c60ffbdefb5ea473f4de315ee2f29fa233cb5c6556ef966
+      sha256: b6a607a1431187b1d4e6f0f1f091d88e861c7c4ec28dc46e121dbe2757339f6e
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   share_plus:
     dependency: "direct main"
     description:
@@ -1847,6 +1847,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  televerse:
+    dependency: transitive
+    description:
+      name: televerse
+      sha256: "1cf35170b12f1ada9d376ee03941e30c98769e1e79f6b259ffaa227e2573cecd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.13.2"
   term_glyph:
     dependency: transitive
     description:

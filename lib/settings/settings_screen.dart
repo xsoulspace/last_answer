@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
@@ -13,7 +14,7 @@ class SettingsScreen extends HookWidget {
     void onBack() => Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
     final isAccountViewVisible =
-        context.read<PurchasesNotifier>().isAdSupported;
+        kDebugMode || context.read<PurchasesNotifier>().isAdSupported;
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
     final tabsViews = [
       const GeneralSettingsView(),

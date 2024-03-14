@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:server/src/endpoints/modules/modules.dart';
 import 'package:server/src/generated/endpoints.dart';
 import 'package:server/src/generated/protocol.dart';

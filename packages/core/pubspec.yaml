@@ -52,14 +52,15 @@ dependencies:
   provider: ^6.1.1
   quiver: ^3.2.1
   rxdart: ^0.27.7
-  serverpod_auth_google_flutter: 1.2.3
-  serverpod_auth_shared_flutter: 1.2.3
-  serverpod_client: 1.2.3
-  serverpod_flutter: 1.2.3
+  serverpod_auth_google_flutter: 1.2.5
+  serverpod_auth_shared_flutter: 1.2.5
+  serverpod_client: 1.2.5
+  serverpod_flutter: 1.2.5
   share_plus: ^7.2.1
   shared_models:
     path: ../shared_models
   shared_preferences: ^2.2.2
+  televerse: ^1.13.2
   ui_kit:
     path: ../ui_kit
   universal_io: ^2.2.0

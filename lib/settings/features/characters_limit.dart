@@ -55,9 +55,10 @@ class CharactersLimitSetting extends HookWidget {
       );
     }
 
-    final isRestricted = settings.isSocialNetworksRestricted;
-    final isNotRestricted =
-        !isRestricted || uiLocaleNotifier.value != Locales.ru;
+    // final isRestricted = settings.isSocialNetworksRestricted &&
+    final isRestricted = settings.isSocialNetworksRestricted &&
+        (uiLocaleNotifier.value == Locales.ru || Envs.store.isRustore);
+    final isNotRestricted = !isRestricted;
 
     return Wrap(
       spacing: 8,

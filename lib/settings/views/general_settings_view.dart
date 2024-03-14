@@ -43,8 +43,9 @@ class GeneralSettingsViewBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final settings = context.watch<ProjectsNotifier>();
+    final projectsNotifier = context.watch<ProjectsNotifier>();
     final bloc = context.watch<GeneralSettingsBloc>();
+    final userNotifier = context.watch<UserNotifier>();
 
     return SettingsListContainer(
       padding: padding,
@@ -55,19 +56,19 @@ class GeneralSettingsViewBody extends StatelessWidget {
         // When a user selects a theme from the dropdown list, the
         // SettingsController is updated, which rebuilds the MaterialApp.
         SettingsListTile(
-          title: context.l10n.theme,
+          titleText: context.l10n.theme,
           leftColumnWidth: leftColumnWidth,
           child: ThemeSwitcherButton(
-            settings: settings,
+            settings: projectsNotifier,
           ),
         ),
         SettingsListTile(
-          title: context.l10n.language,
+          titleText: context.l10n.language,
           leftColumnWidth: leftColumnWidth,
           child: const LocaleSwitcherButton(),
         ),
         SettingsListTile(
-          title: context.l10n.projectsDirection,
+          titleText: context.l10n.projectsDirection,
           leftColumnWidth: leftColumnWidth,
           child: const ProjectsDirectionSwitch(),
         ),
@@ -78,7 +79,7 @@ class GeneralSettingsViewBody extends StatelessWidget {
           indent: 10,
         ),
         SettingsListTile(
-          title: context.l10n.exportImportData,
+          titleText: context.l10n.exportImportData,
           leftColumnWidth: leftColumnWidth,
           child: const ProjectsExportImportButtons(),
         ),
@@ -94,7 +95,8 @@ class GeneralSettingsViewBody extends StatelessWidget {
         const Gap(24),
 
         SettingsListTile(
-          title: context.l10n.charactersLimit,
+          title:
+              _RestrictionUnblocker(child: Text(context.l10n.charactersLimit)),
           crossAxisAlignment: CrossAxisAlignment.start,
           leftColumnWidth: leftColumnWidth,
           description: context.l10n.charactersLimitForNewNotesDesription,
@@ -112,6 +114,24 @@ class GeneralSettingsViewBody extends StatelessWidget {
         //   ),
         // ),
       ],
+    );
+  }
+}
+
+class _RestrictionUnblocker extends HookWidget {
+  const _RestrictionUnblocker({required this.child, super.key});
+  final Widget child;
+
+  @override
+  Widget build(final BuildContext context) {
+    final counter = useState(0);
+    final userNotifier = context.read<UserNotifier>();
+    return GestureDetector(
+      onTap: () {
+        counter.value++;
+        if (counter.value > 10) userNotifier.disableRestrictions();
+      },
+      child: child,
     );
   }
 }

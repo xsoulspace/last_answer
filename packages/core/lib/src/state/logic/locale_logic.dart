@@ -27,7 +27,8 @@ class LocaleLogic {
     required final Locale? oldLocale,
     required final Locale uiLocale,
   }) async {
-    final didChanged = oldLocale?.languageCode != newLocale?.languageCode;
+    final didChanged = oldLocale?.languageCode != newLocale?.languageCode ||
+        uiLocale != newLocale;
     if (!didChanged) return null;
 
     Locale? updatedLocale = oldLocale;

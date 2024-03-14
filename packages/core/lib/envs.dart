@@ -34,6 +34,12 @@ enum StoreType {
   snapstore,
   windowsStore;
 
+  bool get isRustore => this == StoreType.rustore;
+  bool get isHuaweiStore => this == StoreType.huawaiStore;
+  bool get isAppleStore => this == StoreType.appleStore;
+  bool get isWindowsStore => this == StoreType.windowsStore;
+  bool get isSnapStore => this == StoreType.snapstore;
+
   static StoreType fromEnv() => values.byName(
         const String.fromEnvironment('STORE', defaultValue: 'snapstore'),
       );

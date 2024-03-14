@@ -1,5 +1,22 @@
 [
   {
+    "id": "6",
+    "message": {
+      "ru": "- feat: теперь обновления приложения видны в проектах\n- feat: запущен новый сайт!🚀 https://la.xsoulspace.dev На данный момент у него всего два страницы, но теперь он быстрый, удобный и полностью написан на Dart с использованием [Jaspr framework](https://github.com/schultek/jaspr) и [Tailwind](https://tailwindcss.com):)\n- fix: layout с ограничением количества символов для соцсетей стал более компактным и приятным.\n- fix: переключатель языка (работал только после перезагрузки).\n- fix: кнопки вертикального бара адаптированы под языки.",
+      "en": "- fix: characters limit layout made more compact and cozy.\n- fix: language switcher (didn't work after reloading).\n- fix: vertical bar buttons adapted to fit languages.\n- feat: app updates now visible in projects\n- feat: new website launched!🚀 https://la.xsoulspace.dev Currently have only two pages, but now it fast, convenient and completely written with Dart with [Jaspr framework](https://github.com/schultek/jaspr) and [Tailwind](https://tailwindcss.com):)\n- fix: characters limit layout made more compact and cozy.\n- fix: language switcher (didn't work after reloading).\n- fix: vertical bar buttons adapted to fit languages.",
+      "it": "- feat: ora gli aggiornamenti dell'app sono visibili nei progetti\n- feat: è stato lanciato un nuovo sito!🚀 https://la.xsoulspace.dev Al momento ha solo due pagine, ma adesso è veloce, pratico e completamente scritto in Dart con [Jaspr framework](https://github.com/schultek/jaspr) e [Tailwind](https://tailwindcss.com):)\n- fix: il layout con limite del numero di caratteri per le reti sociali è diventato più compatto e accogliente.\n- fix: il selettore di lingua (funzionava solo dopo il ricaricamento).\n- fix: i pulsanti della barra verticale sono stati adattati alle lingue.",
+      "ga": ""
+    },
+    "title": {
+      "ru": "🧩 Обновление Пазл 🧩",
+      "en": "🧩 Puzzle update 🧩",
+      "it": "🧩 Aggiornamento Puzzle 🧩",
+      "ga": "🧩 Puzzle update 🧩"
+    },
+    "created": "2024-03-14"
+  },
+
+  {
     "id": "5",
     "message": {
       "ru": "- feat(🗂️): новая опция группировки проектов в папки (экспериментальная)\n- feat(💾): множество вариантов резервного копирования и восстановления данных (экспериментальная)\n- fix: обновление проекта просто кликнув по нему.  \n\nПотрясающих идей и настроения 🏞️\nАнтон",

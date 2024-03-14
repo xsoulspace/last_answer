@@ -65,6 +65,7 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     required final RemoteUserInitializer remote,
   }) async {
     value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
+    unawaited(updateLocale(value.value.settings.locale));
     unawaited(local.onUserLoad());
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
       await loadRemoteUser();

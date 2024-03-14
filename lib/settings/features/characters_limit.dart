@@ -12,10 +12,14 @@ class CharactersLimitSetting extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final settings = context.watch<UserNotifier>().settings;
     final theme = context.theme;
     final dark = theme.brightness == Brightness.dark;
     useListenable(controller);
-    Widget otherButton;
+    Widget otherButton = HoverableButton(
+      onPressed: () => controller.setIsEditing(true),
+      child: Text(context.l10n.charactersUnlimited),
+    );
 
     // TODO(arenukvern): refactor to separate widget
     if (controller.isEditing) {
@@ -49,94 +53,77 @@ class CharactersLimitSetting extends HookWidget {
           ),
         ],
       );
-    } else {
-      otherButton = HoverableButton(
-        onPressed: () => controller.setIsEditing(true),
-        child: Text(context.l10n.charactersUnlimited),
-      );
-    }
-    // TODO(arenukvern): refactor to separate widget
-
-    SvgGenImage vkIcon;
-    if (controller.isVkLimit) {
-      vkIcon = Assets.icons.vkLogoBlue;
-    } else {
-      vkIcon = dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack;
     }
 
-    // TODO(arenukvern): refactor to separate widget
-
-    AssetGenImage instagramIcon;
-    if (controller.isInstagramLimit) {
-      instagramIcon = Assets.icons.instagramLogoColorful;
-    } else {
-      instagramIcon = Assets.icons.instagramLogoBlack;
-    }
-    // TODO(arenukvern): refactor to separate widget
-
-    AssetGenImage xIcon;
-    if (controller.isXLimit) {
-      xIcon = dark ? Assets.icons.xLogoBlack : Assets.icons.xLogoWhite;
-    } else {
-      xIcon = dark ? Assets.icons.xLogoWhite : Assets.icons.xLogoBlack;
-    }
-    // TODO(arenukvern): refactor to separate widget
-
-    AssetGenImage facebookIcon;
-    if (controller.isFacebookLimit) {
-      facebookIcon = Assets.icons.fbLogoBlue;
-    } else {
-      facebookIcon = dark ? Assets.icons.fbLogoWhite : Assets.icons.fbLogoBlack;
-    }
-    // TODO(arenukvern): refactor to separate widget
-    SvgGenImage discordIcon;
-    if (controller.isDiscordLimit) {
-      discordIcon = Assets.icons.discordLogoBlue;
-    } else {
-      discordIcon =
-          dark ? Assets.icons.discordLogoWhite : Assets.icons.discordLogoBlack;
-    }
+    final isRestricted = settings.isSocialNetworksRestricted;
+    final isNotRestricted =
+        !isRestricted || uiLocaleNotifier.value != Locales.ru;
 
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        CharactersLimitButton(
-          onTap: controller.onSetInstagramLimit,
-          child: instagramIcon.image(
-            colorBlendMode: BlendMode.srcIn,
-            width: 18,
-            height: 18,
-            color: controller.isInstagramLimit
-                ? null
-                : theme.textTheme.bodyMedium?.color,
+        if (isNotRestricted)
+          CharactersLimitButton(
+            onTap: controller.onSetInstagramLimit,
+            child: (controller.isInstagramLimit
+                    ? Assets.icons.instagramLogoColorful
+                    : Assets.icons.instagramLogoBlack)
+                .image(
+              colorBlendMode: BlendMode.srcIn,
+              width: 18,
+              height: 18,
+              color: controller.isInstagramLimit
+                  ? null
+                  : theme.textTheme.bodyMedium?.color,
+            ),
           ),
-        ),
-        CharactersLimitButton(
-          onTap: controller.onSetTwitterLimit,
-          child: ImageGenIcon(
-            genImage: xIcon,
-            dimension: 18,
+        if (isNotRestricted)
+          CharactersLimitButton(
+            onTap: controller.onSetTwitterLimit,
+            child: ImageGenIcon(
+              genImage: switch (controller.isXLimit) {
+                true =>
+                  dark ? Assets.icons.xLogoBlack : Assets.icons.xLogoWhite,
+                false =>
+                  dark ? Assets.icons.xLogoWhite : Assets.icons.xLogoBlack,
+              },
+              dimension: 18,
+            ),
           ),
-        ),
-        CharactersLimitButton(
-          onTap: controller.onSetFacebookLimit,
-          child: ImageGenIcon(
-            genImage: facebookIcon,
-            dimension: 18,
+        if (isNotRestricted)
+          CharactersLimitButton(
+            onTap: controller.onSetFacebookLimit,
+            child: ImageGenIcon(
+              genImage: switch (controller.isFacebookLimit) {
+                true => Assets.icons.fbLogoBlue,
+                false =>
+                  dark ? Assets.icons.fbLogoWhite : Assets.icons.fbLogoBlack,
+              },
+              dimension: 18,
+            ),
           ),
-        ),
         CharactersLimitButton(
           onTap: controller.onSetDiscordLimit,
-          child: discordIcon.svg(
+          child: switch (controller.isDiscordLimit) {
+            true => Assets.icons.discordLogoBlue,
+            false => dark
+                ? Assets.icons.discordLogoWhite
+                : Assets.icons.discordLogoBlack,
+          }
+              .svg(
             width: 16,
             height: 16,
           ),
         ),
         CharactersLimitButton(
           onTap: controller.onSetVkLimit,
-          child: vkIcon.svg(
+          child: switch (controller.isVkLimit) {
+            true => Assets.icons.vkLogoBlue,
+            false => dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack,
+          }
+              .svg(
             width: 18,
             height: 18,
           ),

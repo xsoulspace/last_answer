@@ -1,5 +1,8 @@
 import 'package:jaspr/jaspr.dart';
-import 'package:landing/ui_kit/ui_kit.dart';
+import 'package:jaspr_router/jaspr_router.dart';
+
+import 'sections/sections.dart';
+import 'ui_kit/ui_kit.dart';
 
 /// Main colors:
 /// Emrald, stone,
@@ -7,181 +10,57 @@ import 'package:landing/ui_kit/ui_kit.dart';
 class App extends StatelessComponent {
   @override
   Iterable<Component> build(BuildContext context) sync* {
-    // Renders a <p> element with 'Hello World' content.
+    yield Router(
+      routes: [
+        ShellRoute(
+            builder: (context, state, child) => AppNavigator(child: child),
+            routes: [
+              // Route(
+              //   path: RoutePaths.home,
+              //   builder: (context, state) => DownloadScreen(),
+              // ),
+              // FIXME(arenukvern): disabled for debugging purposes,
+              Route(
+                path: RoutePaths.home,
+                name: RoutePaths.home,
+                builder: (context, state) => HomeScreen(),
+              ),
+              Route(
+                path: RoutePaths.download,
+                name: RoutePaths.download,
+                title: 'Last Answer: download',
+                builder: (context, state) => DownloadScreen(),
+              ),
+            ]),
+      ],
+    );
+  }
+}
+
+class RoutePaths {
+  static const download = '/download';
+  static const home = '/';
+}
+
+extension BuildContextX on BuildContext {
+  RouterState get router => Router.of(this);
+}
+
+class AppNavigator extends StatelessComponent {
+  const AppNavigator({required this.child, super.key});
+  final Component child;
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
     yield body(
       [
         div([
           HeaderAppBar(),
-          div([MainContent()], classes: 'overflow-x-hidden'),
+          div([child], classes: 'overflow-x-hidden'),
           FotterBottomBar(),
         ], classes: 'flex min-h-screen flex-col justify-between')
       ],
       classes: 'antialiased text-stone-700 bg-amber-50/10',
     );
-  }
-}
-
-class MainContent extends StatelessComponent {
-  const MainContent({super.key});
-  @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield SlideOne();
-  }
-}
-
-class SlideOne extends StatelessComponent {
-  const SlideOne({super.key});
-  @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield div([
-      section([
-        div(
-          [
-            h1(
-              [text('Think fast, write faster')],
-              classes: 'text-5xl md:text-8xl tracking-tighter'
-                  'font-bold leading-2 md:leading-tight text-stone-900/80',
-            )
-          ],
-          classes: 'max-w-sm md:max-w-md mx-auto',
-        ),
-        Spacer.y('8 md:mt-20'),
-        p([
-          text(
-              '🍃 Last Answer designed to never miss a moment of inspiration ✨')
-        ],
-            classes:
-                'relative max-w-xs md:max-w-xl mx-auto text-xl md:text-3xl leading-relaxed md:leading-10 text-stone-600/80'),
-        Spacer.y('8 md:mt-16'),
-        OpenAppButton(
-          decoration: StyledButtonDecoration.filled.copyWith(
-            edgeInsets: 'pl-6 pr-4 py-3',
-            textStyle: 'text-md font-semibold',
-          ),
-          title: 'Start for free',
-        ),
-        Spacer.y('8'),
-      ],
-          classes: 'relative mx-auto max-w-5xl text-center '
-              'px-4 pb-4 pt-16 md:py-28 md:pt-28 md:pb-18')
-    ]);
-
-    yield div([
-      section([
-        BentoGrid(
-          cards: [
-            ...[
-              (
-                title: '- Wait, another note app? 👀',
-                description:
-                    'Yes 😉. You know, sometimes, it\'s not that hard to get inspiration, '
-                    'but tooo much waiting for the right app will be open. '
-                    'And in that moment - thoughts forgotten and time is lost. '
-                    'So, with Last Answer we\'ve made it. ',
-              ),
-              (
-                title: 'Start writing before data is loaded',
-                description:
-                    'Last Answer mission is to reduce any delays between '
-                    'thought and writing - if you see the buttons '
-                    'to create a Note or an Idea - you can instantly ⚡️ use '
-                    'them without waiting.',
-              ),
-              (
-                title: 'Offline-first 🏡, your ideas has priority',
-                description:
-                    'To give you fast access to your Notes and Ideas the app loads them as fast as possible, and only then, it loads theme, settings and other preferences. All your data stored in your device.',
-              ),
-              (
-                title: 'Make Note',
-                description: 'To convert quickly thoughts to words.',
-              ),
-              (
-                title: 'Write Post ',
-                description:
-                    'You can write draft of post in Last Answer by using character limits specific to social networks. For example Discord has limit 2000:)',
-              ),
-              (
-                title: 'Brainstorm Idea',
-                description:
-                    'You can use various technics, such as 5 why, six sigmas or similar. Just try it',
-              ),
-              (
-                title: 'Share it! ',
-                description:
-                    'Every note is simple plain text which can be easily copied to any app. Ideas a little bit more complex, but they are also support sharing as simple text.',
-              ),
-              (
-                title: "Read Flow",
-                description:
-                    "We write everyday in messangers, and they have certain flow - to read a chat your eye goes from bottom to up, the same way as you would write on typewriter machine - so as the LastAnswer. Every Note or Idea, designed to feel like a focused chat.",
-              ),
-              (
-                title: 'Updates goes down -& up (if needed)',
-                description:
-                    'Last Answer has auto sorting function - you will see most recent notes are which you edited. Just like in messangers:)'
-              ),
-              (
-                title: 'Configurable',
-                description:
-                    'You can change direction of Notes and Ideas in settings. As the Theme and Language.',
-              ),
-              (
-                title: 'Backup & Restore',
-                description:
-                    'You can always save all data to one single file and restore from it.',
-              )
-            ].map((e) => Card([
-                  Spacer.y('2'),
-                  h3([text(e.title)],
-                      classes:
-                          'font-semibold text-3xl tracking-wide md:text-4xl'),
-                  Spacer.y('8'),
-                  p([text(e.description)], classes: 'text-xl'),
-                  Spacer.y('2'),
-                ], classes: ''))
-          ],
-        ),
-      ], classes: 'relative mx-auto max-w-4xl px-4 py-16 md:p-24 text-center'),
-    ], classes: 'bg-zinc-300/10 rounded-[28px] shadow');
-
-    yield section([
-      Spacer.y('16 md:mt-20'),
-      div(
-        [
-          h1(
-            // TODO(arenukvern): think about phrase, it's too much:)
-            [text('Never lose thoughts in the breeze of time')],
-            classes: 'text-4xl md:text-5xl tracking-tighter'
-                'font-bold leading-2 md:leading-tight text-stone-900/80',
-          )
-        ],
-        classes: 'max-w-sm md:max-w-md mx-auto',
-      ),
-      Spacer.y('16 md:mt-20'),
-      div(
-        [
-          OpenAppButton(
-            decoration: StyledButtonDecoration.filled.copyWith(
-              edgeInsets: 'pl-6 pr-4 py-3',
-              textStyle: 'text-md font-semibold',
-            ),
-            title: 'Open app',
-          ),
-          Spacer.x('12 md:mr-24'),
-          StyledButton(
-            decoration: StyledButtonDecoration.text,
-            titleText: 'Download',
-            onClick: () => throw UnimplementedError(),
-          ),
-        ],
-        classes: 'flex flex-row items-center justify-center',
-      ),
-      // TODO(arenukvern): add community links,
-      Spacer.y('20 md:mt-24'),
-    ],
-        classes: 'relative mx-auto max-w-5xl text-center '
-            'px-4 pb-4 pt-16 md:py-28 md:pt-28 md:pb-18');
   }
 }
 
@@ -193,31 +72,39 @@ class HeaderAppBar extends StatelessComponent {
       [
         div([
           div([
-            Spacer.x('4'),
-            a([
-              strong([text('Last Answer')])
-            ], href: '/', classes: 'flex-none'),
-            Spacer.x('4'),
+            TwSpacer.x('4'),
+            LinkButton(
+              liDecoration: LiLinkButtonDecoration.stone900
+                  .copyWith(textStyle: 'text-xl font-semibold'),
+              titleText: 'Last Answer',
+              url: RoutePaths.home,
+            ),
+            TwSpacer.x('4'),
             div([
               nav([
                 ul([
                   ...[
-                    (title: 'Features', href: '/features'),
-                    (title: 'Sync', href: '/sync'),
-                    (title: 'Pricing', href: '/pricing'),
-                    (title: 'Community', href: '/community'),
-                  ].map((e) => LiLinkButton(
-                      item: e, decoration: LiLinkButtonDecoration.homeAppBar)),
+                    (title: 'Download', url: RoutePaths.download),
+                    // (title: 'Sync', url: '/sync'),
+                    // (title: 'Pricing', url: '/pricing'),
+                    // (title: 'Community', url: '/community'),
+                  ].map(
+                    (e) => LiLinkButton(
+                        item: e,
+                        decoration: LiLinkButtonDecoration.emeraldNormal),
+                  ),
                 ], classes: 'flex space-x-8'),
               ], classes: 'text-sm leading-6 font-semibold')
-            ], classes: 'relative hidden md:flex items-center ml-auto'),
-            AppBarBurgerButton(),
-            Spacer.x('4'),
+              // FIXME(arenukvern): uncomment when menu is ready,
+              // ], classes: 'relative hidden md:flex items-center ml-auto'),
+            ], classes: 'relative flex items-center ml-auto'),
+            // AppBarBurgerButton(),
+            TwSpacer.x('4'),
             OpenAppButton(
               title: 'Open app',
               decoration: StyledButtonDecoration.filled,
             ),
-            Spacer.x('4')
+            TwSpacer.x('4')
           ], classes: 'relative flex items-center'),
         ],
             classes:
@@ -229,6 +116,59 @@ class HeaderAppBar extends StatelessComponent {
   }
 }
 
+final _bottomLinks = <FooterBottomBarLinkTuple>[
+  (
+    sectionTitle: 'Product',
+    links: [
+      (title: 'Download', url: RoutePaths.download),
+      (
+        title: 'Changelog',
+        // TODO(arenukvern): add page,
+        url:
+            'https://github.com/xsoulspace/last_answer/blob/master/CHANGELOG.md'
+      ),
+      // (title: 'Features', url: '/features'),
+      // (title: 'Sync', url: '/sync'),
+      // (title: 'Pricing', url: '/pricing'),
+    ]
+  ),
+  (
+    sectionTitle: 'Community',
+    links: [
+      // (title: 'About', url: '/community'),
+      (title: 'Discord (en)', url: 'https://discord.com/invite/y54DpJwmAn'),
+      (title: 'Telegram (ru)', url: 'https://t.me/xsoulspace'),
+    ]
+  ),
+  (
+    sectionTitle: 'Legal',
+    links: [
+      // TODO(arenukvern): add page,
+      (
+        title: 'Privacy',
+        url:
+            'https://github.com/xsoulspace/last_answer/blob/master/PRIVACY_POLICY.md'
+      ),
+      // TODO(arenukvern): add page,
+      (
+        title: 'Terms',
+        url:
+            'https://github.com/xsoulspace/last_answer/blob/master/TERMS_AND_CONDITIONS.md'
+      ),
+      // TODO(arenukvern): add page,
+      (
+        title: 'License',
+        url: 'https://github.com/xsoulspace/last_answer/blob/master/LICENSE'
+      ),
+    ]
+  ),
+];
+
+typedef FooterBottomBarLinkTuple = ({
+  String sectionTitle,
+  List<LinkButtonTuple> links,
+});
+
 class FotterBottomBar extends StatelessComponent {
   const FotterBottomBar({super.key});
   @override
@@ -237,50 +177,29 @@ class FotterBottomBar extends StatelessComponent {
       div([
         section([
           nav([
-            ...[
-              (
-                sectionTitle: 'Product',
-                items: [
-                  (title: 'Download', href: '/download'),
-                  (title: 'Features', href: '/features'),
-                  (title: 'Sync', href: '/sync'),
-                  (title: 'Pricing', href: '/pricing'),
-                ]
-              ),
-              (
-                sectionTitle: 'Community',
-                items: [
-                  (title: 'About', href: '/community'),
-                  (title: 'Discord (en)', href: '/'),
-                  (title: 'Telegram (ru)', href: 'https://t.me/xsoulspace'),
-                ]
-              ),
-              (
-                sectionTitle: 'Legal',
-                items: [
-                  (title: 'Privacy', href: '/privacy'),
-                  (title: 'Terms', href: '/terms'),
-                  // (title: 'License', href: '/'),
-                ]
-              ),
-            ].map((e) => div([
+            ..._bottomLinks.map(
+              (e) => div(
+                [
                   h5(
                     [text(e.sectionTitle)],
                     classes: 'text-base font-semibold text-stone-800',
                   ),
                   ul(
-                    e.items
+                    e.links
                         .map(
-                          (e) => LiLinkButton(
-                              item: e,
-                              decoration: LiLinkButtonDecoration.footerLink),
+                          (link) => LiLinkButton(
+                            item: link,
+                            decoration: LiLinkButtonDecoration.stone,
+                          ),
                         )
                         .toList(),
                     classes: 'mt-2 space-y-1',
-                  )
-                ])),
+                  ),
+                ],
+              ),
+            ),
           ], classes: 'grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6'),
-          Spacer.y('6'),
+          TwSpacer.y('6'),
           hr(),
           // TODO(arenukvern): add social icons with links,
           p(
@@ -313,14 +232,13 @@ class OpenAppButton extends StatelessComponent {
   final String title;
   @override
   Iterable<Component> build(BuildContext context) sync* {
-    // TODO(arenukvern): add onClick,
-    yield StyledButton(
-      decoration: decoration,
+    yield LinkButton(
+      styledDecoration: decoration,
       title: p([
         text(title),
         IconSpan(icon: MaterialIcons.chevronRight),
       ], classes: 'flex items-center'),
-      onClick: () => throw UnimplementedError(),
+      url: 'https://xsoulspace.dev/last_answer',
     );
   }
 }

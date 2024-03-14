@@ -1139,6 +1139,147 @@ abstract class _PurchasesModel extends PurchasesModel {
       throw _privateConstructorUsedError;
 }
 
+AdsStateModel _$AdsStateModelFromJson(Map<String, dynamic> json) {
+  return _AdsStateModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AdsStateModel {
+  DateTime? get lastDateWhenAdRewardReceived =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AdsStateModelCopyWith<AdsStateModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdsStateModelCopyWith<$Res> {
+  factory $AdsStateModelCopyWith(
+          AdsStateModel value, $Res Function(AdsStateModel) then) =
+      _$AdsStateModelCopyWithImpl<$Res, AdsStateModel>;
+  @useResult
+  $Res call({DateTime? lastDateWhenAdRewardReceived});
+}
+
+/// @nodoc
+class _$AdsStateModelCopyWithImpl<$Res, $Val extends AdsStateModel>
+    implements $AdsStateModelCopyWith<$Res> {
+  _$AdsStateModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lastDateWhenAdRewardReceived = freezed,
+  }) {
+    return _then(_value.copyWith(
+      lastDateWhenAdRewardReceived: freezed == lastDateWhenAdRewardReceived
+          ? _value.lastDateWhenAdRewardReceived
+          : lastDateWhenAdRewardReceived // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AdsStateModelImplCopyWith<$Res>
+    implements $AdsStateModelCopyWith<$Res> {
+  factory _$$AdsStateModelImplCopyWith(
+          _$AdsStateModelImpl value, $Res Function(_$AdsStateModelImpl) then) =
+      __$$AdsStateModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({DateTime? lastDateWhenAdRewardReceived});
+}
+
+/// @nodoc
+class __$$AdsStateModelImplCopyWithImpl<$Res>
+    extends _$AdsStateModelCopyWithImpl<$Res, _$AdsStateModelImpl>
+    implements _$$AdsStateModelImplCopyWith<$Res> {
+  __$$AdsStateModelImplCopyWithImpl(
+      _$AdsStateModelImpl _value, $Res Function(_$AdsStateModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lastDateWhenAdRewardReceived = freezed,
+  }) {
+    return _then(_$AdsStateModelImpl(
+      lastDateWhenAdRewardReceived: freezed == lastDateWhenAdRewardReceived
+          ? _value.lastDateWhenAdRewardReceived
+          : lastDateWhenAdRewardReceived // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AdsStateModelImpl implements _AdsStateModel {
+  const _$AdsStateModelImpl({this.lastDateWhenAdRewardReceived});
+
+  factory _$AdsStateModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AdsStateModelImplFromJson(json);
+
+  @override
+  final DateTime? lastDateWhenAdRewardReceived;
+
+  @override
+  String toString() {
+    return 'AdsStateModel(lastDateWhenAdRewardReceived: $lastDateWhenAdRewardReceived)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AdsStateModelImpl &&
+            (identical(other.lastDateWhenAdRewardReceived,
+                    lastDateWhenAdRewardReceived) ||
+                other.lastDateWhenAdRewardReceived ==
+                    lastDateWhenAdRewardReceived));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, lastDateWhenAdRewardReceived);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AdsStateModelImplCopyWith<_$AdsStateModelImpl> get copyWith =>
+      __$$AdsStateModelImplCopyWithImpl<_$AdsStateModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AdsStateModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AdsStateModel implements AdsStateModel {
+  const factory _AdsStateModel({final DateTime? lastDateWhenAdRewardReceived}) =
+      _$AdsStateModelImpl;
+
+  factory _AdsStateModel.fromJson(Map<String, dynamic> json) =
+      _$AdsStateModelImpl.fromJson;
+
+  @override
+  DateTime? get lastDateWhenAdRewardReceived;
+  @override
+  @JsonKey(ignore: true)
+  _$$AdsStateModelImplCopyWith<_$AdsStateModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 /// @nodoc
 mixin _$UserModelId {
   String get value => throw _privateConstructorUsedError;

@@ -10,29 +10,28 @@ class PurchasesNotifierDto {
   final PurchasesAdsService purchasesAdsService;
 }
 
-class PurchasesNotifier
-    extends ValueNotifier<LoadableContainer<PurchasesModel>> {
+class PurchasesNotifier extends LoadableStateNotifier<PurchasesModel> {
   PurchasesNotifier(final BuildContext context)
       : dto = PurchasesNotifierDto(context),
-        super(const LoadableContainer(value: PurchasesModel.empty));
+        super(PurchasesModel.empty);
 
   final PurchasesNotifierDto dto;
 
   Future<void> onLocalUserLoad() async {
     final localPurchases = await dto.purchasesRepository.getLocalPurchases();
-    _emitLoaded(localPurchases);
+    state = localPurchases;
     unawaited(recordNewDay());
   }
 
   Future<void> onRemoteUserLoad() async {
     final purchases = await dto.purchasesRepository
         .mergePurchases(localPurchases: value.value);
-    _emitLoaded(purchases);
+    state = purchases;
   }
 
   Future<void> recordNewDay() async {
     final purchases = await dto.purchasesRepository.recordNewDay();
-    _emitLoaded(purchases);
+    state = purchases;
   }
 
   bool get isActive => value.value.isActive;
@@ -54,6 +53,7 @@ class PurchasesNotifier
     final toasts = Toasts.of(context);
     final l10n = context.l10n;
     final userNotifier = context.read<UserNotifier>();
+    final adsNotifier = context.read<AdsNotifier>();
     final isDark = userNotifier.settings.themeMode == ThemeMode.dark;
 
     final adInstance = await dto.purchasesAdsService.prepareAdInstance(
@@ -67,15 +67,14 @@ class PurchasesNotifier
     if (reward.isRewarded) {
       final updatedPurchases =
           await dto.purchasesRepository.receiveAdVideoReward();
-      _emitLoaded(updatedPurchases);
+      state = updatedPurchases;
       unawaited(
-        toasts.showBottomToast(message: l10n.rewardForAdThankYou(7)),
+        Future.wait([
+          adsNotifier.onAwareded(),
+          toasts.showBottomToast(message: l10n.rewardForAdThankYou(7)),
+        ]),
       );
     }
     adInstance.dispose();
-  }
-
-  void _emitLoaded(final PurchasesModel state) {
-    value = LoadableContainer.loaded(state);
   }
 }

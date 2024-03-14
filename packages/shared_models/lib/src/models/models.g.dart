@@ -108,3 +108,16 @@ Map<String, dynamic> _$$PurchasesModelImplToJson(
       'supporter_days_count': instance.supporterDaysCount,
       'used_days_count': instance.usedDaysCount,
     };
+
+_$AdsStateModelImpl _$$AdsStateModelImplFromJson(Map<String, dynamic> json) =>
+    _$AdsStateModelImpl(
+      lastDateWhenAdRewardReceived: json['lastDateWhenAdRewardReceived'] == null
+          ? null
+          : DateTime.parse(json['lastDateWhenAdRewardReceived'] as String),
+    );
+
+Map<String, dynamic> _$$AdsStateModelImplToJson(_$AdsStateModelImpl instance) =>
+    <String, dynamic>{
+      'lastDateWhenAdRewardReceived':
+          instance.lastDateWhenAdRewardReceived?.toIso8601String(),
+    };

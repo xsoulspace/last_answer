@@ -13,8 +13,8 @@ clean_macos:
 clean_android: 
 	cd android && gradlew clean
 
-get: 
-	fvm flutter pub get
+get:
+	fvm dart run melos bootstrap 
 
 gen: 
 	fvm dart run build_runner build --enable-experiment=inline-class

@@ -18,8 +18,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 3.20.0+48
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
@@ -40,14 +40,14 @@ dependencies:
     sdk: flutter
   flutter_animate: ^4.2.0+1
   flutter_hooks: ^0.20.3
-  flutter_keyboard_visibility: ^5.4.1
+  flutter_keyboard_visibility: ^6.0.0
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.3.3
   flutter_portal: ^1.1.4
   flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.7
-  form_builder_validators: ^9.1.0
+  form_builder_validators: ^10.0.1
   freezed_annotation: ^2.4.1
   gap: ^3.0.1
   go_router: ^12.1.1
@@ -83,7 +83,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.4.5
   json_serializable: ^6.7.1
-  melos: ^3.1.1
+  melos: ^6.0.0
   mockito: ^5.4.2
   mocktail: ^1.0.1
   msix: ^3.16.7
@@ -95,7 +95,7 @@ dependency_overrides:
   connectivity_plus: ^5.0.2
   flutter_lints: ^3.0.0
   http: ^1.1.2
-  intl: ^0.18.1
+  intl: ^0.19.0
   lints: ^3.0.0
   meta: ^1.11.0
   uuid: ^4.1.0

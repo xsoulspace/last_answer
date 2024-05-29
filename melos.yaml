@@ -1,11 +1,11 @@
 name: lastanswer
 
 packages:
+  - ./*
   - packages/*
 
 sdkPath: ./.fvm/flutter_sdk
 
 scripts:
-  clean_cache: flutter pub cache clean
-  get: flutter pub get && flutter pub run melos bootstrap
-  clean: dart run melos clean
+  get: fvm flutter pub get && fvm dart run melos bootstrap
+  clean: fvm dart run melos clean

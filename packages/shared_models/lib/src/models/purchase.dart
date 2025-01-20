@@ -66,11 +66,7 @@ class PurchaseActionModel with _$PurchaseActionModel {
     final DateTime? createdAt,
   }) = PurchaseActionModelVideoAward;
   const PurchaseActionModel._();
-  factory PurchaseActionModel.fromJson(
-    final Map<String, dynamic> json,
-    // ignore: avoid_unused_constructor_parameters
-    final SerializationManager serializationManager,
-  ) =>
+  factory PurchaseActionModel.fromJson(final Map<String, dynamic> json) =>
       PurchaseActionModel.fromRawJson(json);
   factory PurchaseActionModel.fromRawJson(
     final Map<String, dynamic> json,

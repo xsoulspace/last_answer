@@ -2,21 +2,12 @@ name: core_server_client
 description: Starting point for a Serverpod client.
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
-  flutter: ">=3.22.0"
+  sdk: ">=3.6.0 <4.0.0"
+
+resolution: workspace
 
 dependencies:
   core:
-    path: ../core
-  serverpod_auth_client: 1.2.5
-  serverpod_client: 1.2.5
+  serverpod_auth_client: 2.3.1
+  serverpod_client: 2.3.1
   shared_models:
-    path: ../shared_models
-
-dependency_overrides:
-  connectivity_plus: ^5.0.2
-  flutter_lints: ^3.0.0
-  google_fonts: ^6.1.0
-  lints: ^3.0.0
-  http: ^1.1.2
-  uuid: ^4.2.1

@@ -4,46 +4,36 @@ version: 0.0.1
 publish_to: "none"
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
-  # flutter: ">=3.19.0"
+  sdk: ">=3.6.0 <4.0.0"
+
+resolution: workspace
 
 dependencies:
-  collection: ^1.18.0
-  equatable: ^2.0.5
-  freezed_annotation: ^2.4.1
-  json_annotation: ^4.8.1
-  logger: ^2.0.2+1
+  collection: ^1.19.1
+  equatable: ^2.0.7
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  logger: ^2.5.0
   murmur3: ^2.1.0
-  path: ^1.8.3
-  path_provider: ^2.1.1
+  path: ^1.9.1
+  path_provider: ^2.1.5
   path_to_regexp: ^0.4.0
-  quiver: ^3.2.1
-  serverpod_client: 1.2.5
-  universal_io: ^2.2.0
-  uuid: ^4.1.0
-
-dependency_overrides:
-  analyzer: ^6.3.0
-  collection: ^1.18.0
-  connectivity_plus: ^5.0.2
-  flutter_lints: ^3.0.0
-  http: ^1.1.2
-  intl: ^0.19.0
-  lints: ^3.0.0
-  meta: ^1.11.0
-  uuid: ^4.1.0
+  quiver: ^3.2.2
+  serverpod_client: 2.3.1
+  universal_io: ^2.2.2
+  uuid: ^4.5.1
 
 dev_dependencies:
-  analyzer: ^6.3.0
-  build_runner: ^2.4.6
-  faker: ^2.1.0
-  flutter_lints: ^3.0.0
+  analyzer: ^7.2.0
+  build_runner: ^2.4.14
+  faker: ^2.2.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.4.5
-  json_serializable: ^6.7.1
-  mocktail_image_network: ^1.0.0
-  xsoulspace_lints: ^0.0.10
+  freezed: ^2.5.8
+  json_serializable: ^6.9.3
+  lints: ^5.1.1
+  mocktail_image_network: ^1.2.0
+  xsoulspace_lints: ^0.0.13
 # For information see the following page:
 # https://pub.dev/packages/flutter_gen
 # flutter_gen:

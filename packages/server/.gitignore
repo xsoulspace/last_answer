@@ -10,3 +10,5 @@ doc/api/
 
 # Passwords file
 config/passwords.yaml
+
+pubspec.lock

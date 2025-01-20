@@ -30,7 +30,7 @@ final class GooglePlayHandlerFutureCall extends ScheduledFutureCall {
   @override
   Future<void> invoke(
     final Session session,
-    final SerializableEntity? object,
+    final SerializableModel? object,
   ) async {
     // await googlePlayHandler.pullMessageFromPubSub(session: session);
     unawaited(scheduleCall());

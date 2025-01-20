@@ -4,11 +4,9 @@
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
-    "editor.rulers": [
-      80
-    ]
+    "editor.rulers": [80]
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.19.3",
+  "dart.flutterSdkPath": ".fvm/versions/3.22.1",
   "search.exclude": {
     "**/.fvm": true
   },
@@ -20,5 +18,7 @@
   "diffEditor.experimental.showMoves": true,
   "dart.showTodos": true,
   "dart.insertArgumentPlaceholders": true,
-  "dart.flutterOutline": true
+  "dart.flutterOutline": true,
+  "IDX.aI.enableInlineCompletion": true,
+  "IDX.aI.enableCodebaseIndexing": true
 }

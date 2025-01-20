@@ -106,6 +106,12 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
         ),
       );
 
+  void disableRestrictions() => _updateSettings(
+        (final settings) => settings.copyWith(
+          isSocialNetworksRestricted: false,
+        ),
+      );
+
   Future<void> updateLocale(final Locale? locale) async {
     final result = await LocaleLogic().updateLocale(
       newLocale: locale,

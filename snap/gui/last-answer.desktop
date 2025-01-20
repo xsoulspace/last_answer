@@ -2,9 +2,9 @@
 Name=Last Answer
 
 GenericName=Last Answer
-Comment=Express your ideas
+Comment=App to quickly write Notes & Ideas
 Exec=last-answer
 Icon=${SNAP}/meta/gui/last-answer.png
 Terminal=false
 Type=Application
-Categories=Development;Productivity;
+Categories=Productivity;Development;

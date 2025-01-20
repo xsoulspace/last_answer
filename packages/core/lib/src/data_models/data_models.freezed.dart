@@ -2747,6 +2747,7 @@ mixin _$UserSettingsModel {
   @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
   Locale? get locale => throw _privateConstructorUsedError;
   bool get useTimestampForBackupFilename => throw _privateConstructorUsedError;
+  bool get isSocialNetworksRestricted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2766,7 +2767,8 @@ abstract class $UserSettingsModelCopyWith<$Res> {
       bool isProjectsListReversed,
       int charactersLimitForNewNotes,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) Locale? locale,
-      bool useTimestampForBackupFilename});
+      bool useTimestampForBackupFilename,
+      bool isSocialNetworksRestricted});
 }
 
 /// @nodoc
@@ -2787,6 +2789,7 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
     Object? useTimestampForBackupFilename = null,
+    Object? isSocialNetworksRestricted = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -2809,6 +2812,10 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
           ? _value.useTimestampForBackupFilename
           : useTimestampForBackupFilename // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSocialNetworksRestricted: null == isSocialNetworksRestricted
+          ? _value.isSocialNetworksRestricted
+          : isSocialNetworksRestricted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -2827,7 +2834,8 @@ abstract class _$$UserSettingsModelImplCopyWith<$Res>
       bool isProjectsListReversed,
       int charactersLimitForNewNotes,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) Locale? locale,
-      bool useTimestampForBackupFilename});
+      bool useTimestampForBackupFilename,
+      bool isSocialNetworksRestricted});
 }
 
 /// @nodoc
@@ -2846,6 +2854,7 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
     Object? charactersLimitForNewNotes = null,
     Object? locale = freezed,
     Object? useTimestampForBackupFilename = null,
+    Object? isSocialNetworksRestricted = null,
   }) {
     return _then(_$UserSettingsModelImpl(
       themeMode: null == themeMode
@@ -2868,6 +2877,10 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
           ? _value.useTimestampForBackupFilename
           : useTimestampForBackupFilename // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSocialNetworksRestricted: null == isSocialNetworksRestricted
+          ? _value.isSocialNetworksRestricted
+          : isSocialNetworksRestricted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2881,7 +2894,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
       this.isProjectsListReversed = true,
       this.charactersLimitForNewNotes = 0,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson) this.locale,
-      this.useTimestampForBackupFilename = true});
+      this.useTimestampForBackupFilename = true,
+      this.isSocialNetworksRestricted = true});
 
   factory _$UserSettingsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserSettingsModelImplFromJson(json);
@@ -2901,10 +2915,13 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
   @override
   @JsonKey()
   final bool useTimestampForBackupFilename;
+  @override
+  @JsonKey()
+  final bool isSocialNetworksRestricted;
 
   @override
   String toString() {
-    return 'UserSettingsModel(themeMode: $themeMode, isProjectsListReversed: $isProjectsListReversed, charactersLimitForNewNotes: $charactersLimitForNewNotes, locale: $locale, useTimestampForBackupFilename: $useTimestampForBackupFilename)';
+    return 'UserSettingsModel(themeMode: $themeMode, isProjectsListReversed: $isProjectsListReversed, charactersLimitForNewNotes: $charactersLimitForNewNotes, locale: $locale, useTimestampForBackupFilename: $useTimestampForBackupFilename, isSocialNetworksRestricted: $isSocialNetworksRestricted)';
   }
 
   @override
@@ -2924,7 +2941,11 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
             (identical(other.useTimestampForBackupFilename,
                     useTimestampForBackupFilename) ||
                 other.useTimestampForBackupFilename ==
-                    useTimestampForBackupFilename));
+                    useTimestampForBackupFilename) &&
+            (identical(other.isSocialNetworksRestricted,
+                    isSocialNetworksRestricted) ||
+                other.isSocialNetworksRestricted ==
+                    isSocialNetworksRestricted));
   }
 
   @JsonKey(ignore: true)
@@ -2935,7 +2956,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
       isProjectsListReversed,
       charactersLimitForNewNotes,
       locale,
-      useTimestampForBackupFilename);
+      useTimestampForBackupFilename,
+      isSocialNetworksRestricted);
 
   @JsonKey(ignore: true)
   @override
@@ -2960,7 +2982,8 @@ abstract class _UserSettingsModel implements UserSettingsModel {
       final int charactersLimitForNewNotes,
       @JsonKey(fromJson: _localeFromJson, toJson: _localeToJson)
       final Locale? locale,
-      final bool useTimestampForBackupFilename}) = _$UserSettingsModelImpl;
+      final bool useTimestampForBackupFilename,
+      final bool isSocialNetworksRestricted}) = _$UserSettingsModelImpl;
 
   factory _UserSettingsModel.fromJson(Map<String, dynamic> json) =
       _$UserSettingsModelImpl.fromJson;
@@ -2977,6 +3000,8 @@ abstract class _UserSettingsModel implements UserSettingsModel {
   Locale? get locale;
   @override
   bool get useTimestampForBackupFilename;
+  @override
+  bool get isSocialNetworksRestricted;
   @override
   @JsonKey(ignore: true)
   _$$UserSettingsModelImplCopyWith<_$UserSettingsModelImpl> get copyWith =>

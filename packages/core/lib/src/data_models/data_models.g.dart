@@ -270,6 +270,8 @@ _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
       locale: _localeFromJson(json['locale'] as String),
       useTimestampForBackupFilename:
           json['useTimestampForBackupFilename'] as bool? ?? true,
+      isSocialNetworksRestricted:
+          json['isSocialNetworksRestricted'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$UserSettingsModelImplToJson(
@@ -280,4 +282,5 @@ Map<String, dynamic> _$$UserSettingsModelImplToJson(
       'charactersLimitForNewNotes': instance.charactersLimitForNewNotes,
       'locale': _localeToJson(instance.locale),
       'useTimestampForBackupFilename': instance.useTimestampForBackupFilename,
+      'isSocialNetworksRestricted': instance.isSocialNetworksRestricted,
     };

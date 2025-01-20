@@ -3,7 +3,9 @@ import 'package:serverpod/serverpod.dart';
 
 extension SessionExtension on Session {
   Future<ServerUserId> get userId async {
-    final id = await auth.authenticatedUserId;
-    return id!;
+    final auth = await authenticated;
+    final id = auth?.userId;
+    if (id == null) throw Exception('User is unauthorized');
+    return id;
   }
 }

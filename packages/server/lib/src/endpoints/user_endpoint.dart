@@ -55,7 +55,7 @@ class UserEndpoint extends Endpoint {
     // https://github.com/serverpod/serverpod/discussions/1096
     final userInfo = await Users.findUserByUserId(session, userId);
     if (userInfo != null) {
-      final deleteWhere = session.dbNext.deleteWhere;
+      final deleteWhere = session.db.deleteWhere;
       await Future.wait([
         deleteWhere<UserImage>(
           where: UserImage.t.userId.equals(userId),

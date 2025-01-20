@@ -10,11 +10,7 @@ class RemoteUserModel with _$RemoteUserModel {
   }) = _RemoteUserModel;
   factory RemoteUserModel.fromRawJson(final Map<String, dynamic> json) =>
       _$RemoteUserModelFromJson(json);
-  factory RemoteUserModel.fromJson(
-    final Map<String, dynamic> json,
-    // ignore: avoid_unused_constructor_parameters
-    final SerializationManager serializationManager,
-  ) =>
+  factory RemoteUserModel.fromJson(final Map<String, dynamic> json) =>
       _$RemoteUserModelFromJson(json);
   const RemoteUserModel._();
   static const empty = RemoteUserModel();

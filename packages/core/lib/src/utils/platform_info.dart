@@ -33,6 +33,6 @@ class PlatformInfo {
   static bool get isTransparentBackgroundSupported => isMacOS;
   static bool get isCupertino => isIOS || isMacOS;
   static Future<bool> get isConnected async =>
-      InternetConnectionChecker().hasConnection;
+      InternetConnectionChecker.createInstance().hasConnection;
   static Future<bool> get isDisconnected async => (await isConnected) == false;
 }

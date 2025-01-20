@@ -1,16 +1,17 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class UserPurchaseInfo extends _i1.SerializableEntity {
+abstract class UserPurchaseInfo implements _i1.SerializableModel {
   UserPurchaseInfo._({
     this.id,
     required this.daysOfSupporterLeft,
@@ -27,20 +28,16 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
     required int userId,
   }) = _UserPurchaseInfoImpl;
 
-  factory UserPurchaseInfo.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory UserPurchaseInfo.fromJson(Map<String, dynamic> jsonSerialization) {
     return UserPurchaseInfo(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      daysOfSupporterLeft: serializationManager
-          .deserialize<int>(jsonSerialization['daysOfSupporterLeft']),
-      isOneTimePurchased: serializationManager
-          .deserialize<bool>(jsonSerialization['isOneTimePurchased']),
-      subscriptionEndDate: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['subscriptionEndDate']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
+      id: jsonSerialization['id'] as int?,
+      daysOfSupporterLeft: jsonSerialization['daysOfSupporterLeft'] as int,
+      isOneTimePurchased: jsonSerialization['isOneTimePurchased'] as bool,
+      subscriptionEndDate: jsonSerialization['subscriptionEndDate'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(
+              jsonSerialization['subscriptionEndDate']),
+      userId: jsonSerialization['userId'] as int,
     );
   }
 
@@ -74,6 +71,11 @@ abstract class UserPurchaseInfo extends _i1.SerializableEntity {
         'subscriptionEndDate': subscriptionEndDate?.toJson(),
       'userId': userId,
     };
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 

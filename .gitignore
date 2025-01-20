@@ -11,6 +11,7 @@
 .svn/
 /android/key.properties
 android/key.properties
+pubspec.lock
 # IntelliJ related
 *.iml
 *.ipr

@@ -9,3 +9,9 @@ watch-tailwind:
 	./tailwindcss -i ./web/styles.css -o ./build/output.css --watch
 compile-tailwind:
 	./tailwindcss -i ./web/styles.css -o ./build/jaspr/output.css --minify
+
+serve:
+	jaspr serve
+# before building, remove https://cdn.tailwindcss.com from index
+build:
+	compile-tailwind && jaspr build

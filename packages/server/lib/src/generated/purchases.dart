@@ -1,24 +1,25 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class UserPurchaseInfo extends _i1.TableRow {
+abstract class UserPurchaseInfo
+    implements _i1.TableRow, _i1.ProtocolSerialization {
   UserPurchaseInfo._({
-    int? id,
+    this.id,
     required this.daysOfSupporterLeft,
     required this.isOneTimePurchased,
     this.subscriptionEndDate,
     required this.userId,
-  }) : super(id);
+  });
 
   factory UserPurchaseInfo({
     int? id,
@@ -28,26 +29,25 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
     required int userId,
   }) = _UserPurchaseInfoImpl;
 
-  factory UserPurchaseInfo.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory UserPurchaseInfo.fromJson(Map<String, dynamic> jsonSerialization) {
     return UserPurchaseInfo(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      daysOfSupporterLeft: serializationManager
-          .deserialize<int>(jsonSerialization['daysOfSupporterLeft']),
-      isOneTimePurchased: serializationManager
-          .deserialize<bool>(jsonSerialization['isOneTimePurchased']),
-      subscriptionEndDate: serializationManager
-          .deserialize<DateTime?>(jsonSerialization['subscriptionEndDate']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
+      id: jsonSerialization['id'] as int?,
+      daysOfSupporterLeft: jsonSerialization['daysOfSupporterLeft'] as int,
+      isOneTimePurchased: jsonSerialization['isOneTimePurchased'] as bool,
+      subscriptionEndDate: jsonSerialization['subscriptionEndDate'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(
+              jsonSerialization['subscriptionEndDate']),
+      userId: jsonSerialization['userId'] as int,
     );
   }
 
   static final t = UserPurchaseInfoTable();
 
   static const db = UserPurchaseInfoRepository._();
+
+  @override
+  int? id;
 
   int daysOfSupporterLeft;
 
@@ -80,19 +80,7 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
   }
 
   @override
-  @Deprecated('Will be removed in 2.0.0')
-  Map<String, dynamic> toJsonForDatabase() {
-    return {
-      'id': id,
-      'daysOfSupporterLeft': daysOfSupporterLeft,
-      'isOneTimePurchased': isOneTimePurchased,
-      'subscriptionEndDate': subscriptionEndDate,
-      'userId': userId,
-    };
-  }
-
-  @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
       'daysOfSupporterLeft': daysOfSupporterLeft,
@@ -101,150 +89,6 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
         'subscriptionEndDate': subscriptionEndDate?.toJson(),
       'userId': userId,
     };
-  }
-
-  @override
-  @Deprecated('Will be removed in 2.0.0')
-  void setColumn(
-    String columnName,
-    value,
-  ) {
-    switch (columnName) {
-      case 'id':
-        id = value;
-        return;
-      case 'daysOfSupporterLeft':
-        daysOfSupporterLeft = value;
-        return;
-      case 'isOneTimePurchased':
-        isOneTimePurchased = value;
-        return;
-      case 'subscriptionEndDate':
-        subscriptionEndDate = value;
-        return;
-      case 'userId':
-        userId = value;
-        return;
-      default:
-        throw UnimplementedError();
-    }
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<UserPurchaseInfo>> find(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserPurchaseInfoTable>? where,
-    int? limit,
-    int? offset,
-    _i1.Column? orderBy,
-    List<_i1.Order>? orderByList,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.find<UserPurchaseInfo>(
-      where: where != null ? where(UserPurchaseInfo.t) : null,
-      limit: limit,
-      offset: offset,
-      orderBy: orderBy,
-      orderByList: orderByList,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<UserPurchaseInfo?> findSingleRow(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserPurchaseInfoTable>? where,
-    int? offset,
-    _i1.Column? orderBy,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.findSingleRow<UserPurchaseInfo>(
-      where: where != null ? where(UserPurchaseInfo.t) : null,
-      offset: offset,
-      orderBy: orderBy,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<UserPurchaseInfo?> findById(
-    _i1.Session session,
-    int id,
-  ) async {
-    return session.db.findById<UserPurchaseInfo>(id);
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
-  static Future<int> delete(
-    _i1.Session session, {
-    required _i1.WhereExpressionBuilder<UserPurchaseInfoTable> where,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.delete<UserPurchaseInfo>(
-      where: where(UserPurchaseInfo.t),
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
-  static Future<bool> deleteRow(
-    _i1.Session session,
-    UserPurchaseInfo row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.deleteRow(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
-  static Future<bool> update(
-    _i1.Session session,
-    UserPurchaseInfo row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.update(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated(
-      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
-  static Future<void> insert(
-    _i1.Session session,
-    UserPurchaseInfo row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.insert(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
-  static Future<int> count(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserPurchaseInfoTable>? where,
-    int? limit,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.count<UserPurchaseInfo>(
-      where: where != null ? where(UserPurchaseInfo.t) : null,
-      limit: limit,
-      useCache: useCache,
-      transaction: transaction,
-    );
   }
 
   static UserPurchaseInfoInclude include() {
@@ -269,6 +113,11 @@ abstract class UserPurchaseInfo extends _i1.TableRow {
       orderByList: orderByList?.call(UserPurchaseInfo.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -348,9 +197,6 @@ class UserPurchaseInfoTable extends _i1.Table {
       ];
 }
 
-@Deprecated('Use UserPurchaseInfoTable.t instead.')
-UserPurchaseInfoTable tUserPurchaseInfo = UserPurchaseInfoTable();
-
 class UserPurchaseInfoInclude extends _i1.IncludeObject {
   UserPurchaseInfoInclude._();
 
@@ -394,7 +240,7 @@ class UserPurchaseInfoRepository {
     _i1.OrderByListBuilder<UserPurchaseInfoTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.find<UserPurchaseInfo>(
+    return session.db.find<UserPurchaseInfo>(
       where: where?.call(UserPurchaseInfo.t),
       orderBy: orderBy?.call(UserPurchaseInfo.t),
       orderByList: orderByList?.call(UserPurchaseInfo.t),
@@ -414,7 +260,7 @@ class UserPurchaseInfoRepository {
     _i1.OrderByListBuilder<UserPurchaseInfoTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findFirstRow<UserPurchaseInfo>(
+    return session.db.findFirstRow<UserPurchaseInfo>(
       where: where?.call(UserPurchaseInfo.t),
       orderBy: orderBy?.call(UserPurchaseInfo.t),
       orderByList: orderByList?.call(UserPurchaseInfo.t),
@@ -429,7 +275,7 @@ class UserPurchaseInfoRepository {
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findById<UserPurchaseInfo>(
+    return session.db.findById<UserPurchaseInfo>(
       id,
       transaction: transaction,
     );
@@ -440,7 +286,7 @@ class UserPurchaseInfoRepository {
     List<UserPurchaseInfo> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<UserPurchaseInfo>(
+    return session.db.insert<UserPurchaseInfo>(
       rows,
       transaction: transaction,
     );
@@ -451,7 +297,7 @@ class UserPurchaseInfoRepository {
     UserPurchaseInfo row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<UserPurchaseInfo>(
+    return session.db.insertRow<UserPurchaseInfo>(
       row,
       transaction: transaction,
     );
@@ -463,7 +309,7 @@ class UserPurchaseInfoRepository {
     _i1.ColumnSelections<UserPurchaseInfoTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<UserPurchaseInfo>(
+    return session.db.update<UserPurchaseInfo>(
       rows,
       columns: columns?.call(UserPurchaseInfo.t),
       transaction: transaction,
@@ -476,41 +322,41 @@ class UserPurchaseInfoRepository {
     _i1.ColumnSelections<UserPurchaseInfoTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<UserPurchaseInfo>(
+    return session.db.updateRow<UserPurchaseInfo>(
       row,
       columns: columns?.call(UserPurchaseInfo.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<UserPurchaseInfo>> delete(
     _i1.Session session,
     List<UserPurchaseInfo> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<UserPurchaseInfo>(
+    return session.db.delete<UserPurchaseInfo>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<UserPurchaseInfo> deleteRow(
     _i1.Session session,
     UserPurchaseInfo row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<UserPurchaseInfo>(
+    return session.db.deleteRow<UserPurchaseInfo>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<UserPurchaseInfo>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<UserPurchaseInfoTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<UserPurchaseInfo>(
+    return session.db.deleteWhere<UserPurchaseInfo>(
       where: where(UserPurchaseInfo.t),
       transaction: transaction,
     );
@@ -522,7 +368,7 @@ class UserPurchaseInfoRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<UserPurchaseInfo>(
+    return session.db.count<UserPurchaseInfo>(
       where: where?.call(UserPurchaseInfo.t),
       limit: limit,
       transaction: transaction,

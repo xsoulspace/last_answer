@@ -2,16 +2,18 @@ import 'package:lastanswer/common_imports.dart';
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
-    required this.title,
     required this.child,
     required this.leftColumnWidth,
+    this.titleText = '',
+    this.title,
     this.addTitleQuote = true,
     this.description = '',
     this.crossAxisAlignment = CrossAxisAlignment.center,
     super.key,
   });
   final double leftColumnWidth;
-  final String title;
+  final String titleText;
+  final Widget? title;
   final Widget child;
   final bool addTitleQuote;
   final String description;
@@ -27,9 +29,9 @@ class SettingsListTile extends StatelessWidget {
       children: [
         SizedBox(
           width: leftColumnWidth,
-          child: Text(
-            addTitleQuote ? '$title:' : title,
+          child: DefaultTextStyle.merge(
             textAlign: TextAlign.end,
+            child: title ?? Text(addTitleQuote ? '$titleText:' : titleText),
           ),
         ),
         const SizedBox(width: 12),

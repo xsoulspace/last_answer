@@ -11,8 +11,8 @@ dependencies:
   app_store_server_sdk: ^1.2.9
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
-  serverpod: ^2.3.1
-  serverpod_auth_server: ^2.3.1
+  serverpod: 2.3.1
+  serverpod_auth_server: 2.3.1
   shared_models:
 
 dev_dependencies:
@@ -20,8 +20,4 @@ dev_dependencies:
   xsoulspace_lints: ^0.0.13
 
 dependency_overrides:
-  connectivity_plus: ^6.1.2
   google_fonts: ^6.2.1
-  http: ^1.2.2
-  lints: ^5.1.1
-  uuid: ^4.5.1

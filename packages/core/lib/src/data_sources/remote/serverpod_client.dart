@@ -1,6 +1,5 @@
 import 'package:core_server_client/core_server_client.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
 
 import '../../../core.dart';
 
@@ -17,7 +16,8 @@ class RemoteClientServerpodImpl implements RemoteClient {
   late final Client client = Client(
     host,
     authenticationKeyManager: FlutterAuthenticationKeyManager(),
-  )..connectivityMonitor = FlutterConnectivityMonitor();
+  );
+  // ..connectivityMonitor = FlutterConnectivityMonitor()
   // The session manager keeps track of the signed-in state of the user. You
   // can query it to see if the user is currently signed in and get information
   // about the user.

@@ -27,7 +27,8 @@ class AuthEndpoint extends Endpoint {
   Future<void> completeSignIn(final Session session) async {
     final isSignedIn = await session.isUserSignedIn;
     if (!isSignedIn) throw Exception('User is unauthorized');
-    final userId = await session.auth.authenticatedUserId;
+    final auth = await session.authenticated;
+    final userId = auth?.userId;
     if (userId == null) throw Exception('User is unauthorized');
     final user = await User.db.findFirstRow(
       session,

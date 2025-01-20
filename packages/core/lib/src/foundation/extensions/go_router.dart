@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 extension GoRouterExtension on GoRouter {
   /// https://github.com/flutter/flutter/issues/129833
   String location() {
-    final RouteMatch? lastMatch =
+    final RouteMatchBase? lastMatch =
         routerDelegate.currentConfiguration.matches.lastOrNull;
     final RouteMatchList matchList;
     if (lastMatch != null && lastMatch is ImperativeRouteMatch) {

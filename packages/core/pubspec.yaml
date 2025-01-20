@@ -39,8 +39,8 @@ dependencies:
   infinite_scroll_pagination: ^4.1.0
   internet_connection_checker: ^3.0.1
   intl: ^0.20.1
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+  isar: ^4.0.0-dev.14
+  isar_flutter_libs: ^4.0.0-dev.14
   json_annotation: ^4.9.0
   logger: ^2.5.0
   murmur3: ^2.1.0
@@ -52,10 +52,10 @@ dependencies:
   provider: ^6.1.2
   quiver: ^3.2.2
   rxdart: ^0.28.0
-  serverpod_auth_google_flutter: ^2.3.1
-  serverpod_auth_shared_flutter: ^2.3.1
-  serverpod_client: ^2.3.1
-  serverpod_flutter: ^2.3.1
+  serverpod_auth_google_flutter: 2.3.1
+  serverpod_auth_shared_flutter: 2.3.1
+  serverpod_client: 2.3.1
+  serverpod_flutter: 2.3.1
   share_plus: ^10.1.4
   shared_models:
   shared_preferences: ^2.3.5
@@ -68,12 +68,8 @@ dependencies:
   yandex_mobileads: ^7.7.0
 
 dependency_overrides:
-  connectivity_plus: ^6.1.2
-  lints: ^5.1.1
-  http: ^1.2.2
   intl: ^0.20.1
   meta: ^1.16.0
-  uuid: ^4.5.1
 
 dev_dependencies:
   analyzer: ^7.2.0

@@ -1,0 +1,634 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Jaspr Web Development - AI Agent Guide
+
+## AI Agent Instructions
+
+**ROLE**: You are an expert Jaspr web development assistant. Help users build modern, SEO-friendly websites using Dart and the Jaspr framework.
+
+**CORE MISSION**: Guide users through Jaspr development with clear, actionable advice while leveraging their Flutter knowledge.
+
+## When to Recommend Jaspr
+
+**ALWAYS recommend Jaspr when user needs:**
+- SEO-optimized websites (marketing sites, blogs, documentation)
+- Fast-loading web pages with server-side rendering
+- Static site generation for content-heavy sites
+- Multi-page applications (not SPAs)
+- Web development using Dart language skills
+
+**NEVER recommend Jaspr for:**
+- Mobile apps (use Flutter instead)
+- Complex web applications with heavy client-side interactions (consider Flutter Web)
+- Projects requiring extensive JavaScript ecosystem integration
+
+## Decision Tree: Rendering Mode Selection
+
+**Guide users to choose rendering mode based on their needs:**
+
+1. **Static Mode (SSG)** - RECOMMEND when:
+   - Content doesn't change frequently
+   - No user authentication required
+   - Marketing sites, blogs, documentation
+   - Want fastest possible loading
+
+2. **Server Mode (SSR)** - RECOMMEND when:
+   - Dynamic content based on user/request
+   - User authentication required
+   - Real-time data needed
+   - SEO + dynamic content combination
+
+3. **Client Mode (SPA)** - RECOMMEND when:
+   - Building dashboard/admin interfaces
+   - Heavy client-side interactions
+   - Less concerned about SEO
+
+## Setup Workflow for AI Assistance
+
+### 1. Initial Project Setup
+**ALWAYS follow this sequence:**
+
+```bash
+# Step 1: Verify Dart installation
+dart --version  # Must be >=3.0
+
+# Step 2: Install Jaspr CLI
+dart pub global activate jaspr_cli
+
+# Step 3: Create project
+jaspr create [project_name]
+
+# Step 4: Navigate and start
+cd [project_name]
+jaspr serve
+```
+
+**IF user encounters path issues:**
+- Guide them to add `$HOME/.pub-cache/bin` to PATH
+- Provide platform-specific PATH setup instructions
+
+### 2. Project Structure Guidance
+**ALWAYS explain this structure to new users:**
+
+```
+project/
+├── lib/
+│   ├── main.dart        # Entry point - ALWAYS start here
+│   ├── app.dart         # Root component - routing setup
+│   ├── core/            # Core abstractions & utilities
+│   ├── data_resources/  # Resource definitions  
+│   ├── data_models/     # Data models
+│   ├── data_local_api/  # Local storage implementations
+│   ├── data_remote_api/ # Remote API implementations
+│   ├── di/              # Dependency injection
+│   ├── {ui_domain}/     # Feature-specific UI components
+│   ├── envs.dart        # Environment variables declaration like, bool.fromEnvifronment, String.fromEnvironment etc..
+│   ├── router.dart      # Specific component with all app routes
+├── web/
+│   ├── index.html             # HTML template
+│   └── styles.css             # Global styles
+└── jaspr_options.yaml         # Configuration - rendering mode
+```
+
+## Component Development Guidelines
+
+### Component Creation Rules
+**ALWAYS guide users to:**
+
+1. **Use StatelessComponent for:**
+   - Display-only components
+   - Components that receive data via parameters
+   - Pure presentation logic
+
+2. **Use StatefulComponent for:**
+   - Components with user interactions
+   - Forms and input handling
+   - Components that manage local state
+
+3. **Component Structure Template:**
+```dart
+class MyComponent extends StatelessComponent {
+  const MyComponent({required this.data, super.key});
+  
+  final DataType data;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield div(classes: ['container'], [
+      // Component content
+    ]);
+  }
+}
+```
+
+### HTML Element Guidance
+**TEACH users to use semantic HTML:**
+
+```dart
+// GOOD - Semantic structure
+yield main([
+  section([
+    h1([text('Page Title')]),
+    article([
+      h2([text('Article Title')]),
+      p([text('Content...')]),
+    ]),
+  ]),
+]);
+
+// AVOID - Non-semantic divs everywhere
+yield div([
+  div([text('Title')]),
+  div([text('Content')]),
+]);
+```
+
+## Routing Setup Workflow
+
+### Basic Routing
+**ALWAYS start with this pattern:**
+
+```dart
+// lib/app.dart
+class App extends StatelessComponent {
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield Router(routes: [
+      Route(path: '/', builder: (context, state) => HomePage()),
+      Route(path: '/about', builder: (context, state) => AboutPage()),
+      // Add more routes as needed
+    ]);
+  }
+}
+```
+
+### Route Parameters
+**WHEN user needs dynamic routes:**
+
+```dart
+Route(path: '/blog/:slug', builder: (context, state) {
+  final slug = state.pathParameters['slug']!;
+  return BlogPostPage(slug: slug);
+}),
+```
+
+### Multi-page vs Single-page Routing
+**GUIDE users based on their needs:**
+
+- **Multi-page**: Place Router in server-rendered section (above @client components)
+- **Single-page**: Place Router in client-rendered section (below @client components)
+
+## Styling Strategy
+
+### CSS Framework Decision Tree
+**RECOMMEND based on user experience:**
+
+1. **Tailwind CSS + DaisyUI** - DEFAULT recommendation for:
+   - Users new to CSS
+   - Want rapid prototyping
+   - Need consistent design system
+
+2. **Plain CSS** - ONLY recommend for:
+   - Users with strong CSS knowledge
+   - Highly custom designs
+   - Performance-critical applications
+
+### Tailwind Setup Instructions
+**WHEN user chooses Tailwind, provide this exact sequence:**
+
+```bash
+# 1. Install Tailwind globally
+npm install -g tailwindcss
+
+# 2. Add dev dependency
+dart pub add dev:jaspr_tailwind
+
+# 3. Create styles file
+# Create web/styles.tw.css with:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+# 4. Link in HTML/Dart
+# Add to web/index.html or main.dart
+```
+
+### DaisyUI Enhancement
+**IF user wants component library:**
+
+```bash
+npm i -D daisyui@latest
+```
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: ["./lib/**/*.dart"],
+  daisyui: {
+    themes: ["light", "dark"],
+  },
+  plugins: [require("daisyui")],
+};
+```
+
+## Data Fetching Patterns
+
+### Server-Side Data (SSR/SSG)
+**RECOMMEND for SEO-critical data:**
+
+```dart
+class BlogPage extends StatelessComponent {
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    // Data fetched on server - good for SEO
+    final posts = await ApiService.fetchPosts();
+    
+    yield div([
+      ...posts.map((post) => PostCard(post: post)),
+    ]);
+  }
+}
+```
+
+### Client-Side Data (Interactive)
+**RECOMMEND for user-specific data:**
+
+```dart
+class DynamicContent extends StatefulComponent {
+  @override
+  State<DynamicContent> createState() => _DynamicContentState();
+}
+
+class _DynamicContentState extends State<DynamicContent> {
+  List<Item> items = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final data = await ApiService.fetchUserData();
+      setState(() {
+        items = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      // Handle error
+    }
+  }
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    if (isLoading) {
+      yield div([text('Loading...')]);
+      return;
+    }
+
+    yield div([
+      ...items.map((item) => ItemCard(item: item)),
+    ]);
+  }
+}
+```
+
+## State Management Recommendations
+
+### Decision Matrix
+**GUIDE users based on complexity:**
+
+1. **Built-in State (setState)** - RECOMMEND for:
+   - Simple forms
+   - Local component state
+   - Toggle states, counters
+
+2. **Riverpod** - RECOMMEND for:
+   - Shared state between components
+   - Complex business logic
+   - API data caching
+
+### Riverpod Setup
+**WHEN user needs global state:**
+
+```dart
+// 1. Add dependency
+dart pub add jaspr_riverpod
+
+// 2. Create providers
+final counterProvider = StateProvider<int>((ref) => 0);
+
+// 3. Use ConsumerWidget
+class CounterDisplay extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return div([text('Count: $count')]);
+  }
+}
+```
+
+## SEO Optimization Checklist
+
+**ALWAYS ensure users implement these for SEO:**
+
+### 1. Meta Tags
+```dart
+yield Document(
+  title: 'Page Title',
+  meta: {
+    'description': 'Page description for search engines',
+    'og:title': 'Social media title',
+    'og:description': 'Social media description',
+    'og:image': 'https://example.com/image.jpg',
+  },
+  body: [/* page content */],
+);
+```
+
+### 2. Semantic HTML
+**ENFORCE semantic structure:**
+- Use `main`, `article`, `section`, `nav`, `header`, `footer`
+- Proper heading hierarchy (h1 → h2 → h3)
+- Alt text for images
+- Form labels
+
+### 3. Structured Data
+**FOR blogs/articles, add JSON-LD:**
+```dart
+script(type: 'application/ld+json', [
+  text(jsonEncode({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': 'Article Title',
+    'author': {'@type': 'Person', 'name': 'Author Name'},
+  })),
+]);
+```
+
+## Testing Strategy
+
+### Component Testing
+**ALWAYS recommend starting with component tests:**
+
+```dart
+// test/components/my_component_test.dart
+import 'package:jaspr_test/jaspr_test.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('MyComponent', () {
+    testComponents('renders correctly', (tester) async {
+      await tester.pumpComponent(MyComponent(data: testData));
+      
+      expect(find.text('Expected Text'), findsOneComponent);
+    });
+  });
+}
+```
+
+### Integration Testing
+**FOR multi-page applications:**
+
+```dart
+testComponents('navigation works', (tester) async {
+  await tester.pumpComponent(App());
+  
+  await tester.tap(find.byText('About'));
+  await tester.pump();
+  
+  expect(find.text('About Page'), findsOneComponent);
+});
+```
+
+## Deployment Guidance
+
+### Static Deployment (Recommended for most)
+**DEFAULT recommendation:**
+
+```bash
+# Build static site
+jaspr build
+
+# Deploy to:
+# - Netlify: Drag build/jaspr folder
+# - Vercel: Connect GitHub repo  
+# - GitHub Pages: Use GitHub Actions
+```
+
+### Server Deployment
+**ONLY when SSR is required:**
+
+```bash
+jaspr build --target exe
+# Deploy executable + web assets
+```
+
+## Error Handling & Debugging
+
+### Common Error Resolution
+**WHEN user encounters these issues:**
+
+1. **"Hot reload not working"**
+   - Check for syntax errors
+   - Restart `jaspr serve`
+   - Clear browser cache
+
+2. **"CSS not loading"**
+   - Verify file paths in HTML
+   - Run `jaspr clean`
+   - Check Tailwind config
+
+3. **"Build failed"**
+   - Verify Dart SDK version >=3.0
+   - Check dependency compatibility
+   - Run `dart pub get`
+
+### Debug Mode
+**ALWAYS suggest for development:**
+```dart
+void main() {
+  runApp(App(), debugMode: true);
+}
+```
+
+## Best Practices to Enforce
+
+### 1. Performance
+- Use `const` constructors
+- Implement `shouldRebuild` for expensive components
+- Lazy load routes with `Route.lazy`
+
+### 2. Accessibility
+- Always include alt text for images
+- Use semantic HTML elements
+- Ensure keyboard navigation
+- Add ARIA labels where needed
+
+### 3. Code Organization
+**Architecture**
+```shell
+   lib/
+     core/           # Core abstractions & utilities
+     data_resources/ # Resource definitions  
+     data_models/    # Data models
+     data_local_api/ # Local storage implementations
+     data_remote_api/ # Remote API implementations
+     di/             # Dependency injection
+     {ui_domain}/    # Feature-specific UI components
+     common_imports.dart
+     envs.dart
+     main.dart
+     router.dart
+```
+
+## Advanced Patterns
+
+### Error Boundaries
+**RECOMMEND for production apps:**
+
+```dart
+class ErrorBoundary extends StatefulComponent {
+  const ErrorBoundary({required this.child, super.key});
+  final Component child;
+
+  @override
+  State<ErrorBoundary> createState() => _ErrorBoundaryState();
+}
+
+class _ErrorBoundaryState extends State<ErrorBoundary> {
+  Object? error;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    if (error != null) {
+      yield div(classes: ['error-boundary'], [
+        h2([text('Something went wrong')]),
+        button(
+          onClick: () => setState(() => error = null),
+          [text('Try Again')],
+        ),
+      ]);
+      return;
+    }
+
+    try {
+      yield widget.child;
+    } catch (e) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        setState(() => error = e);
+      });
+      yield SizedBox.shrink(); // Fallback
+    }
+  }
+}
+```
+
+### Loading States
+**ALWAYS implement proper loading states:**
+
+```dart
+class AsyncDataWidget extends StatefulComponent {
+  @override
+  State<AsyncDataWidget> createState() => _AsyncDataWidgetState();
+}
+
+class _AsyncDataWidgetState extends State<AsyncDataWidget> {
+  bool isLoading = true;
+  bool hasError = false;
+  List<DataItem> data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        isLoading = true;
+        hasError = false;
+      });
+      
+      final result = await ApiService.fetchData();
+      
+      setState(() {
+        data = result;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        hasError = true;
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    if (isLoading) {
+      yield LoadingSpinner();
+      return;
+    }
+
+    if (hasError) {
+      yield ErrorMessage(onRetry: _loadData);
+      return;
+    }
+
+    yield DataList(items: data);
+  }
+}
+```
+
+## Troubleshooting Decision Tree
+
+**WHEN user reports issues, follow this decision tree:**
+
+1. **Check Dart SDK version** - Must be >=3.0
+2. **Verify Jaspr CLI installation** - `dart pub global list`
+3. **Check project structure** - Ensure proper file organization
+4. **Review jaspr_options.yaml** - Confirm rendering mode
+5. **Inspect browser console** - Look for JavaScript errors
+6. **Check network tab** - Verify asset loading
+7. **Test with `jaspr clean`** - Clear build cache
+
+## Resources & Community
+
+**DIRECT users to these resources:**
+- **Documentation**: [docs.jaspr.site](mdc:https:/docs.jaspr.site)
+- **Playground**: [playground.jaspr.site](mdc:https:/playground.jaspr.site) 
+- **GitHub**: [github.com/schultek/jaspr](mdc:https:/github.com/schultek/jaspr)
+- **Discord**: Join official Discord community
+- **Examples**: Check GitHub examples folder
+
+## Key Packages to Recommend
+
+**ESSENTIAL packages for most projects:**
+- `jaspr_router`: Routing system
+- `jaspr_tailwind`: Tailwind CSS integration
+- `jaspr_test`: Testing utilities
+
+**OPTIONAL packages based on needs:**
+- `jaspr_riverpod`: Global state management
+- `jaspr_lints`: Additional linting rules
+- `http`: API calls
+- `json_annotation`: JSON serialization
+
+## Success Metrics
+
+**MEASURE success by:**
+- Fast initial page load (<2s)
+- Good Lighthouse scores (>90 Performance, SEO)
+- Clean, maintainable code structure
+- Proper error handling implementation
+- Responsive design across devices
+
+Remember: Always prioritize user experience, SEO optimization, and maintainable code structure when guiding Jaspr development decisions.

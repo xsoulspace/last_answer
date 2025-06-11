@@ -41,7 +41,8 @@
         "--dart-define=STORE=xsoulspaceWebsite",
         "-d",
         "chrome",
-        "--web-port=49660"
+        "--web-port=49660",
+        "--web-experimental-hot-reload"
       ],
       "flutterMode": "debug"
     },
@@ -53,6 +54,7 @@
       "args": [
         "--dart-define-from-file=configs/envs/local.json",
         "--dart-define=STORE=xsoulspaceWebsite",
+        "--web-experimental-hot-reload",
         "-d",
         "chrome",
         "--web-port=49660"

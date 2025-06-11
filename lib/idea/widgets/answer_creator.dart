@@ -40,17 +40,20 @@ class AnswerCreatorControllerDto {
 
 class AnswerCreatorController
     extends ValueNotifier<AnswerCreatorControllerState> {
-  AnswerCreatorController({
-    required this.dto,
-  }) : super(
-          AnswerCreatorControllerState(question: dto.initialQuestion),
-        );
-  late final _textUpdatesController = StreamController<String>()
-    ..stream
-        .sampleTime(
-          const Duration(milliseconds: 200),
-        )
-        .forEach(_save);
+  AnswerCreatorController({required this.dto})
+    : super(AnswerCreatorControllerState(question: dto.initialQuestion)) {
+    _initializeTextUpdates();
+  }
+
+  late final _textUpdatesController = StreamController<String>();
+  late final StreamSubscription _textUpdatesSubscription;
+
+  void _initializeTextUpdates() {
+    _textUpdatesSubscription = _textUpdatesController.stream
+        .sampleTime(const Duration(milliseconds: 200))
+        .listen(_save);
+  }
+
   void _addTextUpdate() => _textUpdatesController.add(answerController.text);
   late final answerController = TextEditingController(text: dto.initialText)
     ..addListener(_addTextUpdate);
@@ -78,6 +81,7 @@ class AnswerCreatorController
   void dispose() {
     focusNode.dispose();
     answerController.dispose();
+    unawaited(_textUpdatesSubscription.cancel());
     unawaited(_textUpdatesController.close());
     super.dispose();
   }
@@ -91,16 +95,13 @@ class AnswerCreatorController
   void onUnfocus() {}
 
   void _save([final String? text]) => dto.ideaViewBloc.onUpdateDraftAnswer(
-        text: answerController.text,
-        question: value.question,
-      );
+    text: answerController.text,
+    question: value.question,
+  );
 }
 
 class AnswerCreator extends HookWidget {
-  const AnswerCreator({
-    required this.controller,
-    super.key,
-  });
+  const AnswerCreator({required this.controller, super.key});
   final AnswerCreatorController controller;
   @override
   Widget build(final BuildContext context) {
@@ -123,17 +124,13 @@ class AnswerCreator extends HookWidget {
     );
     final shareButton = Hero(
       tag: const Key('shareButton'),
-      child: IconShareButton(
-        onTap: () async => controller.onShare(context),
-      ),
+      child: IconShareButton(onTap: () async => controller.onShare(context)),
     );
 
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(
-            color: context.theme.colorScheme.onSecondary,
-          ),
+          top: BorderSide(color: context.theme.colorScheme.onSecondary),
         ),
       ),
       padding: const EdgeInsets.only(top: 2),
@@ -142,11 +139,7 @@ class AnswerCreator extends HookWidget {
         children: [
           if (isQuestionsOpened)
             Padding(
-              padding: const EdgeInsets.only(
-                bottom: 2,
-                right: 10,
-                left: 10,
-              ),
+              padding: const EdgeInsets.only(bottom: 2, right: 10, left: 10),
               child: Row(
                 children: [
                   Expanded(

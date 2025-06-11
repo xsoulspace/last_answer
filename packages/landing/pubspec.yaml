@@ -3,7 +3,7 @@ description: A pure client-side app without ssr.
 version: 0.0.1
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.8.1 <4.0.0"
 
 resolution: workspace
 

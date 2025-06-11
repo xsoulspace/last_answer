@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -12,17 +13,13 @@ import '../utils/utils.dart';
 import 'firebase_initializer.dart';
 
 class FirebaseInitializerImpl implements FirebaseInitializer {
-  FirebaseInitializerImpl({
-    required this.firebaseOptions,
-  });
+  FirebaseInitializerImpl({required this.firebaseOptions});
   @override
   final FirebaseOptions? firebaseOptions;
   @override
   Future<void> onLoad() async {
     if (firebaseOptions == null) return;
-    await Firebase.initializeApp(
-      options: firebaseOptions,
-    );
+    await Firebase.initializeApp(options: firebaseOptions);
   }
 
   @override
@@ -35,7 +32,8 @@ class FirebaseAnalyticsPlugin extends AnalyticsServicePlugin {
   bool _shouldRecordErrors = false;
   @override
   Future<void> onLoad() async {
-    _isEnabled = kTestingAnalytics ||
+    _isEnabled =
+        kTestingAnalytics ||
         (!Platform.isLinux && await analytics.isSupported());
     if (_isEnabled) {
       _shouldRecordErrors = kTestingAnalytics || kDebugMode;
@@ -106,8 +104,9 @@ class FirebaseCrashlyticsPlugin extends AnalyticsServicePlugin {
 
     if (isEnabled) {
       // You could additionally extend this to allow users to opt-in.
-      await FirebaseCrashlytics.instance
-          .setCrashlyticsCollectionEnabled(isEnabled);
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        isEnabled,
+      );
       Isolate.current.addErrorListener(
         // ignore: avoid_types_on_closure_parameters
         RawReceivePort((final List<dynamic> pair) async {
@@ -122,7 +121,9 @@ class FirebaseCrashlyticsPlugin extends AnalyticsServicePlugin {
       // Pass all uncaught asynchronous errors that aren't handled by the
       // Flutter framework to Crashlytics
       PlatformDispatcher.instance.onError = (final error, final stack) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        unawaited(
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+        );
 
         return true;
       };

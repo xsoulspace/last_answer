@@ -33,12 +33,9 @@
     <title>Last Answer</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" type="text/css" href="./styles.css" />
-    <script>
-      // The value below is injected by flutter build, do not touch.
-      var serviceWorkerVersion = null;
-    </script>
+
     <!-- This script adds the flutter initialization JS code -->
-    <script src="flutter.js" defer></script>
+    <script src="flutter_bootstrap.js" defer></script>
 
     <!-- Yandex Context Start -->
     <script>
@@ -62,57 +59,5 @@
       <span class="loader" alt="Loading indicator..."></span>
     </div>
     <div id="flutter_app" style="width: 100%; height: 100%"></div>
-    <script>
-      window.addEventListener("load", function (ev) {
-        // https://stackoverflow.com/a/73731646/9908821
-        function isMobile() {
-          if ("maxTouchPoints" in navigator)
-            return navigator.maxTouchPoints > 0;
-
-          const mQ = matchMedia?.("(pointer:coarse)");
-          if (mQ?.media === "(pointer:coarse)") return !!mQ.matches;
-
-          if ("orientation" in window) return true;
-
-          return /\b(Android|Windows Phone|iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini)\b/i.test(
-            navigator.userAgent
-          );
-        }
-        if (navigator.serviceWorker) {
-          console.log("SW found");
-          navigator.serviceWorker.ready.then((registration) => {
-            console.log("requesting offline resources");
-            registration.active.postMessage("downloadOffline");
-          });
-        }
-        var loading = document.querySelector("#loading");
-        var loadingContainer = document.querySelector("#loading_container");
-        var hostElement = document.querySelector("#flutter_app");
-        // Download main.dart.js
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: async function (engineInitializer) {
-            loading.classList.add("main_done");
-            /// temporary fix, as mobile somehow doesn't work with hostElement
-            let appRunner = isMobile()
-              ? await engineInitializer.initializeEngine()
-              : await engineInitializer.initializeEngine({
-                  hostElement: hostElement,
-                });
-
-            console.log("appRunner");
-            loading.classList.add("init_done");
-            await appRunner.runApp();
-            console.log("runApp - done");
-            window.setTimeout(function () {
-              console.log("removing");
-              loadingContainer.remove();
-            }, 200);
-          },
-        });
-      });
-    </script>
   </body>
 </html>

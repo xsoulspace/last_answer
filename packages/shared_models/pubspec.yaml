@@ -19,7 +19,7 @@ dependencies:
   path_provider: ^2.1.5
   path_to_regexp: ^0.4.0
   quiver: ^3.2.2
-  serverpod_client: 2.3.1
+  serverpod_client: 2.8.0
   universal_io: ^2.2.2
   uuid: ^4.5.1
 
@@ -31,9 +31,9 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.8
   json_serializable: ^6.9.3
-  lints: ^5.1.1
+  lints: ^6.0.0
   mocktail_image_network: ^1.2.0
-  xsoulspace_lints: ^0.0.13
+  xsoulspace_lints: ^0.0.15
 # For information see the following page:
 # https://pub.dev/packages/flutter_gen
 # flutter_gen:

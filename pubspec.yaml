@@ -96,6 +96,10 @@ dependency_overrides:
   json_serializable: ^6.9.3
   analyzer: ^7.2.0
   source_gen: ^2.0.0
+  store_checker:
+    git:
+      url: git@github.com:pdurasie-ecovery/store_checker.git
+      ref: fix-deprecated-android-api
 
 msix_config:
   display_name: "Last Answer: Ideas and Notes"

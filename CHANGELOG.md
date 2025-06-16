@@ -1,5 +1,7 @@
 ## 3.21 (next)
 
+- chore: update dependencies. Flutter 3.32.2, Dart 3.8.1
+
 ## 3.20
 
 🧩 Puzzle update 🧩

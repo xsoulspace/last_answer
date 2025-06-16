@@ -56,8 +56,8 @@ FEATURES
 - start with an idea topic, pick questions and answers and share it.
   P.s.: you can become a super ninja if you use techniques such as Five Why's, PDSA, Six Sigma.
 
-- Messanger style writing - from down to up, the same way as you write in any messanger - just try it and you will like it:)
-- Auto sorting - all projects just feels like "chats" in messanger, so what you write recent - is what you will see as first:)
+- Messenger style writing - from down to up, the same way as you write in any messenger - just try it and you will like it:)
+- Auto sorting - all projects just feels like "chats" in messenger, so what you write recent - is what you will see as first:)
 
 NEW & EXPERIMENTAL
 
@@ -66,7 +66,7 @@ NEW & EXPERIMENTAL
 
 EXTRA FEATURES
 
-- Unique & Custom app layout - primary goal is to achive most convenient writing & note orginizing experience.
+- Unique & Custom app layout - primary goal is to achieve most convenient writing & note organizing experience.
 - Responsive layout - nice to you if you use it on full screen or in a small window.
 - Dark & Light themes
 - English, Italian, Russian languages

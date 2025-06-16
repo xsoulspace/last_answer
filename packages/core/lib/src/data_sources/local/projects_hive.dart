@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../../core.dart';

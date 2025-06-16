@@ -12,6 +12,7 @@
 /android/key.properties
 android/key.properties
 pubspec.lock
+firebase.json
 # IntelliJ related
 *.iml
 *.ipr

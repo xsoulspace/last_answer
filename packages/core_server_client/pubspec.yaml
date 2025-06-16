@@ -8,6 +8,6 @@ resolution: workspace
 
 dependencies:
   core:
-  serverpod_auth_client: 2.3.1
-  serverpod_client: 2.3.1
+  serverpod_auth_client: 2.8.0
+  serverpod_client: 2.8.0
   shared_models:

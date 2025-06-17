@@ -1,4 +1,8 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'S.dart';
+
+// ignore_for_file: type=lint
 
 /// The translations for English (`en`).
 class SEn extends S {
@@ -59,19 +63,23 @@ class SEn extends S {
   String get charactersLimit => 'Characters limit';
 
   @override
-  String get charactersLimitForNewNotesDesription => 'When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.';
+  String get charactersLimitForNewNotesDesription =>
+      'When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.';
 
   @override
   String get charactersUnlimited => 'Other';
 
   @override
-  String get madeWithLoveAndFlutter => 'Made with Flutter ❤ and Open Source Libraries';
+  String get madeWithLoveAndFlutter =>
+      'Made with Flutter ❤ and Open Source Libraries';
 
   @override
-  String get feedbackTextWithEmail => 'or send a message to idea@xsoulspace.dev';
+  String get feedbackTextWithEmail =>
+      'or send a message to idea@xsoulspace.dev';
 
   @override
-  String get niceDayWish => 'Thank you for using this app and have a nice day, full of ideas and inspiration!:)';
+  String get niceDayWish =>
+      'Thank you for using this app and have a nice day, full of ideas and inspiration!:)';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -183,25 +191,31 @@ class SEn extends S {
   String get philosophyAbstractFiveWhyesWhat => 'You can use: \"Five whys\"';
 
   @override
-  String get philosophyAbstractFiveWhyesWhy => 'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys';
+  String get philosophyAbstractFiveWhyesWhy =>
+      'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys';
 
   @override
-  String get philosophyAbstractPDSAWhy => 'Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA';
+  String get philosophyAbstractPDSAWhy =>
+      'Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA';
 
   @override
-  String get philosophyAbstractPDSAWhat => 'You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" ';
+  String get philosophyAbstractPDSAWhat =>
+      'You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" ';
 
   @override
-  String get philosophyAbstractSixSigmaWhy => 'Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma';
+  String get philosophyAbstractSixSigmaWhy =>
+      'Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma';
 
   @override
   String get philosophyAbstractSixSigmaWhat => 'You can use: \"Six Sigma\"';
 
   @override
-  String get aboutAbstractWhatForDescription => 'This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.';
+  String get aboutAbstractWhatForDescription =>
+      'This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.';
 
   @override
-  String get aboutAbstractHowDescription => 'You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.';
+  String get aboutAbstractHowDescription =>
+      'You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.';
 
   @override
   String get aboutAbstractIdeasImprovementsBugs => 'Ideas Improvements Bugs?';
@@ -210,7 +224,8 @@ class SEn extends S {
   String get supporterDaysLeft => 'Supporter days left';
 
   @override
-  String get youCanSupportAppDevelopment => 'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.';
+  String get youCanSupportAppDevelopment =>
+      'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.';
 
   @override
   String get youUsedThisAppFor => 'You used this app for';
@@ -222,7 +237,8 @@ class SEn extends S {
   String get andHaveSupported => 'and have supported';
 
   @override
-  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport => 'Unfortunately, this platform has no abilities to support the app, yet:)';
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport =>
+      'Unfortunately, this platform has no abilities to support the app, yet:)';
 
   @override
   String get butYouCanGoTo => 'But you can go';
@@ -234,19 +250,23 @@ class SEn extends S {
   String get whatSupporterDaysMeans => 'What \"Suppoter Days\" means?';
 
   @override
-  String get supporterDaysAre => 'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)';
+  String get supporterDaysAre =>
+      'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)';
 
   @override
-  String get supporterDaysMainFunctionality => 'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)';
+  String get supporterDaysMainFunctionality =>
+      'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)';
 
   @override
-  String get toGetSupporterDays => 'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.';
+  String get toGetSupporterDays =>
+      'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.';
 
   @override
   String get watchAd => 'Watch Ad';
 
   @override
-  String get adPleaseNote => 'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.';
+  String get adPleaseNote =>
+      'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.';
 
   @override
   String get exportImportData => 'Backup';
@@ -267,10 +287,12 @@ class SEn extends S {
   String get projectsFromFileRestored => 'Projects from file restored 🎉';
 
   @override
-  String get beCarefulItsInreversableAction => 'Be careful, it is not reversable action';
+  String get beCarefulItsInreversableAction =>
+      'Be careful, it is not reversable action';
 
   @override
-  String get byLoadingFileWarning => 'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action';
+  String get byLoadingFileWarning =>
+      'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action';
 
   @override
   String rewardForAdThankYou(Object days) {
@@ -278,10 +300,12 @@ class SEn extends S {
   }
 
   @override
-  String get yourProjectWasCopiedToClipboard => 'Your project was copied to clipboard 🎉';
+  String get yourProjectWasCopiedToClipboard =>
+      'Your project was copied to clipboard 🎉';
 
   @override
-  String get allProjectsWereCopiedToClipboard => 'All projects were copied to clipboard 🎉';
+  String get allProjectsWereCopiedToClipboard =>
+      'All projects were copied to clipboard 🎉';
 
   @override
   String get applyTimestamp => 'Apply timestamp';
@@ -335,10 +359,12 @@ class SEn extends S {
   String get deleteFolder => 'Delete folder?';
 
   @override
-  String get folderDeletionWillNotDeleteProjects => '\nDeletion of this Folder doesn\'t delete any Note or Idea.';
+  String get folderDeletionWillNotDeleteProjects =>
+      '\nDeletion of this Folder doesn\'t delete any Note or Idea.';
 
   @override
-  String get useFoldersForNotes => 'Use 🗂️Folders for Notes and Ideas to quickly organize them.';
+  String get useFoldersForNotes =>
+      'Use 🗂️Folders for Notes and Ideas to quickly organize them.';
 
   @override
   String youCanCreateUpTo(Object foldersLimit) {

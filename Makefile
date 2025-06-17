@@ -12,10 +12,8 @@ clean_macos:
 	cd macos && pod deintegrate && pod install
 clean_android: 
 	cd android && gradlew clean
-
-get:
-	fvm dart run melos bootstrap 
-
+use-firebase-account:
+	firebase login:use
 gen: 
 	fvm dart run build_runner build --enable-experiment=inline-class
 gen-rewrite:

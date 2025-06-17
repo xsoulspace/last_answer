@@ -11,10 +11,11 @@ import 'purchases_ads_base.dart';
 final class PurchasesAdsService extends PurchasesAdsBase {
   // ignore: avoid_unused_constructor_parameters
   PurchasesAdsService(final BuildContext context);
-  late final _instance = (PlatformInfo.isNativeMobile
-      ? PurchasesAdsServiceMobileYaImpl()
-      : PurchasesAdsServiceDesktop())
-    ..addListener(notifyListeners);
+  late final _instance =
+      (PlatformInfo.isNativeMobile
+            ? PurchasesAdsServiceMobileYaImpl()
+            : PurchasesAdsServiceDesktop())
+        ..addListener(notifyListeners);
   @override
   Future<AdInstance> prepareAdInstance({required final AdUnitTuple unitIds}) =>
       _instance.prepareAdInstance(unitIds: unitIds);
@@ -22,8 +23,8 @@ final class PurchasesAdsService extends PurchasesAdsBase {
   bool get isLoaded => _instance.isLoaded;
 
   @override
-  Future<void> onLoad() {
-    _instance.onLoad();
+  Future<void> onLoad() async {
+    await _instance.onLoad();
     return super.onLoad();
   }
 }
@@ -65,12 +66,12 @@ final class PurchasesAdsServiceMobileYaImpl extends PurchasesAdsBase {
   }) async {
     final adLoader = await _adLoader;
     Future<void> preload() => adLoader.loadAd(
-          adRequestConfiguration: AdRequestConfiguration(
-            // adUnitId: 'demo-rewarded-yandex',
-            adUnitId: unitIds.mobile,
-            preferredTheme: unitIds.isDarkMode ? AdTheme.dark : AdTheme.light,
-          ),
-        );
+      adRequestConfiguration: AdRequestConfiguration(
+        // adUnitId: 'demo-rewarded-yandex',
+        adUnitId: unitIds.mobile,
+        preferredTheme: unitIds.isDarkMode ? AdTheme.dark : AdTheme.light,
+      ),
+    );
     Completer<RewardedAd>? adCompleter = _adCompleter;
     if (adCompleter == null) {
       _adCompleter = adCompleter = Completer();
@@ -107,10 +108,7 @@ final class PurchasesAdsServiceDesktop extends PurchasesAdsBase {
 }
 
 final class AdInstanceYaMobileImpl extends AdInstance {
-  AdInstanceYaMobileImpl({
-    required this.ad,
-    required this.onDispose,
-  });
+  AdInstanceYaMobileImpl({required this.ad, required this.onDispose});
   final RewardedAd ad;
   final VoidCallback onDispose;
   @override
@@ -124,9 +122,9 @@ final class AdInstanceYaMobileImpl extends AdInstance {
   Future<AdRewardModel> show() async {
     await ad.setAdEventListener(
       eventListener: RewardedAdEventListener(
-          // onAdFailedToShow: (final e) => dispose(),
-          // onAdDismissed: dispose,
-          ),
+        // onAdFailedToShow: (final e) => dispose(),
+        // onAdDismissed: dispose,
+      ),
     );
     await ad.show();
     final reward = await ad.waitForDismiss();

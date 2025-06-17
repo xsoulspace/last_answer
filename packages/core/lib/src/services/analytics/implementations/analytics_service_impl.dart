@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_annotating_with_dynamic
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -175,7 +177,7 @@ class AnalyticsServiceImpl extends AnalyticsService {
   Future<void> onLoad() async {
     final originalOnError = FlutterError.onError;
     FlutterError.onError = (final errorDetails) {
-      recordFlutterError(errorDetails);
+      unawaited(recordFlutterError(errorDetails));
       // Forward to original handler.
       originalOnError?.call(errorDetails);
     };

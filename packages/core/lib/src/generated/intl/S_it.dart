@@ -1,4 +1,8 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'S.dart';
+
+// ignore_for_file: type=lint
 
 /// The translations for Italian (`it`).
 class SIt extends S {
@@ -59,19 +63,23 @@ class SIt extends S {
   String get charactersLimit => 'Limite di caratteri';
 
   @override
-  String get charactersLimitForNewNotesDesription => 'Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.';
+  String get charactersLimitForNewNotesDesription =>
+      'Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.';
 
   @override
   String get charactersUnlimited => 'Altro';
 
   @override
-  String get madeWithLoveAndFlutter => 'Made with Flutter ❤ and Open Source Libraries';
+  String get madeWithLoveAndFlutter =>
+      'Made with Flutter ❤ and Open Source Libraries';
 
   @override
-  String get feedbackTextWithEmail => 'o inviare un messaggio a idea@xsoulspace.dev';
+  String get feedbackTextWithEmail =>
+      'o inviare un messaggio a idea@xsoulspace.dev';
 
   @override
-  String get niceDayWish => 'Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)';
+  String get niceDayWish =>
+      'Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)';
 
   @override
   String get privacyPolicy => 'Politica sulla riservatezza';
@@ -183,25 +191,31 @@ class SIt extends S {
   String get philosophyAbstractFiveWhyesWhat => 'Puoi usare: \"Cinque perché\"';
 
   @override
-  String get philosophyAbstractFiveWhyesWhy => 'Perché puoi usare questa tecnica se hai un problema o un\'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys';
+  String get philosophyAbstractFiveWhyesWhy =>
+      'Perché puoi usare questa tecnica se hai un problema o un\'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys';
 
   @override
-  String get philosophyAbstractPDSAWhy => 'Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l\'esplorazione di idee, ma a comprendere i problemi dell\'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA';
+  String get philosophyAbstractPDSAWhy =>
+      'Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l\'esplorazione di idee, ma a comprendere i problemi dell\'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA';
 
   @override
-  String get philosophyAbstractPDSAWhat => 'Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ';
+  String get philosophyAbstractPDSAWhat =>
+      'Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ';
 
   @override
-  String get philosophyAbstractSixSigmaWhy => 'Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma';
+  String get philosophyAbstractSixSigmaWhy =>
+      'Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma';
 
   @override
   String get philosophyAbstractSixSigmaWhat => 'Puoi usare: \"Six Sigma\"';
 
   @override
-  String get aboutAbstractWhatForDescription => 'Questa app è progettata per risolvere l\'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.';
+  String get aboutAbstractWhatForDescription =>
+      'Questa app è progettata per risolvere l\'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.';
 
   @override
-  String get aboutAbstractHowDescription => 'Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.';
+  String get aboutAbstractHowDescription =>
+      'Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.';
 
   @override
   String get aboutAbstractIdeasImprovementsBugs => 'Idee Miglioramenti Bug?';
@@ -210,7 +224,8 @@ class SIt extends S {
   String get supporterDaysLeft => 'Giorni di supporto rimasti';
 
   @override
-  String get youCanSupportAppDevelopment => 'Puoi iniziare a sostenere lo sviluppo dell\'app guardando la breve pubblicità qui sotto. Questo mi aiuterà a migliorare l\'app e renderla migliore.';
+  String get youCanSupportAppDevelopment =>
+      'Puoi iniziare a sostenere lo sviluppo dell\'app guardando la breve pubblicità qui sotto. Questo mi aiuterà a migliorare l\'app e renderla migliore.';
 
   @override
   String get youUsedThisAppFor => 'Hai usato questa app per';
@@ -222,7 +237,8 @@ class SIt extends S {
   String get andHaveSupported => 'e ha supportato';
 
   @override
-  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport => 'Purtroppo, questa piattaforma al momento non ha la possibilità di supportare l\'app:)';
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport =>
+      'Purtroppo, questa piattaforma al momento non ha la possibilità di supportare l\'app:)';
 
   @override
   String get butYouCanGoTo => 'Ma tu puoi andare';
@@ -234,19 +250,23 @@ class SIt extends S {
   String get whatSupporterDaysMeans => 'Cosa significa \"Supporter Days\"?';
 
   @override
-  String get supporterDaysAre => 'Supporter Days sono i giorni dati all\'utente dell\'applicazione per sostenere il progetto. Ogni volta che l\'utente utilizza l\'applicazione, viene detratto un Supporter Day (solo una volta al giorno, indipendentemente da quante volte l\'utente apre l\'applicazione in un giorno) e aggiunto ai Giorni supportati (il numero totale di giorni in cui la persona ha supportato il progetto). Se l\'utente non ha mai aperto l\'applicazione, i giorni non vengono detratti. :)';
+  String get supporterDaysAre =>
+      'Supporter Days sono i giorni dati all\'utente dell\'applicazione per sostenere il progetto. Ogni volta che l\'utente utilizza l\'applicazione, viene detratto un Supporter Day (solo una volta al giorno, indipendentemente da quante volte l\'utente apre l\'applicazione in un giorno) e aggiunto ai Giorni supportati (il numero totale di giorni in cui la persona ha supportato il progetto). Se l\'utente non ha mai aperto l\'applicazione, i giorni non vengono detratti. :)';
 
   @override
-  String get supporterDaysMainFunctionality => 'La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l\'opportunità di utilizzare funzionalità aggiuntive dell\'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)';
+  String get supporterDaysMainFunctionality =>
+      'La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l\'opportunità di utilizzare funzionalità aggiuntive dell\'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)';
 
   @override
-  String get toGetSupporterDays => 'Per ottenere i Supporter Days, l\'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.';
+  String get toGetSupporterDays =>
+      'Per ottenere i Supporter Days, l\'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.';
 
   @override
   String get watchAd => 'Guarda la pubblicità';
 
   @override
-  String get adPleaseNote => 'Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.';
+  String get adPleaseNote =>
+      'Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.';
 
   @override
   String get exportImportData => 'Backup';
@@ -267,10 +287,12 @@ class SIt extends S {
   String get projectsFromFileRestored => 'Progetti ripristinati dal file 🎉';
 
   @override
-  String get beCarefulItsInreversableAction => 'Attenzione, è un\'azione non reversibile';
+  String get beCarefulItsInreversableAction =>
+      'Attenzione, è un\'azione non reversibile';
 
   @override
-  String get byLoadingFileWarning => 'Caricando questo file sovrascriverai tutti i progetti attuali nell\'app. \nAttenzione, è un\'azione non reversibile';
+  String get byLoadingFileWarning =>
+      'Caricando questo file sovrascriverai tutti i progetti attuali nell\'app. \nAttenzione, è un\'azione non reversibile';
 
   @override
   String rewardForAdThankYou(Object days) {
@@ -278,10 +300,12 @@ class SIt extends S {
   }
 
   @override
-  String get yourProjectWasCopiedToClipboard => 'Your project was copied to clipboard 🎉';
+  String get yourProjectWasCopiedToClipboard =>
+      'Your project was copied to clipboard 🎉';
 
   @override
-  String get allProjectsWereCopiedToClipboard => 'All projects were copied to clipboard 🎉';
+  String get allProjectsWereCopiedToClipboard =>
+      'All projects were copied to clipboard 🎉';
 
   @override
   String get applyTimestamp => 'Applica timestamp';
@@ -335,10 +359,12 @@ class SIt extends S {
   String get deleteFolder => 'Delete folder?';
 
   @override
-  String get folderDeletionWillNotDeleteProjects => '\nL\'eliminazione di questa cartella non elimina alcuna Nota o Idea.';
+  String get folderDeletionWillNotDeleteProjects =>
+      '\nL\'eliminazione di questa cartella non elimina alcuna Nota o Idea.';
 
   @override
-  String get useFoldersForNotes => 'Usa 🗂️ Cartelle per Note e Idee per organizzarle rapidamente.';
+  String get useFoldersForNotes =>
+      'Usa 🗂️ Cartelle per Note e Idee per organizzarle rapidamente.';
 
   @override
   String youCanCreateUpTo(Object foldersLimit) {

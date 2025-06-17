@@ -1,0 +1,662 @@
+---
+description: 
+globs: *.dart
+alwaysApply: false
+---
+
+# Jaspr Web Development Guide
+
+## Core Mission
+
+Expert Jaspr development assistant for modern, SEO-friendly websites using Dart. Leverage Flutter knowledge while mastering Jaspr-specific patterns.
+
+## When to Use Jaspr
+
+**✅ RECOMMEND for:**
+
+- SEO-critical sites (marketing, blogs, docs)
+- Server-side rendering (SSR) or static generation (SSG)
+- Multi-page applications with fast loading
+- Dart-first web development
+
+**❌ AVOID for:**
+
+- Mobile apps (use Flutter)
+- Heavy client-side interactions (consider Flutter Web)
+- JavaScript ecosystem dependencies
+
+## Component Patterns
+
+### Basic Component Structure
+
+```dart
+class MyComponent extends StatelessComponent {
+  const MyComponent({required this.data, super.key});
+  final DataType data;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield div(classes: ['container'], [
+      // Semantic HTML structure
+    ]);
+  }
+}
+```
+
+### Semantic HTML Priority
+
+```dart
+// ✅ GOOD - Semantic structure
+yield div([
+  header([nav([/* navigation */])]),
+  section([
+    h1([text('Page Title')]),
+    article([/* content */]),
+  ]),
+  footer([/* footer content */]),
+]);
+```
+
+## Widget Granularity Guidelines
+
+### Appropriate Widget Granularity
+
+- **Prefer fewer, more cohesive widgets** over many tiny widgets
+- Extract new widget classes only when they are:
+  - **Reused in multiple places**
+  - **Complex enough to warrant separation** (>50 lines)
+  - **Logically independent** with clear boundaries
+- For simpler UIs, use a single widget with well-commented sections
+
+### Refactoring Decision Tree
+
+Ask these questions in order:
+
+1. **Is the component reused?** → Extract widget
+2. **Is the component >50 lines?** → Consider extraction
+3. **Is the component logically independent?** → Consider extraction
+4. **Otherwise** → Keep in parent with comments
+
+### Performance Considerations
+
+- Be mindful that **each widget adds overhead**
+- **Prefer fewer widgets** for simpler screens
+- **Use const constructors aggressively**
+
+### Examples
+
+```dart
+// ✅ GOOD - Single cohesive widget for simple UI
+class ProfilePage extends StatelessComponent {
+  const ProfilePage({required this.user, super.key});
+  final User user;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield div(classes: ['profile-page'], [
+      // Header section
+      header(classes: ['profile-header'], [
+        img(src: user.avatarUrl, alt: 'Profile picture'),
+        h1([text(user.name)]),
+        p([text(user.bio)]),
+      ]),
+
+      // Stats section
+      section(classes: ['profile-stats'], [
+        div(classes: ['stat'], [
+          span(classes: ['stat-number'], [text('${user.followers}')]),
+          span(classes: ['stat-label'], [text('Followers')]),
+        ]),
+        div(classes: ['stat'], [
+          span(classes: ['stat-number'], [text('${user.following}')]),
+          span(classes: ['stat-label'], [text('Following')]),
+        ]),
+      ]),
+
+      // Posts section
+      section(classes: ['profile-posts'], [
+        h2([text('Recent Posts')]),
+        ...user.posts.map((post) => PostCard(post: post)), // Reused component
+      ]),
+    ]);
+  }
+}
+
+// ✅ GOOD - Extract when reused
+class PostCard extends StatelessComponent {
+  const PostCard({required this.post, super.key});
+  final Post post;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield article(classes: ['post-card'], [
+      h3([text(post.title)]),
+      p([text(post.excerpt)]),
+      time([text(post.publishedAt.toString())]),
+    ]);
+  }
+}
+
+// ❌ AVOID - Over-granular widgets for simple content
+class ProfileHeaderTitle extends StatelessComponent {
+  const ProfileHeaderTitle({required this.name, super.key});
+  final String name;
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield h1([text(name)]); // Too simple to extract
+  }
+}
+```
+
+## Styling Strategy
+
+### Native CSS (Recommended)
+
+Use Jaspr's type-safe CSS system with `@css` annotations:
+
+```dart
+@css
+final styles = [
+  css('.hero')
+    .background(color: Color(0xFF1a1a1a))
+    .padding(Padding.symmetric(vertical: 4.rem, horizontal: 2.rem))
+    .text(
+      color: Colors.white,
+      fontSize: 3.rem,
+      fontWeight: FontWeight.bold,
+      lineHeight: 1.2.px,
+    )
+    .styles(raw: const {
+      'animation': 'fadeIn 0.5s ease-in-out',
+      'backdrop-filter': 'blur(10px)',
+    }),
+
+  css('.card')
+    .background(color: Colors.white)
+    .border(Border.all(color: Color(0xFFe5e7eb), width: 1.px))
+    .borderRadius(BorderRadius.circular(0.5.rem))
+    .padding(Padding.all(1.5.rem))
+    .boxShadow(BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.px, 4.px),
+      blurRadius: 6.px,
+    ))
+    .styles(raw: const {
+      'aspect-ratio': '16/9',
+      'object-fit': 'cover',
+    }),
+
+  // Responsive design with raw properties
+  css.media(MediaQuery.screen(minWidth: 768.px), [
+    css('.hero')
+      .fontSize(4.rem)
+      .styles(raw: const {
+        'text-transform': 'uppercase',
+        'letter-spacing': '0.1em',
+      }),
+    css('.grid')
+      .display(Display.grid)
+      .gridTemplate(
+        columns: GridTracks([
+          GridTrack.fr(1),
+          GridTrack.fr(1),
+        ]),
+      )
+      .styles(raw: const {
+        'grid-gap': '2rem',
+        'grid-auto-rows': 'minmax(200px, auto)',
+      }),
+  ]),
+
+  // Animation keyframes using raw CSS
+  css('@keyframes fadeIn', []).styles(raw: const {
+    '0%': 'opacity: 0; transform: translateY(20px)',
+    '100%': 'opacity: 1; transform: translateY(0)',
+  }),
+
+  css('@keyframes spin', []).styles(raw: const {
+    '0%': 'transform: rotate(0deg)',
+    '100%': 'transform: rotate(360deg)',
+  }),
+];
+```
+
+### Using Raw CSS Properties
+
+When CSS properties are not available in Jaspr's type-safe API, use the `raw` map within `.styles()`:
+
+```dart
+@css
+final advancedStyles = [
+  // Complex animations and transforms
+  css('.loading-spinner')
+    .width(40.px)
+    .height(40.px)
+    .border(Border.all(color: Color(0xFFf3f3f3), width: 4.px))
+    .borderRadius(BorderRadius.circular(50.percent))
+    .styles(raw: const {
+      'border-top': '4px solid #3498db',
+      'animation': 'spin 2s linear infinite',
+    }),
+
+  // Advanced layout properties
+  css('.masonry-grid')
+    .display(Display.grid)
+    .styles(raw: const {
+      'grid-template-columns': 'repeat(auto-fill, minmax(250px, 1fr))',
+      'grid-auto-rows': 'masonry', // CSS Grid Level 3
+      'gap': '1rem',
+    }),
+
+  // Text effects and typography
+  css('.gradient-text')
+    .fontSize(2.rem)
+    .fontWeight(FontWeight.bold)
+    .styles(raw: const {
+      'background': 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
+      'background-clip': 'text',
+      '-webkit-background-clip': 'text',
+      'color': 'transparent',
+      'text-transform': 'uppercase',
+      'letter-spacing': '0.1em',
+    }),
+
+  // Image and media properties
+  css('.hero-image')
+    .width(100.percent)
+    .height(400.px)
+    .styles(raw: const {
+      'object-fit': 'cover',
+      'object-position': 'center',
+      'filter': 'brightness(0.8) contrast(1.2)',
+    }),
+
+  // Advanced positioning and clipping
+  css('.clip-path-element')
+    .position(Position.relative())
+    .styles(raw: const {
+      'clip-path': 'polygon(0 0, 100% 0, 85% 100%, 0% 100%)',
+      'shape-outside': 'polygon(0 0, 100% 0, 85% 100%, 0% 100%)',
+    }),
+
+  // Scroll behavior and overflow
+  css('.custom-scrollbar')
+    .height(300.px)
+    .overflow(Overflow.auto)
+    .styles(raw: const {
+      'scroll-behavior': 'smooth',
+      'scrollbar-width': 'thin',
+      'scrollbar-color': '#888 #f1f1f1',
+    }),
+
+  // CSS custom properties (variables)
+  css(':root', []).styles(raw: const {
+    '--primary-color': '#3498db',
+    '--secondary-color': '#2ecc71',
+    '--border-radius': '8px',
+    '--shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+  }),
+
+  // Using CSS variables
+  css('.themed-button')
+    .padding(Padding.symmetric(horizontal: 1.rem, vertical: 0.5.rem))
+    .border(Border.none())
+    .styles(raw: const {
+      'background-color': 'var(--primary-color)',
+      'border-radius': 'var(--border-radius)',
+      'box-shadow': 'var(--shadow)',
+      'color': 'white',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease',
+    }),
+
+  // Hover and focus states
+  css('.themed-button:hover', []).styles(raw: const {
+    'background-color': 'var(--secondary-color)',
+    'transform': 'translateY(-2px)',
+    'box-shadow': '0 6px 12px rgba(0, 0, 0, 0.15)',
+  }),
+
+  // Complex selectors
+  css('.card:nth-child(odd)', []).styles(raw: const {
+    'background-color': '#f8f9fa',
+  }),
+
+  css('.grid-item:nth-child(3n+1)', []).styles(raw: const {
+    'grid-column': 'span 2',
+  }),
+];
+```
+
+### Key CSS API Patterns
+
+```dart
+// Colors - Use Color() constructor, not Color.hex()
+.color(Color(0xFF1a1a1a))
+
+// Spacing - Use .only(), .symmetric(), .all()
+.margin(Margin.only(top: 2.rem, bottom: 1.rem))
+.padding(Padding.symmetric(horizontal: 1.5.rem))
+
+// Position - Parameters for absolute/relative
+.position(Position.absolute(top: 0.px, left: 0.px))
+
+// Grid - Use GridTemplate with GridTracks
+.gridTemplate(columns: GridTracks([
+  GridTrack.fr(1),
+  GridTrack.minmax(TrackSize.px(200), TrackSize.fr(1)),
+]))
+
+// Units - Use extension methods
+2.rem, 16.px, 100.percent, 50.vh
+
+// Transitions (type-safe)
+.transition(Transition(
+  property: 'all',
+  duration: Duration(milliseconds: 300),
+  timingFunction: TimingFunction.ease,
+))
+
+// Raw properties for unsupported CSS
+.styles(raw: const {
+  'animation': 'spin 1s linear infinite',
+  'backdrop-filter': 'blur(10px)',
+  'clip-path': 'circle(50%)',
+  'filter': 'grayscale(100%)',
+  'object-fit': 'cover',
+  'text-transform': 'uppercase',
+  'user-select': 'none',
+  'will-change': 'transform',
+})
+```
+
+## Routing Setup
+
+```dart
+// lib/app.dart
+class App extends StatelessComponent {
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    yield Router(routes: [
+      Route(path: '/', builder: (_, __) => HomePage()),
+      Route(path: '/about', builder: (_, __) => AboutPage()),
+      Route(path: '/blog/:slug', builder: (context, state) {
+        final slug = state.pathParameters['slug']!;
+        return BlogPostPage(slug: slug);
+      }),
+    ]);
+  }
+}
+```
+
+## Data Patterns
+
+### Server-Side (SEO-friendly)
+
+```dart
+class BlogPage extends StatelessComponent {
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    final posts = await ApiService.fetchPosts(); // Server-rendered
+    yield div([
+      ...posts.map((post) => PostCard(post: post)),
+    ]);
+  }
+}
+```
+
+### Client-Side (Interactive)
+
+```dart
+class DynamicContent extends StatefulComponent {
+  @override
+  State<DynamicContent> createState() => _DynamicContentState();
+}
+
+class _DynamicContentState extends State<DynamicContent> {
+  List<Item> items = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final data = await ApiService.fetchUserData();
+      setState(() {
+        items = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        // Handle error appropriately
+      });
+    }
+  }
+
+  @override
+  Iterable<Component> build(BuildContext context) sync* {
+    if (isLoading) {
+      yield div(classes: ['loading'], [text('Loading...')]);
+      return;
+    }
+
+    yield div([
+      ...items.map((item) => ItemCard(item: item)),
+    ]);
+  }
+}
+```
+
+## SEO Essentials
+
+```dart
+yield Document(
+  title: 'Page Title - Site Name',
+  meta: {
+    'description': 'Compelling page description for search engines',
+    'og:title': 'Social Media Title',
+    'og:description': 'Social media description',
+    'og:image': 'https://example.com/og-image.jpg',
+    'twitter:card': 'summary_large_image',
+  },
+  body: [
+    // Semantic HTML structure
+    div([
+      h1([text('Main Page Heading')]), // Only one h1 per page
+      section([
+        h2([text('Section Heading')]),
+        // Content with proper heading hierarchy
+      ]),
+    ]),
+  ],
+);
+```
+
+## State Management
+
+### Local State (Default)
+
+Use `StatefulComponent` with `setState()` for:
+
+- Form inputs and validation
+- UI toggles and local interactions
+- Component-specific state
+
+### Global State (Riverpod)
+
+```dart
+// Add: dart pub add jaspr_riverpod
+final userProvider = StateProvider<User?>((ref) => null);
+
+class UserProfile extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    return div([
+      if (user != null) text('Welcome, ${user.name}'),
+    ]);
+  }
+}
+```
+
+## Testing Strategy
+
+```dart
+// test/components/my_component_test.dart
+import 'package:jaspr_test/jaspr_test.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('MyComponent', () {
+    testComponents('renders correctly', (tester) async {
+      await tester.pumpComponent(MyComponent(data: testData));
+      expect(find.text('Expected Text'), findsOneComponent);
+    });
+
+    testComponents('handles user interaction', (tester) async {
+      await tester.pumpComponent(MyComponent(data: testData));
+      await tester.tap(find.byText('Click Me'));
+      await tester.pump();
+      expect(find.text('Clicked!'), findsOneComponent);
+    });
+  });
+}
+```
+
+## Common Issues & Solutions
+
+| Issue                                                  | Solution                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Assets (images, data files) not loading                | All web assets must be placed inside the `web/` directory (e.g., `web/assets/data.json`). The Jaspr build process makes them available at the root (e.g., access via `/assets/data.json`).                                                                                                                                                                                                                                                                     |
+| `@css` on private `_State` class                       | When converting a `StatelessComponent` to a `StatefulComponent`, move the `static @css get styles` getter from the private `_State` class to the public `StatefulComponent` class itself. The build system cannot access annotations on private members.                                                                                                                                                                                                       |
+| Unsupported CSS properties                             | For properties not exposed by the type-safe API (e.g., `animation`, `border-top`), use the `raw` map within `.styles()`. Ex: `raw: const {'animation': 'spin 1s linear'}`                                                                                                                                                                                                                                                                                      |
+| **@client component frame scheduling error**           | **Server-side `notifyListeners()` calls cause "Scheduling a frame is not supported on the server" errors. Wrap `notifyListeners()` in `if (kIsWeb)` check to prevent server-side execution.**                                                                                                                                                                                                                                                                  |
+| **@client component state sharing**                    | **Use global state container pattern with `InheritedComponent` to share `ChangeNotifier` services across client component trees. Create global singleton and inject via `InheritedComponent` at root of each `@client` component.**                                                                                                                                                                                                                            |
+| **@client component server/client rendering mismatch** | **Use conditional rendering: `ListenableBuilder` only on client (`kIsWeb`), direct rendering on server. Extract shared content method to avoid duplication.**                                                                                                                                                                                                                                                                                                  |
+| **CSS absolute positioning z-index stacking issues**   | **Remove problematic overlay elements or adjust z-index values. Grain/texture overlays with absolute positioning can interfere with content interaction.**                                                                                                                                                                                                                                                                                                     |
+| Hot reload not working                                 | Check syntax errors, restart `jaspr serve`                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| CSS not loading                                        | Verify `@css` syntax, run `jaspr clean`                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Build failures                                         | Check Dart SDK >=3.0, run `dart pub get`                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Color.hex() deprecated                                 | Use `Color(0xFF...)` constructor                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Position API errors                                    | Use `.absolute(top: 0.px)` with parameters                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Grid layout issues                                     | Use `GridTemplate` with `GridTracks`                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **CSS properties not available in type-safe API**      | **Use the `raw` map within `.styles()` for unsupported properties. Examples: `.styles(raw: const {'text-transform': 'uppercase', 'aspect-ratio': '16/9', 'filter': 'grayscale(100%)', 'object-fit': 'cover', 'animation': 'spin 1s linear', 'backdrop-filter': 'blur(10px)', '-webkit-line-clamp': '3', 'clip-path': 'circle(50%)'})`. This covers animations, filters, transforms, webkit properties, and modern CSS features not yet in the type-safe API.** |
+| **ZIndex requires ZIndex wrapper**                     | **Use `zIndex: const ZIndex(2)` instead of `zIndex: 2`. The zIndex property requires a ZIndex wrapper object.**                                                                                                                                                                                                                                                                                                                                                |
+| **LineHeight requires Unit wrapper**                   | **Use `lineHeight: 1.3.px` instead of `lineHeight: 1.3`. LineHeight values need proper unit extensions.**                                                                                                                                                                                                                                                                                                                                                      |
+| **Margin.auto not available**                          | **Use explicit margin values like `margin: Margin.only(top: 16.px)` instead of `marginTop: Margin.auto`. Auto margins are not supported.**                                                                                                                                                                                                                                                                                                                     |
+
+## Performance Best Practices
+
+- Use `const` constructors everywhere possible
+- Implement semantic HTML for accessibility
+- Optimize images and assets
+- Leverage server-side rendering for SEO
+- Use proper loading states and error boundaries
+- Minimize client-side JavaScript
+
+## Essential Packages
+
+- `jaspr_router` - Routing system
+- `jaspr_test` - Testing utilities
+- `jaspr_riverpod` - Global state management
+- `http` - API calls
+- `json_annotation` - JSON serialization
+
+**Remember**: Prioritize semantic HTML, type-safe CSS, and SEO optimization. Use Jaspr's native CSS system over external frameworks for better performance and maintainability.
+
+## Asset Management
+
+For assets like images, fonts, or data files (e.g., `projects.yaml`) to be accessible on both the server (during pre-rendering) and the client, they **must be placed within the `web/` directory**.
+
+- **Correct:** `web/assets/images/logo.png`
+- **Incorrect:** `assets/images/logo.png` (at the project root)
+
+The Jaspr build process will then correctly serve these files from the root of your application. You would access the above example in your code via the path `assets/images/logo.png`.
+
+---
+
+### Service-Based State Management (`ChangeNotifier`)
+
+For more complex state that needs to be shared across multiple components without prop-drilling, a service-based approach using `ChangeNotifier` provides a lightweight alternative to `Riverpod`. This pattern is demonstrated in the official `fluttercon` example app.
+
+#### How It Works:
+
+1.  **Singleton Service**: State is managed in a singleton class that extends `ChangeNotifier`. This service acts as the single source of truth.
+2.  **`notifyListeners()`**: When state changes, the service calls `notifyListeners()` to alert any listening widgets.
+3.  **`ListenableBuilder`**: Components subscribe to changes by wrapping their build logic in a `ListenableBuilder` that listens to the service instance.
+4.  **Persistence**: For saving state across sessions, a service can integrate packages like `shared_preferences`.
+
+#### 1. Create the State Service
+
+Define a singleton class that extends `ChangeNotifier`.
+
+```dart
+// lib/services/my_state_service.dart
+import 'package:jaspr/jaspr.dart';
+
+class MyStateService extends ChangeNotifier {
+  // Singleton instance
+  static final MyStateService instance = MyStateService();
+
+  int _counter = 0;
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    // Notify listeners to rebuild
+    notifyListeners();
+  }
+}
+```
+
+#### 2. Use the Service in Components
+
+Access the service from any component to either display or modify the state.
+
+- **Display State with `ListenableBuilder`**:
+
+  ```dart
+  // lib/components/counter_display.dart
+  import 'package:jaspr/jaspr.dart';
+  import '../services/my_state_service.dart';
+
+  class CounterDisplay extends StatelessComponent {
+    @override
+    Iterable<Component> build(BuildContext context) sync* {
+      yield ListenableBuilder(
+        listenable: MyStateService.instance,
+        builder: (context, child) { // The builder gives you context and an optional child
+          return p([
+            text('Current count: ${MyStateService.instance.counter}'),
+          ]);
+        },
+      );
+    }
+  }
+  ```
+
+- **Modify State from an Event Handler**:
+
+  ```dart
+  // lib/components/counter_button.dart
+  import 'package:jaspr/jaspr.dart';
+  import '../services/my_state_service.dart';
+
+  class CounterButton extends StatelessComponent {
+    @override
+    Iterable<Component> build(BuildContext context) sync* {
+      yield button(
+        [text('Increment')],
+        onClick: () {
+          MyStateService.instance.increment();
+        },
+      );
+    }
+  }
+  ```

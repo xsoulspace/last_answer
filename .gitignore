@@ -12,6 +12,7 @@
 /android/key.properties
 android/key.properties
 pubspec.lock
+firebase.json
 # IntelliJ related
 *.iml
 *.ipr
@@ -36,7 +37,6 @@ pubspec.lock
 .env
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols

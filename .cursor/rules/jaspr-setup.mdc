@@ -1,0 +1,55 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Jaspr Project Setup & Deployment Guide
+
+## Quick Setup
+```bash
+dart --version  # Requires >=3.8
+dart pub global activate jaspr_cli
+jaspr create my_project
+cd my_project && jaspr serve
+```
+
+## Project Architecture
+```
+lib/
+├── main.dart           # Entry point
+├── app.dart            # Root component + routing
+├── router.dart         # Route definitions
+├── envs.dart           # Environment variables
+├── core/               # Utilities & abstractions
+├── data_*/             # Data layer (models, APIs, resources)
+├── di/                 # Dependency injection
+└── {feature}/          # Feature-specific UI components
+```
+
+## Deployment
+
+### Static Sites (Recommended)
+```bash
+jaspr build
+# Deploy build/jaspr/ to:
+# - Netlify: Drag & drop
+# - Vercel: Git integration
+# - GitHub Pages: Actions workflow
+```
+
+### Server Deployment
+```bash
+jaspr build --target exe
+# Deploy executable + web/ assets to server
+```
+
+## Resources
+- [Documentation](mdc:https:/docs.jaspr.site)
+- [Playground](mdc:https:/playground.jaspr.site)
+- [GitHub](mdc:https:/github.com/schultek/jaspr)
+- [Discord Community](mdc:https:/discord.gg/jaspr)
+
+---
+
+**Note:** This rule covers only project setup, architecture, and deployment. For code-writing best practices, see [jaspr-web-development.mdc](mdc:jaspr-web-development.mdc).
+

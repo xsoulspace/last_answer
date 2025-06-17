@@ -273,14 +273,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
-  connectivity_plus: 18382e7311ba19efcaee94442b23b32507b20695
-  device_info_plus: 1b14eed9bf95428983aed283a8d51cce3d8c4215
-  file_saver: 44e6fbf666677faf097302460e214e977fdd977b
-  file_selector_macos: cc3858c981fe6889f364731200d6232dac1d812d
+  connectivity_plus: 2256d3e20624a7749ed21653aafe291a46446fee
+  device_info_plus: 4fb280989f669696856f8b129e4a5e3cd6c48f76
+  file_saver: e35bd97de451dde55ff8c38862ed7ad0f3418d0f
+  file_selector_macos: 6280b52b459ae6c590af5d78fc35c7267a3c4b31
   Firebase: 374a441a91ead896215703a674d58cdb3e9d772b
-  firebase_analytics: 5249f87da6fed852901581aab2602e0280ec2fdb
-  firebase_core: 6d9bb8b0ea817e8fe0d928177d42275b45fdba6f
-  firebase_crashlytics: 4c480eded64c7329360144f2356d491838e5e18a
+  firebase_analytics: 4a9ea994dad50015bc4e408e76d1e072a3c18d99
+  firebase_core: 74979c022826e0f704c32008f9b132b5f3f4fd16
+  firebase_crashlytics: f0d090cf0b47a695119676453550ebb16695c2a3
   FirebaseAnalytics: 7114c698cac995602e3b1b96663473e50d54d6e7
   FirebaseCore: 48b0dd707581cf9c1a1220da68223fb0a562afaa
   FirebaseCoreExtension: 2d77d6430c16cf43ca2b04608302ed02b3598361
@@ -290,27 +290,27 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: ca12abf9da0003efd3a476b2dff4f7a04fd31b4f
   FirebaseSessions: 9529d14180868e29a8da164b3a729c036204918b
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
+  google_sign_in_ios: 0ab078e60da6dfe23cbc55c83502b52bba1aad63
   GoogleAppMeasurement: 6a9e6317b6a6d810ad03d4a66564ca6c4c5818a3
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
-  in_app_purchase_storekit: 8c3b0b3eb1b0f04efbff401c3de6266d4258d433
-  isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
+  in_app_purchase_storekit: e126ef1b89e4a9fdf07e28f005f82632b4609437
+  isar_flutter_libs: a65381780401f81ad6bf3f2e7cd0de5698fb98c4
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  package_info_plus: 12f1c5c2cfe8727ca46cbd0b26677728972d9a5b
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  package_info_plus: f0052d280d17aa382b932f399edf32507174e870
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  quill_native_bridge_macos: 3a5f378bc757eb92825193853020b759b56cbb2c
-  share_plus: 1fa619de8392a4398bfaf176d441853922614e89
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
-  store_checker: 387169de0dffe57b6370d54cc027e9f95051b57f
-  url_launcher_macos: c82c93949963e55b228a30115bd219499a6fe404
+  quill_native_bridge_macos: 2b005cb56902bb740e0cd9620aa399dfac6b4882
+  share_plus: 510bf0af1a42cd602274b4629920c9649c52f4cc
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  store_checker: 0b5120a0f0a0f36af7b4be01a049e6006151dc16
+  url_launcher_macos: 0fba8ddabfc33ce0a9afe7c5fef5aab3d8d2d673
 
 PODFILE CHECKSUM: 329c3f477c2913a5855e69d5463fbe341bc4695e
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

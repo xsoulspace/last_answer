@@ -1,4 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import '../interfaces/interfaces.dart';
 import 'hive_models.dart';
@@ -10,7 +10,7 @@ final class ComplexLocalDbHiveImpl implements ComplexLocalDb {
     _isOpen = false;
   }
 
-  static bool _isOpen = false;
+  static var _isOpen = false;
   @override
   Future<void> open() async {
     if (_isOpen) return;

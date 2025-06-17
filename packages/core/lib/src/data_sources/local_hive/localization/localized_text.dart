@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../core.dart';
@@ -7,19 +7,13 @@ import '../../../../core.dart';
 part 'localized_text.g.dart';
 
 @Deprecated('')
-
 /// Any text, that should be shown to user in different [Languages]
 /// should use this class to keep values
 @JsonSerializable()
 @HiveType(typeId: HiveBoxesIds.localizedText)
 class LocalizedText with EquatableMixin {
   @Deprecated('')
-  const LocalizedText({
-    required this.en,
-    required this.ru,
-    this.it,
-    this.ga,
-  });
+  const LocalizedText({required this.en, required this.ru, this.it, this.ga});
   @Deprecated('')
   factory LocalizedText.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextFromJson(json);
@@ -43,11 +37,11 @@ class LocalizedText with EquatableMixin {
 
   /// If any new [Languages] added, add this to [values]
   Map<LanguageName, String?> get values => {
-        Locales.ru.languageCode: ru,
-        Locales.en.languageCode: en,
-        Locales.it.languageCode: it,
-        // Locales.ga.languageCode: ga,
-      };
+    Locales.ru.languageCode: ru,
+    Locales.en.languageCode: en,
+    Locales.it.languageCode: it,
+    // Locales.ga.languageCode: ga,
+  };
   String getByLanguage(final LanguageName language) {
     final text = values[getLanguageCode(language)];
 
@@ -57,10 +51,6 @@ class LocalizedText with EquatableMixin {
   @override
   List<Object?> get props => [ru, en, it, ga];
 
-  LocalizedTextModel toModel() => LocalizedTextModel(
-        en: en,
-        ru: ru,
-        it: it ?? '',
-        ga: ga ?? '',
-      );
+  LocalizedTextModel toModel() =>
+      LocalizedTextModel(en: en, ru: ru, it: it ?? '', ga: ga ?? '');
 }

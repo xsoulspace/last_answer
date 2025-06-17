@@ -14,105 +14,28 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-    <!-- <base href="/" /> -->
+    <!-- <base href="/"> -->
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="Fast ideas brainstroming tool" />
+    <meta name="description" content="A new Flutter project." />
+
     <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="last_answer" />
+    <meta name="apple-mobile-web-app-title" content="lastanswer" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
 
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js"></script>
 
     <title>Last Answer</title>
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" type="text/css" href="./styles.css" />
-    <script>
-      // The value below is injected by flutter build, do not touch.
-      const serviceWorkerVersion = "1481598337";
-    </script>
-    <!-- This script adds the flutter initialization JS code -->
-    <script src="flutter.js" defer></script>
-
-    <!-- Yandex Context Start -->
-    <script>
-      window.yaContextCb = window.yaContextCb || [];
-    </script>
-    <script src="https://yandex.ru/ads/system/context.js" async></script>
-    <style>
-      body {
-        margin: 0px;
-        height: 100vh;
-        overflow: hidden;
-      }
-    </style>
-    <!-- Yandex Context End -->
   </head>
   <body>
-    <div class="container" id="loading_container">
-      <div id="loading">
-        <img src="icons/icon-512.png" width="128" />
-      </div>
-      <span class="loader" alt="Loading indicator..."></span>
-    </div>
-    <div id="flutter_app" style="width: 100%; height: 100%"></div>
-    <script>
-      window.addEventListener("load", function (ev) {
-        // https://stackoverflow.com/a/73731646/9908821
-        function isMobile() {
-          if ("maxTouchPoints" in navigator)
-            return navigator.maxTouchPoints > 0;
-
-          const mQ = matchMedia?.("(pointer:coarse)");
-          if (mQ?.media === "(pointer:coarse)") return !!mQ.matches;
-
-          if ("orientation" in window) return true;
-
-          return /\b(Android|Windows Phone|iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini)\b/i.test(
-            navigator.userAgent
-          );
-        }
-        if (navigator.serviceWorker) {
-          console.log("SW found");
-          navigator.serviceWorker.ready.then((registration) => {
-            console.log("requesting offline resources");
-            registration.active.postMessage("downloadOffline");
-          });
-        }
-        var loading = document.querySelector("#loading");
-        var loadingContainer = document.querySelector("#loading_container");
-        var hostElement = document.querySelector("#flutter_app");
-        // Download main.dart.js
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: async function (engineInitializer) {
-            loading.classList.add("main_done");
-            /// temporary fix, as mobile somehow doesn't work with hostElement
-            let appRunner = isMobile()
-              ? await engineInitializer.initializeEngine()
-              : await engineInitializer.initializeEngine({
-                  hostElement: hostElement,
-                });
-
-            console.log("appRunner");
-            loading.classList.add("init_done");
-            await appRunner.runApp();
-            console.log("runApp - done");
-            window.setTimeout(function () {
-              console.log("removing");
-              loadingContainer.remove();
-            }, 200);
-          },
-        });
-      });
-    </script>
+    <script src="flutter_bootstrap.js" async></script>
   </body>
 </html>

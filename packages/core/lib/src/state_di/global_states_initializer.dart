@@ -59,9 +59,11 @@ class GlobalStatesInitializer implements StateInitializer {
   late final _remoteUserInitializer = RemoteUserInitializer(dto.context);
   @override
   Future<void> onLoad() async {
-    await dto.complexLocalDb.open();
-    await dto.localDbDataSource.onLoad();
+    // Migration now acts as the parsed-JSON loader and will populate the
+    // local DB structures expected by data sources. `complexLocalDb.open()`
+    // is no longer required at startup.
     await migrate();
+    await dto.localDbDataSource.onLoad();
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
       // await dto.remoteClient.onLoad();
     }

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+// flutter foundation import removed (unused)
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
@@ -7,9 +7,7 @@ import '../../core.dart';
 
 class ProjectsRepository {
   ProjectsRepository(final BuildContext context)
-      : _datasource = kIsWeb
-            ? ProjectsLocalDataSourceLocalDbImpl(localDb: context.read())
-            : ProjectsLocalDataSourceIsarImpl(isarDb: context.read());
+    : _datasource = ProjectsLocalDataSourceLocalDbImpl(localDb: context.read());
   final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) async =>
       _datasource.putAll(projects: projects);
@@ -23,8 +21,7 @@ class ProjectsRepository {
       _datasource.getById(id: id);
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
-  }) async =>
-      _datasource.getByIds(ids: ids);
+  }) async => _datasource.getByIds(ids: ids);
 
   Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,
@@ -41,15 +38,11 @@ final class TagsRepository
     extends MapBasedRepository<ProjectTagModelId, ProjectTagModel>
     implements TagsLocalDataSource {
   TagsRepository(final BuildContext context)
-      : _datasource = TagsLocalDataSourceImpl(
-          localDb: context.read(),
-        );
+    : _datasource = TagsLocalDataSourceImpl(localDb: context.read());
   final TagsLocalDataSource _datasource;
 
   @override
-  void putAll(
-    final Map<ProjectTagModelId, ProjectTagModel> map,
-  ) =>
+  void putAll(final Map<ProjectTagModelId, ProjectTagModel> map) =>
       _datasource.putAll(map);
   @override
   Map<ProjectTagModelId, ProjectTagModel> getAll() => _datasource.getAll();

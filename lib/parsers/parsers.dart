@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:core/src/state_di/path_utils.dart' as path_utils;
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
 import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,44 +11,49 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// files and parse them. For now this uses a conservative scanner of the
 /// current working directory and common platform paths.
 Future<void> parseAndPopulate() async {
-  final List<File> candidates = [];
-  // heuristics: current dir and common document paths
-  candidates.addAll(Directory.current.listSync().whereType<File>());
-
   final List<String> projectsJson = [];
 
-  for (final file in candidates) {
-    final path = file.path;
-    try {
-      if (path.endsWith('.isar')) {
-        final bytes = file.readAsBytesSync();
-        final meta = isar_parser.parseIsarFromBytes(bytes);
-        // Collect any JSON preview objects found by the parser
-        final preview = meta['jsonObjectsPreview'];
-        if (preview is List) {
-          for (final obj in preview) {
-            if (obj is Map) projectsJson.add(jsonEncode(obj));
+  // Determine candidate directories using shared logic so tests and runtime
+  // behave the same.
+  final candidateDirs = await path_utils.determineDbPaths();
+
+  for (final dirPath in candidateDirs) {
+    final dir = Directory(dirPath);
+    if (!dir.existsSync()) continue;
+    for (final entity in dir.listSync().whereType<File>()) {
+      final path = entity.path;
+      try {
+        if (path.endsWith('.isar')) {
+          // For now read small files fully; future work: streaming parse.
+          final bytes = await entity.readAsBytes();
+          final meta = isar_parser.parseIsarFromBytes(bytes);
+          final preview = meta['jsonObjectsPreview'];
+          if (preview is List) {
+            for (final obj in preview) {
+              if (obj is Map) projectsJson.add(jsonEncode(obj));
+            }
           }
+          print('Parsed isar $path: metaKeys=${meta.keys.toList()}');
         }
-        print('Parsed isar $path: metaKeys=${meta.keys.toList()}');
-      }
-      if (path.endsWith('.hive')) {
-        final bytes = file.readAsBytesSync();
-        final data = hive_parser.parseHiveFromBytes(bytes);
-        for (final v in data.values) {
-          if (v is Map) {
-            projectsJson.add(jsonEncode(v));
-          } else if (v is String) {
-            try {
-              final decoded = jsonDecode(v);
-              if (decoded is Map) projectsJson.add(jsonEncode(decoded));
-            } catch (_) {}
+        if (path.endsWith('.hive')) {
+          final bytes = await entity.readAsBytes();
+          final data = hive_parser.parseHiveFromBytes(bytes);
+          for (final v in data.values) {
+            if (v is Map) {
+              projectsJson.add(jsonEncode(v));
+            } else if (v is String) {
+              try {
+                final decoded = jsonDecode(v);
+                if (decoded is Map) projectsJson.add(jsonEncode(decoded));
+              } catch (_) {}
+            }
           }
+          print('Parsed hive $path: entries=${data.length}');
         }
-        print('Parsed hive $path: entries=${data.length}');
+      } catch (e, st) {
+        // continue on parse error but keep a trace for debugging
+        print('Parser error for $path: $e\n$st');
       }
-    } catch (e) {
-      print('Parser error for $path: $e');
     }
   }
 
@@ -58,8 +64,8 @@ Future<void> parseAndPopulate() async {
       print(
         'Wrote ${projectsJson.length} project(s) to SharedPreferences:webProjects',
       );
-    } catch (e) {
-      print('Failed to write parsed projects to SharedPreferences: $e');
+    } catch (e, st) {
+      print('Failed to write parsed projects to SharedPreferences: $e\n$st');
     }
   }
 }

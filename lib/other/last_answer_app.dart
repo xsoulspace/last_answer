@@ -7,10 +7,10 @@ class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
   @override
   Widget build(final BuildContext context) => FeedbackProvider(
-        child: GlobalStatesProvider(
-          builder: (final context) => const Portal(child: _AppScaffold()),
-        ),
-      );
+    child: GlobalStatesProvider(
+      builder: (final context) => const Portal(child: _AppScaffold()),
+    ),
+  );
 }
 
 class _AppScaffold extends StatefulWidget {

@@ -8,6 +8,7 @@ import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
 import '../state/user_remote_initializer.dart';
+import 'migrator.dart';
 
 class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({required this.context})
@@ -23,7 +24,7 @@ class GlobalStatesInitializerDto {
       appNotifier = context.read(),
       complexLocalDb = context.read(),
       localDbDataSource = context.read(),
-      remoteClient = context.read(),
+      // remoteClient = context.read(),
       purchasesNotifier = context.read(),
       // purchasesAdsService = context.read(),
       projectsRepository = context.read(),
@@ -32,7 +33,7 @@ class GlobalStatesInitializerDto {
   // final PurchasesAdsService purchasesAdsService;
   final BuildContext context;
   final AppFeaturesNotifier appFeaturesNotifier;
-  final RemoteClient remoteClient;
+  // final RemoteClient remoteClient;
   final LocalDbDataSource localDbDataSource;
   final ComplexLocalDb complexLocalDb;
   final EmojiRepository emojiRepository;
@@ -60,8 +61,9 @@ class GlobalStatesInitializer implements StateInitializer {
   Future<void> onLoad() async {
     await dto.complexLocalDb.open();
     await dto.localDbDataSource.onLoad();
+    await migrate();
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
-      await dto.remoteClient.onLoad();
+      // await dto.remoteClient.onLoad();
     }
     await dto.userNotifier.onLoad(
       local: _localUserInitializer,

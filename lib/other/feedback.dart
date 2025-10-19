@@ -14,7 +14,7 @@ class FeedbackProvider extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     if (!Envs.isFeedbackAvailable) return child;
-    return const SizedBox();
+    return child;
     // return Wiredash(
     //   projectId: Envs.wiredashProjectId,
     //   secret: Envs.wiredashProjectSecret,

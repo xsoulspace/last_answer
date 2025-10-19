@@ -8,12 +8,9 @@ Future<void> bootstrap({
   final GlobalServicesInitializer initializer = GlobalServicesInitializerImpl(
     firebaseOptions: firebaseOptions,
   );
-  await runZonedGuarded(
-    () async {
-      WidgetsFlutterBinding.ensureInitialized();
-      unawaited(initializer.onLoad());
-      runApp(const LastAnswerApp());
-    },
-    initializer.analyticsService.recordError,
-  );
+  // await runZonedGuarded(() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // unawaited(initializer.onLoad());
+  runApp(const LastAnswerApp());
+  // }, initializer.analyticsService.recordError);
 }

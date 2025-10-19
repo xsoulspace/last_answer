@@ -4,14 +4,19 @@ import 'package:core/src/state_di/path_utils.dart' as path_utils;
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
 import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
-import 'package:shared_preferences/shared_preferences.dart';
+// shared_preferences previously used for migration convenience; no longer used
 
 /// Simple library facade for existing parsers. This package provides a
 /// `parseAndPopulate` entry point used by `migrate()` to discover archive
 /// files and parse them. For now this uses a conservative scanner of the
 /// current working directory and common platform paths.
-Future<void> parseAndPopulate() async {
-  final List<String> projectsJson = [];
+/// Parse known DB files and return a list of parsed project JSON-like maps.
+///
+/// This used to write results into `SharedPreferences`. For migration we now
+/// return parsed project objects so callers (migrator) can persist them via
+/// application data sources.
+Future<List<Map<String, dynamic>>> parseAndPopulate() async {
+  final List<Map<String, dynamic>> projects = [];
 
   // Determine candidate directories using shared logic so tests and runtime
   // behave the same.
@@ -30,7 +35,7 @@ Future<void> parseAndPopulate() async {
           final preview = meta['jsonObjectsPreview'];
           if (preview is List) {
             for (final obj in preview) {
-              if (obj is Map) projectsJson.add(jsonEncode(obj));
+              if (obj is Map) projects.add(Map<String, dynamic>.from(obj));
             }
           }
           print('Parsed isar $path: metaKeys=${meta.keys.toList()}');
@@ -40,11 +45,12 @@ Future<void> parseAndPopulate() async {
           final data = hive_parser.parseHiveFromBytes(bytes);
           for (final v in data.values) {
             if (v is Map) {
-              projectsJson.add(jsonEncode(v));
+              projects.add(Map<String, dynamic>.from(v));
             } else if (v is String) {
               try {
                 final decoded = jsonDecode(v);
-                if (decoded is Map) projectsJson.add(jsonEncode(decoded));
+                if (decoded is Map)
+                  projects.add(Map<String, dynamic>.from(decoded));
               } catch (_) {}
             }
           }
@@ -56,18 +62,7 @@ Future<void> parseAndPopulate() async {
       }
     }
   }
-
-  if (projectsJson.isNotEmpty) {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList('webProjects', projectsJson);
-      print(
-        'Wrote ${projectsJson.length} project(s) to SharedPreferences:webProjects',
-      );
-    } catch (e, st) {
-      print('Failed to write parsed projects to SharedPreferences: $e\n$st');
-    }
-  }
+  return projects;
 }
 
 /// Convenience: parse projects from provided paths (used in tests later).

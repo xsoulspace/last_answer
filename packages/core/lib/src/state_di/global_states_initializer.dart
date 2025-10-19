@@ -62,7 +62,7 @@ class GlobalStatesInitializer implements StateInitializer {
     await dto.localDbDataSource.onLoad();
     // Migration now acts as the parsed-JSON loader and will populate the
     // local DB structures expected by data sources.
-    await migrate();
+    await migrate(dto.context);
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
       // await dto.remoteClient.onLoad();
     }

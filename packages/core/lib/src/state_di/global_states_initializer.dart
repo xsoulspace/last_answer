@@ -10,27 +10,26 @@ import '../../core.dart';
 import '../state/user_remote_initializer.dart';
 
 class GlobalStatesInitializerDto {
-  GlobalStatesInitializerDto({
-    required this.context,
-  })  : emojiRepository = context.read(),
-        appFeaturesNotifier = context.read(),
-        lastUsedEmojiRepository = context.read(),
-        lastEmojiState = context.read(),
-        specialEmojiState = context.read(),
-        emojiProvider = context.read(),
-        notificationController = context.read(),
-        projectsNotifier = context.read(),
-        userNotifier = context.read(),
-        appNotifier = context.read(),
-        complexLocalDb = context.read(),
-        localDbDataSource = context.read(),
-        remoteClient = context.read(),
-        purchasesNotifier = context.read(),
-        purchasesAdsService = context.read(),
-        projectsRepository = context.read(),
-        tagsNotifier = context.read(),
-        assetBundle = DefaultAssetBundle.of(context);
-  final PurchasesAdsService purchasesAdsService;
+  GlobalStatesInitializerDto({required this.context})
+    : emojiRepository = context.read(),
+      appFeaturesNotifier = context.read(),
+      lastUsedEmojiRepository = context.read(),
+      lastEmojiState = context.read(),
+      specialEmojiState = context.read(),
+      emojiProvider = context.read(),
+      notificationController = context.read(),
+      projectsNotifier = context.read(),
+      userNotifier = context.read(),
+      appNotifier = context.read(),
+      complexLocalDb = context.read(),
+      localDbDataSource = context.read(),
+      remoteClient = context.read(),
+      purchasesNotifier = context.read(),
+      // purchasesAdsService = context.read(),
+      projectsRepository = context.read(),
+      tagsNotifier = context.read(),
+      assetBundle = DefaultAssetBundle.of(context);
+  // final PurchasesAdsService purchasesAdsService;
   final BuildContext context;
   final AppFeaturesNotifier appFeaturesNotifier;
   final RemoteClient remoteClient;
@@ -52,10 +51,7 @@ class GlobalStatesInitializerDto {
 }
 
 class GlobalStatesInitializer implements StateInitializer {
-  GlobalStatesInitializer({
-    required this.dto,
-    required this.router,
-  });
+  GlobalStatesInitializer({required this.dto, required this.router});
   final GlobalStatesInitializerDto dto;
   final GoRouter router;
   late final _localUserInitializer = LocalUserInitializer(dto.context);

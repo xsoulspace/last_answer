@@ -1,35 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:wiredash/wiredash.dart';
+// import 'package:wiredash/wiredash.dart';
 
 class FeedbackProvider extends StatelessWidget {
   const FeedbackProvider({required this.child, super.key});
   final Widget child;
-  static Future<FeedbackResult> show(final BuildContext context) async =>
-      Wiredash.of(context).show(
-        inheritMaterialTheme: true,
-        options: FeedbackProvider.feedbackOptions,
-      );
+  // static Future<FeedbackResult> show(final BuildContext context) async =>
+  //     Wiredash.of(context).show(
+  //       inheritMaterialTheme: true,
+  //       options: FeedbackProvider.feedbackOptions,
+  //     );
 
   @override
   Widget build(final BuildContext context) {
     if (!Envs.isFeedbackAvailable) return child;
-    return Wiredash(
-      projectId: Envs.wiredashProjectId,
-      secret: Envs.wiredashProjectSecret,
-      feedbackOptions: feedbackOptions,
-      child: child,
-    );
+    return const SizedBox();
+    // return Wiredash(
+    //   projectId: Envs.wiredashProjectId,
+    //   secret: Envs.wiredashProjectSecret,
+    //   feedbackOptions: feedbackOptions,
+    //   child: child,
+    // );
   }
 
-  static const feedbackOptions = WiredashFeedbackOptions(
-    labels: [
-      // Take the label ids from your project console
-      // https://console.wiredash.io/ -> Settings -> Labels
-      Label(id: 'label-i53blm87an', title: 'Bug'),
-      Label(id: 'label-r9rtjoszji', title: 'Feature request'),
-    ],
-  );
+  // static const feedbackOptions = WiredashFeedbackOptions(
+  //   labels: [
+  //     // Take the label ids from your project console
+  //     // https://console.wiredash.io/ -> Settings -> Labels
+  //     Label(id: 'label-i53blm87an', title: 'Bug'),
+  //     Label(id: 'label-r9rtjoszji', title: 'Feature request'),
+  //   ],
+  // );
 }
 
 class FeedbackButton extends StatelessWidget {
@@ -39,7 +40,7 @@ class FeedbackButton extends StatelessWidget {
   Widget build(final BuildContext context) => Visibility(
     visible: Envs.isFeedbackAvailable,
     child: IconButton(
-      onPressed: () => FeedbackProvider.show(context),
+      onPressed: () => {}, // FeedbackProvider.show(context),
       icon: const Icon(CupertinoIcons.exclamationmark_bubble),
     ),
   );

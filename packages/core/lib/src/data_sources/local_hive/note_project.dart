@@ -15,11 +15,7 @@ class NoteProject extends BasicProject {
     this.note = '',
     super.isCompleted,
     this.charactersLimit,
-  }) : super(
-          title: '',
-          folder: folder,
-          type: ProjectTypes.note,
-        );
+  }) : super(title: '', folder: folder, type: ProjectTypes.note);
   static Future<NoteProject> create({
     required final String title,
     required final ProjectFolder folder,
@@ -71,19 +67,13 @@ class NoteProject extends BasicProject {
   String toShareString(final BuildContext context) => note;
 
   ProjectModelNote toModel() => ProjectModelNote(
-        createdAt: created,
-        updatedAt: updated,
-        id: ProjectModelId.fromJson(id),
-        charactersLimit: charactersLimit ?? 0,
-        note: note,
-      );
+    createdAt: created,
+    updatedAt: updated,
+    id: ProjectModelId.fromJson(id),
+    charactersLimit: charactersLimit ?? 0,
+    note: note,
+  );
 
   @override
   String toSharableTitle(final BuildContext context) => '';
 }
-
-/// A mock for [NoteProject].
-/// To create use `final mockNoteProject = MockNoteProject();`
-// ignore: avoid_implementing_value_types
-@Deprecated('')
-class MockNoteProject extends Mock implements NoteProject {}

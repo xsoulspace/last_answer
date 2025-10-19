@@ -4,9 +4,7 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=3.8.1 <4.0.0"
-
-resolution: workspace
+  sdk: ^3.9.0
 
 dependencies:
   dart_frog: ^1.2.0

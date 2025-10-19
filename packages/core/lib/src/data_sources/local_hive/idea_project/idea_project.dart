@@ -15,10 +15,7 @@ class IdeaProject extends BasicProject with EquatableMixin {
     this.newAnswerText = '',
     this.newQuestion,
     this.answers,
-  }) : super(
-          folder: folder,
-          type: ProjectTypes.idea,
-        );
+  }) : super(folder: folder, type: ProjectTypes.idea);
   static Future<IdeaProject> create({
     required final String title,
     required final ProjectFolder folder,
@@ -31,8 +28,9 @@ class IdeaProject extends BasicProject with EquatableMixin {
       id: createId(),
       title: title,
     );
-    final ideaBox =
-        await Hive.openBox<IdeaProject>(HiveBoxesIds.ideaProjectKey);
+    final ideaBox = await Hive.openBox<IdeaProject>(
+      HiveBoxesIds.ideaProjectKey,
+    );
     final ideaAnswersBox = await Hive.openBox<IdeaProjectAnswer>(
       HiveBoxesIds.ideaProjectAnswerKey,
     );
@@ -58,10 +56,8 @@ class IdeaProject extends BasicProject with EquatableMixin {
   ProjectFolder? folder;
 
   @override
-  String toShareString(final BuildContext context) => ideaProjectToShareString(
-        context: context,
-        projectIdea: toModel(),
-      );
+  String toShareString(final BuildContext context) =>
+      ideaProjectToShareString(context: context, projectIdea: toModel());
 
   @override
   List<dynamic> get props => [id];
@@ -70,15 +66,10 @@ class IdeaProject extends BasicProject with EquatableMixin {
   bool? get stringify => true;
 
   ProjectModelIdea toModel() => ProjectModelIdea(
-        createdAt: created,
-        id: ProjectModelId.fromJson(id),
-        updatedAt: updated,
-        answers: answers?.map((final e) => e.toModel()).toList() ?? [],
-        title: title,
-      );
+    createdAt: created,
+    id: ProjectModelId.fromJson(id),
+    updatedAt: updated,
+    answers: answers?.map((final e) => e.toModel()).toList() ?? [],
+    title: title,
+  );
 }
-
-/// A mock for [IdeaProject].
-/// To create use `final mockIdeaProject = MockIdeaProject();`
-// ignore: avoid_implementing_value_types
-class MockIdeaProject extends Mock implements IdeaProject {}

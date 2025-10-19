@@ -12,10 +12,7 @@ class IdeaProjectQuestion extends HiveObject
     implements Sharable, HasId {
   /// Do not use default constructor to create new [IdeaProjectQuestion]
   /// Do use [IdeaProjectQuestion.fromTitle]
-  IdeaProjectQuestion({
-    required this.id,
-    required this.title,
-  });
+  IdeaProjectQuestion({required this.id, required this.title});
   factory IdeaProjectQuestion.fromJson(final Map<String, dynamic> json) =>
       _$IdeaProjectQuestionFromJson(json);
 
@@ -40,15 +37,10 @@ class IdeaProjectQuestion extends HiveObject
   String toShareString(final BuildContext context) => '';
 
   IdeaProjectQuestionModel toModel() => IdeaProjectQuestionModel(
-        id: IdeaProjectQuestionModelId.fromJson(id),
-        title: title.toModel(),
-      );
+    id: IdeaProjectQuestionModelId.fromJson(id),
+    title: title.toModel(),
+  );
 
   @override
   String toSharableTitle(final BuildContext context) => '';
 }
-
-/// A mock for [IdeaProjectQuestion].
-/// To create use `final mockIdeaProjectQuestion = MockIdeaProjectQuestion();`
-// ignore: avoid_implementing_value_types
-class MockIdeaProjectQuestion extends Mock implements IdeaProjectQuestion {}

@@ -3,7 +3,6 @@ part of '../hive_models.dart';
 typedef IdeaProjectAnswerId = String;
 
 @Deprecated('use IdeaProjectAnswerModel')
-
 /// This is an answer for [IdeaProject]
 @HiveType(typeId: HiveBoxesIds.ideaProjectAnswer)
 class IdeaProjectAnswer extends HiveObject
@@ -59,17 +58,12 @@ class IdeaProjectAnswer extends HiveObject
   bool? get stringify => true;
 
   IdeaProjectAnswerModel toModel() => IdeaProjectAnswerModel(
-        createdAt: created,
-        id: IdeaProjectAnswerModelId.fromJson(id),
-        question: question.toModel(),
-        text: text,
-      );
+    createdAt: created,
+    id: IdeaProjectAnswerModelId.fromJson(id),
+    question: question.toModel(),
+    text: text,
+  );
 
   @override
   String toSharableTitle(final BuildContext context) => '';
 }
-
-/// A mock for [IdeaProjectAnswer].
-/// To create use `final mockIdeaProjectAnswer = MockIdeaProjectAnswer();`
-// ignore: avoid_implementing_value_types
-class MockIdeaProjectAnswer extends Mock implements IdeaProjectAnswer {}

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:serverpod_auth_client/module.dart';
-import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
+// import 'package:serverpod_auth_client/module.dart';
+// import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
 import 'package:ui_kit/ui_kit.dart';
 
 import '../../../../core.dart';
@@ -20,11 +20,11 @@ class _CustomImpl extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => TextButton(
-        onPressed: () async {
-          await GoogleAuthProvider().getCredentials();
-        },
-        child: const Text('Sign in'),
-      );
+    onPressed: () async {
+      await GoogleAuthProvider().getCredentials();
+    },
+    child: const Text('Sign in'),
+  );
 }
 
 class _ServerpodImpl extends StatelessWidget {
@@ -32,10 +32,10 @@ class _ServerpodImpl extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final remoteClient = RemoteClient.ofContextAsServerpodImpl(context);
+    // final remoteClient = RemoteClient.ofContextAsServerpodImpl(context);
     return ServerpodSignInWithGoogleButton(
       // clientId: PlatformInfo.isWeb ? null : Envs.googleClientId,
-      caller: remoteClient.client.modules.auth,
+      // caller: remoteClient.client.modules.auth,
       serverClientId: Envs.googleServerClientId,
       redirectUri: Envs.serverRedirectUri,
       onFailure: () {
@@ -55,7 +55,7 @@ class _ServerpodImpl extends StatelessWidget {
 class ServerpodSignInWithGoogleButton extends StatefulWidget {
   /// Creates a new Sign in with Google button.
   const ServerpodSignInWithGoogleButton({
-    required this.caller,
+    // required this.caller,
     required this.redirectUri,
     super.key,
     this.clientId,
@@ -68,8 +68,8 @@ class ServerpodSignInWithGoogleButton extends StatefulWidget {
     this.alignment = Alignment.centerLeft,
   });
 
-  /// The Auth module's caller.
-  final Caller caller;
+  // /// The Auth module's caller.
+  // final Caller caller;
 
   /// Google clientId, if not specified through a GoogleService-Info.plist file.
   final String? clientId;
@@ -110,45 +110,46 @@ class ServerpodSignInWithGoogleButtonState
     extends State<ServerpodSignInWithGoogleButton> {
   @override
   Widget build(final BuildContext context) => ElevatedButton.icon(
-        style: widget.style ??
-            ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.grey[700],
-              alignment: widget.alignment,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-            ),
-        onPressed: () async {
-          // Open a dialog with just the progress indicator that isn't
-          // dismissable.
-          final barrierNavigator = await _showLoadingBarrier(context: context);
-
-          // Attempt to sign in the user.
-          final userInfo = await signInWithGoogle(
-            widget.caller,
-            debug: widget.debug,
-            clientId: widget.clientId,
-            serverClientId: widget.serverClientId,
-            additionalScopes: widget.additionalScopes,
-            redirectUri: widget.redirectUri,
-          );
-          // Pop the loading barrier
-          barrierNavigator.pop();
-
-          // Notify the parent.
-          if (userInfo != null) {
-            widget.onSignedIn?.call();
-          } else {
-            widget.onFailure?.call();
-          }
-        },
-        label: const Text('Sign in with Google'),
-        icon: Image.asset(
-          'assets/google-icon.png',
-          package: 'serverpod_auth_google_flutter',
-          width: 24,
-          height: 24,
+    style:
+        widget.style ??
+        ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.grey[700],
+          alignment: widget.alignment,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
-      );
+    onPressed: () async {
+      // Open a dialog with just the progress indicator that isn't
+      // dismissable.
+      final barrierNavigator = await _showLoadingBarrier(context: context);
+
+      // Attempt to sign in the user.
+      // final userInfo = await signInWithGoogle(
+      //   widget.caller,
+      //   debug: widget.debug,
+      //   clientId: widget.clientId,
+      //   serverClientId: widget.serverClientId,
+      //   additionalScopes: widget.additionalScopes,
+      //   redirectUri: widget.redirectUri,
+      // );
+      // Pop the loading barrier
+      barrierNavigator.pop();
+
+      // Notify the parent.
+      // if (userInfo != null) {
+      //   widget.onSignedIn?.call();
+      // } else {
+      //   widget.onFailure?.call();
+      // }
+    },
+    label: const Text('Sign in with Google'),
+    icon: Image.asset(
+      'assets/google-icon.png',
+      package: 'serverpod_auth_google_flutter',
+      width: 24,
+      height: 24,
+    ),
+  );
 }
 
 /// Shows an non-dismissible barrier with a [CircularProgressIndicator]. Used
@@ -162,9 +163,7 @@ Future<NavigatorState> _showLoadingBarrier({
       context: context,
       builder: (final context) {
         completer.complete(Navigator.of(context));
-        return Container(
-          child: const UiCircularProgress(),
-        );
+        return Container(child: const UiCircularProgress());
       },
       barrierDismissible: false,
     ),

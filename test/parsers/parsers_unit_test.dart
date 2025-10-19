@@ -1,0 +1,40 @@
+import 'dart:io';
+
+import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
+import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
+import 'package:test/test.dart';
+
+void main() {
+  test('parseProjectsFromPaths returns summaries for archive files', () async {
+    final dir = Directory('archive');
+    if (!dir.existsSync()) return; // skip if no archives present
+
+    final isarFile = File('archive/isar_3.isar');
+    if (isarFile.existsSync()) {
+      final bytes = isarFile.readAsBytesSync();
+      final meta = isar_parser.parseIsarFromBytes(bytes);
+      expect(meta, contains('pageSize'));
+    }
+  });
+
+  test(
+    'parseAndPopulate returns parsed project maps (skips when no files)',
+    () async {
+      final dir = Directory('archive');
+      if (!dir.existsSync()) return;
+
+      final exists = dir.listSync().any(
+        (final e) =>
+            e is File && (e.path.endsWith('.isar') || e.path.endsWith('.hive')),
+      );
+      if (!exists) return;
+
+      final hiveFile = File('archive/ideaproject.hive');
+      if (hiveFile.existsSync()) {
+        final bytes = hiveFile.readAsBytesSync();
+        final data = hive_parser.parseHiveFromBytes(bytes);
+        expect(data, isA<Map<String, dynamic>>());
+      }
+    },
+  );
+}

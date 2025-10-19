@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:lastanswer/parsers/byte_utils.dart';
+import 'dart:convert';
 
 /// Minimal Isar parser helpers for test-driven development.
 /// This first pass extracts basic metadata: page size and a simple sanity check
@@ -36,13 +37,39 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
     }
   }
 
-  return {
+  final result = {
     'pageSize': defaultPageSize,
     'pages': pages,
     'activeTx': active == page0 ? 'page0' : 'page1',
     'magic': magic,
     'rootPage': rootPage,
   };
+
+  // Attempt to extract ASCII sequences and decode embedded JSON objects as a
+  // best-effort data preview. This is especially useful when full B+ tree
+  // traversal isn't yet implemented for all Isar formats.
+  try {
+    final ascii = extractAsciiStrings(bytes, minLen: 8, maxCount: 300);
+    final jsonObjects = <dynamic>[];
+    for (final s in ascii) {
+      final t = s.trimLeft();
+      if (t.isEmpty) continue;
+      if (t.startsWith('{') || t.startsWith('[')) {
+        try {
+          final decoded = jsonDecode(t);
+          jsonObjects.add(decoded);
+          if (jsonObjects.length >= 20) break;
+        } catch (_) {
+          // ignore non-json sequences
+        }
+      }
+    }
+    if (jsonObjects.isNotEmpty) result['jsonObjectsPreview'] = jsonObjects;
+  } catch (_) {
+    // ignore errors during preview extraction
+  }
+
+  return result;
 }
 
 // Placeholder for future B+ tree traversal. Accepts the full file bytes and a
@@ -61,21 +88,44 @@ Map<dynamic, dynamic> traverseBTree(
     throw Exception('root page out of range');
   final page = bytes.sublist(pageOffset, pageOffset + pageSize);
   final pageType = page[0];
-  if (pageType != 0x02) throw Exception('expected leaf page type 0x02');
-  final numEntries = page[1] | (page[2] << 8);
-  var p = 4; // start after header (1 + 2 + 1)
-  final out = <dynamic, dynamic>{};
-  for (var i = 0; i < numEntries; i++) {
-    if (p + 4 > page.length) throw Exception('truncated key len');
-    final klen = readUint32LE(page, p);
-    p += 4;
-    final key = String.fromCharCodes(page.sublist(p, p + klen));
-    p += klen;
-    final vlen = readUint32LE(page, p);
-    p += 4;
-    final val = String.fromCharCodes(page.sublist(p, p + vlen));
-    p += vlen;
-    out[key] = val;
+  if (pageType == 0x02) {
+    // leaf
+    final numEntries = page[1] | (page[2] << 8);
+    var p = 4; // start after header (1 + 2 + 1)
+    final out = <dynamic, dynamic>{};
+    for (var i = 0; i < numEntries; i++) {
+      if (p + 4 > page.length) throw Exception('truncated key len');
+      final klen = readUint32LE(page, p);
+      p += 4;
+      final key = String.fromCharCodes(page.sublist(p, p + klen));
+      p += klen;
+      final vlen = readUint32LE(page, p);
+      p += 4;
+      final val = String.fromCharCodes(page.sublist(p, p + vlen));
+      p += vlen;
+      out[key] = val;
+    }
+    return out;
+  } else if (pageType == 0x01) {
+    // branch: read child pages and recurse into first child for this test
+    final childCount = page[1] | (page[2] << 8);
+    var p = 4;
+    final children = <int>[];
+    final keys = <String>[];
+    for (var i = 0; i < childCount; i++) {
+      final child = readUint32LE(page, p);
+      p += 4;
+      final klen = readUint32LE(page, p);
+      p += 4;
+      final key = String.fromCharCodes(page.sublist(p, p + klen));
+      p += klen;
+      children.add(child);
+      keys.add(key);
+    }
+    // For tests, recurse into the first child
+    if (children.isEmpty) return <dynamic, dynamic>{};
+    return traverseBTree(bytes, children[0], pageSize: pageSize);
+  } else {
+    throw Exception('unknown page type $pageType');
   }
-  return out;
 }

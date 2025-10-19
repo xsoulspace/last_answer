@@ -5,6 +5,9 @@ import 'dart:typed_data';
 int readUint32LE(final Uint8List b, final int off) =>
     b[off] | (b[off + 1] << 8) | (b[off + 2] << 16) | (b[off + 3] << 24);
 
+int readUint32BE(final Uint8List b, final int off) =>
+    (b[off] << 24) | (b[off + 1] << 16) | (b[off + 2] << 8) | b[off + 3];
+
 int readUint64LE(final Uint8List b, final int off) {
   final low = readUint32LE(b, off);
   final high = readUint32LE(b, off + 4);
@@ -28,6 +31,41 @@ int crc32(final Uint8List bytes) {
     }
   }
   return ~crc & 0xFFFFFFFF;
+}
+
+/// Read unsigned varint (7-bit groups, little-endian style).
+/// Returns a map with 'value' and 'newOffset'.
+Map<String, int> readVarUint(final Uint8List b, final int off) {
+  var shift = 0;
+  var value = 0;
+  var pos = off;
+  while (pos < b.length) {
+    final byte = b[pos++];
+    value |= (byte & 0x7F) << shift;
+    if ((byte & 0x80) == 0) break;
+    shift += 7;
+    if (shift > 63) throw Exception('varint too large');
+  }
+  return {'value': value, 'newOffset': pos};
+}
+
+List<String> extractAsciiStrings(final Uint8List b, {final int minLen = 4, final int maxCount = 100}) {
+  final results = <String>[];
+  final buffer = <int>[];
+  for (var i = 0; i < b.length; i++) {
+    final v = b[i];
+    if (v >= 32 && v <= 126) {
+      buffer.add(v);
+    } else {
+      if (buffer.length >= minLen) {
+        results.add(String.fromCharCodes(buffer));
+        if (results.length >= maxCount) return results;
+      }
+      buffer.clear();
+    }
+  }
+  if (buffer.length >= minLen && results.length < maxCount) results.add(String.fromCharCodes(buffer));
+  return results;
 }
 
 // AES helpers: provide function signature for future: decryptAES256CBC

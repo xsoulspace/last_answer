@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+// AES package usage was considered (aes_crypt_null_safe). To avoid a hard
+// dependency during initial TDD steps, the AES helper remains a stub.
 
 int readUint32LE(final Uint8List b, final int off) =>
     b[off] | (b[off + 1] << 8) | (b[off + 2] << 16) | (b[off + 3] << 24);
@@ -34,7 +36,12 @@ Uint8List decryptAes256Cbc(
   final Uint8List key,
   final Uint8List iv,
 ) {
+  // Not implemented here. When integrating, prefer `aes_crypt_null_safe`:
+  // final crypt = AesCrypt('password');
+  // crypt.aesSetKeys(key, iv);
+  // crypt.aesSetMode(AesMode.cbc);
+  // return crypt.aesDecrypt(encrypted);
   throw UnimplementedError(
-    'AES decrypt helper not implemented in this iteration',
+    'AES decrypt helper not implemented; integrate aes_crypt_null_safe',
   );
 }

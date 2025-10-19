@@ -1,11 +1,19 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:lastanswer/parsers/isar_parser.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('isar parser placeholder throws', () {
-    final bytes = Uint8List(4096);
-    expect(() => parseIsarFromBytes(bytes), throwsA(isA<UnimplementedError>()));
+  test('isar parser reads meta from archive/isar_3.isar', () {
+    final f = File('archive/isar_3.isar');
+    if (!f.existsSync()) {
+      // Skip if archive not present in this environment
+      return;
+    }
+    final bytes = f.readAsBytesSync();
+    final parsed = parseIsarFromBytes(bytes);
+    expect(parsed, containsPair('pageSize', 4096));
+    expect(parsed['activeTx'], anyOf(['page0', 'page1']));
+    expect(parsed, contains('magic'));
   });
 }

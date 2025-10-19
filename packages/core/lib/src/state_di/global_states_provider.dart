@@ -22,6 +22,9 @@ class GlobalStatesProvider extends StatelessWidget {
       // ),
       // Use a local/shared-preferences-backed ComplexLocalDb by default.
       // Isar runtime can be re-enabled via feature flag if needed.
+      // Keep Isar provider for compatibility but register SharedPreferences
+      // LocalDbDataSource as the LocalDb implementation used by
+      // `ProjectsLocalDataSourceLocalDbImpl`.
       Provider(create: ComplexLocalDbIsarImpl.new),
       Provider<LocalDbDataSource>(
         create: SharedPreferencesDbDataSourceImpl.new,

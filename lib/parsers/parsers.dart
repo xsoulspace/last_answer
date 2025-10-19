@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
 import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Simple library facade for existing parsers. This package provides a
 /// `parseAndPopulate` entry point used by `migrate()` to discover archive
@@ -55,7 +55,9 @@ Future<void> parseAndPopulate() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setStringList('webProjects', projectsJson);
-      print('Wrote ${projectsJson.length} project(s) to SharedPreferences:webProjects');
+      print(
+        'Wrote ${projectsJson.length} project(s) to SharedPreferences:webProjects',
+      );
     } catch (e) {
       print('Failed to write parsed projects to SharedPreferences: $e');
     }

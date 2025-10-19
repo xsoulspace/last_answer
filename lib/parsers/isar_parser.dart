@@ -53,5 +53,29 @@ Map<dynamic, dynamic> traverseBTree(
   final int rootPage, {
   final int pageSize = 4096,
 }) {
-  throw UnimplementedError('B+ tree traversal not implemented');
+  // For the first TDD step we parse a very small synthetic leaf page format
+  // produced by tests: header [pageType(1)=0x02][numEntries(2)][reserved(1)]
+  // then repeated entries: [keyLen(4)][keyBytes][valLen(4)][valBytes]
+  final pageOffset = rootPage * pageSize;
+  if (pageOffset + pageSize > bytes.length)
+    throw Exception('root page out of range');
+  final page = bytes.sublist(pageOffset, pageOffset + pageSize);
+  final pageType = page[0];
+  if (pageType != 0x02) throw Exception('expected leaf page type 0x02');
+  final numEntries = page[1] | (page[2] << 8);
+  var p = 4; // start after header (1 + 2 + 1)
+  final out = <dynamic, dynamic>{};
+  for (var i = 0; i < numEntries; i++) {
+    if (p + 4 > page.length) throw Exception('truncated key len');
+    final klen = readUint32LE(page, p);
+    p += 4;
+    final key = String.fromCharCodes(page.sublist(p, p + klen));
+    p += klen;
+    final vlen = readUint32LE(page, p);
+    p += 4;
+    final val = String.fromCharCodes(page.sublist(p, p + vlen));
+    p += vlen;
+    out[key] = val;
+  }
+  return out;
 }

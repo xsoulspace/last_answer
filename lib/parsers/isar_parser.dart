@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:lastanswer/parsers/byte_utils.dart';
-import 'dart:convert';
 
 /// Minimal Isar parser helpers for test-driven development.
 /// This first pass extracts basic metadata: page size and a simple sanity check

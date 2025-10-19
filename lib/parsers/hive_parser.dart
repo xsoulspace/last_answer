@@ -1,6 +1,7 @@
-import 'dart:typed_data';
-import 'package:lastanswer/parsers/byte_utils.dart';
 import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:lastanswer/parsers/byte_utils.dart';
 
 Map<String, dynamic> _tryDeserializeHiveObject(final Uint8List bytes) {
   // Heuristic: first byte = numFields (small), then sequence of
@@ -34,7 +35,9 @@ Map<String, dynamic> _tryDeserializeHiveObject(final Uint8List bytes) {
         }
         out['field_$fieldIdx'] = sval;
       } catch (_) {
-        out['field_$fieldIdx'] = vbytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ');
+        out['field_$fieldIdx'] = vbytes
+            .map((final b) => b.toRadixString(16).padLeft(2, '0'))
+            .join(' ');
       }
     } catch (_) {
       break;
@@ -78,7 +81,8 @@ Map<String, dynamic> parseHiveFromBytes(
       final keyLenInfo = readVarUint(payload, p);
       final keyLen = keyLenInfo['value']!;
       p = keyLenInfo['newOffset']!;
-      if (keyLen < 0 || p + keyLen > payload.length) throw Exception('invalid key length');
+      if (keyLen < 0 || p + keyLen > payload.length)
+        throw Exception('invalid key length');
       final key = String.fromCharCodes(payload.sublist(p, p + keyLen));
       p += keyLen;
 
@@ -97,11 +101,16 @@ Map<String, dynamic> parseHiveFromBytes(
           // fallback: take remaining bytes
           valueLen = payload.length - p;
         }
-        if (valueLen < 0 || p + valueLen > payload.length) throw Exception('invalid value length');
+        if (valueLen < 0 || p + valueLen > payload.length)
+          throw Exception('invalid value length');
         var valueBytes = payload.sublist(p, p + valueLen);
         if (encryptionKey != null) {
           try {
-            valueBytes = decryptAes256Cbc(valueBytes, encryptionKey, Uint8List(16));
+            valueBytes = decryptAes256Cbc(
+              valueBytes,
+              encryptionKey,
+              Uint8List(16),
+            );
           } catch (_) {
             // leave raw if decryption fails
           }
@@ -128,7 +137,12 @@ Map<String, dynamic> parseHiveFromBytes(
             if (obj.isNotEmpty) {
               value = {'type': valueType, 'object': obj};
             } else {
-              value = {'type': valueType, 'hex': valueBytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')};
+              value = {
+                'type': valueType,
+                'hex': valueBytes
+                    .map((final b) => b.toRadixString(16).padLeft(2, '0'))
+                    .join(' '),
+              };
             }
           }
         }

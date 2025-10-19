@@ -12,8 +12,9 @@ void main() {
   final bytes = f.readAsBytesSync();
   final out = <String, dynamic>{};
   out['fileSize'] = bytes.length;
-  out['firstBytes'] = bytes.sublist(0, bytes.length < 64 ? bytes.length : 64)
-      .map((b) => b.toRadixString(16).padLeft(2, '0'))
+  out['firstBytes'] = bytes
+      .sublist(0, bytes.length < 64 ? bytes.length : 64)
+      .map((final b) => b.toRadixString(16).padLeft(2, '0'))
       .join(' ');
 
   // Try to parse first few frames
@@ -37,15 +38,14 @@ void main() {
       'crcStored': crcStored,
       'crcCalc': crcCalc,
       'crcMatch': crcStored == crcCalc,
-      'payloadHexStart': payload.sublist(0, payload.length < 16 ? payload.length : 16)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
+      'payloadHexStart': payload
+          .sublist(0, payload.length < 16 ? payload.length : 16)
+          .map((final b) => b.toRadixString(16).padLeft(2, '0'))
           .join(' '),
     });
     offset += frameLen;
   }
   out['frames'] = frames;
-  final encoder = JsonEncoder.withIndent('  ');
+  const encoder = JsonEncoder.withIndent('  ');
   print(encoder.convert(out));
 }
-
-

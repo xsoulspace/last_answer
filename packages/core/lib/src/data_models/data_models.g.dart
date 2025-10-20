@@ -257,7 +257,11 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'hasCompletedOnboarding': instance.hasCompletedOnboarding,
     };
 
-const _$LocalDbVersionEnumMap = {LocalDbVersion.v4: 'v4'};
+const _$LocalDbVersionEnumMap = {
+  LocalDbVersion.v3_16: 'v3_16',
+  LocalDbVersion.v3_17: 'v3_17',
+  LocalDbVersion.v4: 'v4',
+};
 
 _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
   Map<String, dynamic> json,

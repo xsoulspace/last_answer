@@ -71,6 +71,22 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
     // ignore errors during preview extraction
   }
 
+  // If we successfully located a root page, attempt full B+ tree traversal
+  // to extract key/value pairs. This is best-effort and errors are ignored
+  // to avoid failing the migrator during app startup.
+  if (rootPage != null) {
+    try {
+      final entries = traverseBTree(
+        bytes,
+        rootPage,
+        pageSize: result['pageSize']! as int,
+      );
+      if (entries.isNotEmpty) result['entries'] = entries;
+    } catch (_) {
+      // ignore traversal errors
+    }
+  }
+
   return result;
 }
 

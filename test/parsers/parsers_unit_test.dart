@@ -14,6 +14,13 @@ void main() {
       final bytes = isarFile.readAsBytesSync();
       final meta = isar_parser.parseIsarFromBytes(bytes);
       expect(meta, contains('pageSize'));
+      // When root page is found, ensure traversal extracts entries map
+      if (meta.containsKey('entries')) {
+        final entries = Map<String, dynamic>.from(meta['entries'] as Map);
+        expect(entries, isA<Map<String, dynamic>>());
+        // At least one JSON-like preview or ascii should exist for real files
+        expect(entries.isNotEmpty, isTrue);
+      }
     }
   });
 

@@ -13,12 +13,9 @@ Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
   final currentLocalDbVersion = userNotifier.value.value.localDbVersion;
   if (currentLocalDbVersion == LocalDbVersion.newestVersion) return false;
   try {
-    for (final v in LocalDbVersion.values) {
-      switch (v) {
-        case LocalDbVersion.v4:
-        // noop
-      }
-    }
+    // for (final v in LocalDbVersion.values) {
+    // noop
+    // }
     // ignore: avoid_catches_without_on_clauses
   } catch (e) {
     // ignore all errors as it should be called one time only

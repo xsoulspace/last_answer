@@ -49,9 +49,11 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
   // best-effort data preview. This is especially useful when full B+ tree
   // traversal isn't yet implemented for all Isar formats.
   try {
-    final ascii = extractAsciiStrings(bytes, minLen: 8, maxCount: 300);
+    // Lower minLen to 4 to catch shorter JSON fragments embedded in pages
+    final ascii = extractAsciiStrings(bytes, maxCount: 300);
     final jsonObjects = <dynamic>[];
     for (final s in ascii) {
+      // Use tolerant decoding in case ascii extraction picked up mixed bytes
       final t = s.trimLeft();
       if (t.isEmpty) continue;
       if (t.startsWith('{') || t.startsWith('[')) {

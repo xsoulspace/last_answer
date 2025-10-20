@@ -83,7 +83,11 @@ Map<String, dynamic> parseHiveFromBytes(
       p = keyLenInfo['newOffset']!;
       if (keyLen < 0 || p + keyLen > payload.length)
         throw Exception('invalid key length');
-      final key = String.fromCharCodes(payload.sublist(p, p + keyLen));
+      // Use tolerant UTF-8 decoding for keys (production files may be malformed)
+      final key = utf8.decode(
+        payload.sublist(p, p + keyLen),
+        allowMalformed: true,
+      );
       p += keyLen;
 
       if (p >= payload.length) {
@@ -116,20 +120,32 @@ Map<String, dynamic> parseHiveFromBytes(
           }
         }
         dynamic value;
-        if (valueType == 1) {
-          value = String.fromCharCodes(valueBytes);
-          final s = value.toString().trimLeft();
+        // Attempt tolerant UTF-8 decode first for both textual and non-textual
+        // value types. Many production Hive values embed JSON or UTF-8 text
+        // but may contain occasional malformed sequences.
+        try {
+          final decoded = utf8.decode(valueBytes, allowMalformed: true);
+          final s = decoded.trimLeft();
           if (s.startsWith('{') || s.startsWith('[')) {
             try {
               value = jsonDecode(s);
             } catch (_) {
-              // try heuristic deserialization for Hive objects
+              // not valid JSON despite being textual; try Hive object heuristic
               final obj = _tryDeserializeHiveObject(valueBytes);
-              if (obj.isNotEmpty) value = obj;
+              if (obj.isNotEmpty) {
+                value = obj;
+              } else {
+                // keep decoded string as best-effort preview
+                value = s;
+              }
             }
+          } else {
+            // treat as plain string when decoding succeeds
+            value = s;
           }
-        } else {
-          final ascii = extractAsciiStrings(valueBytes, minLen: 6, maxCount: 3);
+        } catch (_) {
+          // Non-decodable bytes; fall back to ascii extraction and heuristics
+          final ascii = extractAsciiStrings(valueBytes, maxCount: 5);
           if (ascii.isNotEmpty) {
             value = {'type': valueType, 'ascii_preview': ascii};
           } else {

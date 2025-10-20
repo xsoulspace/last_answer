@@ -1,31 +1,17 @@
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 abstract interface class LocalDbDataSource implements Loadable {
   void setMap({
     required final String key,
     required final Map<String, dynamic> value,
   });
-  Map<String, dynamic> getMap(
-    final String key,
-  );
-  void setString({
-    required final String key,
-    required final String value,
-  });
-  String getString({
-    required final String key,
-    final String defaultValue = '',
-  });
+  Map<String, dynamic> getMap(final String key);
+  void setString({required final String key, required final String value});
+  String getString({required final String key, final String defaultValue = ''});
   void setBool({required final String key, required final bool value});
-  bool getBool({
-    required final String key,
-    final bool defaultValue = false,
-  });
+  bool getBool({required final String key, final bool defaultValue = false});
   void setInt({required final String key, required final int? value});
-  int getInt({
-    required final String key,
-    final int defaultValue = 0,
-  });
+  int getInt({required final String key, final int defaultValue = 0});
 
   void setItem<T>({
     required final String key,

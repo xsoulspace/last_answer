@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../../core.dart';
 
@@ -16,9 +16,7 @@ class GlobalServicesInitializerMockImpl extends GlobalServicesInitializer {
 }
 
 class GlobalServicesInitializerImpl extends GlobalServicesInitializer {
-  GlobalServicesInitializerImpl({
-    this.firebaseOptions,
-  });
+  GlobalServicesInitializerImpl({this.firebaseOptions});
 
   @override
   final AnalyticsService analyticsService = AnalyticsServiceImpl();
@@ -33,8 +31,9 @@ class GlobalServicesInitializerImpl extends GlobalServicesInitializer {
     final effectiveFirebaseOptions = firebaseOptions;
     if (effectiveFirebaseOptions != null) {
       Future<void> addAnalytics() async {
-        _firebaseInitializer =
-            FirebaseInitializerImpl(firebaseOptions: effectiveFirebaseOptions);
+        _firebaseInitializer = FirebaseInitializerImpl(
+          firebaseOptions: effectiveFirebaseOptions,
+        );
         await _firebaseInitializer?.onLoad();
         analyticsService
           ..upsertPlugin(FirebaseCrashlyticsPlugin())

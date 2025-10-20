@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 /// Toggle this for testing Crashlytics in your app locally.
 const kTestingCrashlytics = false;
@@ -8,9 +8,7 @@ const kTestingCrashlytics = false;
 const kTestingAnalytics = false;
 
 abstract class FirebaseInitializer implements Loadable {
-  FirebaseInitializer({
-    required this.firebaseOptions,
-  });
+  FirebaseInitializer({required this.firebaseOptions});
   final FirebaseOptions? firebaseOptions;
 
   @override

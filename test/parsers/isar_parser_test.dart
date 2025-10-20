@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:lastanswer/parsers/isar_parser.dart';
+import 'package:core/src/state_di/parsers/isar_parser.dart';
 import 'package:test/test.dart';
 
 void main() {

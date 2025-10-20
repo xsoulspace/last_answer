@@ -1,4 +1,4 @@
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 abstract base class AdInstance implements Disposable {
   Future<AdRewardModel> show();
@@ -7,10 +7,7 @@ abstract base class AdInstance implements Disposable {
 }
 
 class AdRewardModel {
-  AdRewardModel({
-    required this.amount,
-    required this.isRewarded,
-  });
+  AdRewardModel({required this.amount, required this.isRewarded});
   final int amount;
   final bool isRewarded;
 }

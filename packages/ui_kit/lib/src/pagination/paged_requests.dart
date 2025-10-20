@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import 'pagination.dart';
 
 abstract class PagedRequestsBuilder<TModel> {
-  PagedRequestsBuilder({
-    required this.onLoadData,
-  });
+  PagedRequestsBuilder({required this.onLoadData});
   final Future<PaginatedPageResponseModel<TModel>> Function(int page)
-      onLoadData;
+  onLoadData;
 }
 
 /// This class meant to be abstract as should be implemented
@@ -22,12 +21,12 @@ abstract base class ExternalPagedController<TItem> implements Disposable {
     this.addEmptyFirstItem = false,
     this.emptyItemBuilder,
     final int firstPageKey = 1,
-  })  : _firstPageKey = firstPageKey,
-        assert(
-          // ignore: avoid_bool_literals_in_conditional_expressions
-          addEmptyFirstItem ? emptyItemBuilder != null : true,
-          'emptyItemBuilder must not be null',
-        ) {
+  }) : _firstPageKey = firstPageKey,
+       assert(
+         // ignore: avoid_bool_literals_in_conditional_expressions
+         addEmptyFirstItem ? emptyItemBuilder != null : true,
+         'emptyItemBuilder must not be null',
+       ) {
     pager.addListener(_onPagerChanged);
   }
   late final int _firstPageKey;
@@ -104,20 +103,12 @@ abstract base class ExternalPagedController<TItem> implements Disposable {
 
   void insertItem(final TItem item, {final int at = 0}) =>
       pager.insertElements([item], at: at);
-  void insertItems(
-    final List<TItem> items, {
-    final int at = 0,
-  }) =>
+  void insertItems(final List<TItem> items, {final int at = 0}) =>
       pager.insertElements(items, at: at);
-  void moveElementFirst({
-    required final TItem element,
-  }) {
+  void moveElementFirst({required final TItem element}) {
     final index = items.indexWhere((final e) => e == element);
     if (index >= 0) {
-      moveElementByIndex(
-        element: element,
-        index: index,
-      );
+      moveElementByIndex(element: element, index: index);
     } else {
       insertItem(element);
     }
@@ -131,24 +122,22 @@ abstract base class ExternalPagedController<TItem> implements Disposable {
 
     /// target index after element removal
     final int moveToIndex = 0,
-  }) =>
-      pager.moveElementByIndex(
-        element: element,
-        moveToIndex: moveToIndex,
-        index: index,
-      );
+  }) => pager.moveElementByIndex(
+    element: element,
+    moveToIndex: moveToIndex,
+    index: index,
+  );
   void replaceItem(
     final TItem item, {
     final bool shouldAddOnNotFound = false,
     final bool Function(TItem a, TItem b)? equals,
     final int? index,
-  }) =>
-      pager.replaceElement(
-        element: item,
-        shouldAddOnNotFound: shouldAddOnNotFound,
-        equals: equals,
-        index: index,
-      );
+  }) => pager.replaceElement(
+    element: item,
+    shouldAddOnNotFound: shouldAddOnNotFound,
+    equals: equals,
+    index: index,
+  );
 
   void deleteItem(final TItem item) => pager.removeElement(element: item);
   TItem? deleteItemWhere(final bool Function(TItem element) test) =>

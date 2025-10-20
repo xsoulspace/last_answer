@@ -32,6 +32,7 @@ dependencies:
   intl: ^0.20.2
   # isar: ^4.0.0-dev.14
   # isar_flutter_libs: ^4.0.0-dev.14
+  is_dart_empty_or_not: ^0.2.3
   json_annotation: ^4.9.0
   logger: ^2.6.2
   package_info_plus: ^9.0.0
@@ -49,6 +50,7 @@ dependencies:
   universal_io: ^2.2.2
   url_launcher: ^6.3.2
   uuid: ^4.5.1
+  xsoulspace_foundation: ^0.2.2
   xsoulspace_locale: ^0.3.0
 
 dev_dependencies:

@@ -3,16 +3,17 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
 import 'package:lastanswer/settings/views/changelog_view.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class ProjectView extends StatelessWidget {
   const ProjectView({super.key});
 
   @override
   Widget build(final BuildContext context) {
-    final projectContainer =
-        context.select<OpenedProjectNotifier, LoadableContainer<ProjectModel>>(
-      (final c) => c.value,
-    );
+    final projectContainer = context
+        .select<OpenedProjectNotifier, LoadableContainer<ProjectModel>>(
+          (final c) => c.value,
+        );
     if (projectContainer.isLoading) {
       return const UiCircularProgress();
     }
@@ -55,10 +56,10 @@ class _ProjectViewAppBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => BackTextUniversalAppBar(
-        onBack: () => context.go(ScreenPaths.home),
-        titleStr: '',
-        useBackButton: true,
-      );
+    onBack: () => context.go(ScreenPaths.home),
+    titleStr: '',
+    useBackButton: true,
+  );
 }
 
 class _ChangelogViewAppBar extends StatelessWidget {
@@ -66,8 +67,8 @@ class _ChangelogViewAppBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => BackTextUniversalAppBar(
-        onBack: () => context.go(ScreenPaths.home),
-        titleStr: context.l10n.changeLog,
-        useBackButton: true,
-      );
+    onBack: () => context.go(ScreenPaths.home),
+    titleStr: context.l10n.changeLog,
+    useBackButton: true,
+  );
 }

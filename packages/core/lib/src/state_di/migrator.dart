@@ -1,8 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:from_json_to_json/from_json_to_json.dart';
-import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/parsers/parsers.dart' as parsers;
+// import 'package:shared_models/shared_models.dart';
+import 'package:is_dart_empty_or_not/is_dart_empty_or_not.dart';
+import 'package:provider/provider.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+
+import '../data_models/data_models.dart';
+import '../data_repositories/data_repositories.dart';
+import 'parsers/parsers.dart' as parsers;
 
 /// Core migration entry used by runtime initialization.
 ///
@@ -25,7 +32,7 @@ Future<void> migrate(final BuildContext context) async {
       if (id.isEmpty) continue;
       idTypeMap[id] = jsonDecodeString(
         p['runtimeType'],
-      ).useWhenEmpty(p['type']);
+      ).whenEmptyUse(p['type']);
       final oldUnique = unique[id];
       unique[id] = {...?oldUnique, ...p};
     } catch (_) {}

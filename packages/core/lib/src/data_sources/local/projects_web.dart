@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../../core.dart';
 
@@ -12,17 +13,12 @@ class SearchableContainer<T> {
 
 extension on ProjectModel {
   SearchableContainer<ProjectModel> toSearchableContainer() =>
-      SearchableContainer(
-        value: this,
-        jsonContent: toString(),
-      );
+      SearchableContainer(value: this, jsonContent: toString());
 }
 
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
-  ProjectsLocalDataSourceLocalDbImpl({
-    required this.localDb,
-  });
+  ProjectsLocalDataSourceLocalDbImpl({required this.localDb});
   final LocalDbDataSource localDb;
   final List<SearchableContainer<ProjectModel>> _cache = [];
   bool _isReversed = false;
@@ -85,8 +81,10 @@ final class ProjectsLocalDataSourceLocalDbImpl
     final int itemsCount = items.length;
     final pagesCount = (itemsCount / dto.limit).ceil();
     final start = dto.page * dto.limit;
-    final effectiveItems =
-        items.skip(start).take(dto.limit).map((final e) => e.value);
+    final effectiveItems = items
+        .skip(start)
+        .take(dto.limit)
+        .map((final e) => e.value);
 
     return PaginatedPageResponseModel(
       values: effectiveItems.toList(),
@@ -130,10 +128,10 @@ final class ProjectsLocalDataSourceLocalDbImpl
   }
 
   void _saveCache() => localDb.setItemsList(
-        key: SharedPreferencesKeys.webProjects.name,
-        convertToJson: (final v) => v.value.toJson(),
-        value: _cache,
-      );
+    key: SharedPreferencesKeys.webProjects.name,
+    convertToJson: (final v) => v.value.toJson(),
+    value: _cache,
+  );
 
   @override
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
@@ -164,8 +162,10 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
   }) async {
-    final map =
-        _cache.toMap(toKey: (final e) => e.value.id, toValue: (final e) => e);
+    final map = _cache.toMap(
+      toKey: (final e) => e.value.id,
+      toValue: (final e) => e,
+    );
 
     return ids.map((final e) => map[e]?.value).nonNulls.toList();
   }

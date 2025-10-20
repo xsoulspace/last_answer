@@ -1,7 +1,8 @@
 import 'dart:typed_data';
-import 'package:test/test.dart';
+
+import 'package:core/src/state_di/parsers/hive_parser.dart';
 import 'package:lastanswer/parsers/byte_utils.dart';
-import 'package:lastanswer/parsers/hive_parser.dart';
+import 'package:test/test.dart';
 
 Uint8List _buildHiveFrame({required final Uint8List payload}) {
   // Frame layout: [len(4 LE)] [payload...] [crc(4 LE)]

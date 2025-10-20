@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
-import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
+import 'package:core/src/state_di/parsers/hive_parser.dart' as hive_parser;
+import 'package:core/src/state_di/parsers/isar_parser.dart' as isar_parser;
 import 'package:test/test.dart';
 
 void main() {

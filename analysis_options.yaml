@@ -2,7 +2,6 @@ include: package:xsoulspace_lints/app.yaml
 
 analyzer:
   exclude:
-    - lib/**.*.dart
     - lib/l10n/l10n.dart
     - lib/l10n/l10n_*.dart
 

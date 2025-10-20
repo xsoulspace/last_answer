@@ -44,11 +44,21 @@ Future<void> migrate(final BuildContext context) async {
 
   try {
     await projectsRepository.putAll(projects: projects);
+    final existingTags = tagsRepository.getAll();
     final tags = projects
         .expand((final p) => p.tagsIds)
+        .toSet()
+        .indexed
         .toMap(
-          toKey: (final e) => e,
-          toValue: (final e) => ProjectTagModel(id: e),
+          toKey: (final e) => e.$2,
+          toValue: (final e) {
+            final existingTag = existingTags[e.$2];
+            final data = ProjectTagModel(
+              id: e.$2,
+              title: existingTag?.title ?? e.$1.toString(),
+            );
+            return data;
+          },
         );
 
     /// populate cache of tags

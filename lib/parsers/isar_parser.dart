@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:lastanswer/parsers/byte_utils.dart';
@@ -58,9 +57,7 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
       if (t.isEmpty) continue;
       if (t.startsWith('{') || t.startsWith('[')) {
         try {
-          final decoded = jsonDecode(t);
-          jsonObjects.add(decoded);
-          if (jsonObjects.length >= 20) break;
+          extractJsonMaps(t).forEach(jsonObjects.add);
         } catch (e, st) {
           print('Error decoding JSON: $e\n$st');
           // ignore non-json sequences

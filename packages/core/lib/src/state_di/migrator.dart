@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/parsers/parsers.dart' as parsers;
 
@@ -10,7 +12,21 @@ Future<void> migrate(final BuildContext context) async {
   final parsed = await parsers.parseAndPopulate();
   if (parsed.isEmpty) return;
 
-  final projects = parsed.map(ProjectModel.fromJson).toList(growable: false);
+  // Deduplicate parsed project maps by `id` when available to avoid
+  // creating duplicate entries from multiple sources (hive + isar previews).
+  final unique = <String, Map<String, dynamic>>{};
+  for (final p in parsed) {
+    try {
+      final id = (p['id'] is String) ? p['id'] as String : jsonEncode(p);
+      unique[id] = p;
+    } catch (_) {
+      unique[jsonEncode(p)] = p;
+    }
+  }
+  final projects = unique.values
+      .where((final e) => e['runtimeType'] != null)
+      .map(ProjectModel.fromJson)
+      .toList(growable: false);
 
   try {
     await context.read<ProjectsRepository>().putAll(projects: projects);
@@ -26,6 +42,17 @@ Future<void> migrate(final BuildContext context) async {
 Future<void> migrateWithRepository(final ProjectsRepository repository) async {
   final parsed = await parsers.parseAndPopulate();
   if (parsed.isEmpty) return;
-  final projects = parsed.map(ProjectModel.fromJson).toList(growable: false);
+  final unique = <String, Map<String, dynamic>>{};
+  for (final p in parsed) {
+    try {
+      final id = (p['id'] is String) ? p['id'] as String : jsonEncode(p);
+      unique[id] = p;
+    } catch (_) {
+      unique[jsonEncode(p)] = p;
+    }
+  }
+  final projects = unique.values
+      .map(ProjectModel.fromJson)
+      .toList(growable: false);
   await repository.putAll(projects: projects);
 }

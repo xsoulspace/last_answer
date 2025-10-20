@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:universal_io/io.dart';
 
 /// Determine candidate directories where DB files might live on this platform.
 /// Mirrors the logic previously present in `migrator.dart` so both the app
@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 Future<List<String>> determineDbPaths() async {
   final paths = <String>[];
   if (kIsWeb) {
-    paths.add('/assets/${Envs.isarDbName}');
+    paths.add('/assets/isar_4');
     return paths;
   }
 

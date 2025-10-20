@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:from_json_to_json/from_json_to_json.dart';
 import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';

@@ -50,7 +50,7 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
   // traversal isn't yet implemented for all Isar formats.
   try {
     // Lower minLen to 4 to catch shorter JSON fragments embedded in pages
-    final ascii = extractAsciiStrings(bytes, maxCount: 300);
+    final ascii = extractAsciiStrings(bytes);
     final jsonObjects = <dynamic>[];
     for (final s in ascii) {
       // Use tolerant decoding in case ascii extraction picked up mixed bytes
@@ -61,13 +61,15 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
           final decoded = jsonDecode(t);
           jsonObjects.add(decoded);
           if (jsonObjects.length >= 20) break;
-        } catch (_) {
+        } catch (e, st) {
+          print('Error decoding JSON: $e\n$st');
           // ignore non-json sequences
         }
       }
     }
     if (jsonObjects.isNotEmpty) result['jsonObjectsPreview'] = jsonObjects;
-  } catch (_) {
+  } catch (e, st) {
+    print('Error extracting ASCII sequences: $e\n$st');
     // ignore errors during preview extraction
   }
 
@@ -108,16 +110,6 @@ Map<dynamic, dynamic> traverseBTree(
   final page = bytes.sublist(pageOffset, pageOffset + pageSize);
   final pageType = page[0];
 
-  // Helper to decode bytes to a string (tolerant) or hex fallback.
-  String decodePreview(final Uint8List b) {
-    try {
-      final s = utf8.decode(b, allowMalformed: true);
-      return s;
-    } catch (_) {
-      return b.map((final x) => x.toRadixString(16).padLeft(2, '0')).join(' ');
-    }
-  }
-
   // Collect entries for leaf pages.
   if (pageType == 0x02) {
     // header: [pageType(1)][numEntries(2)][reserved(1)]
@@ -140,27 +132,8 @@ Map<dynamic, dynamic> traverseBTree(
       p += vlen;
 
       // decode key and value with tolerant UTF-8; attempt JSON decode on value
-      final key = decodePreview(Uint8List.fromList(keyBytes));
-      dynamic value;
-      try {
-        final decoded = utf8.decode(valBytes, allowMalformed: true).trimLeft();
-        if (decoded.startsWith('{') || decoded.startsWith('[')) {
-          try {
-            value = jsonDecode(decoded);
-          } catch (_) {
-            value = decoded;
-          }
-        } else {
-          value = decoded;
-        }
-      } catch (_) {
-        final ascii = extractAsciiStrings(valBytes, maxCount: 3);
-        if (ascii.isNotEmpty) {
-          value = {'ascii_preview': ascii};
-        } else {
-          value = decodePreview(Uint8List.fromList(valBytes));
-        }
-      }
+      final key = decodeToStringOrHex(Uint8List.fromList(keyBytes));
+      final value = decodeValue(Uint8List.fromList(valBytes));
 
       out[key] = value;
     }

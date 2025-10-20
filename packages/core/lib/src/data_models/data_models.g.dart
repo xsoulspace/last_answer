@@ -28,8 +28,8 @@ _$ProjectModelIdeaImpl _$$ProjectModelIdeaImplFromJson(
   Map<String, dynamic> json,
 ) => _$ProjectModelIdeaImpl(
   id: ProjectModelId.fromJson(json['id'] as String),
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  createdAt: dateTimeFromIso8601String(json['createdAt']) ?? DateTime.now(),
+  updatedAt: dateTimeFromIso8601String(json['updatedAt']) ?? DateTime.now(),
   title: json['title'] as String? ?? '',
   type:
       $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
@@ -82,8 +82,8 @@ _$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
   Map<String, dynamic> json,
 ) => _$ProjectModelNoteImpl(
   id: ProjectModelId.fromJson(json['id'] as String),
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  createdAt: dateTimeFromIso8601String(json['createdAt']) ?? DateTime.now(),
+  updatedAt: dateTimeFromIso8601String(json['updatedAt']) ?? DateTime.now(),
   note: json['note'] as String? ?? '',
   type:
       $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
@@ -187,7 +187,7 @@ _$LocalizedTextModelImpl _$$LocalizedTextModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$LocalizedTextModelImpl(
   ru: json['ru'] as String,
-  en: json['en'] as String,
+  en: json['en'] as String? ?? '',
   it: json['it'] as String? ?? '',
   ga: json['ga'] as String? ?? '',
 );

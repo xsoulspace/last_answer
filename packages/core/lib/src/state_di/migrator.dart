@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:from_json_to_json/from_json_to_json.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/parsers/parsers.dart' as parsers;
 
@@ -9,27 +10,49 @@ import 'package:lastanswer/parsers/parsers.dart' as parsers;
 /// migration helper `migrateWithRepository` so tests can exercise migration
 /// without requiring a `BuildContext`.
 Future<void> migrate(final BuildContext context) async {
-  final parsed = await parsers.parseAndPopulate();
+  final tagsRepository = context.read<TagsRepository>();
+  final projectsRepository = context.read<ProjectsRepository>();
+  final parsed = await parsers.parseOldFiles();
   if (parsed.isEmpty) return;
 
   // Deduplicate parsed project maps by `id` when available to avoid
   // creating duplicate entries from multiple sources (hive + isar previews).
   final unique = <String, Map<String, dynamic>>{};
+  final idTypeMap = <String, String>{}; // id -> type
   for (final p in parsed) {
     try {
-      final id = (p['id'] is String) ? p['id'] as String : jsonEncode(p);
-      unique[id] = p;
-    } catch (_) {
-      unique[jsonEncode(p)] = p;
-    }
+      final id = jsonDecodeString(p['id']);
+      if (id.isEmpty) continue;
+      idTypeMap[id] = jsonDecodeString(
+        p['runtimeType'],
+      ).useWhenEmpty(p['type']);
+      final oldUnique = unique[id];
+      unique[id] = {...?oldUnique, ...p};
+    } catch (_) {}
   }
   final projects = unique.values
-      .where((final e) => e['runtimeType'] != null)
+      .map((final e) {
+        final type = idTypeMap[e['id']];
+        if (type == 'changelog') return null;
+        return e
+          ..['type'] = type
+          ..['runtimeType'] = type;
+      })
+      .nonNulls
       .map(ProjectModel.fromJson)
       .toList(growable: false);
 
   try {
-    await context.read<ProjectsRepository>().putAll(projects: projects);
+    await projectsRepository.putAll(projects: projects);
+    final tags = projects
+        .expand((final p) => p.tagsIds)
+        .toMap(
+          toKey: (final e) => e,
+          toValue: (final e) => ProjectTagModel(id: e),
+        );
+
+    /// populate cache of tags
+    tagsRepository.putAll(tags);
     print('Migrated ${projects.length} project(s) into local DB');
   } on Exception catch (e, st) {
     // report but don't crash the app during initialization
@@ -40,7 +63,7 @@ Future<void> migrate(final BuildContext context) async {
 /// Pure-Dart migrator used by tests and CLI tools.
 /// Accepts a `ProjectsRepository` to avoid depending on `BuildContext`.
 Future<void> migrateWithRepository(final ProjectsRepository repository) async {
-  final parsed = await parsers.parseAndPopulate();
+  final parsed = await parsers.parseOldFiles();
   if (parsed.isEmpty) return;
   final unique = <String, Map<String, dynamic>>{};
   for (final p in parsed) {

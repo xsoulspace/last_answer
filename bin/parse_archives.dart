@@ -27,7 +27,10 @@ Future<void> main() async {
       // add ascii extraction for manual inspection
       parsed = {
         'parsed': parsed,
-        'ascii': parsers.extractAsciiStrings(bytes, minLen: 6).take(50).toList(),
+        'ascii': parsers
+            .extractAsciiStrings(bytes, minLen: 6)
+            .take(50)
+            .toList(),
       };
       results[name] = parsed;
     } catch (e, st) {

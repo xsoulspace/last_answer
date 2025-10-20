@@ -3,49 +3,6 @@ import 'dart:typed_data';
 
 import 'package:lastanswer/parsers/byte_utils.dart';
 
-Map<String, dynamic> _tryDeserializeHiveObject(final Uint8List bytes) {
-  // Heuristic: first byte = numFields (small), then sequence of
-  // [fieldIndex(1)][valueLen(varint)][valueBytes]
-  if (bytes.isEmpty) return {};
-  final numFields = bytes[0];
-  if (numFields == 0 || numFields > 200) return {};
-  var p = 1;
-  final out = <String, dynamic>{};
-  for (var i = 0; i < numFields; i++) {
-    if (p >= bytes.length) break;
-    final fieldIdx = bytes[p++];
-    if (p >= bytes.length) break;
-    try {
-      final info = readVarUint(bytes, p);
-      final vlen = info['value']!;
-      p = info['newOffset']!;
-      if (vlen < 0 || p + vlen > bytes.length) break;
-      final vbytes = bytes.sublist(p, p + vlen);
-      p += vlen;
-      // try to parse as utf8/json
-      String sval;
-      try {
-        sval = utf8.decode(vbytes);
-        final ts = sval.trimLeft();
-        if (ts.startsWith('{') || ts.startsWith('[')) {
-          try {
-            out['field_$fieldIdx'] = jsonDecode(sval);
-            continue;
-          } catch (_) {}
-        }
-        out['field_$fieldIdx'] = sval;
-      } catch (_) {
-        out['field_$fieldIdx'] = vbytes
-            .map((final b) => b.toRadixString(16).padLeft(2, '0'))
-            .join(' ');
-      }
-    } catch (_) {
-      break;
-    }
-  }
-  return out;
-}
-
 /// Parse a `.hive` file from raw bytes produced by tests or read from disk.
 /// Returns a map of key -> value (strings for this minimal implementation).
 Map<String, dynamic> parseHiveFromBytes(
@@ -119,49 +76,7 @@ Map<String, dynamic> parseHiveFromBytes(
             // leave raw if decryption fails
           }
         }
-        dynamic value;
-        // Attempt tolerant UTF-8 decode first for both textual and non-textual
-        // value types. Many production Hive values embed JSON or UTF-8 text
-        // but may contain occasional malformed sequences.
-        try {
-          final decoded = utf8.decode(valueBytes, allowMalformed: true);
-          final s = decoded.trimLeft();
-          if (s.startsWith('{') || s.startsWith('[')) {
-            try {
-              value = jsonDecode(s);
-            } catch (_) {
-              // not valid JSON despite being textual; try Hive object heuristic
-              final obj = _tryDeserializeHiveObject(valueBytes);
-              if (obj.isNotEmpty) {
-                value = obj;
-              } else {
-                // keep decoded string as best-effort preview
-                value = s;
-              }
-            }
-          } else {
-            // treat as plain string when decoding succeeds
-            value = s;
-          }
-        } catch (_) {
-          // Non-decodable bytes; fall back to ascii extraction and heuristics
-          final ascii = extractAsciiStrings(valueBytes, maxCount: 5);
-          if (ascii.isNotEmpty) {
-            value = {'type': valueType, 'ascii_preview': ascii};
-          } else {
-            final obj = _tryDeserializeHiveObject(valueBytes);
-            if (obj.isNotEmpty) {
-              value = {'type': valueType, 'object': obj};
-            } else {
-              value = {
-                'type': valueType,
-                'hex': valueBytes
-                    .map((final b) => b.toRadixString(16).padLeft(2, '0'))
-                    .join(' '),
-              };
-            }
-          }
-        }
+        final value = decodeValue(valueBytes, valueType: valueType);
         data[key] = value;
       }
     } catch (e) {

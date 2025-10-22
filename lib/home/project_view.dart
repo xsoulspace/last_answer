@@ -34,7 +34,7 @@ class ProjectView extends StatelessWidget {
 }
 
 class _AdaptiveView extends StatelessWidget {
-  const _AdaptiveView({required this.child, required this.appBar, super.key});
+  const _AdaptiveView({required this.child, required this.appBar});
   final Widget appBar;
   final Widget child;
 
@@ -52,7 +52,7 @@ class _AdaptiveView extends StatelessWidget {
 }
 
 class _ProjectViewAppBar extends StatelessWidget {
-  const _ProjectViewAppBar({super.key});
+  const _ProjectViewAppBar();
 
   @override
   Widget build(final BuildContext context) => BackTextUniversalAppBar(
@@ -63,7 +63,7 @@ class _ProjectViewAppBar extends StatelessWidget {
 }
 
 class _ChangelogViewAppBar extends StatelessWidget {
-  const _ChangelogViewAppBar({super.key});
+  const _ChangelogViewAppBar();
 
   @override
   Widget build(final BuildContext context) => BackTextUniversalAppBar(

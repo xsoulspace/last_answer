@@ -11,30 +11,41 @@ class ProjectsNotifierState with _$ProjectsNotifierState {
 
 class ProjectsNotifierDto {
   ProjectsNotifierDto(final BuildContext context)
-      : projectsRepository = context.read(),
-        tagsRepository = context.read();
+    : projectsRepository = context.read(),
+      tagsRepository = context.read();
   final ProjectsRepository projectsRepository;
   final TagsRepository tagsRepository;
 }
 
 class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   ProjectsNotifier(final BuildContext context)
-      : dto = ProjectsNotifierDto(context),
-        super(const ProjectsNotifierState());
+    : dto = ProjectsNotifierDto(context),
+      super(const ProjectsNotifierState());
 
   final ProjectsNotifierDto dto;
   late final ProjectsPagedController projectsPagedController =
       ProjectsPagedController(
-    requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
-      projectsRepository: dto.projectsRepository,
-      getDto: () => value.requestProjectsDto,
-    ),
-  )..onLoad();
+        requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
+          projectsRepository: dto.projectsRepository,
+          getDto: () => value.requestProjectsDto,
+        ),
+      );
   List<IdeaProjectQuestionModel> get ideaQuestions => ideaQuestionsData;
   ProjectTagModelId get selectedTagId => value.requestProjectsDto.tagId;
+  final _fileService = FileService();
+  late final _editingProjectUpdatesController =
+      StreamController<ProjectModel>();
 
-  Future<void> onLocalUserLoad() async =>
-      projectsPagedController.loadFirstPage();
+  StreamSubscription<ProjectModel>? _updatesSubscription;
+
+  Future<void> onLocalUserLoad() async {
+    _updatesSubscription ??= _editingProjectUpdatesController.stream.listen(
+      updateProject,
+    );
+
+    projectsPagedController.loadFirstPage();
+  }
+
   void onReset() => projectsPagedController.refresh();
 
   void updateDto(
@@ -42,9 +53,7 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   ) {
     final updatedDto = updater(value.requestProjectsDto);
     if (updatedDto == value.requestProjectsDto) return;
-    value = value.copyWith(
-      requestProjectsDto: updatedDto,
-    );
+    value = value.copyWith(requestProjectsDto: updatedDto);
     projectsPagedController
       ..refresh()
       ..loadFirstPage();
@@ -53,12 +62,11 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   void updateEditingProject(
     final ProjectModel project, {
     final bool shouldMarkAsUpdated = true,
-  }) =>
-      _editingProjectUpdatesController.add(
-        project.copyWith(
-          updatedAt: shouldMarkAsUpdated ? DateTime.now() : project.updatedAt,
-        ),
-      );
+  }) => _editingProjectUpdatesController.add(
+    project.copyWith(
+      updatedAt: shouldMarkAsUpdated ? DateTime.now() : project.updatedAt,
+    ),
+  );
 
   void deleteProject(final ProjectModel project) {
     projectsPagedController.pager.removeElement(
@@ -68,8 +76,6 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     unawaited(dto.projectsRepository.remove(id: project.id));
   }
 
-  late final _editingProjectUpdatesController = StreamController<ProjectModel>()
-    ..stream.sampleTime(1.seconds).listen(updateProject);
   Future<void> updateProject(final ProjectModel project) async {
     final oldProject = await dto.projectsRepository.getById(id: project.id);
     final shouldMoveToFirst = oldProject?.updatedAt != project.updatedAt;
@@ -86,10 +92,13 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
     final Iterable<ProjectModel> projects, {
     final bool shouldUpdatePager = true,
   }) async {
-    final oldProjects = await dto.projectsRepository
-        .getByIds(ids: projects.map((final e) => e.id));
-    final oldProjectsMap =
-        oldProjects.toMap(toKey: (final v) => v.id, toValue: (final v) => v);
+    final oldProjects = await dto.projectsRepository.getByIds(
+      ids: projects.map((final e) => e.id),
+    );
+    final oldProjectsMap = oldProjects.toMap(
+      toKey: (final v) => v.id,
+      toValue: (final v) => v,
+    );
     if (shouldUpdatePager) {
       for (final project in projects) {
         final oldProject = oldProjectsMap[project.id];
@@ -107,19 +116,17 @@ class ProjectsNotifier extends ValueNotifier<ProjectsNotifierState> {
   }
 
   @override
-  void dispose() {
-    unawaited(_editingProjectUpdatesController.close());
+  Future<void> dispose() async {
+    await _updatesSubscription?.cancel();
+    await _editingProjectUpdatesController.close();
     projectsPagedController.dispose();
     super.dispose();
   }
-
-  final _fileService = FileService();
 }
 
 extension ProjectsNotifierX on ProjectsNotifier {
-  void _setFileLoading(final bool isLoading) => setValue(
-        value.copyWith(isAllProjectsFileLoading: isLoading),
-      );
+  void _setFileLoading(final bool isLoading) =>
+      setValue(value.copyWith(isAllProjectsFileLoading: isLoading));
   Future<void> copyDbSaveToClipboard(final BuildContext context) async {
     _setFileLoading(true);
     try {
@@ -156,10 +163,7 @@ extension ProjectsNotifierX on ProjectsNotifier {
   Future<DbSaveModel> _getDbSave() async {
     final allProjects = await dto.projectsRepository.getAll();
     final allTags = dto.tagsRepository.getAll();
-    return DbSaveModel(
-      projects: allProjects,
-      tags: allTags.values.toList(),
-    );
+    return DbSaveModel(projects: allProjects, tags: allTags.values.toList());
   }
 
   Future<void> saveToFile(

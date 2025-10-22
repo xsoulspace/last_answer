@@ -81,7 +81,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
     final int itemsCount = items.length;
     final pagesCount = (itemsCount / dto.limit).ceil();
-    final start = dto.page * dto.limit;
+    final start = (dto.page - 1) * dto.limit;
     final effectiveItems = items
         .skip(start)
         .take(dto.limit)

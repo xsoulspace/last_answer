@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 // import 'package:televerse/televerse.dart';
 

@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:yandex_mobileads/mobile_ads.dart';
 
-import '../../../core.dart';
 import 'ad_instance.dart';
 import 'purchases_ads_base.dart';
 

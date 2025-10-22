@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../../core.dart';
 
@@ -23,13 +23,10 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
   void setMap({
     required final String key,
     required final Map<String, dynamic> value,
-  }) =>
-      setString(key: key, value: jsonEncode(value));
+  }) => setString(key: key, value: jsonEncode(value));
 
   @override
-  Map<String, dynamic> getMap(
-    final String key,
-  ) {
+  Map<String, dynamic> getMap(final String key) {
     final str = getString(key: key);
     if (str.isEmpty) return {};
 
@@ -39,10 +36,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
   }
 
   @override
-  void setString({
-    required final String key,
-    required final String value,
-  }) {
+  void setString({required final String key, required final String value}) {
     unawaited(_prefs.setString(key, value));
   }
 
@@ -57,32 +51,20 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
   }
 
   @override
-  void setBool({
-    required final String key,
-    required final bool value,
-  }) {
+  void setBool({required final String key, required final bool value}) {
     unawaited(_prefs.setBool(key, value));
   }
 
   @override
-  bool getBool({
-    required final String key,
-    final bool defaultValue = false,
-  }) =>
+  bool getBool({required final String key, final bool defaultValue = false}) =>
       _prefs.getBool(key) ?? defaultValue;
 
   @override
-  void setInt({
-    required final String key,
-    required final int? value,
-  }) =>
+  void setInt({required final String key, required final int? value}) =>
       unawaited(_prefs.setInt(key, value ?? 0));
 
   @override
-  int getInt({
-    required final String key,
-    final int defaultValue = 0,
-  }) =>
+  int getInt({required final String key, final int defaultValue = 0}) =>
       _prefs.getInt(key) ?? defaultValue;
 
   @override
@@ -111,8 +93,7 @@ class SharedPreferencesDbDataSourceImpl implements LocalDbDataSource, Loadable {
   Iterable<String> getStringsIterable({
     required final String key,
     final List<String> defaultValue = const [],
-  }) =>
-      _prefs.getStringList(key) ?? [];
+  }) => _prefs.getStringList(key) ?? [];
 
   @override
   void setStringList({

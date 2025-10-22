@@ -9,11 +9,7 @@ extension type const ProjectModelId(String value) {
   String toJson() => value;
 }
 
-enum ProjectTypes {
-  idea,
-  note,
-  systemChangelog,
-}
+enum ProjectTypes { idea, note, systemChangelog }
 
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
@@ -73,21 +69,20 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
 
   static const titleLimit = 90;
   String getTitle(final BuildContext context) => switch (this) {
-        ProjectModelIdea(title: final titleStr) => titleStr,
-        ProjectModelNote(:final note) => _getTitle(note),
-        ProjectModelChangelog(:final title) =>
-          _getTitle(title.localize(context)),
-      };
+    ProjectModelIdea(title: final titleStr) => titleStr,
+    ProjectModelNote(:final note) => _getTitle(note),
+    ProjectModelChangelog(:final title) => _getTitle(title.localize(context)),
+  };
 
   @override
   String toShareString(final BuildContext context) => map(
-        idea: (final value) =>
-            ideaProjectToShareString(context: context, projectIdea: value),
-        note: (final value) => value.note,
+    idea: (final value) =>
+        ideaProjectToShareString(context: context, projectIdea: value),
+    note: (final value) => value.note,
 
-        /// maybe share newest changelog, but not sure
-        changelog: (final value) => '',
-      );
+    /// maybe share newest changelog, but not sure
+    changelog: (final value) => '',
+  );
 
   @override
   String toSharableTitle(final BuildContext context) => getTitle(context);
@@ -174,27 +169,27 @@ class IdeaProjectQuestionModel
 class LocalizedTextModel with _$LocalizedTextModel {
   const factory LocalizedTextModel({
     required final String ru,
-    required final String en,
+    @Default('') final String en,
     @Default('') final String it,
     @Default('') final String ga,
   }) = _LocalizedTextModel;
   factory LocalizedTextModel.fromJson(final Map<String, dynamic> json) =>
       _$LocalizedTextModelFromJson(json);
   const LocalizedTextModel._();
-  static const empty = LocalizedTextModel(en: '', ru: '');
+  static const empty = LocalizedTextModel(ru: '');
 
   /// If any new [Languages] added, add this to [values]
   Map<LanguageName, String?> get values => {
-        Locales.ru.languageCode: ru,
-        Locales.en.languageCode: en,
-        Locales.it.languageCode: it,
-        // Locales.ga.languageCode: ga,
-      };
+    Locales.ru.languageCode: ru,
+    Locales.en.languageCode: en,
+    Locales.it.languageCode: it,
+    // Locales.ga.languageCode: ga,
+  };
 
   String localize(final BuildContext context) =>
       _getByLanguage(context.locale.languageCode);
   String _getByLanguage(final String languageCode) =>
-      values[languageCode] ?? ''.useWhenEmpty(en);
+      values[languageCode] ?? ''.whenEmptyUse(en);
 }
 
 String getLanguageCode(final LanguageName language) {

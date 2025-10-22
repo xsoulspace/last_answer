@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../../core.dart';
 
@@ -12,36 +14,32 @@ class SearchableContainer<T> {
 
 extension on ProjectModel {
   SearchableContainer<ProjectModel> toSearchableContainer() =>
-      SearchableContainer(
-        value: this,
-        jsonContent: toString(),
-      );
+      SearchableContainer(value: this, jsonContent: toString());
 }
 
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
-  ProjectsLocalDataSourceLocalDbImpl({
-    required this.localDb,
-  });
+  ProjectsLocalDataSourceLocalDbImpl({required this.localDb});
   final LocalDbDataSource localDb;
-  final List<SearchableContainer<ProjectModel>> _cache = [];
+  final List<SearchableContainer<ProjectModel>> _fullCache = [];
+
   bool _isReversed = false;
+
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
+  Future<PagingControllerPageModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
     final data = dto.data;
-    // ignore: avoid_positional_boolean_parameters
     void reverse({final bool force = false}) {
       if (data == null) return;
       if (_isReversed != data.isReversed || force) {
         if (data.isReversed) {
-          _cache.sort(
+          _fullCache.sort(
             (final a, final b) =>
                 b.value.updatedAt.compareTo(a.value.updatedAt),
           );
         } else {
-          _cache.sort(
+          _fullCache.sort(
             (final a, final b) =>
                 a.value.updatedAt.compareTo(b.value.updatedAt),
           );
@@ -50,19 +48,15 @@ final class ProjectsLocalDataSourceLocalDbImpl
       }
     }
 
-    if (_cache.isEmpty) {
-      final localItems = localDb.getItemsIterable(
-        key: SharedPreferencesKeys.webProjects.name,
-        convertFromJson: ProjectModel.fromJson,
-      );
-      _putAll(projects: localItems);
+    if (_fullCache.isEmpty) {
+      _preloadCache();
 
       /// first reverse
       reverse(force: true);
     }
 
     reverse();
-    final items = [..._cache];
+    final items = [..._fullCache];
     if (data != null) {
       final conditions = <bool Function(SearchableContainer<ProjectModel> e)>[];
       if (data.search.isNotEmpty) {
@@ -84,11 +78,13 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
     final int itemsCount = items.length;
     final pagesCount = (itemsCount / dto.limit).ceil();
-    final start = dto.page * dto.limit;
-    final effectiveItems =
-        items.skip(start).take(dto.limit).map((final e) => e.value);
+    final start = (dto.page - 1) * dto.limit;
+    final effectiveItems = items
+        .skip(start)
+        .take(dto.limit)
+        .map((final e) => e.value);
 
-    return PaginatedPageResponseModel(
+    return PagingControllerPageModel(
       values: effectiveItems.toList(),
       currentPage: dto.page,
       pagesCount: pagesCount,
@@ -97,47 +93,59 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> put({required final ProjectModel project}) async {
+    _preloadCache();
     final container = project.toSearchableContainer();
-    final index = _cache.indexWhere((final e) => e.value.id == project.id);
+    final index = _fullCache.indexWhere((final e) => e.value.id == project.id);
     if (index >= 0) {
-      _cache[index] = container;
+      _fullCache[index] = container;
     } else {
-      _cache.insert(0, container);
+      _fullCache.insert(0, container);
     }
-    _saveCache();
+    _saveFullCache();
   }
 
   @override
   Future<void> remove({required final ProjectModelId id}) async {
-    _cache.removeWhere((final e) => e.value.id == id);
-    _saveCache();
-  }
-
-  void _putAll({required final Iterable<ProjectModel> projects}) {
-    final itemsContainers = projects.map(
-      (final e) => e.toSearchableContainer(),
-    );
-    _cache
-      ..clear()
-      ..addAll(itemsContainers);
+    _preloadCache();
+    _fullCache.removeWhere((final e) => e.value.id == id);
+    _saveFullCache();
   }
 
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async {
+    _preloadCache();
     for (final project in projects) {
       await put(project: project);
     }
   }
 
-  void _saveCache() => localDb.setItemsList(
-        key: SharedPreferencesKeys.webProjects.name,
-        convertToJson: (final v) => v.value.toJson(),
-        value: _cache,
-      );
+  Iterable<ProjectModel> _getLocalItems() => localDb.getItemsIterable(
+    key: SharedPreferencesKeys.webProjects.name,
+    convertFromJson: ProjectModel.fromJson,
+  );
+
+  void _saveFullCache() => localDb.setItemsList(
+    key: SharedPreferencesKeys.webProjects.name,
+    convertToJson: (final v) => v.value.toJson(),
+    value: _fullCache,
+  );
+
+  /// will be not sorted however
+  void _preloadCache() {
+    if (_fullCache.isNotEmpty) return;
+    final localItems = _getLocalItems();
+    final itemsContainers = localItems.map(
+      (final e) => e.toSearchableContainer(),
+    );
+    _fullCache
+      ..clear()
+      ..addAll(itemsContainers);
+  }
 
   @override
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
-    final items = [..._cache];
+    _preloadCache();
+    final items = [..._fullCache];
     if (dto != null) {
       if (dto.isReversed) {
         items.sort(
@@ -157,15 +165,21 @@ final class ProjectsLocalDataSourceLocalDbImpl
   }
 
   @override
-  Future<ProjectModel?> getById({required final ProjectModelId id}) async =>
-      _cache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+  Future<ProjectModel?> getById({required final ProjectModelId id}) async {
+    _preloadCache();
+    return _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+  }
 
   @override
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
   }) async {
-    final map =
-        _cache.toMap(toKey: (final e) => e.value.id, toValue: (final e) => e);
+    _preloadCache();
+
+    final map = _fullCache.toMap(
+      toKey: (final e) => e.value.id,
+      toValue: (final e) => e,
+    );
 
     return ids.map((final e) => map[e]?.value).nonNulls.toList();
   }

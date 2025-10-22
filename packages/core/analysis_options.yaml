@@ -6,7 +6,6 @@ analyzer:
     # Please do not change this to lib wide
     # rule, since the app_router.gr.dart can often
     # be cause of missing dependencies.
-    - lib/**.*.dart
     - lib/src/generated/intl/*
     - lib/src/generated/assets.gen.dart
     - lib/src/generated/fonts.gen.dart

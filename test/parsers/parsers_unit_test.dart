@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:lastanswer/parsers/hive_parser.dart' as hive_parser;
-import 'package:lastanswer/parsers/isar_parser.dart' as isar_parser;
-import 'package:test/test.dart';
+import 'package:core/src/state_di/parsers/hive_parser.dart' as hive_parser;
+import 'package:core/src/state_di/parsers/isar_parser.dart' as isar_parser;
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('parseProjectsFromPaths returns summaries for archive files', () async {
+  test('parseProjectsFromPaths returns summaries for archive files', () {
     final dir = Directory('archive');
     if (!dir.existsSync()) return; // skip if no archives present
 
@@ -14,12 +14,19 @@ void main() {
       final bytes = isarFile.readAsBytesSync();
       final meta = isar_parser.parseIsarFromBytes(bytes);
       expect(meta, contains('pageSize'));
+      // When root page is found, ensure traversal extracts entries map
+      if (meta.containsKey('entries')) {
+        final entries = Map<String, dynamic>.from(meta['entries'] as Map);
+        expect(entries, isA<Map<String, dynamic>>());
+        // At least one JSON-like preview or ascii should exist for real files
+        expect(entries.isNotEmpty, isTrue);
+      }
     }
   });
 
   test(
     'parseAndPopulate returns parsed project maps (skips when no files)',
-    () async {
+    () {
       final dir = Directory('archive');
       if (!dir.existsSync()) return;
 

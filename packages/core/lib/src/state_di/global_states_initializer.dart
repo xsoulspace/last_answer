@@ -22,7 +22,6 @@ class GlobalStatesInitializerDto {
       projectsNotifier = context.read(),
       userNotifier = context.read(),
       appNotifier = context.read(),
-      complexLocalDb = context.read(),
       localDbDataSource = context.read(),
       // remoteClient = context.read(),
       purchasesNotifier = context.read(),
@@ -35,7 +34,6 @@ class GlobalStatesInitializerDto {
   final AppFeaturesNotifier appFeaturesNotifier;
   // final RemoteClient remoteClient;
   final LocalDbDataSource localDbDataSource;
-  final ComplexLocalDb complexLocalDb;
   final EmojiRepository emojiRepository;
   final LastUsedEmojiRepository lastUsedEmojiRepository;
   final AssetBundle assetBundle;

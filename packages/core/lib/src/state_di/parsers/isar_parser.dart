@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:lastanswer/parsers/byte_utils.dart';
+import 'byte_utils.dart';
 
 /// Minimal Isar parser helpers for test-driven development.
 /// This first pass extracts basic metadata: page size and a simple sanity check
@@ -49,24 +48,42 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
   // best-effort data preview. This is especially useful when full B+ tree
   // traversal isn't yet implemented for all Isar formats.
   try {
-    final ascii = extractAsciiStrings(bytes, minLen: 8, maxCount: 300);
+    // Lower minLen to 4 to catch shorter JSON fragments embedded in pages
+    final ascii = extractAsciiStrings(bytes);
     final jsonObjects = <dynamic>[];
     for (final s in ascii) {
+      // Use tolerant decoding in case ascii extraction picked up mixed bytes
       final t = s.trimLeft();
       if (t.isEmpty) continue;
       if (t.startsWith('{') || t.startsWith('[')) {
         try {
-          final decoded = jsonDecode(t);
-          jsonObjects.add(decoded);
-          if (jsonObjects.length >= 20) break;
-        } catch (_) {
+          extractJsonMaps(t).forEach(jsonObjects.add);
+        } catch (e, st) {
+          print('Error decoding JSON: $e\n$st');
           // ignore non-json sequences
         }
       }
     }
     if (jsonObjects.isNotEmpty) result['jsonObjectsPreview'] = jsonObjects;
-  } catch (_) {
+  } catch (e, st) {
+    print('Error extracting ASCII sequences: $e\n$st');
     // ignore errors during preview extraction
+  }
+
+  // If we successfully located a root page, attempt full B+ tree traversal
+  // to extract key/value pairs. This is best-effort and errors are ignored
+  // to avoid failing the migrator during app startup.
+  if (rootPage != null) {
+    try {
+      final entries = traverseBTree(
+        bytes,
+        rootPage,
+        pageSize: result['pageSize']! as int,
+      );
+      if (entries.isNotEmpty) result['entries'] = entries;
+    } catch (_) {
+      // ignore traversal errors
+    }
   }
 
   return result;
@@ -80,51 +97,80 @@ Map<dynamic, dynamic> traverseBTree(
   final int rootPage, {
   final int pageSize = 4096,
 }) {
-  // For the first TDD step we parse a very small synthetic leaf page format
-  // produced by tests: header [pageType(1)=0x02][numEntries(2)][reserved(1)]
-  // then repeated entries: [keyLen(4)][keyBytes][valLen(4)][valBytes]
+  // Robust recursive B+ tree traversal for simple Isar/MDBX-like page layouts.
+  // This implementation aims to be forgiving and extract key/value pairs from
+  // leaf pages and to recurse branch pages to collect all leaf entries.
+
   final pageOffset = rootPage * pageSize;
   if (pageOffset + pageSize > bytes.length)
     throw Exception('root page out of range');
   final page = bytes.sublist(pageOffset, pageOffset + pageSize);
   final pageType = page[0];
+
+  // Collect entries for leaf pages.
   if (pageType == 0x02) {
-    // leaf
-    final numEntries = page[1] | (page[2] << 8);
+    // header: [pageType(1)][numEntries(2)][reserved(1)]
+    final numEntries = page.length >= 3 ? (page[1] | (page[2] << 8)) : 0;
     var p = 4; // start after header (1 + 2 + 1)
     final out = <dynamic, dynamic>{};
     for (var i = 0; i < numEntries; i++) {
-      if (p + 4 > page.length) throw Exception('truncated key len');
+      if (p + 4 > page.length) break; // truncated
       final klen = readUint32LE(page, p);
       p += 4;
-      final key = String.fromCharCodes(page.sublist(p, p + klen));
+      if (klen < 0 || p + klen > page.length) break;
+      final keyBytes = page.sublist(p, p + klen);
       p += klen;
+
+      if (p + 4 > page.length) break;
       final vlen = readUint32LE(page, p);
       p += 4;
-      final val = String.fromCharCodes(page.sublist(p, p + vlen));
+      if (vlen < 0 || p + vlen > page.length) break;
+      final valBytes = page.sublist(p, p + vlen);
       p += vlen;
-      out[key] = val;
+
+      // decode key and value with tolerant UTF-8; attempt JSON decode on value
+      final key = decodeToStringOrHex(Uint8List.fromList(keyBytes));
+      final value = decodeValue(Uint8List.fromList(valBytes));
+
+      out[key] = value;
     }
     return out;
-  } else if (pageType == 0x01) {
-    // branch: read child pages and recurse into first child for this test
-    final childCount = page[1] | (page[2] << 8);
+  }
+  // Branch page: contains child page numbers and separator keys. Recurse all children.
+  else if (pageType == 0x01) {
+    final childCount = page.length >= 3 ? (page[1] | (page[2] << 8)) : 0;
     var p = 4;
     final children = <int>[];
-    final keys = <String>[];
     for (var i = 0; i < childCount; i++) {
+      if (p + 4 > page.length) break;
       final child = readUint32LE(page, p);
       p += 4;
+      // read optional key length and key bytes (some formats store separators)
+      if (p + 4 > page.length) {
+        children.add(child);
+        continue;
+      }
       final klen = readUint32LE(page, p);
       p += 4;
-      final key = String.fromCharCodes(page.sublist(p, p + klen));
+      if (klen < 0 || p + klen > page.length) {
+        children.add(child);
+        continue;
+      }
+      // skip separator key bytes
       p += klen;
       children.add(child);
-      keys.add(key);
     }
-    // For tests, recurse into the first child
-    if (children.isEmpty) return <dynamic, dynamic>{};
-    return traverseBTree(bytes, children[0], pageSize: pageSize);
+
+    final aggregated = <dynamic, dynamic>{};
+    for (final c in children) {
+      try {
+        final sub = traverseBTree(bytes, c, pageSize: pageSize);
+        aggregated.addAll(Map.from(sub));
+      } catch (_) {
+        // ignore traversal errors for specific children
+      }
+    }
+    return aggregated;
   } else {
     throw Exception('unknown page type $pageType');
   }

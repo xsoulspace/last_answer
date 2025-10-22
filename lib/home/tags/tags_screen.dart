@@ -10,9 +10,9 @@ class TagsScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
-        create: TagsScreenNotifier.new,
-        builder: (final context, final child) => const TagsScreenBody(),
-      );
+    create: TagsScreenNotifier.new,
+    builder: (final context, final child) => const TagsScreenBody(),
+  );
 }
 
 class TagsScreenBody extends StatelessWidget {
@@ -27,9 +27,7 @@ class TagsScreenBody extends StatelessWidget {
       TagsScreenType.allTags => const _TagsListView(),
       TagsScreenType.editingTag => const _ManageTagView(),
       TagsScreenType.addProjects => const _AddProjectsView(),
-    }
-        .animate()
-        .fadeIn();
+    }.animate().fadeIn();
   }
 }
 
@@ -39,8 +37,9 @@ class _TagsListView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final tags = context.watch<TagsNotifier>().values;
-    final isPurchased =
-        context.select<PurchasesNotifier, bool>((final c) => c.isActive);
+    final isPurchased = context.select<PurchasesNotifier, bool>(
+      (final c) => c.isActive,
+    );
     final foldersLimit = isPurchased ? 20 : 10;
     final isLimitReached = tags.length >= foldersLimit;
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
@@ -62,9 +61,7 @@ class _TagsListView extends StatelessWidget {
                     text: TextSpan(
                       style: textTheme.bodyMedium,
                       children: [
-                        TextSpan(
-                          text: l10n.useFoldersForNotes,
-                        ),
+                        TextSpan(text: l10n.useFoldersForNotes),
                         TextSpan(
                           style: textTheme.bodySmall,
                           text: l10n.youCanCreateUpTo(foldersLimit),
@@ -135,14 +132,14 @@ class EditableTagListTile extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ListTile(
-        onTap: onTap,
-        title: Text(tag.title),
-        trailing: IconButton(
-          onPressed: onDelete,
-          iconSize: 14,
-          icon: const Icon(CupertinoIcons.trash),
-        ),
-      );
+    onTap: onTap,
+    title: Text(tag.title),
+    trailing: IconButton(
+      onPressed: onDelete,
+      iconSize: 14,
+      icon: const Icon(CupertinoIcons.trash),
+    ),
+  );
 }
 
 class _ManageTagView extends StatelessWidget {
@@ -178,9 +175,7 @@ class _ManageTagView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: UiTextField(
-                    decoration: InputDecoration(
-                      labelText: l10n.folderName,
-                    ),
+                    decoration: InputDecoration(labelText: l10n.folderName),
                     maxLength: 12,
                     value: selectedTag.value.title,
                     onChanged: stateNotifier.onFolderTitleChanged,
@@ -194,10 +189,7 @@ class _ManageTagView extends StatelessWidget {
                 const SliverGap(16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    l10n.projects,
-                    style: textTheme.titleMedium,
-                  ),
+                  child: Text(l10n.projects, style: textTheme.titleMedium),
                 ).sliver(),
                 const SliverGap(16),
                 Padding(
@@ -219,11 +211,8 @@ class _ManageTagView extends StatelessWidget {
                       return ClosableProjectListTile(
                         project: project,
                         key: ValueKey(project.id),
-                        onDelete: (final project) =>
-                            stateNotifier.onSelectedProjectChanged(
-                          false,
-                          project,
-                        ),
+                        onDelete: (final project) => stateNotifier
+                            .onSelectedProjectChanged(false, project),
                       );
                     },
                   ),
@@ -270,16 +259,16 @@ class SelectableProjectListTile extends StatelessWidget {
   final void Function(bool isSelected, ProjectModel project) onTap;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.getTitle(context)),
-        selected: selected,
-        trailing: Icon(
-          Icons.check,
-          color: selected
-              ? context.colorScheme.tertiary
-              : context.colorScheme.tertiaryContainer,
-        ),
-        onTap: () => onTap(!selected, project),
-      );
+    title: Text(project.getTitle(context)),
+    selected: selected,
+    trailing: Icon(
+      Icons.check,
+      color: selected
+          ? context.colorScheme.tertiary
+          : context.colorScheme.tertiaryContainer,
+    ),
+    onTap: () => onTap(!selected, project),
+  );
 }
 
 class ClosableProjectListTile extends StatelessWidget {
@@ -292,17 +281,17 @@ class ClosableProjectListTile extends StatelessWidget {
   final ValueChanged<ProjectModel> onDelete;
   @override
   Widget build(final BuildContext context) => ListTile(
-        title: Text(project.getTitle(context), maxLines: 2),
-        trailing: IconButton(
-          iconSize: 16,
-          onPressed: () => onDelete(project),
-          icon: const Icon(CupertinoIcons.trash),
-        ),
-      );
+    title: Text(project.getTitle(context), maxLines: 2),
+    trailing: IconButton(
+      iconSize: 16,
+      onPressed: () => onDelete(project),
+      icon: const Icon(CupertinoIcons.trash),
+    ),
+  );
 }
 
 class _AddProjectsView extends StatelessWidget {
-  const _AddProjectsView({super.key});
+  const _AddProjectsView();
 
   @override
   Widget build(final BuildContext context) {
@@ -325,41 +314,46 @@ class _AddProjectsView extends StatelessWidget {
                   CloseButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
                 ],
               ),
-              PagedSliverList<int, ProjectModel>(
-                pagingController:
-                    tagsScreenNotifier.addProjectsPagedController.pager,
-                builderDelegate: PagedChildBuilderDelegate(
-                  animateTransitions: true,
-                  transitionDuration: 100.ms,
-                  firstPageProgressIndicatorBuilder: (final context) =>
-                      const UiCircularProgress()
-                          .animate(delay: 1500.ms)
-                          .fadeIn(),
-                  noItemsFoundIndicatorBuilder: (final context) =>
-                      Text(context.l10n.noProjectsYet).animate().fadeIn(),
-                  newPageProgressIndicatorBuilder: (final context) =>
-                      const UiCircularProgress()
-                          .animate(delay: 1500.ms)
-                          .fadeIn(),
-                  itemBuilder: (final context, final item, final index) =>
-                      SelectableProjectListTile(
-                    key: ValueKey(item.id),
-                    selected: projects.value
-                            .firstWhereOrNull((final e) => e.id == item.id) !=
-                        null,
-                    project: item,
-                    onTap: tagsScreenNotifier.onSelectedProjectChanged,
-                  ),
-                ),
+              PagingListener(
+                controller: tagsScreenNotifier.addProjectsPagedController.pager,
+                builder: (final context, final state, final nextPageCallback) =>
+                    PagedSliverList<int, ProjectModel>(
+                      fetchNextPage: nextPageCallback,
+                      state: state,
+                      builderDelegate: PagedChildBuilderDelegate(
+                        animateTransitions: true,
+                        transitionDuration: 100.ms,
+                        firstPageProgressIndicatorBuilder: (final context) =>
+                            const UiCircularProgress()
+                                .animate(delay: 1500.ms)
+                                .fadeIn(),
+                        noItemsFoundIndicatorBuilder: (final context) =>
+                            Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                        newPageProgressIndicatorBuilder: (final context) =>
+                            const UiCircularProgress()
+                                .animate(delay: 1500.ms)
+                                .fadeIn(),
+                        itemBuilder: (final context, final item, final index) =>
+                            SelectableProjectListTile(
+                              key: ValueKey(item.id),
+                              selected:
+                                  projects.value.firstWhereOrNull(
+                                    (final e) => e.id == item.id,
+                                  ) !=
+                                  null,
+                              project: item,
+                              onTap:
+                                  tagsScreenNotifier.onSelectedProjectChanged,
+                            ),
+                      ),
+                    ),
               ),
             ],
           ),
         ),
         SearchBar(
           trailing: [
-            BackButton(
-              onPressed: tagsScreenNotifier.onCloseAddProjects,
-            ),
+            BackButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
           ],
           elevation: const MaterialStatePropertyAll(8),
           hintText: l10n.searchProjects,
@@ -391,11 +385,7 @@ class DialogTopBar extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          padding: const EdgeInsets.only(
-            top: 8,
-            left: 16,
-            right: 10,
-          ),
+          padding: const EdgeInsets.only(top: 8, left: 16, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

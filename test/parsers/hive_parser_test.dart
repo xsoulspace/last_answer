@@ -1,7 +1,8 @@
 import 'dart:typed_data';
-import 'package:test/test.dart';
-import 'package:lastanswer/parsers/byte_utils.dart';
-import 'package:lastanswer/parsers/hive_parser.dart';
+
+import 'package:core/src/state_di/parsers/byte_utils.dart';
+import 'package:core/src/state_di/parsers/hive_parser.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 Uint8List _buildHiveFrame({required final Uint8List payload}) {
   // Frame layout: [len(4 LE)] [payload...] [crc(4 LE)]
@@ -46,13 +47,13 @@ void main() {
     expect(crc32(p), isA<int>());
   });
 
-  test('hive parser reads single key/value frame', () async {
+  test('hive parser reads single key/value frame', () {
     final frame = _buildSimpleKeyValueFrame('name', 'alice');
     final parsed = parseHiveFromBytes(frame);
     expect(parsed['name'], equals('alice'));
   });
 
-  test('hive parser handles delete frame (empty value)', () async {
+  test('hive parser handles delete frame (empty value)', () {
     // key with empty value -> delete
     final kb = Uint8List.fromList('age'.codeUnits);
     final payload = BytesBuilder();

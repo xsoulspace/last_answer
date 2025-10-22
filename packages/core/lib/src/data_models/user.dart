@@ -4,9 +4,10 @@ part of 'data_models.dart';
 
 enum LocalDbVersion {
   v3_16,
-  v3_17;
+  v3_17,
+  v4;
 
-  static const newestVersion = v3_17;
+  static const newestVersion = v4;
 }
 
 @freezed

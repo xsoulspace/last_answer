@@ -13,27 +13,19 @@ class RequestProjectsDto with _$RequestProjectsDto {
   }) = _RequestProjectsDto;
   const RequestProjectsDto._();
   static const empty = RequestProjectsDto();
-  static const emptyForHome = RequestProjectsDto(
-    shouldAddChangelog: true,
-  );
+  static const emptyForHome = RequestProjectsDto(shouldAddChangelog: true);
   bool get isEmpty => search.isEmpty && types.isEmpty && tagId.isEmpty;
 }
 
 class ProjectsPagedDataRequestsBuilder
-    extends PagedRequestsBuilder<ProjectModel> {
-  ProjectsPagedDataRequestsBuilder({
-    required super.onLoadData,
-  });
+    extends PagingControllerRequestsBuilder<ProjectModel> {
+  ProjectsPagedDataRequestsBuilder({required super.onLoadData});
   factory ProjectsPagedDataRequestsBuilder.getAll({
     required final ProjectsRepository projectsRepository,
     required final ValueGetter<RequestProjectsDto> getDto,
-  }) =>
-      ProjectsPagedDataRequestsBuilder(
-        onLoadData: (final pageKey) async => projectsRepository.getPaginated(
-          request: PaginatedPageRequestModel(
-            data: getDto(),
-            page: pageKey,
-          ),
-        ),
-      );
+  }) => ProjectsPagedDataRequestsBuilder(
+    onLoadData: (final pageKey) async => projectsRepository.getPaginated(
+      request: PagingControllerRequestModel(data: getDto(), page: pageKey),
+    ),
+  );
 }

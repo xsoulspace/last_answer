@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_catches_without_on_clauses
+
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
@@ -10,6 +12,7 @@ import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import '../data_models/data_models.dart';
 import '../data_repositories/data_repositories.dart';
 import 'parsers/parsers.dart' as parsers;
+import 'path_utils.dart';
 
 /// Core migration entry used by runtime initialization.
 ///
@@ -37,7 +40,7 @@ Future<void> migrate(final BuildContext context) async {
       unique[id] = {...?oldUnique, ...p};
     } catch (_) {}
   }
-  final projects = unique.values
+  final parsedProjects = unique.values
       .map((final e) {
         final type = idTypeMap[e['id']];
         if (type == 'changelog') return null;
@@ -49,10 +52,16 @@ Future<void> migrate(final BuildContext context) async {
       .map(ProjectModel.fromJson)
       .toList(growable: false);
 
+  for (final project in parsedProjects) {
+    final oldProject = await projectsRepository.getById(id: project.id);
+    final mergedJson = {...project.toJson(), ...?oldProject?.toJson()};
+    final updatedProject = ProjectModel.fromJson(mergedJson);
+    await projectsRepository.put(project: updatedProject);
+  }
+
   try {
-    await projectsRepository.putAll(projects: projects);
     final existingTags = tagsRepository.getAll();
-    final tags = projects
+    final tags = parsedProjects
         .expand((final p) => p.tagsIds)
         .toSet()
         .indexed
@@ -70,15 +79,13 @@ Future<void> migrate(final BuildContext context) async {
 
     /// populate cache of tags
     tagsRepository.putAll(tags);
-    print('Migrated ${projects.length} project(s) into local DB');
-  } on Exception catch (e, st) {
-    // report but don't crash the app during initialization
-    print('Failed to persist migrated projects: $e\n$st');
-  }
+    await removeDbFiles();
+  } on Exception catch (_) {}
 }
 
 /// Pure-Dart migrator used by tests and CLI tools.
 /// Accepts a `ProjectsRepository` to avoid depending on `BuildContext`.
+@visibleForTesting
 Future<void> migrateWithRepository(final ProjectsRepository repository) async {
   final parsed = await parsers.parseOldFiles();
   if (parsed.isEmpty) return;

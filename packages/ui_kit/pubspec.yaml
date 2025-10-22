@@ -37,7 +37,8 @@ dependencies:
   universal_io: ^2.2.2
   url_launcher: ^6.3.2
   uuid: ^4.5.1
-  xsoulspace_foundation: ^0.2.2
+  xsoulspace_foundation: ^0.3.0
+  xsoulspace_ui_foundation: ^0.3.0
 
 dev_dependencies:
   bloc_test: ^10.0.0

@@ -21,7 +21,7 @@ dependencies:
   quiver: ^3.2.2
   universal_io: ^2.2.2
   uuid: ^4.5.1
-  xsoulspace_foundation: ^0.2.2
+  xsoulspace_foundation: ^0.3.0
 
 dev_dependencies:
   analyzer: ^8.4.0

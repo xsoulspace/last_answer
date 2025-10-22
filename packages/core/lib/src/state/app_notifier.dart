@@ -9,7 +9,7 @@ class AppFeaturesModel with _$AppFeaturesModel {
   }) = _AppFeaturesModel;
 }
 
-@stateDistributor
+@resource
 class AppFeaturesNotifier extends ValueNotifier<AppFeaturesModel> {
   // ignore: avoid_unused_constructor_parameters
   AppFeaturesNotifier(final BuildContext context)

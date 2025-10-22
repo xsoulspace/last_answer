@@ -16,7 +16,7 @@ class UserNotifierDto {
 
 final uiLocaleNotifier = ValueNotifier(Locales.en);
 
-@stateDistributor
+@resource
 class RemoteUserNotifier
     extends ValueNotifier<LoadableContainer<RemoteUserModel>> {
   // ignore: avoid_unused_constructor_parameters

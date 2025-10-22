@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:typed_data';
 
 import 'package:universal_io/io.dart';
@@ -48,7 +50,7 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
                 // try to extract JSON object(s) from longer strings
                 try {
                   final decoded = byte_utils.extractJsonMaps(obj);
-                  for (final m in decoded) projects.add(m);
+                  decoded.forEach(projects.add);
                 } catch (_) {}
               }
             }
@@ -63,7 +65,8 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
               } else if (v is String) {
                 try {
                   final decoded = byte_utils.extractJsonMaps(v);
-                  for (final m in decoded) projects.add(m);
+
+                  decoded.forEach(projects.add);
                 } catch (_) {}
               }
             }
@@ -92,7 +95,7 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
                   if (s is String) {
                     try {
                       final decoded = byte_utils.extractJsonMaps(s);
-                      for (final m in decoded) projects.add(m);
+                      decoded.forEach(projects.add);
                     } catch (_) {}
                   }
                 }
@@ -108,7 +111,7 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
             } else if (v is String) {
               try {
                 final decoded = byte_utils.extractJsonMaps(v);
-                for (final m in decoded) projects.add(m);
+                decoded.forEach(projects.add);
               } catch (_) {}
             }
           }
@@ -123,8 +126,8 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
             minLen: 20,
           );
           for (final s in ascii) {
-            final extracted = byte_utils.extractJsonMaps(s);
-            for (final m in extracted) projects.add(m);
+            final decoded = byte_utils.extractJsonMaps(s);
+            decoded.forEach(projects.add);
           }
         } catch (_) {}
         print('parsed asciiProjects');

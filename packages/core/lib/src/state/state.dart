@@ -11,6 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:ui_kit/ui_kit.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../core.dart';
 import '../data_repositories/purchases_repository.dart';

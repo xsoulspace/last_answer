@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../../core.dart';
 
@@ -23,10 +24,10 @@ final class ProjectsLocalDataSourceLocalDbImpl
   final List<SearchableContainer<ProjectModel>> _cache = [];
   bool _isReversed = false;
   @override
-  Future<PaginatedPageResponseModel<ProjectModel>> getPaginated({
-    required final PaginatedPageRequestModel<RequestProjectsDto> dto,
+  Future<PagingControllerPageModel<ProjectModel>> getPaginated({
+    required final RequestProjectsDto? dto,
   }) async {
-    final data = dto.data;
+    final data = dto;
     // ignore: avoid_positional_boolean_parameters
     void reverse({final bool force = false}) {
       if (data == null) return;

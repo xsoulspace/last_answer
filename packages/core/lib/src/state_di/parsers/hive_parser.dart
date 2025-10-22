@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:lastanswer/parsers/byte_utils.dart';
+import 'byte_utils.dart';
 
 /// Parse a `.hive` file from raw bytes produced by tests or read from disk.
 /// Returns a map of key -> value (strings for this minimal implementation).

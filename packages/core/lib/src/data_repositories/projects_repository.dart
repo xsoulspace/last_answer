@@ -1,6 +1,7 @@
 // flutter foundation import removed (unused)
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../core.dart';
@@ -24,12 +25,12 @@ class ProjectsRepository {
   }) => _datasource.getByIds(ids: ids);
 
   Future<PagingControllerPageModel<ProjectModel>> getPaginated({
-    required final RequestProjectsDto request,
+    required final PaginatedPageRequestModel<RequestProjectsDto> request,
   }) async {
     final response = await _datasource.getPaginated(dto: request);
 
     /// hack to inject changelog
-    if (request.shouldAddChangelog == true) {}
+    if (request.data?.shouldAddChangelog == true) {}
     return response;
   }
 }

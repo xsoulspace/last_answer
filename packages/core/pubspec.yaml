@@ -52,7 +52,7 @@ dependencies:
   uuid: ^4.5.1
   xsoulspace_foundation: ^0.3.0
   xsoulspace_locale: ^0.3.0
-  xsoulspace_ui_foundation: ^0.3.0
+  xsoulspace_ui_foundation: ^0.3.1
 
 dev_dependencies:
   # build_runner: ^2.9.0

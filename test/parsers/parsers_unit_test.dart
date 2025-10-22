@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:core/src/state_di/parsers/hive_parser.dart' as hive_parser;
 import 'package:core/src/state_di/parsers/isar_parser.dart' as isar_parser;
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('parseProjectsFromPaths returns summaries for archive files', () async {
+  test('parseProjectsFromPaths returns summaries for archive files', () {
     final dir = Directory('archive');
     if (!dir.existsSync()) return; // skip if no archives present
 
@@ -26,7 +26,7 @@ void main() {
 
   test(
     'parseAndPopulate returns parsed project maps (skips when no files)',
-    () async {
+    () {
       final dir = Directory('archive');
       if (!dir.existsSync()) return;
 

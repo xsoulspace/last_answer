@@ -25,7 +25,7 @@ class ProjectsPagedDataRequestsBuilder
     required final ValueGetter<RequestProjectsDto> getDto,
   }) => ProjectsPagedDataRequestsBuilder(
     onLoadData: (final pageKey) async => projectsRepository.getPaginated(
-      request: PagingControllerRequestModel(data: getDto(), page: pageKey),
+      request: PaginatedPageRequestModel(data: getDto(), page: pageKey),
     ),
   );
 }

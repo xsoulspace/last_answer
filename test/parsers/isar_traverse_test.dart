@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/state_di/parsers/isar_parser.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 Uint8List _u16(final int v) => Uint8List.fromList([v & 0xFF, (v >> 8) & 0xFF]);
 Uint8List _u32(final int v) => Uint8List.fromList([

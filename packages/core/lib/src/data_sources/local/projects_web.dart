@@ -25,9 +25,9 @@ final class ProjectsLocalDataSourceLocalDbImpl
   bool _isReversed = false;
   @override
   Future<PagingControllerPageModel<ProjectModel>> getPaginated({
-    required final RequestProjectsDto? dto,
+    required final PaginatedPageRequestModel<RequestProjectsDto> dto,
   }) async {
-    final data = dto;
+    final data = dto.data;
     // ignore: avoid_positional_boolean_parameters
     void reverse({final bool force = false}) {
       if (data == null) return;
@@ -87,7 +87,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
         .take(dto.limit)
         .map((final e) => e.value);
 
-    return PaginatedPageResponseModel(
+    return PagingControllerPageModel(
       values: effectiveItems.toList(),
       currentPage: dto.page,
       pagesCount: pagesCount,

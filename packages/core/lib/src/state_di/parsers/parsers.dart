@@ -28,6 +28,8 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
   // for production copies (useful when running locally or in CI).
   final candidateDirs = await path_utils.determineDbPaths();
 
+  if (candidateDirs.isEmpty) return projects;
+
   for (final dirPath in candidateDirs) {
     final dir = Directory(dirPath);
     if (!dir.existsSync()) continue;

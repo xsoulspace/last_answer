@@ -227,40 +227,49 @@ class _ProjectsListView extends StatelessWidget {
                 ..refresh()
                 ..loadFirstPage();
             },
-            child: PagedListView<int, ProjectModel>(
-              state: projectsController.pager.value,
-              fetchNextPage: projectsController.pager.fetchNextPage,
-              reverse: isReversed,
-              builderDelegate: PagedChildBuilderDelegate(
-                animateTransitions: true,
-                transitionDuration: 100.ms,
-                firstPageProgressIndicatorBuilder: (final context) =>
-                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
-                noItemsFoundIndicatorBuilder: (final context) =>
-                    Text(context.l10n.noProjectsYet).animate().fadeIn(),
-                newPageProgressIndicatorBuilder: (final context) =>
-                    const UiCircularProgress().animate(delay: 1500.ms).fadeIn(),
-                itemBuilder: (final context, final item, final index) =>
-                    ProjectTile(
-                      onRemove: (final _) async {
-                        final shouldProceed = await showRemoveTitleDialog(
-                          context: context,
-                          title: item.getTitle(context),
-                        );
-                        if (shouldProceed) {
-                          projectsNotifier.deleteProject(item);
-                        }
-                      },
-                      project: item,
-                      onTap: (final item) {
-                        projectNotifier.loadProject(
-                          project: item,
-                          context: context,
-                        );
-                      },
-                      selected: openedProjectId == item.id,
+            child: PagingListener(
+              controller: projectsController.pager,
+              builder: (final context, final state, final nextPageCallback) =>
+                  PagedListView<int, ProjectModel>(
+                    state: state,
+                    fetchNextPage: nextPageCallback,
+                    reverse: isReversed,
+                    builderDelegate: PagedChildBuilderDelegate(
+                      animateTransitions: true,
+                      transitionDuration: 100.ms,
+                      firstPageProgressIndicatorBuilder: (final context) =>
+                          const UiCircularProgress()
+                              .animate(delay: 1500.ms)
+                              .fadeIn(),
+                      noItemsFoundIndicatorBuilder: (final context) =>
+                          Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                      newPageProgressIndicatorBuilder: (final context) =>
+                          const UiCircularProgress()
+                              .animate(delay: 1500.ms)
+                              .fadeIn(),
+                      itemBuilder: (final context, final item, final index) =>
+                          ProjectTile(
+                            key: ValueKey(item.id),
+                            onRemove: (final _) async {
+                              final shouldProceed = await showRemoveTitleDialog(
+                                context: context,
+                                title: item.getTitle(context),
+                              );
+                              if (shouldProceed) {
+                                projectsNotifier.deleteProject(item);
+                              }
+                            },
+                            project: item,
+                            onTap: (final item) {
+                              projectNotifier.loadProject(
+                                project: item,
+                                context: context,
+                              );
+                            },
+                            selected: openedProjectId == item.id,
+                          ),
                     ),
-              ),
+                  ),
             ),
           ),
         ),

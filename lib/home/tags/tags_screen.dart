@@ -314,38 +314,39 @@ class _AddProjectsView extends StatelessWidget {
                   CloseButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
                 ],
               ),
-              PagedSliverList<int, ProjectModel>(
-                fetchNextPage: tagsScreenNotifier
-                    .addProjectsPagedController
-                    .pager
-                    .fetchNextPage,
-                state:
-                    tagsScreenNotifier.addProjectsPagedController.pager.value,
-                builderDelegate: PagedChildBuilderDelegate(
-                  animateTransitions: true,
-                  transitionDuration: 100.ms,
-                  firstPageProgressIndicatorBuilder: (final context) =>
-                      const UiCircularProgress()
-                          .animate(delay: 1500.ms)
-                          .fadeIn(),
-                  noItemsFoundIndicatorBuilder: (final context) =>
-                      Text(context.l10n.noProjectsYet).animate().fadeIn(),
-                  newPageProgressIndicatorBuilder: (final context) =>
-                      const UiCircularProgress()
-                          .animate(delay: 1500.ms)
-                          .fadeIn(),
-                  itemBuilder: (final context, final item, final index) =>
-                      SelectableProjectListTile(
-                        key: ValueKey(item.id),
-                        selected:
-                            projects.value.firstWhereOrNull(
-                              (final e) => e.id == item.id,
-                            ) !=
-                            null,
-                        project: item,
-                        onTap: tagsScreenNotifier.onSelectedProjectChanged,
+              PagingListener(
+                controller: tagsScreenNotifier.addProjectsPagedController.pager,
+                builder: (final context, final state, final nextPageCallback) =>
+                    PagedSliverList<int, ProjectModel>(
+                      fetchNextPage: nextPageCallback,
+                      state: state,
+                      builderDelegate: PagedChildBuilderDelegate(
+                        animateTransitions: true,
+                        transitionDuration: 100.ms,
+                        firstPageProgressIndicatorBuilder: (final context) =>
+                            const UiCircularProgress()
+                                .animate(delay: 1500.ms)
+                                .fadeIn(),
+                        noItemsFoundIndicatorBuilder: (final context) =>
+                            Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                        newPageProgressIndicatorBuilder: (final context) =>
+                            const UiCircularProgress()
+                                .animate(delay: 1500.ms)
+                                .fadeIn(),
+                        itemBuilder: (final context, final item, final index) =>
+                            SelectableProjectListTile(
+                              key: ValueKey(item.id),
+                              selected:
+                                  projects.value.firstWhereOrNull(
+                                    (final e) => e.id == item.id,
+                                  ) !=
+                                  null,
+                              project: item,
+                              onTap:
+                                  tagsScreenNotifier.onSelectedProjectChanged,
+                            ),
                       ),
-                ),
+                    ),
               ),
             ],
           ),

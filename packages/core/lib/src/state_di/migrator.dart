@@ -20,46 +20,65 @@ import 'path_utils.dart';
 /// migration helper `migrateWithRepository` so tests can exercise migration
 /// without requiring a `BuildContext`.
 Future<void> migrate(final BuildContext context) async {
-  final tagsRepository = context.read<TagsRepository>();
-  final projectsRepository = context.read<ProjectsRepository>();
-  final parsed = await parsers.parseOldFiles();
-  if (parsed.isEmpty) return;
-
-  // Deduplicate parsed project maps by `id` when available to avoid
-  // creating duplicate entries from multiple sources (hive + isar previews).
-  final unique = <String, Map<String, dynamic>>{};
-  final idTypeMap = <String, String>{}; // id -> type
-  for (final p in parsed) {
-    try {
-      final id = jsonDecodeString(p['id']);
-      if (id.isEmpty) continue;
-      idTypeMap[id] = jsonDecodeString(
-        p['runtimeType'],
-      ).whenEmptyUse(p['type']);
-      final oldUnique = unique[id];
-      unique[id] = {...?oldUnique, ...p};
-    } catch (_) {}
-  }
-  final parsedProjects = unique.values
-      .map((final e) {
-        final type = idTypeMap[e['id']];
-        if (type == 'changelog') return null;
-        return e
-          ..['type'] = type
-          ..['runtimeType'] = type;
-      })
-      .nonNulls
-      .map(ProjectModel.fromJson)
-      .toList(growable: false);
-
-  for (final project in parsedProjects) {
-    final oldProject = await projectsRepository.getById(id: project.id);
-    final mergedJson = {...project.toJson(), ...?oldProject?.toJson()};
-    final updatedProject = ProjectModel.fromJson(mergedJson);
-    await projectsRepository.put(project: updatedProject);
-  }
-
   try {
+    final tagsRepository = context.read<TagsRepository>();
+    final projectsRepository = context.read<ProjectsRepository>();
+    final parsed = await parsers.parseOldFiles();
+    if (parsed.isEmpty) return;
+
+    // Deduplicate parsed project maps by `id` when available to avoid
+    // creating duplicate entries from multiple sources (hive + isar previews).
+    final unique = <String, Map<String, dynamic>>{};
+    final idTypeMap = <String, String>{}; // id -> type
+    for (final p in parsed) {
+      try {
+        final id = jsonDecodeString(p['id']);
+        if (id.isEmpty) continue;
+        idTypeMap[id] = jsonDecodeString(
+          p['runtimeType'],
+        ).whenEmptyUse(p['type']);
+        final oldUnique = unique[id];
+        unique[id] = {...?oldUnique, ...p};
+      } catch (_) {}
+    }
+    final allAnswers = <IdeaProjectAnswerModel>[];
+
+    final parsedProjects = unique.values
+        .map((final e) {
+          final type = idTypeMap[e['id']];
+          if (type == 'changelog') return null;
+          if (e['question'] != null) {
+            final answer = IdeaProjectAnswerModel.fromJson(e);
+            allAnswers.add(answer);
+            return null;
+          }
+          return e
+            ..['type'] = type
+            ..['runtimeType'] = type;
+        })
+        .nonNulls
+        .map(ProjectModel.fromJson)
+        .toList(growable: false);
+
+    for (final project in parsedProjects) {
+      final oldProject = await projectsRepository.getById(id: project.id);
+      final mergedJson = {...project.toJson(), ...?oldProject?.toJson()};
+      final updatedProject = ProjectModel.fromJson(mergedJson);
+      await projectsRepository.put(project: updatedProject);
+    }
+
+    if (allAnswers.isNotEmpty) {
+      await projectsRepository.put(
+        project: ProjectModel.idea(
+          id: ProjectModelId.generate(),
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          answers: allAnswers,
+          title: 'ALL SAVED ANSWERS',
+        ),
+      );
+    }
+
     final existingTags = tagsRepository.getAll();
     final tags = parsedProjects
         .expand((final p) => p.tagsIds)

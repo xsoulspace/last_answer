@@ -8,7 +8,6 @@ import 'package:shared_models/shared_models.dart';
 
 import '../../core.dart';
 import '../state/user_remote_initializer.dart';
-import 'migrator.dart';
 
 class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({required this.context})
@@ -60,7 +59,7 @@ class GlobalStatesInitializer implements StateInitializer {
     await dto.localDbDataSource.onLoad();
     // Migration now acts as the parsed-JSON loader and will populate the
     // local DB structures expected by data sources.
-    await migrate(dto.context);
+
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
       // await dto.remoteClient.onLoad();
     }

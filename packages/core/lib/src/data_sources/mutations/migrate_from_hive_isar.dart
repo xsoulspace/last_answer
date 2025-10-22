@@ -9,17 +9,16 @@ import 'package:is_dart_empty_or_not/is_dart_empty_or_not.dart';
 import 'package:provider/provider.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
-import '../data_models/data_models.dart';
-import '../data_repositories/data_repositories.dart';
+import '../../data_models/data_models.dart';
+import '../../data_repositories/data_repositories.dart';
 import 'parsers/parsers.dart' as parsers;
-import 'path_utils.dart';
 
 /// Core migration entry used by runtime initialization.
 ///
 /// This function remains Flutter-aware and delegates to the pure-Dart
 /// migration helper `migrateWithRepository` so tests can exercise migration
 /// without requiring a `BuildContext`.
-Future<void> migrate(final BuildContext context) async {
+Future<void> migrateFromHiveAndIsar(final BuildContext context) async {
   try {
     final tagsRepository = context.read<TagsRepository>();
     final projectsRepository = context.read<ProjectsRepository>();
@@ -98,7 +97,7 @@ Future<void> migrate(final BuildContext context) async {
 
     /// populate cache of tags
     tagsRepository.putAll(tags);
-    await removeDbFiles();
+    // await removeDbFiles();
   } on Exception catch (_) {}
 }
 

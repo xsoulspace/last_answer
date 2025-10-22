@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:core/src/state_di/parsers/isar_parser.dart';
+import 'package:core/src/data_sources/mutations/parsers/isar_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

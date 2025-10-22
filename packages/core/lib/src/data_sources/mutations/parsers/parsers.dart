@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:universal_io/io.dart';
 
-import '../path_utils.dart' as path_utils;
+import '../../../state_di/path_utils.dart' as path_utils;
 import 'byte_utils.dart' as byte_utils;
 import 'hive_parser.dart' as hive_parser;
 import 'isar_parser.dart' as isar_parser;

@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../../core.dart';
+import 'migrate_from_hive_isar.dart';
 
 Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
   final userNotifier = dto.userNotifier;
@@ -13,6 +14,7 @@ Future<bool> runMutations(final GlobalStatesInitializerDto dto) async {
   final currentLocalDbVersion = userNotifier.value.value.localDbVersion;
   if (currentLocalDbVersion == LocalDbVersion.newestVersion) return false;
   try {
+    await migrateFromHiveAndIsar(dto.context);
     // for (final v in LocalDbVersion.values) {
     // noop
     // }

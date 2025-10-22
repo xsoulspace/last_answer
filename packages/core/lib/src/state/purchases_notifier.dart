@@ -47,8 +47,8 @@ class PurchasesNotifier extends LoadableStateNotifier<PurchasesModel> {
       mobile: 'R-A-5804060-2',
     ),
   };
-  bool get isAdSupported =>
-      adUnits.mobile.isNotEmpty || adUnits.desktop.isNotEmpty;
+  bool get isAdSupported => false; //
+  // adUnits.mobile.isNotEmpty || adUnits.desktop.isNotEmpty;
   Future<void> watchAd(final BuildContext context) async {
     final toasts = Toasts.of(context);
     final l10n = context.l10n;

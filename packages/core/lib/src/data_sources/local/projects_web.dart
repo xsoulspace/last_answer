@@ -93,6 +93,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> put({required final ProjectModel project}) async {
+    _preloadCache();
     final container = project.toSearchableContainer();
     final index = _fullCache.indexWhere((final e) => e.value.id == project.id);
     if (index >= 0) {
@@ -105,21 +106,14 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> remove({required final ProjectModelId id}) async {
+    _preloadCache();
     _fullCache.removeWhere((final e) => e.value.id == id);
     _saveFullCache();
   }
 
-  void _putAllToCache({required final Iterable<ProjectModel> projects}) {
-    final itemsContainers = projects.map(
-      (final e) => e.toSearchableContainer(),
-    );
-    _fullCache
-      ..clear()
-      ..addAll(itemsContainers);
-  }
-
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async {
+    _preloadCache();
     for (final project in projects) {
       await put(project: project);
     }
@@ -140,7 +134,12 @@ final class ProjectsLocalDataSourceLocalDbImpl
   void _preloadCache() {
     if (_fullCache.isNotEmpty) return;
     final localItems = _getLocalItems();
-    _putAllToCache(projects: localItems);
+    final itemsContainers = localItems.map(
+      (final e) => e.toSearchableContainer(),
+    );
+    _fullCache
+      ..clear()
+      ..addAll(itemsContainers);
   }
 
   @override
@@ -166,13 +165,17 @@ final class ProjectsLocalDataSourceLocalDbImpl
   }
 
   @override
-  Future<ProjectModel?> getById({required final ProjectModelId id}) async =>
-      _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+  Future<ProjectModel?> getById({required final ProjectModelId id}) async {
+    _preloadCache();
+    return _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+  }
 
   @override
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
   }) async {
+    _preloadCache();
+
     final map = _fullCache.toMap(
       toKey: (final e) => e.value.id,
       toValue: (final e) => e,

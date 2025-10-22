@@ -1,20 +1,18 @@
-import 'package:flutter/foundation.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/settings/views/views.dart';
 
 class SettingsScreen extends HookWidget {
-  const SettingsScreen({
-    super.key,
-  });
+  const SettingsScreen({super.key});
 
   @override
   Widget build(final BuildContext context) {
     void onBack() => Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
-    final isAccountViewVisible =
-        kDebugMode || context.read<PurchasesNotifier>().isAdSupported;
+    final isAccountViewVisible = context
+        .read<PurchasesNotifier>()
+        .isAdSupported;
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
     final tabsViews = [
       const GeneralSettingsView(),
@@ -82,9 +80,6 @@ class SpeedyPageViewScrollPhysics extends ScrollPhysics {
       SpeedyPageViewScrollPhysics(parent: buildParent(ancestor));
 
   @override
-  SpringDescription get spring => const SpringDescription(
-        mass: 80,
-        stiffness: 100,
-        damping: 1,
-      );
+  SpringDescription get spring =>
+      const SpringDescription(mass: 80, stiffness: 100, damping: 1);
 }

@@ -162,7 +162,7 @@ extension ProjectsNotifierX on ProjectsNotifier {
 
   Future<DbSaveModel> _getDbSave() async {
     final allProjects = await dto.projectsRepository.getAll();
-    final allTags = dto.tagsRepository.getAll();
+    final allTags = await dto.tagsRepository.getAll();
     return DbSaveModel(projects: allProjects, tags: allTags.values.toList());
   }
 

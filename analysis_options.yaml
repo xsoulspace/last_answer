@@ -4,6 +4,7 @@ analyzer:
   exclude:
     - lib/l10n/l10n.dart
     - lib/l10n/l10n_*.dart
+    - archive/**
 
   errors:
     unused_local_variable: info

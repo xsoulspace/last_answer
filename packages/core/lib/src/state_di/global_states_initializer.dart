@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../core.dart';
 import '../state/user_remote_initializer.dart';
@@ -21,7 +22,7 @@ class GlobalStatesInitializerDto {
       projectsNotifier = context.read(),
       userNotifier = context.read(),
       appNotifier = context.read(),
-      localDbDataSource = context.read(),
+      localDb = context.read(),
       // remoteClient = context.read(),
       purchasesNotifier = context.read(),
       // purchasesAdsService = context.read(),
@@ -32,7 +33,7 @@ class GlobalStatesInitializerDto {
   final BuildContext context;
   final AppFeaturesNotifier appFeaturesNotifier;
   // final RemoteClient remoteClient;
-  final LocalDbDataSource localDbDataSource;
+  final LocalDbI localDb;
   final EmojiRepository emojiRepository;
   final LastUsedEmojiRepository lastUsedEmojiRepository;
   final AssetBundle assetBundle;
@@ -56,7 +57,7 @@ class GlobalStatesInitializer implements StateInitializer {
   late final _remoteUserInitializer = RemoteUserInitializer(dto.context);
   @override
   Future<void> onLoad() async {
-    await dto.localDbDataSource.onLoad();
+    await dto.localDb.init();
     // Migration now acts as the parsed-JSON loader and will populate the
     // local DB structures expected by data sources.
 
@@ -98,7 +99,7 @@ class GlobalStatesInitializer implements StateInitializer {
       toKey: (final p0) => p0.emoji,
     );
 
-    final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
+    final lastUsedEmojis = await dto.lastUsedEmojiRepository.getAll();
     dto.lastEmojiState.putAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();

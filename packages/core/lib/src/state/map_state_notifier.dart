@@ -4,13 +4,11 @@ typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
 /// analogue of ValueNotifier but wihout equality checks
 base class MapStateNotifier<TKey, TValue> extends ChangeNotifier {
-  MapStateNotifier({
-    this.repository,
-    this.onFilter,
-  });
+  MapStateNotifier({this.repository, this.onFilter});
 
-  LoadableContainer<Map<TKey, TValue>> state =
-      const LoadableContainer(value: {});
+  LoadableContainer<Map<TKey, TValue>> state = const LoadableContainer(
+    value: {},
+  );
 
   /// Use [filterKeyword] to get filtered values
   String _filterKeyword = '';
@@ -80,9 +78,7 @@ base class MapStateNotifier<TKey, TValue> extends ChangeNotifier {
     if (values.isEmpty) {
       assignAll({});
     } else {
-      assignEntries(
-        values.map((final e) => MapEntry(toKey(e), e)),
-      );
+      assignEntries(values.map((final e) => MapEntry(toKey(e), e)));
     }
   }
 }

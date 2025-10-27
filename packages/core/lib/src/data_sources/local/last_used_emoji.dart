@@ -1,19 +1,19 @@
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../interfaces/interfaces.dart';
 import 'local.dart';
 
 final class LastUsedEmojiLocalDataSourceImpl
     implements LastUsedEmojiLocalDataSource {
-  LastUsedEmojiLocalDataSourceImpl({
-    required this.localDbDataSource,
-  });
-  final LocalDbDataSource localDbDataSource;
+  LastUsedEmojiLocalDataSourceImpl({required this.localDbDataSource});
+  final LocalDbI localDbDataSource;
 
   @override
-  Map<String, EmojiModel> getAll() {
-    final map =
-        localDbDataSource.getMap(SharedPreferencesKeys.lastUsedEmojis.name);
+  Future<Map<String, EmojiModel>> getAll() async {
+    final map = await localDbDataSource.getMap(
+      SharedPreferencesKeys.lastUsedEmojis.name,
+    );
     if (map.isEmpty) return {};
     try {
       return Map.fromEntries(
@@ -35,7 +35,7 @@ final class LastUsedEmojiLocalDataSourceImpl
     final effectiveMap = map.map(
       (final key, final value) => MapEntry(key, value.toJson()),
     );
-    localDbDataSource.setMap(
+    await localDbDataSource.setMap(
       key: SharedPreferencesKeys.lastUsedEmojis.name,
       value: effectiveMap,
     );

@@ -20,7 +20,7 @@ extension on ProjectModel {
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
   ProjectsLocalDataSourceLocalDbImpl({required this.localDb});
-  final LocalDbDataSource localDb;
+  final LocalDbI localDb;
   final List<SearchableContainer<ProjectModel>> _fullCache = [];
 
   bool _isReversed = false;
@@ -49,7 +49,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
     }
 
     if (_fullCache.isEmpty) {
-      _preloadCache();
+      await _preloadCache();
 
       /// first reverse
       reverse(force: true);
@@ -93,7 +93,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<void> put({required final ProjectModel project}) async {
-    _preloadCache();
+    await _preloadCache();
     final container = project.toSearchableContainer();
     final index = _fullCache.indexWhere((final e) => e.value.id == project.id);
     if (index >= 0) {
@@ -101,39 +101,39 @@ final class ProjectsLocalDataSourceLocalDbImpl
     } else {
       _fullCache.insert(0, container);
     }
-    _saveFullCache();
+    await _saveFullCache();
   }
 
   @override
   Future<void> remove({required final ProjectModelId id}) async {
-    _preloadCache();
+    await _preloadCache();
     _fullCache.removeWhere((final e) => e.value.id == id);
-    _saveFullCache();
+    await _saveFullCache();
   }
 
   @override
   Future<void> putAll({required final List<ProjectModel> projects}) async {
-    _preloadCache();
+    await _preloadCache();
     for (final project in projects) {
       await put(project: project);
     }
   }
 
-  Iterable<ProjectModel> _getLocalItems() => localDb.getItemsIterable(
+  Future<Iterable<ProjectModel>> _getLocalItems() => localDb.getItemsIterable(
     key: SharedPreferencesKeys.webProjects.name,
-    convertFromJson: ProjectModel.fromJson,
+    fromJson: ProjectModel.fromJson,
   );
 
-  void _saveFullCache() => localDb.setItemsList(
+  Future<void> _saveFullCache() => localDb.setItemsList(
     key: SharedPreferencesKeys.webProjects.name,
-    convertToJson: (final v) => v.value.toJson(),
+    toJson: (final v) => v.value.toJson(),
     value: _fullCache,
   );
 
   /// will be not sorted however
-  void _preloadCache() {
+  Future<void> _preloadCache() async {
     if (_fullCache.isNotEmpty) return;
-    final localItems = _getLocalItems();
+    final localItems = await _getLocalItems();
     final itemsContainers = localItems.map(
       (final e) => e.toSearchableContainer(),
     );
@@ -144,7 +144,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
-    _preloadCache();
+    await _preloadCache();
     final items = [..._fullCache];
     if (dto != null) {
       if (dto.isReversed) {
@@ -166,7 +166,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
 
   @override
   Future<ProjectModel?> getById({required final ProjectModelId id}) async {
-    _preloadCache();
+    await _preloadCache();
     return _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
   }
 
@@ -174,7 +174,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
   }) async {
-    _preloadCache();
+    await _preloadCache();
 
     final map = _fullCache.toMap(
       toKey: (final e) => e.value.id,

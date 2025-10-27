@@ -78,7 +78,7 @@ Future<void> migrateFromHiveAndIsar(final BuildContext context) async {
       );
     }
 
-    final existingTags = tagsRepository.getAll();
+    final existingTags = await tagsRepository.getAll();
     final tags = parsedProjects
         .expand((final p) => p.tagsIds)
         .toSet()

@@ -35,16 +35,15 @@ class ProjectsRepository {
   }
 }
 
-final class TagsRepository
-    extends MapBasedRepository<ProjectTagModelId, ProjectTagModel>
-    implements TagsLocalDataSource {
+final class TagsRepository implements TagsLocalDataSource {
   TagsRepository(final BuildContext context)
     : _datasource = TagsLocalDataSourceImpl(localDb: context.read());
   final TagsLocalDataSource _datasource;
 
   @override
-  void putAll(final Map<ProjectTagModelId, ProjectTagModel> map) =>
+  Future<void> putAll(final Map<ProjectTagModelId, ProjectTagModel> map) =>
       _datasource.putAll(map);
   @override
-  Map<ProjectTagModelId, ProjectTagModel> getAll() => _datasource.getAll();
+  Future<Map<ProjectTagModelId, ProjectTagModel>> getAll() =>
+      _datasource.getAll();
 }

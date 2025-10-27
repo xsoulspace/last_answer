@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../core.dart';
 
@@ -20,9 +21,7 @@ class GlobalStatesProvider extends StatelessWidget {
       //     host: Envs.serverHost,
       //   ),
       // ),
-      Provider<LocalDbDataSource>(
-        create: SharedPreferencesDbDataSourceImpl.new,
-      ),
+      Provider<LocalDbI>(create: (final context) => PrefsDb()),
       // ChangeNotifierProvider<PurchasesIapService>(
       //   create: PurchasesIapGoogleAppleImpl.new,
       // ),

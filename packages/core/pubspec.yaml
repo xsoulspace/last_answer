@@ -45,8 +45,6 @@ dependencies:
   shared_preferences: ^2.5.3
   ui_kit:
   universal_io: ^2.2.2
-  universal_storage_db: ^0.1.0-dev.2
-  universal_storage_filesystem: ^0.1.0-dev.10
   url_launcher: ^6.3.2
   uuid: ^4.5.1
   xsoulspace_foundation: ^0.3.0

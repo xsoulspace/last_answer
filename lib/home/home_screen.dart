@@ -90,7 +90,7 @@ class TagsVerticalBar extends StatelessWidget {
       (final c) => c.selectedTagId,
     );
     final tagsNotifier = context.watch<TagsNotifier>();
-    final tags = tagsNotifier.values;
+    final tags = tagsNotifier.orderedValues;
     void chooseTag([final ProjectTagModel? tag]) => projectsNotifier.updateDto(
       (final dto) => dto.copyWith(tagId: tag?.id ?? ProjectTagModelId.empty),
     );

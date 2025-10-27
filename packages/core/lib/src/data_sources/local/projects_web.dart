@@ -3,7 +3,9 @@ import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
-import '../../../core.dart';
+import '../../data_models/data_models.dart';
+import '../../state/state.dart';
+import '../data_sources.dart';
 
 class SearchableContainer<T> {
   const SearchableContainer({required this.jsonContent, required this.value});

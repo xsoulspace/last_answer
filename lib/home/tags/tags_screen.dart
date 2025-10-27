@@ -32,11 +32,11 @@ class TagsScreenBody extends StatelessWidget {
 }
 
 class _TagsListView extends StatelessWidget {
-  const _TagsListView({super.key});
+  const _TagsListView();
 
   @override
   Widget build(final BuildContext context) {
-    final tags = context.watch<TagsNotifier>().values;
+    final tags = context.watch<TagsNotifier>().orderedValues;
     final isPurchased = context.select<PurchasesNotifier, bool>(
       (final c) => c.isActive,
     );

@@ -168,9 +168,9 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     _removedProjects.addAll(value.projects.value);
     _updateProjects([]);
     await _assignTagToProjects(tagId);
-    dto._.tagsNotifier.remove(key: tagId);
+    dto._.tagsNotifier.remove(tagId);
     if (isDeletingAppWideTag) {
-      final tags = dto._.tagsNotifier.values;
+      final tags = dto._.tagsNotifier.orderedValues;
       if (tags.isNotEmpty) {
         dto._.projectsNotifier.updateDto(
           (final dto) => dto.copyWith(tagId: tags.first.id),
@@ -194,7 +194,7 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
         tag = tag.copyWith(id: ProjectTagModelId.generate());
       }
       final tagId = tag.id;
-      dto._.tagsNotifier.put(key: tagId, value: tag);
+      dto._.tagsNotifier.upsert(tag);
       await _assignTagToProjects(tagId);
       onCloseTagManagement();
     } finally {

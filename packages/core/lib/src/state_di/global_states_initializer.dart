@@ -88,19 +88,13 @@ class GlobalStatesInitializer implements StateInitializer {
   Future<void> _loadPost() async {
     final emojis = await dto.emojiRepository.getAllEmoji();
 
-    dto.emojiProvider.loadIterable(
-      values: emojis,
-      toKey: (final p0) => p0.emoji,
-    );
+    dto.emojiProvider.assignAllOrdered(emojis);
 
     final specialEmojis = await dto.emojiRepository.getSpecialEmoji();
-    dto.specialEmojiState.loadIterable(
-      values: specialEmojis,
-      toKey: (final p0) => p0.emoji,
-    );
+    dto.specialEmojiState.assignAllOrdered(specialEmojis);
 
     final lastUsedEmojis = await dto.lastUsedEmojiRepository.getAll();
-    dto.lastEmojiState.putAll(lastUsedEmojis);
+    dto.lastEmojiState.assignAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
   }

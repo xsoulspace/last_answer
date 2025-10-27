@@ -2,13 +2,11 @@ part of 'state.dart';
 
 typedef OnFilterCallback<TValue> = bool Function(TValue value, String keyword);
 
-/// analogue of ValueNotifier but wihout equality checks
-base class MapStateNotifier<TKey, TValue> extends ChangeNotifier {
-  MapStateNotifier({this.repository, this.onFilter});
+/// analogue of ValueNotifier but without equality checks
+base class MapStateNotifier<K, V> extends OrderedMapNotifier<K, V> {
+  MapStateNotifier({this.onFilter, super.toKey});
 
-  LoadableContainer<Map<TKey, TValue>> state = const LoadableContainer(
-    value: {},
-  );
+  LoadableContainer<Map<K, V>> state = const LoadableContainer(value: {});
 
   /// Use [filterKeyword] to get filtered values
   String _filterKeyword = '';
@@ -23,62 +21,15 @@ base class MapStateNotifier<TKey, TValue> extends ChangeNotifier {
     notifyListeners();
   }
 
-  final OnFilterCallback<TValue>? onFilter;
-  final MapBasedRepository<TKey, TValue>? repository;
+  // ignore: unsafe_variance
+  final OnFilterCallback<V>? onFilter;
 
-  List<TValue> get values => state.value.values.toList();
-  List<TValue> get filteredValues {
-    final list = [...values];
+  List<V> get filteredValues {
+    final list = [...orderedValues];
     if (onFilter != null) {
       list.retainWhere((final v) => onFilter!(v, _filterKeyword));
     }
 
     return list;
-  }
-
-  void _save() => repository?.putAll(state.value);
-  void setState(final Map<TKey, TValue> value, {final bool notify = false}) {
-    state = LoadableContainer.loaded(value);
-    if (notify) notifyListeners();
-  }
-
-  void put({required final TKey key, required final TValue value}) {
-    setState({...state.value}..[key] = value, notify: true);
-    _save();
-  }
-
-  void putAll(final Map<TKey, TValue> map) {
-    setState({...state.value}..addAll(map), notify: true);
-    _save();
-  }
-
-  void putEntries(final Iterable<MapEntry<TKey, TValue>> newEntries) {
-    setState({...state.value}..addEntries(newEntries), notify: true);
-    _save();
-  }
-
-  void remove({required final TKey key}) {
-    setState({...state.value}..remove(key), notify: true);
-    _save();
-  }
-
-  void assignAll(final Map<TKey, TValue> map) {
-    setState({...map}, notify: true);
-  }
-
-  void assignEntries(final Iterable<MapEntry<TKey, TValue>> newEntries) {
-    setState(Map.fromEntries(newEntries), notify: true);
-    _save();
-  }
-
-  void loadIterable({
-    required final Iterable<TValue> values,
-    required final TKey Function(TValue) toKey,
-  }) {
-    if (values.isEmpty) {
-      assignAll({});
-    } else {
-      assignEntries(values.map((final e) => MapEntry(toKey(e), e)));
-    }
   }
 }

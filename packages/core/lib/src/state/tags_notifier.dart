@@ -6,9 +6,11 @@ import '../../core.dart';
 final class TagsNotifier
     extends MapStateNotifier<ProjectTagModelId, ProjectTagModel> {
   TagsNotifier(final BuildContext context)
-      : super(repository: context.read<TagsRepository>());
+    : tagsRepository = context.read(),
+      super(toKey: (final e) => e.id);
+  final TagsRepository tagsRepository;
   Future<void> onLocalUserLoad() async {
-    final tags = repository!.getAll();
+    final tags = await tagsRepository.getAll();
     assignAll(tags);
   }
 }

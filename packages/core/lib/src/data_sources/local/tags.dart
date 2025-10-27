@@ -1,6 +1,8 @@
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
-import '../../../core.dart';
+import '../../data_models/data_models.dart';
+import '../interfaces/interfaces.dart';
+import 'shared_preferences_keys.dart';
 
 final class TagsLocalDataSourceImpl implements TagsLocalDataSource {
   TagsLocalDataSourceImpl({required this.localDb});

@@ -7,9 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 Uint8List _buildHiveFrame({required final Uint8List payload}) {
   // Frame layout: [len(4 LE)] [payload...] [crc(4 LE)]
   final len = 4 + payload.length + 4; // include len field and crc
-  final out = BytesBuilder();
-  out.add(_u32(len));
-  out.add(payload);
+  final out = BytesBuilder()
+    ..add(_u32(len))
+    ..add(payload);
   final crc = crc32(payload);
   out.add(_u32(crc));
   return out.toBytes();
@@ -23,16 +23,17 @@ Uint8List _u32(final int v) => Uint8List.fromList([
 ]);
 
 Uint8List _buildSimpleKeyValueFrame(final String key, final String value) {
+  // ignore: lines_longer_than_80_chars
   // payload: [keyType(1)=1 string][keyLen(4)][keyBytes][valueType(1)=1 string][valueLen(4)][valueBytes]
   final kb = Uint8List.fromList(key.codeUnits);
   final vb = Uint8List.fromList(value.codeUnits);
-  final payload = BytesBuilder();
-  payload.add([1]);
-  payload.add(_u32(kb.length));
-  payload.add(kb);
-  payload.add([1]);
-  payload.add(_u32(vb.length));
-  payload.add(vb);
+  final payload = BytesBuilder()
+    ..add([1])
+    ..add(_u32(kb.length))
+    ..add(kb)
+    ..add([1])
+    ..add(_u32(vb.length))
+    ..add(vb);
   return _buildHiveFrame(payload: payload.toBytes());
 }
 
@@ -56,15 +57,15 @@ void main() {
   test('hive parser handles delete frame (empty value)', () {
     // key with empty value -> delete
     final kb = Uint8List.fromList('age'.codeUnits);
-    final payload = BytesBuilder();
-    payload.add([1]);
-    payload.add(_u32(kb.length));
-    payload.add(kb);
+    final payload = BytesBuilder()
+      ..add([1])
+      ..add(_u32(kb.length))
+      ..add(kb);
     // no value bytes => delete
     final frame = _buildHiveFrame(payload: payload.toBytes());
-    final start = BytesBuilder();
-    start.add(_buildSimpleKeyValueFrame('name', 'bob'));
-    start.add(frame);
+    final start = BytesBuilder()
+      ..add(_buildSimpleKeyValueFrame('name', 'bob'))
+      ..add(frame);
     final parsed = parseHiveFromBytes(start.toBytes());
     expect(parsed.containsKey('name'), isFalse);
   });

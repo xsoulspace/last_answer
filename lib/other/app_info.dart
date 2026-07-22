@@ -4,9 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class AppInfoScreen extends StatefulWidget {
-  const AppInfoScreen({
-    super.key,
-  });
+  const AppInfoScreen({super.key});
   static const privacyPolicyLink =
       'https://xsoulspace.dev/#/home/p/Ly08SUzbm9IbHg1aiHLp/privacy';
   static const termsAndConditions =
@@ -65,9 +63,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                       alignment: WrapAlignment.center,
                       children: [
                         const DiscordButton(),
-                        SelectableText(
-                          context.l10n.feedbackTextWithEmail,
-                        ),
+                        SelectableText(context.l10n.feedbackTextWithEmail),
                       ],
                     ),
                     TextButton(
@@ -113,10 +109,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                         ),
                       ],
                     ),
-                    SelectableText(
-                      version,
-                      textAlign: TextAlign.center,
-                    ),
+                    SelectableText(version, textAlign: TextAlign.center),
                   ].map(
                     (final w) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),

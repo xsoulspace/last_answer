@@ -1,3 +1,6 @@
+// ignore_for_file: lines_longer_than_80_chars, avoid_catches_without_on_clauses
+
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'byte_utils.dart';
@@ -59,14 +62,14 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
         try {
           extractJsonMaps(t).forEach(jsonObjects.add);
         } catch (e, st) {
-          print('Error decoding JSON: $e\n$st');
+          log('Error decoding JSON', error: e, stackTrace: st);
           // ignore non-json sequences
         }
       }
     }
     if (jsonObjects.isNotEmpty) result['jsonObjectsPreview'] = jsonObjects;
   } catch (e, st) {
-    print('Error extracting ASCII sequences: $e\n$st');
+    log('Error extracting ASCII sequences', stackTrace: st, error: e);
     // ignore errors during preview extraction
   }
 
@@ -89,21 +92,22 @@ Map<String, dynamic> parseIsarFromBytes(final Uint8List bytes) {
   return result;
 }
 
-// Placeholder for future B+ tree traversal. Accepts the full file bytes and a
-// root page number (page-indexed) and returns a map of key->value. Not yet
-// implemented; will be driven by tests that include small synthetic pages.
+// B+ tree traversal. Accepts the full file bytes and a
+// root page number (page-indexed) and returns a map of key->value.
+// should be driven by tests that include small synthetic pages.
+//
+// Robust recursive B+ tree traversal for simple Isar/MDBX-like page layouts.
+// This implementation aims to be forgiving and extract key/value pairs from
+// leaf pages and to recurse branch pages to collect all leaf entries.
 Map<dynamic, dynamic> traverseBTree(
   final Uint8List bytes,
   final int rootPage, {
   final int pageSize = 4096,
 }) {
-  // Robust recursive B+ tree traversal for simple Isar/MDBX-like page layouts.
-  // This implementation aims to be forgiving and extract key/value pairs from
-  // leaf pages and to recurse branch pages to collect all leaf entries.
-
   final pageOffset = rootPage * pageSize;
-  if (pageOffset + pageSize > bytes.length)
+  if (pageOffset + pageSize > bytes.length) {
     throw Exception('root page out of range');
+  }
   final page = bytes.sublist(pageOffset, pageOffset + pageSize);
   final pageType = page[0];
 

@@ -54,7 +54,7 @@ class AppNotifier extends ValueNotifier<AppNotifierState> {
     final l10n = context.l10n;
 
     await dto.projectsRepository.putAll(projects: dbSave.projects);
-    dto.tagsRepository.putAll(
+    await dto.tagsRepository.putAll(
       dbSave.tags.toMap(
         toKey: (final item) => item.id,
         toValue: (final item) => item,

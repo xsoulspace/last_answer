@@ -4,40 +4,28 @@ import 'package:lastanswer/settings/settings.dart';
 import 'package:lastanswer/settings/views/general_settings_bloc.dart';
 
 class GeneralSettingsProvider extends StatelessWidget {
-  const GeneralSettingsProvider({
-    required this.builder,
-    super.key,
-  });
+  const GeneralSettingsProvider({required this.builder, super.key});
   final WidgetBuilder builder;
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
-        create: (final context) => GeneralSettingsBloc(
-          dto: GeneralSettingsBlocDto(context: context),
-        ),
-        builder: (final context, final child) => builder(context),
-      );
+    create: (final context) =>
+        GeneralSettingsBloc(dto: GeneralSettingsBlocDto(context: context)),
+    builder: (final context, final child) => builder(context),
+  );
 }
 
 class GeneralSettingsView extends StatelessWidget {
-  const GeneralSettingsView({
-    this.padding,
-    super.key,
-  });
+  const GeneralSettingsView({this.padding, super.key});
   final EdgeInsets? padding;
 
   @override
   Widget build(final BuildContext context) => GeneralSettingsProvider(
-        builder: (final context) => GeneralSettingsViewBody(
-          padding: padding,
-        ),
-      );
+    builder: (final context) => GeneralSettingsViewBody(padding: padding),
+  );
 }
 
 class GeneralSettingsViewBody extends StatelessWidget {
-  const GeneralSettingsViewBody({
-    this.padding,
-    super.key,
-  });
+  const GeneralSettingsViewBody({this.padding, super.key});
   final EdgeInsets? padding;
 
   @override
@@ -58,9 +46,7 @@ class GeneralSettingsViewBody extends StatelessWidget {
         SettingsListTile(
           titleText: context.l10n.theme,
           leftColumnWidth: leftColumnWidth,
-          child: ThemeSwitcherButton(
-            settings: projectsNotifier,
-          ),
+          child: ThemeSwitcherButton(settings: projectsNotifier),
         ),
         SettingsListTile(
           titleText: context.l10n.language,
@@ -95,8 +81,9 @@ class GeneralSettingsViewBody extends StatelessWidget {
         const Gap(24),
 
         SettingsListTile(
-          title:
-              _RestrictionUnblocker(child: Text(context.l10n.charactersLimit)),
+          title: _RestrictionUnblocker(
+            child: Text(context.l10n.charactersLimit),
+          ),
           crossAxisAlignment: CrossAxisAlignment.start,
           leftColumnWidth: leftColumnWidth,
           description: context.l10n.charactersLimitForNewNotesDesription,
@@ -119,7 +106,7 @@ class GeneralSettingsViewBody extends StatelessWidget {
 }
 
 class _RestrictionUnblocker extends HookWidget {
-  const _RestrictionUnblocker({required this.child, super.key});
+  const _RestrictionUnblocker({required this.child});
   final Widget child;
 
   @override

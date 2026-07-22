@@ -115,9 +115,10 @@ class _AILayoutBuilderState extends State<AILayoutBuilder>
         widget.onLayoutGenerated?.call(result);
 
         // Animate in the new layout
-        _fadeController.forward();
-        _scaleController.forward();
+        unawaited(_fadeController.forward());
+        unawaited(_scaleController.forward());
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (error) {
       if (mounted) {
         setState(() {
@@ -400,6 +401,7 @@ class AILayoutRenderer extends StatelessWidget {
             style: const TextStyle(color: Colors.white70),
           ),
           Text(
+            // ignore: lines_longer_than_80_chars
             'Generated: ${layoutTree.metadata.generatedAt.toString().substring(11, 19)}',
             style: const TextStyle(color: Colors.white70),
           ),

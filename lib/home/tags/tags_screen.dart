@@ -81,7 +81,7 @@ class _TagsListView extends StatelessWidget {
                     tag: tag,
                     onTap: () =>
                         tagsScreenNotifier.onEditTagManagement(tag: tag),
-                    onDelete: () async => tagsScreenNotifier.onDeleteTag(
+                    onDelete: () => tagsScreenNotifier.onDeleteTag(
                       context: context,
                       tag: tag,
                     ),
@@ -355,10 +355,10 @@ class _AddProjectsView extends StatelessWidget {
           trailing: [
             BackButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
           ],
-          elevation: const MaterialStatePropertyAll(8),
+          elevation: const WidgetStatePropertyAll(8),
           hintText: l10n.searchProjects,
           onChanged: tagsScreenNotifier.onSearchAddProjects,
-          padding: const MaterialStatePropertyAll(
+          padding: const WidgetStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16),
           ),
           autoFocus: PlatformInfo.isNativeWebDesktop,

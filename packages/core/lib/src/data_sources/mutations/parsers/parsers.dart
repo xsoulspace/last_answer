@@ -1,5 +1,7 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore: lines_longer_than_80_chars
+// ignore_for_file: avoid_catches_without_on_clauses, cascade_invocations, curly_braces_in_flow_control_structures
 
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:universal_io/io.dart';
@@ -73,7 +75,7 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
               }
             }
           }
-          print('Parsed isar $path: metaKeys=${meta.keys.toList()}');
+          log('Parsed isar $path: metaKeys=${meta.keys.toList()}');
         }
         if (path.endsWith('.hive')) {
           final data = hive_parser.parseHiveFromBytes(bytes);
@@ -117,7 +119,7 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
               } catch (_) {}
             }
           }
-          print('Parsed hive $path: entries=${data.length}');
+          log('Parsed hive $path: entries=${data.length}');
         }
 
         // Also scan raw bytes for ASCII JSON fragments that the frame
@@ -132,10 +134,10 @@ Future<List<Map<String, dynamic>>> parseOldFiles([
             decoded.forEach(projects.add);
           }
         } catch (_) {}
-        print('parsed asciiProjects');
+        log('parsed asciiProjects');
       } catch (e, st) {
         // continue on parse error but keep a trace for debugging
-        print('Parser error for $path: $e\n$st');
+        log('Parser error for $path', error: e, stackTrace: st);
       }
     }
   }

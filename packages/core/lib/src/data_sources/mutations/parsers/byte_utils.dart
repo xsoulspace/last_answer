@@ -1,4 +1,7 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:from_json_to_json/from_json_to_json.dart';
@@ -104,6 +107,7 @@ List<String> extractAsciiStrings(final Uint8List b, {final int minLen = 4}) {
 String decodeToStringOrHex(final Uint8List bytes) {
   try {
     return utf8.decode(bytes, allowMalformed: true);
+    // ignore: avoid_catches_without_on_clauses
   } catch (_) {
     return bytes
         .map((final b) => b.toRadixString(16).padLeft(2, '0'))
@@ -184,8 +188,9 @@ List<Map<String, dynamic>> extractJsonMaps(
       } else {
         throw Exception('Could not find valid JSON');
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, st) {
-      print('Error decoding JSON as list: $e\n$st');
+      log('Error decoding JSON as list', error: e, stackTrace: st);
       // not valid JSON despite being textual; try Hive object heuristic
       final obj = tryDeserializeHiveObject(bytes!);
       if (obj.isNotEmpty) {
@@ -206,7 +211,8 @@ List<Map<String, dynamic>> extractJsonMaps(
             .toList();
       }
     }
-  } catch (e, st) {
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
     // Try to extract just the valid JSON portion by finding where it ends
     return tryDecode();
   }
@@ -217,6 +223,7 @@ List<Map<String, dynamic>> extractJsonMaps(
         return [decodedMap];
       }
     }
+    // ignore: avoid_catches_without_on_clauses
   } catch (_) {
     return tryDecode();
   }
@@ -261,14 +268,17 @@ Map<String, dynamic> tryDeserializeHiveObject(final Uint8List bytes) {
           try {
             out['field_$fieldIdx'] = extractJsonMaps(sval);
             continue;
+            // ignore: avoid_catches_without_on_clauses
           } catch (_) {}
         }
         out['field_$fieldIdx'] = sval;
+        // ignore: avoid_catches_without_on_clauses
       } catch (_) {
         out['field_$fieldIdx'] = vbytes
             .map((final b) => b.toRadixString(16).padLeft(2, '0'))
             .join(' ');
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (_) {
       break;
     }
@@ -303,6 +313,7 @@ dynamic decodeValue(final Uint8List bytes, {final int? valueType}) {
       // treat as plain string when decoding succeeds
       return s;
     }
+    // ignore: avoid_catches_without_on_clauses
   } catch (_) {
     // Non-decodable bytes; fall back to ascii extraction and heuristics
     final ascii = extractAsciiStrings(bytes);

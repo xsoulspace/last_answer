@@ -4,7 +4,7 @@ import '../../../../core.dart';
 
 class GoogleAuthProvider implements AuthProvider {
   @override
-  Future<ProviderResponseModel> getCredentials() async {
+  Future<ProviderResponseModel> getCredentials() {
     throw UnimplementedError();
     // try {
     //   final googleSignIn = GoogleSignIn(

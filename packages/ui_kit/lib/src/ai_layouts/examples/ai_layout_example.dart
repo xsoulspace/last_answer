@@ -197,6 +197,7 @@ class _AILayoutExampleState extends State<AILayoutExample> {
         return AIContextPresets.ecommerceBrowsing(screenSize, deviceType);
       case LayoutContentType.gaming:
         return AIContextPresets.gamingInterface(screenSize, deviceType);
+      // ignore: no_default_cases
       default:
         return AILayoutContext(
           contentType: _selectedContentType,

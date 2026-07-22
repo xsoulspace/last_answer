@@ -13,25 +13,26 @@ Uint8List _u32(final int v) => Uint8List.fromList([
 ]);
 
 Uint8List buildLeafPage(final int pageSize, final Map<String, String> entries) {
-  final b = BytesBuilder();
-  // pageType = 0x02 (leaf)
-  b.add([0x02]);
-  b.add(_u16(entries.length));
-  // reserved one byte to make header 3 bytes
-  b.add([0]);
+  final b = BytesBuilder()
+    // pageType = 0x02 (leaf)
+    ..add([0x02])
+    ..add(_u16(entries.length))
+    // reserved one byte to make header 3 bytes
+    ..add([0]);
   entries.forEach((final k, final v) {
     final kb = utf8.encode(k);
     final vb = utf8.encode(v);
-    b.add(_u32(kb.length));
-    b.add(kb);
-    b.add(_u32(vb.length));
-    b.add(vb);
+    b
+      ..add(_u32(kb.length))
+      ..add(kb)
+      ..add(_u32(vb.length))
+      ..add(vb);
   });
   final content = b.toBytes();
-  if (content.length > pageSize)
+  if (content.length > pageSize) {
     throw Exception('page overflow in test builder');
-  final page = Uint8List(pageSize);
-  page.setAll(0, content);
+  }
+  final page = Uint8List(pageSize)..setAll(0, content);
   return page;
 }
 
@@ -44,8 +45,8 @@ void main() {
 
     // Build file bytes with rootPage at index 2
     const totalPages = rootPage + 1;
-    final fileBytes = Uint8List(totalPages * pageSize);
-    fileBytes.setAll(rootPage * pageSize, page);
+    final fileBytes = Uint8List(totalPages * pageSize)
+      ..setAll(rootPage * pageSize, page);
 
     final parsed = traverseBTree(fileBytes, rootPage);
     expect(parsed.length, equals(entries.length));

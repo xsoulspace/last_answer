@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_catches_without_on_clauses, lines_longer_than_80_chars
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -38,8 +40,9 @@ Map<String, dynamic> parseHiveFromBytes(
       final keyLenInfo = readVarUint(payload, p);
       final keyLen = keyLenInfo['value']!;
       p = keyLenInfo['newOffset']!;
-      if (keyLen < 0 || p + keyLen > payload.length)
+      if (keyLen < 0 || p + keyLen > payload.length) {
         throw Exception('invalid key length');
+      }
       // Use tolerant UTF-8 decoding for keys (production files may be malformed)
       final key = utf8.decode(
         payload.sublist(p, p + keyLen),
@@ -62,8 +65,9 @@ Map<String, dynamic> parseHiveFromBytes(
           // fallback: take remaining bytes
           valueLen = payload.length - p;
         }
-        if (valueLen < 0 || p + valueLen > payload.length)
+        if (valueLen < 0 || p + valueLen > payload.length) {
           throw Exception('invalid value length');
+        }
         var valueBytes = payload.sublist(p, p + valueLen);
         if (encryptionKey != null) {
           try {

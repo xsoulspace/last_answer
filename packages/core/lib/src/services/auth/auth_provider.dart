@@ -8,6 +8,7 @@ abstract class ProviderResponseModel with _$ProviderResponseModel {
       _ProviderResponseModel;
 }
 
+// ignore: one_member_abstracts
 abstract interface class AuthProvider {
   AuthProvider._();
   Future<ProviderResponseModel> getCredentials();

@@ -5,8 +5,10 @@ class ChatMessage {
   final String content;
 }
 
-/// Port for doc inference (Ask AI, Expand, Summarise). No implementation in this app;
+/// Port for doc inference (Ask AI, Expand, Summarise). No implementation
+/// in this app;
 /// wire a provider when a backend is available.
+// ignore: one_member_abstracts
 abstract interface class DocInferencePort {
   /// Streams assistant reply tokens for the given [messages].
   Stream<String> chat(List<ChatMessage> messages);

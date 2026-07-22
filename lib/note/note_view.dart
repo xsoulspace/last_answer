@@ -5,10 +5,7 @@ import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
 
 class NoteView extends StatefulWidget {
-  const NoteView({
-    required this.note,
-    super.key,
-  });
+  const NoteView({required this.note, super.key});
   final ProjectModelNote note;
   @override
   State<NoteView> createState() => _NoteViewState();
@@ -18,19 +15,19 @@ class _NoteViewState extends State<NoteView>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(final BuildContext context) => PopScope(
-        onPopInvoked: (final _) =>
-            context.read<OpenedProjectNotifier>().onPopProject(),
-        child: ChangeNotifierProvider(
-          create: (final _) => NoteViewBloc(
-            dto: NoteViewBlocDto(
-              initialNote: widget.note,
-              tickerProvider: this,
-              context: context,
-            ),
-          ),
-          builder: (final context, final child) => const NoteViewBody(),
+    onPopInvokedWithResult: (_, _) =>
+        context.read<OpenedProjectNotifier>().onPopProject(),
+    child: ChangeNotifierProvider(
+      create: (final _) => NoteViewBloc(
+        dto: NoteViewBlocDto(
+          initialNote: widget.note,
+          tickerProvider: this,
+          context: context,
         ),
-      );
+      ),
+      builder: (final context, final child) => const NoteViewBody(),
+    ),
+  );
 }
 
 class NoteViewBody extends StatelessWidget {

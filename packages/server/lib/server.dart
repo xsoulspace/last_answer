@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:server/src/endpoints/modules/modules.dart';
 import 'package:server/src/generated/endpoints.dart';
@@ -13,24 +14,17 @@ import 'package:serverpod_auth_server/module.dart' as auth;
 
 Future<void> run(final List<String> args) async {
   // Initialize Serverpod and connect it with your generated code.
-  final pod = Serverpod(
-    args,
-    Protocol(),
-    Endpoints(),
-  );
+  final pod = Serverpod(args, Protocol(), Endpoints());
 
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
 
   // Setup a default page at the web root.
-  pod.webServer.addRoute(RouteRoot(), '/');
+  pod.webServer.addRoute(RouteRoot());
   pod.webServer.addRoute(RouteRoot(), '/index.html');
   pod.webServer.addRoute(auth.RouteGoogleSignIn(), '/googlesignin');
   // Serve all files in the /static directory.
-  pod.webServer.addRoute(
-    RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
-    '/*',
-  );
+  pod.webServer.addRoute(StaticRoute.directory(Directory('static')));
   await Modules.createModules(pod: pod);
 
   // Start the server.

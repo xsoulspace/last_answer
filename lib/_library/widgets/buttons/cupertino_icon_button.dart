@@ -19,15 +19,11 @@ class CupertinoIconButton extends StatelessWidget {
   final double? size;
   @override
   Widget build(final BuildContext context) => CupertinoButton(
-        minSize: 0,
-        borderRadius: defaultBorderRadius,
-        padding: padding ?? EdgeInsets.zero,
-        color: backgroundColor,
-        onPressed: onPressed,
-        child: Icon(
-          icon,
-          color: color,
-          size: size,
-        ),
-      );
+    borderRadius: defaultBorderRadius,
+    padding: padding ?? EdgeInsets.zero,
+    color: backgroundColor,
+    onPressed: onPressed,
+    minimumSize: Size.zero,
+    child: Icon(icon, color: color, size: size),
+  );
 }

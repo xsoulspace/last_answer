@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -59,6 +61,7 @@ class AILayoutEngine {
       }
 
       return result;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       // Fallback to conservative layout on error
       return _generateFallbackLayout(context, stopwatch.elapsed);
@@ -188,6 +191,7 @@ class AILayoutEngine {
         nodes.addAll(await _generateMagazineLayout(availableArea, context));
       case LayoutContentType.dashboard:
         nodes.addAll(await _generateFluidDashboard(availableArea, context));
+      // ignore: no_default_cases
       default:
         nodes.addAll(await _generateAsymmetricLayout(availableArea, context));
     }
@@ -455,6 +459,7 @@ class AILayoutEngine {
       case InteractionType.swipe:
         return node.type == LayoutNodeType.image ||
             node.type == LayoutNodeType.list;
+      // ignore: no_default_cases
       default:
         return false;
     }
@@ -562,18 +567,14 @@ class AILayoutEngine {
   Future<List<LayoutNode>> _generateConservativeLayout(
     final AILayoutContext context,
     final Rect area,
-  ) async {
     // Implementation for conservative layouts
-    return [];
-  }
+  ) async => [];
 
   Future<List<LayoutNode>> _generateAdaptiveLayout(
     final AILayoutContext context,
     final Rect area,
-  ) async {
     // Implementation for adaptive layouts
-    return [];
-  }
+  ) async => [];
 
   Duration _estimateReadingTime(final AILayoutContext context) =>
       const Duration(minutes: 2);

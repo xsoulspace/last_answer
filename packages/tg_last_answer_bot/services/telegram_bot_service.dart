@@ -20,7 +20,7 @@ class TelegramBotService {
     /// The [bot.hears] method allows you to listen to messages that match a regular expression.
     /// You can use the `Context.matches` getter to access the matches of the regular expression.
     bot.hears(RegExp('Hello, (.*)!'), (ctx) async {
-      await ctx.reply('${ctx.matches![1]} must be a doing great!');
+      await ctx.reply('${ctx.matches[1]} must be a doing great!');
     });
     print('Starting telegram bot...');
     // await bot.start(

@@ -1,7 +1,7 @@
 part of 'state.dart';
 
 @freezed
-class ProjectsNotifierState with _$ProjectsNotifierState {
+abstract class ProjectsNotifierState with _$ProjectsNotifierState {
   const factory ProjectsNotifierState({
     @Default(RequestProjectsDto.empty)
     final RequestProjectsDto requestProjectsDto,

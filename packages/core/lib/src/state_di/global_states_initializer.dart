@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:universal_storage_interface/universal_storage_interface.dart';
+import 'package:universal_storage_local_db/universal_storage_local_db.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../core.dart';
@@ -58,6 +60,10 @@ class GlobalStatesInitializer implements StateInitializer {
   @override
   Future<void> onLoad() async {
     await dto.localDb.init();
+    final storageService = dto.context.read<StorageService>();
+    await storageService.initializeWithConfig(
+      const LocalDbStorageConfig(keyspacePrefix: 'last_answer_docs'),
+    );
     // Migration now acts as the parsed-JSON loader and will populate the
     // local DB structures expected by data sources.
 

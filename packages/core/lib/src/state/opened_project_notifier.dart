@@ -27,6 +27,7 @@ class OpenedProjectNotifier
       ProjectTypes.note => ScreenPaths.note(noteId: project.id),
       ProjectTypes.idea => ScreenPaths.idea(ideaId: project.id),
       ProjectTypes.systemChangelog => ScreenPaths.changelog,
+      ProjectTypes.doc => ScreenPaths.doc(docId: project.id),
     };
     unawaited(context.push(path));
   }
@@ -46,6 +47,11 @@ class OpenedProjectNotifier
       },
       changelog: (final value) {
         // noop
+      },
+      doc: (final doc) {
+        if (doc.title.isEmpty && doc.blocks.isEmpty) {
+          dto.projectsNotifier.deleteProject(doc);
+        }
       },
     );
   }
@@ -80,6 +86,14 @@ class OpenedProjectNotifier
     );
     if (title.isNotEmpty) dto.projectsNotifier.updateEditingProject(idea);
     loadProject(context: context, project: idea);
+  }
+
+  void createGddProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyGdd());
+  }
+
+  void createPrdProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyPrd());
   }
 
   void deleteProject() {

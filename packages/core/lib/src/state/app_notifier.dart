@@ -3,7 +3,7 @@ part of 'state.dart';
 enum AppStatus { offline, online, loading }
 
 @freezed
-class AppFeaturesModel with _$AppFeaturesModel {
+abstract class AppFeaturesModel with _$AppFeaturesModel {
   const factory AppFeaturesModel({
     @Default(false) final bool isRemoteServicesEnabled,
   }) = _AppFeaturesModel;
@@ -17,7 +17,7 @@ class AppFeaturesNotifier extends ValueNotifier<AppFeaturesModel> {
 }
 
 @freezed
-class AppNotifierState with _$AppNotifierState {
+abstract class AppNotifierState with _$AppNotifierState {
   const factory AppNotifierState({
     @Default(AppStatus.loading) final AppStatus status,
   }) = _AppNotifierState;

@@ -1,5 +1,6 @@
 export 'ads.dart';
 export 'dictionaries.dart';
+export 'doc_body_storage.dart';
 export 'emoji.dart';
 export 'last_used_emoji.dart';
 export 'notifications.dart';

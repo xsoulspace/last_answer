@@ -1,7 +1,7 @@
 part of 'data_models.dart';
 
 @freezed
-class NotificationMessageModel with _$NotificationMessageModel {
+abstract class NotificationMessageModel with _$NotificationMessageModel {
   const factory NotificationMessageModel({
     required final String id,
     required final LocalizedTextModel message,

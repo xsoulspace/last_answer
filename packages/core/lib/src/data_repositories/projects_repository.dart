@@ -1,14 +1,18 @@
-// flutter foundation import removed (unused)
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:universal_storage_interface/universal_storage_interface.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../core.dart';
 
 class ProjectsRepository {
   ProjectsRepository(final BuildContext context)
-    : _datasource = ProjectsLocalDataSourceLocalDbImpl(localDb: context.read());
+    : _datasource = ProjectsLocalDataSourceLocalDbImpl(
+        localDb: context.read<LocalDbI>(),
+        storageService: context.read<StorageService>(),
+      );
   final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) =>
       _datasource.putAll(projects: projects);

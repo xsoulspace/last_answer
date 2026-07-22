@@ -1,4 +1,5 @@
 export 'auth/auth.dart';
+export 'doc_inference_port.dart';
 export 'file_service/file_service.dart';
 // export 'purchases_ads/purchases_ads.dart';
 // export 'purchases_iap/purchases_iap_service.dart';

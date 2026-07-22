@@ -1,7 +1,7 @@
 part of 'state.dart';
 
 @freezed
-class RequestProjectsDto with _$RequestProjectsDto {
+abstract class RequestProjectsDto with _$RequestProjectsDto {
   const factory RequestProjectsDto({
     @Default('') final String search,
     @Default([]) final List<ProjectTypes> types,

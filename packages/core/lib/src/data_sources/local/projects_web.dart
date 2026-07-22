@@ -1,11 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../data_models/data_models.dart';
 import '../../state/state.dart';
 import '../data_sources.dart';
+import 'doc_body_storage.dart';
 
 class SearchableContainer<T> {
   const SearchableContainer({required this.jsonContent, required this.value});
@@ -21,8 +23,12 @@ extension on ProjectModel {
 
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
-  ProjectsLocalDataSourceLocalDbImpl({required this.localDb});
+  ProjectsLocalDataSourceLocalDbImpl({
+    required this.localDb,
+    this.storageService,
+  });
   final LocalDbI localDb;
+  final StorageService? storageService;
   final List<SearchableContainer<ProjectModel>> _fullCache = [];
 
   bool _isReversed = false;
@@ -96,7 +102,17 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<void> put({required final ProjectModel project}) async {
     await _preloadCache();
-    final container = project.toSearchableContainer();
+    ProjectModel toCache = project;
+    if (project case ProjectModelDoc doc) {
+      if (storageService != null) {
+        await storageService!.saveFile(
+          docBodyPath(doc.docKind, doc.id),
+          docBodyToJson(doc.blocks, doc.threads),
+        );
+      }
+      toCache = doc.copyWith(blocks: const [], threads: {});
+    }
+    final container = toCache.toSearchableContainer();
     final index = _fullCache.indexWhere((final e) => e.value.id == project.id);
     if (index >= 0) {
       _fullCache[index] = container;
@@ -109,6 +125,12 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<void> remove({required final ProjectModelId id}) async {
     await _preloadCache();
+    final existing = _fullCache.firstWhereOrNull((final e) => e.value.id == id);
+    if (existing?.value case ProjectModelDoc doc) {
+      if (storageService != null) {
+        await storageService!.removeFile(docBodyPath(doc.docKind, doc.id));
+      }
+    }
     _fullCache.removeWhere((final e) => e.value.id == id);
     await _saveFullCache();
   }
@@ -169,7 +191,20 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<ProjectModel?> getById({required final ProjectModelId id}) async {
     await _preloadCache();
-    return _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+    final stub =
+        _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+    if (stub case ProjectModelDoc doc) {
+      if (storageService != null) {
+        final raw = await storageService!.readFile(
+          docBodyPath(doc.docKind, doc.id),
+        );
+        final body = docBodyFromJson(raw);
+        if (body != null) {
+          return doc.copyWith(blocks: body.$1, threads: body.$2);
+        }
+      }
+    }
+    return stub;
   }
 
   @override

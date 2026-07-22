@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_storage_interface/universal_storage_interface.dart';
+import 'package:universal_storage_local_db/universal_storage_local_db.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../core.dart';
@@ -16,12 +18,12 @@ class GlobalStatesProvider extends StatelessWidget {
       ChangeNotifierProvider(create: AppFeaturesNotifier.new),
 
       /// services, repos
-      // Provider<RemoteClient>(
-      //   create: (final context) => RemoteClientServerpodImpl(
-      //     host: Envs.serverHost,
-      //   ),
-      // ),
       Provider<LocalDbI>(create: (final context) => PrefsDb()),
+      Provider<StorageService>(
+        create: (final context) => StorageService(
+          LocalDbStorageProvider(localDb: context.read<LocalDbI>()),
+        ),
+      ),
       // ChangeNotifierProvider<PurchasesIapService>(
       //   create: PurchasesIapGoogleAppleImpl.new,
       // ),
@@ -34,6 +36,7 @@ class GlobalStatesProvider extends StatelessWidget {
       Provider(create: NotificationsRepository.new),
       Provider(create: ProjectsRepository.new),
       Provider(create: AdsRepository.new),
+      Provider<DocInferencePort?>(create: (_) => null),
 
       /// notifiers & blocs
       ChangeNotifierProvider(create: EmojiStateNotifier.new),

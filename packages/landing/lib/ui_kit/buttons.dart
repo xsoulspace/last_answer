@@ -1,4 +1,5 @@
-import 'package:jaspr/ui.dart';
+import 'package:jaspr/client.dart';
+import 'package:jaspr/dom.dart';
 import 'package:landing/app.dart';
 
 class StyledButtonDecoration {
@@ -51,9 +52,12 @@ class StyledButton extends StatelessComponent {
   final String titleText;
   final Component? title;
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield button([title ?? text(titleText)],
-        classes: decoration.toString(), onClick: onClick);
+  Component build(BuildContext context) {
+    return button(
+      [title ?? text(titleText)],
+      classes: decoration.toString(),
+      onClick: onClick,
+    );
   }
 }
 
@@ -80,10 +84,7 @@ class LiLinkButtonDecoration {
   final String transitions;
 
   LiLinkButtonDecoration copyWith({String? textStyle}) =>
-      LiLinkButtonDecoration(
-        classes,
-        textStyle: textStyle ?? this.textStyle,
-      );
+      LiLinkButtonDecoration(classes, textStyle: textStyle ?? this.textStyle);
 
   @override
   String toString() => [classes, textStyle, transitions].join(' ');
@@ -100,14 +101,14 @@ class LiLinkButton extends StatelessComponent {
   final bool openInNewTab;
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield li([
+  Component build(BuildContext context) {
+    return li([
       LinkButton(
         titleText: item.title,
         url: item.url,
         liDecoration: decoration,
         openInNewTab: openInNewTab,
-      )
+      ),
     ]);
   }
 }
@@ -129,8 +130,8 @@ class LinkButton extends StatelessComponent {
     this.url = '',
     this.classes = '',
     super.key,
-  })  : liDecoration = null,
-        styledDecoration = null;
+  }) : liDecoration = null,
+       styledDecoration = null;
   final Component? title;
   final String titleText;
   final String url;
@@ -139,7 +140,7 @@ class LinkButton extends StatelessComponent {
   final StyledButtonDecoration? styledDecoration;
   final String classes;
   @override
-  Iterable<Component> build(BuildContext context) sync* {
+  Component build(BuildContext context) {
     assert(url.isNotEmpty);
 
     final classes =
@@ -151,14 +152,14 @@ class LinkButton extends StatelessComponent {
     final children = [title ?? text(titleText)];
     // TODO(arenukvern): description, https://github.com/schultek/jaspr/issues/180
     if (shouldUseA) {
-      yield a(
+      return a(
         children,
         href: url,
         target: shouldUseA ? Target.blank : null,
         classes: classes,
       );
     } else {
-      yield button(
+      return button(
         children,
         onClick: () => context.router.pushNamed(url),
         classes: classes,

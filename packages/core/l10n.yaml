@@ -3,6 +3,5 @@ template-arb-file: intl_en.arb
 output-dir: lib/src/generated/intl
 output-localization-file: S.dart
 output-class: S
-synthetic-package: false
 nullable-getter: false
 untranslated-messages-file: lib/src/generated/untraslated_strings.txt

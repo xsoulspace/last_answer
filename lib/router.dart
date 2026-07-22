@@ -37,6 +37,10 @@ final appRouter = GoRouter(
               (final _) => const ProjectView(),
             ),
             AppRoute(
+              '/home/d/:docId',
+              (final _) => const ProjectView(),
+            ),
+            AppRoute(
               '/home/i/:ideaId',
               (final _) => const ProjectView(),
             ),

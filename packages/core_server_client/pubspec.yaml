@@ -2,16 +2,14 @@ name: core_server_client
 description: Starting point for a Serverpod client.
 
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.12.0
+
+resolution: workspace
 
 dependencies:
   core:
     path: ../core
-  serverpod_auth_client: 2.8.0
-  serverpod_client: 2.8.0
-  shared_models:
-    path: ../shared_models
-
-dependency_overrides:
+  serverpod_auth_client: ^3.4.11
+  serverpod_client: ^3.4.11
   shared_models:
     path: ../shared_models

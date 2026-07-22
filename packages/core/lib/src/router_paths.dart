@@ -15,4 +15,6 @@ class ScreenPaths {
       '$home/i/${ideaId.value}/${answerId.value}';
   static String note({required final ProjectModelId noteId}) =>
       '$home/n/${noteId.value}';
+  static String doc({required final ProjectModelId docId}) =>
+      '$home/d/${docId.value}';
 }

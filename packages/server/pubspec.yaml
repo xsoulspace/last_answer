@@ -3,20 +3,22 @@ description: Starting point for a Serverpod server.
 # version: 1.0.0
 # homepage: https://www.example.com
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.12.0
+
+resolution: workspace
 
 dependencies:
   app_store_server_sdk: ^1.2.10
-  googleapis: ^15.0.0
-  googleapis_auth: ^2.0.0
-  serverpod: ^2.9.1
-  serverpod_auth_server: ^2.9.1
+  googleapis: ^16.0.0
+  googleapis_auth: ^2.3.3
+  serverpod: ^3.4.11
+  serverpod_auth_server: ^3.4.11
   shared_models:
     path: ../shared_models
 
 dev_dependencies:
-  lints: ^6.0.0
+  lints: ^6.1.0
   xsoulspace_lints: ^0.1.2
 
 dependency_overrides:
-  google_fonts: ^6.3.2
+  google_fonts: ^8.2.0

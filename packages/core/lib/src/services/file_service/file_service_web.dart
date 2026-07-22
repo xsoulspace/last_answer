@@ -8,14 +8,14 @@ import 'file_service_i.dart';
 class FileService implements FileServiceI {
   @override
   Future<Map<String, dynamic>> openFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
-      withData: true,
     );
     if (result == null || result.files.isEmpty) return {};
     final file = result.files.first;
-    final s = const Utf8Decoder().convert(file.bytes!.toList());
+    final bytes = await file.readAsBytes();
+    final s = const Utf8Decoder().convert(bytes.toList());
     return jsonDecode(s);
   }
 
@@ -30,8 +30,11 @@ class FileService implements FileServiceI {
     final str = jsonEncode(data);
     final uint8List = const Utf8Encoder().convert(str);
     const String mimeType = 'text/json';
-    final XFile textFile =
-        XFile.fromData(uint8List, mimeType: mimeType, name: filename);
+    final XFile textFile = XFile.fromData(
+      uint8List,
+      mimeType: mimeType,
+      name: filename,
+    );
     await textFile.saveTo(result.path);
     return true;
   }

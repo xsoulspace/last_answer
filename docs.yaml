@@ -3,6 +3,11 @@ name: Word By Word Game
 sidebar:
   - - About
     - "/"
+  - - Product
+    - - - GDD/PRD Editor — Goal & Pillars
+        - "/product/gdd-prd-editor-goal-and-pillars"
+    - - - Decision & refinement tools
+        - "/product/refinement-tools"
   - - Legal
     - - - Privacy Policy
         - "/legal/privacy-policy"

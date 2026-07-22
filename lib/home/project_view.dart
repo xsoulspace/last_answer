@@ -1,5 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/doc/doc_view.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
 import 'package:lastanswer/settings/views/changelog_view.dart';
@@ -28,6 +29,10 @@ class ProjectView extends StatelessWidget {
       changelog: (final changelog) => const _AdaptiveView(
         appBar: _ChangelogViewAppBar(),
         child: ChangelogView(),
+      ),
+      doc: (final doc) => _AdaptiveView(
+        appBar: const _ProjectViewAppBar(),
+        child: DocView(doc: doc, key: ValueKey(id)),
       ),
     );
   }

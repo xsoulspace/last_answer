@@ -6,10 +6,14 @@ class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({
     required this.onIdeaTap,
     required this.onNoteTap,
+    this.onGddTap,
+    this.onPrdTap,
     super.key,
   });
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
+  final VoidCallback? onGddTap;
+  final VoidCallback? onPrdTap;
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
@@ -33,6 +37,24 @@ class VerticalProjectsBar extends StatelessWidget {
               onTap: () => {}, // FeedbackProvider.show(context),
               label: 'Bugs',
               child: const FeedbackButton(),
+            ),
+          if (onGddTap != null)
+            BarItem(
+              onTap: onGddTap!,
+              label: 'GDD',
+              child: IconButton(
+                onPressed: onGddTap,
+                icon: const Icon(Icons.sports_esports),
+              ),
+            ),
+          if (onPrdTap != null)
+            BarItem(
+              onTap: onPrdTap!,
+              label: 'PRD',
+              child: IconButton(
+                onPressed: onPrdTap,
+                icon: const Icon(Icons.description),
+              ),
             ),
           BarItem(
             onTap: onIdeaTap,

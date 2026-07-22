@@ -131,24 +131,3 @@ class _PlatformTile extends StatelessComponent {
     ], classes: 'pb-4 pt-4 border-b last:border-b-0 border-stone-100 w-full');
   }
 }
-
-class Row extends StatelessComponent {
-  const Row({
-    required this.children,
-    this.mainAxisAlignment = JustifyContent.center,
-    super.key,
-  });
-  final List<Component> children;
-  final JustifyContent mainAxisAlignment;
-  @override
-  Component build(BuildContext context) {
-    return div(
-      styles: Styles(
-        display: Display.flex,
-        flexDirection: FlexDirection.row,
-        justifyContent: mainAxisAlignment,
-      ),
-      children,
-    );
-  }
-}

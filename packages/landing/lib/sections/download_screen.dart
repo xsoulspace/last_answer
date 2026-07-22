@@ -37,16 +37,16 @@ final _platforms = <PlatformLinksTuple>[
 class DownloadScreen extends StatelessComponent {
   const DownloadScreen({super.key});
   @override
-  Component build(BuildContext context) sync {
+  Component build(BuildContext context) {
     return section([
       Card([
         h2(
-          [text('Last Answer')],
+          [Component.text('Last Answer')],
           classes:
               'text-5xl md:text-7xl tracking-tighter leading-2 md:leading-tight',
         ),
         h4([
-          text('Notes & Ideas'),
+          Component.text('Notes & Ideas'),
         ], classes: 'text-2xl md:text-3xl text-stone-800/70'),
         TwSpacer.y('8'),
         div([
@@ -54,7 +54,7 @@ class DownloadScreen extends StatelessComponent {
             mainAxisAlignment: JustifyContent.spaceBetween,
             children: [
               p([
-                text(
+                Component.text(
                   'Simple and quick app to write your thoughts. Also, it is open source.',
                 ),
               ], classes: 'w-fit'),
@@ -80,7 +80,7 @@ class DownloadScreen extends StatelessComponent {
         div([hr()], classes: 'w-full'),
         TwSpacer.y('12'),
         h5([
-          text('Platforms'),
+          Component.text('Platforms'),
         ], classes: 'text-2xl font-light text-stone-800/60'),
         TwSpacer.y('4'),
         ..._platforms.map((e) => _PlatformTile(platform: e)),
@@ -97,15 +97,15 @@ typedef PlatformLinksTuple = ({
 typedef PlatformLinkTuple = ({String title, String url});
 
 class _PlatformTile extends StatelessComponent {
-  const _PlatformTile({required this.platform, super.key});
+  const _PlatformTile({required this.platform});
   final PlatformLinksTuple platform;
   @override
-  Component build(BuildContext context) sync {
+  Component build(BuildContext context) {
     return div([
       Row(
         mainAxisAlignment: JustifyContent.spaceBetween,
         children: [
-          strong([text(platform.platformTitle)], classes: ''),
+          strong([Component.text(platform.platformTitle)], classes: ''),
           div(
             platform.links
                 .map(
@@ -118,7 +118,7 @@ class _PlatformTile extends StatelessComponent {
                         classes: 'text-sm',
                       ),
                       TwSpacer.x('2'),
-                      text(e.title),
+                      Component.text(e.title),
                     ], classes: 'flex items-center'),
                     openInNewTab: true,
                   ),
@@ -129,5 +129,26 @@ class _PlatformTile extends StatelessComponent {
         ],
       ),
     ], classes: 'pb-4 pt-4 border-b last:border-b-0 border-stone-100 w-full');
+  }
+}
+
+class Row extends StatelessComponent {
+  const Row({
+    required this.children,
+    this.mainAxisAlignment = JustifyContent.center,
+    super.key,
+  });
+  final List<Component> children;
+  final JustifyContent mainAxisAlignment;
+  @override
+  Component build(BuildContext context) {
+    return div(
+      styles: Styles(
+        display: Display.flex,
+        flexDirection: FlexDirection.row,
+        justifyContent: mainAxisAlignment,
+      ),
+      children,
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
@@ -179,13 +180,13 @@ class FotterBottomBar extends StatelessComponent {
             ..._bottomLinks.map(
               (e) => div([
                 h5([
-                  text(e.sectionTitle),
+                  Component.text(e.sectionTitle),
                 ], classes: 'text-base font-semibold text-stone-800'),
                 ul(
                   e.links
                       .map(
-                        (link) => LiLinkButton(
-                          item: link,
+                        (linkRecord) => LiLinkButton(
+                          item: linkRecord,
                           decoration: LiLinkButtonDecoration.stone,
                         ),
                       )
@@ -199,7 +200,7 @@ class FotterBottomBar extends StatelessComponent {
           hr(),
           // TODO(arenukvern): add social icons with links,
           p([
-            text('© 2020-2024 Anton Malofeev, Irina Veter.'),
+            Component.text('© 2020-2024 Anton Malofeev, Irina Veter.'),
           ], classes: 'mt-8 text-xs leading-5 text-stone-500'),
         ]),
       ], classes: 'mx-auto max-w-7xl px-12 py-8'),
@@ -212,7 +213,7 @@ class AppBarBurgerButton extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return div([
-      button([text('Menu')], classes: ''),
+      button([Component.text('Menu')], classes: ''),
     ], classes: 'ml-auto md:hidden');
   }
 }
@@ -230,7 +231,7 @@ class OpenAppButton extends StatelessComponent {
     return LinkButton(
       styledDecoration: decoration,
       title: p([
-        text(title),
+        Component.text(title),
         IconSpan(icon: MaterialIcons.chevronRight),
       ], classes: 'flex items-center'),
       url: 'https://xsoulspace.dev/last_answer',

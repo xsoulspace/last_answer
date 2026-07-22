@@ -9,19 +9,18 @@ class TelegramBotService {
     if (!_isInitializable) return;
     final bot = _bot = Bot(Envs.telegramBotToken);
 
-    bot.start();
+    await bot.start();
 
     /// Sets up the /settings command listener
-    bot.settings((ctx) async => ctx.reply('Settings'));
-
-    /// Sets up the /help command listener
-    bot.help((ctx) async => ctx.reply('Help'));
-
-    /// The [bot.hears] method allows you to listen to messages that match a regular expression.
-    /// You can use the `Context.matches` getter to access the matches of the regular expression.
-    bot.hears(RegExp('Hello, (.*)!'), (ctx) async {
-      await ctx.reply('${ctx.matches[1]} must be a doing great!');
-    });
+    bot
+      ..settings((ctx) async => ctx.reply('Settings'))
+      /// Sets up the /help command listener
+      ..help((ctx) async => ctx.reply('Help'))
+      /// The [bot.hears] method allows you to listen to messages that match a regular expression.
+      /// You can use the `Context.matches` getter to access the matches of the regular expression.
+      ..hears(RegExp('Hello, (.*)!'), (ctx) async {
+        await ctx.reply('${ctx.matches[1]} must be a doing great!');
+      });
     print('Starting telegram bot...');
     // await bot.start(
     //   (ctx) {

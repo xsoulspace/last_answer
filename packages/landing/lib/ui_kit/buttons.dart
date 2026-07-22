@@ -54,7 +54,7 @@ class StyledButton extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return button(
-      [title ?? text(titleText)],
+      [title ?? Component.text(titleText)],
       classes: decoration.toString(),
       onClick: onClick,
     );
@@ -149,7 +149,7 @@ class LinkButton extends StatelessComponent {
     final shouldUseA =
         url.startsWith('https://') || url.startsWith('http://') || openInNewTab;
 
-    final children = [title ?? text(titleText)];
+    final children = [title ?? Component.text(titleText)];
     // TODO(arenukvern): description, https://github.com/schultek/jaspr/issues/180
     if (shouldUseA) {
       return a(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 // import 'package:serverpod_auth_client/module.dart';
@@ -31,6 +32,7 @@ class _ServerpodImpl extends StatelessWidget {
   const _ServerpodImpl();
 
   @override
+  // ignore: prefer_expression_function_bodies
   Widget build(final BuildContext context) {
     // final remoteClient = RemoteClient.ofContextAsServerpodImpl(context);
     return ServerpodSignInWithGoogleButton(
@@ -39,10 +41,10 @@ class _ServerpodImpl extends StatelessWidget {
       serverClientId: Envs.googleServerClientId,
       redirectUri: Envs.serverRedirectUri,
       onFailure: () {
-        print('onFailure');
+        log('onFailure');
       },
       onSignedIn: () {
-        print('onSignedIn');
+        log('onSignedIn');
       },
     );
   }
@@ -163,6 +165,8 @@ Future<NavigatorState> _showLoadingBarrier({
       context: context,
       builder: (final context) {
         completer.complete(Navigator.of(context));
+
+        // ignore: avoid_unnecessary_containers
         return Container(child: const UiCircularProgress());
       },
       barrierDismissible: false,

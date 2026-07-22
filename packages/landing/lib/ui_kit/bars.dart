@@ -1,16 +1,15 @@
+import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 class TabBar extends StatelessComponent {
-  const TabBar({
-    required this.tabs,
-    super.key,
-  });
+  const TabBar({required this.tabs, super.key});
   final List<Component> tabs;
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield div(
+  Component build(BuildContext context) {
+    return div(
       [ul(tabs, classes: 'flex flex-row')],
-      classes: 'relative mx-auto max-w-lg w-full overflow-x-auto rounded-full '
+      classes:
+          'relative mx-auto max-w-lg w-full overflow-x-auto rounded-full '
           'border-black/5 bg-black/5 p-1 backdrop-blur-2xl',
     );
   }
@@ -29,10 +28,10 @@ class Tab extends StatelessComponent {
   final Component? title;
   final bool isSelected;
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield li([
+  Component build(BuildContext context) {
+    return li([
       button(
-        [title ?? text(titleText)],
+        [title ?? Component.text(titleText)],
         classes: 'font-semibold text-stone-500/90',
         onClick: onClick,
       ),

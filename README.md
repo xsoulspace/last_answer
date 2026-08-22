@@ -28,7 +28,7 @@
     <img height="90px"; alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
   </a>
   <a href="https://apps.apple.com/us/app/lastanswer-brainstorm-notes/id1592159945?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 67px;"><img  src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1635811200&h=c0b39b674d1eebdbed8e027d3291b23c" alt="Download on the App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"></a>
-  
+
 </p>
 
 ---
@@ -97,6 +97,14 @@ Thank you for your support and have a great day! 🌄
 
 [@Aleksey070 for insights about AI and testing](https://github.com/Aleksey070)
 [@albanobattistella for initial Italian translation](https://github.com/albanobattistella)
+
+## License
+
+This project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+
+- Personal and noncommercial use is free.
+- Commercial use, including distributing this software (or works based on it) as part of a commercial product or app store publication, requires a separate commercial license.
+- For commercial licensing, contact [anton@xsoulspace.dev](mailto:anton@xsoulspace.dev).
 
 ## Other
 

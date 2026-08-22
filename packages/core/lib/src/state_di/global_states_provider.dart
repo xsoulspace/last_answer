@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_local_db/universal_storage_local_db.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
+import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
+import 'package:xsoulspace_monetization_rustore/xsoulspace_monetization_rustore.dart';
 
 import '../../core.dart';
 
@@ -50,6 +54,65 @@ class GlobalStatesProvider extends StatelessWidget {
       ChangeNotifierProvider(create: UserNotifier.new),
       ChangeNotifierProvider(create: AppNotifier.new),
       ChangeNotifierProvider(create: OpenedProjectNotifier.new),
+
+      /// monetization
+      ChangeNotifierProvider<MonetizationStoreStatusResource>(
+        create: (final _) => MonetizationStoreStatusResource(),
+      ),
+      ChangeNotifierProvider<MonetizationTypeResource>(
+        create: (final _) =>
+            MonetizationTypeResource(MonetizationType.subscription),
+      ),
+      ChangeNotifierProvider<ActiveSubscriptionResource>(
+        create: (final _) => ActiveSubscriptionResource(),
+      ),
+      ChangeNotifierProvider<SubscriptionStatusResource>(
+        create: (final _) => SubscriptionStatusResource(),
+      ),
+      ChangeNotifierProvider<AvailableSubscriptionsResource>(
+        create: (final _) => AvailableSubscriptionsResource(),
+      ),
+      ChangeNotifierProvider<PaywallSelectedSubscriptionResource>(
+        create: (final _) => PaywallSelectedSubscriptionResource(),
+      ),
+      ChangeNotifierProvider<PurchasePaywallErrorResource>(
+        create: (final _) => PurchasePaywallErrorResource(),
+      ),
+      Provider<PurchasesLocalApi>(
+        create: (final context) =>
+            PurchasesLocalApi(localDb: context.read<LocalDbI>()),
+      ),
+      Provider<MonetizationFoundation>(
+        create: (final context) {
+          final purchaseProvider = switch (monetizationStoreTarget) {
+            InstallationTargetStore.rustore => RustorePurchaseProvider(
+              consoleApplicationId: rustoreApplicationId,
+              deeplinkScheme: appDeeplinkScheme,
+              // ignore: avoid_redundant_argument_values
+              enableLogging: kDebugMode,
+              productTypeChecker: MonetizationProducts.productTypeChecker,
+            ),
+            _ => NoopPurchaseProvider(),
+          };
+          return MonetizationFoundation(
+            resources: (
+              status: context.read<MonetizationStoreStatusResource>(),
+              type: context.read<MonetizationTypeResource>(),
+              activeSubscription: context.read<ActiveSubscriptionResource>(),
+              subscriptionStatus: context.read<SubscriptionStatusResource>(),
+              availableSubscriptions: context
+                  .read<AvailableSubscriptionsResource>(),
+              paywallSelectedSubscription: context
+                  .read<PaywallSelectedSubscriptionResource>(),
+              purchasePaywallError: context
+                  .read<PurchasePaywallErrorResource>(),
+            ),
+            purchasesLocalApi: context.read<PurchasesLocalApi>(),
+            purchaseProvider: purchaseProvider,
+          );
+        },
+        dispose: (final _, final foundation) => foundation.dispose(),
+      ),
     ],
     child: Builder(builder: builder),
   );

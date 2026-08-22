@@ -4,6 +4,8 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/ui_pay/paywall_flow.dart';
+import 'package:lastanswer/ui_pay/paywall_screen.dart';
 
 final appRouter = GoRouter(
   redirect: _handleRootRedirect,
@@ -12,41 +14,20 @@ final appRouter = GoRouter(
       builder: (final context, final router, final navigator) =>
           AppScaffold(navigator: navigator),
       routes: [
-        AppRoute(
-          ScreenPaths.bootstrap,
-          (final _) => const LoadingScreen(),
-        ),
-        AppRoute(
-          ScreenPaths.intro,
-          (final _) => const IntroScreen(),
-        ),
+        AppRoute(ScreenPaths.bootstrap, (final _) => const LoadingScreen()),
+        AppRoute(ScreenPaths.intro, (final _) => const IntroScreen()),
         ShellRoute(
           builder: (final context, final state, final navigator) =>
-              ScreenScaffold(
-            navigator: HomeScreen(
-              navigator: navigator,
-            ),
-          ),
+              ScreenScaffold(navigator: HomeScreen(navigator: navigator)),
           routes: [
+            AppRoute(ScreenPaths.home, (final _) => const ProjectsListScreen()),
+            AppRoute('/home/n/:noteId', (final _) => const ProjectView()),
+            AppRoute('/home/d/:docId', (final _) => const ProjectView()),
+            AppRoute('/home/i/:ideaId', (final _) => const ProjectView()),
+            AppRoute(ScreenPaths.changelog, (final _) => const ProjectView()),
             AppRoute(
-              ScreenPaths.home,
-              (final _) => const ProjectsListScreen(),
-            ),
-            AppRoute(
-              '/home/n/:noteId',
-              (final _) => const ProjectView(),
-            ),
-            AppRoute(
-              '/home/d/:docId',
-              (final _) => const ProjectView(),
-            ),
-            AppRoute(
-              '/home/i/:ideaId',
-              (final _) => const ProjectView(),
-            ),
-            AppRoute(
-              ScreenPaths.changelog,
-              (final _) => const ProjectView(),
+              PaywallFlow.paywallPath,
+              (final _) => const PaywallScreen(),
             ),
           ],
         ),
@@ -63,29 +44,29 @@ class AppRoute extends GoRoute {
     final List<GoRoute> routes = const [],
     this.useFade = false,
   }) : super(
-          path: path,
-          routes: routes,
-          pageBuilder: (final context, final state) {
-            final pageContent = Scaffold(
-              body: builder(state),
-              resizeToAvoidBottomInset: false,
-            );
-            if (useFade) {
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: pageContent,
-                transitionsBuilder: (
-                  final context,
-                  final animation,
-                  final secondaryAnimation,
-                  final child,
-                ) =>
-                    FadeTransition(opacity: animation, child: child),
-              );
-            }
-            return CupertinoPage(child: pageContent);
-          },
-        );
+         path: path,
+         routes: routes,
+         pageBuilder: (final context, final state) {
+           final pageContent = Scaffold(
+             body: builder(state),
+             resizeToAvoidBottomInset: false,
+           );
+           if (useFade) {
+             return CustomTransitionPage(
+               key: state.pageKey,
+               child: pageContent,
+               transitionsBuilder:
+                   (
+                     final context,
+                     final animation,
+                     final secondaryAnimation,
+                     final child,
+                   ) => FadeTransition(opacity: animation, child: child),
+             );
+           }
+           return CupertinoPage(child: pageContent);
+         },
+       );
   final bool useFade;
 }
 

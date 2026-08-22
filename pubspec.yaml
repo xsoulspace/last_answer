@@ -97,6 +97,15 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/xsoulspace_locale
   xsoulspace_state_utils:
     path: ../dart_flutter_packages/pkgs/xsoulspace_state_utils
+  # TODO(arenukvern): remove after xsoulspace_monetization_* packages publish
+  xsoulspace_installation_store:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_installation_store
+  xsoulspace_monetization_interface:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_interface
+  xsoulspace_monetization_foundation:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_foundation
+  xsoulspace_monetization_rustore:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_rustore
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
   universal_storage_local_db:

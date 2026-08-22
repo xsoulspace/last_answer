@@ -5,6 +5,13 @@ analyzer:
     - lib/l10n/l10n.dart
     - lib/l10n/l10n_*.dart
     - archive/**
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   errors:
     unused_local_variable: info

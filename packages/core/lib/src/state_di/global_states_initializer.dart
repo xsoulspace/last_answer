@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 import '../../core.dart';
 import '../state/user_remote_initializer.dart';
@@ -84,7 +85,17 @@ class GlobalStatesInitializer implements StateInitializer {
       router.go(ScreenPaths.home);
       // router.go(ScreenPaths.intro);
     }
+    unawaited(_initMonetization());
     unawaited(_loadPost());
+  }
+
+  /// Initializes monetization: local restore first, then store init.
+  Future<void> _initMonetization() async {
+    final foundation = dto.context.read<MonetizationFoundation>();
+    await foundation.initLocal();
+    await foundation.init(
+      productIds: MonetizationProducts.subscriptionsForBuild,
+    );
   }
 
   /// ********************************************

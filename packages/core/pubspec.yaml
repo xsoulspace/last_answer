@@ -50,7 +50,11 @@ dependencies:
   url_launcher: ^6.3.2
   uuid: ^4.6.0
   xsoulspace_foundation:
+  xsoulspace_installation_store: ^0.1.2
   xsoulspace_locale:
+  xsoulspace_monetization_foundation: ^0.9.0
+  xsoulspace_monetization_interface: ^0.9.0
+  xsoulspace_monetization_rustore: ^1.0.1-dev.2
   xsoulspace_state_utils:
   xsoulspace_ui_foundation:
 

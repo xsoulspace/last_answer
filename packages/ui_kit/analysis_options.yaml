@@ -9,6 +9,13 @@ analyzer:
     # rule, since the app_router.gr.dart can often
     # be cause of missing dependencies.
     - lib/**.*.dart
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   errors:
     unused_local_variable: info

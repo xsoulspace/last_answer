@@ -44,11 +44,11 @@ Map<String, dynamic> threadsToJsonMap(Map<SpanId, DocThreadModel> map) =>
 
 /// Identifies a span for threading: "blockId" (whole block) or "blockId:start:end".
 extension type const SpanId(String value) {
+  factory SpanId.forBlock(DocBlockId blockId) => SpanId(blockId.value);
+  factory SpanId.forRange(DocBlockId blockId, int start, int end) =>
+      SpanId('${blockId.value}:$start:$end');
   factory SpanId.fromJson(String value) => SpanId(value);
   String toJson() => value;
-  static SpanId forBlock(DocBlockId blockId) => SpanId(blockId.value);
-  static SpanId forRange(DocBlockId blockId, int start, int end) =>
-      SpanId('${blockId.value}:$start:$end');
 }
 
 @freezed
@@ -74,6 +74,20 @@ abstract class DocThreadModel with _$DocThreadModel {
 
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
+  factory ProjectModel.emptyGdd() => ProjectModel.doc(
+    id: ProjectModelId.generate(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    docKind: DocKind.gdd,
+    blocks: defaultGddTemplate(),
+  );
+  factory ProjectModel.emptyPrd() => ProjectModel.doc(
+    id: ProjectModelId.generate(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    docKind: DocKind.prd,
+    blocks: defaultPrdTemplate(),
+  );
   @Implements<Archivable>()
   @Implements<Sharable>()
   const factory ProjectModel.idea({
@@ -177,27 +191,12 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );
-
-  static ProjectModel emptyGdd() => ProjectModel.doc(
-    id: ProjectModelId.generate(),
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    docKind: DocKind.gdd,
-    blocks: defaultGddTemplate(),
-  );
-  static ProjectModel emptyPrd() => ProjectModel.doc(
-    id: ProjectModelId.generate(),
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    docKind: DocKind.prd,
-    blocks: defaultPrdTemplate(),
-  );
 }
 
 List<DocBlockModel> defaultGddTemplate() => [
   DocBlockModel(
     id: DocBlockId.generate(),
-    type: DocBlockType.heading,
+    type: DocBlockType.list,
     content: 'Overview',
     level: 1,
   ),

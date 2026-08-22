@@ -13,6 +13,7 @@ class DocView extends StatefulWidget {
 class _DocViewState extends State<DocView> {
   late ProjectModelDoc _doc;
   int? _focusedBlockIndex;
+  int? _lastFocusedBlockIndex;
   SpanId? _threadPanelSpanId;
 
   @override
@@ -40,15 +41,19 @@ class _DocViewState extends State<DocView> {
   }
 
   void _onBlockFocus(final int index, final bool hasFocus) {
+    if (hasFocus) {
+      _lastFocusedBlockIndex = index;
+    }
     setState(() => _focusedBlockIndex = hasFocus ? index : null);
   }
 
   void _openDiscuss() {
-    if (_focusedBlockIndex == null) return;
-    final blockId = _doc.blocks[_focusedBlockIndex!].id;
+    final index = _lastFocusedBlockIndex;
+    if (index == null) return;
+    final blockId = _doc.blocks[index].id;
     final spanId = SpanId.forBlock(blockId);
-    final threads = Map<SpanId, DocThreadModel>.from(_doc.threads);
-    threads.putIfAbsent(spanId, () => const DocThreadModel(messages: []));
+    final threads = Map<SpanId, DocThreadModel>.from(_doc.threads)
+      ..putIfAbsent(spanId, () => const DocThreadModel());
     _updateDoc(_doc.copyWith(threads: threads, updatedAt: DateTime.now()));
     setState(() => _threadPanelSpanId = spanId);
   }
@@ -58,7 +63,7 @@ class _DocViewState extends State<DocView> {
   void _addThreadMessage(final String content) {
     final spanId = _threadPanelSpanId;
     if (spanId == null) return;
-    final thread = _doc.threads[spanId] ?? const DocThreadModel(messages: []);
+    final thread = _doc.threads[spanId] ?? const DocThreadModel();
     final messages = [
       ...thread.messages,
       DocThreadMessageModel(content: content, timestamp: DateTime.now()),
@@ -80,48 +85,52 @@ class _DocViewState extends State<DocView> {
   }
 
   @override
-  Widget build(final BuildContext context) => PopScope(
-    onPopInvoked: (_) => context.read<OpenedProjectNotifier>().onPopProject(),
-    child: Stack(
-      children: [
-        ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          itemCount: _doc.blocks.length,
-          itemBuilder: (final context, final index) => _DocBlockTile(
-            block: _doc.blocks[index],
-            blockIndex: index,
-            hasThread: _doc.threads.containsKey(
-              SpanId.forBlock(_doc.blocks[index].id),
-            ),
-            isFocused: _focusedBlockIndex == index,
-            onFocus: _onBlockFocus,
-            onChanged: (final content) => _replaceBlock(
-              index,
-              _doc.blocks[index].copyWith(content: content),
-            ),
-            onThreadTap: () => setState(
-              () => _threadPanelSpanId = SpanId.forBlock(_doc.blocks[index].id),
+  Widget build(final BuildContext context) {
+    final focusedBlockIndex = _focusedBlockIndex;
+    return PopScope(
+      onPopInvokedWithResult: (_, _) =>
+          context.read<OpenedProjectNotifier>().onPopProject(),
+      child: Stack(
+        children: [
+          ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 16),
+            itemCount: _doc.blocks.length,
+            itemBuilder: (final context, final index) => _DocBlockTile(
+              block: _doc.blocks[index],
+              blockIndex: index,
+              hasThread: _doc.threads.containsKey(
+                SpanId.forBlock(_doc.blocks[index].id),
+              ),
+              isFocused: focusedBlockIndex == index,
+              onFocus: _onBlockFocus,
+              onChanged: (final content) => _replaceBlock(
+                index,
+                _doc.blocks[index].copyWith(content: content),
+              ),
+              onThreadTap: () => setState(
+                () =>
+                    _threadPanelSpanId = SpanId.forBlock(_doc.blocks[index].id),
+              ),
             ),
           ),
-        ),
-        if (_focusedBlockIndex != null)
-          _SelectionToolbar(
-            onDiscuss: _openDiscuss,
-            onAskAi: _onAskAi,
-            onExpand: () {}, // placeholder
-            onSummarise: () {}, // placeholder
-          ),
-        if (_threadPanelSpanId != null)
-          _ThreadPanel(
-            thread:
-                _doc.threads[_threadPanelSpanId] ??
-                const DocThreadModel(messages: []),
-            onClose: _closeThreadPanel,
-            onSend: _addThreadMessage,
-          ),
-      ],
-    ),
-  );
+          if (_lastFocusedBlockIndex != null)
+            _SelectionToolbar(
+              onDiscuss: _openDiscuss,
+              onAskAi: _onAskAi,
+              onExpand: () {}, // placeholder
+              onSummarise: () {}, // placeholder
+            ),
+          if (_threadPanelSpanId != null)
+            _ThreadPanel(
+              thread:
+                  _doc.threads[_threadPanelSpanId] ?? const DocThreadModel(),
+              onClose: _closeThreadPanel,
+              onSend: _addThreadMessage,
+            ),
+        ],
+      ),
+    );
+  }
 }
 
 class _SelectionToolbar extends StatelessWidget {
@@ -296,6 +305,7 @@ class _DocBlockTile extends StatefulWidget {
   final int blockIndex;
   final bool hasThread;
   final bool isFocused;
+  // ignore: avoid_positional_boolean_parameters
   final void Function(int index, bool hasFocus) onFocus;
   final ValueChanged<String> onChanged;
   final VoidCallback onThreadTap;
@@ -334,8 +344,9 @@ class _DocBlockTileState extends State<_DocBlockTile> {
 
   @override
   void dispose() {
-    _focusNode.removeListener(_reportFocus);
-    _focusNode.dispose();
+    _focusNode
+      ..removeListener(_reportFocus)
+      ..dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -345,49 +356,46 @@ class _DocBlockTileState extends State<_DocBlockTile> {
     final theme = Theme.of(context);
     final isHeading = widget.block.type == DocBlockType.heading;
     final isList = widget.block.type == DocBlockType.list;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isList)
-            const Padding(
-              padding: EdgeInsets.only(top: 12, right: 8),
-              child: Text('•'),
-            ),
-          Expanded(
-            child: TextField(
-              key: ValueKey(widget.block.id.value),
-              controller: _controller,
-              focusNode: _focusNode,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              style: isHeading
-                  ? theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          (theme.textTheme.titleMedium?.fontSize ?? 16) +
-                          (widget.block.level != null
-                              ? (4 - (widget.block.level!.clamp(1, 4)))
-                              : 0),
-                    )
-                  : theme.textTheme.bodyMedium,
-              maxLines: isHeading ? 1 : null,
-              onChanged: widget.onChanged,
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.hasThread)
+          IconButton(
+            iconSize: 18,
+            onPressed: widget.onThreadTap,
+            icon: const Icon(Icons.chat_bubble_outline),
+            tooltip: 'Open thread',
           ),
-          if (widget.hasThread)
-            IconButton(
-              iconSize: 18,
-              onPressed: widget.onThreadTap,
-              icon: const Icon(Icons.chat_bubble_outline),
-              tooltip: 'Open thread',
+        if (isList)
+          const Padding(
+            padding: EdgeInsets.only(top: 12, right: 8),
+            child: Text('•'),
+          ),
+        Expanded(
+          child: TextField(
+            key: ValueKey(widget.block.id),
+            controller: _controller,
+            focusNode: _focusNode,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
             ),
-        ],
-      ),
+            style: isHeading
+                ? theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize:
+                        (theme.textTheme.titleMedium?.fontSize ?? 16) +
+                        (widget.block.level != null
+                            ? (4 - (widget.block.level!.clamp(1, 4)))
+                            : 0),
+                  )
+                : theme.textTheme.bodyMedium,
+            maxLines: isHeading ? 1 : null,
+            onChanged: widget.onChanged,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -776,6 +776,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'All'**
   String get all;
+
+  /// No description provided for @githubSync.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Sync'**
+  String get githubSync;
+
+  /// No description provided for @connectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect GitHub…'**
+  String get connectGithub;
+
+  /// No description provided for @disconnectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect GitHub'**
+  String get disconnectGithub;
+
+  /// No description provided for @githubConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub connected'**
+  String get githubConnected;
+
+  /// No description provided for @githubConnectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect GitHub: {error}'**
+  String githubConnectFailed(String error);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

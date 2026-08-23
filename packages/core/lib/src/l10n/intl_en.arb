@@ -111,5 +111,17 @@
   "useFoldersForNotes": "Use 🗂️Folders for Notes and Ideas to quickly organize them.",
   "youCanCreateUpTo": "\n\nYou can create up to {foldersLimit} Folders.",
   "clickToEditFolders": "Click to edit Folders",
-  "all": "All"
+  "all": "All",
+  "githubSync": "GitHub Sync",
+  "connectGithub": "Connect GitHub…",
+  "disconnectGithub": "Disconnect GitHub",
+  "githubConnected": "GitHub connected",
+  "githubConnectFailed": "Could not connect GitHub: {error}",
+  "@githubConnectFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

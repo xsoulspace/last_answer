@@ -376,4 +376,21 @@ class SIt extends S {
 
   @override
   String get all => 'All';
+
+  @override
+  String get githubSync => 'Sincronizzazione GitHub';
+
+  @override
+  String get connectGithub => 'Collega GitHub…';
+
+  @override
+  String get disconnectGithub => 'Disconnetti GitHub';
+
+  @override
+  String get githubConnected => 'GitHub collegato';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Impossibile collegare GitHub: $error';
+  }
 }

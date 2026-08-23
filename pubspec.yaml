@@ -65,6 +65,8 @@ dependencies:
   shared_models:
   shared_preferences: ^2.5.5
   ui_kit:
+  universal_storage_github_oauth:
+    path: ../dart_flutter_packages/pkgs/universal_storage_github_oauth
   universal_io: ^2.3.1
   url_launcher: ^6.3.2
   uuid: ^4.6.0
@@ -81,6 +83,8 @@ dev_dependencies:
   xsoulspace_lints: ^0.1.2
 
 dependency_overrides:
+  universal_storage_oauth:
+    path: ../dart_flutter_packages/pkgs/universal_storage_oauth
   analyzer: ^14.1.0
   meta: ^1.19.0
   intl: ^0.20.3

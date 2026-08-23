@@ -376,4 +376,21 @@ class SEn extends S {
 
   @override
   String get all => 'All';
+
+  @override
+  String get githubSync => 'GitHub Sync';
+
+  @override
+  String get connectGithub => 'Connect GitHub…';
+
+  @override
+  String get disconnectGithub => 'Disconnect GitHub';
+
+  @override
+  String get githubConnected => 'GitHub connected';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Could not connect GitHub: $error';
+  }
 }

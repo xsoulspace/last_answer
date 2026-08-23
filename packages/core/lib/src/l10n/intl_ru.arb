@@ -114,5 +114,17 @@
   "useFoldersForNotes": "Используйте 🗂️ Папки для заметок и идей, чтобы быстро организовать их.  ",
   "youCanCreateUpTo": "\n\nВы можете создать до {foldersLimit} папок.",
   "clickToEditFolders": "Редактировать папки",
-  "all": "Все"
+  "all": "Все",
+  "githubSync": "Синхронизация GitHub",
+  "connectGithub": "Подключить GitHub…",
+  "disconnectGithub": "Отключить GitHub",
+  "githubConnected": "GitHub подключён",
+  "githubConnectFailed": "Не удалось подключить GitHub: {error}",
+  "@githubConnectFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

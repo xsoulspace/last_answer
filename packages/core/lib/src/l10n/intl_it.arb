@@ -111,5 +111,17 @@
   "useFoldersForNotes": "Usa 🗂️ Cartelle per Note e Idee per organizzarle rapidamente.",
   "youCanCreateUpTo": "\n\nPuoi creare fino a {foldersLimit} cartelle.",
   "clickToEditFolders": "Fai clic per modificare le cartelle",
-  "all": "All"
+  "all": "All",
+  "githubSync": "Sincronizzazione GitHub",
+  "connectGithub": "Collega GitHub…",
+  "disconnectGithub": "Disconnetti GitHub",
+  "githubConnected": "GitHub collegato",
+  "githubConnectFailed": "Impossibile collegare GitHub: {error}",
+  "@githubConnectFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

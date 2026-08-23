@@ -58,6 +58,11 @@ class GeneralSettingsViewBody extends StatelessWidget {
           leftColumnWidth: leftColumnWidth,
           child: const ProjectsDirectionSwitch(),
         ),
+        SettingsListTile(
+          titleText: context.l10n.githubSync,
+          leftColumnWidth: leftColumnWidth,
+          child: const GithubSyncButton(),
+        ),
         Divider(
           color: theme.highlightColor,
           height: 24,

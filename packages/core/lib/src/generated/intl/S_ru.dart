@@ -378,4 +378,21 @@ class SRu extends S {
 
   @override
   String get all => 'Все';
+
+  @override
+  String get githubSync => 'Синхронизация GitHub';
+
+  @override
+  String get connectGithub => 'Подключить GitHub…';
+
+  @override
+  String get disconnectGithub => 'Отключить GitHub';
+
+  @override
+  String get githubConnected => 'GitHub подключён';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Не удалось подключить GitHub: $error';
+  }
 }

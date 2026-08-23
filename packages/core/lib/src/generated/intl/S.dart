@@ -806,6 +806,54 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Could not connect GitHub: {error}'**
   String githubConnectFailed(String error);
+
+  /// No description provided for @chooseRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose repository'**
+  String get chooseRepository;
+
+  /// No description provided for @createNewRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new repository'**
+  String get createNewRepository;
+
+  /// No description provided for @repoNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'repository-name'**
+  String get repoNameHint;
+
+  /// No description provided for @subdirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Subdirectory'**
+  String get subdirectory;
+
+  /// No description provided for @backupToGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up to GitHub'**
+  String get backupToGithub;
+
+  /// No description provided for @restoreFromGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from GitHub'**
+  String get restoreFromGithub;
+
+  /// No description provided for @githubBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backed up to GitHub ✓'**
+  String get githubBackupDone;
+
+  /// No description provided for @githubRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored from GitHub ✓'**
+  String get githubRestoreDone;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

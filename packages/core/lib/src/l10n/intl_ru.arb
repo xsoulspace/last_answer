@@ -126,5 +126,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "chooseRepository": "Выберите репозиторий",
+  "createNewRepository": "Создать новый репозиторий",
+  "repoNameHint": "имя-репозитория",
+  "subdirectory": "Подкаталог",
+  "backupToGithub": "Резервная копия в GitHub",
+  "restoreFromGithub": "Восстановить из GitHub",
+  "githubBackupDone": "Скопировано в GitHub ✓",
+  "githubRestoreDone": "Восстановлено из GitHub ✓"
 }

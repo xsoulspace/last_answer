@@ -393,4 +393,28 @@ class SEn extends S {
   String githubConnectFailed(String error) {
     return 'Could not connect GitHub: $error';
   }
+
+  @override
+  String get chooseRepository => 'Choose repository';
+
+  @override
+  String get createNewRepository => 'Create new repository';
+
+  @override
+  String get repoNameHint => 'repository-name';
+
+  @override
+  String get subdirectory => 'Subdirectory';
+
+  @override
+  String get backupToGithub => 'Back up to GitHub';
+
+  @override
+  String get restoreFromGithub => 'Restore from GitHub';
+
+  @override
+  String get githubBackupDone => 'Backed up to GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Restored from GitHub ✓';
 }

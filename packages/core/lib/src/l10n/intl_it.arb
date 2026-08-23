@@ -123,5 +123,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "chooseRepository": "Scegli repository",
+  "createNewRepository": "Crea nuovo repository",
+  "repoNameHint": "nome-repository",
+  "subdirectory": "Sottocartella",
+  "backupToGithub": "Backup su GitHub",
+  "restoreFromGithub": "Ripristina da GitHub",
+  "githubBackupDone": "Salvato su GitHub ✓",
+  "githubRestoreDone": "Ripristinato da GitHub ✓"
 }

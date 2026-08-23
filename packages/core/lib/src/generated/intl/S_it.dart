@@ -393,4 +393,28 @@ class SIt extends S {
   String githubConnectFailed(String error) {
     return 'Impossibile collegare GitHub: $error';
   }
+
+  @override
+  String get chooseRepository => 'Scegli repository';
+
+  @override
+  String get createNewRepository => 'Crea nuovo repository';
+
+  @override
+  String get repoNameHint => 'nome-repository';
+
+  @override
+  String get subdirectory => 'Sottocartella';
+
+  @override
+  String get backupToGithub => 'Backup su GitHub';
+
+  @override
+  String get restoreFromGithub => 'Ripristina da GitHub';
+
+  @override
+  String get githubBackupDone => 'Salvato su GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Ripristinato da GitHub ✓';
 }

@@ -395,4 +395,28 @@ class SRu extends S {
   String githubConnectFailed(String error) {
     return 'Не удалось подключить GitHub: $error';
   }
+
+  @override
+  String get chooseRepository => 'Выберите репозиторий';
+
+  @override
+  String get createNewRepository => 'Создать новый репозиторий';
+
+  @override
+  String get repoNameHint => 'имя-репозитория';
+
+  @override
+  String get subdirectory => 'Подкаталог';
+
+  @override
+  String get backupToGithub => 'Резервная копия в GitHub';
+
+  @override
+  String get restoreFromGithub => 'Восстановить из GitHub';
+
+  @override
+  String get githubBackupDone => 'Скопировано в GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Восстановлено из GitHub ✓';
 }

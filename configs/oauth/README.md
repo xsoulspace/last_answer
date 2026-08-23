@@ -66,3 +66,31 @@ the github_api provider once the token exists.
 - macOS entitlements: network (server client) + keychain-sharing for
   flutter_secure_storage.
 - Android `INTERNET` permission (already present).
+
+## 5. Wiring the Client ID into the app
+
+Copy the Client ID (not a secret) into `configs/envs/prod.json`:
+
+```json
+{
+  "GITHUB_OAUTH_CLIENT_ID": "Iv1.xxxxxxxxxxxxxxxx"
+}
+```
+
+(Also present as an empty key in `prod.sample.json`. For quick local runs:
+`flutter run --dart-define=GITHUB_OAUTH_CLIENT_ID=Iv1.xxx`.)
+
+Builds already pass the file via `--dart-define-from-file=configs/envs/prod.json`
+(see `justfile`). Without it, the settings toggle shows the feature as
+unavailable.
+
+### Is a token or client secret needed?
+
+**No — neither.** The device flow is an OAuth "public client" flow
+(RFC 8628): the app only ever sends the **Client ID**, which is safe to
+embed in a distributed app. The user authorizes on github.com directly and
+GitHub issues the access token to the polling app; no secret participates
+anywhere, so there is nothing private to keep out of the repo.
+
+Do **not** put a personal access token or the client secret in
+`configs/envs/*.json` for this feature.

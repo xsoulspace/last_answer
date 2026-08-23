@@ -854,6 +854,78 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Restored from GitHub ✓'**
   String get githubRestoreDone;
+
+  /// No description provided for @pasteTokenInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a token instead'**
+  String get pasteTokenInstead;
+
+  /// No description provided for @tokenGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a fine-grained token'**
+  String get tokenGuideTitle;
+
+  /// No description provided for @tokenStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Open github.com and sign in.'**
+  String get tokenStep1;
+
+  /// No description provided for @tokenStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Click “Generate new token” on the token page (button below).'**
+  String get tokenStep2;
+
+  /// No description provided for @tokenStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Repository access → “Only select repositories” → pick your notes repo.'**
+  String get tokenStep3;
+
+  /// No description provided for @tokenStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Permissions → Contents → “Read and write”. Nothing else.'**
+  String get tokenStep4;
+
+  /// No description provided for @tokenStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Set an expiry date, generate, copy the token here.'**
+  String get tokenStep5;
+
+  /// No description provided for @tokenFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Token (ghu_… / github_pat_…)'**
+  String get tokenFieldLabel;
+
+  /// No description provided for @connectWithToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connectWithToken;
+
+  /// No description provided for @openGithubTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub token page'**
+  String get openGithubTokens;
+
+  /// No description provided for @manageTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage / revoke tokens'**
+  String get manageTokens;
+
+  /// No description provided for @tokenSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.'**
+  String get tokenSafety;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

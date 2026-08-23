@@ -131,5 +131,17 @@
   "backupToGithub": "Back up to GitHub",
   "restoreFromGithub": "Restore from GitHub",
   "githubBackupDone": "Backed up to GitHub ✓",
-  "githubRestoreDone": "Restored from GitHub ✓"
+  "githubRestoreDone": "Restored from GitHub ✓",
+  "pasteTokenInstead": "Paste a token instead",
+  "tokenGuideTitle": "Create a fine-grained token",
+  "tokenStep1": "1. Open github.com and sign in.",
+  "tokenStep2": "2. Click “Generate new token” on the token page (button below).",
+  "tokenStep3": "3. Repository access → “Only select repositories” → pick your notes repo.",
+  "tokenStep4": "4. Permissions → Contents → “Read and write”. Nothing else.",
+  "tokenStep5": "5. Set an expiry date, generate, copy the token here.",
+  "tokenFieldLabel": "Token (ghu_… / github_pat_…)",
+  "connectWithToken": "Connect",
+  "openGithubTokens": "Open GitHub token page",
+  "manageTokens": "Manage / revoke tokens",
+  "tokenSafety": "Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them."
 }

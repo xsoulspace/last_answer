@@ -419,4 +419,45 @@ class SRu extends S {
 
   @override
   String get githubRestoreDone => 'Восстановлено из GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Вставить токен вручную';
+
+  @override
+  String get tokenGuideTitle => 'Создайте fine-grained токен';
+
+  @override
+  String get tokenStep1 => '1. Откройте github.com и войдите.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Нажмите «Generate new token» на странице токенов (кнопка ниже).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → «Only select repositories» → выберите репозиторий заметок.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → «Read and write». Больше ничего.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Установите срок действия, сгенерируйте и вставьте токен сюда.';
+
+  @override
+  String get tokenFieldLabel => 'Токен (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Подключить';
+
+  @override
+  String get openGithubTokens => 'Открыть страницу токенов GitHub';
+
+  @override
+  String get manageTokens => 'Управление токенами / отзыв';
+
+  @override
+  String get tokenSafety =>
+      'Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить.';
 }

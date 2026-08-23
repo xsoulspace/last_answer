@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_github_api/universal_storage_github_api.dart';
@@ -134,6 +135,49 @@ class GithubSyncNotifier extends ChangeNotifier {
       if (context.mounted) _showError(context, e.toString());
     } finally {
       _connecting = false;
+      notifyListeners();
+    }
+  }
+
+  /// Connects using a user-provided Personal Access Token instead of the
+  /// device flow. Validates the token against the GitHub API before
+  /// storing it.
+  Future<bool> connectWithToken(final BuildContext context, {
+    required final String token,
+  }) async {
+    if (_busy || token.trim().isEmpty) return false;
+    _busy = true;
+    notifyListeners();
+    try {
+      final trimmed = token.trim();
+      // Validate before storing: GET /user with this token must succeed.
+      final response = await Dio().get<Object?>(
+        'https://api.github.com/user',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $trimmed',
+            'Accept': 'application/vnd.github+json',
+          },
+          validateStatus: (final _) => true,
+        ),
+      );
+      if (response.statusCode != 200) {
+        throw AuthenticationException(
+          'GitHub returned HTTP ${response.statusCode}',
+        );
+      }
+      await _storage.storeCredentials(
+        GitPlatform.github,
+        StoredCredentials.create(accessToken: OAuthAccessToken(trimmed)),
+      );
+      _connected = true;
+      await _loadRepos();
+      return true;
+    } on Exception catch (e) {
+      if (context.mounted) _showError(context, e.toString());
+      return false;
+    } finally {
+      _busy = false;
       notifyListeners();
     }
   }

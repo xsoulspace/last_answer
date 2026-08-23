@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
+// ignore: directives_ordering
 import 'package:lastanswer/common_imports.dart';
+// ignore: directives_ordering
 import 'package:lastanswer/settings/features/features.dart';
 
 /// Settings section for GitHub sync: connection toggle, repository
@@ -81,6 +84,87 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
     }
   }
 
+  Future<void> _showTokenDialog(final BuildContext context) async {
+    final l10n = context.l10n;
+    final controller = TextEditingController();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => AlertDialog(
+        title: Text(l10n.tokenGuideTitle),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.tokenStep1, style: dialogContext.textTheme.bodySmall),
+              const SizedBox(height: 4),
+              Text(l10n.tokenStep2, style: dialogContext.textTheme.bodySmall),
+              TextButton.icon(
+                icon: const Icon(Icons.open_in_new, size: 16),
+                label: Text(
+                  l10n.openGithubTokens,
+                  style: dialogContext.textTheme.bodySmall,
+                ),
+                onPressed: () => unawaited(
+                  launchUrl(
+                    Uri.parse(
+                      'https://github.com/settings/personal-access-tokens/new',
+                    ),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(l10n.tokenStep3, style: dialogContext.textTheme.bodySmall),
+              const SizedBox(height: 4),
+              Text(l10n.tokenStep4, style: dialogContext.textTheme.bodySmall),
+              const SizedBox(height: 4),
+              Text(l10n.tokenStep5, style: dialogContext.textTheme.bodySmall),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: l10n.tokenFieldLabel,
+                  isDense: true,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(l10n.tokenSafety, style: dialogContext.textTheme.bodySmall),
+              TextButton.icon(
+                icon: const Icon(Icons.manage_accounts, size: 16),
+                label: Text(
+                  l10n.manageTokens,
+                  style: dialogContext.textTheme.bodySmall,
+                ),
+                onPressed: () => unawaited(
+                  launchUrl(
+                    Uri.parse('https://github.com/settings/tokens'),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.connectWithToken),
+          ),
+        ],
+      ),
+    );
+    final token = controller.text;
+    controller.dispose();
+    if (confirmed != true || !mounted) return;
+    await _notifier.connectWithToken(this.context, token: token);
+  }
+
   @override
   Widget build(final BuildContext context) {
     if (!GithubSyncNotifier.isSupported) {
@@ -116,6 +200,10 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
         subtitle: Text(l10n.connectGithub),
         value: false,
         onChanged: (final _) => unawaited(_notifier.connect(context)),
+        secondary: TextButton(
+          onPressed: () => unawaited(_showTokenDialog(context)),
+          child: Text(l10n.pasteTokenInstead),
+        ),
       );
     }
 

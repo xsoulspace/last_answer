@@ -131,5 +131,17 @@
   "backupToGithub": "Backup su GitHub",
   "restoreFromGithub": "Ripristina da GitHub",
   "githubBackupDone": "Salvato su GitHub ✓",
-  "githubRestoreDone": "Ripristinato da GitHub ✓"
+  "githubRestoreDone": "Ripristinato da GitHub ✓",
+  "pasteTokenInstead": "Incolla un token",
+  "tokenGuideTitle": "Crea un token fine-grained",
+  "tokenStep1": "1. Apri github.com ed effettua il login.",
+  "tokenStep2": "2. Premi «Generate new token» nella pagina dei token (pulsante sotto).",
+  "tokenStep3": "3. Repository access → «Only select repositories» → scegli il repo delle note.",
+  "tokenStep4": "4. Permissions → Contents → «Read and write». Nient’altro.",
+  "tokenStep5": "5. Imposta una scadenza, genera e incolla il token qui.",
+  "tokenFieldLabel": "Token (ghu_… / github_pat_…)",
+  "connectWithToken": "Collega",
+  "openGithubTokens": "Apri la pagina dei token GitHub",
+  "manageTokens": "Gestisci / revoca i token",
+  "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli."
 }

@@ -417,4 +417,45 @@ class SEn extends S {
 
   @override
   String get githubRestoreDone => 'Restored from GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Paste a token instead';
+
+  @override
+  String get tokenGuideTitle => 'Create a fine-grained token';
+
+  @override
+  String get tokenStep1 => '1. Open github.com and sign in.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Click “Generate new token” on the token page (button below).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → “Only select repositories” → pick your notes repo.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → “Read and write”. Nothing else.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Set an expiry date, generate, copy the token here.';
+
+  @override
+  String get tokenFieldLabel => 'Token (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Connect';
+
+  @override
+  String get openGithubTokens => 'Open GitHub token page';
+
+  @override
+  String get manageTokens => 'Manage / revoke tokens';
+
+  @override
+  String get tokenSafety =>
+      'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.';
 }

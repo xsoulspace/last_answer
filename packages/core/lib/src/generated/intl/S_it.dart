@@ -417,4 +417,45 @@ class SIt extends S {
 
   @override
   String get githubRestoreDone => 'Ripristinato da GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Incolla un token';
+
+  @override
+  String get tokenGuideTitle => 'Crea un token fine-grained';
+
+  @override
+  String get tokenStep1 => '1. Apri github.com ed effettua il login.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Premi «Generate new token» nella pagina dei token (pulsante sotto).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → «Only select repositories» → scegli il repo delle note.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → «Read and write». Nient’altro.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Imposta una scadenza, genera e incolla il token qui.';
+
+  @override
+  String get tokenFieldLabel => 'Token (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Collega';
+
+  @override
+  String get openGithubTokens => 'Apri la pagina dei token GitHub';
+
+  @override
+  String get manageTokens => 'Gestisci / revoca i token';
+
+  @override
+  String get tokenSafety =>
+      'Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.';
 }

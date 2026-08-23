@@ -1,0 +1,18 @@
+{
+  "name": "Last Answer Sync",
+  "url": "https://github.com/xsoulspace/last_answer",
+  "hook_attributes": {
+    "url": "https://github.com/xsoulspace/last_answer",
+    "active": false
+  },
+  "redirect_url": "dev.xsoulspace.lastanswer://oauth/github/callback",
+  "description": "GitHub sync for Last Answer notes (repo contents read/write)",
+  "public": true,
+  "request_oauth_on_install": false,
+  "setup_url": "https://github.com/xsoulspace/last_answer",
+  "default_permissions": {
+    "contents": "write",
+    "metadata": "read"
+  },
+  "default_events": []
+}

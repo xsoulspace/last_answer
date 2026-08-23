@@ -3,8 +3,11 @@
 // authorization in a browser while the test polls.
 //
 // Run:
-//   flutter test test/github_device_flow_real_test.dart \
+//   GITHUB_E2E=1 flutter test test/github_device_flow_real_test.dart \
 //     --dart-define-from-file=configs/envs/prod.json --timeout 600s
+//
+// Skipped automatically unless GITHUB_E2E=1 is set (it requires a human
+// at the browser and hits real network).
 //
 // Note: GitHub App user tokens start with `ghu_` (OAuth apps: `gho_`).
 import 'dart:async';
@@ -85,6 +88,11 @@ class _PrintingDelegate implements OAuthFlowDelegate {
 
 void main() {
   test('e2e: real GitHub device flow → token → current user', () async {
+    if (Platform.environment['GITHUB_E2E'] != '1') {
+      // ignore: avoid_print
+      print('skipped: set GITHUB_E2E=1 to run this manual check');
+      return;
+    }
     const clientId = String.fromEnvironment('GITHUB_OAUTH_CLIENT_ID');
     expect(clientId, isNotEmpty, reason: 'pass --dart-define-from-file=configs/envs/prod.json');
 

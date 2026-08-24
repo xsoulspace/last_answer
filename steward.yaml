@@ -1,0 +1,69 @@
+schema: steward/v1
+repo:
+  id: last_answer
+  archetype: app
+  archetype_detection:
+    confidence: 1.0
+    signals:
+      - 'explicit --archetype'
+
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+
+adoption:
+  status: adopting
+  owner: last_answer
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+    adr_dir: docs/decisions
+  knowledge:
+    docs_map: AGENTS.md
+    source_policy: required_for_external_claims
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: false
+    registry: skills.json
+  quality:
+    validate: 'dart test'
+    evidence: .steward/evidence
+  harness:
+    enabled: false
+    action_contract: deferred
+  release:
+    changelog: CHANGELOG.md
+    artifact_provenance: required
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+    success_evidence: required
+  security:
+    action_effects: required
+    redaction: steward/redaction/v1
+  org:
+    owners: AGENTS.md
+
+actions: {}
+
+probes: {}
+
+diagnostics:
+  cases: {}
+
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []

@@ -1,0 +1,38 @@
+---
+status: current
+evidence_type: ledger
+date: 2026-08-24
+scope: repository claim and proof status
+claim_tested: Current weakest true repository claims.
+proof_level: native validation run recorded; no readiness or maturity claim yet
+commands_or_sources:
+  - "fvm flutter analyze --no-pub (2026-08-24): 0 errors, 154 info/warning issues (mostly generated *.freezed.dart and unused elements)"
+  - "fvm flutter test (2026-08-24): 10 passed, 1 skipped (GITHUB_E2E manual check), 0 failed"
+result: baseline ledger initialized; native gates green at error level; one pre-existing failing parser test fixed during adoption
+limitations: Analysis warnings not yet triaged; e2e gated behind env var was not run.
+non_claims:
+  - maturity
+  - harness readiness
+  - product runtime correctness
+  - steward presence readiness (P2+)
+next_disposition: keep as current status pointer until superseded
+current_status_pointer: docs/evidence/current-status.mdx
+---
+
+# Current Evidence Status
+
+Use this ledger for the weakest true current claim. Historical evidence is provenance unless this file points to it.
+
+## Current Claims
+
+| Claim                                            | Evidence                                                                                                   | Status  | Non-claims                                                                            |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------- |
+| Baseline evidence ledger exists                  | This file was initialized.                                                                                 | current | Does not prove readiness, maturity, harness support, or product runtime correctness.  |
+| Native quality gate passes at error level        | `fvm flutter analyze` → 0 errors; `fvm flutter test` → all pass (10/10, 1 skipped).                        | current | Warnings/infos remain (154); does not prove release readiness or product correctness. |
+| Hive parser fixture contract aligned with parser | `test/parsers/hive_parser_test.dart` fixtures use varint lengths per `hive_parser.dart`; all 4 cases pass. | current | Fixture fix does not validate production `.hive` file parsing.                        |
+
+## Rerun Route
+
+Record the native validation command, Steward command, benchmark, or blocked-state route needed to refresh each current claim.
+
+- Claims above: rerun `fvm flutter analyze --no-pub` and `fvm flutter test`.

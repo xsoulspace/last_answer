@@ -1,10 +1,7 @@
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_pay/paywall_flow.dart';
 import 'package:lastanswer/ui_pay/ui_pay.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 /// "Become Pro" tab: shows subscription status and entry to the paywall.
@@ -93,7 +90,7 @@ class _PaywallEntry extends StatelessWidget {
         textAlign: TextAlign.center,
       ).animate().fadeIn(),
       const Gap(8),
-      Text(
+      const Text(
         'Agents, intentcall, ACP support, sync with Daily Budget Planner '
         'and more. The core app works offline for free — Pro unlocks the '
         'connected experience.',

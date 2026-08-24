@@ -13,7 +13,6 @@ void main() {
         ..initializeFlutterToolkit();
       unawaited(bootstrap());
     },
-    (final error, final stack) =>
-        MCPToolkitBinding.instance.handleZoneError(error, stack),
+    MCPToolkitBinding.instance.handleZoneError,
   );
 }

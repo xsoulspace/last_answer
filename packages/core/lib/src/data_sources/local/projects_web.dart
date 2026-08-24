@@ -7,7 +7,6 @@ import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 import '../../data_models/data_models.dart';
 import '../../state/state.dart';
 import '../data_sources.dart';
-import 'doc_body_storage.dart';
 
 class SearchableContainer<T> {
   const SearchableContainer({required this.jsonContent, required this.value});
@@ -103,7 +102,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<void> put({required final ProjectModel project}) async {
     await _preloadCache();
     ProjectModel toCache = project;
-    if (project case ProjectModelDoc doc) {
+    if (project case final ProjectModelDoc doc) {
       if (storageService != null) {
         await storageService!.saveFile(
           docBodyPath(doc.docKind, doc.id),
@@ -126,7 +125,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<void> remove({required final ProjectModelId id}) async {
     await _preloadCache();
     final existing = _fullCache.firstWhereOrNull((final e) => e.value.id == id);
-    if (existing?.value case ProjectModelDoc doc) {
+    if (existing?.value case final ProjectModelDoc doc) {
       if (storageService != null) {
         await storageService!.removeFile(docBodyPath(doc.docKind, doc.id));
       }
@@ -193,7 +192,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
     await _preloadCache();
     final stub =
         _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
-    if (stub case ProjectModelDoc doc) {
+    if (stub case final ProjectModelDoc doc) {
       if (storageService != null) {
         final raw = await storageService!.readFile(
           docBodyPath(doc.docKind, doc.id),

@@ -22,17 +22,29 @@ Uint8List _u32(final int v) => Uint8List.fromList([
   (v >> 24) & 0xFF,
 ]);
 
+Uint8List _varUint(final int v) {
+  // matches parser contract: unsigned varint (7-bit groups, LE)
+  final out = BytesBuilder();
+  var value = v;
+  while (value >= 0x80) {
+    out.addByte((value & 0x7F) | 0x80);
+    value >>= 7;
+  }
+  out.addByte(value);
+  return out.toBytes();
+}
+
 Uint8List _buildSimpleKeyValueFrame(final String key, final String value) {
   // ignore: lines_longer_than_80_chars
-  // payload: [keyType(1)=1 string][keyLen(4)][keyBytes][valueType(1)=1 string][valueLen(4)][valueBytes]
+  // payload: [keyType(1)=1 string][keyLen(varint)][keyBytes][valueType(1)=1 string][valueLen(varint)][valueBytes]
   final kb = Uint8List.fromList(key.codeUnits);
   final vb = Uint8List.fromList(value.codeUnits);
   final payload = BytesBuilder()
     ..add([1])
-    ..add(_u32(kb.length))
+    ..add(_varUint(kb.length))
     ..add(kb)
     ..add([1])
-    ..add(_u32(vb.length))
+    ..add(_varUint(vb.length))
     ..add(vb);
   return _buildHiveFrame(payload: payload.toBytes());
 }
@@ -59,7 +71,7 @@ void main() {
     final kb = Uint8List.fromList('age'.codeUnits);
     final payload = BytesBuilder()
       ..add([1])
-      ..add(_u32(kb.length))
+      ..add(_varUint(kb.length))
       ..add(kb);
     // no value bytes => delete
     final frame = _buildHiveFrame(payload: payload.toBytes());
@@ -67,6 +79,7 @@ void main() {
       ..add(_buildSimpleKeyValueFrame('name', 'bob'))
       ..add(frame);
     final parsed = parseHiveFromBytes(start.toBytes());
-    expect(parsed.containsKey('name'), isFalse);
+    expect(parsed.containsKey('age'), isFalse);
+    expect(parsed['name'], equals('bob'));
   });
 }

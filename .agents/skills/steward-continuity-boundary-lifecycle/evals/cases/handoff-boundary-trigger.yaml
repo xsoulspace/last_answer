@@ -1,0 +1,12 @@
+id: steward-continuity-handoff-boundary-trigger
+skill: steward-continuity-boundary-lifecycle
+routing: should_trigger
+input: "Design a handoff between repo stewards that preserves continuity, carries only handoff-safe context, and avoids merging identities."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["handoff-safe", "continuity"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Do not claim the receiving agent is the same steward", "Mode Boundary", "non-claims"]

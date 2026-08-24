@@ -10,12 +10,10 @@
 // at the browser and hits real network).
 //
 // Note: GitHub App user tokens start with `ghu_` (OAuth apps: `gho_`).
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:universal_storage_github_oauth/universal_storage_github_oauth.dart';
-import 'package:universal_storage_oauth/universal_storage_oauth.dart';
 
 class _MemoryStorage implements CredentialStorage {
   final Map<GitPlatform, StoredCredentials> _store = {};

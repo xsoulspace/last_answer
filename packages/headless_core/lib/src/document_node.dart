@@ -11,7 +11,13 @@ part 'document_node.g.dart';
 extension type const NodeId(String value) implements String {}
 
 /// Block granularity kinds (ADR 0001 v1: block-level anchoring only).
-enum BlockType { heading, paragraph, list }
+enum BlockType { heading, paragraph, list, message }
+
+/// Author/sender of a chat message block.
+enum ChatRole { user, assistant }
+
+/// Delivery/lifecycle state of a chat message block.
+enum MessageStatus { streaming, complete, failed }
 
 /// Lifecycle of a document node.
 enum DocumentStatus {
@@ -33,6 +39,22 @@ abstract class Block with _$Block {
 
     /// Heading level for [BlockType.heading]; list nesting for lists.
     int? level,
+
+    /// Sender for [BlockType.message]; null otherwise.
+    ChatRole? role,
+
+    /// Logical agent/conversation turn id supplied by the caller/backend.
+    String? messageId,
+
+    /// Active backend session associated with a message or document stream.
+    String? sessionId,
+
+    /// Tool call identifier when the assistant message represents one call.
+    String? toolCallId,
+
+    /// Human-readable tool name/title when [toolCallId] is present.
+    String? title,
+    @Default(MessageStatus.complete) MessageStatus status,
   }) = _Block;
 
   factory Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
@@ -98,16 +120,23 @@ extension DocumentNodeX on DocumentNode {
   bool get satisfiesChildInvariants =>
       !isChild || (anchorSpan != null && spanSnapshot != null);
 
+  Block? blockById(NodeId id) {
+    for (final block in blocks) {
+      if (block.id.value == id.value) return block;
+    }
+    return null;
+  }
+
   /// Blocks are immutable value objects; returns a copy with [blocks]
   /// replaced and `updatedAt` bumped.
-  DocumentNode withBlocks(List<Block> blocks, {DateTime? at}) => copyWith(
-    blocks: blocks,
-    updatedAt: at ?? DateTime.now().toUtc(),
-  );
+  DocumentNode withBlocks(List<Block> blocks, {DateTime? at}) =>
+      copyWith(blocks: blocks, updatedAt: at ?? DateTime.now().toUtc());
 
   /// Collapses an already-applied child (ADR 0001: the author first applies
   /// the outcome to the head span manually or via explicit agent rewrite;
   /// collapse only archives).
-  DocumentNode collapse({DateTime? at}) =>
-      copyWith(status: DocumentStatus.collapsed, updatedAt: at ?? DateTime.now().toUtc());
+  DocumentNode collapse({DateTime? at}) => copyWith(
+    status: DocumentStatus.collapsed,
+    updatedAt: at ?? DateTime.now().toUtc(),
+  );
 }

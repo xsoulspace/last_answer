@@ -17,7 +17,12 @@ T _$identity<T>(T value) => value;
 mixin _$Block {
 
  NodeId get id; BlockType get type; String get content;/// Heading level for [BlockType.heading]; list nesting for lists.
- int? get level;
+ int? get level;/// Sender for [BlockType.message]; null otherwise.
+ ChatRole? get role;/// Logical agent/conversation turn id supplied by the caller/backend.
+ String? get messageId;/// Active backend session associated with a message or document stream.
+ String? get sessionId;/// Tool call identifier when the assistant message represents one call.
+ String? get toolCallId;/// Human-readable tool name/title when [toolCallId] is present.
+ String? get title; MessageStatus get status;
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +35,16 @@ $BlockCopyWith<Block> get copyWith => _$BlockCopyWithImpl<Block>(this as Block, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, status: $status)';
 }
 
 
@@ -50,7 +55,7 @@ abstract mixin class $BlockCopyWith<$Res>  {
   factory $BlockCopyWith(Block value, $Res Function(Block) _then) = _$BlockCopyWithImpl;
 @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, MessageStatus status
 });
 
 
@@ -67,13 +72,19 @@ class _$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? status = null,}) {
   return _then(Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as BlockType,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,level: freezed == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as ChatRole?,messageId: freezed == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
+as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
+as String?,toolCallId: freezed == toolCallId ? _self.toolCallId : toolCallId // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as MessageStatus,
   ));
 }
 
@@ -158,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
   return orElse();
 
 }
@@ -179,10 +190,10 @@ return $default(_that.id,_that.type,_that.content,_that.level);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _Block():
-return $default(_that.id,_that.type,_that.content,_that.level);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +210,10 @@ return $default(_that.id,_that.type,_that.content,_that.level);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
   return null;
 
 }
@@ -214,7 +225,7 @@ return $default(_that.id,_that.type,_that.content,_that.level);case _:
 @JsonSerializable()
 
 class _Block implements Block {
-  const _Block({required this.id, required this.type, this.content = '', this.level});
+  const _Block({required this.id, required this.type, this.content = '', this.level, this.role, this.messageId, this.sessionId, this.toolCallId, this.title, this.status = MessageStatus.complete});
   factory _Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
 
 @override final  NodeId id;
@@ -222,6 +233,17 @@ class _Block implements Block {
 @override@JsonKey() final  String content;
 /// Heading level for [BlockType.heading]; list nesting for lists.
 @override final  int? level;
+/// Sender for [BlockType.message]; null otherwise.
+@override final  ChatRole? role;
+/// Logical agent/conversation turn id supplied by the caller/backend.
+@override final  String? messageId;
+/// Active backend session associated with a message or document stream.
+@override final  String? sessionId;
+/// Tool call identifier when the assistant message represents one call.
+@override final  String? toolCallId;
+/// Human-readable tool name/title when [toolCallId] is present.
+@override final  String? title;
+@override@JsonKey() final  MessageStatus status;
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
@@ -236,16 +258,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, status: $status)';
 }
 
 
@@ -256,7 +278,7 @@ abstract mixin class _$BlockCopyWith<$Res> implements $BlockCopyWith<$Res> {
   factory _$BlockCopyWith(_Block value, $Res Function(_Block) _then) = __$BlockCopyWithImpl;
 @override @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, MessageStatus status
 });
 
 
@@ -273,13 +295,19 @@ class __$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? status = null,}) {
   return _then(_Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as BlockType,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,level: freezed == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as ChatRole?,messageId: freezed == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
+as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
+as String?,toolCallId: freezed == toolCallId ? _self.toolCallId : toolCallId // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as MessageStatus,
   ));
 }
 

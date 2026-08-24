@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +12,28 @@ import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_rustore/xsoulspace_monetization_rustore.dart';
 
+import 'package:lastanswer/doc/acp_doc_inference_port.dart';
+import 'package:lastanswer/doc/acp_agent_runtime.dart' as acp_runtime;
+
 import '../../core.dart';
 
 class GlobalStatesProvider extends StatelessWidget {
   const GlobalStatesProvider({required this.builder, super.key});
   final WidgetBuilder builder;
+
+  static DocInferencePort? _createDocInferencePort(final BuildContext context) {
+    if (Envs.acpAgentCommand.isEmpty) return null;
+    return AcpDocInferencePort(
+      config: AcpAgentConfig(
+        command: Envs.acpAgentCommand,
+        arguments: Envs.acpAgentArguments.isEmpty
+            ? const []
+            : Envs.acpAgentArguments.split(' '),
+        workingDirectory: Directory.current.path,
+      ),
+    );
+  }
+
   @override
   Widget build(final BuildContext context) => MultiProvider(
     providers: [
@@ -46,7 +65,18 @@ class GlobalStatesProvider extends StatelessWidget {
           service: context.read<StorageService>(),
         ),
       ),
-      Provider<DocInferencePort?>(create: (_) => null),
+      Provider(
+        create: (final context) => headless_core.ChatDocumentService(
+          repository: context.read<headless_core.DocumentRepository>(),
+        ),
+      ),
+      Provider<acp_runtime.AcpInstallationService>(
+        create: (final _) => acp_runtime.AcpInstallationService(),
+      ),
+      Provider<acp_runtime.AcpAgentRuntime>(
+        create: (final _) => acp_runtime.AcpAgentRuntime(),
+      ),
+      Provider<DocInferencePort?>(create: _createDocInferencePort),
 
       /// notifiers & blocs
       ChangeNotifierProvider(create: EmojiStateNotifier.new),

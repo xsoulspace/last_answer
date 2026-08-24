@@ -83,9 +83,7 @@ class StorageDocumentRepository implements DocumentRepository {
     if (raw == null) return {};
     try {
       final decoded = jsonDecode(raw) as Map<String, dynamic>;
-      return decoded.map(
-        (k, v) => MapEntry(k, (v as List).cast<String>()),
-      );
+      return decoded.map((k, v) => MapEntry(k, (v as List).cast<String>()));
     } on Object {
       return {};
     }

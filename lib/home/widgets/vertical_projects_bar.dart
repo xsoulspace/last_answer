@@ -8,12 +8,14 @@ class VerticalProjectsBar extends StatelessWidget {
     required this.onNoteTap,
     this.onGddTap,
     this.onPrdTap,
+    this.onChatTap,
     super.key,
   });
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
   final VoidCallback? onGddTap;
   final VoidCallback? onPrdTap;
+  final VoidCallback? onChatTap;
   @override
   Widget build(final BuildContext context) {
     final themeDefiner = ThemeDefiner.of(context);
@@ -54,6 +56,15 @@ class VerticalProjectsBar extends StatelessWidget {
               child: IconButton(
                 onPressed: onPrdTap,
                 icon: const Icon(Icons.description),
+              ),
+            ),
+          if (onChatTap != null)
+            BarItem(
+              onTap: onChatTap!,
+              label: 'Chat',
+              child: IconButton(
+                onPressed: onChatTap,
+                icon: const Icon(Icons.forum_outlined),
               ),
             ),
           BarItem(

@@ -80,6 +80,9 @@ class _VerticalBar extends StatelessWidget {
           onPrdTap: () {
             context.read<OpenedProjectNotifier>().createPrdProject(context);
           },
+          onChatTap: () {
+            context.read<OpenedProjectNotifier>().createChatProject(context);
+          },
         ),
       ],
     ),

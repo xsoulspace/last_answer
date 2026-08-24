@@ -11,6 +11,14 @@ _Block _$BlockFromJson(Map<String, dynamic> json) => _Block(
   type: $enumDecode(_$BlockTypeEnumMap, json['type']),
   content: json['content'] as String? ?? '',
   level: (json['level'] as num?)?.toInt(),
+  role: $enumDecodeNullable(_$ChatRoleEnumMap, json['role']),
+  messageId: json['messageId'] as String?,
+  sessionId: json['sessionId'] as String?,
+  toolCallId: json['toolCallId'] as String?,
+  title: json['title'] as String?,
+  status:
+      $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
+      MessageStatus.complete,
 );
 
 Map<String, dynamic> _$BlockToJson(_Block instance) => <String, dynamic>{
@@ -18,12 +26,30 @@ Map<String, dynamic> _$BlockToJson(_Block instance) => <String, dynamic>{
   'type': _$BlockTypeEnumMap[instance.type]!,
   'content': instance.content,
   'level': instance.level,
+  'role': _$ChatRoleEnumMap[instance.role],
+  'messageId': instance.messageId,
+  'sessionId': instance.sessionId,
+  'toolCallId': instance.toolCallId,
+  'title': instance.title,
+  'status': _$MessageStatusEnumMap[instance.status]!,
 };
 
 const _$BlockTypeEnumMap = {
   BlockType.heading: 'heading',
   BlockType.paragraph: 'paragraph',
   BlockType.list: 'list',
+  BlockType.message: 'message',
+};
+
+const _$ChatRoleEnumMap = {
+  ChatRole.user: 'user',
+  ChatRole.assistant: 'assistant',
+};
+
+const _$MessageStatusEnumMap = {
+  MessageStatus.streaming: 'streaming',
+  MessageStatus.complete: 'complete',
+  MessageStatus.failed: 'failed',
 };
 
 _AnchorSpan _$AnchorSpanFromJson(Map<String, dynamic> json) => _AnchorSpan(

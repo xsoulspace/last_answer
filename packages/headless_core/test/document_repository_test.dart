@@ -13,7 +13,12 @@ void conformanceSuite(DocumentRepository Function() makeRepo) {
   DocumentNode root() => DocumentNode(
     id: const NodeId('root'),
     blocks: const [
-      Block(id: NodeId('rb1'), type: BlockType.heading, content: 'Head', level: 1),
+      Block(
+        id: NodeId('rb1'),
+        type: BlockType.heading,
+        content: 'Head',
+        level: 1,
+      ),
       Block(id: NodeId('rb2'), type: BlockType.paragraph, content: 'Body'),
     ],
     createdAt: DateTime.utc(2026, 1, 1),
@@ -107,8 +112,6 @@ void main() {
 
     tearDown(() => dir.delete(recursive: true));
 
-    conformanceSuite(
-      () => StorageDocumentRepository(service: service),
-    );
+    conformanceSuite(() => StorageDocumentRepository(service: service));
   });
 }

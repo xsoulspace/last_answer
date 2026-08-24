@@ -20,6 +20,7 @@ enum DocStatus { open, collapsed }
 abstract final class DocFormatIds {
   static const gdd = 'gdd';
   static const prd = 'prd';
+  static const chat = 'chat';
 }
 
 extension type const DocBlockId(String value) {
@@ -68,6 +69,12 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     updatedAt: DateTime.now(),
     formatId: DocFormatIds.prd,
     blocks: defaultPrdTemplate(),
+  );
+  factory ProjectModel.emptyChat() => ProjectModel.doc(
+    id: ProjectModelId.generate(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    formatId: DocFormatIds.chat,
   );
   @Implements<Archivable>()
   @Implements<Sharable>()

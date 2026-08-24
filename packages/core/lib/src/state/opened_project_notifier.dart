@@ -2,8 +2,8 @@ part of 'state.dart';
 
 class OpenedProjectNotifierDto {
   OpenedProjectNotifierDto(final BuildContext context)
-      : projectsNotifier = context.read(),
-        userNotifier = context.read();
+    : projectsNotifier = context.read(),
+      userNotifier = context.read();
   final ProjectsNotifier projectsNotifier;
   final UserNotifier userNotifier;
 }
@@ -11,8 +11,8 @@ class OpenedProjectNotifierDto {
 class OpenedProjectNotifier
     extends ValueNotifier<LoadableContainer<ProjectModel>> {
   OpenedProjectNotifier(final BuildContext context)
-      : dto = OpenedProjectNotifierDto(context),
-        super(LoadableContainer(value: ProjectModel.emptyNote));
+    : dto = OpenedProjectNotifierDto(context),
+      super(LoadableContainer(value: ProjectModel.emptyNote));
 
   final OpenedProjectNotifierDto dto;
 
@@ -49,7 +49,8 @@ class OpenedProjectNotifier
         // noop
       },
       doc: (final doc) {
-        final hasNoContent = doc.title.isEmpty &&
+        final hasNoContent =
+            doc.title.isEmpty &&
             doc.blocks.every((final b) => b.content.isEmpty);
         if (hasNoContent) dto.projectsNotifier.deleteProject(doc);
       },
@@ -94,6 +95,10 @@ class OpenedProjectNotifier
 
   void createPrdProject(final BuildContext context) {
     loadProject(context: context, project: ProjectModel.emptyPrd());
+  }
+
+  void createChatProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyChat());
   }
 
   void deleteProject() {

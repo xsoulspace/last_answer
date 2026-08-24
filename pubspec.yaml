@@ -76,6 +76,12 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
+  xsoulspace_inference_acp:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
+  xsoulspace_inference_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  dart_acp_toolkit:
+    path: /Users/antonio/mcp/cline/intentcall/packages/acp_toolkit
   headless_core:
     path: packages/headless_core
   universal_io: ^2.3.1
@@ -94,6 +100,16 @@ dev_dependencies:
   xsoulspace_lints: ^0.1.2
 
 dependency_overrides:
+  ecsly:
+    path: /Users/antonio/xs/ecsly/core_packages/ecsly
+  dart_acp_toolkit:
+    path: /Users/antonio/mcp/cline/intentcall/packages/acp_toolkit
+  xsoulspace_inference_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  ecsly_async_parallel:
+    path: /Users/antonio/xs/ecsly/plugins/ecsly_async_parallel
+  async_parallel:
+    path: /Users/antonio/xs/ecsly/plugins/async_parallel
   universal_storage_oauth:
     path: ../dart_flutter_packages/pkgs/universal_storage_oauth
   universal_storage_filesystem:

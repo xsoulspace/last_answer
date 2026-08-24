@@ -28,13 +28,11 @@ final class InMemoryDocumentRepository implements DocumentRepository {
   }
 
   @override
-  Future<List<NodeId>> childrenOf(NodeId? parentId) async =>
-      _nodes.values
-          .where((n) => n.parentDocId == parentId)
-          .map((n) => n.id)
-          .toList();
+  Future<List<NodeId>> childrenOf(NodeId? parentId) async => _nodes.values
+      .where((n) => n.parentDocId == parentId)
+      .map((n) => n.id)
+      .toList();
 
   @override
   Future<List<NodeId>> allIds() async => _nodes.keys.toList();
 }
-

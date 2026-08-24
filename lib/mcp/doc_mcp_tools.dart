@@ -21,7 +21,7 @@ Set<AgentCallEntry> docMcpEntries() => {
         message:
             'Current document path depth: ${state.depth}. '
             'Root doc id: ${state.rootDocId}. Current node id: '
-            '${state.currentDocId}, status: ${state.status.name}.',
+            '${state.currentDocId}, status: ${state.status}.',
         parameters: {'ok': true, ...state.toJson()},
       );
     },
@@ -57,8 +57,8 @@ Set<AgentCallEntry> docMcpEntries() => {
             ? 'blockIndex $index is out of range '
                   '(0..${state.blockCount - 1}).'
             : 'Discussion child created and opened for block $index '
-                  '(id: ${childId.value}).',
-        parameters: {'ok': childId != null, 'childDocId': childId?.value},
+                  '(id: $childId).',
+        parameters: {'ok': childId != null, 'childDocId': childId},
       );
     },
     definition: MCPToolDefinition(

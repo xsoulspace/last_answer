@@ -7,14 +7,19 @@ claim_tested: Current weakest true repository claims.
 proof_level: native validation run recorded; no readiness or maturity claim yet
 commands_or_sources:
   - "fvm flutter analyze (2026-08-24): 0 errors; 154 info/warning (mostly generated *.freezed.dart / unused)"
+  - "fvm flutter analyze --no-fatal-infos --no-fatal-warnings (2026-08-24): passed with 187 non-error diagnostics"
   - "fvm flutter test (2026-08-24): 17 passed, 0 failed"
+  - "fvm flutter test packages/headless_core/test (2026-08-24): 16 passed, 0 failed"
+  - "fvm flutter test (2026-08-24): 25 passed, 0 failed; includes ACP runtime and chat document tests"
+  - "fvm flutter test packages/headless_core (2026-08-24): 29 passed, 0 failed; includes deterministic agent lifecycle"
+  - "fvm flutter analyze --no-fatal-infos --no-fatal-warnings (2026-08-24): passed with 232 non-error diagnostics"
   - "packages/core: just gen-rewrite rebuilt codegen; fvm dart analyze 0 errors"
   - "MCP toolkit live (macOS ws://...): doc_state / doc_discuss_block / doc_collapse registered + exercised"
   - "Maestro e2e/maestro/doc_discussion_lifecycle.yaml: ran on iPhone 17 Pro (iOS 26.4); lifecycle verified"
   - "UI/AX: toolbar scrollable (overflow fixed), semantic labels + tooltips on Discuss/Ask AI/Apply conclusion, heading placeholder, open/child badges with key refs"
   - "ADR 0001 gaps implemented: agent conclusion → head rewrite (`_rewriteHeadFromDiscussion` + `rewriteFromDiscussion` param on collapse/MCP); empty open-child cleanup on climb-up (`_climbUp` deletes empty open nodes, archives collapsed ones); breadcrumb jump uses `_climbUp` (not raw remove)"
-result: ADR 0001 v1 implemented: model, filesystem body storage (`docs/{id}.json`), lazy `getChildren`, recursive `doc_view.dart` (breadcrumbs + back-stack + collapse + badges), 3 new MCP tools, Maestro flow, UX/AX fixes, agent-rewrite + cleanup actions.
-limitations: Sub-block (character-range) anchors deferred per ADR; filesystem-only body storage enforcement deferred; Maestro timing assertion (wait after Discuss) not yet added; `xsoulspace_foundation` dependency codegen issue (pre-existing, unrelated) blocks iOS build but macOS debug works.
+result: ADR 0001 v1 implemented: model, capability-gated filesystem body storage (`docs/{id}.json` only for active filesystem backend), lazy `getChildren`, recursive `doc_view.dart` (breadcrumbs + back-stack + collapse + badges), 3 new MCP tools, Maestro flow, UX/AX fixes, agent-rewrite + cleanup actions.
+limitations: Sub-block anchors and format packs are documented as deferred; Maestro timing fix is implemented but the simulator rerun was not performed in this loop. The sibling `xsoulspace_foundation` generated file was restored to its known-good revision (`1c156fe2`) so tests compile.
 non_claims:
   - maturity
   - harness readiness
@@ -30,20 +35,19 @@ Use this ledger for the weakest true current claim. Historical evidence is prove
 
 ## What works (verified)
 
-- **Model / storage**: `DocStatus`, `AnchorSpanModel`, `formatId` (replaces `DocKind`), `parentDocId`, `spanSnapshot`; body files `docs/{id}.json`; lazy `getChildren`; `getById` reads body from file.
+- **Model / storage**: `DocStatus`, `AnchorSpanModel`, `formatId` (replaces `DocKind`), `parentDocId`, `spanSnapshot`; capability-gated body files `docs/{id}.json`; lazy `getChildren`; `getById` reads body when filesystem storage is active.
 - **UI / navigation**: `DocView` back-stack (`_path`), breadcrumbs (`_BreadcrumbBar` with climb-up + collapse), block-level badges (open/collapsed counts), `Discuss` → child node, `Collapse` → archive + climb, `Apply conclusion` (rewrite head from discussion + collapse) — all wired.
 - **MCP**: `doc_state`, `doc_discuss_block`, `doc_collapse` (with optional `rewrite`) — all registered in `main.dart`, verified live on macOS.
 - **Maestro**: `e2e/maestro/doc_discussion_lifecycle.yaml` (iOS simulator) — flow covers GDD creation, focus, Discuss, child navigation, collapse/reopen, Apply conclusion.
 - **UX / AX**: scrollable toolbar (overflow fixed), `tooltip` on Discuss/Ask AI/Apply conclusion, `key` on badge buttons, heading placeholder (`hintText`), `ValueKey` on text fields.
 - **Cleanup**: `_climbUp` deletes empty open children (abandoned nodes) and archives collapsed ones; breadcrumb jump uses `_climbUp`.
+- **ACP chat documents**: local executable clients, PATH discovery, spawn/initialize, sessions, streaming, cancel/stop, persisted message blocks, and anchored threads are implemented. The headless harness validates the same install → start → session → stream → persist lifecycle without UI or an LLM.
 
 ## What's left (plan)
 
-1. Maestro timing: add `wait` after `tapOn: "Discuss"` so the assertion runs after navigation completes.
-2. Storage capability matrix: enforce filesystem-only body storage (gate `saveFile`/`readFile` on backend capability); document in ADR.
-3. Sub-block anchors: extend `AnchorSpan` with `prefixHash`/`suffixHash` for finer span selection (ADR deferred to post-v1).
-4. Format packs / runtime extensions: GDD/PRD templates as installable format packs with Select→Do hints (ADR deferred).
-5. Fix `xsoulspace_foundation` dependency codegen (pre-existing, unrelated) to restore iOS simulator builds.
+1. Rerun Maestro on a booted iOS simulator after adding `waitForAnimationToEnd`.
+2. Keep sibling `xsoulspace_foundation` codegen synchronized or pin Freezed 3.x consistently across workspaces.
+3. Exercise a real installed ACP client end-to-end (authentication and provider-specific behavior remain unverified).
 
 ## Non-claims
 
@@ -52,6 +56,6 @@ Use this ledger for the weakest true current claim. Historical evidence is prove
 
 ## Rerun Route
 
-- Native gates: `fvm flutter analyze --no-pub` + `fvm flutter test`.
+- Native gates: `fvm flutter analyze --no-fatal-infos --no-fatal-warnings` + `fvm flutter test` + `fvm flutter test packages/headless_core/test`.
 - ADR 0001 claim: `cd packages/core && just gen-rewrite`, then `maestro test e2e/maestro/doc_discussion_lifecycle.yaml` on booted iOS simulator.
 - MCP lifecycle: connect to running macOS debug app (`ws://...`), call `doc_state` → `doc_discuss_block` → `doc_collapse` (with/without `rewrite`).

@@ -22,6 +22,10 @@ class Envs {
   );
   static final store = StoreType.fromEnv();
   static const telegramBotToken = String.fromEnvironment('TELEGRAM_BOT_TOKEN');
+  static const acpAgentCommand = String.fromEnvironment('ACP_AGENT_COMMAND');
+  static const acpAgentArguments = String.fromEnvironment(
+    'ACP_AGENT_ARGUMENTS',
+  );
 }
 
 enum StoreType {

@@ -11,8 +11,16 @@ extension type const ProjectModelId(String value) {
 
 enum ProjectTypes { idea, note, systemChangelog, doc }
 
-/// Kind of document: GDD (Game Design) or PRD (Product Requirements).
-enum DocKind { gdd, prd }
+/// Lifecycle of a document node: `open` while being worked on; `collapsed`
+/// once its conclusion is applied to the head span. Collapsed nodes are
+/// archived, never deleted.
+enum DocStatus { open, collapsed }
+
+/// Known format ids. Any other value is a user-installed format template.
+abstract final class DocFormatIds {
+  static const gdd = 'gdd';
+  static const prd = 'prd';
+}
 
 extension type const DocBlockId(String value) {
   factory DocBlockId.fromJson(String value) => DocBlockId(value);
@@ -34,42 +42,15 @@ abstract class DocBlockModel with _$DocBlockModel {
       _$DocBlockModelFromJson(json);
 }
 
-Map<SpanId, DocThreadModel> threadsFromJsonMap(Map<String, dynamic> json) =>
-    json.map(
-      (key, value) =>
-          MapEntry(SpanId.fromJson(key), DocThreadModel.fromJson(value)),
-    );
-Map<String, dynamic> threadsToJsonMap(Map<SpanId, DocThreadModel> map) =>
-    map.map((key, value) => MapEntry(key.value, value.toJson()));
-
-/// Identifies a span for threading: "blockId" (whole block) or "blockId:start:end".
-extension type const SpanId(String value) {
-  factory SpanId.forBlock(DocBlockId blockId) => SpanId(blockId.value);
-  factory SpanId.forRange(DocBlockId blockId, int start, int end) =>
-      SpanId('${blockId.value}:$start:$end');
-  factory SpanId.fromJson(String value) => SpanId(value);
-  String toJson() => value;
-}
-
 @freezed
-abstract class DocThreadMessageModel with _$DocThreadMessageModel {
-  const factory DocThreadMessageModel({
-    required String content,
-    required DateTime timestamp,
-    @Default('') String authorId,
-    @Default('') String authorName,
-  }) = _DocThreadMessageModel;
-  factory DocThreadMessageModel.fromJson(Map<String, dynamic> json) =>
-      _$DocThreadMessageModelFromJson(json);
-}
-
-@freezed
-abstract class DocThreadModel with _$DocThreadModel {
-  const factory DocThreadModel({
-    @Default([]) List<DocThreadMessageModel> messages,
-  }) = _DocThreadModel;
-  factory DocThreadModel.fromJson(Map<String, dynamic> json) =>
-      _$DocThreadModelFromJson(json);
+abstract class AnchorSpanModel with _$AnchorSpanModel {
+  const factory AnchorSpanModel({
+    required DocBlockId blockId,
+    String? prefixHash,
+    String? suffixHash,
+  }) = _AnchorSpanModel;
+  factory AnchorSpanModel.fromJson(Map<String, dynamic> json) =>
+      _$AnchorSpanModelFromJson(json);
 }
 
 @freezed
@@ -78,14 +59,14 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     id: ProjectModelId.generate(),
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    docKind: DocKind.gdd,
+    formatId: DocFormatIds.gdd,
     blocks: defaultGddTemplate(),
   );
   factory ProjectModel.emptyPrd() => ProjectModel.doc(
     id: ProjectModelId.generate(),
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    docKind: DocKind.prd,
+    formatId: DocFormatIds.prd,
     blocks: defaultPrdTemplate(),
   );
   @Implements<Archivable>()
@@ -132,15 +113,24 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     required ProjectModelId id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required DocKind docKind,
+
+    /// Format template id ([DocFormatIds] or custom). Empty = generic doc.
+    @Default('') String formatId,
     @Default('') String title,
     @Default(ProjectTypes.doc) ProjectTypes type,
     @Default([]) List<ProjectTagModelId> tagsIds,
     DateTime? archivedAt,
     @Default([]) List<DocBlockModel> blocks,
-    @JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap)
-    @Default({})
-    Map<SpanId, DocThreadModel> threads,
+
+    /// Parent document when this node is a discussion opened on a span.
+    ProjectModelId? parentDocId,
+
+    /// Span this node anchors to in [parentDocId].
+    AnchorSpanModel? anchorSpan,
+
+    /// Snapshot of the anchored text at creation ("history note").
+    @Default('') String spanSnapshot,
+    @Default(DocStatus.open) DocStatus status,
   }) = ProjectModelDoc;
   factory ProjectModel.fromJson(dynamic json) =>
       _$ProjectModelFromJson(json as Map<String, dynamic>);

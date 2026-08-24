@@ -49,9 +49,9 @@ class OpenedProjectNotifier
         // noop
       },
       doc: (final doc) {
-        if (doc.title.isEmpty && doc.blocks.isEmpty) {
-          dto.projectsNotifier.deleteProject(doc);
-        }
+        final hasNoContent = doc.title.isEmpty &&
+            doc.blocks.every((final b) => b.content.isEmpty);
+        if (hasNoContent) dto.projectsNotifier.deleteProject(doc);
       },
     );
   }

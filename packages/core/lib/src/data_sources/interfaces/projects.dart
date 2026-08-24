@@ -16,4 +16,11 @@ abstract interface class ProjectsLocalDataSource {
   Future<List<ProjectModel>> getByIds({
     required final Iterable<ProjectModelId> ids,
   });
+
+  /// Returns document nodes anchored to [parentDocId], oldest first.
+  /// Discussion children are excluded from listings; they are resolved
+  /// lazily via this method (ADR 0001).
+  Future<List<ProjectModel>> getChildren({
+    required final ProjectModelId parentDocId,
+  });
 }

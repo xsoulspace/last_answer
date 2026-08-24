@@ -53,7 +53,11 @@ class ProjectTile extends StatelessWidget {
         doc: (final doc) => SizedBox.square(
           dimension: 14,
           child: Icon(
-            doc.docKind == DocKind.gdd ? Icons.sports_esports : Icons.description,
+            switch (doc.formatId) {
+              DocFormatIds.gdd => Icons.sports_esports,
+              DocFormatIds.prd => Icons.description,
+              _ => Icons.article_outlined,
+            },
             size: 12.5,
             color: theme.colorScheme.primary.withOpacity(0.5),
           ),

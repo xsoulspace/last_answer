@@ -20,6 +20,13 @@ extension on ProjectModel {
       SearchableContainer(value: this, jsonContent: toString());
 }
 
+/// Discussion children are stored as separate nodes but excluded from
+/// listings; they are resolved lazily via [ProjectsLocalDataSource.getChildren].
+bool _isVisibleInLists(final ProjectModel e) => switch (e) {
+  final ProjectModelDoc d => d.parentDocId == null,
+  _ => true,
+};
+
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
   ProjectsLocalDataSourceLocalDbImpl({
@@ -63,7 +70,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
     }
 
     reverse();
-    final items = [..._fullCache];
+    final items = [..._fullCache].where(_isVisibleInLists);
     if (data != null) {
       final conditions = <bool Function(SearchableContainer<ProjectModel> e)>[];
       if (data.search.isNotEmpty) {
@@ -105,11 +112,11 @@ final class ProjectsLocalDataSourceLocalDbImpl
     if (project case final ProjectModelDoc doc) {
       if (storageService != null) {
         await storageService!.saveFile(
-          docBodyPath(doc.docKind, doc.id),
-          docBodyToJson(doc.blocks, doc.threads),
+          docBodyPath(doc.id),
+          docBodyToJson(doc.blocks),
         );
       }
-      toCache = doc.copyWith(blocks: const [], threads: {});
+      toCache = doc.copyWith(blocks: const []);
     }
     final container = toCache.toSearchableContainer();
     final index = _fullCache.indexWhere((final e) => e.value.id == project.id);
@@ -125,10 +132,8 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<void> remove({required final ProjectModelId id}) async {
     await _preloadCache();
     final existing = _fullCache.firstWhereOrNull((final e) => e.value.id == id);
-    if (existing?.value case final ProjectModelDoc doc) {
-      if (storageService != null) {
-        await storageService!.removeFile(docBodyPath(doc.docKind, doc.id));
-      }
+    if (existing != null && storageService != null) {
+      await storageService!.removeFile(docBodyPath(id));
     }
     _fullCache.removeWhere((final e) => e.value.id == id);
     await _saveFullCache();
@@ -168,7 +173,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
     await _preloadCache();
-    final items = [..._fullCache];
+    final items = [..._fullCache].where(_isVisibleInLists);
     if (dto != null) {
       if (dto.isReversed) {
         items.sort(
@@ -194,16 +199,28 @@ final class ProjectsLocalDataSourceLocalDbImpl
         _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
     if (stub case final ProjectModelDoc doc) {
       if (storageService != null) {
-        final raw = await storageService!.readFile(
-          docBodyPath(doc.docKind, doc.id),
-        );
-        final body = docBodyFromJson(raw);
-        if (body != null) {
-          return doc.copyWith(blocks: body.$1, threads: body.$2);
+        final raw = await storageService!.readFile(docBodyPath(doc.id));
+        final blocks = docBodyFromJson(raw);
+        if (blocks != null) {
+          return doc.copyWith(blocks: blocks);
         }
       }
     }
     return stub;
+  }
+
+  @override
+  Future<List<ProjectModel>> getChildren({
+    required final ProjectModelId parentDocId,
+  }) async {
+    await _preloadCache();
+    final children = _fullCache
+        .map((final e) => e.value)
+        .whereType<ProjectModelDoc>()
+        .where((final d) => d.parentDocId == parentDocId)
+        .toList()
+      ..sort((final a, final b) => a.createdAt.compareTo(b.createdAt));
+    return children;
   }
 
   @override
@@ -217,6 +234,8 @@ final class ProjectsLocalDataSourceLocalDbImpl
       toValue: (final e) => e,
     );
 
-    return ids.map((final e) => map[e]?.value).nonNulls.toList();
+    return ids.map((final e) => map[e]?.value).nonNulls
+        .where(_isVisibleInLists)
+        .toList();
   }
 }

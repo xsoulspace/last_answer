@@ -28,6 +28,10 @@ class ProjectsRepository {
     required final Iterable<ProjectModelId> ids,
   }) => _datasource.getByIds(ids: ids);
 
+  Future<List<ProjectModel>> getChildren({
+    required final ProjectModelId parentDocId,
+  }) => _datasource.getChildren(parentDocId: parentDocId);
+
   Future<PagingControllerPageModel<ProjectModel>> getPaginated({
     required final PaginatedPageRequestModel<RequestProjectsDto> request,
   }) async {

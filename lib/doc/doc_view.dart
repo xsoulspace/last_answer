@@ -1,12 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/common_imports.dart';
+import 'package:uuid/uuid.dart';
 
 /// Recursive document editor (ADR 0001).
 ///
 /// Renders [doc] blocks as an editable list. Any block can be discussed:
-/// "Discuss" creates a child [ProjectModelDoc] anchored to that block
+/// "Discuss" creates a child [hc.DocumentNode] anchored to that block
 /// (with a snapshot of its content) and dives into it. Navigation uses an
 /// internal back-stack ([_path]) with breadcrumbs; collapsed discussions are
 /// archived, never deleted.
+///
+/// Persistence goes through [hc.DocumentRepository] (ADR 0002 hard cut):
+/// full node bodies live in headless_core storage; the root's stub stays in
+/// ProjectsRepository for listing/routing only.
 class DocView extends StatefulWidget {
   const DocView({required this.doc, super.key});
   final ProjectModelDoc doc;
@@ -18,6 +25,35 @@ class DocView extends StatefulWidget {
   @override
   State<DocView> createState() => _DocViewState();
 }
+
+const _uuid = Uuid();
+
+hc.NodeId _nextNodeId() => hc.NodeId(_uuid.v4());
+
+/// Converts the root stub from ProjectsRepository into a full node.
+hc.DocumentNode _stubToNode(final ProjectModelDoc doc) => hc.DocumentNode(
+  id: hc.NodeId(doc.id.value),
+  formatId: doc.formatId.isEmpty ? null : doc.formatId,
+  blocks: [
+    for (final b in doc.blocks)
+      hc.Block(
+        id: hc.NodeId(b.id.value),
+        type: hc.BlockType.values.byName(b.type.name),
+        content: b.content,
+        level: b.level,
+      ),
+  ],
+  createdAt: doc.createdAt,
+  updatedAt: doc.updatedAt,
+);
+
+/// Converts a full node back into the root stub for ProjectsRepository.
+ProjectModelDoc _nodeToStub(final hc.DocumentNode node) => ProjectModelDoc(
+  id: ProjectModelId(node.id.value),
+  createdAt: node.createdAt,
+  updatedAt: node.updatedAt,
+  formatId: node.formatId ?? '',
+);
 
 /// Debug-only snapshot of the open recursive document, published for
 /// MCP agent tooling (`doc_state`, `doc_discuss_block`, `doc_collapse`).
@@ -31,26 +67,26 @@ class DocDebugState {
   });
 
   /// Root first, currently open node last.
-  final List<ProjectModelDoc> path;
-  final List<DocBlockModel> blocks;
+  final List<hc.DocumentNode> path;
+  final List<hc.Block> blocks;
 
   /// Per-block count of anchored discussion children (aligned with [blocks]).
   final List<int> childrenCounts;
-  final Future<ProjectModelId?> Function(int blockIndex) discussBlock;
-  final Future<bool> Function() collapseCurrent;
+  final Future<String?> Function(int blockIndex) discussBlock;
+  final Future<bool> Function({bool rewriteFromDiscussion}) collapseCurrent;
 
-  ProjectModelDoc get current => path.last;
+  hc.DocumentNode get current => path.last;
   int get depth => path.length;
   String get rootDocId => path.first.id.value;
   String get currentDocId => current.id.value;
-  DocStatus get status => current.status;
+  String get status => current.status.name;
   int get blockCount => blocks.length;
 
   Map<String, Object?> toJson() => {
     'depth': depth,
     'rootDocId': rootDocId,
     'currentDocId': currentDocId,
-    'status': status.name,
+    'status': status,
     'path': [
       for (final node in path)
         {'id': node.id.value, 'status': node.status.name},
@@ -69,19 +105,21 @@ class DocDebugState {
 
 class _DocViewState extends State<DocView> {
   /// Root first, currently open document last.
-  late List<ProjectModelDoc> _path;
+  late List<hc.DocumentNode> _path;
   int? _lastFocusedBlockIndex;
 
   /// Open/collapsed discussion children of the current node, by anchor block.
-  Map<DocBlockId, List<ProjectModelDoc>> _childrenByBlock = {};
+  Map<hc.NodeId, List<hc.DocumentNode>> _childrenByBlock = {};
 
   /// Text controllers of visible blocks, for cursor-positioned AI writes.
   final Map<int, TextEditingController> _controllers = {};
 
+  hc.DocumentRepository get _docRepo => context.read<hc.DocumentRepository>();
+
   @override
   void initState() {
     super.initState();
-    _path = [widget.doc];
+    _path = [_stubToNode(widget.doc)];
     unawaited(_reloadChildren());
   }
 
@@ -89,7 +127,7 @@ class _DocViewState extends State<DocView> {
   void didUpdateWidget(final DocView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.doc != widget.doc && _path.length == 1) {
-      setState(() => _path[0] = widget.doc);
+      setState(() => _path[0] = _stubToNode(widget.doc));
     }
   }
 
@@ -103,15 +141,19 @@ class _DocViewState extends State<DocView> {
     super.dispose();
   }
 
-  ProjectModelDoc get _current => _path.last;
+  hc.DocumentNode get _current => _path.last;
 
   Future<void> _reloadChildren() async {
-    final repository = context.read<ProjectsRepository>();
-    final children = await repository.getChildren(parentDocId: _current.id);
+    final children = await _docRepo.childrenOf(_current.id);
+    final loaded = <hc.DocumentNode>[];
+    for (final id in children) {
+      final result = await _docRepo.get(id);
+      if (result case final hc.DocFound found) loaded.add(found.node);
+    }
     if (!mounted) return;
     setState(() {
-      _childrenByBlock = <DocBlockId, List<ProjectModelDoc>>{};
-      for (final child in children.whereType<ProjectModelDoc>()) {
+      _childrenByBlock = <hc.NodeId, List<hc.DocumentNode>>{};
+      for (final child in loaded) {
         final blockId = child.anchorSpan?.blockId;
         if (blockId == null) continue;
         _childrenByBlock.putIfAbsent(blockId, () => []).add(child);
@@ -119,22 +161,23 @@ class _DocViewState extends State<DocView> {
     });
   }
 
-  Future<void> _persist(final ProjectModelDoc node) async {
+  Future<void> _persist(final hc.DocumentNode node) async {
     setState(() => _path[_path.length - 1] = node);
+    await _docRepo.save(node);
     if (_path.length == 1) {
-      context.read<OpenedProjectNotifier>().updateProject(node);
+      // Keep the listing stub in sync (title/id/routing only).
+      context.read<OpenedProjectNotifier>().updateProject(_nodeToStub(node));
     } else {
-      await context.read<ProjectsRepository>().put(project: node);
+      final parent = _path[_path.length - 2];
+      await _docRepo.save(parent);
     }
   }
 
-  Future<void> _replaceBlock(final int index, final DocBlockModel block) async {
-    final blocks = List<DocBlockModel>.from(_current.blocks);
+  Future<void> _replaceBlock(final int index, final hc.Block block) async {
+    final blocks = List<hc.Block>.from(_current.blocks);
     if (index < 0 || index >= blocks.length) return;
     blocks[index] = block;
-    await _persist(
-      _current.copyWith(blocks: blocks, updatedAt: DateTime.now()),
-    );
+    await _persist(_current.withBlocks(blocks));
   }
 
   void _onBlockFocus(final int index, final bool hasFocus) {
@@ -146,7 +189,7 @@ class _DocViewState extends State<DocView> {
   }
 
   /// Dives into the given child discussion document.
-  Future<void> _openChild(final ProjectModelDoc child) async {
+  Future<void> _openChild(final hc.DocumentNode child) async {
     setState(() {
       _path.add(child);
       _lastFocusedBlockIndex = null;
@@ -154,9 +197,18 @@ class _DocViewState extends State<DocView> {
     await _reloadChildren();
   }
 
-  /// Climbs one level up the back-stack.
+  /// Climbs one level up the back-stack. Abandoned open children (created then
+  /// left behind via breadcrumb jump) are deleted so the node store stays clean;
+  /// collapsed children are archived, never deleted (ADR 0001).
   Future<void> _climbUp() async {
     if (_path.length <= 1) return;
+    final child = _path.last;
+    if (child.status == hc.DocumentStatus.open) {
+      final isEmpty = child.blocks.every((final b) => b.content.trim().isEmpty);
+      if (isEmpty) {
+        await _docRepo.delete(child.id);
+      }
+    }
     setState(() {
       _path.removeLast();
       _lastFocusedBlockIndex = null;
@@ -166,40 +218,99 @@ class _DocViewState extends State<DocView> {
 
   /// Creates a discussion child anchored to the block at [index] and dives in.
   /// Returns the new child's id, or null if [index] is out of range.
-  Future<ProjectModelId?> _discussBlock(final int index) async {
+  Future<String?> _discussBlock(final int index) async {
     final blocks = _current.blocks;
     if (index < 0 || index >= blocks.length) return null;
     final block = blocks[index];
-    final child = ProjectModelDoc(
-      id: ProjectModelId.generate(),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
+    final now = DateTime.now();
+    final child = hc.DocumentNode(
+      id: _nextNodeId(),
+      createdAt: now,
+      updatedAt: now,
       parentDocId: _current.id,
-      anchorSpan: AnchorSpanModel(blockId: block.id),
+      anchorSpan: hc.AnchorSpan(blockId: block.id),
       spanSnapshot: block.content,
-      blocks: [
-        DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-      ],
+      blocks: [hc.Block(id: _nextNodeId(), type: hc.BlockType.paragraph)],
     );
-    await context.read<ProjectsRepository>().put(project: child);
+    await _docRepo.save(child);
     await _openChild(child);
-    return child.id;
+    return child.id.value;
   }
 
   /// Collapses the current discussion: archives it and climbs back to head.
   /// Returns false when already at the root (nothing to collapse).
-  Future<bool> _collapseCurrent() async {
+  ///
+  /// If [rewriteFromDiscussion] is true and an inference port is configured, the
+  /// parent's anchored block is rewritten first (agent conclusion → head), per
+  /// ADR 0001 — the head is edited by the author or by an explicitly requested
+  /// agent rewrite of that exact part, never silently.
+  Future<bool> _collapseCurrent({bool rewriteFromDiscussion = false}) async {
     if (_path.length <= 1) return false;
+    if (rewriteFromDiscussion) await _rewriteHeadFromDiscussion();
     await _persist(
-      _current.copyWith(status: DocStatus.collapsed, updatedAt: DateTime.now()),
+      _current.copyWith(
+        status: hc.DocumentStatus.collapsed,
+        updatedAt: DateTime.now(),
+      ),
     );
     await _climbUp();
     return true;
   }
 
-  String _breadcrumbLabel(final ProjectModelDoc node) {
-    if (node.title.isNotEmpty) return node.title;
-    final snapshot = node.spanSnapshot.trim();
+  /// Asks the inference port to rewrite the parent's anchored block using the
+  /// current discussion child as context, then writes the result into the head.
+  Future<void> _rewriteHeadFromDiscussion() async {
+    final port = context.read<DocInferencePort?>();
+    if (port == null) return;
+    final parentIndex = _path.length - 2;
+    final parent = _path[parentIndex];
+    final anchor = _current.anchorSpan;
+    final blockIndex = parent.blocks.indexWhere(
+      (final b) => b.id == anchor?.blockId,
+    );
+    if (blockIndex < 0) return;
+    final headBlock = parent.blocks[blockIndex];
+    final buffer = StringBuffer();
+    await for (final token in port.chat(_buildRewritePrompt(headBlock))) {
+      buffer.write(token);
+    }
+    final rewritten = buffer.toString().trim();
+    if (rewritten.isEmpty) return;
+    final updatedParent = parent.withBlocks(
+      List<hc.Block>.from(parent.blocks)
+        ..[blockIndex] = headBlock.copyWith(content: rewritten),
+    );
+    _path[parentIndex] = updatedParent;
+    await _docRepo.save(updatedParent);
+  }
+
+  List<ChatMessage> _buildRewritePrompt(final hc.Block headBlock) => [
+    const ChatMessage(
+      role: 'system',
+      content:
+          'You are rewriting one block of a design document. The user '
+          'discussed the block below and reached a conclusion. Rewrite the '
+          'block to reflect that conclusion. Output only the rewritten block '
+          'text, nothing else.',
+    ),
+    ChatMessage(
+      role: 'user',
+      content:
+          'Original block:\n${headBlock.content}\n\n'
+          'Discussion:\n${_discussionContext()}',
+    ),
+  ];
+
+  String _discussionContext() => _current.blocks
+      .map((final b) => b.content)
+      .where((final c) => c.trim().isNotEmpty)
+      .join('\n');
+
+  String _breadcrumbLabel(final hc.DocumentNode node) {
+    if (_path.first == node && widget.doc.title.isNotEmpty) {
+      return widget.doc.title;
+    }
+    final snapshot = (node.spanSnapshot ?? '').trim();
     if (snapshot.isNotEmpty) {
       return snapshot.length <= 32 ? snapshot : '${snapshot.substring(0, 32)}…';
     }
@@ -287,7 +398,7 @@ class _DocViewState extends State<DocView> {
               labelBuilder: _breadcrumbLabel,
               onTap: (final index) async {
                 while (_path.length > index + 1) {
-                  _path.removeLast();
+                  await _climbUp();
                 }
                 setState(() => _lastFocusedBlockIndex = null);
                 await _reloadChildren();
@@ -307,12 +418,14 @@ class _DocViewState extends State<DocView> {
                   blockIndex: index,
                   openChildrenCount:
                       children
-                          ?.where((c) => c.status == DocStatus.open)
+                          ?.where((c) => c.status == hc.DocumentStatus.open)
                           .length ??
                       0,
                   collapsedChildrenCount:
                       children
-                          ?.where((c) => c.status == DocStatus.collapsed)
+                          ?.where(
+                            (c) => c.status == hc.DocumentStatus.collapsed,
+                          )
                           .length ??
                       0,
                   onFocus: _onBlockFocus,
@@ -333,6 +446,9 @@ class _DocViewState extends State<DocView> {
               unawaited(_discussBlock(index));
             },
             onAskAi: _onAskAi,
+            onApplyConclusion: _path.length > 1
+                ? () => unawaited(_collapseCurrent(rewriteFromDiscussion: true))
+                : null,
             onExpand: () {}, // placeholder
             onSummarise: () {}, // placeholder
           ),
@@ -350,8 +466,8 @@ class _BreadcrumbBar extends StatelessWidget {
     required this.onTap,
     required this.onCollapse,
   });
-  final List<ProjectModelDoc> path;
-  final String Function(ProjectModelDoc node) labelBuilder;
+  final List<hc.DocumentNode> path;
+  final String Function(hc.DocumentNode node) labelBuilder;
   final void Function(int index) onTap;
   final VoidCallback onCollapse;
 
@@ -424,11 +540,16 @@ class _SelectionToolbar extends StatelessWidget {
     required this.onAskAi,
     required this.onExpand,
     required this.onSummarise,
+    this.onApplyConclusion,
   });
   final VoidCallback onDiscuss;
   final VoidCallback onAskAi;
   final VoidCallback onExpand;
   final VoidCallback onSummarise;
+
+  /// "Apply conclusion" — rewrite the head span from this discussion and
+  /// collapse (ADR 0001). Only available when inside a discussion child.
+  final VoidCallback? onApplyConclusion;
 
   @override
   Widget build(final BuildContext context) => Padding(
@@ -458,6 +579,17 @@ class _SelectionToolbar extends StatelessWidget {
                 label: const Text('Ask AI'),
               ),
             ),
+            onApplyConclusion == null
+                ? const SizedBox.shrink()
+                : Tooltip(
+                    message:
+                        'Rewrite the head span from this discussion and collapse',
+                    child: TextButton.icon(
+                      onPressed: onApplyConclusion,
+                      icon: const Icon(Icons.auto_awesome, size: 18),
+                      label: const Text('Apply conclusion'),
+                    ),
+                  ),
             TextButton.icon(
               onPressed: onExpand,
               icon: const Icon(Icons.unfold_more, size: 18),
@@ -487,7 +619,7 @@ class _DocBlockTile extends StatefulWidget {
     required this.onOpenChild,
     super.key,
   });
-  final DocBlockModel block;
+  final hc.Block block;
   final int blockIndex;
   final int openChildrenCount;
   final int collapsedChildrenCount;
@@ -543,8 +675,8 @@ class _DocBlockTileState extends State<_DocBlockTile> {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final isHeading = widget.block.type == DocBlockType.heading;
-    final isList = widget.block.type == DocBlockType.list;
+    final isHeading = widget.block.type == hc.BlockType.heading;
+    final isList = widget.block.type == hc.BlockType.list;
     final hasChildren =
         widget.openChildrenCount > 0 || widget.collapsedChildrenCount > 0;
     return Row(

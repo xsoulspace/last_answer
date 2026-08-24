@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:headless_core/headless_core.dart' as headless_core;
 import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_local_db/universal_storage_local_db.dart';
@@ -40,6 +41,11 @@ class GlobalStatesProvider extends StatelessWidget {
       Provider(create: NotificationsRepository.new),
       Provider(create: ProjectsRepository.new),
       Provider(create: AdsRepository.new),
+      Provider<headless_core.DocumentRepository>(
+        create: (final context) => headless_core.StorageDocumentRepository(
+          service: context.read<StorageService>(),
+        ),
+      ),
       Provider<DocInferencePort?>(create: (_) => null),
 
       /// notifiers & blocs

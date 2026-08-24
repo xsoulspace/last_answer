@@ -76,6 +76,8 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
+  headless_core:
+    path: packages/headless_core
   universal_io: ^2.3.1
   url_launcher: ^6.3.2
   uuid: ^4.6.0

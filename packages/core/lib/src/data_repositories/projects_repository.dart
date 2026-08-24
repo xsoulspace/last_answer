@@ -6,12 +6,21 @@ import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import '../../core.dart';
+import 'package:lastanswer/settings/features/storage_backends_state.dart'
+    as storage_backends;
 
 class ProjectsRepository {
   ProjectsRepository(final BuildContext context)
     : _datasource = ProjectsLocalDataSourceLocalDbImpl(
         localDb: context.read<LocalDbI>(),
         storageService: context.read<StorageService>(),
+        supportsFileStorage: () =>
+            storage_backends.StorageBackendIdX.fromName(
+              storage_backends.StorageBackendsNotifier.instance
+                      .snapshot()['active']
+                  as String?,
+            ) ==
+            storage_backends.StorageBackendId.filesystem,
       );
   final ProjectsLocalDataSource _datasource;
   Future<void> putAll({required final List<ProjectModel> projects}) =>

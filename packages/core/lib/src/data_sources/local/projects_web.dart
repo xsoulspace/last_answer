@@ -35,10 +35,16 @@ final class ProjectsLocalDataSourceLocalDbImpl
   ProjectsLocalDataSourceLocalDbImpl({
     required this.localDb,
     this.storageService,
+    this.supportsFileStorage = _defaultFalse,
   });
   final LocalDbI localDb;
   final StorageService? storageService;
+  final bool Function() supportsFileStorage;
   final List<SearchableContainer<ProjectModel>> _fullCache = [];
+
+  static bool _defaultFalse() => false;
+
+  bool get _canUseBodyFiles => storageService != null && supportsFileStorage();
 
   bool _isReversed = false;
 
@@ -113,7 +119,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
     await _preloadCache();
     ProjectModel toCache = project;
     if (project case final ProjectModelDoc doc) {
-      if (storageService != null) {
+      if (_canUseBodyFiles) {
         await storageService!.saveFile(
           docBodyPath(doc.id),
           docBodyToJson(doc.blocks),
@@ -135,7 +141,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   Future<void> remove({required final ProjectModelId id}) async {
     await _preloadCache();
     final existing = _fullCache.firstWhereOrNull((final e) => e.value.id == id);
-    if (existing != null && storageService != null) {
+    if (existing != null && _canUseBodyFiles) {
       await storageService!.removeFile(docBodyPath(id));
     }
     _fullCache.removeWhere((final e) => e.value.id == id);
@@ -202,7 +208,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
         .firstWhereOrNull((final e) => e.value.id == id)
         ?.value;
     if (stub case final ProjectModelDoc doc) {
-      if (storageService != null) {
+      if (_canUseBodyFiles) {
         final raw = await storageService!.readFile(docBodyPath(doc.id));
         final blocks = docBodyFromJson(raw);
         if (blocks != null) {

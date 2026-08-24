@@ -1,7 +1,8 @@
 # ADR 0001 — Recursive Document Node Model
 
-- Status: Accepted (design), not yet implemented
+- Status: **Implemented** (v1 — block-granularity anchors, linear view, localDb + filesystem body storage)
 - Date: 2026-02-06
+- Implemented: 2026-08-24 (see `docs/evidence/current-status.mdx`)
 - Supersedes: thread-as-message-list model (`DocThreadModel` keyed by `SpanId` inside
   `ProjectModelDoc`, see `packages/core/lib/src/data_models/project.dart`)
 
@@ -46,7 +47,7 @@ DocumentNode {
 
 AnchorSpan {
   blockId: BlockId                 // block-granularity anchoring in v1
-  prefixHash?: string              // optional finer anchor with graceful degradation
+  prefixHash?: string              // reserved; sub-block UI is deferred for v1
   suffixHash?: string
 }
 ```
@@ -55,7 +56,7 @@ Rules:
 
 - **Recursion** falls out: a child is a full `DocumentNode`; its blocks are selectable,
   so it can open grandchildren. Depth is unbounded but navigated via a linear
-  back-stack + breadcrumb first; tree/map are later *views over the same store*.
+  back-stack + breadcrumb first; tree/map are later _views over the same store_.
 - **Snapshot on creation**: every child stores the text it anchored. Cheap, and
   future-proofs against edits, sync bugs, and storage migrations.
 - **Collapse**: author applies the outcome to the head span (manual rewrite or explicit
@@ -67,14 +68,18 @@ Rules:
   annotation if it has non-collapsed descendants (resolved lazily).
 - **Persistent IDs everywhere** (node id, block id). IDs must survive sync/export so
   anchors stay valid across devices and the planned migration to `~/xs/ecsly`.
+- **Sub-block anchors are deferred for v1**: `AnchorSpanModel.prefixHash` /
+  `suffixHash` exist as forward-compatible fields, but no user-facing sub-block anchor
+  selection or resolution is implemented in v1.
 
 ### Formats & templates
 
 - Remove the sealed `DocKind {gdd, prd}` enum from the model; replace with optional
   `formatId` metadata. Existing docs migrate: `docKind` → `formatId: 'gdd' | 'prd'`.
 - GDD/PRD "creation" becomes instantiation of pre-saved template documents.
-- Format packs (template + suggested Select→Do actions + prompt hints) become installable
-  extensions later; nothing format-specific lives in core models.
+- `formatId` accepts custom string values, but format packs (template + suggested
+  Select→Do actions + prompt hints) are deferred; no installable extension system is
+  implemented for v1. Nothing format-specific lives in core models.
 
 ### Storage
 
@@ -108,6 +113,6 @@ Revisit this ADR if any of these turn out true in practice:
 - Users regularly need sub-block (character-range) anchors before block anchoring feels
   workable — then extend `AnchorSpan` (already shaped for it).
 - Collapse-by-manual-rewrite proves too heavy (frequent long diffs) — then add a
-  review-diff promotion action as an *addition*, keeping manual as default.
+  review-diff promotion action as an _addition_, keeping manual as default.
 - Lazy descendant annotation performs badly on large graphs — then introduce a bounded
   eager index as a cache, not as source of truth.

@@ -29,6 +29,10 @@ name: doc-discussion-lifecycle
 
 - tapOn: "Discuss"
 
+# Allow discussion navigation to settle before asserting the child state.
+- waitForAnimationToEnd:
+    timeout: 500
+
 # We are now inside the discussion child: breadcrumb bar shows the climb-up
 # control and the collapse action; the anchored span snapshot is the label.
 - assertVisible: "Collapse discussion"

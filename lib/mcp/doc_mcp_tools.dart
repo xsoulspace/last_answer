@@ -89,7 +89,10 @@ Set<AgentCallEntry> docMcpEntries() => {
           parameters: {'ok': false},
         );
       }
-      final collapsed = await state.collapseCurrent();
+      final rewrite = (parameters['rewrite'] as bool?) == true;
+      final collapsed = await state.collapseCurrent(
+        rewriteFromDiscussion: rewrite,
+      );
       return MCPCallResult(
         message: collapsed
             ? 'Discussion collapsed (archived); climbed up to the parent.'
@@ -101,8 +104,21 @@ Set<AgentCallEntry> docMcpEntries() => {
       name: 'doc_collapse',
       description:
           'Collapse the currently open discussion node: mark it as '
-          'collapsed (archived) and climb back to its parent document.',
-      inputSchema: ObjectSchema.fromMap(_emptySchema()),
+          'collapsed (archived) and climb back to its parent document. '
+          'Set "rewrite" to rewrite the parent head span from this '
+          'discussion before collapsing (agent conclusion → head).',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'additionalProperties': false,
+        'properties': {
+          'rewrite': {
+            'type': 'boolean',
+            'description':
+                'Rewrite the parent head span from this discussion '
+                'before collapsing (default false).',
+          },
+        },
+      }),
     ),
   ),
 };

@@ -1,0 +1,26 @@
+name: headless_core
+description: Pure-Dart domain model and storage repositories for Last Answer documents (ADR 0001/0002).
+version: 0.1.0-dev.1
+publish_to: none
+
+environment:
+  sdk: ^3.12.0
+
+resolution: workspace
+
+dependencies:
+  from_json_to_json: ^0.5.0
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  meta: ^1.19.0
+  universal_storage_interface: ^0.1.0-dev.10
+
+dev_dependencies:
+  build_runner: ^2.15.2
+  freezed: ^3.2.5
+  json_serializable: ^6.14.0
+  lints: ^6.1.0
+  test: ^1.31.2
+  universal_storage_filesystem:
+    path: ../../../dart_flutter_packages/pkgs/universal_storage_filesystem
+  xsoulspace_lints: ^0.1.2

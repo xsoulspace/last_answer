@@ -65,6 +65,7 @@ dependencies:
   shared_models:
   shared_preferences: ^2.5.5
   ui_kit:
+  mcp_toolkit: ^5.0.4
   universal_storage_github_api:
     path: ../dart_flutter_packages/pkgs/universal_storage_github_api
   universal_storage_github_oauth:

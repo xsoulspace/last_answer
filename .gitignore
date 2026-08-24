@@ -3,6 +3,7 @@
 *.log
 *.pyc
 *.swp
+.flutter_mcp
 *.snap
 .DS_Store
 .atom/

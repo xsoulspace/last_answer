@@ -194,16 +194,25 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
       );
     }
     if (!_notifier.connected) {
-      return SwitchListTile.adaptive(
-        contentPadding: EdgeInsets.zero,
-        title: Text(l10n.githubSync),
-        subtitle: Text(l10n.connectGithub),
-        value: false,
-        onChanged: (final _) => unawaited(_notifier.connect(context)),
-        secondary: TextButton(
-          onPressed: () => unawaited(_showTokenDialog(context)),
-          child: Text(l10n.pasteTokenInstead),
-        ),
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SwitchListTile.adaptive(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.githubSync),
+            subtitle: Text(l10n.connectGithub),
+            value: false,
+            onChanged: (final _) => unawaited(_notifier.connect(context)),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () => unawaited(_showTokenDialog(context)),
+              child: Text(l10n.pasteTokenInstead),
+            ),
+          ),
+        ],
       );
     }
 

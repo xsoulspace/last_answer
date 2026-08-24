@@ -48,10 +48,12 @@ class HomeAppBar extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: onInfoTap,
+          tooltip: 'Info',
           icon: const Icon(Icons.info_outline),
         ),
         IconButton(
           onPressed: onSettingsTap,
+          tooltip: 'Settings',
           icon: const Icon(CupertinoIcons.gear),
         ),
       ]

@@ -1,0 +1,37 @@
+# E2E: GitHub Sync settings section + token-paste guided dialog.
+#
+# Prerequisites:
+#   - iOS simulator booted with the app installed:
+#       flutter build ios --simulator --dart-define-from-file=configs/envs/prod.json
+#       xcrun simctl install booted build/ios/iphonesimulator/Runner.app
+#   - maestro CLI installed.
+#
+# Run:
+#   maestro test e2e/maestro/github_sync_settings.yaml
+appId: dev.xsoulspace.lastanswer
+name: github-sync-settings
+---
+- launchApp:
+    clearState: false
+
+# Reach the Settings screen (icon button in the home scaffold).
+- tapOn:
+    text: "Settings"
+    optional: true
+
+# GitHub Sync section is present.
+- assertVisible: "GitHub Sync"
+
+# Open the manual-token guided dialog.
+- tapOn: "Paste a token instead"
+
+# Guided steps render.
+- assertVisible: "Create a fine-grained token"
+- assertVisible: "Open GitHub token page"
+- assertVisible: "Permissions → Contents → “Read and write”. Nothing else."
+- assertVisible: "Safety: the token is stored only on this device"
+- assertVisible: "Manage / revoke tokens"
+
+# Close without entering a token.
+- tapOn: "Cancel"
+- assertVisible: "Connect GitHub…"

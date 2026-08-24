@@ -18,3 +18,6 @@ Future<StorageService> buildFilesystemService(final String path) async =>
 /// Unsupported on web; callers check availability before calling.
 Future<StorageService> buildGitOfflineService(final String path) async =>
     throw UnsupportedError('Git offline backend is not supported on web');
+
+/// No default path without a filesystem.
+Future<String> defaultFilesystemPath() async => '';

@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
 import 'storage_backends_platform_stub.dart'
-    if (dart.library.io) 'storage_backends_platform_io.dart' as platform;
+    if (dart.library.io) 'storage_backends_platform_io.dart'
+    as platform;
 
 /// Pluggable storage backends, in the order they are offered to the user.
 enum StorageBackendId { localDb, filesystem, gitOffline, github }
@@ -114,12 +114,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
       _filesystemPath = map['fsPath'] as String? ?? '';
       _gitPath = map['gitPath'] as String? ?? '';
     }
-    try {
-      final docs = await getApplicationDocumentsDirectory();
-      _defaultPath = docs.path;
-    } on Exception {
-      _defaultPath = '';
-    }
+    _defaultPath = await platform.defaultFilesystemPath();
     notifyListeners();
   }
 

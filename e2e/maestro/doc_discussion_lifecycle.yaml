@@ -1,0 +1,59 @@
+# E2E: Recursive document editor (ADR 0001) — discussion lifecycle.
+#
+# Covers: creating a GDD doc, focusing a block, Discuss → child node with
+# breadcrumbs, Collapse (archive) → climb back with badge, reopen via badge.
+#
+# Prerequisites:
+#   - iOS simulator booted with the app installed:
+#       flutter build ios --simulator --dart-define-from-file=configs/envs/prod.json
+#       xcrun simctl install booted build/ios/iphonesimulator/Runner.app
+#   - maestro CLI installed.
+#
+# Run:
+#   maestro test e2e/maestro/doc_discussion_lifecycle.yaml
+appId: dev.xsoulspace.lastanswer
+name: doc-discussion-lifecycle
+---
+- launchApp:
+    clearState: false
+
+# --- Create a new GDD document from the vertical bar -----------------------
+- tapOn: "GDD"
+
+# Template renders (GDD template headings).
+- assertVisible: "Gameplay"
+
+# --- Focus a block, then Discuss it ----------------------------------------
+# Tap the "Gameplay" heading to focus it (Select → Do).
+- tapOn: "Gameplay"
+
+- tapOn: "Discuss"
+
+# We are now inside the discussion child: breadcrumb bar shows the climb-up
+# control and the collapse action; the anchored span snapshot is the label.
+- assertVisible: "Collapse discussion"
+
+# Type into the discussion child's first block.
+- tapOn:
+    point: 50%, 30%
+- inputText: "Combat should be turn-based"
+- hideKeyboard
+
+# --- Collapse the discussion (archive + climb back) ------------------------
+- tapOn: "Collapse discussion"
+
+# Back at the root doc; the anchored block now shows an archived-discussion
+# badge (check-circle icon button with "Archived discussion" tooltip).
+- assertVisible: "Gameplay"
+
+# --- Reopen the archived discussion via its badge --------------------------
+- tapOn:
+    # Badge icon sits left of the "Gameplay" heading text.
+    point: "17%, 22%"
+
+# Inside the child again: breadcrumb shows the snapshot label.
+- assertVisible: "Combat should be turn-based"
+
+# Climb back up via the breadcrumb bar's climb-up arrow.
+- tapOn: "Climb up"
+- assertVisible: "Gameplay"

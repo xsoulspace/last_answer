@@ -432,11 +432,12 @@ class _SelectionToolbar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 24),
+    padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),
-      child: Padding(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
           mainAxisSize: MainAxisSize.min,

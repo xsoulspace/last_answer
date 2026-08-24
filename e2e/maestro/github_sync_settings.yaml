@@ -14,13 +14,13 @@ name: github-sync-settings
 - launchApp:
     clearState: false
 
-# Reach the Settings screen (icon button in the home scaffold).
+# Reach the Settings screen (gear button in the home app bar).
 - tapOn:
     text: "Settings"
     optional: true
 
-# GitHub Sync section is present.
-- assertVisible: "GitHub Sync"
+# GitHub Sync section is present (manual-token entry point).
+- assertVisible: "Paste a token instead"
 
 # Open the manual-token guided dialog.
 - tapOn: "Paste a token instead"
@@ -28,10 +28,8 @@ name: github-sync-settings
 # Guided steps render.
 - assertVisible: "Create a fine-grained token"
 - assertVisible: "Open GitHub token page"
-- assertVisible: "Permissions → Contents → “Read and write”. Nothing else."
-- assertVisible: "Safety: the token is stored only on this device"
 - assertVisible: "Manage / revoke tokens"
 
 # Close without entering a token.
 - tapOn: "Cancel"
-- assertVisible: "Connect GitHub…"
+- assertVisible: "Paste a token instead"

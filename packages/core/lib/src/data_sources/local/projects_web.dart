@@ -27,6 +27,9 @@ bool _isVisibleInLists(final ProjectModel e) => switch (e) {
   _ => true,
 };
 
+bool _listVisibility(final SearchableContainer<ProjectModel> e) =>
+    _isVisibleInLists(e.value);
+
 final class ProjectsLocalDataSourceLocalDbImpl
     implements ProjectsLocalDataSource {
   ProjectsLocalDataSourceLocalDbImpl({
@@ -70,7 +73,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
     }
 
     reverse();
-    final items = [..._fullCache].where(_isVisibleInLists);
+    final items = [..._fullCache].where(_listVisibility).toList();
     if (data != null) {
       final conditions = <bool Function(SearchableContainer<ProjectModel> e)>[];
       if (data.search.isNotEmpty) {
@@ -173,7 +176,7 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<List<ProjectModel>> getAll({final RequestProjectsDto? dto}) async {
     await _preloadCache();
-    final items = [..._fullCache].where(_isVisibleInLists);
+    final items = [..._fullCache].where(_listVisibility).toList();
     if (dto != null) {
       if (dto.isReversed) {
         items.sort(
@@ -195,8 +198,9 @@ final class ProjectsLocalDataSourceLocalDbImpl
   @override
   Future<ProjectModel?> getById({required final ProjectModelId id}) async {
     await _preloadCache();
-    final stub =
-        _fullCache.firstWhereOrNull((final e) => e.value.id == id)?.value;
+    final stub = _fullCache
+        .firstWhereOrNull((final e) => e.value.id == id)
+        ?.value;
     if (stub case final ProjectModelDoc doc) {
       if (storageService != null) {
         final raw = await storageService!.readFile(docBodyPath(doc.id));
@@ -214,12 +218,13 @@ final class ProjectsLocalDataSourceLocalDbImpl
     required final ProjectModelId parentDocId,
   }) async {
     await _preloadCache();
-    final children = _fullCache
-        .map((final e) => e.value)
-        .whereType<ProjectModelDoc>()
-        .where((final d) => d.parentDocId == parentDocId)
-        .toList()
-      ..sort((final a, final b) => a.createdAt.compareTo(b.createdAt));
+    final children =
+        _fullCache
+            .map((final e) => e.value)
+            .whereType<ProjectModelDoc>()
+            .where((final d) => d.parentDocId == parentDocId)
+            .toList()
+          ..sort((final a, final b) => a.createdAt.compareTo(b.createdAt));
     return children;
   }
 
@@ -234,7 +239,9 @@ final class ProjectsLocalDataSourceLocalDbImpl
       toValue: (final e) => e,
     );
 
-    return ids.map((final e) => map[e]?.value).nonNulls
+    return ids
+        .map((final e) => map[e]?.value)
+        .nonNulls
         .where(_isVisibleInLists)
         .toList();
   }

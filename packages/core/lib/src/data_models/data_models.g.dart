@@ -46,38 +46,19 @@ const _$DocBlockTypeEnumMap = {
   DocBlockType.list: 'list',
 };
 
-_DocThreadMessageModel _$DocThreadMessageModelFromJson(
-  Map<String, dynamic> json,
-) => _DocThreadMessageModel(
-  content: json['content'] as String,
-  timestamp: DateTime.parse(json['timestamp'] as String),
-  authorId: json['authorId'] as String? ?? '',
-  authorName: json['authorName'] as String? ?? '',
-);
-
-Map<String, dynamic> _$DocThreadMessageModelToJson(
-  _DocThreadMessageModel instance,
-) => <String, dynamic>{
-  'content': instance.content,
-  'timestamp': instance.timestamp.toIso8601String(),
-  'authorId': instance.authorId,
-  'authorName': instance.authorName,
-};
-
-_DocThreadModel _$DocThreadModelFromJson(Map<String, dynamic> json) =>
-    _DocThreadModel(
-      messages:
-          (json['messages'] as List<dynamic>?)
-              ?.map(
-                (e) =>
-                    DocThreadMessageModel.fromJson(e as Map<String, dynamic>),
-              )
-              .toList() ??
-          const [],
+_AnchorSpanModel _$AnchorSpanModelFromJson(Map<String, dynamic> json) =>
+    _AnchorSpanModel(
+      blockId: DocBlockId.fromJson(json['blockId'] as String),
+      prefixHash: json['prefixHash'] as String?,
+      suffixHash: json['suffixHash'] as String?,
     );
 
-Map<String, dynamic> _$DocThreadModelToJson(_DocThreadModel instance) =>
-    <String, dynamic>{'messages': instance.messages};
+Map<String, dynamic> _$AnchorSpanModelToJson(_AnchorSpanModel instance) =>
+    <String, dynamic>{
+      'blockId': instance.blockId,
+      'prefixHash': instance.prefixHash,
+      'suffixHash': instance.suffixHash,
+    };
 
 ProjectModelIdea _$ProjectModelIdeaFromJson(Map<String, dynamic> json) =>
     ProjectModelIdea(
@@ -205,51 +186,64 @@ Map<String, dynamic> _$ProjectModelChangelogToJson(
   'runtimeType': instance.$type,
 };
 
-ProjectModelDoc _$ProjectModelDocFromJson(Map<String, dynamic> json) =>
-    ProjectModelDoc(
-      id: ProjectModelId.fromJson(json['id'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      docKind: $enumDecode(_$DocKindEnumMap, json['docKind']),
-      title: json['title'] as String? ?? '',
-      type:
-          $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
-          ProjectTypes.doc,
-      tagsIds:
-          (json['tagsIds'] as List<dynamic>?)
-              ?.map((e) => ProjectTagModelId.fromJson(e as String))
-              .toList() ??
-          const [],
-      archivedAt: json['archivedAt'] == null
-          ? null
-          : DateTime.parse(json['archivedAt'] as String),
-      blocks:
-          (json['blocks'] as List<dynamic>?)
-              ?.map((e) => DocBlockModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      threads: json['threads'] == null
-          ? const {}
-          : threadsFromJsonMap(json['threads'] as Map<String, dynamic>),
-      $type: json['runtimeType'] as String?,
-    );
+ProjectModelDoc _$ProjectModelDocFromJson(
+  Map<String, dynamic> json,
+) => ProjectModelDoc(
+  id: ProjectModelId.fromJson(json['id'] as String),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  formatId: json['formatId'] as String? ?? '',
+  title: json['title'] as String? ?? '',
+  type:
+      $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+      ProjectTypes.doc,
+  tagsIds:
+      (json['tagsIds'] as List<dynamic>?)
+          ?.map((e) => ProjectTagModelId.fromJson(e as String))
+          .toList() ??
+      const [],
+  archivedAt: json['archivedAt'] == null
+      ? null
+      : DateTime.parse(json['archivedAt'] as String),
+  blocks:
+      (json['blocks'] as List<dynamic>?)
+          ?.map((e) => DocBlockModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  parentDocId: json['parentDocId'] == null
+      ? null
+      : ProjectModelId.fromJson(json['parentDocId'] as String),
+  anchorSpan: json['anchorSpan'] == null
+      ? null
+      : AnchorSpanModel.fromJson(json['anchorSpan'] as Map<String, dynamic>),
+  spanSnapshot: json['spanSnapshot'] as String? ?? '',
+  status:
+      $enumDecodeNullable(_$DocStatusEnumMap, json['status']) ?? DocStatus.open,
+  $type: json['runtimeType'] as String?,
+);
 
 Map<String, dynamic> _$ProjectModelDocToJson(ProjectModelDoc instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'docKind': _$DocKindEnumMap[instance.docKind]!,
+      'formatId': instance.formatId,
       'title': instance.title,
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'tagsIds': instance.tagsIds,
       'archivedAt': instance.archivedAt?.toIso8601String(),
       'blocks': instance.blocks,
-      'threads': threadsToJsonMap(instance.threads),
+      'parentDocId': instance.parentDocId,
+      'anchorSpan': instance.anchorSpan,
+      'spanSnapshot': instance.spanSnapshot,
+      'status': _$DocStatusEnumMap[instance.status]!,
       'runtimeType': instance.$type,
     };
 
-const _$DocKindEnumMap = {DocKind.gdd: 'gdd', DocKind.prd: 'prd'};
+const _$DocStatusEnumMap = {
+  DocStatus.open: 'open',
+  DocStatus.collapsed: 'collapsed',
+};
 
 _IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(
   Map<String, dynamic> json,

@@ -11,8 +11,60 @@ class DocView extends StatefulWidget {
   const DocView({required this.doc, super.key});
   final ProjectModelDoc doc;
 
+  /// Debug-only snapshot of the open recursive document, published for
+  /// MCP agent tooling (`doc_state`, `doc_discuss_block`, `doc_collapse`).
+  static DocDebugState? debugDocState;
+
   @override
   State<DocView> createState() => _DocViewState();
+}
+
+/// Debug-only snapshot of the open recursive document, published for
+/// MCP agent tooling (`doc_state`, `doc_discuss_block`, `doc_collapse`).
+class DocDebugState {
+  const DocDebugState({
+    required this.path,
+    required this.blocks,
+    required this.childrenCounts,
+    required this.discussBlock,
+    required this.collapseCurrent,
+  });
+
+  /// Root first, currently open node last.
+  final List<ProjectModelDoc> path;
+  final List<DocBlockModel> blocks;
+
+  /// Per-block count of anchored discussion children (aligned with [blocks]).
+  final List<int> childrenCounts;
+  final Future<ProjectModelId?> Function(int blockIndex) discussBlock;
+  final Future<bool> Function() collapseCurrent;
+
+  ProjectModelDoc get current => path.last;
+  int get depth => path.length;
+  String get rootDocId => path.first.id.value;
+  String get currentDocId => current.id.value;
+  DocStatus get status => current.status;
+  int get blockCount => blocks.length;
+
+  Map<String, Object?> toJson() => {
+    'depth': depth,
+    'rootDocId': rootDocId,
+    'currentDocId': currentDocId,
+    'status': status.name,
+    'path': [
+      for (final node in path)
+        {'id': node.id.value, 'status': node.status.name},
+    ],
+    'blocks': [
+      for (var i = 0; i < blocks.length; i++)
+        {
+          'index': i,
+          'type': blocks[i].type.name,
+          'content': blocks[i].content,
+          'childrenCount': childrenCounts[i],
+        },
+    ],
+  };
 }
 
 class _DocViewState extends State<DocView> {
@@ -30,7 +82,7 @@ class _DocViewState extends State<DocView> {
   void initState() {
     super.initState();
     _path = [widget.doc];
-    _reloadChildren();
+    unawaited(_reloadChildren());
   }
 
   @override
@@ -43,6 +95,7 @@ class _DocViewState extends State<DocView> {
 
   @override
   void dispose() {
+    DocView.debugDocState = null;
     for (final controller in _controllers.values) {
       controller.dispose();
     }
@@ -112,13 +165,15 @@ class _DocViewState extends State<DocView> {
   }
 
   /// Creates a discussion child anchored to the block at [index] and dives in.
-  Future<void> _discussBlock(final int index) async {
-    final block = _current.blocks[index];
+  /// Returns the new child's id, or null if [index] is out of range.
+  Future<ProjectModelId?> _discussBlock(final int index) async {
+    final blocks = _current.blocks;
+    if (index < 0 || index >= blocks.length) return null;
+    final block = blocks[index];
     final child = ProjectModelDoc(
       id: ProjectModelId.generate(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      title: '',
       parentDocId: _current.id,
       anchorSpan: AnchorSpanModel(blockId: block.id),
       spanSnapshot: block.content,
@@ -128,24 +183,25 @@ class _DocViewState extends State<DocView> {
     );
     await context.read<ProjectsRepository>().put(project: child);
     await _openChild(child);
+    return child.id;
   }
 
   /// Collapses the current discussion: archives it and climbs back to head.
-  Future<void> _collapseCurrent() async {
-    if (_path.length <= 1) return;
+  /// Returns false when already at the root (nothing to collapse).
+  Future<bool> _collapseCurrent() async {
+    if (_path.length <= 1) return false;
     await _persist(
       _current.copyWith(status: DocStatus.collapsed, updatedAt: DateTime.now()),
     );
     await _climbUp();
+    return true;
   }
 
   String _breadcrumbLabel(final ProjectModelDoc node) {
     if (node.title.isNotEmpty) return node.title;
     final snapshot = node.spanSnapshot.trim();
     if (snapshot.isNotEmpty) {
-      return snapshot.length <= 32
-          ? snapshot
-          : '${snapshot.substring(0, 32)}…';
+      return snapshot.length <= 32 ? snapshot : '${snapshot.substring(0, 32)}…';
     }
     return 'Discussion';
   }
@@ -172,12 +228,17 @@ class _DocViewState extends State<DocView> {
     final buffer = StringBuffer();
     await for (final token in port.chat(_buildPromptMessages())) {
       buffer.write(token);
-      final text = '$prefix${buffer.toString()}$suffix';
+      final text = '$prefix$buffer$suffix';
       controller
         ..text = text
-        ..selection = TextSelection.collapsed(offset: prefix.length + buffer.length);
+        ..selection = TextSelection.collapsed(
+          offset: prefix.length + buffer.length,
+        );
     }
-    await _replaceBlock(index!, _current.blocks[index].copyWith(content: controller.text));
+    await _replaceBlock(
+      index!,
+      _current.blocks[index].copyWith(content: controller.text),
+    );
   }
 
   List<ChatMessage> _buildPromptMessages() {
@@ -194,6 +255,19 @@ class _DocViewState extends State<DocView> {
   @override
   Widget build(final BuildContext context) {
     final isRoot = _path.length == 1;
+    assert(() {
+      DocView.debugDocState = DocDebugState(
+        path: List.of(_path),
+        blocks: _current.blocks,
+        childrenCounts: [
+          for (final block in _current.blocks)
+            _childrenByBlock[block.id]?.length ?? 0,
+        ],
+        discussBlock: _discussBlock,
+        collapseCurrent: _collapseCurrent,
+      );
+      return true;
+    }());
     return PopScope(
       /// At depth > 0, system-back climbs the stack instead of leaving.
       canPop: isRoot,
@@ -232,9 +306,15 @@ class _DocViewState extends State<DocView> {
                   block: block,
                   blockIndex: index,
                   openChildrenCount:
-                      children?.where((c) => c.status == DocStatus.open).length ?? 0,
+                      children
+                          ?.where((c) => c.status == DocStatus.open)
+                          .length ??
+                      0,
                   collapsedChildrenCount:
-                      children?.where((c) => c.status == DocStatus.collapsed).length ?? 0,
+                      children
+                          ?.where((c) => c.status == DocStatus.collapsed)
+                          .length ??
+                      0,
                   onFocus: _onBlockFocus,
                   onControllerReady: _registerController,
                   onChanged: (final content) =>
@@ -361,15 +441,21 @@ class _SelectionToolbar extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton.icon(
-              onPressed: onDiscuss,
-              icon: const Icon(Icons.chat_bubble_outline, size: 18),
-              label: const Text('Discuss'),
+            Tooltip(
+              message: 'Discuss the focused block',
+              child: TextButton.icon(
+                onPressed: onDiscuss,
+                icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                label: const Text('Discuss'),
+              ),
             ),
-            TextButton.icon(
-              onPressed: onAskAi,
-              icon: const Icon(Icons.smart_toy_outlined, size: 18),
-              label: const Text('Ask AI'),
+            Tooltip(
+              message: 'Ask AI at the cursor position',
+              child: TextButton.icon(
+                onPressed: onAskAi,
+                icon: const Icon(Icons.smart_toy_outlined, size: 18),
+                label: const Text('Ask AI'),
+              ),
             ),
             TextButton.icon(
               onPressed: onExpand,
@@ -465,6 +551,7 @@ class _DocBlockTileState extends State<_DocBlockTile> {
       children: [
         if (hasChildren)
           IconButton(
+            key: const ValueKey('open-child-button'),
             iconSize: 18,
             visualDensity: VisualDensity.compact,
             onPressed: widget.onOpenChild,
@@ -491,10 +578,11 @@ class _DocBlockTileState extends State<_DocBlockTile> {
             key: ValueKey(widget.block.id),
             controller: _controller,
             focusNode: _focusNode,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
               contentPadding: EdgeInsets.zero,
+              hintText: isHeading ? 'Heading' : null,
             ),
             style: isHeading
                 ? theme.textTheme.titleMedium?.copyWith(

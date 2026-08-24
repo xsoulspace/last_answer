@@ -594,42 +594,42 @@ as int?,
 
 
 /// @nodoc
-mixin _$DocThreadMessageModel {
+mixin _$AnchorSpanModel {
 
- String get content; DateTime get timestamp; String get authorId; String get authorName;
-/// Create a copy of DocThreadMessageModel
+ DocBlockId get blockId; String? get prefixHash; String? get suffixHash;
+/// Create a copy of AnchorSpanModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DocThreadMessageModelCopyWith<DocThreadMessageModel> get copyWith => _$DocThreadMessageModelCopyWithImpl<DocThreadMessageModel>(this as DocThreadMessageModel, _$identity);
+$AnchorSpanModelCopyWith<AnchorSpanModel> get copyWith => _$AnchorSpanModelCopyWithImpl<AnchorSpanModel>(this as AnchorSpanModel, _$identity);
 
-  /// Serializes this DocThreadMessageModel to a JSON map.
+  /// Serializes this AnchorSpanModel to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DocThreadMessageModel&&(identical(other.content, content) || other.content == content)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorName, authorName) || other.authorName == authorName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnchorSpanModel&&(identical(other.blockId, blockId) || other.blockId == blockId)&&(identical(other.prefixHash, prefixHash) || other.prefixHash == prefixHash)&&(identical(other.suffixHash, suffixHash) || other.suffixHash == suffixHash));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,content,timestamp,authorId,authorName);
+int get hashCode => Object.hash(runtimeType,blockId,prefixHash,suffixHash);
 
 @override
 String toString() {
-  return 'DocThreadMessageModel(content: $content, timestamp: $timestamp, authorId: $authorId, authorName: $authorName)';
+  return 'AnchorSpanModel(blockId: $blockId, prefixHash: $prefixHash, suffixHash: $suffixHash)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DocThreadMessageModelCopyWith<$Res>  {
-  factory $DocThreadMessageModelCopyWith(DocThreadMessageModel value, $Res Function(DocThreadMessageModel) _then) = _$DocThreadMessageModelCopyWithImpl;
+abstract mixin class $AnchorSpanModelCopyWith<$Res>  {
+  factory $AnchorSpanModelCopyWith(AnchorSpanModel value, $Res Function(AnchorSpanModel) _then) = _$AnchorSpanModelCopyWithImpl;
 @useResult
 $Res call({
- String content, DateTime timestamp, String authorId, String authorName
+ DocBlockId blockId, String? prefixHash, String? suffixHash
 });
 
 
@@ -637,30 +637,29 @@ $Res call({
 
 }
 /// @nodoc
-class _$DocThreadMessageModelCopyWithImpl<$Res>
-    implements $DocThreadMessageModelCopyWith<$Res> {
-  _$DocThreadMessageModelCopyWithImpl(this._self, this._then);
+class _$AnchorSpanModelCopyWithImpl<$Res>
+    implements $AnchorSpanModelCopyWith<$Res> {
+  _$AnchorSpanModelCopyWithImpl(this._self, this._then);
 
-  final DocThreadMessageModel _self;
-  final $Res Function(DocThreadMessageModel) _then;
+  final AnchorSpanModel _self;
+  final $Res Function(AnchorSpanModel) _then;
 
-/// Create a copy of DocThreadMessageModel
+/// Create a copy of AnchorSpanModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? timestamp = null,Object? authorId = null,Object? authorName = null,}) {
-  return _then(DocThreadMessageModel(
-content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as String,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as DateTime,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,authorName: null == authorName ? _self.authorName : authorName // ignore: cast_nullable_to_non_nullable
-as String,
+@pragma('vm:prefer-inline') @override $Res call({Object? blockId = null,Object? prefixHash = freezed,Object? suffixHash = freezed,}) {
+  return _then(AnchorSpanModel(
+blockId: null == blockId ? _self.blockId : blockId // ignore: cast_nullable_to_non_nullable
+as DocBlockId,prefixHash: freezed == prefixHash ? _self.prefixHash : prefixHash // ignore: cast_nullable_to_non_nullable
+as String?,suffixHash: freezed == suffixHash ? _self.suffixHash : suffixHash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
 }
 
 
-/// Adds pattern-matching-related methods to [DocThreadMessageModel].
-extension DocThreadMessageModelPatterns on DocThreadMessageModel {
+/// Adds pattern-matching-related methods to [AnchorSpanModel].
+extension AnchorSpanModelPatterns on AnchorSpanModel {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -673,10 +672,10 @@ extension DocThreadMessageModelPatterns on DocThreadMessageModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DocThreadMessageModel value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnchorSpanModel value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _DocThreadMessageModel() when $default != null:
+case _AnchorSpanModel() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -695,10 +694,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DocThreadMessageModel value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnchorSpanModel value)  $default,){
 final _that = this;
 switch (_that) {
-case _DocThreadMessageModel():
+case _AnchorSpanModel():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -716,10 +715,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DocThreadMessageModel value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnchorSpanModel value)?  $default,){
 final _that = this;
 switch (_that) {
-case _DocThreadMessageModel() when $default != null:
+case _AnchorSpanModel() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -737,10 +736,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String content,  DateTime timestamp,  String authorId,  String authorName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DocBlockId blockId,  String? prefixHash,  String? suffixHash)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _DocThreadMessageModel() when $default != null:
-return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);case _:
+case _AnchorSpanModel() when $default != null:
+return $default(_that.blockId,_that.prefixHash,_that.suffixHash);case _:
   return orElse();
 
 }
@@ -758,10 +757,10 @@ return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String content,  DateTime timestamp,  String authorId,  String authorName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DocBlockId blockId,  String? prefixHash,  String? suffixHash)  $default,) {final _that = this;
 switch (_that) {
-case _DocThreadMessageModel():
-return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);case _:
+case _AnchorSpanModel():
+return $default(_that.blockId,_that.prefixHash,_that.suffixHash);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -778,10 +777,10 @@ return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String content,  DateTime timestamp,  String authorId,  String authorName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DocBlockId blockId,  String? prefixHash,  String? suffixHash)?  $default,) {final _that = this;
 switch (_that) {
-case _DocThreadMessageModel() when $default != null:
-return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);case _:
+case _AnchorSpanModel() when $default != null:
+return $default(_that.blockId,_that.prefixHash,_that.suffixHash);case _:
   return null;
 
 }
@@ -792,49 +791,48 @@ return $default(_that.content,_that.timestamp,_that.authorId,_that.authorName);c
 /// @nodoc
 @JsonSerializable()
 
-class _DocThreadMessageModel implements DocThreadMessageModel {
-  const _DocThreadMessageModel({required this.content, required this.timestamp, this.authorId = '', this.authorName = ''});
-  factory _DocThreadMessageModel.fromJson(Map<String, dynamic> json) => _$DocThreadMessageModelFromJson(json);
+class _AnchorSpanModel implements AnchorSpanModel {
+  const _AnchorSpanModel({required this.blockId, this.prefixHash, this.suffixHash});
+  factory _AnchorSpanModel.fromJson(Map<String, dynamic> json) => _$AnchorSpanModelFromJson(json);
 
-@override final  String content;
-@override final  DateTime timestamp;
-@override@JsonKey() final  String authorId;
-@override@JsonKey() final  String authorName;
+@override final  DocBlockId blockId;
+@override final  String? prefixHash;
+@override final  String? suffixHash;
 
-/// Create a copy of DocThreadMessageModel
+/// Create a copy of AnchorSpanModel
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$DocThreadMessageModelCopyWith<_DocThreadMessageModel> get copyWith => __$DocThreadMessageModelCopyWithImpl<_DocThreadMessageModel>(this, _$identity);
+_$AnchorSpanModelCopyWith<_AnchorSpanModel> get copyWith => __$AnchorSpanModelCopyWithImpl<_AnchorSpanModel>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$DocThreadMessageModelToJson(this, );
+  return _$AnchorSpanModelToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DocThreadMessageModel&&(identical(other.content, content) || other.content == content)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorName, authorName) || other.authorName == authorName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnchorSpanModel&&(identical(other.blockId, blockId) || other.blockId == blockId)&&(identical(other.prefixHash, prefixHash) || other.prefixHash == prefixHash)&&(identical(other.suffixHash, suffixHash) || other.suffixHash == suffixHash));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,content,timestamp,authorId,authorName);
+int get hashCode => Object.hash(runtimeType,blockId,prefixHash,suffixHash);
 
 @override
 String toString() {
-  return 'DocThreadMessageModel(content: $content, timestamp: $timestamp, authorId: $authorId, authorName: $authorName)';
+  return 'AnchorSpanModel(blockId: $blockId, prefixHash: $prefixHash, suffixHash: $suffixHash)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$DocThreadMessageModelCopyWith<$Res> implements $DocThreadMessageModelCopyWith<$Res> {
-  factory _$DocThreadMessageModelCopyWith(_DocThreadMessageModel value, $Res Function(_DocThreadMessageModel) _then) = __$DocThreadMessageModelCopyWithImpl;
+abstract mixin class _$AnchorSpanModelCopyWith<$Res> implements $AnchorSpanModelCopyWith<$Res> {
+  factory _$AnchorSpanModelCopyWith(_AnchorSpanModel value, $Res Function(_AnchorSpanModel) _then) = __$AnchorSpanModelCopyWithImpl;
 @override @useResult
 $Res call({
- String content, DateTime timestamp, String authorId, String authorName
+ DocBlockId blockId, String? prefixHash, String? suffixHash
 });
 
 
@@ -842,291 +840,21 @@ $Res call({
 
 }
 /// @nodoc
-class __$DocThreadMessageModelCopyWithImpl<$Res>
-    implements _$DocThreadMessageModelCopyWith<$Res> {
-  __$DocThreadMessageModelCopyWithImpl(this._self, this._then);
+class __$AnchorSpanModelCopyWithImpl<$Res>
+    implements _$AnchorSpanModelCopyWith<$Res> {
+  __$AnchorSpanModelCopyWithImpl(this._self, this._then);
 
-  final _DocThreadMessageModel _self;
-  final $Res Function(_DocThreadMessageModel) _then;
+  final _AnchorSpanModel _self;
+  final $Res Function(_AnchorSpanModel) _then;
 
-/// Create a copy of DocThreadMessageModel
+/// Create a copy of AnchorSpanModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? timestamp = null,Object? authorId = null,Object? authorName = null,}) {
-  return _then(_DocThreadMessageModel(
-content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as String,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as DateTime,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,authorName: null == authorName ? _self.authorName : authorName // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
-mixin _$DocThreadModel {
-
- List<DocThreadMessageModel> get messages;
-/// Create a copy of DocThreadModel
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$DocThreadModelCopyWith<DocThreadModel> get copyWith => _$DocThreadModelCopyWithImpl<DocThreadModel>(this as DocThreadModel, _$identity);
-
-  /// Serializes this DocThreadModel to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DocThreadModel&&const DeepCollectionEquality().equals(other.messages, messages));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(messages));
-
-@override
-String toString() {
-  return 'DocThreadModel(messages: $messages)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $DocThreadModelCopyWith<$Res>  {
-  factory $DocThreadModelCopyWith(DocThreadModel value, $Res Function(DocThreadModel) _then) = _$DocThreadModelCopyWithImpl;
-@useResult
-$Res call({
- List<DocThreadMessageModel> messages
-});
-
-
-
-
-}
-/// @nodoc
-class _$DocThreadModelCopyWithImpl<$Res>
-    implements $DocThreadModelCopyWith<$Res> {
-  _$DocThreadModelCopyWithImpl(this._self, this._then);
-
-  final DocThreadModel _self;
-  final $Res Function(DocThreadModel) _then;
-
-/// Create a copy of DocThreadModel
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? messages = null,}) {
-  return _then(DocThreadModel(
-messages: null == messages ? _self.messages : messages // ignore: cast_nullable_to_non_nullable
-as List<DocThreadMessageModel>,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [DocThreadModel].
-extension DocThreadModelPatterns on DocThreadModel {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DocThreadModel value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _DocThreadModel() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DocThreadModel value)  $default,){
-final _that = this;
-switch (_that) {
-case _DocThreadModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DocThreadModel value)?  $default,){
-final _that = this;
-switch (_that) {
-case _DocThreadModel() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<DocThreadMessageModel> messages)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _DocThreadModel() when $default != null:
-return $default(_that.messages);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<DocThreadMessageModel> messages)  $default,) {final _that = this;
-switch (_that) {
-case _DocThreadModel():
-return $default(_that.messages);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<DocThreadMessageModel> messages)?  $default,) {final _that = this;
-switch (_that) {
-case _DocThreadModel() when $default != null:
-return $default(_that.messages);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _DocThreadModel implements DocThreadModel {
-  const _DocThreadModel({ List<DocThreadMessageModel> messages = const []}): _messages = messages;
-  factory _DocThreadModel.fromJson(Map<String, dynamic> json) => _$DocThreadModelFromJson(json);
-
- final  List<DocThreadMessageModel> _messages;
-@override@JsonKey() List<DocThreadMessageModel> get messages {
-  if (_messages is EqualUnmodifiableListView) return _messages;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_messages);
-}
-
-
-/// Create a copy of DocThreadModel
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$DocThreadModelCopyWith<_DocThreadModel> get copyWith => __$DocThreadModelCopyWithImpl<_DocThreadModel>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$DocThreadModelToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DocThreadModel&&const DeepCollectionEquality().equals(other._messages, _messages));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_messages));
-
-@override
-String toString() {
-  return 'DocThreadModel(messages: $messages)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$DocThreadModelCopyWith<$Res> implements $DocThreadModelCopyWith<$Res> {
-  factory _$DocThreadModelCopyWith(_DocThreadModel value, $Res Function(_DocThreadModel) _then) = __$DocThreadModelCopyWithImpl;
-@override @useResult
-$Res call({
- List<DocThreadMessageModel> messages
-});
-
-
-
-
-}
-/// @nodoc
-class __$DocThreadModelCopyWithImpl<$Res>
-    implements _$DocThreadModelCopyWith<$Res> {
-  __$DocThreadModelCopyWithImpl(this._self, this._then);
-
-  final _DocThreadModel _self;
-  final $Res Function(_DocThreadModel) _then;
-
-/// Create a copy of DocThreadModel
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? messages = null,}) {
-  return _then(_DocThreadModel(
-messages: null == messages ? _self._messages : messages // ignore: cast_nullable_to_non_nullable
-as List<DocThreadMessageModel>,
+@override @pragma('vm:prefer-inline') $Res call({Object? blockId = null,Object? prefixHash = freezed,Object? suffixHash = freezed,}) {
+  return _then(_AnchorSpanModel(
+blockId: null == blockId ? _self.blockId : blockId // ignore: cast_nullable_to_non_nullable
+as DocBlockId,prefixHash: freezed == prefixHash ? _self.prefixHash : prefixHash // ignore: cast_nullable_to_non_nullable
+as String?,suffixHash: freezed == suffixHash ? _self.suffixHash : suffixHash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1317,13 +1045,13 @@ return doc(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  DocKind docKind,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks, @JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap)  Map<SpanId, DocThreadModel> threads)?  doc,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)?  doc,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.docKind,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.threads);case _:
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);case _:
   return orElse();
 
 }
@@ -1341,13 +1069,13 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.docKind,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  DocKind docKind,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks, @JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap)  Map<SpanId, DocThreadModel> threads)  doc,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea():
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote():
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog():
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc():
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.docKind,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.threads);}
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -1361,13 +1089,13 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.docKind,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  DocKind docKind,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks, @JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap)  Map<SpanId, DocThreadModel> threads)?  doc,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)?  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.docKind,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.threads);case _:
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);case _:
   return null;
 
 }
@@ -1685,13 +1413,14 @@ $LocalizedTextModelCopyWith<$Res> get title {
 @JsonSerializable()
 
 class ProjectModelDoc extends ProjectModel implements Archivable, Sharable {
-  const ProjectModelDoc({required this.id, required this.createdAt, required this.updatedAt, required this.docKind, this.title = '', this.type = ProjectTypes.doc,  List<ProjectTagModelId> tagsIds = const [], this.archivedAt,  List<DocBlockModel> blocks = const [], @JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap)  Map<SpanId, DocThreadModel> threads = const {},  String? $type}): _tagsIds = tagsIds,_blocks = blocks,_threads = threads,$type = $type ?? 'doc',super._();
+  const ProjectModelDoc({required this.id, required this.createdAt, required this.updatedAt, this.formatId = '', this.title = '', this.type = ProjectTypes.doc,  List<ProjectTagModelId> tagsIds = const [], this.archivedAt,  List<DocBlockModel> blocks = const [], this.parentDocId, this.anchorSpan, this.spanSnapshot = '', this.status = DocStatus.open,  String? $type}): _tagsIds = tagsIds,_blocks = blocks,$type = $type ?? 'doc',super._();
   factory ProjectModelDoc.fromJson(Map<String, dynamic> json) => _$ProjectModelDocFromJson(json);
 
 @override final  ProjectModelId id;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
- final  DocKind docKind;
+/// Format template id ([DocFormatIds] or custom). Empty = generic doc.
+@JsonKey() final  String formatId;
 @JsonKey() final  String title;
 @override@JsonKey() final  ProjectTypes type;
  final  List<ProjectTagModelId> _tagsIds;
@@ -1709,13 +1438,13 @@ class ProjectModelDoc extends ProjectModel implements Archivable, Sharable {
   return EqualUnmodifiableListView(_blocks);
 }
 
- final  Map<SpanId, DocThreadModel> _threads;
-@JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap) Map<SpanId, DocThreadModel> get threads {
-  if (_threads is EqualUnmodifiableMapView) return _threads;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_threads);
-}
-
+/// Parent document when this node is a discussion opened on a span.
+ final  ProjectModelId? parentDocId;
+/// Span this node anchors to in [parentDocId].
+ final  AnchorSpanModel? anchorSpan;
+/// Snapshot of the anchored text at creation ("history note").
+@JsonKey() final  String spanSnapshot;
+@JsonKey() final  DocStatus status;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
@@ -1734,16 +1463,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelDoc&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.docKind, docKind) || other.docKind == docKind)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&const DeepCollectionEquality().equals(other._threads, _threads));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelDoc&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,docKind,title,type,const DeepCollectionEquality().hash(_tagsIds),archivedAt,const DeepCollectionEquality().hash(_blocks),const DeepCollectionEquality().hash(_threads));
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,formatId,title,type,const DeepCollectionEquality().hash(_tagsIds),archivedAt,const DeepCollectionEquality().hash(_blocks),parentDocId,anchorSpan,spanSnapshot,status);
 
 @override
 String toString() {
-  return 'ProjectModel.doc(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, docKind: $docKind, title: $title, type: $type, tagsIds: $tagsIds, archivedAt: $archivedAt, blocks: $blocks, threads: $threads)';
+  return 'ProjectModel.doc(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, formatId: $formatId, title: $title, type: $type, tagsIds: $tagsIds, archivedAt: $archivedAt, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, spanSnapshot: $spanSnapshot, status: $status)';
 }
 
 
@@ -1754,11 +1483,11 @@ abstract mixin class $ProjectModelDocCopyWith<$Res> implements $ProjectModelCopy
   factory $ProjectModelDocCopyWith(ProjectModelDoc value, $Res Function(ProjectModelDoc) _then) = _$ProjectModelDocCopyWithImpl;
 @override @useResult
 $Res call({
- ProjectModelId id, DateTime createdAt, DateTime updatedAt, DocKind docKind, String title, ProjectTypes type, List<ProjectTagModelId> tagsIds, DateTime? archivedAt, List<DocBlockModel> blocks,@JsonKey(fromJson: threadsFromJsonMap, toJson: threadsToJsonMap) Map<SpanId, DocThreadModel> threads
+ ProjectModelId id, DateTime createdAt, DateTime updatedAt, String formatId, String title, ProjectTypes type, List<ProjectTagModelId> tagsIds, DateTime? archivedAt, List<DocBlockModel> blocks, ProjectModelId? parentDocId, AnchorSpanModel? anchorSpan, String spanSnapshot, DocStatus status
 });
 
 
-
+$AnchorSpanModelCopyWith<$Res>? get anchorSpan;
 
 }
 /// @nodoc
@@ -1771,23 +1500,38 @@ class _$ProjectModelDocCopyWithImpl<$Res>
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? docKind = null,Object? title = null,Object? type = null,Object? tagsIds = null,Object? archivedAt = freezed,Object? blocks = null,Object? threads = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? formatId = null,Object? title = null,Object? type = null,Object? tagsIds = null,Object? archivedAt = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? spanSnapshot = null,Object? status = null,}) {
   return _then(ProjectModelDoc(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as ProjectModelId,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,docKind: null == docKind ? _self.docKind : docKind // ignore: cast_nullable_to_non_nullable
-as DocKind,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as DateTime,formatId: null == formatId ? _self.formatId : formatId // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as ProjectTypes,tagsIds: null == tagsIds ? _self._tagsIds : tagsIds // ignore: cast_nullable_to_non_nullable
 as List<ProjectTagModelId>,archivedAt: freezed == archivedAt ? _self.archivedAt : archivedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,blocks: null == blocks ? _self._blocks : blocks // ignore: cast_nullable_to_non_nullable
-as List<DocBlockModel>,threads: null == threads ? _self._threads : threads // ignore: cast_nullable_to_non_nullable
-as Map<SpanId, DocThreadModel>,
+as List<DocBlockModel>,parentDocId: freezed == parentDocId ? _self.parentDocId : parentDocId // ignore: cast_nullable_to_non_nullable
+as ProjectModelId?,anchorSpan: freezed == anchorSpan ? _self.anchorSpan : anchorSpan // ignore: cast_nullable_to_non_nullable
+as AnchorSpanModel?,spanSnapshot: null == spanSnapshot ? _self.spanSnapshot : spanSnapshot // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as DocStatus,
   ));
 }
 
+/// Create a copy of ProjectModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AnchorSpanModelCopyWith<$Res>? get anchorSpan {
+    if (_self.anchorSpan == null) {
+    return null;
+  }
 
+  return $AnchorSpanModelCopyWith<$Res>(_self.anchorSpan!, (value) {
+    return _then(_self.copyWith(anchorSpan: value));
+  });
+}
 }
 
 

@@ -524,6 +524,9 @@ class SIt extends S {
   String get storageOpenGithubSetup => 'Apri le impostazioni GitHub';
 
   @override
+  String get storageNotAvailable => 'Non disponibile su questa piattaforma';
+
+  @override
   String get tokenSafety =>
       'Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.';
 }

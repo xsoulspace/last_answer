@@ -169,6 +169,7 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   bool get _canReplicate =>
       _active != StorageBackendId.localDb &&
       _active != StorageBackendId.github &&
+      _active.isSupportedOnPlatform &&
       _notifier.isConfigured;
 
   void _submitPath(final String value) {
@@ -196,15 +197,18 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
         l10n.storageGithubOptionHint,
       ),
     };
+    final supported = id.isSupportedOnPlatform;
     return RadioListTile.adaptive(
       key: ValueKey('storage-backend-${id.name}'),
       contentPadding: EdgeInsets.zero,
       dense: true,
-      title: Text(title),
+      title: Text(supported ? title : '$title (${l10n.storageNotAvailable})'),
       subtitle: Text(hint, style: context.textTheme.bodySmall),
       value: id,
       groupValue: _active,
-      onChanged: (final _) => unawaited(_notifier.selectBackend(id)),
+      onChanged: supported
+          ? (final _) => unawaited(_notifier.selectBackend(id))
+          : null,
     );
   }
 }

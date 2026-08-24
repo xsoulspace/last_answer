@@ -522,6 +522,9 @@ class SEn extends S {
   String get storageOpenGithubSetup => 'Open GitHub settings';
 
   @override
+  String get storageNotAvailable => 'Not available on this platform';
+
+  @override
   String get tokenSafety =>
       'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.';
 }

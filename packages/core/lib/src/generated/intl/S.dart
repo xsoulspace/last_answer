@@ -1041,6 +1041,12 @@ abstract class S {
   /// **'Open GitHub settings'**
   String get storageOpenGithubSetup;
 
+  /// No description provided for @storageNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available on this platform'**
+  String get storageNotAvailable;
+
   /// No description provided for @tokenSafety.
   ///
   /// In en, this message translates to:

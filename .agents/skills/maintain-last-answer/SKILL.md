@@ -37,6 +37,16 @@ Never hand-edit `*.g.dart` / `*.freezed.dart`. Update EN + IT + RU arb files tog
 - App wiring: `lib/other/last_answer_app.dart` → `GlobalStatesProvider` (packages/core, all repos/notifiers) → `GlobalStatesInitializer.onLoad()` (DB init, user load).
 - Settings UI lives in `lib/settings/features/*_button.dart` + `_state.dart`; tiles registered in `lib/settings/views/general_settings_view.dart`.
 - Storage backends: `lib/settings/features/storage_backends_state.dart` (`StorageBackendsNotifier`, singleton with static `payloadBuilder` / `restoreApplier` hooks) and `storage_backends_button.dart` (UI). Backends in fixed UX order: **localDb → filesystem → gitOffline → github**.
+- Platform availability (`storage_backends_platform_{io,stub}.dart`, conditional on `dart.library.io`):
+
+  | backend    | macOS/Win/Linux | web                |
+  |------------|-----------------|--------------------|
+  | localDb    | ✅              | ✅                 |
+  | filesystem | ✅              | ❌ (no dart:io)    |
+  | gitOffline | ✅ (needs real git, not xcrun shim) | ❌ (no Process) |
+  | github     | ✅              | ✅ (PAT path)      |
+
+  Unsupported tiles render disabled with "(not available on this platform)"; MCP `storage_state` reports `supportedBackends`; the smoke script auto-skips them. On web, dart:io throws `UnsupportedError` (an Error, not Exception) — always catch broadly around backend calls.
   - localDb = shared-prefs-backed live store (default, always on; not a replication target).
   - filesystem / gitOffline = optional copies via `universal_storage_filesystem` / `universal_storage_git_offline` (path deps in `../dart_flutter_packages/pkgs/…`; also listed under both `dependencies:` AND `dependency_overrides:` in pubspec).
   - github = driven separately by `GithubSyncNotifier` (OAuth device flow / PAT); never built through `StorageBackendsNotifier.buildService`.

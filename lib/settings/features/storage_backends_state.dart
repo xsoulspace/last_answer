@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
-import 'package:universal_storage_git_offline/universal_storage_git_offline.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
+
+import 'storage_backends_platform_stub.dart'
+    if (dart.library.io) 'storage_backends_platform_io.dart' as platform;
 
 /// Pluggable storage backends, in the order they are offered to the user.
 enum StorageBackendId { localDb, filesystem, gitOffline, github }
@@ -20,6 +20,14 @@ extension StorageBackendIdX on StorageBackendId {
         (final b) => b.name == name,
         orElse: () => StorageBackendId.localDb,
       );
+
+  /// Whether this backend can actually run on the current platform
+  /// (web has no filesystem/processes; iOS devices cannot spawn git).
+  bool get isSupportedOnPlatform => switch (this) {
+    StorageBackendId.localDb || StorageBackendId.github => true,
+    StorageBackendId.filesystem => platform.filesystemSupported(),
+    StorageBackendId.gitOffline => platform.gitOfflineSupported(),
+  };
 }
 
 /// Result of the last replication/restore operation (for UI and MCP).
@@ -152,40 +160,29 @@ class StorageBackendsNotifier extends ChangeNotifier {
       case StorageBackendId.localDb:
         return null;
       case StorageBackendId.filesystem:
+        if (!id.isSupportedOnPlatform) {
+          throw const StorageBackendConfigException(
+            'Filesystem backend is not available on this platform',
+          );
+        }
         if (_filesystemPath.isEmpty) {
           throw const StorageBackendConfigException(
             'Filesystem path is not set',
           );
         }
-        final dir = Directory(_filesystemPath);
-        if (!dir.existsSync()) dir.createSync(recursive: true);
-        final provider = FileSystemStorageProvider();
-        await provider.initWithConfig(
-          FileSystemConfig(
-            filePathConfig: FilePathConfig.create(
-              path: dir.path,
-              macOSBookmarkData: MacOSBookmark.fromDirectory(dir),
-            ),
-          ),
-        );
-        return StorageService(provider);
+        return platform.buildFilesystemService(_filesystemPath);
       case StorageBackendId.gitOffline:
+        if (!id.isSupportedOnPlatform) {
+          throw const StorageBackendConfigException(
+            'Git offline backend is not available on this platform',
+          );
+        }
         if (_gitPath.isEmpty) {
           throw const StorageBackendConfigException(
             'Git repository path is not set',
           );
         }
-        final provider = OfflineGitStorageProvider(
-          commitBatching: const GitCommitBatching(),
-        );
-        await provider.initWithConfig(
-          OfflineGitConfig(
-            localPath: _gitPath,
-            authorName: 'Last Answer',
-            authorEmail: 'sync@lastanswer.local',
-          ),
-        );
-        return StorageService(provider);
+        return platform.buildGitOfflineService(_gitPath);
       case StorageBackendId.github:
         throw const StorageBackendConfigException(
           'GitHub is driven by GithubSyncNotifier (OAuth-protected)',
@@ -220,7 +217,8 @@ class StorageBackendsNotifier extends ChangeNotifier {
         message: 'replicated',
         bytes: jsonPayload.length,
       );
-    } on Exception catch (e) {
+    } catch (e) {
+      // Catch Error too: on web dart:io throws UnsupportedError.
       _lastReport = StorageOperationReport(
         ok: false,
         backend: backend,
@@ -310,7 +308,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
         message: 'restored and applied',
         bytes: report.bytes,
       );
-    } on Exception catch (e) {
+    } catch (e) {
       _lastReport = StorageOperationReport(
         ok: false,
         backend: backend ?? _active,

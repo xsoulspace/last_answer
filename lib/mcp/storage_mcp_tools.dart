@@ -16,7 +16,15 @@ Set<AgentCallEntry> storageMcpEntries() => {
       message: 'Storage backends state. '
           'Backends: localDb (default live store), filesystem, gitOffline, '
           'github (driven by GitHub Sync OAuth).',
-      parameters: {'state': StorageBackendsNotifier.instance.snapshot()},
+      parameters: {
+        'state': {
+          ...StorageBackendsNotifier.instance.snapshot(),
+          'supportedBackends': StorageBackendId.values
+              .where((final b) => b.isSupportedOnPlatform)
+              .map((final b) => b.name)
+              .toList(),
+        },
+      },
     ),
     definition: MCPToolDefinition(
       name: 'storage_state',
@@ -38,6 +46,14 @@ Set<AgentCallEntry> storageMcpEntries() => {
         );
       }
       await StorageBackendsNotifier.instance.selectBackend(matches.first);
+      if (!matches.first.isSupportedOnPlatform) {
+        return MCPCallResult(
+          message:
+              '${matches.first.name} selected, but it is NOT supported on '
+              'this platform; backup/restore will fail.',
+          parameters: {'ok': true, 'active': matches.first.name},
+        );
+      }
       return MCPCallResult(
         message: 'Active storage backend set to ${matches.first.name}.',
         parameters: {'ok': true, 'active': matches.first.name},

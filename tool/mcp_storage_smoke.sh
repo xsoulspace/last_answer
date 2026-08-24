@@ -79,40 +79,56 @@ echo "Smoke dir: $SMOKE_DIR"
 
 rm -rf "$SMOKE_DIR"
 
-echo "==> Filesystem backend: select, configure, backup, restore"
-R=$(call_tool storage_select_backend '{"backend":"filesystem"}')
-check_ok "$R" "" "select filesystem"
+# Which local backends does this platform support?
+SUPPORTED=$(echo "$STATE" | python3 -c "
+import json,sys
+print(' '.join(json.load(sys.stdin)['data']['parameters']['state'].get('supportedBackends', [])))
+")
+echo "Supported backends: $SUPPORTED"
 
-R=$(call_tool storage_set_path "{\"backend\":\"filesystem\",\"path\":\"$SMOKE_DIR/fs\"}")
-check_ok "$R" "path set" "set filesystem path"
+run_local_backend() { # backendName
+  local B=$1
+  if ! echo " $SUPPORTED " | grep -q " $B "; then
+    R=$(call_tool storage_backup "{\"backend\":\"$B\",\"payload\":$(python3 -c 'import json,os;print(json.dumps(os.environ["PAYLOAD"]))')}")
+    echo "$R" | grep -q 'not available' \
+      && echo "SKIP: $B not available on this platform (graceful failure ✓)" \
+      || fail "$B expected unavailable but got: $R"
+    return
+  fi
+  R=$(call_tool storage_select_backend "{\"backend\":\"$B\"}")
+  check_ok "$R" "" "select $B"
 
-R=$(call_tool storage_backup "{\"backend\":\"filesystem\",\"payload\":$(python3 -c "import json,os;print(json.dumps(os.environ['PAYLOAD']))")}")
-check_ok "$R" "Replicated to filesystem" "backup to filesystem"
+  R=$(call_tool storage_set_path "{\"backend\":\"$B\",\"path\":\"$SMOKE_DIR/$B\"}")
+  check_ok "$R" "path set" "set $B path"
 
-[[ -f "$SMOKE_DIR/fs/last-answer-data.json" ]] \
-  && grep -q "MCP smoke" "$SMOKE_DIR/fs/last-answer-data.json" \
-  && echo "PASS: backup file exists on disk" \
-  || fail "backup file missing at $SMOKE_DIR/fs/last-answer-data.json"
+  R=$(call_tool storage_backup "{\"backend\":\"$B\",\"payload\":$(python3 -c 'import json,os;print(json.dumps(os.environ["PAYLOAD"]))')}")
+  check_ok "$R" "Replicated to $B" "backup to $B"
 
-R=$(call_tool storage_restore '{"backend":"filesystem","apply":"false"}')
-check_ok "$R" "Read backup from filesystem" "restore (read-only) from filesystem"
-echo "$R" | grep -q "MCP smoke" || fail "restored payload mismatch"
+  [[ -f "$SMOKE_DIR/$B/last-answer-data.json" ]] \
+    && grep -q "MCP smoke" "$SMOKE_DIR/$B/last-answer-data.json" \
+    && echo "PASS: backup file exists on disk" \
+    || fail "backup file missing at $SMOKE_DIR/$B/last-answer-data.json"
 
-echo "==> Git offline backend: select, configure, backup, restore"
-R=$(call_tool storage_select_backend '{"backend":"gitOffline"}')
-check_ok "$R" "" "select gitOffline"
+  R=$(call_tool storage_restore "{\"backend\":\"$B\",\"apply\":\"false\"}")
+  check_ok "$R" "Read backup from $B" "restore (read-only) from $B"
+  echo "$R" | grep -q "MCP smoke" || fail "restored payload mismatch"
+}
 
-R=$(call_tool storage_set_path "{\"backend\":\"gitOffline\",\"path\":\"$SMOKE_DIR/git\"}")
-check_ok "$R" "path set" "set git path"
+if echo " $SUPPORTED " | grep -q ' filesystem '; then
+  echo "==> Filesystem backend: select, configure, backup, restore"
+fi
+run_local_backend filesystem
 
-R=$(call_tool storage_backup "{\"backend\":\"gitOffline\",\"payload\":$(python3 -c "import json,os;print(json.dumps(os.environ['PAYLOAD']))")}")
-check_ok "$R" "Replicated to gitOffline" "backup to gitOffline"
+if echo " $SUPPORTED " | grep -q ' gitOffline '; then
+  echo "==> Git offline backend: select, configure, backup, restore"
+fi
+run_local_backend gitOffline
 
-R=$(call_tool storage_restore '{"backend":"gitOffline","apply":"false"}')
-check_ok "$R" "Read backup from gitOffline" "restore (read-only) from gitOffline"
-echo "$R" | grep -q "MCP smoke" || fail "restored payload mismatch"
-[[ -d "$SMOKE_DIR/git/.git" ]] && echo "PASS: git repo versioned on disk" \
-  || fail ".git not found in $SMOKE_DIR/git"
+# .git check only meaningful when git ran.
+if echo " $SUPPORTED " | grep -q ' gitOffline '; then
+  [[ -d "$SMOKE_DIR/gitOffline/.git" ]] && echo "PASS: git repo versioned on disk" \
+    || fail ".git not found in $SMOKE_DIR/gitOffline"
+fi
 
 echo "==> Cleanup: back to localDb"
 R=$(call_tool storage_select_backend '{"backend":"localDb"}')

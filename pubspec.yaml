@@ -70,6 +70,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_github_api
   universal_storage_github_oauth:
     path: ../dart_flutter_packages/pkgs/universal_storage_github_oauth
+  universal_storage_filesystem:
+    path: ../dart_flutter_packages/pkgs/universal_storage_filesystem
+  universal_storage_git_offline:
+    path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
   universal_io: ^2.3.1
@@ -90,6 +94,10 @@ dev_dependencies:
 dependency_overrides:
   universal_storage_oauth:
     path: ../dart_flutter_packages/pkgs/universal_storage_oauth
+  universal_storage_filesystem:
+    path: ../dart_flutter_packages/pkgs/universal_storage_filesystem
+  universal_storage_git_offline:
+    path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   analyzer: ^14.1.0
   meta: ^1.19.0
   intl: ^0.20.3

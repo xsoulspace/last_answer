@@ -458,6 +458,73 @@ class SRu extends S {
   String get manageTokens => 'Управление токенами / отзыв';
 
   @override
+  String get storage => 'Хранилище';
+
+  @override
+  String get storageSectionHint =>
+      'Заметки всегда хранятся в локальной базе на этом устройстве. Можно также сохранять синхронизированную копию в другом месте — как резервную или для переноса на новое устройство.';
+
+  @override
+  String get storageLocalDb => 'Локальная база данных';
+
+  @override
+  String get storageLocalDbHint =>
+      'По умолчанию. Быстро и приватно — данные не покидают это устройство.';
+
+  @override
+  String get storageFilesystem => 'Папка на этом устройстве';
+
+  @override
+  String get storageFilesystemHint =>
+      'Хранит копию в выбранной вами папке — легко открыть любым файловым менеджером или включить в свои резервные копии.';
+
+  @override
+  String get storageGitOffline => 'Git-папка (офлайн)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Хранит копию в локальном Git-репозитории: каждый бэкап версионируется, можно смотреть историю и откатываться. Аккаунт не нужен.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Приватная облачная копия в вашем репозитории GitHub — защита при потере устройства. Настройте её в разделе «GitHub Sync» ниже.';
+
+  @override
+  String get storageFolderPathLabel => 'Путь к папке';
+
+  @override
+  String get storageGitPathLabel => 'Путь к папке репозитория';
+
+  @override
+  String get storagePathHint =>
+      'Если папки ещё нет, она будет создана автоматически.';
+
+  @override
+  String get storageBackupNow => 'Сохранить копию сейчас';
+
+  @override
+  String get storageRestoreNow => 'Восстановить из копии';
+
+  @override
+  String get storageBackupDone => 'Копия сохранена ✓';
+
+  @override
+  String get storageRestoreDone => 'Восстановлено ✓';
+
+  @override
+  String get storageNoBackupFound => 'В этом месте пока нет резервной копии.';
+
+  @override
+  String get storageOperationFailed =>
+      'Не удалось выполнить операцию с хранилищем';
+
+  @override
+  String get storageOpenGithubSetup => 'Открыть настройки GitHub';
+
+  @override
   String get tokenSafety =>
       'Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить.';
 }

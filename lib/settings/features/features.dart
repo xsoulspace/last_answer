@@ -4,4 +4,6 @@ export 'github_sync_button.dart';
 export 'github_sync_state.dart';
 export 'locale_switcher_button.dart';
 export 'projects_export_import_buttons.dart';
+export 'storage_backends_button.dart';
+export 'storage_backends_state.dart';
 export 'theme_switcher_button.dart';

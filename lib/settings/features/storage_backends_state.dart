@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_git_offline/universal_storage_git_offline.dart';
@@ -13,9 +15,11 @@ enum StorageBackendId { localDb, filesystem, gitOffline, github }
 /// Human-facing metadata for a backend.
 extension StorageBackendIdX on StorageBackendId {
   String get persistedName => name;
-  static StorageBackendId fromName(final String? name) => StorageBackendId
-      .values.firstWhere((final b) => b.name == name,
-          orElse: () => StorageBackendId.localDb);
+  static StorageBackendId fromName(final String? name) =>
+      StorageBackendId.values.firstWhere(
+        (final b) => b.name == name,
+        orElse: () => StorageBackendId.localDb,
+      );
 }
 
 /// Result of the last replication/restore operation (for UI and MCP).
@@ -41,14 +45,23 @@ class StorageOperationReport {
 class StorageBackendsNotifier extends ChangeNotifier {
   /// Singleton so MCP tools can drive storage without a widget tree.
   StorageBackendsNotifier.internal();
-  static final StorageBackendsNotifier instance = StorageBackendsNotifier
-      .internal();
+  static final StorageBackendsNotifier instance =
+      StorageBackendsNotifier.internal();
 
   static const _prefsKey = 'storage_backend_config_v1';
+
+  /// Builds the full app data payload (JSON string) for replication.
+  /// Set at startup so MCP tools can back up without the widget tree.
+  static Future<String> Function()? payloadBuilder;
+
+  /// Applies a restored JSON payload to the live local DB.
+  /// Set at startup so MCP tools can restore without the widget tree.
+  static Future<void> Function(String jsonPayload)? restoreApplier;
 
   StorageBackendId _active = StorageBackendId.localDb;
   String _filesystemPath = '';
   String _gitPath = '';
+  String _defaultPath = '';
   StorageOperationReport? _lastReport;
 
   /// Currently selected backend (local_db by default).
@@ -59,6 +72,10 @@ class StorageBackendsNotifier extends ChangeNotifier {
 
   /// Absolute path of the local git repository for the git backend.
   String get gitPath => _gitPath;
+
+  /// Writable default location (app documents dir) suggested to users
+  /// and used by agent tooling on sandboxed platforms.
+  String get defaultPath => _defaultPath;
 
   /// Last replication/restore result.
   StorageOperationReport? get lastReport => _lastReport;
@@ -88,6 +105,12 @@ class StorageBackendsNotifier extends ChangeNotifier {
       _active = StorageBackendIdX.fromName(map['backend'] as String?);
       _filesystemPath = map['fsPath'] as String? ?? '';
       _gitPath = map['gitPath'] as String? ?? '';
+    }
+    try {
+      final docs = await getApplicationDocumentsDirectory();
+      _defaultPath = docs.path;
+    } on Exception {
+      _defaultPath = '';
     }
     notifyListeners();
   }
@@ -221,6 +244,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
         );
       }
       content = await service.readFile(_dataFile);
+      _lastPayload = content ?? '';
       _lastReport = StorageOperationReport(
         ok: content != null,
         backend: backend,
@@ -238,12 +262,77 @@ class StorageBackendsNotifier extends ChangeNotifier {
     return _lastReport!;
   }
 
+  /// Builds a payload via [payloadBuilder] (or throws if not set).
+  Future<String> buildPayload() async {
+    final builder = payloadBuilder;
+    if (builder == null) {
+      throw const StorageBackendConfigException(
+        'No payload builder registered',
+      );
+    }
+    return builder();
+  }
+
+  /// Replicates the app data (via [buildPayload]) to [backend]
+  /// (defaults to the active backend).
+  Future<StorageOperationReport> backupNow({
+    final String? jsonPayload,
+    final StorageBackendId? backend,
+  }) async {
+    final payload = jsonPayload ?? await buildPayload();
+    return replicate(backend: backend ?? _active, jsonPayload: payload);
+  }
+
+  /// Reads the payload from [backend] and, when it succeeds and
+  /// [apply] is set, applies it to the live local DB via
+  /// [restoreApplier].
+  Future<StorageOperationReport> restoreNow({
+    final StorageBackendId? backend,
+    final bool apply = true,
+  }) async {
+    final report = await restore(backend ?? _active);
+    if (!report.ok || !apply) return report;
+    final applier = restoreApplier;
+    if (applier == null) {
+      _lastReport = StorageOperationReport(
+        ok: false,
+        backend: backend ?? _active,
+        message: 'No restore applier registered',
+      );
+      notifyListeners();
+      return _lastReport!;
+    }
+    try {
+      await applier(_lastPayload);
+      _lastReport = StorageOperationReport(
+        ok: true,
+        backend: backend ?? _active,
+        message: 'restored and applied',
+        bytes: report.bytes,
+      );
+    } on Exception catch (e) {
+      _lastReport = StorageOperationReport(
+        ok: false,
+        backend: backend ?? _active,
+        message: e.toString(),
+      );
+    }
+    notifyListeners();
+    return _lastReport!;
+  }
+
+  String _lastPayload = '';
+
+  /// Last payload read by [restore] (empty when nothing was read yet).
+  String get lastPayload => _lastPayload;
+
   /// Snapshot for MCP tools.
   Map<String, dynamic> snapshot() => {
     'active': _active.name,
     'filesystemPath': _filesystemPath,
     'gitPath': _gitPath,
     'isConfigured': isConfigured,
+    'defaultPath': _defaultPath,
     if (_lastReport != null)
       'lastReport': {
         'ok': _lastReport!.ok,

@@ -456,6 +456,72 @@ class SEn extends S {
   String get manageTokens => 'Manage / revoke tokens';
 
   @override
+  String get storage => 'Storage';
+
+  @override
+  String get storageSectionHint =>
+      'Your notes always live in the local database on this device. You can also keep a synced copy in another place — useful as a backup or for moving to a new device.';
+
+  @override
+  String get storageLocalDb => 'Local database';
+
+  @override
+  String get storageLocalDbHint =>
+      'Default. Fast and private — data never leaves this device.';
+
+  @override
+  String get storageFilesystem => 'Folder on this device';
+
+  @override
+  String get storageFilesystemHint =>
+      'Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.';
+
+  @override
+  String get storageGitOffline => 'Git folder (offline)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.';
+
+  @override
+  String get storageFolderPathLabel => 'Folder path';
+
+  @override
+  String get storageGitPathLabel => 'Repository folder path';
+
+  @override
+  String get storagePathHint =>
+      'The folder is created automatically if it doesn\'t exist yet.';
+
+  @override
+  String get storageBackupNow => 'Back up now';
+
+  @override
+  String get storageRestoreNow => 'Restore from copy';
+
+  @override
+  String get storageBackupDone => 'Backup saved ✓';
+
+  @override
+  String get storageRestoreDone => 'Restored ✓';
+
+  @override
+  String get storageNoBackupFound => 'No backup found in this location yet.';
+
+  @override
+  String get storageOperationFailed => 'Storage operation failed';
+
+  @override
+  String get storageOpenGithubSetup => 'Open GitHub settings';
+
+  @override
   String get tokenSafety =>
       'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.';
 }

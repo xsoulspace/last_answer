@@ -456,6 +456,74 @@ class SIt extends S {
   String get manageTokens => 'Gestisci / revoca i token';
 
   @override
+  String get storage => 'Archiviazione';
+
+  @override
+  String get storageSectionHint =>
+      'Le note sono sempre salvate nel database locale su questo dispositivo. Puoi anche tenere una copia sincronizzata altrove — utile come backup o per spostarti su un nuovo dispositivo.';
+
+  @override
+  String get storageLocalDb => 'Database locale';
+
+  @override
+  String get storageLocalDbHint =>
+      'Predefinito. Veloce e privato: i dati non lasciano mai questo dispositivo.';
+
+  @override
+  String get storageFilesystem => 'Cartella su questo dispositivo';
+
+  @override
+  String get storageFilesystemHint =>
+      'Mantiene una copia in una cartella a tua scelta: facile da aprire con qualsiasi file manager o da includere nei tuoi backup.';
+
+  @override
+  String get storageGitOffline => 'Cartella Git (offline)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Mantiene una copia in un repository Git locale: ogni backup è versionato, quindi puoi vedere la cronologia e tornare indietro. Non serve un account.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Copia privata nel cloud nel tuo repository GitHub: protegge dalla perdita del dispositivo. Configurala nella sezione “GitHub Sync” qui sotto.';
+
+  @override
+  String get storageFolderPathLabel => 'Percorso della cartella';
+
+  @override
+  String get storageGitPathLabel => 'Percorso della cartella del repository';
+
+  @override
+  String get storagePathHint =>
+      'La cartella viene creata automaticamente se non esiste ancora.';
+
+  @override
+  String get storageBackupNow => 'Salva copia ora';
+
+  @override
+  String get storageRestoreNow => 'Ripristina dalla copia';
+
+  @override
+  String get storageBackupDone => 'Copia salvata ✓';
+
+  @override
+  String get storageRestoreDone => 'Ripristinato ✓';
+
+  @override
+  String get storageNoBackupFound =>
+      'Nessun backup trovato in questa posizione.';
+
+  @override
+  String get storageOperationFailed =>
+      'Operazione di archiviazione non riuscita';
+
+  @override
+  String get storageOpenGithubSetup => 'Apri le impostazioni GitHub';
+
+  @override
   String get tokenSafety =>
       'Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.';
 }

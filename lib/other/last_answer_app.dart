@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';
+import 'package:lastanswer/settings/features/features.dart';
 
 class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
@@ -29,6 +32,36 @@ class _AppScaffoldState extends State<_AppScaffold> {
   void initState() {
     super.initState();
     unawaited(_initializer.onLoad());
+    _initStorageBackends();
+  }
+
+  /// Loads persisted storage-backend selection and wires the payload
+  /// hooks so MCP tools can back up / restore without the widget tree.
+  void _initStorageBackends() {
+    final notifier = StorageBackendsNotifier.instance;
+    unawaited(notifier.load());
+    assert(() {
+      StorageBackendsNotifier.payloadBuilder = () async => jsonEncode(
+        DbSaveModel(
+          projects: await context.read<ProjectsRepository>().getAll(),
+          tags: (await context.read<TagsRepository>().getAll())
+              .values
+              .toList(),
+        ).toJson(),
+      );
+      StorageBackendsNotifier.restoreApplier = (final jsonPayload) async {
+        if (!mounted) return;
+        final dbSave = DbSaveModel.fromJson(
+          jsonDecode(jsonPayload) as Map<String, dynamic>,
+        );
+        if (dbSave.isEmpty) return;
+        await context.read<AppNotifier>().restoreFromDbSave(
+          dbSave: dbSave,
+          context: context,
+        );
+      };
+      return true;
+    }());
   }
 
   @override

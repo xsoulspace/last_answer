@@ -921,6 +921,126 @@ abstract class S {
   /// **'Manage / revoke tokens'**
   String get manageTokens;
 
+  /// No description provided for @storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storage;
+
+  /// No description provided for @storageSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your notes always live in the local database on this device. You can also keep a synced copy in another place — useful as a backup or for moving to a new device.'**
+  String get storageSectionHint;
+
+  /// No description provided for @storageLocalDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Local database'**
+  String get storageLocalDb;
+
+  /// No description provided for @storageLocalDbHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Default. Fast and private — data never leaves this device.'**
+  String get storageLocalDbHint;
+
+  /// No description provided for @storageFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder on this device'**
+  String get storageFilesystem;
+
+  /// No description provided for @storageFilesystemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.'**
+  String get storageFilesystemHint;
+
+  /// No description provided for @storageGitOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Git folder (offline)'**
+  String get storageGitOffline;
+
+  /// No description provided for @storageGitOfflineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.'**
+  String get storageGitOfflineHint;
+
+  /// No description provided for @storageGithubOption.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub'**
+  String get storageGithubOption;
+
+  /// No description provided for @storageGithubOptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.'**
+  String get storageGithubOptionHint;
+
+  /// No description provided for @storageFolderPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder path'**
+  String get storageFolderPathLabel;
+
+  /// No description provided for @storageGitPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repository folder path'**
+  String get storageGitPathLabel;
+
+  /// No description provided for @storagePathHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The folder is created automatically if it doesn\'t exist yet.'**
+  String get storagePathHint;
+
+  /// No description provided for @storageBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get storageBackupNow;
+
+  /// No description provided for @storageRestoreNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from copy'**
+  String get storageRestoreNow;
+
+  /// No description provided for @storageBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved ✓'**
+  String get storageBackupDone;
+
+  /// No description provided for @storageRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored ✓'**
+  String get storageRestoreDone;
+
+  /// No description provided for @storageNoBackupFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup found in this location yet.'**
+  String get storageNoBackupFound;
+
+  /// No description provided for @storageOperationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage operation failed'**
+  String get storageOperationFailed;
+
+  /// No description provided for @storageOpenGithubSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub settings'**
+  String get storageOpenGithubSetup;
+
   /// No description provided for @tokenSafety.
   ///
   /// In en, this message translates to:

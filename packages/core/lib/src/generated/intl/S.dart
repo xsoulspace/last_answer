@@ -930,7 +930,7 @@ abstract class S {
   /// No description provided for @storageSectionHint.
   ///
   /// In en, this message translates to:
-  /// **'Your notes always live in the local database on this device. You can also keep a synced copy in another place — useful as a backup or for moving to a new device.'**
+  /// **'Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.'**
   String get storageSectionHint;
 
   /// No description provided for @storageLocalDb.
@@ -942,7 +942,7 @@ abstract class S {
   /// No description provided for @storageLocalDbHint.
   ///
   /// In en, this message translates to:
-  /// **'Default. Fast and private — data never leaves this device.'**
+  /// **'Always on. Fast and private — data never leaves this device.'**
   String get storageLocalDbHint;
 
   /// No description provided for @storageFilesystem.
@@ -980,6 +980,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.'**
   String get storageGithubOptionHint;
+
+  /// No description provided for @storagePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary storage — restores use it by default'**
+  String get storagePrimary;
+
+  /// No description provided for @storageSetAsPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as primary'**
+  String get storageSetAsPrimary;
 
   /// No description provided for @storageFolderPathLabel.
   ///
@@ -1046,6 +1058,114 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Not available on this platform'**
   String get storageNotAvailable;
+
+  /// No description provided for @storageMeshTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync between devices'**
+  String get storageMeshTitle;
+
+  /// No description provided for @storageMeshHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.'**
+  String get storageMeshHint;
+
+  /// No description provided for @storageMeshBecomeMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this device as main'**
+  String get storageMeshBecomeMain;
+
+  /// No description provided for @storageMeshJoinWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'I have a pairing code'**
+  String get storageMeshJoinWithCode;
+
+  /// No description provided for @storageMeshWaitingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this screen open. On your second device tap “{joinWithCode}” and scan this code or paste it.'**
+  String storageMeshWaitingHint(String joinWithCode);
+
+  /// No description provided for @storageMeshCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get storageMeshCopyCode;
+
+  /// No description provided for @storageMeshCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing code copied'**
+  String get storageMeshCodeCopied;
+
+  /// No description provided for @storageMeshPasteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste pairing code'**
+  String get storageMeshPasteTitle;
+
+  /// No description provided for @storageMeshScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code'**
+  String get storageMeshScanQr;
+
+  /// No description provided for @storageMeshConnectButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get storageMeshConnectButton;
+
+  /// No description provided for @storageMeshMainBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Main device'**
+  String get storageMeshMainBadge;
+
+  /// No description provided for @storageMeshJoinedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to your main device. Notes sync automatically while both are on the same network.'**
+  String get storageMeshJoinedStatus;
+
+  /// No description provided for @storageMeshConnectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected devices: {count}'**
+  String storageMeshConnectedCount(int count);
+
+  /// No description provided for @storageMeshSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get storageMeshSyncNow;
+
+  /// No description provided for @storageMeshSyncDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices synced ✓'**
+  String get storageMeshSyncDone;
+
+  /// No description provided for @storageMeshPairingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect: {error}'**
+  String storageMeshPairingFailed(String error);
+
+  /// No description provided for @storageMeshAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced settings (debug)'**
+  String get storageMeshAdvanced;
+
+  /// No description provided for @storageMeshUnpair.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpair devices'**
+  String get storageMeshUnpair;
 
   /// No description provided for @tokenSafety.
   ///

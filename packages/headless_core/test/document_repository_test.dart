@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:headless_core/headless_core.dart';
-import 'package:headless_core/headless_core.dart';
 import 'package:test/test.dart';
 import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
@@ -21,8 +20,8 @@ void conformanceSuite(DocumentRepository Function() makeRepo) {
       ),
       Block(id: NodeId('rb2'), type: BlockType.paragraph, content: 'Body'),
     ],
-    createdAt: DateTime.utc(2026, 1, 1),
-    updatedAt: DateTime.utc(2026, 1, 1),
+    createdAt: DateTime.utc(2026),
+    updatedAt: DateTime.utc(2026),
   );
 
   DocumentNode child(String id) => DocumentNode(
@@ -65,8 +64,8 @@ void conformanceSuite(DocumentRepository Function() makeRepo) {
       id: const NodeId('bad'),
       parentDocId: const NodeId('root'),
       // missing anchorSpan and spanSnapshot
-      createdAt: DateTime.utc(2026, 1, 1),
-      updatedAt: DateTime.utc(2026, 1, 1),
+      createdAt: DateTime.utc(2026),
+      updatedAt: DateTime.utc(2026),
     );
     expect(() => repo.save(bad), throwsA(isA<InvariantViolation>()));
   });

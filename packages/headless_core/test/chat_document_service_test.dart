@@ -92,8 +92,8 @@ void main() {
   );
 
   test('chat blocks survive JSON persistence', () {
-    final block = Block(
-      id: const NodeId('message'),
+    const block = Block(
+      id: NodeId('message'),
       type: BlockType.message,
       content: 'Ready',
       role: ChatRole.assistant,

@@ -23,8 +23,8 @@ DocumentNode _root() => DocumentNode(
       level: 1,
     ),
   ],
-  createdAt: DateTime.utc(2026, 1, 1),
-  updatedAt: DateTime.utc(2026, 1, 1),
+  createdAt: DateTime.utc(2026),
+  updatedAt: DateTime.utc(2026),
 );
 
 void main() {
@@ -124,8 +124,8 @@ void main() {
           Block(id: NodeId('one'), type: BlockType.paragraph, content: 'one'),
           Block(id: NodeId('two'), type: BlockType.paragraph, content: 'two'),
         ],
-        createdAt: DateTime.utc(2026, 1, 1),
-        updatedAt: DateTime.utc(2026, 1, 1),
+        createdAt: DateTime.utc(2026),
+        updatedAt: DateTime.utc(2026),
       ),
     );
     final discussion = await service.openDiscussion(

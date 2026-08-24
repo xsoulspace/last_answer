@@ -5,8 +5,8 @@
 /// the app, TUI, CLI, headless serve mode, and tests.
 library;
 
-export 'src/document_agent_service.dart';
 export 'src/chat_document_service.dart';
+export 'src/document_agent_service.dart';
 export 'src/document_node.dart';
 export 'src/document_repository.dart';
 export 'src/headless_agent_harness.dart';

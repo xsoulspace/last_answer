@@ -76,9 +76,9 @@ final class DocumentAgentAnswer {
 /// the caller and applied only by [applyParentRewrite].
 final class DocumentAgentService {
   DocumentAgentService({
-    required DocumentRepository repository,
+    required this.repository,
     required this.inference,
-  }) : repository = repository;
+  });
 
   final DocumentInferencePort inference;
   final DocumentRepository repository;

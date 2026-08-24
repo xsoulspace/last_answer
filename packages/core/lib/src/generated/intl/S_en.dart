@@ -460,14 +460,14 @@ class SEn extends S {
 
   @override
   String get storageSectionHint =>
-      'Your notes always live in the local database on this device. You can also keep a synced copy in another place — useful as a backup or for moving to a new device.';
+      'Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.';
 
   @override
   String get storageLocalDb => 'Local database';
 
   @override
   String get storageLocalDbHint =>
-      'Default. Fast and private — data never leaves this device.';
+      'Always on. Fast and private — data never leaves this device.';
 
   @override
   String get storageFilesystem => 'Folder on this device';
@@ -489,6 +489,12 @@ class SEn extends S {
   @override
   String get storageGithubOptionHint =>
       'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.';
+
+  @override
+  String get storagePrimary => 'Primary storage — restores use it by default';
+
+  @override
+  String get storageSetAsPrimary => 'Use as primary';
 
   @override
   String get storageFolderPathLabel => 'Folder path';
@@ -523,6 +529,68 @@ class SEn extends S {
 
   @override
   String get storageNotAvailable => 'Not available on this platform';
+
+  @override
+  String get storageMeshTitle => 'Sync between devices';
+
+  @override
+  String get storageMeshHint =>
+      'Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.';
+
+  @override
+  String get storageMeshBecomeMain => 'Use this device as main';
+
+  @override
+  String get storageMeshJoinWithCode => 'I have a pairing code';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Keep this screen open. On your second device tap “$joinWithCode” and scan this code or paste it.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Copy code';
+
+  @override
+  String get storageMeshCodeCopied => 'Pairing code copied';
+
+  @override
+  String get storageMeshPasteTitle => 'Paste pairing code';
+
+  @override
+  String get storageMeshScanQr => 'Scan QR code';
+
+  @override
+  String get storageMeshConnectButton => 'Connect';
+
+  @override
+  String get storageMeshMainBadge => 'Main device';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Connected to your main device. Notes sync automatically while both are on the same network.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Connected devices: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Sync now';
+
+  @override
+  String get storageMeshSyncDone => 'Devices synced ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Could not connect: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Advanced settings (debug)';
+
+  @override
+  String get storageMeshUnpair => 'Unpair devices';
 
   @override
   String get tokenSafety =>

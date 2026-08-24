@@ -462,14 +462,14 @@ class SRu extends S {
 
   @override
   String get storageSectionHint =>
-      'Заметки всегда хранятся в локальной базе на этом устройстве. Можно также сохранять синхронизированную копию в другом месте — как резервную или для переноса на новое устройство.';
+      'Заметки всегда хранятся в локальной базе на этом устройстве. Включите ниже любые другие места для дополнительных синхронизированных копий: каждое добавляет резервную копию, и их можно сочетать. Отметьте одно как основное (★): восстановление по умолчанию использует его.';
 
   @override
   String get storageLocalDb => 'Локальная база данных';
 
   @override
   String get storageLocalDbHint =>
-      'По умолчанию. Быстро и приватно — данные не покидают это устройство.';
+      'Всегда включена. Быстро и приватно — данные не покидают это устройство.';
 
   @override
   String get storageFilesystem => 'Папка на этом устройстве';
@@ -491,6 +491,13 @@ class SRu extends S {
   @override
   String get storageGithubOptionHint =>
       'Приватная облачная копия в вашем репозитории GitHub — защита при потере устройства. Настройте её в разделе «GitHub Sync» ниже.';
+
+  @override
+  String get storagePrimary =>
+      'Основное хранилище — восстановление по умолчанию использует его';
+
+  @override
+  String get storageSetAsPrimary => 'Сделать основным';
 
   @override
   String get storageFolderPathLabel => 'Путь к папке';
@@ -526,6 +533,68 @@ class SRu extends S {
 
   @override
   String get storageNotAvailable => 'Недоступно на этой платформе';
+
+  @override
+  String get storageMeshTitle => 'Синхронизация между устройствами';
+
+  @override
+  String get storageMeshHint =>
+      'Соедините свои устройства напрямую по Wi‑Fi — без аккаунта и облака. Покажите код, отсканируйте — готово.';
+
+  @override
+  String get storageMeshBecomeMain => 'Сделать это устройство основным';
+
+  @override
+  String get storageMeshJoinWithCode => 'У меня есть код';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Не закрывайте этот экран. На втором устройстве нажмите «$joinWithCode» и отсканируйте код или вставьте его.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Копировать код';
+
+  @override
+  String get storageMeshCodeCopied => 'Код скопирован';
+
+  @override
+  String get storageMeshPasteTitle => 'Вставьте код сопряжения';
+
+  @override
+  String get storageMeshScanQr => 'Сканировать QR-код';
+
+  @override
+  String get storageMeshConnectButton => 'Подключить';
+
+  @override
+  String get storageMeshMainBadge => 'Основное устройство';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Соединено с основным устройством. Заметки синхронизируются автоматически, пока оба в одной сети.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Подключено устройств: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Синхронизировать';
+
+  @override
+  String get storageMeshSyncDone => 'Устройства синхронизированы ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Не удалось подключиться: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Расширенные настройки (отладка)';
+
+  @override
+  String get storageMeshUnpair => 'Отвязать устройства';
 
   @override
   String get tokenSafety =>

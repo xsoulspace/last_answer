@@ -113,7 +113,7 @@ final class HeadlessAgentHarness {
     final nodeId = current!.id;
     await chat.appendMessage(nodeId, role: ChatRole.user, content: text);
     final assistantBlockId = NodeId('assistant-block-${++_blockNumber}');
-    var buffer = StringBuffer();
+    final buffer = StringBuffer();
     try {
       await for (final delta in send(text)) {
         buffer.write(delta);

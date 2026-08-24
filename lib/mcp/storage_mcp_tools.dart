@@ -15,8 +15,10 @@ Set<AgentCallEntry> storageMcpEntries() => {
     handler: (final parameters) => MCPCallResult(
       message:
           'Storage backends state. '
-          'Backends: localDb (default live store), filesystem, gitOffline, '
-          'github (driven by GitHub Sync OAuth).',
+          'Checkbox model: localDb is the always-on live store; any number '
+          'of backends can be enabled at once as replication targets and '
+          'one of them is primary. Backends: localDb, filesystem, '
+          'gitOffline, mesh, github (driven by GitHub Sync OAuth).',
       parameters: {
         'state': {
           ...StorageBackendsNotifier.instance.snapshot(),
@@ -30,24 +32,45 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_state',
       description:
-          'Get the current storage backends state: active backend, '
-          'configured paths and last operation report.',
+          'Get the current storage backends state: enabled backends, '
+          'primary backend, configured paths and last operation report.',
       inputSchema: ObjectSchema.fromMap(_emptySchema()),
     ),
   ),
   mcpToolkitTool(
     handler: (final parameters) async {
-      final service = await StorageBackendsNotifier.instance
-          .ensureMeshService();
-      final payload = await service.createQrPayload();
+      final notifier = StorageBackendsNotifier.instance;
+      // Agent-driven seamless setup: hosting on demand so the code
+      // carries a reachable relay hint. Web (no dart:io) falls back to
+      // a hintless code.
+      try {
+        await notifier.becomeMainDevice();
+      } on Object catch (error) {
+        // Web (and other non-IO platforms) throw UnsupportedError —
+        // an Error, not an Exception — so this must stay broad.
+        if (error is! UnsupportedError) rethrow;
+        await notifier.ensureMeshService();
+      }
+      final service = await notifier.ensureMeshService();
+      final pairingCode = await service.createPairingCode();
       return MCPCallResult(
-        message: 'Signed mesh pairing payload is ready.',
-        parameters: {'pairingCode': base64Encode(payload)},
+        message: service.isHosting
+            ? 'Signed mesh pairing code is ready; this device hosts the '
+                  'relay at ${service.advertisedEndpoint}.'
+            : 'Signed mesh pairing code is ready (no hosted relay).',
+        parameters: {
+          'pairingCode': pairingCode,
+          'advertisedEndpoint': service.advertisedEndpoint?.toString(),
+          'peers': service.peers.length,
+        },
       );
     },
     definition: MCPToolDefinition(
       name: 'storage_mesh_pairing_code',
-      description: 'Create a signed mesh-pair/v1 QR pairing code.',
+      description:
+          'Create a signed mesh-pair/v1 QR pairing code for this device. '
+          'Starts hosting the local relay when needed ("main device"), '
+          'so the code embeds a reachable endpoint.',
       inputSchema: ObjectSchema.fromMap(_emptySchema()),
     ),
   ),
@@ -61,15 +84,23 @@ Set<AgentCallEntry> storageMcpEntries() => {
         );
       }
       try {
+        final report = await StorageBackendsNotifier.instance.joinWithCode(
+          code,
+        );
         final service = await StorageBackendsNotifier.instance
             .ensureMeshService();
-        final peer = await service.acceptQrPayload(base64Decode(code));
+        final peer = service.peers.isEmpty ? null : service.peers.last;
         return MCPCallResult(
-          message: 'Paired with ${peer.peerId}.',
+          message: report.ok
+              ? 'Paired${peer == null ? '' : ' with ${peer.peerId}'} and '
+                    'synced the app data (${report.message}).'
+              : 'Pairing or sync failed: ${report.message}',
           parameters: {
-            'ok': true,
-            'peerId': peer.peerId,
-            'identityKey': base64Encode(peer.identityKey),
+            'ok': report.ok,
+            if (peer != null) 'peerId': peer.peerId,
+            if (peer != null)
+              'identityKey': base64Encode(peer.identityKey),
+            'report': report.message,
           },
         );
       } on FormatException catch (error) {
@@ -82,8 +113,9 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_mesh_accept_pairing',
       description:
-          'Verify a signed base64 mesh-pair/v1 pairing code and register '
-          'the peer.',
+          'Verify a signed base64 mesh-pair/v1 pairing code, connect to '
+          'the peer automatically, and pull its app data into the live '
+          'database.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'additionalProperties': false,
@@ -110,21 +142,25 @@ Set<AgentCallEntry> storageMcpEntries() => {
       if (!matches.first.isSupportedOnPlatform) {
         return MCPCallResult(
           message:
-              '${matches.first.name} selected, but it is NOT supported on '
-              'this platform; backup/restore will fail.',
-          parameters: {'ok': true, 'active': matches.first.name},
+              '${matches.first.name} enabled and made primary, but it is '
+              'NOT supported on this platform; backup/restore will fail.',
+          parameters: {'ok': true, 'primary': matches.first.name},
         );
       }
       return MCPCallResult(
-        message: 'Active storage backend set to ${matches.first.name}.',
-        parameters: {'ok': true, 'active': matches.first.name},
+        message:
+            '${matches.first.name} enabled and set as primary storage '
+            'backend.',
+        parameters: {'ok': true, 'primary': matches.first.name},
       );
     },
     definition: MCPToolDefinition(
       name: 'storage_select_backend',
       description:
-          'Select the active storage backend. '
-          'One of: localDb, filesystem, gitOffline, github.',
+          'Enable a storage backend and make it primary (legacy single-'
+          'selection tool; prefer storage_set_enabled + storage_set_primary '
+          'for multi-backend setups). One of: localDb, filesystem, '
+          'gitOffline, mesh, github.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'additionalProperties': false,
@@ -133,7 +169,111 @@ Set<AgentCallEntry> storageMcpEntries() => {
           'backend': {
             'type': 'string',
             'enum': StorageBackendId.values.map((final b) => b.name).toList(),
-            'description': 'Backend to activate.',
+            'description': 'Backend to enable and mark as primary.',
+          },
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      final raw = parameters['backend'] ?? '';
+      final matches = StorageBackendId.values.where((final b) => b.name == raw);
+      if (matches.isEmpty) {
+        return MCPCallResult(
+          message:
+              'Unknown backend "$raw". Valid values: '
+              '${StorageBackendId.values.map((final b) => b.name).join(', ')}.',
+          parameters: {'ok': false},
+        );
+      }
+      final id = matches.first;
+      final value = (parameters['enabled'] ?? '') != 'false';
+      try {
+        await StorageBackendsNotifier.instance.setEnabled(id, value: value);
+      } on StorageBackendConfigException catch (e) {
+        return MCPCallResult(
+          message: e.message,
+          parameters: {'ok': false, 'backend': id.name, 'enabled': value},
+        );
+      }
+      return MCPCallResult(
+        message:
+            '${id.name} ${value ? 'enabled' : 'disabled'}.',
+        parameters: {
+          'ok': true,
+          'backend': id.name,
+          'enabled': value,
+          'enabledBackends': StorageBackendsNotifier.instance.enabled
+              .map((final b) => b.name)
+              .toList(),
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'storage_set_enabled',
+      description:
+          'Toggle a storage backend like a checkbox: enabling adds it as a '
+          'replication target without disabling the others. localDb cannot '
+          'be disabled.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'additionalProperties': false,
+        'required': ['backend', 'enabled'],
+        'properties': {
+          'backend': {
+            'type': 'string',
+            'enum': StorageBackendId.values.map((final b) => b.name).toList(),
+          },
+          'enabled': {'type': 'boolean'},
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      final raw = parameters['backend'] ?? '';
+      final id = StorageBackendIdX.fromName(raw.isEmpty ? null : raw);
+      if (id.name != raw) {
+        return MCPCallResult(
+          message:
+              'Unknown backend "$raw". Valid values: '
+              '${StorageBackendId.values.map((final b) => b.name).join(', ')}.',
+          parameters: {'ok': false},
+        );
+      }
+      final notifier = StorageBackendsNotifier.instance;
+      if (!notifier.isEnabled(id)) {
+        return MCPCallResult(
+          message: '${id.name} is not enabled; enable it first.',
+          parameters: {'ok': false, 'backend': id.name},
+        );
+      }
+      await notifier.setPrimary(id);
+      return MCPCallResult(
+        message: '${id.name} is now the primary storage backend.',
+        parameters: {
+          'ok': true,
+          'primary': notifier.primary.name,
+          'enabledBackends': notifier.enabled
+              .map((final b) => b.name)
+              .toList(),
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'storage_set_primary',
+      description:
+          'Mark one of the enabled backends as primary. The primary is the '
+          'default source for restores.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'additionalProperties': false,
+        'required': ['backend'],
+        'properties': {
+          'backend': {
+            'type': 'string',
+            'enum': StorageBackendId.values.map((final b) => b.name).toList(),
           },
         },
       }),
@@ -153,16 +293,9 @@ Set<AgentCallEntry> storageMcpEntries() => {
         case 'filesystem':
           await StorageBackendsNotifier.instance.setFilesystemPath(path);
         case 'mesh':
-          final relayEndpoint = parameters['relayEndpoint'] ?? '';
-          if (relayEndpoint.isEmpty) {
-            return MCPCallResult(
-              message: 'relayEndpoint is required for mesh.',
-              parameters: {'ok': false},
-            );
-          }
           await StorageBackendsNotifier.instance.setMeshConfig(
             storePath: path,
-            relayEndpoint: relayEndpoint,
+            relayEndpoint: parameters['relayEndpoint']?.toString() ?? '',
             port: 0,
           );
         case 'gitOffline':
@@ -181,10 +314,10 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_set_path',
       description:
-          'Set the folder path for a local backend. For mesh, also set '
-          'relayEndpoint (for example ws://192.168.1.20:8080). '
-          'backend must be "filesystem" or "gitOffline"; the folder is '
-          'created automatically when missing.',
+          'Set the folder path for a local backend. backend must be '
+          '"filesystem", "mesh", or "gitOffline"; the folder is created '
+          'automatically when missing. For mesh, relayEndpoint is optional '
+          '(seamless pairing hosts a relay automatically).',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'additionalProperties': false,
@@ -206,37 +339,26 @@ Set<AgentCallEntry> storageMcpEntries() => {
   mcpToolkitTool(
     handler: (final parameters) async {
       final peerId = parameters['peerId']?.toString().trim() ?? '';
-      if (peerId.isEmpty) {
-        return MCPCallResult(
-          message: 'peerId is required.',
-          parameters: {'ok': false},
-        );
-      }
       try {
         final notifier = StorageBackendsNotifier.instance;
         final service = await notifier.ensureMeshService();
-        await service.addPeer(peerId: peerId);
+        if (peerId.isNotEmpty && !service.peers.any((p) => p.peerId == peerId)) {
+          await service.registerPeer(peerId: peerId);
+        }
         var payload = parameters['payload']?.toString() ?? '';
         if (payload.isEmpty) {
-          final builder = StorageBackendsNotifier.payloadBuilder;
-          if (builder == null) {
-            return MCPCallResult(
-              message: 'No app payload is available until startup completes.',
-              parameters: {'ok': false},
-            );
-          }
-          payload = await builder();
+          payload = await notifier.buildPayload();
         }
         await service.backup(payload);
         await service.sync();
         final restored = await service.restore();
         return MCPCallResult(
           message:
-              'Mesh synced with $peerId '
+              'Mesh synced${peerId.isEmpty ? '' : ' with $peerId'} '
               '(${restored?.length ?? 0} bytes).',
           parameters: {
             'ok': restored == payload,
-            'peerId': peerId,
+            if (peerId.isNotEmpty) 'peerId': peerId,
             'bytes': restored?.length ?? 0,
           },
         );
@@ -250,16 +372,17 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_mesh_sync',
       description:
-          'Register a remote mesh peer, publish the app payload to the '
-          'local replica, and run an addressed-relay sync session.',
+          'Publish the app payload to the local mesh replica and run an '
+          'addressed-relay sync session with every known peer. Optionally '
+          'registers a remote peer id first (advanced/debug).',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'additionalProperties': false,
-        'required': ['peerId'],
         'properties': {
           'peerId': {
             'type': 'string',
-            'description': 'Stable remote replica peer ID.',
+            'description':
+                'Optional stable remote replica peer ID to register.',
           },
           'payload': {
             'type': 'string',
@@ -281,8 +404,8 @@ Set<AgentCallEntry> storageMcpEntries() => {
         );
         return MCPCallResult(
           message: report.ok
-              ? 'Replicated to ${report.backend.name} '
-                    '(${report.bytes ?? 0} bytes).'
+              ? '${report.message}'
+                    '${report.bytes == null ? '' : ' (${report.bytes} bytes)'}'
               : 'Backup failed: ${report.message}',
           parameters: {'ok': report.ok, 'report': report.toJson()},
         );
@@ -296,9 +419,10 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_backup',
       description:
-          'Replicate the full app data payload to a storage backend. '
-          'Uses the active backend unless "backend" is given; uses the '
-          'live app data unless an explicit "payload" JSON string is given.',
+          'Replicate the full app data payload. Without "backend", writes '
+          'a copy to every enabled replication target; with "backend", '
+          'only to that one. Uses the live app data unless an explicit '
+          '"payload" JSON string is given.',
       inputSchema: ObjectSchema.fromMap(_optionalBackendSchema()),
     ),
   ),
@@ -361,7 +485,9 @@ Map<String, Object?> _optionalBackendSchema() => {
     'backend': {
       'type': 'string',
       'enum': StorageBackendId.values.map((final b) => b.name).toList(),
-      'description': 'Defaults to the currently active backend.',
+      'description':
+          'Backup: defaults to all enabled targets. Restore: defaults to '
+          'the primary backend.',
     },
     'payload': {'type': 'string', 'description': 'Optional JSON payload.'},
     'apply': {

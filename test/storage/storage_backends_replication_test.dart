@@ -135,8 +135,9 @@ void main() {
     });
 
     test('unknown persisted name falls back to localDb', () async {
-      // Same cached mock store the singleton already holds.
+      // Clear the new v2 key so migration from v1 is exercised.
       final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('storage_backend_config_v2');
       await prefs.setString(
         'storage_backend_config_v1',
         jsonEncode({'backend': 'nope'}),

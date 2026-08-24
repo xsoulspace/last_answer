@@ -1,9 +1,8 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/common_imports.dart';
-import 'package:uuid/uuid.dart';
-
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
+import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 
@@ -109,7 +108,6 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       updatedAt: node.updatedAt,
       formatId: DocFormatIds.chat,
       title: node.blocks.firstOrNull?.content ?? '',
-      blocks: const [],
     );
     if (mounted) context.read<OpenedProjectNotifier>().updateProject(stub);
   }
@@ -118,9 +116,9 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     final updated = _current.withBlocks(blocks);
     setState(() => _path[_path.length - 1] = updated);
     await _chatService.repository.save(updated);
-    if (_path.length == 1)
+    if (_path.length == 1) {
       await _persistRoot(updated);
-    else {
+    } else {
       final parentIndex = _path.length - 2;
       await _chatService.repository.save(_path[parentIndex]);
     }
@@ -154,9 +152,9 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       final stream = _runtime.send(text);
       _streamSubscription = stream.listen(
         (update) {
-          if (update.textDelta != null)
-            buffer.write(update.textDelta!);
-          else if (update.message != null)
+          if (update.textDelta != null) {
+            buffer.write(update.textDelta);
+          } else if (update.message != null)
             buffer.writeln('[tool] ${update.message}');
           unawaited(_updateAssistant(buffer.toString(), assistantBlockId));
         },
@@ -193,7 +191,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   }
 
   Future<void> _failAssistant(hc.NodeId blockId, StringBuffer buffer) async {
-    await _safeReplaceMessage(blockId, '${buffer}\n[failed]');
+    await _safeReplaceMessage(blockId, '$buffer\n[failed]');
     await _chatService.updateMessageStatus(
       _current.id,
       blockId,
@@ -221,7 +219,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 
   Future<void> _climbUp() async {
     if (_path.length <= 1) return;
-    setState(() => _path.removeLast());
+    setState(_path.removeLast);
     await _reloadCurrent();
   }
 
@@ -267,7 +265,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
           if (_path.length > 1)
             Row(
               children: [
-                IconButton(onPressed: _climbUp, icon: Icon(Icons.arrow_back)),
+                IconButton(onPressed: _climbUp, icon: const Icon(Icons.arrow_back)),
                 Expanded(
                   child: Text(
                     _current.spanSnapshot ?? '',
@@ -278,16 +276,16 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
               ],
             ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(
               children: [
-                Icon(Icons.circle, size: 10, color: Colors.greenAccent),
-                Gap(6),
+                const Icon(Icons.circle, size: 10, color: Colors.greenAccent),
+                const Gap(6),
                 Text('ACP $_statusLabel'),
-                Spacer(),
+                const Spacer(),
                 DropdownButton<AcpAgentInstallation>(
                   value: _selectedInstallation,
-                  hint: Text('Select agent'),
+                  hint: const Text('Select agent'),
                   items: [
                     for (final installation in _installations)
                       DropdownMenuItem(
@@ -302,19 +300,19 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                 if (_installations.isEmpty)
                   IconButton(
                     onPressed: _showInstallHelp,
-                    icon: Icon(Icons.download_outlined),
+                    icon: const Icon(Icons.download_outlined),
                   ),
                 IconButton(
                   onPressed: _isSending ? null : _useLocalClient,
                   tooltip: 'Use local executable',
-                  icon: Icon(Icons.folder_open),
+                  icon: const Icon(Icons.folder_open),
                 ),
               ],
             ),
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final message = messages[index];
@@ -340,9 +338,9 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    constraints: BoxConstraints(maxWidth: 560),
-                    padding: EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(bottom: 8),
+                    constraints: const BoxConstraints(maxWidth: 560),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
@@ -364,8 +362,8 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                             TextButton.icon(
                               onPressed: () =>
                                   unawaited(_discussMessage(message)),
-                              label: Text('Discuss'),
-                              icon: Icon(Icons.chat_bubble_outline, size: 18),
+                              label: const Text('Discuss'),
+                              icon: const Icon(Icons.chat_bubble_outline, size: 18),
                             ),
                             TextButton.icon(
                               onPressed: () {
@@ -375,8 +373,8 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                                   ),
                                 );
                               },
-                              label: Text('Copy'),
-                              icon: Icon(Icons.copy, size: 18),
+                              label: const Text('Copy'),
+                              icon: const Icon(Icons.copy, size: 18),
                             ),
                           ],
                         ),
@@ -389,7 +387,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
           ),
           SafeArea(
             top: false,
-            minimum: EdgeInsets.all(8),
+            minimum: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
@@ -402,10 +400,10 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                 if (_isSending)
                   IconButton.filledTonal(
                     onPressed: _stop,
-                    icon: Icon(Icons.stop),
+                    icon: const Icon(Icons.stop),
                   )
                 else
-                  IconButton.filled(onPressed: _send, icon: Icon(Icons.send)),
+                  IconButton.filled(onPressed: _send, icon: const Icon(Icons.send)),
               ],
             ),
           ),
@@ -450,19 +448,19 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Install an ACP agent'),
+        title: const Text('Install an ACP agent'),
         content: SelectableText(commands.join('\n')),
         actions: [
           TextButton(
             onPressed: Navigator.of(context).pop,
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               unawaited(_detectAgents());
             },
-            child: Text('Recheck'),
+            child: const Text('Recheck'),
           ),
         ],
       ),

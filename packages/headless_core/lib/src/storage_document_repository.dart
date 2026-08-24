@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:headless_core/headless_core.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
-import 'document_repository.dart';
+import '../headless_core.dart';
 
 /// [DocumentRepository] backed by any [StorageService].
 ///
@@ -12,8 +11,7 @@ import 'document_repository.dart';
 /// scanning. The index degrades gracefully: corrupt/missing index rebuilds
 /// from node files on the next save.
 class StorageDocumentRepository implements DocumentRepository {
-  StorageDocumentRepository({required StorageService service})
-    : _service = service;
+  StorageDocumentRepository({required this._service});
 
   final StorageService _service;
 

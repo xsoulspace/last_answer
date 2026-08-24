@@ -460,14 +460,14 @@ class SIt extends S {
 
   @override
   String get storageSectionHint =>
-      'Le note sono sempre salvate nel database locale su questo dispositivo. Puoi anche tenere una copia sincronizzata altrove — utile come backup o per spostarti su un nuovo dispositivo.';
+      'Le note sono sempre salvate nel database locale su questo dispositivo. Attiva qui sotto altri posti in cui tenere copie sincronizzate: ognuno aggiunge un backup e possono essere combinati. Contrassegnane uno come primario (★): i ripristini lo usano per impostazione predefinita.';
 
   @override
   String get storageLocalDb => 'Database locale';
 
   @override
   String get storageLocalDbHint =>
-      'Predefinito. Veloce e privato: i dati non lasciano mai questo dispositivo.';
+      'Sempre attivo. Veloce e privato: i dati non lasciano mai questo dispositivo.';
 
   @override
   String get storageFilesystem => 'Cartella su questo dispositivo';
@@ -489,6 +489,13 @@ class SIt extends S {
   @override
   String get storageGithubOptionHint =>
       'Copia privata nel cloud nel tuo repository GitHub: protegge dalla perdita del dispositivo. Configurala nella sezione “GitHub Sync” qui sotto.';
+
+  @override
+  String get storagePrimary =>
+      'Archiviazione primaria: i ripristini la usano per impostazione predefinita';
+
+  @override
+  String get storageSetAsPrimary => 'Usa come primaria';
 
   @override
   String get storageFolderPathLabel => 'Percorso della cartella';
@@ -525,6 +532,68 @@ class SIt extends S {
 
   @override
   String get storageNotAvailable => 'Non disponibile su questa piattaforma';
+
+  @override
+  String get storageMeshTitle => 'Sincronizza tra dispositivi';
+
+  @override
+  String get storageMeshHint =>
+      'Collega i tuoi dispositivi direttamente via Wi‑Fi — niente account, niente cloud. Mostra un codice, scansionalo, fatto.';
+
+  @override
+  String get storageMeshBecomeMain => 'Usa questo dispositivo come principale';
+
+  @override
+  String get storageMeshJoinWithCode => 'Ho un codice di abbinamento';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Tieni aperta questa schermata. Sul secondo dispositivo tocca “$joinWithCode” e scansiona questo codice o incollalo.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Copia il codice';
+
+  @override
+  String get storageMeshCodeCopied => 'Codice di abbinamento copiato';
+
+  @override
+  String get storageMeshPasteTitle => 'Incolla il codice di abbinamento';
+
+  @override
+  String get storageMeshScanQr => 'Scansiona il codice QR';
+
+  @override
+  String get storageMeshConnectButton => 'Connetti';
+
+  @override
+  String get storageMeshMainBadge => 'Dispositivo principale';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Connesso al dispositivo principale. Le note si sincronizzano automaticamente finché entrambi sono sulla stessa rete.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Dispositivi connessi: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Sincronizza ora';
+
+  @override
+  String get storageMeshSyncDone => 'Dispositivi sincronizzati ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Impossibile connettersi: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Impostazioni avanzate (debug)';
+
+  @override
+  String get storageMeshUnpair => 'Disaccoppia i dispositivi';
 
   @override
   String get tokenSafety =>

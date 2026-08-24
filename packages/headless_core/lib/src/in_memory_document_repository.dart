@@ -1,6 +1,5 @@
-import 'package:headless_core/headless_core.dart';
+import '../headless_core.dart';
 
-import 'document_repository.dart';
 
 /// In-memory [DocumentRepository] for tests and ephemeral use.
 final class InMemoryDocumentRepository implements DocumentRepository {

@@ -92,7 +92,15 @@ dependencies:
   universal_io: ^2.3.1
   url_launcher: ^6.3.2
   uuid: ^4.6.0
+  mobile_scanner: ^7.0.1
+  qr: ^4.0.0
 
+  intl: any
+  xsoulspace_monetization_foundation: any
+  xsoulspace_foundation: any
+  xsoulspace_installation_store: any
+  xsoulspace_monetization_interface: any
+  file_selector: any
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
@@ -104,6 +112,7 @@ dev_dependencies:
   msix: ^3.18.0
   xsoulspace_lints: ^0.1.2
 
+  web: any
 dependency_overrides:
   ecsly:
     path: /Users/antonio/xs/ecsly/core_packages/ecsly

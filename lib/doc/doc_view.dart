@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/common_imports.dart';
 import 'package:uuid/uuid.dart';
@@ -496,7 +495,7 @@ class _BreadcrumbBar extends StatelessWidget {
                         Icon(
                           Icons.chevron_right,
                           size: 16,
-                          color: theme.colorScheme.onSurface.withOpacity(0.4),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                         ),
                       InkWell(
                         borderRadius: BorderRadius.circular(6),
@@ -579,9 +578,7 @@ class _SelectionToolbar extends StatelessWidget {
                 label: const Text('Ask AI'),
               ),
             ),
-            onApplyConclusion == null
-                ? const SizedBox.shrink()
-                : Tooltip(
+            if (onApplyConclusion == null) const SizedBox.shrink() else Tooltip(
                     message:
                         'Rewrite the head span from this discussion and collapse',
                     child: TextButton.icon(

@@ -73,7 +73,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Last Answer needs local network access for development tools.</string>
+	<string>Last Answer syncs your notes directly between your devices on the local network.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Last Answer uses the camera only to scan pairing codes when connecting two of your devices.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_dartobservatory._tcp</string>

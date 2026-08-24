@@ -144,15 +144,17 @@
   "openGithubTokens": "Apri la pagina dei token GitHub",
   "manageTokens": "Gestisci / revoca i token",
   "storage": "Archiviazione",
-  "storageSectionHint": "Le note sono sempre salvate nel database locale su questo dispositivo. Puoi anche tenere una copia sincronizzata altrove — utile come backup o per spostarti su un nuovo dispositivo.",
+  "storageSectionHint": "Le note sono sempre salvate nel database locale su questo dispositivo. Attiva qui sotto altri posti in cui tenere copie sincronizzate: ognuno aggiunge un backup e possono essere combinati. Contrassegnane uno come primario (★): i ripristini lo usano per impostazione predefinita.",
   "storageLocalDb": "Database locale",
-  "storageLocalDbHint": "Predefinito. Veloce e privato: i dati non lasciano mai questo dispositivo.",
+  "storageLocalDbHint": "Sempre attivo. Veloce e privato: i dati non lasciano mai questo dispositivo.",
   "storageFilesystem": "Cartella su questo dispositivo",
   "storageFilesystemHint": "Mantiene una copia in una cartella a tua scelta: facile da aprire con qualsiasi file manager o da includere nei tuoi backup.",
   "storageGitOffline": "Cartella Git (offline)",
   "storageGitOfflineHint": "Mantiene una copia in un repository Git locale: ogni backup è versionato, quindi puoi vedere la cronologia e tornare indietro. Non serve un account.",
   "storageGithubOption": "GitHub",
   "storageGithubOptionHint": "Copia privata nel cloud nel tuo repository GitHub: protegge dalla perdita del dispositivo. Configurala nella sezione “GitHub Sync” qui sotto.",
+  "storagePrimary": "Archiviazione primaria: i ripristini la usano per impostazione predefinita",
+  "storageSetAsPrimary": "Usa come primaria",
   "storageFolderPathLabel": "Percorso della cartella",
   "storageGitPathLabel": "Percorso della cartella del repository",
   "storagePathHint": "La cartella viene creata automaticamente se non esiste ancora.",
@@ -164,5 +166,38 @@
   "storageOperationFailed": "Operazione di archiviazione non riuscita",
   "storageOpenGithubSetup": "Apri le impostazioni GitHub",
   "storageNotAvailable": "Non disponibile su questa piattaforma",
+  "storageMeshTitle": "Sincronizza tra dispositivi",
+  "storageMeshHint": "Collega i tuoi dispositivi direttamente via Wi‑Fi — niente account, niente cloud. Mostra un codice, scansionalo, fatto.",
+  "storageMeshBecomeMain": "Usa questo dispositivo come principale",
+  "storageMeshJoinWithCode": "Ho un codice di abbinamento",
+  "storageMeshWaitingHint": "Tieni aperta questa schermata. Sul secondo dispositivo tocca “{joinWithCode}” e scansiona questo codice o incollalo.",
+  "@storageMeshWaitingHint": {
+    "placeholders": {
+      "joinWithCode": { "type": "String" }
+    }
+  },
+  "storageMeshCopyCode": "Copia il codice",
+  "storageMeshCodeCopied": "Codice di abbinamento copiato",
+  "storageMeshPasteTitle": "Incolla il codice di abbinamento",
+  "storageMeshScanQr": "Scansiona il codice QR",
+  "storageMeshConnectButton": "Connetti",
+  "storageMeshMainBadge": "Dispositivo principale",
+  "storageMeshJoinedStatus": "Connesso al dispositivo principale. Le note si sincronizzano automaticamente finché entrambi sono sulla stessa rete.",
+  "storageMeshConnectedCount": "Dispositivi connessi: {count}",
+  "@storageMeshConnectedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "storageMeshSyncNow": "Sincronizza ora",
+  "storageMeshSyncDone": "Dispositivi sincronizzati ✓",
+  "storageMeshPairingFailed": "Impossibile connettersi: {error}",
+  "@storageMeshPairingFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "storageMeshAdvanced": "Impostazioni avanzate (debug)",
+  "storageMeshUnpair": "Disaccoppia i dispositivi",
   "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli."
 }

@@ -15,8 +15,8 @@ DocumentNode _child({
   parentDocId: parentId,
   anchorSpan: AnchorSpan(blockId: blockId),
   spanSnapshot: 'original text',
-  createdAt: DateTime.utc(2026, 1, 1),
-  updatedAt: DateTime.utc(2026, 1, 1),
+  createdAt: DateTime.utc(2026),
+  updatedAt: DateTime.utc(2026),
 );
 
 void main() {
@@ -59,8 +59,8 @@ void main() {
       id: const NodeId('c2'),
       parentDocId: const NodeId('p'),
       // no anchorSpan / spanSnapshot
-      createdAt: DateTime.utc(2026, 1, 1),
-      updatedAt: DateTime.utc(2026, 1, 1),
+      createdAt: DateTime.utc(2026),
+      updatedAt: DateTime.utc(2026),
     );
     expect(bad.satisfiesChildInvariants, isFalse);
   });
@@ -79,8 +79,8 @@ void main() {
   test('withBlocks bumps updatedAt', () {
     final node = DocumentNode(
       id: const NodeId('d'),
-      createdAt: DateTime.utc(2026, 1, 1),
-      updatedAt: DateTime.utc(2026, 1, 1),
+      createdAt: DateTime.utc(2026),
+      updatedAt: DateTime.utc(2026),
     );
     final edited = node.withBlocks(const [
       Block(id: NodeId('b9'), type: BlockType.list, content: 'item'),

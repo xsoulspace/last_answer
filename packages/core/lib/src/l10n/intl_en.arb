@@ -144,15 +144,17 @@
   "openGithubTokens": "Open GitHub token page",
   "manageTokens": "Manage / revoke tokens",
   "storage": "Storage",
-  "storageSectionHint": "Your notes always live in the local database on this device. You can also keep a synced copy in another place — useful as a backup or for moving to a new device.",
+  "storageSectionHint": "Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.",
   "storageLocalDb": "Local database",
-  "storageLocalDbHint": "Default. Fast and private — data never leaves this device.",
+  "storageLocalDbHint": "Always on. Fast and private — data never leaves this device.",
   "storageFilesystem": "Folder on this device",
   "storageFilesystemHint": "Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.",
   "storageGitOffline": "Git folder (offline)",
   "storageGitOfflineHint": "Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.",
   "storageGithubOption": "GitHub",
   "storageGithubOptionHint": "Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.",
+  "storagePrimary": "Primary storage — restores use it by default",
+  "storageSetAsPrimary": "Use as primary",
   "storageFolderPathLabel": "Folder path",
   "storageGitPathLabel": "Repository folder path",
   "storagePathHint": "The folder is created automatically if it doesn't exist yet.",
@@ -164,5 +166,38 @@
   "storageOperationFailed": "Storage operation failed",
   "storageOpenGithubSetup": "Open GitHub settings",
   "storageNotAvailable": "Not available on this platform",
+  "storageMeshTitle": "Sync between devices",
+  "storageMeshHint": "Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.",
+  "storageMeshBecomeMain": "Use this device as main",
+  "storageMeshJoinWithCode": "I have a pairing code",
+  "storageMeshWaitingHint": "Keep this screen open. On your second device tap “{joinWithCode}” and scan this code or paste it.",
+  "@storageMeshWaitingHint": {
+    "placeholders": {
+      "joinWithCode": { "type": "String" }
+    }
+  },
+  "storageMeshCopyCode": "Copy code",
+  "storageMeshCodeCopied": "Pairing code copied",
+  "storageMeshPasteTitle": "Paste pairing code",
+  "storageMeshScanQr": "Scan QR code",
+  "storageMeshConnectButton": "Connect",
+  "storageMeshMainBadge": "Main device",
+  "storageMeshJoinedStatus": "Connected to your main device. Notes sync automatically while both are on the same network.",
+  "storageMeshConnectedCount": "Connected devices: {count}",
+  "@storageMeshConnectedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "storageMeshSyncNow": "Sync now",
+  "storageMeshSyncDone": "Devices synced ✓",
+  "storageMeshPairingFailed": "Could not connect: {error}",
+  "@storageMeshPairingFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "storageMeshAdvanced": "Advanced settings (debug)",
+  "storageMeshUnpair": "Unpair devices",
   "tokenSafety": "Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them."
 }

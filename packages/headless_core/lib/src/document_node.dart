@@ -85,7 +85,7 @@ abstract class DocumentNode with _$DocumentNode {
   const factory DocumentNode({
     required NodeId id,
 
-    /// Only 'doc' today; extensible later without model changes.
+    required DateTime createdAt, required DateTime updatedAt, /// Only 'doc' today; extensible later without model changes.
     @Default('doc') String kind,
 
     /// Replaces sealed format enums: 'gdd', 'prd', or any template id.
@@ -103,8 +103,6 @@ abstract class DocumentNode with _$DocumentNode {
     /// Snapshot of anchored text at creation — the "history note" that
     /// future-proofs against edits, sync bugs, and storage migrations.
     String? spanSnapshot,
-    required DateTime createdAt,
-    required DateTime updatedAt,
   }) = _DocumentNode;
 
   factory DocumentNode.fromJson(Map<String, dynamic> json) =>

@@ -1,4 +1,4 @@
-import 'package:headless_core/headless_core.dart';
+import '../headless_core.dart';
 
 /// Result of a repository read that may not exist.
 sealed class DocResult {

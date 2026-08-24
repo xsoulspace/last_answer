@@ -142,7 +142,8 @@ class GithubSyncNotifier extends ChangeNotifier {
   /// Connects using a user-provided Personal Access Token instead of the
   /// device flow. Validates the token against the GitHub API before
   /// storing it.
-  Future<bool> connectWithToken(final BuildContext context, {
+  Future<bool> connectWithToken(
+    final BuildContext context, {
     required final String token,
   }) async {
     if (_busy || token.trim().isEmpty) return false;
@@ -242,8 +243,9 @@ class GithubSyncNotifier extends ChangeNotifier {
       final info = await service.createRepository(
         CreateRepositoryRequest(name: name.trim(), isPrivate: true),
       );
-      final owner =
-          info.fullName.contains('/') ? info.fullName.split('/').first : '';
+      final owner = info.fullName.contains('/')
+          ? info.fullName.split('/').first
+          : '';
       await selectRepository(owner: owner, repo: info.name);
     } on Exception catch (e) {
       if (context.mounted) _showError(context, e.toString());
@@ -256,7 +258,8 @@ class GithubSyncNotifier extends ChangeNotifier {
   /// Writes [jsonPayload] to `<subdir>/last-answer-backup.json`.
   ///
   /// Returns the commit message from GitHub or throws.
-  Future<String?> backupNow(final BuildContext context, {
+  Future<String?> backupNow(
+    final BuildContext context, {
     required final String jsonPayload,
   }) async {
     final result = await _withTarget(context, (
@@ -273,9 +276,10 @@ class GithubSyncNotifier extends ChangeNotifier {
   /// `null` when the file does not exist yet.
   Future<String?> restoreNow(final BuildContext context) =>
       _withTarget(
-        context,
-        (final service, final path) => service.readFile(path),
-      ) as Future<String?>;
+            context,
+            (final service, final path) => service.readFile(path),
+          )
+          as Future<String?>;
 
   Future<Object?> _withTarget(
     final BuildContext context,
@@ -348,12 +352,11 @@ class GithubSyncNotifier extends ChangeNotifier {
 
   void _showError(final BuildContext context, final String message) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('GitHub error: $message')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('GitHub error: $message')));
   }
 }
-
 
 /// Delegate that never runs a flow; used for headless operations.
 class _NoUiDelegate implements OAuthFlowDelegate {

@@ -5,6 +5,8 @@ import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_git_offline/universal_storage_git_offline.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
+import 'mesh_storage_service.dart';
+
 /// IO-platform implementation of backend availability and service builders.
 
 /// Filesystem backend works wherever dart:io works.
@@ -65,4 +67,17 @@ Future<String> defaultFilesystemPath() async {
   } on Exception {
     return '';
   }
+}
+
+Future<StorageService> buildMeshService({
+  required final String storePath,
+  required final Uri relayEndpoint,
+  required final String peerId,
+}) async {
+  final service = await MeshStorageService.open(
+    storePath: storePath,
+    relayEndpoint: relayEndpoint,
+    peerId: peerId,
+  );
+  return service.storage;
 }

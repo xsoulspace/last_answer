@@ -2,9 +2,7 @@ import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class ProjectsExportImportButtons extends StatelessWidget {
-  const ProjectsExportImportButtons({
-    super.key,
-  });
+  const ProjectsExportImportButtons({super.key});
 
   @override
   Widget build(final BuildContext context) {

@@ -20,10 +20,24 @@ class StorageBackendsButton extends StatefulWidget {
 class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   final StorageBackendsNotifier _notifier = StorageBackendsNotifier.instance;
   final _pathController = TextEditingController();
+  final _meshPathController = TextEditingController();
+  final _peerIdController = TextEditingController();
+  final _hostController = TextEditingController();
+  final _portController = TextEditingController();
+  final _relayController = TextEditingController();
 
   @override
   void dispose() {
-    _pathController.dispose();
+    for (final controller in [
+      _pathController,
+      _meshPathController,
+      _peerIdController,
+      _hostController,
+      _portController,
+      _relayController,
+    ]) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -47,10 +61,9 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
     await _notifier.replicate(backend: _notifier.active, jsonPayload: payload);
     if (!mounted) return;
     await toasts.showBottomToast(
-      message:
-          _notifier.lastReport?.ok ?? false
-              ? l10n.storageBackupDone
-              : (_notifier.lastReport?.message ?? l10n.storageOperationFailed),
+      message: _notifier.lastReport?.ok ?? false
+          ? l10n.storageBackupDone
+          : (_notifier.lastReport?.message ?? l10n.storageOperationFailed),
     );
   }
 
@@ -102,10 +115,91 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 4),
-          child: Text(l10n.storageSectionHint, style: context.textTheme.bodySmall),
+          child: Text(
+            l10n.storageSectionHint,
+            style: context.textTheme.bodySmall,
+          ),
         ),
         ...StorageBackendId.values.map(_tile),
-        if (_needsPath) ...[
+        if (_active == StorageBackendId.mesh) ...[
+          TextField(
+            controller: _meshPathController,
+            decoration: InputDecoration(
+              labelText: 'Mesh store path',
+              isDense: true,
+            ),
+            onSubmitted: (value) => unawaited(
+              _notifier.setMeshConfig(
+                storePath: value,
+                relayEndpoint: _notifier.meshRelayEndpoint,
+                port: _notifier.meshPort,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _peerIdController,
+                  decoration: const InputDecoration(
+                    labelText: 'Peer ID',
+                    isDense: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: _hostController,
+                  decoration: const InputDecoration(
+                    labelText: 'Host',
+                    isDense: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: _portController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Port',
+                    isDense: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: _relayController,
+            decoration: const InputDecoration(
+              labelText: 'Relay URL',
+              hintText: 'ws://192.168.1.20:8080',
+              isDense: true,
+            ),
+            onSubmitted: (value) => unawaited(
+              _notifier.setMeshConfig(
+                storePath: _notifier.meshStorePath.isEmpty
+                    ? 'memory'
+                    : _notifier.meshStorePath,
+                relayEndpoint: value,
+                port: _notifier.meshPort,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 12,
+            runSpacing: 4,
+            children: [
+              TextButton.icon(
+                icon: const Icon(Icons.sync),
+                label: Text('Sync now'),
+                onPressed: () => unawaited(_meshSync()),
+              ),
+            ],
+          ),
+        ] else if (_needsPath) ...[
           const SizedBox(height: 8),
           TextField(
             controller: _pathController,
@@ -163,8 +257,24 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   StorageBackendId get _active => _notifier.active;
 
   bool get _needsPath =>
-      (_active == StorageBackendId.filesystem && _notifier.filesystemPath.isEmpty) ||
+      (_active == StorageBackendId.filesystem &&
+          _notifier.filesystemPath.isEmpty) ||
       (_active == StorageBackendId.gitOffline && _notifier.gitPath.isEmpty);
+
+  Future<void> _meshSync() async {
+    try {
+      final service = await _notifier.ensureMeshService();
+      final payload = jsonEncode(await _buildDbSaveJson());
+      await service.backup(payload);
+      await service.addPeer(peerId: _peerIdController.text.trim());
+      await service.sync();
+      if (!mounted) return;
+      await Toasts.of(context).showBottomToast(message: 'Mesh sync complete');
+    } on Object catch (error) {
+      if (!mounted) return;
+      await Toasts.of(context).showBottomToast(message: '$error');
+    }
+  }
 
   bool get _canReplicate =>
       _active != StorageBackendId.localDb &&
@@ -183,7 +293,11 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   Widget _tile(final StorageBackendId id) {
     final l10n = context.l10n;
     final (title, hint) = switch (id) {
-      StorageBackendId.localDb => (l10n.storageLocalDb, l10n.storageLocalDbHint),
+      StorageBackendId.localDb => (
+        l10n.storageLocalDb,
+        l10n.storageLocalDbHint,
+      ),
+      StorageBackendId.mesh => ('P2P mesh', 'Sync directly between devices'),
       StorageBackendId.filesystem => (
         l10n.storageFilesystem,
         l10n.storageFilesystemHint,

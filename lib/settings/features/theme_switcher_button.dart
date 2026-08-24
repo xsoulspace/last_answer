@@ -2,10 +2,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/widgets/question_dropdown.dart';
 
 class ThemeSwitcherButton extends StatelessWidget {
-  const ThemeSwitcherButton({
-    required this.settings,
-    super.key,
-  });
+  const ThemeSwitcherButton({required this.settings, super.key});
   final ProjectsNotifier settings;
   @override
   Widget build(final BuildContext context) {
@@ -26,10 +23,7 @@ class ThemeSwitcherButton extends StatelessWidget {
           value: ThemeMode.light,
           label: context.l10n.themeLight,
         ),
-        DropdownMenuEntry(
-          value: ThemeMode.dark,
-          label: context.l10n.themeDark,
-        ),
+        DropdownMenuEntry(value: ThemeMode.dark, label: context.l10n.themeDark),
       ],
       initialSelection: themeMode,
       onSelected: userNotifier.updateThemeMode,

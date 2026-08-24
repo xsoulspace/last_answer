@@ -168,10 +168,7 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
   @override
   Widget build(final BuildContext context) {
     if (!GithubSyncNotifier.isSupported) {
-      return Text(
-        context.l10n.githubSync,
-        style: context.textTheme.bodySmall,
-      );
+      return Text(context.l10n.githubSync, style: context.textTheme.bodySmall);
     }
     return ListenableBuilder(
       listenable: _notifier,
@@ -280,29 +277,30 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
       required final String owner,
       required final String name,
       final bool? isPrivate,
-    }) =>
-        ListTile(
-          dense: true,
-          contentPadding: EdgeInsets.zero,
-          leading: Icon(
-            (isPrivate ?? true) ? Icons.lock_outline : Icons.lock_open_outlined,
-            size: 18,
-          ),
-          title: Text('$owner/$name'),
-          onTap: () => unawaited(
-            _notifier
-                .selectRepository(owner: owner, repo: name)
-                .then((_) => _syncSubdirField()),
-          ),
-          trailing: current?.owner == owner && current?.repo == name
-              ? const Icon(Icons.check)
-              : null,
-        );
+    }) => ListTile(
+      dense: true,
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        (isPrivate ?? true) ? Icons.lock_outline : Icons.lock_open_outlined,
+        size: 18,
+      ),
+      title: Text('$owner/$name'),
+      onTap: () => unawaited(
+        _notifier
+            .selectRepository(owner: owner, repo: name)
+            .then((_) => _syncSubdirField()),
+      ),
+      trailing: current?.owner == owner && current?.repo == name
+          ? const Icon(Icons.check)
+          : null,
+    );
 
     return [
       Text(l10n.chooseRepository, style: context.textTheme.bodyMedium),
       const SizedBox(height: 8),
-      ...repos.take(20).map(
+      ...repos
+          .take(20)
+          .map(
             (final repo) => tile(
               owner: repo.fullName.contains('/')
                   ? repo.fullName.split('/').first

@@ -52,9 +52,7 @@ void main() {
       expect(report.bytes, payloadV1.length);
 
       // The file actually landed in the chosen folder.
-      final file = File(
-        '${tempDir.path}/last-answer-data.json',
-      );
+      final file = File('${tempDir.path}/last-answer-data.json');
       expect(file.existsSync(), isTrue);
       expect(await file.readAsString(), payloadV1);
 

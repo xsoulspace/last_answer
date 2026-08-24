@@ -29,6 +29,7 @@ dependencies:
   blur: ^4.0.2
   collection: ^1.19.1
   core:
+  cryptography: ^2.7.0
   cupertino_icons: ^1.0.9
   dio: ^5.10.0
   equatable: ^2.1.0
@@ -76,6 +77,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
+  universal_storage_mesh:
+    path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+  universal_storage_mesh_transport:
+    path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
   xsoulspace_inference_acp:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
@@ -145,6 +150,14 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
   universal_storage_local_db:
     path: ../dart_flutter_packages/pkgs/universal_storage_local_db
+  universal_storage_convergence:
+    path: ../dart_flutter_packages/pkgs/universal_storage_convergence
+  universal_storage_mesh:
+    path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+  universal_storage_mesh_transport:
+    path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
+  shelf: ^1.4.2
+  shelf_web_socket: ^3.0.0
 
 msix_config:
   display_name: "Last Answer: Ideas and Notes"

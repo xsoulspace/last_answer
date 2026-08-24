@@ -19,5 +19,18 @@ Future<StorageService> buildFilesystemService(final String path) async =>
 Future<StorageService> buildGitOfflineService(final String path) async =>
     throw UnsupportedError('Git offline backend is not supported on web');
 
+Future<StorageService> Function({
+  required String storePath,
+  required Uri relayEndpoint,
+  required String peerId,
+})
+get buildMeshService => _buildMeshService;
+
+Future<StorageService> _buildMeshService({
+  required final String storePath,
+  required final Uri relayEndpoint,
+  required final String peerId,
+}) async => throw UnsupportedError('Mesh backend is not supported on web');
+
 /// No default path without a filesystem.
 Future<String> defaultFilesystemPath() async => '';

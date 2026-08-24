@@ -92,7 +92,11 @@ void main() {
       return;
     }
     const clientId = String.fromEnvironment('GITHUB_OAUTH_CLIENT_ID');
-    expect(clientId, isNotEmpty, reason: 'pass --dart-define-from-file=configs/envs/prod.json');
+    expect(
+      clientId,
+      isNotEmpty,
+      reason: 'pass --dart-define-from-file=configs/envs/prod.json',
+    );
 
     final provider = GithubDeviceFlowAuthProvider(
       flowConfig: const GithubDeviceFlowConfig(clientId: clientId),
@@ -110,14 +114,19 @@ void main() {
     // ignore: avoid_print
     print('');
     // ignore: avoid_print
-    print('✅ TOKEN OBTAINED (masked): '
-        '${result.credentials?.accessToken.safeRepresentation}');
+    print(
+      '✅ TOKEN OBTAINED (masked): '
+      '${result.credentials?.accessToken.safeRepresentation}',
+    );
     // ignore: avoid_print
     print('✅ USER: ${result.user?.login} (${result.user?.email})');
 
     expect(await provider.isAuthenticated(), isTrue);
     expect(result.user?.login, isNotEmpty);
-    expect(result.credentials?.accessToken.value, anyOf(startsWith('gho_'), startsWith('ghu_')));
+    expect(
+      result.credentials?.accessToken.value,
+      anyOf(startsWith('gho_'), startsWith('ghu_')),
+    );
 
     await provider.signOut();
     // ignore: avoid_print

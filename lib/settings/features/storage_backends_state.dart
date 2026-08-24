@@ -5,12 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
+import 'mesh_storage_service.dart';
+
 import 'storage_backends_platform_stub.dart'
     if (dart.library.io) 'storage_backends_platform_io.dart'
     as platform;
 
 /// Pluggable storage backends, in the order they are offered to the user.
-enum StorageBackendId { localDb, filesystem, gitOffline, github }
+enum StorageBackendId { localDb, filesystem, gitOffline, mesh, github }
 
 /// Human-facing metadata for a backend.
 extension StorageBackendIdX on StorageBackendId {
@@ -24,7 +26,9 @@ extension StorageBackendIdX on StorageBackendId {
   /// Whether this backend can actually run on the current platform
   /// (web has no filesystem/processes; iOS devices cannot spawn git).
   bool get isSupportedOnPlatform => switch (this) {
-    StorageBackendId.localDb || StorageBackendId.github => true,
+    StorageBackendId.localDb ||
+    StorageBackendId.github ||
+    StorageBackendId.mesh => true,
     StorageBackendId.filesystem => platform.filesystemSupported(),
     StorageBackendId.gitOffline => platform.gitOfflineSupported(),
   };
@@ -69,6 +73,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
   StorageBackendId _active = StorageBackendId.localDb;
   String _filesystemPath = '';
   String _gitPath = '';
+  String _meshStorePath = '';
+  int _meshPort = 0;
+  String _meshRelayEndpoint = '';
   String _defaultPath = '';
   StorageOperationReport? _lastReport;
 
@@ -80,6 +87,11 @@ class StorageBackendsNotifier extends ChangeNotifier {
 
   /// Absolute path of the local git repository for the git backend.
   String get gitPath => _gitPath;
+
+  /// Local mesh replica, optional IO relay port, and relay endpoint.
+  String get meshStorePath => _meshStorePath;
+  int get meshPort => _meshPort;
+  String get meshRelayEndpoint => _meshRelayEndpoint;
 
   /// Writable default location (app documents dir) suggested to users
   /// and used by agent tooling on sandboxed platforms.
@@ -94,8 +106,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
         return _filesystemPath.isNotEmpty;
       case StorageBackendId.gitOffline:
         return _gitPath.isNotEmpty;
-      case StorageBackendId.github:
-      case StorageBackendId.localDb:
+      case StorageBackendId.mesh:
+        return _meshStorePath.isNotEmpty && _meshRelayEndpoint.isNotEmpty;
+      case StorageBackendId.github || StorageBackendId.localDb:
         return true;
     }
   }
@@ -113,6 +126,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
       _active = StorageBackendIdX.fromName(map['backend'] as String?);
       _filesystemPath = map['fsPath'] as String? ?? '';
       _gitPath = map['gitPath'] as String? ?? '';
+      _meshStorePath = map['meshStorePath'] as String? ?? '';
+      _meshPort = map['meshPort'] as int? ?? 0;
+      _meshRelayEndpoint = map['meshRelayEndpoint'] as String? ?? '';
     }
     _defaultPath = await platform.defaultFilesystemPath();
     notifyListeners();
@@ -135,6 +151,18 @@ class StorageBackendsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setMeshConfig({
+    required final String storePath,
+    required final String relayEndpoint,
+    required final int port,
+  }) async {
+    _meshStorePath = storePath.trim();
+    _meshRelayEndpoint = relayEndpoint.trim();
+    _meshPort = port;
+    if (_active == StorageBackendId.mesh) await _persist();
+    notifyListeners();
+  }
+
   Future<void> _persist() async {
     final prefs = await _prefs;
     await prefs.setString(
@@ -143,6 +171,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
         'backend': _active.name,
         'fsPath': _filesystemPath,
         'gitPath': _gitPath,
+        'meshStorePath': _meshStorePath,
+        'meshPort': _meshPort,
+        'meshRelayEndpoint': _meshRelayEndpoint,
       }),
     );
     notifyListeners();
@@ -178,6 +209,20 @@ class StorageBackendsNotifier extends ChangeNotifier {
           );
         }
         return platform.buildGitOfflineService(_gitPath);
+      case StorageBackendId.mesh:
+        if (!id.isSupportedOnPlatform) {
+          throw const StorageBackendConfigException(
+            'Mesh backend is not available on this platform',
+          );
+        }
+        if (_meshStorePath.isEmpty) {
+          throw const StorageBackendConfigException('Mesh path is not set');
+        }
+        return platform.buildMeshService(
+          storePath: _meshStorePath,
+          relayEndpoint: Uri.parse(_meshRelayEndpoint),
+          peerId: meshPeerId,
+        );
       case StorageBackendId.github:
         throw const StorageBackendConfigException(
           'GitHub is driven by GithubSyncNotifier (OAuth-protected)',
@@ -319,11 +364,51 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Last payload read by [restore] (empty when nothing was read yet).
   String get lastPayload => _lastPayload;
 
+  MeshStorageService? _meshService;
+
+  /// Stable browser-safe peer identity persisted with backend config.
+  String get meshPeerId {
+    final existing = _meshPeerId;
+    if (existing.isNotEmpty) return existing;
+    return _meshPeerId = DateTime.now().microsecondsSinceEpoch.toString();
+  }
+
+  String _meshPeerId = '';
+
+  /// Active mesh replica, created by [ensureMeshService].
+  MeshStorageService? get meshService => _meshService;
+
+  Future<MeshStorageService> ensureMeshService() async {
+    if (_meshService != null) return _meshService!;
+    if (_meshStorePath.isEmpty) {
+      _meshStorePath = 'memory:${meshPeerId}';
+    }
+    final service = await MeshStorageService.open(
+      storePath: _meshStorePath,
+      relayEndpoint: Uri.parse(_meshRelayEndpoint),
+      peerId: meshPeerId,
+    );
+    await _persist();
+    _meshService = service;
+    notifyListeners();
+    return service;
+  }
+
+  @override
+  void dispose() {
+    unawaited(_meshService?.dispose());
+    _meshService = null;
+    super.dispose();
+  }
+
   /// Snapshot for MCP tools.
   Map<String, dynamic> snapshot() => {
     'active': _active.name,
     'filesystemPath': _filesystemPath,
     'gitPath': _gitPath,
+    'meshStorePath': _meshStorePath,
+    'meshPort': _meshPort,
+    'meshRelayEndpoint': _meshRelayEndpoint,
     'isConfigured': isConfigured,
     'defaultPath': _defaultPath,
     if (_lastReport != null)

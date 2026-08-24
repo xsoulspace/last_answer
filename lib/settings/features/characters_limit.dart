@@ -4,10 +4,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features/characters_limit_state.dart';
 
 class CharactersLimitSetting extends HookWidget {
-  const CharactersLimitSetting({
-    required this.controller,
-    super.key,
-  });
+  const CharactersLimitSetting({required this.controller, super.key});
   final CharactersLimitController controller;
 
   @override
@@ -46,17 +43,15 @@ class CharactersLimitSetting extends HookWidget {
           ),
           HoverableButton(
             onPressed: controller.isEditing ? controller.onClearLimit : null,
-            child: const Icon(
-              CupertinoIcons.clear,
-              size: 14,
-            ),
+            child: const Icon(CupertinoIcons.clear, size: 14),
           ),
         ],
       );
     }
 
     // final isRestricted = settings.isSocialNetworksRestricted &&
-    final isRestricted = settings.isSocialNetworksRestricted &&
+    final isRestricted =
+        settings.isSocialNetworksRestricted &&
         (uiLocaleNotifier.value == Locales.ru || Envs.store.isRustore);
     final isNotRestricted = !isRestricted;
 
@@ -68,17 +63,18 @@ class CharactersLimitSetting extends HookWidget {
         if (isNotRestricted)
           CharactersLimitButton(
             onTap: controller.onSetInstagramLimit,
-            child: (controller.isInstagramLimit
-                    ? Assets.icons.instagramLogoColorful
-                    : Assets.icons.instagramLogoBlack)
-                .image(
-              colorBlendMode: BlendMode.srcIn,
-              width: 18,
-              height: 18,
-              color: controller.isInstagramLimit
-                  ? null
-                  : theme.textTheme.bodyMedium?.color,
-            ),
+            child:
+                (controller.isInstagramLimit
+                        ? Assets.icons.instagramLogoColorful
+                        : Assets.icons.instagramLogoBlack)
+                    .image(
+                      colorBlendMode: BlendMode.srcIn,
+                      width: 18,
+                      height: 18,
+                      color: controller.isInstagramLimit
+                          ? null
+                          : theme.textTheme.bodyMedium?.color,
+                    ),
           ),
         if (isNotRestricted)
           CharactersLimitButton(
@@ -109,25 +105,18 @@ class CharactersLimitSetting extends HookWidget {
           onTap: controller.onSetDiscordLimit,
           child: switch (controller.isDiscordLimit) {
             true => Assets.icons.discordLogoBlue,
-            false => dark
-                ? Assets.icons.discordLogoWhite
-                : Assets.icons.discordLogoBlack,
-          }
-              .svg(
-            width: 16,
-            height: 16,
-          ),
+            false =>
+              dark
+                  ? Assets.icons.discordLogoWhite
+                  : Assets.icons.discordLogoBlack,
+          }.svg(width: 16, height: 16),
         ),
         CharactersLimitButton(
           onTap: controller.onSetVkLimit,
           child: switch (controller.isVkLimit) {
             true => Assets.icons.vkLogoBlue,
             false => dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack,
-          }
-              .svg(
-            width: 18,
-            height: 18,
-          ),
+          }.svg(width: 18, height: 18),
         ),
         otherButton,
       ],
@@ -146,18 +135,15 @@ class CharactersLimitButton extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => Card(
-        color: context.colorScheme.primaryContainer,
-        child: HoverableButton(
-          onPressed: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 3,
-              horizontal: 3,
-            ),
-            child: child,
-          ),
-        ),
-      );
+    color: context.colorScheme.primaryContainer,
+    child: HoverableButton(
+      onPressed: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
+        child: child,
+      ),
+    ),
+  );
 }
 
 class ImageGenIcon extends StatelessWidget {
@@ -172,13 +158,11 @@ class ImageGenIcon extends StatelessWidget {
   final double dimension;
   @override
   Widget build(final BuildContext context) => Container(
-        width: dimension,
-        height: dimension,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: genImage.provider(),
-          ),
-          color: color,
-        ),
-      );
+    width: dimension,
+    height: dimension,
+    decoration: BoxDecoration(
+      image: DecorationImage(image: genImage.provider()),
+      color: color,
+    ),
+  );
 }

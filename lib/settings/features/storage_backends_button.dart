@@ -228,7 +228,6 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
     final (title, hint) = _labels(id);
     final supported = id.isSupportedOnPlatform;
     final isEnabled = _notifier.isEnabled(id);
-    final isPrimary = _notifier.primary == id;
     return CheckboxListTile.adaptive(
       key: ValueKey('storage-backend-${id.name}'),
       contentPadding: EdgeInsets.zero,

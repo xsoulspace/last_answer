@@ -157,10 +157,10 @@ Set<AgentCallEntry> storageMcpEntries() => {
     definition: MCPToolDefinition(
       name: 'storage_select_backend',
       description:
-          'Enable a storage backend and make it primary (legacy single-'
-          'selection tool; prefer storage_set_enabled + storage_set_primary '
-          'for multi-backend setups). One of: localDb, filesystem, '
-          'gitOffline, mesh, github.',
+          'Enable a storage backend and make it primary. '
+          'Legacy single-selection tool; for multi-backend setups prefer '
+          'storage_set_enabled + storage_set_primary. '
+          'One of: localDb, filesystem, gitOffline, mesh, github.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'additionalProperties': false,

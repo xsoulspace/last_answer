@@ -472,6 +472,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
   }) async {
     final reports = await replicateToEnabled(jsonPayload: jsonPayload);
     final succeeded = reports.where((final r) => r.ok).toList();
+    final names = reports.map((final r) => r.backend.name).join(', ');
     _lastReport = switch (reports) {
       const [] => StorageOperationReport(
         ok: true,
@@ -481,9 +482,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
       _ when succeeded.length == reports.length => StorageOperationReport(
         ok: true,
         backend: _primary,
-        // ignore: lines_longer_than_80_chars
-        message:
-            'replicated to ${reports.map((final r) => r.backend.name).join(', ')}',
+        message: 'replicated to $names',
         bytes: jsonPayload.length,
       ),
       _ => StorageOperationReport(

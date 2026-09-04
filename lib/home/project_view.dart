@@ -1,4 +1,5 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/chat_document_view.dart';
 import 'package:lastanswer/doc/doc_view.dart';
@@ -33,9 +34,11 @@ class ProjectView extends StatelessWidget {
       ),
       doc: (final doc) => _AdaptiveView(
         appBar: const _ProjectViewAppBar(),
-        child: doc.formatId == DocFormatIds.chat
-            ? ChatDocumentView(doc: doc, key: ValueKey(id))
-            : DocView(doc: doc, key: ValueKey(id)),
+        child: switch (doc.formatId) {
+          DocFormatIds.chat => ChatDocumentView(doc: doc, key: ValueKey(id)),
+          DocFormatIds.agent => AgentDocSurface(doc: doc, key: ValueKey(id)),
+          _ => DocView(doc: doc, key: ValueKey(id)),
+        },
       ),
     );
   }

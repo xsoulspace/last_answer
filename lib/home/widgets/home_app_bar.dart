@@ -48,8 +48,10 @@ class HomeAppBar extends StatelessWidget {
       actions:
           [
                 IconButton(
-                  onPressed: () => context.go(ScreenPaths.codingAgent),
-                  tooltip: 'Coding agent',
+                  onPressed: () => context
+                      .read<OpenedProjectNotifier>()
+                      .createAgentProject(context),
+                  tooltip: 'New agent doc',
                   icon: const Icon(Icons.smart_toy_outlined),
                 ),
                 IconButton(

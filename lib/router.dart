@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
-import 'package:lastanswer/coding_agent/coding_agent.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/home/project_view.dart';
@@ -26,10 +25,6 @@ final appRouter = GoRouter(
             AppRoute('/home/d/:docId', (final _) => const ProjectView()),
             AppRoute('/home/i/:ideaId', (final _) => const ProjectView()),
             AppRoute(ScreenPaths.changelog, (final _) => const ProjectView()),
-            AppRoute(
-              ScreenPaths.codingAgent,
-              (final _) => const CodingAgentScreen(),
-            ),
             AppRoute(
               PaywallFlow.paywallPath,
               (final _) => const PaywallScreen(),

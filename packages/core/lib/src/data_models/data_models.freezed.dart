@@ -322,6 +322,290 @@ $LocalizedTextModelCopyWith<$Res> get title {
 
 
 /// @nodoc
+mixin _$AgentDocModel {
+
+ List<String> get workspaces; String get backend;/// Explicit verification command overriding the workspace convention
+/// (D8): the same escape hatch the CLI spells `--check`. Empty = the
+/// workspace convention decides.
+ List<String> get checkCommand;
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AgentDocModelCopyWith<AgentDocModel> get copyWith => _$AgentDocModelCopyWithImpl<AgentDocModel>(this as AgentDocModel, _$identity);
+
+  /// Serializes this AgentDocModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgentDocModel&&const DeepCollectionEquality().equals(other.workspaces, workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&const DeepCollectionEquality().equals(other.checkCommand, checkCommand));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(workspaces),backend,const DeepCollectionEquality().hash(checkCommand));
+
+@override
+String toString() {
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, checkCommand: $checkCommand)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AgentDocModelCopyWith<$Res>  {
+  factory $AgentDocModelCopyWith(AgentDocModel value, $Res Function(AgentDocModel) _then) = _$AgentDocModelCopyWithImpl;
+@useResult
+$Res call({
+ List<String> workspaces, String backend, List<String> checkCommand
+});
+
+
+
+
+}
+/// @nodoc
+class _$AgentDocModelCopyWithImpl<$Res>
+    implements $AgentDocModelCopyWith<$Res> {
+  _$AgentDocModelCopyWithImpl(this._self, this._then);
+
+  final AgentDocModel _self;
+  final $Res Function(AgentDocModel) _then;
+
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? workspaces = null,Object? backend = null,Object? checkCommand = null,}) {
+  return _then(AgentDocModel(
+workspaces: null == workspaces ? _self.workspaces : workspaces // ignore: cast_nullable_to_non_nullable
+as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
+as String,checkCommand: null == checkCommand ? _self.checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AgentDocModel].
+extension AgentDocModelPatterns on AgentDocModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AgentDocModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AgentDocModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AgentDocModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _AgentDocModel():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AgentDocModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AgentDocModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  List<String> checkCommand)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AgentDocModel() when $default != null:
+return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  List<String> checkCommand)  $default,) {final _that = this;
+switch (_that) {
+case _AgentDocModel():
+return $default(_that.workspaces,_that.backend,_that.checkCommand);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> workspaces,  String backend,  List<String> checkCommand)?  $default,) {final _that = this;
+switch (_that) {
+case _AgentDocModel() when $default != null:
+return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AgentDocModel implements AgentDocModel {
+  const _AgentDocModel({ List<String> workspaces = const [], this.backend = 'apple_foundation_afm',  List<String> checkCommand = const []}): _workspaces = workspaces,_checkCommand = checkCommand;
+  factory _AgentDocModel.fromJson(Map<String, dynamic> json) => _$AgentDocModelFromJson(json);
+
+ final  List<String> _workspaces;
+@override@JsonKey() List<String> get workspaces {
+  if (_workspaces is EqualUnmodifiableListView) return _workspaces;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_workspaces);
+}
+
+@override@JsonKey() final  String backend;
+/// Explicit verification command overriding the workspace convention
+/// (D8): the same escape hatch the CLI spells `--check`. Empty = the
+/// workspace convention decides.
+ final  List<String> _checkCommand;
+/// Explicit verification command overriding the workspace convention
+/// (D8): the same escape hatch the CLI spells `--check`. Empty = the
+/// workspace convention decides.
+@override@JsonKey() List<String> get checkCommand {
+  if (_checkCommand is EqualUnmodifiableListView) return _checkCommand;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_checkCommand);
+}
+
+
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AgentDocModelCopyWith<_AgentDocModel> get copyWith => __$AgentDocModelCopyWithImpl<_AgentDocModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AgentDocModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgentDocModel&&const DeepCollectionEquality().equals(other._workspaces, _workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&const DeepCollectionEquality().equals(other._checkCommand, _checkCommand));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_workspaces),backend,const DeepCollectionEquality().hash(_checkCommand));
+
+@override
+String toString() {
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, checkCommand: $checkCommand)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AgentDocModelCopyWith<$Res> implements $AgentDocModelCopyWith<$Res> {
+  factory _$AgentDocModelCopyWith(_AgentDocModel value, $Res Function(_AgentDocModel) _then) = __$AgentDocModelCopyWithImpl;
+@override @useResult
+$Res call({
+ List<String> workspaces, String backend, List<String> checkCommand
+});
+
+
+
+
+}
+/// @nodoc
+class __$AgentDocModelCopyWithImpl<$Res>
+    implements _$AgentDocModelCopyWith<$Res> {
+  __$AgentDocModelCopyWithImpl(this._self, this._then);
+
+  final _AgentDocModel _self;
+  final $Res Function(_AgentDocModel) _then;
+
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? workspaces = null,Object? backend = null,Object? checkCommand = null,}) {
+  return _then(_AgentDocModel(
+workspaces: null == workspaces ? _self._workspaces : workspaces // ignore: cast_nullable_to_non_nullable
+as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
+as String,checkCommand: null == checkCommand ? _self._checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$DocBlockModel {
 
  DocBlockId get id; DocBlockType get type; String get content; int? get level;
@@ -1045,13 +1329,13 @@ return doc(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)?  doc,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);case _:
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);case _:
   return orElse();
 
 }
@@ -1069,13 +1353,13 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)  doc,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea():
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote():
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog():
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc():
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);}
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -1089,13 +1373,13 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  DocStatus status)?  doc,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
 return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
-return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.status);case _:
+return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);case _:
   return null;
 
 }
@@ -1413,7 +1697,7 @@ $LocalizedTextModelCopyWith<$Res> get title {
 @JsonSerializable()
 
 class ProjectModelDoc extends ProjectModel implements Archivable, Sharable {
-  const ProjectModelDoc({required this.id, required this.createdAt, required this.updatedAt, this.formatId = '', this.title = '', this.type = ProjectTypes.doc,  List<ProjectTagModelId> tagsIds = const [], this.archivedAt,  List<DocBlockModel> blocks = const [], this.parentDocId, this.anchorSpan, this.spanSnapshot = '', this.status = DocStatus.open,  String? $type}): _tagsIds = tagsIds,_blocks = blocks,$type = $type ?? 'doc',super._();
+  const ProjectModelDoc({required this.id, required this.createdAt, required this.updatedAt, this.formatId = '', this.title = '', this.type = ProjectTypes.doc,  List<ProjectTagModelId> tagsIds = const [], this.archivedAt,  List<DocBlockModel> blocks = const [], this.parentDocId, this.anchorSpan, this.spanSnapshot = '', this.agent, this.status = DocStatus.open,  String? $type}): _tagsIds = tagsIds,_blocks = blocks,$type = $type ?? 'doc',super._();
   factory ProjectModelDoc.fromJson(Map<String, dynamic> json) => _$ProjectModelDocFromJson(json);
 
 @override final  ProjectModelId id;
@@ -1444,6 +1728,8 @@ class ProjectModelDoc extends ProjectModel implements Archivable, Sharable {
  final  AnchorSpanModel? anchorSpan;
 /// Snapshot of the anchored text at creation ("history note").
 @JsonKey() final  String spanSnapshot;
+/// Agent-doc payload (ADR 0003). Null for every other doc format.
+ final  AgentDocModel? agent;
 @JsonKey() final  DocStatus status;
 
 @JsonKey(name: 'runtimeType')
@@ -1463,16 +1749,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelDoc&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelDoc&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot)&&(identical(other.agent, agent) || other.agent == agent)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,formatId,title,type,const DeepCollectionEquality().hash(_tagsIds),archivedAt,const DeepCollectionEquality().hash(_blocks),parentDocId,anchorSpan,spanSnapshot,status);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,formatId,title,type,const DeepCollectionEquality().hash(_tagsIds),archivedAt,const DeepCollectionEquality().hash(_blocks),parentDocId,anchorSpan,spanSnapshot,agent,status);
 
 @override
 String toString() {
-  return 'ProjectModel.doc(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, formatId: $formatId, title: $title, type: $type, tagsIds: $tagsIds, archivedAt: $archivedAt, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, spanSnapshot: $spanSnapshot, status: $status)';
+  return 'ProjectModel.doc(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, formatId: $formatId, title: $title, type: $type, tagsIds: $tagsIds, archivedAt: $archivedAt, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, spanSnapshot: $spanSnapshot, agent: $agent, status: $status)';
 }
 
 
@@ -1483,11 +1769,11 @@ abstract mixin class $ProjectModelDocCopyWith<$Res> implements $ProjectModelCopy
   factory $ProjectModelDocCopyWith(ProjectModelDoc value, $Res Function(ProjectModelDoc) _then) = _$ProjectModelDocCopyWithImpl;
 @override @useResult
 $Res call({
- ProjectModelId id, DateTime createdAt, DateTime updatedAt, String formatId, String title, ProjectTypes type, List<ProjectTagModelId> tagsIds, DateTime? archivedAt, List<DocBlockModel> blocks, ProjectModelId? parentDocId, AnchorSpanModel? anchorSpan, String spanSnapshot, DocStatus status
+ ProjectModelId id, DateTime createdAt, DateTime updatedAt, String formatId, String title, ProjectTypes type, List<ProjectTagModelId> tagsIds, DateTime? archivedAt, List<DocBlockModel> blocks, ProjectModelId? parentDocId, AnchorSpanModel? anchorSpan, String spanSnapshot, AgentDocModel? agent, DocStatus status
 });
 
 
-$AnchorSpanModelCopyWith<$Res>? get anchorSpan;
+$AnchorSpanModelCopyWith<$Res>? get anchorSpan;$AgentDocModelCopyWith<$Res>? get agent;
 
 }
 /// @nodoc
@@ -1500,7 +1786,7 @@ class _$ProjectModelDocCopyWithImpl<$Res>
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? formatId = null,Object? title = null,Object? type = null,Object? tagsIds = null,Object? archivedAt = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? spanSnapshot = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? formatId = null,Object? title = null,Object? type = null,Object? tagsIds = null,Object? archivedAt = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? spanSnapshot = null,Object? agent = freezed,Object? status = null,}) {
   return _then(ProjectModelDoc(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as ProjectModelId,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1514,7 +1800,8 @@ as DateTime?,blocks: null == blocks ? _self._blocks : blocks // ignore: cast_nul
 as List<DocBlockModel>,parentDocId: freezed == parentDocId ? _self.parentDocId : parentDocId // ignore: cast_nullable_to_non_nullable
 as ProjectModelId?,anchorSpan: freezed == anchorSpan ? _self.anchorSpan : anchorSpan // ignore: cast_nullable_to_non_nullable
 as AnchorSpanModel?,spanSnapshot: null == spanSnapshot ? _self.spanSnapshot : spanSnapshot // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,agent: freezed == agent ? _self.agent : agent // ignore: cast_nullable_to_non_nullable
+as AgentDocModel?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as DocStatus,
   ));
 }
@@ -1530,6 +1817,18 @@ $AnchorSpanModelCopyWith<$Res>? get anchorSpan {
 
   return $AnchorSpanModelCopyWith<$Res>(_self.anchorSpan!, (value) {
     return _then(_self.copyWith(anchorSpan: value));
+  });
+}/// Create a copy of ProjectModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AgentDocModelCopyWith<$Res>? get agent {
+    if (_self.agent == null) {
+    return null;
+  }
+
+  return $AgentDocModelCopyWith<$Res>(_self.agent!, (value) {
+    return _then(_self.copyWith(agent: value));
   });
 }
 }

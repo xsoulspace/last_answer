@@ -21,6 +21,33 @@ abstract final class DocFormatIds {
   static const gdd = 'gdd';
   static const prd = 'prd';
   static const chat = 'chat';
+
+  /// Agents in docs (ADR 0003): a document bound to one or more workspaces
+  /// where humans and agents work the same task surface.
+  static const agent = 'agent';
+}
+
+/// Agent-doc payload (ADR 0003 — Agents live in docs, Phase 1).
+///
+/// Doc data (mesh-synced, shareable): the workspace set the doc binds to,
+/// the default backend for its runtime bindings, and an optional workspace
+/// oracle override (the product equivalent of the CLI's `--check`). World
+/// snapshots and the meaning tree are NEVER here — they stay device-local
+/// under the workspace (`<workspace>/.dart_tool/harnessd_store/`).
+@freezed
+sealed class AgentDocModel with _$AgentDocModel {
+  const factory AgentDocModel({
+    @Default([]) List<String> workspaces,
+    @Default('apple_foundation_afm') String backend,
+
+    /// Explicit verification command overriding the workspace convention
+    /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
+    /// workspace convention decides.
+    @Default([]) List<String> checkCommand,
+  }) = _AgentDocModel;
+
+  factory AgentDocModel.fromJson(Map<String, dynamic> json) =>
+      _$AgentDocModelFromJson(json);
 }
 
 extension type const DocBlockId(String value) {
@@ -75,6 +102,16 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     formatId: DocFormatIds.chat,
+  );
+
+  /// ADR 0003 — Agents live in docs: a new agent doc binds to no workspace
+  /// yet; the first session pins it (Phase 1).
+  factory ProjectModel.emptyAgent() => ProjectModel.doc(
+    id: ProjectModelId.generate(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    formatId: DocFormatIds.agent,
+    agent: const AgentDocModel(),
   );
   @Implements<Archivable>()
   @Implements<Sharable>()
@@ -137,6 +174,9 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
 
     /// Snapshot of the anchored text at creation ("history note").
     @Default('') String spanSnapshot,
+
+    /// Agent-doc payload (ADR 0003). Null for every other doc format.
+    AgentDocModel? agent,
     @Default(DocStatus.open) DocStatus status,
   }) = ProjectModelDoc;
   factory ProjectModel.fromJson(dynamic json) =>

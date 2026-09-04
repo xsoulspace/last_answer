@@ -4,6 +4,6 @@
 /// ACP v1 daemon running in-process (see [HarnessHost]).
 library;
 
-export 'coding_agent_screen.dart';
+export 'agent_doc_surface.dart';
 export 'harness_host.dart';
 export 'harness_session_controller.dart';

@@ -97,6 +97,11 @@ class OpenedProjectNotifier
     loadProject(context: context, project: ProjectModel.emptyPrd());
   }
 
+  /// ADR 0003 — Agents live in docs (Phase 1): a new agent doc.
+  void createAgentProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyAgent());
+  }
+
   void createChatProject(final BuildContext context) {
     loadProject(context: context, project: ProjectModel.emptyChat());
   }

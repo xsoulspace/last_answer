@@ -106,8 +106,9 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
     final focusedBorder = widget.hasBorder
         ? OutlineInputBorder(
             borderRadius: defaultBorderRadius,
-            borderSide:
-                BorderSide(color: context.colorScheme.primary.withOpacity(0.4)),
+            borderSide: BorderSide(
+              color: context.colorScheme.primary.withOpacity(0.4),
+            ),
           )
         : _border;
     final theme = Theme.of(context);
@@ -132,8 +133,9 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
           onKeyEvent: (final event) {
             if ((HardwareKeyboard.instance.isMetaPressed ||
                     HardwareKeyboard.instance.isControlPressed) &&
-                HardwareKeyboard.instance
-                    .isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
+                HardwareKeyboard.instance.isLogicalKeyPressed(
+                  LogicalKeyboardKey.enter,
+                )) {
               widget.onSubmit();
             }
           },
@@ -154,7 +156,8 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
             textAlignVertical: widget.textAlignVertical,
             style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
-              contentPadding: widget.contentPadding ??
+              contentPadding:
+                  widget.contentPadding ??
                   (PlatformInfo.isNativeDesktop
                       ? const EdgeInsets.fromLTRB(12, 20, 0, 20)
                       : const EdgeInsets.only(bottom: 4)),

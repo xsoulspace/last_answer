@@ -6,7 +6,6 @@ class ScreenPaths {
   static const home = '/home';
   static const intro = '/intro';
   static const changelog = '$home/changelog';
-  static const codingAgent = '$home/coding-agent';
   static String idea({required final ProjectModelId ideaId}) =>
       '$home/i/${ideaId.value}';
   static String ideaAnswer({

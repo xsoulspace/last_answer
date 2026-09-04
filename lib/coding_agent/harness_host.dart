@@ -179,6 +179,7 @@ final class HarnessHostConfig {
     this.scripted = false,
     this.handlerFactory,
     this.apiKey,
+    this.checkCommand,
   });
 
   /// `apple_foundation_afm` (local-first, North Star) or `open_router`.
@@ -191,6 +192,11 @@ final class HarnessHostConfig {
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
   final String? apiKey;
+
+  /// Explicit verification criterion overriding the D8 workspace
+  /// convention (the doc binding's `--check`, ADR 0003). Empty/null → the
+  /// workspace convention decides.
+  final List<String>? checkCommand;
 
   /// The OpenRouter router needs a key from somewhere; AFM needs nothing
   /// (on-device). Honest failure: an unresolvable key is a config error
@@ -208,18 +214,23 @@ final class HarnessHostConfig {
     scripted: scripted,
     handlerFactory: handlerFactory,
     apiKey: apiKey,
+    checkCommand: checkCommand,
   );
 
-  /// Backend-switch support: same mover surface, new backend/key.
-  HarnessHostConfig copyWith({String? backend, String? apiKey}) =>
-      HarnessHostConfig(
-        backend: backend ?? this.backend,
-        model: model,
-        meaningProfile: meaningProfile,
-        scripted: scripted,
-        handlerFactory: handlerFactory,
-        apiKey: apiKey ?? this.apiKey,
-      );
+  /// Backend-switch support: same mover surface, new backend/key/check.
+  HarnessHostConfig copyWith({
+    String? backend,
+    String? apiKey,
+    List<String>? checkCommand,
+  }) => HarnessHostConfig(
+    backend: backend ?? this.backend,
+    model: model,
+    meaningProfile: meaningProfile,
+    scripted: scripted,
+    handlerFactory: handlerFactory,
+    apiKey: apiKey ?? this.apiKey,
+    checkCommand: checkCommand ?? this.checkCommand,
+  );
 }
 
 /// A [StringSink] adapter that pushes utf8-encoded lines into a

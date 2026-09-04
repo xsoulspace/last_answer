@@ -24,6 +24,28 @@ Map<String, dynamic> _$NotificationMessageModelToJson(
   'created': instance.created.toIso8601String(),
 };
 
+_AgentDocModel _$AgentDocModelFromJson(Map<String, dynamic> json) =>
+    _AgentDocModel(
+      workspaces:
+          (json['workspaces'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      backend: json['backend'] as String? ?? 'apple_foundation_afm',
+      checkCommand:
+          (json['checkCommand'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$AgentDocModelToJson(_AgentDocModel instance) =>
+    <String, dynamic>{
+      'workspaces': instance.workspaces,
+      'backend': instance.backend,
+      'checkCommand': instance.checkCommand,
+    };
+
 _DocBlockModel _$DocBlockModelFromJson(Map<String, dynamic> json) =>
     _DocBlockModel(
       id: DocBlockId.fromJson(json['id'] as String),
@@ -217,6 +239,9 @@ ProjectModelDoc _$ProjectModelDocFromJson(
       ? null
       : AnchorSpanModel.fromJson(json['anchorSpan'] as Map<String, dynamic>),
   spanSnapshot: json['spanSnapshot'] as String? ?? '',
+  agent: json['agent'] == null
+      ? null
+      : AgentDocModel.fromJson(json['agent'] as Map<String, dynamic>),
   status:
       $enumDecodeNullable(_$DocStatusEnumMap, json['status']) ?? DocStatus.open,
   $type: json['runtimeType'] as String?,
@@ -236,6 +261,7 @@ Map<String, dynamic> _$ProjectModelDocToJson(ProjectModelDoc instance) =>
       'parentDocId': instance.parentDocId,
       'anchorSpan': instance.anchorSpan,
       'spanSnapshot': instance.spanSnapshot,
+      'agent': instance.agent,
       'status': _$DocStatusEnumMap[instance.status]!,
       'runtimeType': instance.$type,
     };

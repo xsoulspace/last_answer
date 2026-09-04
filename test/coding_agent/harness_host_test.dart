@@ -126,7 +126,6 @@ void main() {
       'per-workspace world continues (snapshot restore)', () async {
     final controller = HarnessSessionController(
       config: HarnessHostConfig(
-        backend: 'apple_foundation_afm',
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
       ),
@@ -138,7 +137,6 @@ void main() {
     await controller.createSession(workspace.path);
     await controller.delegate('Fix main.dart.');
     expect(controller.current?.verdictLine, contains('PASS'));
-    final firstSessionId = controller.current!.id;
 
     // Switch backend (OpenRouter needs no real key here: the scripted
     // handlerFactory outranks the real router — LLM-free by design).
@@ -148,12 +146,21 @@ void main() {
     expect(controller.config.backend, 'open_router');
     expect(controller.sessions, isEmpty);
 
-    // The NEXT session for the same workspace restores the world from
-    // the per-workspace snapshot store (R7c loadSession) and the turn
-    // completes on the new backend.
+    // The NEXT session for the same workspace restores the world from the
+    // per-workspace snapshot store (R7c loadSession) and the turn
+    // completes on the new backend. Session ids are per-daemon-instance
+    // (both counters start at sess_1) — the RESUME is the store restore,
+    // which is proven by the resumable-world assertion below.
     await controller.createSession(workspace.path);
-    expect(controller.current!.id, isNot(firstSessionId));
+    // ensureStarted re-wired the controller to the NEW host's permission
+    // round-trips; the test's user-actor must do the same.
+    controller.host.permissionRequests.listen((final p) => p.allow());
     await controller.delegate('Confirm main.dart is fixed.');
     expect(controller.current?.verdictLine, contains('PASS'));
+    expect(
+      controller.current!.transcript.toString(),
+      isNot(contains('no goal-carrying actor')),
+      reason: 'the restored world must carry a resumable goal actor (R7c)',
+    );
   }, timeout: const Timeout(Duration(minutes: 3)));
 }

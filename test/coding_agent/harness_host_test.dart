@@ -14,6 +14,7 @@ import 'dart:io';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 
 import 'scripted_write_mover.dart';
 
@@ -119,5 +120,40 @@ void main() {
       isTrue,
       reason: 'the per-workspace snapshot store must exist',
     );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  test('controller switchBackend: AFM → OpenRouter restarts the daemon and the '
+      'per-workspace world continues (snapshot restore)', () async {
+    final controller = HarnessSessionController(
+      config: HarnessHostConfig(
+        backend: 'apple_foundation_afm',
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+      ),
+    );
+    addTearDown(controller.dispose);
+    controller.host.permissionRequests.listen((final p) => p.allow());
+
+    expect(controller.config.backend, 'apple_foundation_afm');
+    await controller.createSession(workspace.path);
+    await controller.delegate('Fix main.dart.');
+    expect(controller.current?.verdictLine, contains('PASS'));
+    final firstSessionId = controller.current!.id;
+
+    // Switch backend (OpenRouter needs no real key here: the scripted
+    // handlerFactory outranks the real router — LLM-free by design).
+    await controller.switchBackend(
+      controller.config.copyWith(backend: 'open_router', apiKey: 'test-key'),
+    );
+    expect(controller.config.backend, 'open_router');
+    expect(controller.sessions, isEmpty);
+
+    // The NEXT session for the same workspace restores the world from
+    // the per-workspace snapshot store (R7c loadSession) and the turn
+    // completes on the new backend.
+    await controller.createSession(workspace.path);
+    expect(controller.current!.id, isNot(firstSessionId));
+    await controller.delegate('Confirm main.dart is fixed.');
+    expect(controller.current?.verdictLine, contains('PASS'));
   }, timeout: const Timeout(Duration(minutes: 3)));
 }

@@ -28,9 +28,16 @@ final class HarnessSessionView {
 /// `session/request_permission` round-trip ([answerPermission]) — the
 /// controller adds no protocol of its own.
 final class HarnessSessionController extends ChangeNotifier {
-  HarnessSessionController({required this.host});
+  HarnessSessionController({required HarnessHostConfig config})
+    : _config = config,
+      host = HarnessHost(config: config);
 
-  final HarnessHost host;
+  HarnessHostConfig _config;
+  HarnessHostConfig get config => _config;
+
+  /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
+  /// snapshot stores make the world survive the restart — R7c).
+  HarnessHost host;
 
   final List<HarnessSessionView> sessions = [];
   HarnessSessionView? current;
@@ -38,6 +45,7 @@ final class HarnessSessionController extends ChangeNotifier {
   String? error;
   bool _started = false;
   Completer<PendingPermission>? _permissionArrived;
+  StreamSubscription<PendingPermission>? _permissionSub;
 
   bool get isRunning => current?.running ?? false;
 
@@ -45,14 +53,48 @@ final class HarnessSessionController extends ChangeNotifier {
   /// round-trips.
   Future<void> ensureStarted() async {
     if (_started) return;
+    if (!_config.openRouterKeyResolvable) {
+      error =
+          'OpenRouter needs an API key: enter one below or set '
+          'OPENROUTER_API_KEY.';
+      notifyListeners();
+      return;
+    }
     _started = true;
     try {
-      host.permissionRequests.listen(_onPermissionRequest);
+      _permissionSub = host.permissionRequests.listen(_onPermissionRequest);
       await host.start();
     } on Object catch (e) {
       error = '$e';
       _started = false;
     }
+    notifyListeners();
+  }
+
+  /// Switches the backend (AFM on-device ↔ OpenRouter) and restarts the
+  /// daemon. Sessions of the old backend are dropped; the NEXT session for
+  /// a known workspace RESTORES its world from the per-workspace snapshot
+  /// store (R7c `loadSession`) — work continues across the switch.
+  Future<void> switchBackend(final HarnessHostConfig config) async {
+    if (isRunning) {
+      error = 'a task is running — cancel it before switching backends.';
+      notifyListeners();
+      return;
+    }
+    if (config.backend == _config.backend && config.apiKey == _config.apiKey) {
+      return;
+    }
+    _config = config;
+    error = null;
+    _started = false;
+    await _permissionSub?.cancel();
+    _permissionSub = null;
+    pendingPermission = null;
+    current = null;
+    sessions.clear();
+    final oldHost = host;
+    host = HarnessHost(config: config);
+    unawaited(oldHost.stop());
     notifyListeners();
   }
 
@@ -173,7 +215,8 @@ final class HarnessSessionController extends ChangeNotifier {
 
   @override
   void dispose() {
-    host.stop().ignore();
+    unawaited(_permissionSub?.cancel());
+    unawaited(host.stop());
     super.dispose();
   }
 }

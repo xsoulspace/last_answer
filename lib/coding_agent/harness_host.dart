@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
@@ -164,10 +165,12 @@ final class PendingPermission {
   }
 }
 
-/// Configuration for the embedded daemon. Production default is AFM-first
-/// (local, on-device); tests pass [handlerFactory] — the harness's LLM-free
-/// scripted seam — or [scripted]/[meaningProfile] for the deterministic
-/// mover modes. No other host surface exists.
+/// Configuration for the embedded daemon. The backend is switchable at
+/// runtime (AFM on-device ↔ OpenRouter): a switch restarts the daemon and
+/// the per-workspace snapshot store restores the world on the next session
+/// (R7c `loadSession`), so work continues across the switch. Tests pass
+/// [handlerFactory] — the harness's LLM-free scripted seam. No other host
+/// surface exists.
 final class HarnessHostConfig {
   const HarnessHostConfig({
     this.backend = 'apple_foundation_afm',
@@ -175,6 +178,7 @@ final class HarnessHostConfig {
     this.meaningProfile = false,
     this.scripted = false,
     this.handlerFactory,
+    this.apiKey,
   });
 
   /// `apple_foundation_afm` (local-first, North Star) or `open_router`.
@@ -184,13 +188,38 @@ final class HarnessHostConfig {
   final bool scripted;
   final GenerationHandler Function(ModelRouter router)? handlerFactory;
 
+  /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
+  /// process environment (never present for a GUI-launched macOS app).
+  final String? apiKey;
+
+  /// The OpenRouter router needs a key from somewhere; AFM needs nothing
+  /// (on-device). Honest failure: an unresolvable key is a config error
+  /// surfaced BEFORE a session is created, never a mid-turn crash.
+  bool get openRouterKeyResolvable {
+    if (backend != 'open_router') return true;
+    final key = apiKey ?? Platform.environment['OPENROUTER_API_KEY'];
+    return key != null && key.isNotEmpty;
+  }
+
   HarnessAcpBackend buildBackend() => HarnessAcpBackend(
     backend: backend,
     model: model,
     meaningProfile: meaningProfile,
     scripted: scripted,
     handlerFactory: handlerFactory,
+    apiKey: apiKey,
   );
+
+  /// Backend-switch support: same mover surface, new backend/key.
+  HarnessHostConfig copyWith({String? backend, String? apiKey}) =>
+      HarnessHostConfig(
+        backend: backend ?? this.backend,
+        model: model,
+        meaningProfile: meaningProfile,
+        scripted: scripted,
+        handlerFactory: handlerFactory,
+        apiKey: apiKey ?? this.apiKey,
+      );
 }
 
 /// A [StringSink] adapter that pushes utf8-encoded lines into a

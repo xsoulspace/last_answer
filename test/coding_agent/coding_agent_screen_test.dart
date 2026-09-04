@@ -36,11 +36,9 @@ void main() {
     final tester,
   ) async {
     final controller = HarnessSessionController(
-      host: HarnessHost(
-        config: HarnessHostConfig(
-          handlerFactory: (_) =>
-              ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
-        ),
+      config: HarnessHostConfig(
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
       ),
     );
     addTearDown(controller.dispose);

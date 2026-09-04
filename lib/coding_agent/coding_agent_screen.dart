@@ -29,11 +29,12 @@ class _CodingAgentScreenState extends State<CodingAgentScreen> {
   late final HarnessSessionController _controller =
       widget.controller ??
       HarnessSessionController(
-        host: HarnessHost(config: widget.config ?? const HarnessHostConfig()),
+        config: widget.config ?? const HarnessHostConfig(),
       );
   late final bool _ownsController = widget.controller == null;
   final _workspaceField = TextEditingController();
   final _taskField = TextEditingController();
+  final _keyField = TextEditingController();
 
   @override
   void initState() {
@@ -46,7 +47,19 @@ class _CodingAgentScreenState extends State<CodingAgentScreen> {
     if (_ownsController) _controller.dispose();
     _workspaceField.dispose();
     _taskField.dispose();
+    _keyField.dispose();
     super.dispose();
+  }
+
+  Future<void> _switchBackend(final String backend) async {
+    await _controller.switchBackend(
+      _controller.config.copyWith(
+        backend: backend,
+        apiKey: backend == 'open_router' && _keyField.text.trim().isNotEmpty
+            ? _keyField.text.trim()
+            : null,
+      ),
+    );
   }
 
   Future<void> _delegate() async {
@@ -83,6 +96,11 @@ class _CodingAgentScreenState extends State<CodingAgentScreen> {
                       text: 'error: ${controller.error}',
                       color: theme.colorScheme.errorContainer,
                     ),
+                  _BackendSwitcher(
+                    controller: controller,
+                    keyField: _keyField,
+                    onSwitch: _switchBackend,
+                  ),
                   TextField(
                     key: const Key('coding_agent.workspace'),
                     controller: _workspaceField,
@@ -271,4 +289,74 @@ final class _Banner extends StatelessWidget {
     color: color,
     child: Padding(padding: const EdgeInsets.all(8), child: Text(text)),
   );
+}
+
+/// The backend switcher: AFM (on-device, local-first) ↔ OpenRouter.
+/// Switching restarts the daemon; the per-workspace snapshot stores restore
+/// the world on the next session (R7c), so work continues across switches.
+final class _BackendSwitcher extends StatelessWidget {
+  const _BackendSwitcher({
+    required this.controller,
+    required this.keyField,
+    required this.onSwitch,
+  });
+
+  final HarnessSessionController controller;
+  final TextEditingController keyField;
+  final Future<void> Function(String backend) onSwitch;
+
+  static const _afm = 'apple_foundation_afm';
+  static const _openRouter = 'open_router';
+
+  @override
+  Widget build(final BuildContext context) {
+    final busy = controller.isRunning;
+    final selected = controller.config.backend;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 8,
+      children: [
+        SegmentedButton<String>(
+          key: const Key('coding_agent.backend'),
+          segments: const [
+            ButtonSegment(
+              value: _afm,
+              icon: Icon(Icons.laptop_mac),
+              label: Text('AFM (on-device)'),
+            ),
+            ButtonSegment(
+              value: _openRouter,
+              icon: Icon(Icons.cloud_outlined),
+              label: Text('OpenRouter'),
+            ),
+          ],
+          selected: {selected},
+          onSelectionChanged: busy
+              ? null
+              : (final selection) => onSwitch(selection.first).ignore(),
+        ),
+        if (selected == _openRouter) ...[
+          TextField(
+            key: const Key('coding_agent.api_key'),
+            controller: keyField,
+            enabled: !busy,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'OpenRouter API key',
+              hintText: 'sk-or-… (or set OPENROUTER_API_KEY)',
+              suffixIcon: IconButton(
+                key: const Key('coding_agent.api_key.apply'),
+                tooltip: 'Use key',
+                onPressed: keyField.text.trim().isEmpty
+                    ? null
+                    : () => onSwitch(_openRouter).ignore(),
+                icon: const Icon(Icons.check),
+              ),
+            ),
+            onSubmitted: (_) => onSwitch(_openRouter).ignore(),
+          ),
+        ],
+      ],
+    );
+  }
 }

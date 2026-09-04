@@ -15,6 +15,7 @@
 
 import 'dart:io';
 
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -56,8 +57,16 @@ void main() {
         "void main() { throw StateError('not implemented'); }\n",
       );
 
+      // ADR 0003 Phase 1: the run goes through the AGENT DOC surface —
+      // a real ProjectModel.emptyAgent() doc whose payload persists the
+      // workspace binding (captured in memory here; the app wires the
+      // projects repository).
+      final doc = ProjectModel.emptyAgent() as ProjectModelDoc;
+      final docUpdates = <ProjectModelDoc>[];
       final controller = HarnessSessionController(
-        config: const HarnessHostConfig(),
+        config: HarnessHostConfig(
+          backend: doc.agent?.backend ?? 'apple_foundation_afm',
+        ),
       );
       addTearDown(controller.dispose);
       // The user-actor approves writes (the permission UI answers these in
@@ -65,7 +74,15 @@ void main() {
       controller.host.permissionRequests.listen((final p) => p.allow());
 
       await tester.pumpWidget(
-        MaterialApp(home: CodingAgentScreen(controller: controller)),
+        MaterialApp(
+          home: Scaffold(
+            body: AgentDocSurface(
+              doc: doc,
+              controller: controller,
+              onDocChanged: docUpdates.add,
+            ),
+          ),
+        ),
       );
 
       // The full UI flow: type workspace + sentence, delegate.
@@ -98,6 +115,13 @@ void main() {
         await Future<void>.delayed(poll);
         await tester.pump();
       }
+
+      // ADR 0003: the workspace binding became doc data.
+      expect(
+        docUpdates.last.agent?.workspaces,
+        contains(workspace.path),
+        reason: 'the agent doc must pin its workspace (syncable doc data)',
+      );
 
       final transcript = controller.current?.transcript.toString() ?? '';
       // ignore: avoid_print

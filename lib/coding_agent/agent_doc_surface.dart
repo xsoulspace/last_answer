@@ -38,6 +38,10 @@ final class AgentDocSurface extends StatefulWidget {
   /// (`DocView.debugDocState` pattern).
   static AgentDocDebugState? debugState;
 
+  /// The live surface for intent-driven actions (delegate/answer) —
+  /// set while the doc is open, cleared on dispose.
+  static _AgentDocSurfaceState? debugSurface;
+
   @override
   State<AgentDocSurface> createState() => _AgentDocSurfaceState();
 }
@@ -54,6 +58,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   @override
   void initState() {
     super.initState();
+    AgentDocSurface.debugSurface = this;
     _workspaceField.text = _doc.agent?.workspaces.firstOrNull ?? '';
     unawaited(_controller.ensureStarted());
   }
@@ -67,8 +72,46 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     );
   }
 
+  /// Intent surface: delegate a task sentence (host-injected decision)
+  /// without touching the text fields. Returns (ok, message).
+  ({bool ok, String message}) delegateFromIntent(final String task) {
+    final current = _controller.current;
+    if (current?.running ?? false) {
+      return (ok: false, message: 'a task is already running.');
+    }
+    final workspace = _workspaceField.text.trim();
+    if (workspace.isEmpty) {
+      return (ok: false, message: 'no workspace bound to the doc yet.');
+    }
+    unawaited(() async {
+      if (current == null || current.cwd != workspace) {
+        await _controller.createSession(workspace);
+      }
+      final agent = _doc.agent ?? const AgentDocModel();
+      if (!agent.workspaces.contains(workspace)) {
+        _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
+      }
+      await _controller.delegate(task);
+    }());
+    return (ok: true, message: 'delegated: $task');
+  }
+
+  /// Intent surface: answer the pending permission round-trip.
+  ({bool ok, String message}) answerPermissionFromIntent({
+    required final bool allow,
+  }) {
+    if (_controller.pendingPermission == null) {
+      return (ok: false, message: 'no pending permission request.');
+    }
+    _controller.answerPermission(allow: allow);
+    return (ok: true, message: allow ? 'allowed' : 'rejected');
+  }
+
   @override
   void dispose() {
+    if (identical(AgentDocSurface.debugSurface, this)) {
+      AgentDocSurface.debugSurface = null;
+    }
     if (_ownsController) _controller.dispose();
     _workspaceField.dispose();
     _taskField.dispose();

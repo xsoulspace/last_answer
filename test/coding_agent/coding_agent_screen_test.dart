@@ -3,7 +3,7 @@
 //
 // task input (sentence + workspace) → delegate → the write-gate permission
 // prompt surfaces → the user answers ALLOW → the verdict surfaces in the
-// UI. The same flow through the REAL screen widgets, no protocol bypass.
+// UI. Everything through the REAL screen widgets — no protocol bypass.
 library;
 
 import 'dart:io';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/coding_agent.dart';
 
+import 'pump_until.dart';
 import 'scripted_write_mover.dart';
 
 void main() {
@@ -49,7 +50,7 @@ void main() {
       MaterialApp(home: CodingAgentScreen(controller: controller)),
     );
 
-    // Enter the workspace and the task sentence; delegate.
+    // The user types the workspace and the task sentence, then delegates.
     await tester.enterText(
       find.byKey(const Key('coding_agent.workspace')),
       workspace.path,
@@ -61,9 +62,9 @@ void main() {
     await tester.tap(find.byKey(const Key('coding_agent.delegate')));
     await tester.pump();
 
-    // The write-gate round-trip crosses real IO — run it to completion
-    // outside the fake-async zone, then resume the frame.
-    await tester.runAsync(() => controller.nextPermission());
+    // The write-gate round-trip crosses the fake/real zone boundary —
+    // alternate pump and runAsync until the prompt surfaces.
+    await pumpUntil(tester, () => controller.pendingPermission != null);
     await tester.pump();
 
     expect(
@@ -76,8 +77,8 @@ void main() {
     await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
     await tester.pump();
 
-    // The turn (verification oracle: dart run main.dart) crosses real IO.
-    await tester.runAsync(() => controller.whenIdle());
+    // The turn runs the workspace oracle (dart run main.dart) for real.
+    await pumpUntil(tester, () => !controller.isRunning);
     await tester.pump();
 
     expect(
@@ -93,6 +94,7 @@ void main() {
     expect(
       File('${workspace.path}/main.dart').readAsStringSync(),
       contains("print('ok')"),
+      reason: 'the allowed write must land in the workspace',
     );
   }, timeout: const Timeout(Duration(minutes: 3)));
 }

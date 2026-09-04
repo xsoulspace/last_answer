@@ -5,15 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 /// in the test's fake-async zone (flushed by [WidgetTester.pump]), while
 /// real file/process IO (snapshot store, the workspace oracle's
 /// `dart run`) only completes inside [WidgetTester.runAsync]. Alternating
-/// both until a condition holds drives a full scripted session
+/// both until [condition] holds drives a full scripted session
 /// deterministically, in real milliseconds.
 Future<void> pumpUntil(
-  final Future<void> Function(Future<void> Function()) runAsync,
+  final WidgetTester tester,
   final bool Function() condition, {
   final int maxCycles = 600,
 }) async {
   for (var i = 0; i < maxCycles && !condition(); i++) {
-    await runAsync(
+    await tester.pump(const Duration(milliseconds: 50));
+    await tester.runAsync(
       () => Future<void>.delayed(const Duration(milliseconds: 10)),
     );
   }

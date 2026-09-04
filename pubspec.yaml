@@ -85,6 +85,13 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  # TASK B (ADR 0015): the harness as the app's first embedded domain host.
+  # The host module (lib/coding_agent/) owns the daemon lifecycle in-process;
+  # the LLM-free scripted seam (handlerFactory) lives in the harness barrel.
+  xsoulspace_agentic_harness:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_agentic_harness
+  xsoulspace_inference_apple_foundation:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_apple_foundation
   dart_acp_toolkit:
     path: /Users/antonio/mcp/cline/intentcall/packages/acp_toolkit
   headless_core:
@@ -120,6 +127,10 @@ dependency_overrides:
     path: /Users/antonio/mcp/cline/intentcall/packages/acp_toolkit
   xsoulspace_inference_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  agentic_executables_wire:
+    path: ../../agentic_executables/agentic_executables_wire
+  ecsly_serialization:
+    path: /Users/antonio/xs/ecsly/plugins/ecsly_serialization
   ecsly_async_parallel:
     path: /Users/antonio/xs/ecsly/plugins/ecsly_async_parallel
   async_parallel:

@@ -45,25 +45,31 @@ class HomeAppBar extends StatelessWidget {
         greeting.current,
         style: context.textTheme.labelSmall,
       ),
-      actions: [
-        IconButton(
-          onPressed: onInfoTap,
-          tooltip: 'Info',
-          icon: const Icon(Icons.info_outline),
-        ),
-        IconButton(
-          onPressed: onSettingsTap,
-          tooltip: 'Settings',
-          icon: const Icon(CupertinoIcons.gear),
-        ),
-      ]
-          .map(
-            (final child) => Padding(
-              padding: const EdgeInsets.only(right: 18),
-              child: child,
-            ),
-          )
-          .toList(),
+      actions:
+          [
+                IconButton(
+                  onPressed: () => context.go(ScreenPaths.codingAgent),
+                  tooltip: 'Coding agent',
+                  icon: const Icon(Icons.smart_toy_outlined),
+                ),
+                IconButton(
+                  onPressed: onInfoTap,
+                  tooltip: 'Info',
+                  icon: const Icon(Icons.info_outline),
+                ),
+                IconButton(
+                  onPressed: onSettingsTap,
+                  tooltip: 'Settings',
+                  icon: const Icon(CupertinoIcons.gear),
+                ),
+              ]
+              .map(
+                (final child) => Padding(
+                  padding: const EdgeInsets.only(right: 18),
+                  child: child,
+                ),
+              )
+              .toList(),
     );
   }
 }

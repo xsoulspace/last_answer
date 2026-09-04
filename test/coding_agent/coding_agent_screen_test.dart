@@ -4,7 +4,6 @@
 // task input (sentence + workspace) → delegate → the write-gate permission
 // prompt surfaces → the user answers ALLOW → the verdict surfaces in the
 // UI. Everything through the REAL screen widgets — no protocol bypass.
-library;
 
 import 'dart:io';
 
@@ -83,8 +82,8 @@ void main() {
 
     expect(
       find.textContaining('verdict: PASS'),
-      findsOneWidget,
-      reason: 'the verdict must surface in the transcript',
+      findsWidgets,
+      reason: 'the verdict must surface (banner + transcript)',
     );
     expect(
       find.byKey(const Key('coding_agent.verdict.card')),

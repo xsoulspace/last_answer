@@ -40,7 +40,20 @@ with pi and other CLIs as first-class squad members during the transition.
 
 ## Phases (each shippable alone)
 
-### Phase 1 — AgentDoc format + view (coding first)
+### Phase 1 — AgentDoc format + view (coding first) — **LANDED 2026-09-04**
+
+- Landed: `DocFormatIds.agent` + `AgentDocModel` payload (workspace set,
+  backend, check override) on `ProjectModel.doc`; `AgentDocSurface` in the
+  ProjectView dispatch; home entry creates agent docs; MCP/intent entries
+  (`agent_doc_state`, `agent_task_delegate`, `agent_permission_answer`);
+  the daemon accepts the doc's `checkCommand` (the product `--check`).
+- Verified: scripted widget e2e (delegate → permission → verdict → doc
+  payload pins workspace); real-AFM e2e as the macOS app; **self-profile
+  gate** — an agent doc bound to this repo fixed a committed failing
+  fixture on-device (honest oracle, restored after each run). Rows:
+  harness `benchmark/runs/delegation_m1_evidence.md` (Phase 1 section).
+
+Original plan (superseded by the landed state above):
 
 - `ProjectModel.doc` `formatId: 'agent'`: workspace set (start: one),
   roster, board, batched transcript blocks, permission log.

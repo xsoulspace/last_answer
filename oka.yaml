@@ -1,0 +1,49 @@
+# oka.yaml — no-Gradle Android build for Last Answer (oka, ADR-0006).
+# Mirrors android/app/build.gradle.kts: applicationId, SDK levels, resources,
+# manifest surface, deeplinks. Signing auto-resolves from android/key.properties
+# when present (release keystore); otherwise debug keystore (dev only).
+name: lastanswer
+version: 3.22.0+51
+
+flutter:
+  entrypoint: lib/main_prod.dart
+
+android:
+  compile_sdk: 36
+  min_sdk: 25
+  target_sdk: 36
+  java_version: 11
+  package_name: dev.xsoulspace.lastanswer
+  version_code: 51
+  version_name: 3.22.0
+  # App res: LaunchTheme, styles, splash drawables, mipmap icons.
+  res_dirs:
+    - android/app/src/main/res
+  manifest:
+    permissions:
+      - android.permission.INTERNET
+      - android.permission.ACCESS_NETWORK_STATE
+      - android.permission.CAMERA
+    cleartext_traffic: true
+    flutter_deeplinking: true
+    application_attributes:
+      android:icon: "@mipmap/ic_launcher"
+    activity_attributes:
+      android:theme: "@style/LaunchTheme"
+    application_meta_data:
+      - name: io.flutter.embedding.android.NormalTheme
+        resource: "@style/NormalTheme"
+    deeplinks:
+      # App Links (autoVerify) — matches the gradle manifest intent-filter.
+      - scheme: https
+        host: xsoulspace.dev
+      - scheme: http
+        host: xsoulspace.dev
+      # RuStore billing callback scheme (scheme-only, no host).
+      - scheme: dev.xsoulspace.lastanswer
+
+pipeline:
+  # resourceConfigurations from gradle: keep only en/ru qualifiers.
+  resource_configs:
+    - en
+    - ru

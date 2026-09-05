@@ -330,6 +330,38 @@ void main() {
   );
 
   testWidgets(
+    'R9.1: the agent doc surface derives the MEANING runtime (the embedded '
+    'runtime is meaning-first; scripted seams may still opt out)',
+    (final tester) async {
+      // The surface-owned controller runs the meaning profile.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: AgentDocSurface(doc: _agentDoc())),
+        ),
+      );
+      await tester.pump();
+      expect(AgentDocSurface.debugState, isNotNull);
+      expect(
+        AgentDocSurface.debugState!.runtimeProfile,
+        'meaning',
+        reason: 'AFM works through the meaning tree — never command tools '
+            '(the agent projection states which runtime it speaks)',
+      );
+      // The built backend carries the same profile.
+      expect(
+        HarnessHostConfig(meaningProfile: true).buildBackend().meaningProfile,
+        isTrue,
+      );
+      expect(
+        HarnessHostConfig().buildBackend().meaningProfile,
+        isFalse,
+        reason: 'the conventional profile stays available for scripted '
+            'seams and CLI squad members — but is never the agent-doc path',
+      );
+    },
+  );
+
+  testWidgets(
     'agent_task_guide refuses honestly with no session, mid-turn, and '
     'before the last turn ends',
     (final tester) async {

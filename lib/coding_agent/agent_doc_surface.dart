@@ -99,6 +99,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     return base.copyWith(
       backend: agent.backend,
       checkCommand: agent.checkCommand.isEmpty ? null : agent.checkCommand,
+      // R9.1 — the agent doc's embedded runtime is the MEANING runtime:
+      // reads are budgeted zoom cuts, mutations are host-materialized edit
+      // moves (verify + auto-revert). The conventional command profile
+      // stays only for external CLI squad members (R9.c).
+      meaningProfile: true,
     );
   }
 
@@ -378,6 +383,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           workspaces: _doc.agent?.workspaces ?? const [],
           checkCommand: _doc.agent?.checkCommand ?? const <String>[],
           backend: controller.config.backend,
+          runtimeProfile: controller.config.meaningProfile
+              ? 'meaning'
+              : 'commands',
           sessionId: current?.id,
           running: controller.isRunning,
           pendingPermissionTitle: controller.pendingPermission?.request.title,
@@ -1404,6 +1412,7 @@ final class AgentDocDebugState {
     required this.workspaces,
     required this.backend,
     this.checkCommand = const [],
+    this.runtimeProfile = 'meaning',
     this.sessionId,
     this.running = false,
     this.pendingPermissionTitle,
@@ -1420,6 +1429,11 @@ final class AgentDocDebugState {
   /// workspace convention decides.
   final List<String> checkCommand;
   final String backend;
+
+  /// R9.1 — which tool surface the runtime speaks: `meaning` (zoom cuts,
+  /// edit moves — the AFM path) or `commands` (conventional, CLI squad
+  /// members only).
+  final String runtimeProfile;
   final String? sessionId;
   final bool running;
   final String? pendingPermissionTitle;
@@ -1436,6 +1450,7 @@ final class AgentDocDebugState {
     'workspaces': workspaces,
     'checkCommand': checkCommand,
     'backend': backend,
+    'runtimeProfile': runtimeProfile,
     'sessionId': ?sessionId,
     'running': running,
     'pendingPermissionTitle': ?pendingPermissionTitle,

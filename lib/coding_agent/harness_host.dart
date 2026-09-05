@@ -160,7 +160,6 @@ final class HarnessHostConfig {
   /// `apple_foundation_afm` (local-first, North Star) or `open_router`.
   final String backend;
   final String model;
-  final bool meaningProfile;
   final bool scripted;
   final GenerationHandler Function(ModelRouter router)? handlerFactory;
 
@@ -172,6 +171,17 @@ final class HarnessHostConfig {
   /// convention (the doc binding's `--check`, ADR 0003). Empty/null → the
   /// workspace convention decides.
   final List<String>? checkCommand;
+
+  /// R9.1 (redefined plan): the embedded runtime is the MEANING runtime
+  /// (ADR 0023/0024/0027) — reads are budgeted zoom cuts, mutations are
+  /// host-materialized edit moves that verify and auto-revert; blind
+  /// whole-file writes do not exist. AFM's context window is too small
+  /// for anything else; the conventional command profile remains only for
+  /// external CLI squad members (codex et al., R9.c's runtime union).
+  /// NOT a constructor default: the AGENT-DOC SURFACE derives
+  /// `meaningProfile: true` for its bindings (scripted test seams keep
+  /// the conventional registry, whose tools the scripted mover emits).
+  final bool meaningProfile;
 
   /// The OpenRouter router needs a key from somewhere; AFM needs nothing
   /// (on-device). Honest failure: an unresolvable key is a config error
@@ -228,10 +238,11 @@ final class HarnessHostConfig {
     String? backend,
     String? apiKey,
     List<String>? checkCommand,
+    bool? meaningProfile,
   }) => HarnessHostConfig(
     backend: backend ?? this.backend,
     model: model,
-    meaningProfile: meaningProfile,
+    meaningProfile: meaningProfile ?? this.meaningProfile,
     scripted: scripted,
     handlerFactory: handlerFactory,
     apiKey: apiKey ?? this.apiKey,

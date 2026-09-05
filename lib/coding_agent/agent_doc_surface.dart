@@ -366,6 +366,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
       builder: (final context, final _) {
         final controller = _controller;
         final current = controller.current;
+        String? lastGuidance;
+        for (final turn in (current?.turns ?? const <HarnessTurn>[]).reversed) {
+          if (turn.guidance != null) {
+            lastGuidance = turn.guidance;
+            break;
+          }
+        }
         AgentDocSurface.debugState = AgentDocDebugState(
           docId: _doc.id.value,
           workspaces: _doc.agent?.workspaces ?? const [],
@@ -376,7 +383,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           verdict: current?.verdictLine,
           transcriptTail: current?.transcript.toString() ?? '',
           turnCount: current?.turns.length ?? 0,
-          lastGuidance: current?.turns.lastOrNull?.guidance,
+          lastGuidance: lastGuidance,
         );
         return ColoredBox(
           color: theme.colorScheme.surface,

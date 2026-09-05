@@ -127,13 +127,15 @@ void main() {
     'agent_doc_bind: binds workspace + check override DIRECTLY onto the '
     'doc payload (never a form fill) and refreshes the daemon config',
     (final tester) async {
+      // ONE mover instance: the harness invokes handlerFactory PER TURN,
+      // so per-turn state (the single scripted write) must live on a
+      // shared object, not on a fresh mover.
+      final mover = GuidedFixMover(
+        'main.dart',
+        "void main() { print('ok'); }\n",
+      );
       final controller = HarnessSessionController(
-        config: HarnessHostConfig(
-          handlerFactory: (_) => GuidedFixMover(
-            'main.dart',
-            "void main() { print('ok'); }\n",
-          ),
-        ),
+        config: HarnessHostConfig(handlerFactory: (_) => mover),
       );
       addTearDown(controller.dispose);
 
@@ -205,13 +207,15 @@ void main() {
     'agent_task_guide: FAIL turn → guidance as first-class grid state → '
     'continuation turn PASSes (monotonic: one guidance per turn)',
     (final tester) async {
+      // ONE mover instance: the harness invokes handlerFactory PER TURN,
+      // so per-turn state (the single scripted write) must live on a
+      // shared object, not on a fresh mover.
+      final mover = GuidedFixMover(
+        'main.dart',
+        "void main() { print('ok'); }\n",
+      );
       final controller = HarnessSessionController(
-        config: HarnessHostConfig(
-          handlerFactory: (_) => GuidedFixMover(
-            'main.dart',
-            "void main() { print('ok'); }\n",
-          ),
-        ),
+        config: HarnessHostConfig(handlerFactory: (_) => mover),
       );
       addTearDown(controller.dispose);
 
@@ -263,9 +267,9 @@ void main() {
       await pumpUntil(tester, () => !controller.isRunning);
       await tester.pump();
 
-      // The verdict lands on the grid; the guided turn carries its
-      // provenance as FIRST-CLASS state (GUIDE row), never a bare
-      // transcript line.
+      // The verdict lands on the grid; the guidance is FIRST-CLASS state
+      // on the turn it responds to (GUIDE row under the FAIL turn), never
+      // a bare transcript line.
       expect(
         controller.current?.verdictPassed,
         isTrue,
@@ -273,11 +277,14 @@ void main() {
             'the guided continuation must PASS '
             '(transcript: ${controller.current?.transcript})',
       );
-      final guidedTurn = controller.current!.turns[1];
+      final failedTurn = controller.current!.turns[0];
       expect(
-        guidedTurn.guidance,
+        failedTurn.guidance,
         contains('print'),
-        reason: 'the guidance must be recorded on the turn it continues',
+        reason: 'the guidance must be recorded on the turn it responds to',
+      );
+      expect(controller.current!.turns[1].taskSentence, startsWith('continue'),
+        reason: 'the continuation sentence is the composer pre-fill',
       );
       expect(
         find.byKey(const Key('coding_agent.guidance')),
@@ -295,11 +302,29 @@ void main() {
         reason: 'the allowed continuation write lands in the workspace',
       );
 
-      // Monotonic: a second guidance on the same turn is refused.
+      // Monotonic: the guard is PER TURN. A new guide after the guided
+      // continuation ended is a legitimate NEW escalation (allowed); while
+      // that turn runs, guiding again is refused.
       final again = await _entry('agent_task_guide')
-          .invokeDirect({'guidance': 'try again'});
-      expect(okOf(again), isFalse, reason: 'one guidance per ended turn');
-      expect(again.message, contains('monotonic'));
+          .invokeDirect({'guidance': 'escalate again'});
+      expect(okOf(again), isTrue, reason: again.message);
+      await pumpUntil(tester, () => controller.isRunning);
+      final midContinuation = await _entry('agent_task_guide')
+          .invokeDirect({'guidance': 'not while running'});
+      expect(okOf(midContinuation), isFalse);
+      expect(midContinuation.message, contains('running'));
+      await pumpUntil(tester, () => !controller.isRunning);
+      await tester.pump();
+      expect(
+        controller.current!.turns.last.hasVerdict,
+        isTrue,
+        reason: 'the second escalation completes with a mechanical verdict',
+      );
+      expect(
+        controller.current!.turns.last.permissions,
+        isEmpty,
+        reason: 'the workspace is already fixed — no write, no gate',
+      );
     },
     timeout: const Timeout(Duration(minutes: 4)),
   );
@@ -308,13 +333,15 @@ void main() {
     'agent_task_guide refuses honestly with no session, mid-turn, and '
     'before the last turn ends',
     (final tester) async {
+      // ONE mover instance: the harness invokes handlerFactory PER TURN,
+      // so per-turn state (the single scripted write) must live on a
+      // shared object, not on a fresh mover.
+      final mover = GuidedFixMover(
+        'main.dart',
+        "void main() { print('ok'); }\n",
+      );
       final controller = HarnessSessionController(
-        config: HarnessHostConfig(
-          handlerFactory: (_) => GuidedFixMover(
-            'main.dart',
-            "void main() { print('ok'); }\n",
-          ),
-        ),
+        config: HarnessHostConfig(handlerFactory: (_) => mover),
       );
       addTearDown(controller.dispose);
 

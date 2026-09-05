@@ -58,6 +58,21 @@
   outer oracle held every time). Phase 2 (runtime seam + squad UX) is now
   unblocked.
 
+- **Adapted to the harness refactor (ADR 0025/0026)** by the concurrent
+  session: the daemon/ACP host policy moved to `xsoulspace_agentic_host`
+  (`HarnessEmbed` + `HarnessBackendBinding`, provider-thin
+  apple_foundation). Product-side policy (config, check override,
+  consent) stayed here; all gates re-validated green against it: clean-env
+  build + bundled dylib, AFM e2e PASS (1 decision, 1,323 tokens, 44.4 s),
+  self-profile PASS (1 decision, 1,554 tokens, 41.5 s).
+- **Gate hardening (found BY the loop):** the self-profile run's
+  wandering model once overwrote the gate's own test file through the
+  blanket auto-allow — the scripted user-actor now allows ONLY
+  fixture-path writes (deny-by-default everywhere else); the fixture
+  check switched to plain `dart <file>` (`dart run` hits the build-hook
+  churn every grade — dogfood finding confirmed twice more). Runtime
+  labels state the model policy: AFM = real work, OpenRouter (deepseek-
+  v4-flash) = backup.
 ## 2026-09-04 — TASK B: the harness embedded (first domain host)
 
 - `HarnessAcpBackend` re-exported from

@@ -71,6 +71,14 @@ Use this ledger for the weakest true current claim. Historical evidence is prove
   first-write-without-permission (F3), bridge crash on cancel during a live
   tool call (`postToolCall` barrier-sync), small-model off-task wandering
   (outer oracle held every time).
+- **Re-validated against the harness refactor (ADR 0025/0026):** all
+  gates green — clean-env build + bundled dylib, AFM e2e PASS (1,323
+  tokens, 44.4 s), self-profile PASS (1,554 tokens, 41.5 s). Gate
+  hardened after the wandering model overwrote the gate's own test file
+  through the blanket auto-allow: the scripted user-actor now allows
+  ONLY fixture-path writes; the fixture check is plain `dart <file>` (the
+  `dart run` build-hook churn derailed three runs). Runtime labels: AFM =
+  real work, OpenRouter (deepseek-v4-flash) = backup.
 - Non-claims: one-turn GUI pass on a large repo; OpenRouter network path
   from the GUI (missing-key error surface verified only); widget tests do
   not run AFM.

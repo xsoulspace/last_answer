@@ -1,0 +1,62 @@
+---
+description: Last Answer — North Star
+---
+
+# North Star — last_answer
+
+> Product-level North Star. Infrastructure North Star lives in the
+> dart_flutter_packages monorepo (`docs/NORTH_STAR.mdx`); the composition
+> law (ADR 0003) keeps the two plans adjacent — they reference, never
+> import each other.
+
+## The star
+
+**Any document in last_answer is a place where a human and agents work
+together — on text, under the human's control, verified by honest
+oracles — and last_answer becomes the operator console** (pi and other
+CLIs retire to being squad members, not the console).
+
+One sentence: *the human writes a sentence; the work happens in the
+world; the verdict lands on the grid; the human stays sovereign
+throughout.*
+
+## Value paths (each measurable)
+
+1. **Human sovereignty** — permissions deny-by-default and visible;
+   budgets monotonic and surfaced; every surface controllable from one
+   simple place (PROFILE / SETUP). Measure: no action the agent takes
+   that the human cannot see, veto, or stop.
+2. **Verifiable work** — every delegated task ends in a mechanical
+   verdict (PASS/FAIL) with spend stated (backend, decisions, tokens
+   source, wall, n). Failures are classified data, never dropped.
+   Measure: delegation rows in the harness evidence ledger.
+3. **Text-first surfaces** — the working surface is conversation on one
+   grid ([DESIGN.md](DESIGN.md)); structured data renders inside the
+   flow; the same typed state is projected to humans (UI) and agents
+   (intents). Measure: any new capability ships both projections in one
+   change.
+4. **Local-first** — AFM (on-device) is the default brain for real
+   work; OpenRouter (deepseek-v4-flash) is the labeled backup; CLI
+   agents are transitional squad members (ADR 0003 runtime union).
+5. **The console migration (R9)** — every operator cycle for THIS repo
+   (issue → delegate → permission → verdict) runs through last_answer,
+   headless-capable, without a terminal. pi is retired per R9 rows,
+   never by decree.
+
+## Non-goals
+
+- No second protocol (ACP vocabulary is the universe — ADR 0003).
+- No generic "agentify every doc" before one evidence-tier domain
+  proves out (Phase 4).
+- No cross-workspace task coordination until the one-world squad is
+  proven at scale.
+- No world snapshots in the doc store; the meaning tree re-derives.
+
+## Where the frontier lives
+
+- Forward plan: [PLAN.md](PLAN.md) (production path, ordered, each item
+  names its gate).
+- Landed record: [history.md](history.md). Decisions:
+  [decisions/](decisions/) (ADR 0003 is the constitution).
+- Design law: [DESIGN.md](DESIGN.md).
+- Handoff briefs: [HANDOFF-agents-in-docs.md](HANDOFF-agents-in-docs.md).

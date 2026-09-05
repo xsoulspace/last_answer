@@ -341,8 +341,9 @@ void main() {
       );
       await tester.pump();
 
-      // Switch the backend to OpenRouter through the REAL segmented control.
-      await tester.tap(find.text('OpenRouter'));
+      // Switch the backend to OpenRouter through the REAL setup toggle
+      // (labeled as the backup runtime — AFM is the real-work default).
+      await tester.tap(find.textContaining('OpenRouter'));
       await tester.pump();
       await pumpUntil(tester, () => controller.config.backend == 'open_router');
 
@@ -477,6 +478,15 @@ void main() {
       find.byKey(const Key('coding_agent.permission')),
       findsOneWidget,
       reason: 'enter in the composer must delegate the sentence',
+    );
+    // Finish the turn (allow → verdict) so no timer is left pending.
+    await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
+    await pumpUntil(tester, () => !controller.isRunning);
+    await tester.pump();
+    expect(
+      find.textContaining('verdict: PASS'),
+      findsWidgets,
+      reason: 'the full ⏎ loop must land the verdict on the grid',
     );
   }, timeout: const Timeout(Duration(minutes: 3)));
 }

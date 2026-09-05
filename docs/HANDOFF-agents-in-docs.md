@@ -10,9 +10,13 @@ shortcuts are forbidden for reasons recorded in ADRs.
 - **Product (you work here):** `~/xs/storage_problem/last_answer` — docs,
   UI, hosts. Flutter app (macOS-first for this work).
 - **Infrastructure (you only compose, never modify product-wards):**
-  - `~/xs/storage_problem/dart_flutter_packages` — `pkgs/xsoulspace_agentic_harness`
-    (loop/oracles/daemon), `pkgs/xsoulspace_inference_apple_foundation`
-    (AFM FFI bridge + `HarnessAcpBackend`), `pkgs/xsoulspace_inference_openrouter`.
+  - `~/xs/storage_problem/dart_flutter_packages` — post ADR 0025/0026:
+    `pkgs/xsoulspace_agentic_host` (daemon + ACP host policy:
+    `HarnessAcpBackend`, `HarnessEmbed`, `runCodingAgentOnce`),
+    `pkgs/xsoulspace_agentic_harness` (loop/oracles engine),
+    `pkgs/xsoulspace_inference_apple_foundation` (AFM FFI bridge +
+    `appleFoundationBinding`), `pkgs/xsoulspace_inference_openrouter`
+    (backup provider; model `deepseek/deepseek-v4-flash-0731`).
   - `~/xs/agentic_executables` — canonical rows / repair packs
     (`agentic_executables_wire`).
   - `~/mcp/cline/intentcall` — intent registry (`intentcall_core`) +
@@ -22,6 +26,11 @@ shortcuts are forbidden for reasons recorded in ADRs.
 ## Read order (non-negotiable)
 
 1. `docs/decisions/0003-agents-live-in-docs.md` — the law for this work.
+1b. `docs/NORTH_STAR.mdx` — the product North Star (R9 console migration
+   is a value path).
+1c. `docs/DESIGN.md` — the design law for product UI (text-first grid,
+   ink is data, human sovereignty; widget keys are the agent's UI
+   contract).
 2. `docs/PLAN.md` (last_answer) — the production path; **Phase 1.5 is your
    first gate**; standing rules.
 3. `docs/history.md` (last_answer) — what is landed; do not redo.
@@ -159,3 +168,16 @@ one doc, one task, one cross-device permission answer.
   actors); you orchestrate and escalate — do not absorb fixes the
   harness can do. AFM is the local-first goal; OpenRouter and pi are
   transitional.
+
+## Driving the app externally (the operator path)
+
+The canonical external-driver path is the mcp_toolkit console over the
+VM service: launch `flutter run -d macos --debug`; use
+`flutter-mcp-toolkit exec --name semantic_snapshot / tap_widget /
+enter_text` for the GUI and `exec --name fmt_client_tool --toolName
+agent_doc_state | agent_task_delegate | agent_permission_answer` for the
+typed intent surface. Semantic refs shift after every re-render —
+re-snapshot before EVERY interaction, and never drive doc bindings
+through form fills (controller listeners do not fire on semantic
+injection — measured); use the intents and file missing intents as R9.a
+work instead of hacking around them.

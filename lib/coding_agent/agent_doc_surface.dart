@@ -612,13 +612,13 @@ class _SetupPane extends StatelessWidget {
             children: [
               SizedBox(width: 84, child: Text('RUNTIME', style: _label(theme))),
               _TextToggle(
-                label: 'AFM (on-device)',
+                label: 'AFM · real work',
                 active: backend == 'apple_foundation_afm',
                 onTap: busy ? () {} : () => onBackend('apple_foundation_afm'),
               ),
               const SizedBox(width: 8),
               _TextToggle(
-                label: 'OpenRouter',
+                label: 'OpenRouter · backup',
                 active: backend == 'open_router',
                 onTap: busy ? () {} : () => onBackend('open_router'),
               ),

@@ -87,6 +87,66 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    multi-workspace daemon (one process, several worlds), new-task goal
    isolation on a resumed world (the Phase-1 dogfood finding).
 
+## R9 — working through last_answer instead of pi (the console migration)
+
+pi is the operator console today: I (the coding agent) fix this repo's
+issues by delegating through a terminal (CLI spawn, NDJSON, extension
+scripts). R9 flips the console: the SAME operator cycle runs through
+last_answer — its agent-doc surface, its intents, its verdicts — until
+pi is not needed for last_answer work. The gate is a RECORDED ROW, not a
+vibe: one full issue fixed with zero terminal usage.
+
+What pi provides today that last_answer must absorb (gap analysis):
+
+1. **Headless doc lifecycle** — pi creates/binds docs from scripts.
+   Missing intents: `agent.doc.create` (title/format), `agent.doc.bind`
+   (workspace + check override). The Phase-1.5 run measured this exact
+   gap: semantic form-fill bypasses controller listeners, so binding MUST
+   be an intent, not a field fill. (Phase 3 core, small.)
+2. **Escalation as a first-class state** — the escalation round-trip
+   works (turn FAIL → guidance → PASS, measured) but lives in the
+   transcript. Add `agent.task.guide` as an intent + a first-class UI
+   state on the grid (the composer pre-filled with "continue with
+   guidance…"). This is R9's named completion criterion in
+   agents-in-docs.
+3. **Board as canonical rows** (Phase 2) — pi juggles multiple issues;
+   last_answer needs the task board (`TaskRowWire` in
+   agentic_executables_wire — NEVER in this product) + the squad view
+   (file locks, per-actor verdicts) so several delegated issues drain in
+   parallel on one doc.
+4. **Reliability pulls** (harness-side, filed in
+   delegation_phase1_5.md): unanswered-permission 5-minute stall loop,
+   cancel not turn-interrupting, intermittent first-write-without-
+   permission (F3), bridge crash on cancel mid-tool-call. Working through
+   last_answer daily will hit all four; they are the harness's own
+   backlog, pulled — not absorbed.
+5. **Driver ergonomics** — the canonical external-driver path is the
+   mcp_toolkit console (`flutter-mcp-toolkit exec --name fmt_client_tool
+   --toolName agent_*`) over the VM service; document it in
+   HANDOFF-agents-in-docs and keep `agent_doc_state` dense enough to
+   drive from (turns, permissions, verdict spend).
+
+Ordered next steps (each names its gate):
+
+- **R9.a — intents for the missing verbs** (`agent.doc.create`,
+  `agent.doc.bind`, `agent.task.guide`): gate — a script creates a doc,
+  binds this repo with a check override, delegates, answers a
+  permission, and reads the verdict, with ZERO field fills.
+- **R9.b — the dogfood switch**: the next last_answer issue is fixed
+  exclusively through last_answer (operator via intents; AFM on-device;
+  no terminal). Gate: one PASS row + one classified FAIL row, both
+  recorded with backend/decisions/tokens/verdict/wall. From this moment
+  pi is demoted to squad member for this repo.
+- **R9.c — board + squad** (Phase 2): two agents (one embedded, one CLI)
+  on one doc, disjoint issues, board drains, idle; human gate re-run
+  with a CLI binding. Gate: scripted e2e + a recorded two-issue row.
+- **R9.d — escalation UX** completes R9 per the race-track definition:
+  guidance answered in-app, measured by rows.
+
+Standing rule for R9: every cycle through last_answer that hits friction
+twice becomes a named failure class in the evidence ledger — the surface
+grows intent-first, never by hand-added one-off buttons.
+
 ## Race tracks
 
 - **R8 — agents in docs:** Phase 1 LANDED (see history); **Phase 1.5

@@ -83,11 +83,14 @@ void main() {
 
       final doc = ProjectModel.emptyAgent() as ProjectModelDoc;
       // The doc's check override (the product's `--check`): targeted at the
-      // fixture, NOT the repo convention (`flutter test` — minutes).
+      // fixture, NOT the repo convention (`flutter test` — minutes). Plain
+      // `dart <file>` (no `run`): `dart run` inside the app process hits
+      // the build-hook churn every grade ("File modified during build") —
+      // the recorded dogfood finding; it derailed three gate runs.
       final docWithCheck = doc.copyWith(
         agent: (doc.agent ?? const AgentDocModel()).copyWith(
           workspaces: [repo],
-          checkCommand: ['dart', 'run', _fixturePath],
+          checkCommand: ['dart', _fixturePath],
         ),
       );
       final controller = HarnessSessionController(
@@ -96,7 +99,12 @@ void main() {
         ),
       );
       addTearDown(controller.dispose);
-      controller.host.permissionRequests.listen((final p) => p.allow());
+      // The scripted user-actor allows ONLY fixture-path writes. A blanket
+      // allow once let the wandering model overwrite THIS gate file
+      // (measured); deny-by-default stays the rule for everything else.
+      controller.host.permissionRequests.listen((final p) {
+        p.request.title.contains('tool/agent_fixture') ? p.allow() : p.reject();
+      });
 
       await tester.pumpWidget(
         MaterialApp(
@@ -106,10 +114,10 @@ void main() {
         ),
       );
 
-      await tester.enterText(
-        find.byKey(const Key('coding_agent.workspace')),
-        repo,
-      );
+      // The doc is PRE-BOUND (workspaces: [repo]) — the binding is doc
+      // data, so SETUP stays collapsed and the workspace field is
+      // pre-filled. The human only writes the task sentence; SETUP is one
+      // toggle away when they want to change the binding.
       await tester.enterText(
         find.byKey(const Key('coding_agent.task')),
         'Fix $_fixturePath so `dart run $_fixturePath` exits 0: make main '

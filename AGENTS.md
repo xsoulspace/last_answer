@@ -13,6 +13,18 @@ Guidance for AI agents working in this repository.
 
 The long-term product direction (see `docs/product/gdd-prd-editor-goal-and-pillars.md`) is a document-centric editor: "the document is the product" — edit, discuss any span, and act with AI on the selection without leaving the doc, with pluggable inference backends (no vendor lock-in).
 
+## North Star & design law
+
+- **North Star**: [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) — any
+  document is a place where a human and agents work together; last_answer
+  becomes the operator console. Value paths + non-goals live there.
+- **Design law**: [docs/DESIGN.md](docs/DESIGN.md) — text-first
+  conversation surfaces on one grid (Tufte × Müller-Brockmann), ink is
+  data, the human is sovereign, widget keys are the agent's UI contract.
+  Binding for ALL product UI; the agent-doc surface
+  (`lib/coding_agent/agent_doc_surface.dart`) is the reference
+  implementation. Read it before building any new view.
+
 ## Tech stack
 
 - Flutter / Dart (SDK `^3.12.0`), managed with **FVM** (`fvm flutter ...`, `fvm dart ...`).

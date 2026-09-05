@@ -192,18 +192,17 @@ final class HarnessHostConfig {
     final bindings = <String, HarnessBackendBinding>{};
     final key = apiKey ?? Platform.environment['OPENROUTER_API_KEY'];
     if (backend == 'open_router' && key != null && key.isNotEmpty) {
-      final router = ModelRouter(
-        inferenceClientsBuilders: {
-          OpenRouterModelNames.openRouter: () => OpenRouterInferenceClient(
-                apiKey: key,
-                defaultModel: model,
-              ),
-        },
-      )
-        ..models[const ModelId('harnessd')] = Model(
-          id: const ModelId('harnessd'),
-          name: OpenRouterModelNames.openRouter,
-        );
+      final router =
+          ModelRouter(
+              inferenceClientsBuilders: {
+                OpenRouterModelNames.openRouter: () =>
+                    OpenRouterInferenceClient(apiKey: key, defaultModel: model),
+              },
+            )
+            ..models[const ModelId('harnessd')] = Model(
+              id: const ModelId('harnessd'),
+              name: OpenRouterModelNames.openRouter,
+            );
       bindings['open_router'] = HarnessBackendBinding(
         defaultModel: model,
         buildRouter: ({required model, apiKey}) => router,

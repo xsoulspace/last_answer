@@ -1,17 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
-import 'package:xsoulspace_inference_apple_foundation/xsoulspace_inference_apple_foundation.dart';
+// ADR 0026: the in-process ACP transport lives in the HOST package
+// (HarnessEmbed); this module keeps product-side policy only: config
+// (backend switching, check override) + consent (PendingPermission).
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+// ADR 0026: providers register HarnessBackendBinding entries; the client
+// is pure inference_core underneath.
+import 'package:xsoulspace_inference_apple_foundation/xsoulspace_inference_apple_foundation.dart'
+    show appleFoundationBinding;
+import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart'
+    show OpenRouterInferenceClient, OpenRouterModelNames;
 
 /// TASK B (ADR 0015) — last_answer embeds the harness as its first domain
-/// host. This module owns the daemon lifecycle IN-PROCESS:
+/// host. This module owns the daemon lifecycle IN-PROCESS via the host
+/// package's [HarnessEmbed] (ADR 0025/0026):
 ///
-/// - the daemon is a real [AcpStdioServer] running [HarnessAcpBackend] over
-///   an IN-MEMORY duplex channel (no stdio, no subprocess) — the same wire
-///   protocol any external ACP client (Zed, pi) would speak;
 /// - per-session worlds and per-workspace snapshot stores
 ///   (`<cwd>/.dart_tool/harnessd_store`) are owned by the backend — the
 ///   host never touches them (the snapshot persists beats/verdicts/budgets
@@ -29,14 +35,12 @@ final class HarnessHost {
 
   final HarnessHostConfig config;
 
-  AcpClient? _client;
-  final _toServer = StreamController<List<int>>();
-  final _toClient = StreamController<List<int>>();
+  HarnessEmbed? _embed;
   final _permissionController = StreamController<PendingPermission>.broadcast();
   Completer<PendingPermission>? _permissionSeen;
 
   /// Whether the in-process daemon is running and initialized.
-  bool get isRunning => _client != null && !_client!.isClosed;
+  bool get isRunning => _embed?.isRunning ?? false;
 
   /// Every `session/request_permission` the daemon raises mid-turn (the
   /// write gate / edit approver). The UI (or the user-as-actor) answers via
@@ -48,20 +52,10 @@ final class HarnessHost {
   Future<void> start() async {
     if (isRunning) return;
     final backend = config.buildBackend();
-    final server = AcpStdioServer(
+    _embed = await HarnessEmbed.start(
       backend: backend,
-      inputStream: _toServer.stream,
-      outputSink: _ChannelSink(_toClient),
-    );
-    // The server loop reads the in-memory stream until the host stops.
-    unawaited(server.run());
-    final client = AcpClient(
-      agentOutput: _toClient.stream,
-      agentInput: _ChannelSink(_toServer),
       permissionHandler: _handlePermission,
     );
-    _client = client;
-    await client.initialize();
   }
 
   /// Creates a session for [cwd] (the delegated workspace). Sessions are
@@ -69,7 +63,7 @@ final class HarnessHost {
   /// same cwd CONTINUES the live world (and restores it from the snapshot
   /// store after a host restart).
   Future<String> newSession(final String cwd) =>
-      _requireClient().newSession(cwd: cwd);
+      _requireEmbed().newSession(cwd);
 
   /// Runs one prompt turn — the user's task sentence as a host-injected
   /// decision. Progress streams to [onText] (agent text chunks, including
@@ -79,48 +73,30 @@ final class HarnessHost {
     final String task, {
     final void Function(String delta)? onText,
     final void Function(String title)? onToolCall,
-  }) async {
-    final client = _requireClient();
-    final result = await client.promptText(
-      sessionId,
-      task,
-      onUpdate: (final update) => switch (update) {
-        AgentMessageChunk() => _onChunk(update, onText),
-        ToolCallUpdate() => onToolCall?.call(update.title ?? 'tool'),
-        _ => null,
-      },
-    );
-    return result.stopReason;
-  }
-
-  void _onChunk(
-    final AgentMessageChunk update,
-    final void Function(String delta)? onText,
-  ) {
-    final content = update.content;
-    if (content is AcpTextBlock && content.text.isNotEmpty) {
-      onText?.call(content.text);
-    }
-  }
+  }) => _requireEmbed().delegateTask(
+    sessionId,
+    task,
+    onText: onText,
+    onToolCall: onToolCall,
+  );
 
   /// Cancels in-flight work for a session (real: aborts generation).
-  void cancel(final String sessionId) => _client?.cancel(sessionId);
+  void cancel(final String sessionId) => _embed?.cancel(sessionId);
 
   /// Stops the daemon (closes both channel ends) and the client.
   Future<void> stop() async {
-    final client = _client;
-    _client = null;
-    await client?.dispose();
-    if (!_toServer.isClosed) await _toServer.close();
-    if (!_toClient.isClosed) await _toClient.close();
+    final embed = _embed;
+    _embed = null;
+    await embed?.stop();
+    if (!_permissionController.isClosed) await _permissionController.close();
   }
 
-  AcpClient _requireClient() {
-    final client = _client;
-    if (client == null || client.isClosed) {
+  HarnessEmbed _requireEmbed() {
+    final embed = _embed;
+    if (embed == null || !embed.isRunning) {
       throw StateError('Harness host is not running: call start() first');
     }
-    return client;
+    return embed;
   }
 
   /// Test visibility: completes with the NEXT pending permission request
@@ -169,8 +145,7 @@ final class PendingPermission {
 /// runtime (AFM on-device ↔ OpenRouter): a switch restarts the daemon and
 /// the per-workspace snapshot store restores the world on the next session
 /// (R7c `loadSession`), so work continues across the switch. Tests pass
-/// [handlerFactory] — the harness's LLM-free scripted seam. No other host
-/// surface exists.
+/// [handlerFactory] — the harness's LLM-free scripted seam.
 final class HarnessHostConfig {
   const HarnessHostConfig({
     this.backend = 'apple_foundation_afm',
@@ -207,15 +182,47 @@ final class HarnessHostConfig {
     return key != null && key.isNotEmpty;
   }
 
-  HarnessAcpBackend buildBackend() => HarnessAcpBackend(
-    backend: backend,
-    model: model,
-    meaningProfile: meaningProfile,
-    scripted: scripted,
-    handlerFactory: handlerFactory,
-    apiKey: apiKey,
-    checkCommand: checkCommand,
-  );
+  /// ADR 0025 seam: backends are INJECTED bindings — AFM (retained client
+  /// so cancel reaches `xs_fm_cancel`) and OpenRouter (needs a key). An
+  /// unresolvable backend yields no binding; the daemon then refuses
+  /// prompts with named data instead of hanging. Bindings are LAZY — the
+  /// native client / HTTP client materialize on first router use, so
+  /// scripted / handler-factory modes never touch a provider.
+  HarnessAcpBackend buildBackend() {
+    final bindings = <String, HarnessBackendBinding>{};
+    final key = apiKey ?? Platform.environment['OPENROUTER_API_KEY'];
+    if (backend == 'open_router' && key != null && key.isNotEmpty) {
+      final router = ModelRouter(
+        inferenceClientsBuilders: {
+          OpenRouterModelNames.openRouter: () => OpenRouterInferenceClient(
+                apiKey: key,
+                defaultModel: model,
+              ),
+        },
+      )
+        ..models[const ModelId('harnessd')] = Model(
+          id: const ModelId('harnessd'),
+          name: OpenRouterModelNames.openRouter,
+        );
+      bindings['open_router'] = HarnessBackendBinding(
+        defaultModel: model,
+        buildRouter: ({required model, apiKey}) => router,
+      );
+    }
+    if (backend == 'apple_foundation_afm') {
+      bindings['apple_foundation_afm'] = appleFoundationBinding().binding;
+    }
+    return HarnessAcpBackend(
+      backend: backend,
+      bindings: bindings,
+      model: model,
+      meaningProfile: meaningProfile,
+      scripted: scripted,
+      handlerFactory: handlerFactory,
+      apiKey: apiKey,
+      checkCommand: checkCommand,
+    );
+  }
 
   /// Backend-switch support: same mover surface, new backend/key/check.
   HarnessHostConfig copyWith({
@@ -231,31 +238,4 @@ final class HarnessHostConfig {
     apiKey: apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
   );
-}
-
-/// A [StringSink] adapter that pushes utf8-encoded lines into a
-/// [StreamController] — the in-memory stand-in for a subprocess pipe.
-final class _ChannelSink implements StringSink {
-  _ChannelSink(this._out);
-
-  final StreamController<List<int>> _out;
-
-  @override
-  void write(final Object? obj) => _add('$obj');
-
-  @override
-  void writeln([final Object? obj = '']) => _add('$obj\n');
-
-  @override
-  void writeAll(
-    final Iterable<Object?> objects, [
-    final String separator = '',
-  ]) => _add(objects.join(separator));
-
-  @override
-  void writeCharCode(final int charCode) => _add(String.fromCharCode(charCode));
-
-  void _add(final String s) {
-    if (!_out.isClosed) _out.add(utf8.encode(s));
-  }
 }

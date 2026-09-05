@@ -435,20 +435,24 @@ class _StatusRule extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               _TextToggle(
-                label: 'OPENROUTER',
+                label: 'OR',
                 active: backend == 'open_router',
                 onTap: onOpenSetup,
               ),
               const SizedBox(width: 14),
-              InkWell(
-                onTap: onOpenSetup,
-                child: Text(
-                  wsName,
-                  style: _mono(
-                    theme,
-                    color: workspace.isEmpty
-                        ? theme.colorScheme.onSurfaceVariant
-                        : theme.colorScheme.onSurface,
+              Flexible(
+                child: InkWell(
+                  onTap: onOpenSetup,
+                  child: Text(
+                    wsName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: _mono(
+                      theme,
+                      color: workspace.isEmpty
+                          ? theme.colorScheme.onSurfaceVariant
+                          : theme.colorScheme.onSurface,
+                    ),
                   ),
                 ),
               ),
@@ -461,10 +465,6 @@ class _StatusRule extends StatelessWidget {
                     style: _mono(theme),
                   ),
                 ),
-              Text('$turnCount', style: _mono(theme)),
-              const SizedBox(width: 4),
-              Text('turns', style: _label(theme)),
-              const SizedBox(width: 14),
               _TextToggle(
                 label: 'PROFILE',
                 active: profileOpen,

@@ -12,7 +12,7 @@ android:
   compile_sdk: 36
   min_sdk: 25
   target_sdk: 36
-  java_version: 11
+  java_version: 17
   package_name: dev.xsoulspace.lastanswer
   version_code: 51
   version_name: 3.22.0
@@ -28,6 +28,7 @@ android:
     flutter_deeplinking: true
     application_attributes:
       android:icon: "@mipmap/ic_launcher"
+      android:label: "Last Answer"
     activity_attributes:
       android:theme: "@style/LaunchTheme"
     application_meta_data:
@@ -43,6 +44,10 @@ android:
       - scheme: dev.xsoulspace.lastanswer
 
 pipeline:
+  # Test-only plugin: needs junit on the compile classpath and contributes
+  # nothing to the shipped APK.
+  exclude_plugins:
+    - integration_test
   # resourceConfigurations from gradle: keep only en/ru qualifiers.
   resource_configs:
     - en

@@ -7,6 +7,7 @@
 // data). Everything through the REAL surface widgets — no protocol bypass.
 import 'dart:io';
 
+import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:core/core.dart';
 import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -375,4 +376,107 @@ void main() {
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );
+
+  testWidgets('the working surface is a conversation: PROFILE pane exposes the '
+      'honest context load (turns, spend, permissions)', (final tester) async {
+    final controller = HarnessSessionController(
+      config: HarnessHostConfig(
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+      ),
+    );
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AgentDocSurface(doc: _agentDoc(), controller: controller),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // Profile hidden by default; toggled on from the status rule.
+    expect(find.byKey(const Key('coding_agent.profile')), findsNothing);
+    await tester.tap(find.byKey(const Key('coding_agent.profile.toggle')));
+    await tester.pump();
+    expect(find.byKey(const Key('coding_agent.profile')), findsOneWidget);
+    expect(
+      find.textContaining('turns 0'),
+      findsOneWidget,
+      reason: 'the profile must state the context load concisely',
+    );
+    expect(find.textContaining('PERMISSIONS'), findsOneWidget);
+
+    // Delegate one turn; the profile then shows the spend from the
+    // verdict line (the honest tokens source).
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.workspace')),
+      workspace.path,
+    );
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.task')),
+      'Fix main.dart so `dart run main.dart` exits 0.',
+    );
+    await tester.tap(find.byKey(const Key('coding_agent.delegate')));
+    await tester.pump();
+    await pumpUntil(tester, () => controller.pendingPermission != null);
+    await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
+    await pumpUntil(tester, () => !controller.isRunning);
+    await tester.pump();
+
+    expect(
+      find.textContaining('turns 1'),
+      findsOneWidget,
+      reason: 'the profile must show the completed turn count',
+    );
+    expect(
+      find.textContaining('#1 PASS'),
+      findsOneWidget,
+      reason: 'the small-multiple row must carry verdict + spend',
+    );
+    expect(
+      find.textContaining('write main.dart'),
+      findsWidgets,
+      reason: 'the permission log must show the round-trip as data',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  testWidgets('enter delegates from the composer (messenger pattern)', (
+    final tester,
+  ) async {
+    final controller = HarnessSessionController(
+      config: HarnessHostConfig(
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+      ),
+    );
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AgentDocSurface(doc: _agentDoc(), controller: controller),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.workspace')),
+      workspace.path,
+    );
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.task')),
+      'Fix main.dart so `dart run main.dart` exits 0.',
+    );
+    await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+    await tester.pump();
+    await pumpUntil(tester, () => controller.pendingPermission != null);
+    expect(
+      find.byKey(const Key('coding_agent.permission')),
+      findsOneWidget,
+      reason: 'enter in the composer must delegate the sentence',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
 }

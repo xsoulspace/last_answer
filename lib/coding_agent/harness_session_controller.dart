@@ -5,19 +5,77 @@ import 'package:flutter/foundation.dart';
 
 import 'package:lastanswer/coding_agent/harness_host.dart';
 
+/// One structured beat inside a turn: a tool call the agent made.
+final class TurnToolCall {
+  TurnToolCall(this.title, this.at);
+  final String title;
+  final DateTime at;
+}
+
+/// One permission round-trip inside a turn. `allowed == null` while the
+/// human (or agent) has not answered — deny-by-default is the UI's job to
+/// make visible, never to hide.
+final class TurnPermission {
+  TurnPermission(this.title, this.at);
+  final String title;
+  final DateTime at;
+  bool? allowed;
+}
+
+/// One delegated task turn — the conversation node. The raw transcript
+/// string stays the record (tests, debugState); [HarnessTurn] is the
+/// structured projection the doc surface renders (small multiples: every
+/// turn is laid out identically — task sentence, agent text, tool beats,
+/// permission round-trips, verdict with spend).
+final class HarnessTurn {
+  HarnessTurn(this.taskSentence, this.startedAt);
+
+  final String taskSentence;
+  final DateTime startedAt;
+  final StringBuffer text = StringBuffer();
+  final List<TurnToolCall> toolCalls = [];
+  final List<TurnPermission> permissions = [];
+  String? verdictLine;
+  DateTime? completedAt;
+
+  bool get hasVerdict => verdictLine != null;
+  bool get verdictPassed => verdictLine?.contains('PASS') ?? false;
+  bool get isDone => completedAt != null;
+
+  /// Spend parsed from the verdict line — the tokens source is the backend
+  /// verdict chunk (never a guess). Null until the turn ends.
+  ({int decisions, int rounds, int tokens, int wallMs})? get spend {
+    final v = verdictLine;
+    if (v == null) return null;
+    int? figure(final String label) {
+      final match = RegExp('$label (\\d+)').firstMatch(v);
+      return match == null ? null : int.tryParse(match.group(1)!);
+    }
+
+    return (
+      decisions: figure('decisions') ?? 0,
+      rounds: figure('rounds') ?? 0,
+      tokens: figure('tokens') ?? 0,
+      wallMs: figure('wall') ?? 0,
+    );
+  }
+}
+
 /// One visible harness session: id, delegated workspace, the streamed
-/// transcript, and the latest surfaced verdict.
+/// transcript, structured turns, and the latest surfaced verdict.
 final class HarnessSessionView {
   HarnessSessionView({required this.id, required this.cwd});
 
   final String id;
   final String cwd;
   final StringBuffer transcript = StringBuffer();
+  final List<HarnessTurn> turns = [];
   String? verdictLine;
   bool running = false;
 
   bool get hasVerdict => verdictLine != null;
   bool get verdictPassed => verdictLine?.contains('PASS') ?? false;
+  HarnessTurn? get openTurn => turns.isEmpty ? null : turns.last;
 }
 
 /// The UI-facing state over one [HarnessHost]: session list, streamed
@@ -81,7 +139,9 @@ final class HarnessSessionController extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    if (config.backend == _config.backend && config.apiKey == _config.apiKey) {
+    if (config.backend == _config.backend &&
+        config.apiKey == _config.apiKey &&
+        _sameList(config.checkCommand, _config.checkCommand)) {
       return;
     }
     _config = config;
@@ -127,6 +187,8 @@ final class HarnessSessionController extends ChangeNotifier {
     target
       ..running = true
       ..verdictLine = null;
+    final turn = HarnessTurn(task, DateTime.now());
+    target.turns.add(turn);
     notifyListeners();
     try {
       final stop = await host.delegateTask(
@@ -134,33 +196,42 @@ final class HarnessSessionController extends ChangeNotifier {
         task,
         onText: (final delta) {
           target.transcript.write(delta);
-          _extractVerdict(target, delta);
+          turn.text.write(delta);
+          _extractVerdict(target, delta, turn);
           notifyListeners();
         },
         onToolCall: (final title) {
           target.transcript.write('\n[tool] $title\n');
+          turn.toolCalls.add(TurnToolCall(title, DateTime.now()));
           notifyListeners();
         },
       );
       target.transcript.write('\n— turn ended ($stop) —\n');
+      turn.text.write('\n— turn ended ($stop) —\n');
       return stop;
     } on Object catch (e) {
       error = '$e';
       target.transcript.write('\n— turn failed: $e —\n');
+      turn.text.write('\n— turn failed: $e —\n');
       return null;
     } finally {
       target
         ..running = false
         ..transcript.write('\n');
+      turn.completedAt = DateTime.now();
       notifyListeners();
     }
   }
 
   /// Answers the pending permission round-trip (allow = the write/edit
-  /// proceeds; reject = it never lands).
+  /// proceeds; reject = it never lands). The outcome is recorded on the
+  /// turn's permission log — the conversation shows the human's decision
+  /// as data, same as the agent sees it.
   void answerPermission({required final bool allow}) {
     final pending = pendingPermission;
     pendingPermission = null;
+    final logged = _permissionTurns[pending];
+    if (logged != null) logged.allowed = allow;
     if (pending != null) {
       allow ? pending.allow() : pending.reject();
     }
@@ -168,7 +239,14 @@ final class HarnessSessionController extends ChangeNotifier {
   }
 
   /// Cancels the current session's in-flight turn (real cancellation).
+  /// An ANSWER-PENDING permission is rejected first: the human's stop must
+  /// break the round-trip — an unanswered write otherwise stalls the tool
+  /// for its full 5-minute deadline (measured, Phase-1.5 GUI run), and
+  /// deny is the conservative answer.
   void cancelCurrent() {
+    if (pendingPermission != null) {
+      answerPermission(allow: false);
+    }
     final session = current;
     if (session != null) host.cancel(session.id);
   }
@@ -203,14 +281,34 @@ final class HarnessSessionController extends ChangeNotifier {
 
   void _onPermissionRequest(final PendingPermission pending) {
     pendingPermission = pending;
+    // Project into the open turn's permission log (same state the UI and
+    // the agent projection read — one truth, two renderings).
+    final open = current?.openTurn;
+    if (open != null) {
+      _permissionTurns[pending] = TurnPermission(
+        pending.request.title,
+        DateTime.now(),
+      )..allowed = null;
+      open.permissions.add(_permissionTurns[pending]!);
+    }
     _permissionArrived?.complete(pending);
     _permissionArrived = null;
     notifyListeners();
   }
 
-  void _extractVerdict(final HarnessSessionView session, final String delta) {
+  final Map<PendingPermission, TurnPermission> _permissionTurns = {};
+
+  void _extractVerdict(
+    final HarnessSessionView session,
+    final String delta,
+    final HarnessTurn? turn,
+  ) {
     final match = RegExp('verdict: (PASS|FAIL)').firstMatch(delta);
-    if (match != null) session.verdictLine = match.group(0);
+    if (match != null) {
+      final line = match.group(0);
+      session.verdictLine = line;
+      if (turn != null) turn.verdictLine = line;
+    }
   }
 
   @override
@@ -218,5 +316,12 @@ final class HarnessSessionController extends ChangeNotifier {
     unawaited(_permissionSub?.cancel());
     unawaited(host.stop());
     super.dispose();
+  }
+
+  static bool _sameList(final List<String>? a, final List<String>? b) {
+    final x = a ?? const <String>[];
+    final y = b ?? const <String>[];
+    return x.length == y.length &&
+        x.indexed.every((final e) => y[e.$1] == e.$2);
   }
 }

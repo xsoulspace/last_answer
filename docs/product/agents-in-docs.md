@@ -40,6 +40,13 @@ with pi and other CLIs as first-class squad members during the transition.
 
 ## Phases (each shippable alone)
 
+> Forward tracking lives in [docs/PLAN.md](../PLAN.md) (production path,
+> gates, ledger); the landed record in [docs/history.md](../history.md).
+> The agent handoff brief is
+> [docs/HANDOFF-agents-in-docs.md](../HANDOFF-agents-in-docs.md) — Phase
+> 1.5 (the HUMAN gate: AFM pipeline usable in the GUI, no terminal) runs
+> BEFORE any harness-side phase.
+
 ### Phase 1 — AgentDoc format + view (coding first) — **LANDED 2026-09-04**
 
 - Landed: `DocFormatIds.agent` + `AgentDocModel` payload (workspace set,

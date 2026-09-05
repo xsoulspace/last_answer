@@ -112,6 +112,9 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+  # Phase 1.5 widget tests fake the directory picker over its platform
+  # interface (file_selector itself stays a runtime dependency).
+  file_selector_platform_interface: ^2.7.0
   # TASK B / R8: the AFM e2e gate runs as a real macOS app
   # (`flutter test integration_test -d macos` — macOS 26 + Apple Intelligence).
   integration_test:

@@ -52,6 +52,14 @@ final class AgentDocSurface extends StatefulWidget {
   /// set while the doc is open, cleared on dispose.
   static _AgentDocSurfaceState? debugSurface;
 
+  /// R9.a — app wiring for the `agent_doc_create` intent: creates a NEW
+  /// agent doc AND opens it (the `OpenedProjectNotifier.createAgentProject`
+  /// path, including the route push), returning the created doc. Installed
+  /// by the app shell in debug/profile builds only (same guard that
+  /// registers the MCP entries); headless drivers need create+open as ONE
+  /// verb — a form fill cannot do it (Phase-1.5 measurement).
+  static ProjectModelDoc Function()? createAgentProjectHook;
+
   @override
   State<AgentDocSurface> createState() => _AgentDocSurfaceState();
 }
@@ -128,6 +136,101 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     }
     _controller.answerPermission(allow: allow);
     return (ok: true, message: allow ? 'allowed' : 'rejected');
+  }
+
+  /// R9.a — intent surface: bind the workspace (absolute path) and the
+  /// optional check override DIRECTLY onto the doc payload. NEVER a form
+  /// fill: semantic text injection does not fire controller listeners, so
+  /// a filled field silently bypassed persistence (measured, Phase 1.5).
+  /// Persists via [onDocChanged] and reflects the binding in the human UI
+  /// (fields + SETUP state) — the same typed state, two projections.
+  ({bool ok, String message}) bindFromIntent({
+    required final String workspace,
+    final String? check,
+  }) {
+    final trimmed = workspace.trim();
+    if (trimmed.isEmpty) {
+      return (ok: false, message: 'workspace (absolute path) is required.');
+    }
+    if (!trimmed.startsWith('/')) {
+      return (ok: false, message: 'workspace must be an absolute path.');
+    }
+    if (_controller.isRunning) {
+      return (
+        ok: false,
+        message: 'a task is running — binding is refused while a turn runs.',
+      );
+    }
+    final agent = _doc.agent ?? const AgentDocModel();
+    final words = check == null
+        ? agent.checkCommand
+        : check
+              .trim()
+              .split(RegExp(r'\s+'))
+              .where((final w) => w.isNotEmpty)
+              .toList();
+    _persist(
+      agent.copyWith(
+        workspaces: agent.workspaces.contains(trimmed)
+            ? agent.workspaces
+            : [...agent.workspaces, trimmed],
+        checkCommand: words,
+      ),
+    );
+    // Reflect the binding for the human. The check field's listener
+    // re-fires on this assignment but persists nothing new: the payload
+    // already carries exactly these words.
+    _workspaceField.text = trimmed;
+    if (check != null) _checkField.text = check;
+    setState(() {});
+    unawaited(_syncConfigBeforeTurn().catchError((final _) {}));
+    return (
+      ok: true,
+      message: check == null
+          ? 'bound workspace $trimmed.'
+          : 'bound workspace $trimmed with check override.',
+    );
+  }
+
+  /// R9.a — intent surface: escalation guidance for the open doc's LAST
+  /// turn. A host-injected decision (same channel as a delegate), recorded
+  /// as FIRST-CLASS grid state: the turn carries its guidance provenance,
+  /// the composer pre-fills the continuation sentence, and the turn is
+  /// delegated immediately. Monotonic: exactly one guidance per ended
+  /// turn — a second `agent_task_guide` for the same turn is refused.
+  ({bool ok, String message}) guideFromIntent(final String guidance) {
+    final trimmed = guidance.trim();
+    if (trimmed.isEmpty) return (ok: false, message: 'guidance is required.');
+    final session = _controller.current;
+    if (session == null) {
+      return (ok: false, message: 'no session yet — delegate a task first.');
+    }
+    if (_controller.isRunning) {
+      return (
+        ok: false,
+        message: 'a task is running — guidance is refused while a turn runs.',
+      );
+    }
+    final last = session.turns.lastOrNull;
+    if (last == null || !last.isDone) {
+      return (ok: false, message: 'the last turn has not ended yet.');
+    }
+    if (last.guidance != null) {
+      return (
+        ok: false,
+        message: 'guidance already recorded for the last turn (monotonic).',
+      );
+    }
+    last.guidance = trimmed;
+    // The composer pre-fills the continuation — visible, editable by the
+    // human, and the exact sentence the host receives.
+    _taskField.text = 'continue with guidance: $trimmed';
+    setState(() {});
+    unawaited(_delegate());
+    return (
+      ok: true,
+      message: 'guidance recorded; continuing with guidance.',
+    );
   }
 
   bool get _hasBoundWorkspace => _doc.agent?.workspaces.isNotEmpty ?? false;
@@ -273,6 +376,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           verdict: current?.verdictLine,
           transcriptTail: current?.transcript.toString() ?? '',
           turnCount: current?.turns.length ?? 0,
+          lastGuidance: current?.turns.lastOrNull?.guidance,
         );
         return ColoredBox(
           color: theme.colorScheme.surface,
@@ -753,6 +857,15 @@ class _TurnView extends StatelessWidget {
             onToggleBeat: onToggleBeat,
           ),
         ),
+        if (turn.guidance != null)
+          _GridRow(
+            role: 'GUIDE',
+            child: SelectableText(
+              turn.guidance!,
+              key: const Key('coding_agent.guidance'),
+              style: _mono(theme, color: theme.colorScheme.onSurface),
+            ),
+          ),
       ],
     );
   }
@@ -1288,6 +1401,7 @@ final class AgentDocDebugState {
     this.verdict,
     this.transcriptTail = '',
     this.turnCount = 0,
+    this.lastGuidance,
   });
 
   final String docId;
@@ -1300,6 +1414,10 @@ final class AgentDocDebugState {
   final String transcriptTail;
   final int turnCount;
 
+  /// R9.a — escalation guidance carried by the latest turn (null when the
+  /// last turn was not guided).
+  final String? lastGuidance;
+
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
@@ -1309,6 +1427,7 @@ final class AgentDocDebugState {
     'pendingPermissionTitle': ?pendingPermissionTitle,
     'verdict': ?verdict,
     'turnCount': turnCount,
+    'lastGuidance': ?lastGuidance,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,

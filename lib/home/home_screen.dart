@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/home/tags/tags.dart';
@@ -15,6 +16,19 @@ class HomeScreen extends StatelessWidget {
   final Widget navigator;
   @override
   Widget build(final BuildContext context) {
+    assert(() {
+      // R9.a — the `agent_doc_create` intent routes create+open through the
+      // app's own path (OpenedProjectNotifier.createAgentProject, including
+      // the route push). Installed under the router (this context is below
+      // MaterialApp.router) and in debug/profile builds only — the same
+      // guard that registers the MCP entries in main.dart.
+      AgentDocSurface.createAgentProjectHook = () {
+        final opened = context.read<OpenedProjectNotifier>();
+        opened.createAgentProject(context);
+        return opened.value.value as ProjectModelDoc;
+      };
+      return true;
+    }());
     final screenLayout = ScreenLayout.of(context);
     if (screenLayout.small) return navigator;
 

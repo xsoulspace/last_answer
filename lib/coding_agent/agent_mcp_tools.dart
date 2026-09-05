@@ -121,6 +121,128 @@ Set<AgentCallEntry> agentMcpEntries() => {
       }),
     ),
   ),
+  mcpToolkitTool(
+    handler: (final parameters) {
+      // R9.a — create + open routes through the app's own path (the
+      // OpenedProjectNotifier.createAgentProject equivalent), installed by
+      // the app shell in debug/profile builds. Returns the new docId so a
+      // headless driver can address the doc it just created.
+      final hook = AgentDocSurface.createAgentProjectHook;
+      if (hook == null) {
+        return MCPCallResult(
+          message:
+              'agent_doc_create is not wired in this build (the app shell '
+              'installs it in debug/profile builds only).',
+          parameters: {'ok': false},
+        );
+      }
+      final doc = hook();
+      return MCPCallResult(
+        message:
+            'created and opened agent doc ${doc.id.value}. It binds to no '
+            'workspace yet — call agent_doc_bind (poll agent_doc_state '
+            'until the surface reports this docId).',
+        parameters: {'ok': true, 'docId': doc.id.value},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_doc_create',
+      description:
+          'Create a NEW agent doc and open it (create + open in one verb). '
+          'Returns the docId. The doc binds to no workspace yet; bind one '
+          'with agent_doc_bind — never by filling the SETUP fields '
+          '(semantic fills bypass persistence).',
+      inputSchema: ObjectSchema.fromMap(_emptySchema()),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) {
+      // R9.a — bind workspace (+ optional check override) DIRECTLY onto
+      // the open doc payload. Measured Phase-1.5 finding: a semantic form
+      // fill never fires controller listeners, so binding MUST be an
+      // intent, never a field fill.
+      final workspace = parameters['workspace'];
+      if (workspace == null || workspace.isEmpty) {
+        return MCPCallResult(
+          message: 'workspace (absolute path) is required.',
+          parameters: {'ok': false},
+        );
+      }
+      final surface = AgentDocSurface.debugSurface;
+      if (surface == null) {
+        return MCPCallResult(
+          message: 'No agent doc surface is currently open.',
+          parameters: {'ok': false},
+        );
+      }
+      final result = surface.bindFromIntent(
+        workspace: workspace,
+        check: parameters['check'],
+      );
+      return MCPCallResult(
+        message: result.message,
+        parameters: {'ok': result.ok},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_doc_bind',
+      description:
+          'Bind a workspace (absolute path) and an optional check override '
+          '(literal argv, whitespace-split — e.g. "dart '
+          'tool/agent_fixture/main.dart") onto the open agent doc. '
+          'Persists into the syncable doc payload; NEVER a form fill.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'workspace': {'type': 'string'},
+          'check': {'type': 'string'},
+        },
+        'required': ['workspace'],
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) {
+      // R9.a — escalation guidance as a host-injected decision on the
+      // open doc's last turn: first-class grid state (GUIDE row + composer
+      // pre-fill), then the continuation turn is delegated. Monotonic:
+      // one guidance per ended turn.
+      final guidance = parameters['guidance'];
+      if (guidance == null || guidance.isEmpty) {
+        return MCPCallResult(
+          message: 'guidance (string) is required.',
+          parameters: {'ok': false},
+        );
+      }
+      final surface = AgentDocSurface.debugSurface;
+      if (surface == null) {
+        return MCPCallResult(
+          message: 'No agent doc surface is currently open.',
+          parameters: {'ok': false},
+        );
+      }
+      final result = surface.guideFromIntent(guidance);
+      return MCPCallResult(
+        message: result.message,
+        parameters: {'ok': result.ok},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_task_guide',
+      description:
+          'Send escalation guidance for the open agent doc\'s LAST ended '
+          'turn (the continuation after a FAIL). Host-injected decision, '
+          'monotonic — one guidance per turn; the continuation turn is '
+          'delegated immediately and the guidance lands on the grid.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'guidance': {'type': 'string'},
+        },
+        'required': ['guidance'],
+      }),
+    ),
+  ),
 };
 
 Map<String, Object?> _emptySchema() => {

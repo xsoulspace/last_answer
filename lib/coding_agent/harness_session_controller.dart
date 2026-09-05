@@ -32,6 +32,10 @@ final class HarnessTurn {
 
   final String taskSentence;
   final DateTime startedAt;
+
+  /// R9.a — escalation guidance this turn continues (host-injected via
+  /// `agent_task_guide`). First-class grid data, not a transcript line.
+  String? guidance;
   final StringBuffer text = StringBuffer();
   final List<TurnToolCall> toolCalls = [];
   final List<TurnPermission> permissions = [];

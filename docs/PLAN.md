@@ -128,10 +128,14 @@ What pi provides today that last_answer must absorb (gap analysis):
 
 Ordered next steps (each names its gate):
 
-- **R9.a — intents for the missing verbs** (`agent.doc.create`,
-  `agent.doc.bind`, `agent.task.guide`): gate — a script creates a doc,
-  binds this repo with a check override, delegates, answers a
-  permission, and reads the verdict, with ZERO field fills.
+- **R9.a — intents for the missing verbs — DONE (2026-09-05).**
+  `agent_doc_create` / `agent_doc_bind` / `agent_task_guide` registered
+  (mcp_toolkit + intentcall, same `debugSurface` pattern); the headless
+  gate (`tool/r9a_gate.sh`) ran create → bind → delegate → permission →
+  verdict with ZERO field fills — final run PASS (`apple_foundation_afm`,
+  1,552 tokens, 43.6 s; run 1 honest FAIL with 10 off-task writes denied
+  through the intent path). Widget gates green on real intent entries +
+  real keys. Rows: harness `benchmark/runs/delegation_r9.md`.
 - **R9.b — the dogfood switch**: the next last_answer issue is fixed
   exclusively through last_answer (operator via intents; AFM on-device;
   no terminal). Gate: one PASS row + one classified FAIL row, both

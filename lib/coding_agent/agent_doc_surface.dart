@@ -376,6 +376,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
         AgentDocSurface.debugState = AgentDocDebugState(
           docId: _doc.id.value,
           workspaces: _doc.agent?.workspaces ?? const [],
+          checkCommand: _doc.agent?.checkCommand ?? const <String>[],
           backend: controller.config.backend,
           sessionId: current?.id,
           running: controller.isRunning,
@@ -1402,6 +1403,7 @@ final class AgentDocDebugState {
     required this.docId,
     required this.workspaces,
     required this.backend,
+    this.checkCommand = const [],
     this.sessionId,
     this.running = false,
     this.pendingPermissionTitle,
@@ -1413,6 +1415,10 @@ final class AgentDocDebugState {
 
   final String docId;
   final List<String> workspaces;
+
+  /// The bound check override (the doc's `--check`, ADR 0003) — empty = the
+  /// workspace convention decides.
+  final List<String> checkCommand;
   final String backend;
   final String? sessionId;
   final bool running;
@@ -1428,6 +1434,7 @@ final class AgentDocDebugState {
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
+    'checkCommand': checkCommand,
     'backend': backend,
     'sessionId': ?sessionId,
     'running': running,

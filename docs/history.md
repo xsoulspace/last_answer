@@ -5,6 +5,44 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-09-05 — R9.a: the missing verbs (headless doc lifecycle + escalation)
+
+- **Three new MCP/intent entries** (`lib/coding_agent/agent_mcp_tools.dart`,
+  mcp_toolkit + intentcall `AgentCallEntry`, same `debugSurface` pattern):
+  `agent_doc_create` (create + open through the app's own
+  `OpenedProjectNotifier.createAgentProject` path via a debug-only app hook
+  on the home shell; returns docId), `agent_doc_bind` (workspace + check
+  override DIRECTLY onto the doc payload via `onDocChanged` — never a form
+  fill, per the Phase-1.5 measurement), `agent_task_guide` (escalation
+  guidance as a host-injected decision: recorded on the turn it responds
+  to as a first-class GUIDE grid row + composer pre-fill "continue with
+  guidance…", continuation delegated immediately; monotonic — one guidance
+  per ended turn).
+- **The agent projection grew the fields the driver needs**:
+  `checkCommand` (the doc's `--check`) and `lastGuidance` join
+  `agent_doc_state`'s JSON.
+- **Headless gate GREEN** (`tool/r9a_gate.sh`, zero GUI clicks, zero field
+  fills): create → bind (this repo + `dart tool/agent_fixture/main.dart`)
+  → delegate → permission round-trips through the intent → verdict read
+  back. Final run **PASS** (backend `apple_foundation_afm`, 1 decision,
+  3 rounds, 1,552 tokens, wall 43.6 s; fixture oracle exit 0, fixture
+  restored). Run 1 was an honest FAIL turn whose wandering model attempted
+  TEN off-task `lib/main.dart` writes — every one REJECTED through
+  `agent_permission_answer` (deny-by-default held on the intent path too).
+  Rows + findings: harness `benchmark/runs/delegation_r9.md`.
+- **Widget gates** (`test/coding_agent/agent_intents_test.dart`): create
+  returns the created docId (+ honest refusal when the hook is unwired);
+  bind persists the payload, refreshes the daemon config, refuses relative
+  paths; guide FAIL → GUIDE row → continuation PASS, with no-session and
+  mid-turn refusals. All driven through the REAL intent entries
+  (`AgentCallEntry.invokeDirect`) on the real surface keys. 16/16 green.
+- Findings (rows in `delegation_r9.md`): create→open lag (drivers poll
+  `agent_doc_state` for the docId; create doubles as the app-readiness
+  probe); the scripted seam's `handlerFactory` is per-turn (shared mover
+  instance for per-turn state); the in-loop `run` tool cannot execute the
+  fixture check from the jail while the outer oracle can (repair-hint
+  candidate).
+
 ## 2026-09-05 — Phase 1.5: THE HUMAN GATE (AFM + harness usable in the GUI, no terminal)
 
 - **Bridge dylib bundling** (Runner build phase):

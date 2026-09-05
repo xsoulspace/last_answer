@@ -49,6 +49,29 @@ Use this ledger for the weakest true current claim. Historical evidence is prove
 2. Keep sibling `xsoulspace_foundation` codegen synchronized or pin Freezed 3.x consistently across workspaces.
 3. Exercise a real installed ACP client end-to-end (authentication and provider-specific behavior remain unverified).
 
+## R9.a — the missing verbs (2026-09-05)
+
+- Claim: the headless operator cycle (doc create → workspace bind →
+  delegate → permission answer → verdict) runs through last_answer's OWN
+  intents with zero GUI clicks and zero field fills. Weakest proof:
+  [delegation_r9.md](../../../../dart_flutter_packages/pkgs/xsoulspace_agentic_harness/benchmark/runs/delegation_r9.md)
+  — gate script `tool/r9a_gate.sh`, final run PASS (backend
+  `apple_foundation_afm`, 1 decision, 3 rounds, 1,552 tokens, 43.6 s,
+  fixture oracle exit 0, fixture restored); run 1 honest FAIL with 10
+  off-task `lib/main.dart` writes REJECTED through the intent permission
+  path (deny-by-default held). Widget gates:
+  `test/coding_agent/agent_intents_test.dart` (16/16 green, real intent
+  entries + real surface keys).
+- New intents: `agent_doc_create` (create + open, returns docId;
+  debug-only app hook on the home shell), `agent_doc_bind` (workspace +
+  check override onto the doc payload — never a form fill),
+  `agent_task_guide` (host-injected escalation, GUIDE grid row + composer
+  pre-fill, monotonic per turn). Projection grew `checkCommand` and
+  `lastGuidance`.
+- Non-claims: one-turn PASS not claimed (run 1 FAILED honestly); the
+  live FAIL → guide → PASS escalation row is R9.b/R9.d's; OpenRouter
+  intent path untested.
+
 ## Phase 1.5 — the human gate (2026-09-05)
 
 - Claim: the AFM agent-doc pipeline works in the real macOS app with NO

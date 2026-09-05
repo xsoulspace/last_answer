@@ -96,13 +96,19 @@ if [ -z "$DOC_ID" ]; then
 fi
 echo "R9A_GATE created doc=$DOC_ID"
 
-# ── 4. Wait until the new doc surface is OPEN (navigation settled) ────────
-for _ in $(seq 1 30); do
+# ── 4. Wait until the new doc surface is OPEN (route push + first mount
+#      can lag tens of seconds on a cold debug build — measured) ─────────
+for _ in $(seq 1 90); do
   OPEN_ID=$(state_field docId || true)
   [ "$OPEN_ID" = "\"$DOC_ID\"" ] && break
-  sleep 1
+  sleep 2
 done
 echo "R9A_GATE open docId=$(state_field docId)"
+OPEN_ID=$(state_field docId || true)
+if [ "$OPEN_ID" != "\"$DOC_ID\"" ]; then
+  echo "R9A_GATE FAIL: the created doc surface never reported itself open"
+  exit 1
+fi
 
 # ── 5. BIND this repo + the fixture check (intent — never a form fill) ────
 call_tool agent_doc_bind "$(python3 -c '
@@ -115,8 +121,14 @@ import json, sys
 r = json.load(sys.stdin)
 p = (r.get("data") or {}).get("parameters") or {}
 print("R9A_GATE bind ok=", p.get("ok"), "—", r.get("data", {}).get("message") or p.get("message") or "")'
-BOUND=$(state_field workspaces)
+BOUND=""
+for _ in $(seq 1 15); do
+  BOUND=$(state_field workspaces || true)
+  [ "$BOUND" != "null" ] && [ "$BOUND" != "[]" ] && break
+  sleep 1
+done
 echo "R9A_GATE bound workspaces=$BOUND"
+echo "R9A_GATE check override=$(state_field checkCommand)"
 if [ "$BOUND" = "null" ] || [ "$BOUND" = "[]" ]; then
   echo "R9A_GATE FAIL: binding never landed in the doc payload"; exit 1
 fi
@@ -132,8 +144,10 @@ p = (r.get("data") or {}).get("parameters") or {}
 print("R9A_GATE delegate ok=", p.get("ok"))'
 
 # ── 7. Permission loop: allow ONLY fixture-path writes (deny-by-default),
-#      read the verdict when the turn ends ────────────────────────────────
+#      read the verdict when the turn ends; on FAIL, guide once via
+#      agent_task_guide (the R9.a/R9.d escalation path) and continue. ────
 VERDICT=""
+GUIDED=0
 DEADLINE=$((SECONDS + TIMEOUT_S))
 ALLOWED=0
 REJECTED=0
@@ -155,11 +169,30 @@ while [ "$SECONDS" -lt "$DEADLINE" ]; do
     sleep 1
     continue
   fi
+  RUNNING=$(state_field running || true)
   V=$(state_field verdict || true)
-  if [ "$V" != "null" ] && [ -n "$V" ]; then
+  if [ "$RUNNING" = "false" ] && [ "$V" != "null" ] && [ -n "$V" ]; then
+    if printf '%s' "$V" | grep -q 'PASS'; then
+      VERDICT="$V"
+      break
+    fi
+    if [ "$GUIDED" -lt 2 ]; then
+      GUIDED=$((GUIDED + 1))
+      echo "R9A_GATE turn ended FAIL — guiding (escalation $GUIDED)"
+      call_tool agent_task_guide "$(python3 -c '
+import json
+print(json.dumps({"guidance": "ONLY tool/agent_fixture/main.dart may change. "
+  "Its main() must print ok and exit 0 — replace the throw with a print, "
+  "change nothing else, never touch lib/ or docs/."}))')" | python3 -c '
+import json, sys
+r = json.load(sys.stdin)
+p = (r.get("data") or {}).get("parameters") or {}
+print("R9A_GATE guide ok=", p.get("ok"), "—", r.get("data", {}).get("message") or "")'
+      sleep 2
+      continue
+    fi
     VERDICT="$V"
-    RUNNING=$(state_field running || true)
-    [ "$RUNNING" = "false" ] && break
+    break
   fi
   sleep 2
 done
@@ -171,8 +204,11 @@ if [ -z "$VERDICT" ]; then
 fi
 
 echo "R9A_GATE verdict=$VERDICT"
-echo "R9A_GATE decisions: allowed=$ALLOWED rejected=$REJECTED (denies are the safe default, never dropped)"
+echo "R9A_GATE decisions: allowed=$ALLOWED rejected=$REJECTED guided=$GUIDED (denies are the safe default, never dropped)"
 echo "R9A_GATE turnCount=$(state_field turnCount)"
+echo "R9A_GATE guidance on grid: $(state_field lastGuidance | head -c 160)"
+echo "R9A_GATE transcript tail (spend source):"
+state_field transcriptTail | python3 -c 'import sys; s=sys.stdin.read(); print(s[-1200:])'
 
 # ── 8. Mechanical oracle (the surface verdict is cross-checked) ──────────
 if printf '%s' "$VERDICT" | grep -q 'PASS'; then

@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
@@ -390,6 +391,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           sessionId: current?.id,
           running: controller.isRunning,
           pendingPermissionTitle: controller.pendingPermission?.request.title,
+          remotePermissions: controller.remotePermissions,
           verdict: current?.verdictLine,
           transcriptTail: current?.transcript.toString() ?? '',
           turnCount: current?.turns.length ?? 0,
@@ -805,6 +807,18 @@ class _Conversation extends StatelessWidget {
       reverse: true,
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
       children: [
+        // PLAN 5c — remote permission rows (DESIGN §9): announced by the
+        // owning device, visible AND answerable from this peer's flow —
+        // same PERM row, same reject-first ordering, origin label in the
+        // gutter. Never a modal, never a separate pane.
+        for (final record in controller.remotePermissions)
+          _RemotePermRow(
+            record: record,
+            originLabel: controller.originLabelOf(record),
+            onAnswer: (final allow) => unawaited(
+              controller.answerRemotePermission(record.requestId, allow: allow),
+            ),
+          ),
         if (controller.pendingPermission == null && (current?.running ?? false))
           const _LiveRow(),
         if (current?.hasVerdict ?? false)
@@ -952,8 +966,11 @@ class _TurnBody extends StatelessWidget {
     }
     flushProse();
 
-    // Permission round-trips recorded on this turn.
+    // Permission round-trips recorded on this turn. A remote answer is
+    // recorded exactly like a local one — indistinguishable except by
+    // the resolved origin label (ADR 0005 §5, DESIGN §9).
     for (final p in turn.permissions) {
+      final origin = p.originLabel;
       children.add(
         _GridRow(
           role: 'PERM',
@@ -962,7 +979,7 @@ class _TurnBody extends StatelessWidget {
               true => 'allow',
               false => 'reject',
               null => 'awaiting…',
-            }}',
+            }}${origin == null ? '' : ' · $origin'}',
             style: _mono(
               theme,
               color: p.allowed == false ? theme.colorScheme.error : null,
@@ -1123,6 +1140,90 @@ class _LiveRow extends StatelessWidget {
           theme,
           color: theme.colorScheme.onSurfaceVariant,
         ).copyWith(fontStyle: FontStyle.italic),
+      ),
+    );
+  }
+}
+
+/// One REMOTE permission record on the peer's flow (DESIGN §9): the same
+/// PERM row a local request gets — title, outcome, reject-first actions —
+/// with the origin (roster-resolved actor, else the announcing device) as
+/// the gutter label. Pending rows carry the actions; answered rows keep
+/// the decision visible as data, never dropped.
+class _RemotePermRow extends StatelessWidget {
+  const _RemotePermRow({
+    required this.record,
+    required this.originLabel,
+    required this.onAnswer,
+  });
+
+  final PermRequestRecord record;
+  final String originLabel;
+  final ValueChanged<bool> onAnswer;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final pending = record.isPending;
+    return Padding(
+      key: Key('coding_agent.perm.${record.requestId}'),
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: _gutterWidth,
+            child: Text(
+              originLabel,
+              key: Key('coding_agent.perm.${record.requestId}.origin'),
+              style: _label(theme).copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              '${record.title}  →  ${switch (record.status) {
+                PermRequestStatus.pending => 'awaiting…',
+                PermRequestStatus.allow => 'allow',
+                PermRequestStatus.reject => 'reject',
+              }}',
+              style: _mono(
+                theme,
+                color: record.status == PermRequestStatus.reject
+                    ? theme.colorScheme.error
+                    : null,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (pending) ...[
+            const SizedBox(width: 12),
+            TextButton(
+              key: Key('coding_agent.perm.${record.requestId}.reject'),
+              style: TextButton.styleFrom(
+                foregroundColor: theme.colorScheme.onSurface,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                minimumSize: const Size(0, 30),
+              ),
+              onPressed: () => onAnswer(false),
+              child: Text('[reject]', style: _mono(theme)),
+            ),
+            const SizedBox(width: 6),
+            TextButton(
+              key: Key('coding_agent.perm.${record.requestId}.allow'),
+              style: TextButton.styleFrom(
+                foregroundColor: theme.colorScheme.onSurface,
+                minimumSize: const Size(0, 30),
+              ),
+              onPressed: () => onAnswer(true),
+              child: Text('[allow]', style: _mono(theme)),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -1772,6 +1873,7 @@ final class AgentDocDebugState {
     this.lastGuidance,
     this.actors = const [],
     this.sessionActors = const {},
+    this.remotePermissions = const [],
   });
 
   final String docId;
@@ -1804,6 +1906,12 @@ final class AgentDocDebugState {
   /// ADR 0006 registry `Actors[]`: session view id → attached actor ids.
   final Map<String, List<String>> sessionActors;
 
+  /// PLAN 5c — remote permission records announced by OTHER peers
+  /// (pending and answered): the same doc state the peer's flow renders
+  /// (one state, many projections, DESIGN §5) — an agent reads who is
+  /// asking, from where, and what has been decided.
+  final List<PermRequestRecord> remotePermissions;
+
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
@@ -1818,6 +1926,7 @@ final class AgentDocDebugState {
     'lastGuidance': ?lastGuidance,
     'actors': [for (final a in actors) a.toJson()],
     'sessionActors': sessionActors,
+    'remotePermissions': [for (final p in remotePermissions) p.toJson()],
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,

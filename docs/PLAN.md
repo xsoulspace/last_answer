@@ -74,51 +74,40 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    tier. Different tool surface, different verification. Gate: one task
    delegated, graded honestly (evidence, not pass), failure classified.
 
-5. **Phase 5 — multiplayer over the convergence kernel**
-   ([ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md),
-   [ADR 0006](decisions/0006-session-is-not-world.md); kernel contract:
-   dart_flutter_packages ADRs 0010/0011/0029). Landed record:
-   [history.md](history.md) (2026-09-06 entries). Status per track:
+5. **Phase 5 — multiplayer over the convergence kernel** — LANDED
+   end-to-end over fakes (local gate). Full landed record:
+   [history.md](history.md) (2026-09-06, squads 1–3). Decisions:
+   [ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md),
+   [ADR 0006](decisions/0006-session-is-not-world.md),
+   [ADR 0007](decisions/0007-actor-roster-and-multiplayer-identity.md);
+   kernel contract: dart_flutter_packages ADRs 0010/0011/0029/0030/0031.
 
-   - **5a — session registry split — ✅ LANDED, gate green.**
-     `Workspace (≤1 daemon) → Sessions[] → Actors[]` registry;
-     workspace-grouped overview on the grid; second session per workspace
-     works fully offline.
-   - **5b — doc ops over the kernel — ✅ substrate + composite landed,
-     ⬜ mesh wiring open.** Landed: `DocReplica` (single kernel doc over
-     `CompositeMergeStrategy` per infra ADR 0030 — two-lane deviation
-     resolved; convergence conformance green). Remaining: mesh wiring —
-     `DocReplica` ops flowing through `MeshStorageProvider` storage
-     (unblocked: one VV/one snapshot per doc). Gate remains: two devices
-     converge on one doc's transcript and board after reconnect.
-   - **5c — presence + permission routing — ✅ foundation + roster
-     landed, ⬜ routing open.** Landed: `MeshEphemeralFrame` + signing +
-     `MeshPresenceSession`/`EphemeralFrameTransport` foundation
-     (transport-agnostic, reusable by ecsly/games) + `PresenceConfig`
-     presets (infra ADR 0031); `ActorRoster`/`ActorProfile` with PROFILE
-     `ACTORS` section and roster-backed session rows ([ADR
-     0007](decisions/0007-actor-roster-and-multiplayer-identity.md)).
-     Remaining: (a) wire roster + presence into `MeshStorageService`
-     (roster replicaId = pairing peer id; roster persistence target);
-     (b) remote permission routing + `PERM`-row origin label in the doc
-     surface; (c) investigate the pre-existing `agent_doc_persistence_test`
-     failure (see history). Gate remains: two devices, one doc, one
-     workspace, two sessions open, a permission answered from the second
-     device, transcript identical on both, zero new protocol.
-   - **5d — ecsly-world migration — ✅ ADR + plugin landed (ecsly repo),
-     ⬜ bridge open.** Landed: ecsly ADR 0001 +
-     `plugins/ecsly_world_sync` (fake-transport gated). Remaining: live
-     `World` → delta bridge (ecsly event channels), kernel publication
-     (then delete the path override), ecsly NORTH_STAR table row
-     (maintainer edit). Gate remains: one doc graph lives as an ecsly
-     world whose replica converges on two devices via the kernel.
+   FORWARD FRONTIER ONLY (each names its gate):
 
-   **Kernel decisions this phase pulls (in order):**
-   1. Composite/dispatching strategy — ✅ LANDED (infra ADR 0030 +
-      property suite; DocReplica collapsed).
-   2. YATA-style positional text merge (v2 strategy behind the same
-      `MergeStrategy` seam) — gated on the co-editing phase, NOT on 5b
-      wiring; scheduled, not speculative.
+   - **5.G1 — the two-device REAL gate** (runbook:
+     [multiplayer-device-gates](product/multiplayer-device-gates.md)):
+     macOS app (relay host) + web app (second peer) on one doc; QR
+     pairing; scripted concurrent edits; a permission answered from the
+     web peer; debugSurface projections byte-identical after each
+     convergence point; zero new protocol. BLOCKER: fix the pre-existing
+     `agent_doc_persistence_test` failure first (it guards the
+     persistence path this gate stands on).
+   - **5.G2 — heavy-usage soak** (same runbook, T4 tier): chaos matrix
+     over the two apps — partitions, kill-and-resume, streaming bursts,
+     large docs, clock skew. Gate: every chaos row either converges to
+     byte-identical projections or lands a NAMED expected divergence.
+   - **5.G3 — snapshot-aware doc sync**: `DocReplicaStore` never compacts
+     (peer-file re-derivation needs complete logs). Pull kernel
+     `needsSnapshotFor`/`adoptSnapshot` into the store + mesh cycle.
+     Gate: compacted replica + lagging peer catch up over the real seam.
+   - **5.G4 — YATA v2** (kernel, dart_flutter_packages): positional text
+     merge behind the `MergeStrategy` seam. Trigger: the co-editing
+     phase (two writers, one block) becomes the product frontier — NOT
+     before. Until then the oracle asserts convergence, never positional
+     intent, for same-anchor inserts.
+   - **5.G5 — ecsly bridge** (ecsly repo): live `World` → delta bridge +
+     kernel publication (delete the path override). Gate: one doc graph
+     lives as an ecsly world converging on two devices via the kernel.
 
 6. **Harness-side open problems** (tracked in agentic_harness PLAN.md R8;
    this product pulls, never implements them itself): actor topology

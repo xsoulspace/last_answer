@@ -91,6 +91,31 @@ Landed:
   Flag: another concurrent session committed squad 2's files mid-run
   (`c603b9e9`, `a206c560`) — agents made no commits themselves; one
   formatting-only diff remains uncommitted.
+- **Squad 3 (sequential, dependency-ordered D→E→F; all gates re-verified)**:
+  - *D — 5b wiring*: `DocReplicaStore` (headless_core, pure Dart over
+    `universal_storage_interface`): per-doc JSON persistence, batched
+    flush, VV-diff op exchange, peer-file re-derivation from the durable
+    op log (event-sourced honesty: file actor ≠ local actor folds the log,
+    never trusts the file state); `MeshStorageService.attachDocSync` +
+    flush→anti-entropy→absorb cycle. headless_core 53/53; mesh e2e 3/3
+    unchanged.
+  - *E — 5c wiring*: presence session owned by `MeshStorageService`
+    (signer = pairing identity key via interface; authenticator fed from
+    peer records; `PresenceConfig.background`); `joinDoc`/`leaveDoc`/
+    `presence(docId)` pass-throughs (doc-scoped, caller-owned);
+    `attachRoster` forces replicaId = pairing peerId; roster rides sync as
+    durable ops. Roster/presence tests 10/10.
+  - *F — 5c-c*: permission round-trips as durable `perm/` doc ops
+    (wire change: lane-map extension, fresh docs only);
+    `PermissionDocRouter` + controller policy `remotePermissionRouting`
+    (default OFF — local behavior byte-for-byte unchanged); owner's
+    permission future completes when the ANSWER op arrives via sync;
+    peer devices render remote pending permissions in-flow with
+    roster-resolved origin labels, reject-first, recorded as data.
+    headless_core 59/59; surface/routing tests 7/7; coding_agent suite
+    unchanged (32 + the pre-existing failure).
+  Non-claim: the two-DEVICE gate (real hardware, real relay) has not run —
+  it is the human gate; all routing/folding is proven over fakes.
 
 Non-claims (updated after the squad run): mesh wiring of doc ops into
 last_answer's app/storage layer, the presence side-channel on real relay

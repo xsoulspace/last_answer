@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/foundation.dart';
+import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 
 /// One structured beat inside a turn: a tool call the agent made.
 final class TurnToolCall {
@@ -21,6 +23,12 @@ final class TurnPermission {
   final String title;
   final DateTime at;
   bool? allowed;
+
+  /// PLAN 5c — the answer's origin, resolved through the roster at record
+  /// time (small-caps actor/device label, DESIGN §9). Null for local
+  /// answers: a remote answer is recorded on the turn exactly like a
+  /// local one, indistinguishable except by origin (ADR 0005 §5).
+  String? originLabel;
 }
 
 /// One delegated task turn — the conversation node. The raw transcript
@@ -144,6 +152,33 @@ final class HarnessSessionController extends ChangeNotifier {
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
   HarnessHost host;
+
+  /// PLAN 5c — the doc channel for remote permission routing (ADR 0005
+  /// §5). Null until the app wiring attaches one
+  /// ([attachPermissionRouter]); without it, permissions are purely
+  /// device-local round-trips.
+  PermissionDocRouter? permissionRouter;
+
+  /// PLAN 5c policy — default OFF: local answering is unchanged and no
+  /// permission op is ever written. ON: a pending host permission is
+  /// announced as a doc op and its future completes when the ANSWER op
+  /// folds into the doc (from a peer or from this device — one state, one
+  /// completion path). Deny-by-default is preserved: no answer op → no
+  /// completion; the host's own 5-minute deadline remains the backstop.
+  bool remotePermissionRouting = false;
+
+  bool get _routingEnabled =>
+      remotePermissionRouting && permissionRouter != null;
+
+  /// Attaches the doc channel for remote permission routing (see
+  /// [permissionRouter]). The caller owns the router's store lifecycle.
+  void attachPermissionRouter(final PermissionDocRouter router) {
+    permissionRouter = router;
+    notifyListeners();
+  }
+
+  /// Routed permission round-trips: pending future → doc request id.
+  final Map<PendingPermission, String> _routedPermissionIds = {};
 
   /// ADR 0006 registry: workspaces (each with ≤1 world) and their
   /// session projections. Several sessions per workspace are legal;
@@ -337,16 +372,148 @@ final class HarnessSessionController extends ChangeNotifier {
   /// proceeds; reject = it never lands). The outcome is recorded on the
   /// turn's permission log — the conversation shows the human's decision
   /// as data, same as the agent sees it.
+  ///
+  /// PLAN 5c: when [remotePermissionRouting] is ON and the pending was
+  /// announced as a doc op, the answer is ISSUED AS A DOC OP — the host's
+  /// future completes when the answer op folds back (immediately for a
+  /// locally-issued answer; with the next sync for a peer's). OFF (or not
+  /// announced): the direct local round-trip, byte-for-byte unchanged.
   void answerPermission({required final bool allow}) {
     final pending = pendingPermission;
     pendingPermission = null;
     final logged = _permissionTurns[pending];
     if (logged != null) logged.allowed = allow;
-    if (pending != null) {
+    final requestId = pending == null ? null : _routedPermissionIds[pending];
+    if (pending != null && requestId != null) {
+      // Kept in _routedPermissionIds: the future completes when the answer
+      // op folds back (refreshPermissions) — the fold records the outcome
+      // on the turn and retires the mapping.
+      unawaited(_answerThroughDoc(requestId, allow));
+    } else if (pending != null) {
       allow ? pending.allow() : pending.reject();
     }
     notifyListeners();
   }
+
+  /// Issues the answer op through the doc channel; [refreshPermissions]
+  /// then completes the host's future from the folded op.
+  Future<void> _answerThroughDoc(
+    final String requestId,
+    final bool allow,
+  ) async {
+    final router = permissionRouter;
+    if (router == null) return;
+    try {
+      await router.answerRequest(requestId: requestId, allow: allow);
+    } on Object catch (e) {
+      // The write failed (storage gone) or a concurrent answer folded in
+      // first (first answer wins). The human decided — the round-trip
+      // must not strand: complete directly, conservatively.
+      error = 'permission answer not recorded as doc op: $e';
+      final pending = _pendingForRequest(requestId);
+      if (pending != null && !pending.isAnswered) {
+        allow ? pending.allow() : pending.reject();
+        _routedPermissionIds.remove(pending);
+      }
+      notifyListeners();
+      return;
+    }
+    refreshPermissions();
+  }
+
+  PendingPermission? _pendingForRequest(final String requestId) {
+    for (final entry in _routedPermissionIds.entries) {
+      if (entry.value == requestId) return entry.key;
+    }
+    return null;
+  }
+
+  /// PLAN 5c — peer-side answer (ADR 0005 §3 input rights): answers a
+  /// remote pending permission through the doc. Recorded as data (the
+  /// answer op); the OWNER's future completes when the op arrives with
+  /// the next sync cycle. Nothing here grants authority beyond the one
+  /// round-trip (ADR 0007 §3).
+  Future<void> answerRemotePermission(
+    final String requestId, {
+    required final bool allow,
+  }) async {
+    final router = permissionRouter;
+    if (router == null) return;
+    try {
+      await router.answerRequest(requestId: requestId, allow: allow);
+    } on Object catch (e) {
+      error = 'remote permission answer refused: $e';
+      notifyListeners();
+      return;
+    }
+    refreshPermissions();
+  }
+
+  /// Signature of the remote-permission projection — a change means the
+  /// surface (and the agent projection) must rebuild.
+  String? _remotePermSignature;
+
+  static String _permSignatureOf(final List<PermRequestRecord> records) =>
+      records.map((final r) => '${r.requestId}:${r.status.name}').join('|');
+
+  /// Re-reads the folded permission state of the doc replica: completes
+  /// routed futures whose ANSWER op has arrived (locally issued answers
+  /// fold immediately; remote answers fold with the mesh sync cycle —
+  /// the app wiring calls this after [MeshStorageService.sync]).
+  /// Attributes remote answers on the turn with a roster-resolved origin
+  /// label (DESIGN §9); local answers keep none. Also notifies when the
+  /// remote-permission projection changed (a request arrived, or an
+  /// answer landed) — one state, many projections (DESIGN §5).
+  void refreshPermissions() {
+    final router = permissionRouter;
+    if (router == null) return;
+    var changed = false;
+    if (_routedPermissionIds.isNotEmpty) {
+      for (final record in router.entries()) {
+        if (record.isPending) continue;
+        final pending = _pendingForRequest(record.requestId);
+        if (pending == null) continue;
+        _routedPermissionIds.remove(pending);
+        changed = true;
+        if (!pending.isAnswered) {
+          final allow = record.status == PermRequestStatus.allow;
+          allow ? pending.allow() : pending.reject();
+          final logged = _permissionTurns[pending];
+          if (record.responderPeerId != null &&
+              record.responderPeerId != router.selfId) {
+            // Remote answer: recorded on the turn exactly like a local
+            // one, attributed with the roster-resolved origin (DESIGN §9).
+            logged
+              ?..allowed = allow
+              ..originLabel =
+                  roster.get(record.responderActorId ?? '')?.gutterLabel ??
+                  actorGutterLabel(record.responderPeerId!);
+          } else {
+            logged?.allowed = allow;
+          }
+        }
+      }
+    }
+    final signature = _permSignatureOf(remotePermissions);
+    if (signature != _remotePermSignature) {
+      _remotePermSignature = signature;
+      changed = true;
+    }
+    if (changed) notifyListeners();
+  }
+
+  /// Remote permission entries (announced by OTHER peers, pending and
+  /// answered) — the peer-side in-flow projection (DESIGN §9). Own
+  /// announcements render through [pendingPermission] / the turn log.
+  List<PermRequestRecord> get remotePermissions =>
+      permissionRouter?.remoteEntries() ?? const [];
+
+  /// Origin gutter label for a remote permission record: the roster
+  /// actor when resolvable, else the announcing device (small-caps —
+  /// DESIGN §9; identity, never authority, ADR 0007 §3).
+  String originLabelOf(final PermRequestRecord record) =>
+      roster.get(record.originActorId ?? '')?.gutterLabel ??
+      actorGutterLabel(record.originPeerId);
 
   /// Cancels the current session's in-flight turn (real cancellation).
   /// An ANSWER-PENDING permission is rejected first: the human's stop must
@@ -416,8 +583,42 @@ final class HarnessSessionController extends ChangeNotifier {
       )..allowed = null;
       open.permissions.add(_permissionTurns[pending]!);
     }
+    if (_routingEnabled) {
+      unawaited(_announcePermission(pending));
+    }
     _permissionArrived?.complete(pending);
     _permissionArrived = null;
+    notifyListeners();
+  }
+
+  /// PLAN 5c — announces the pending round-trip as a doc op so peers see
+  /// it and can answer (the gate: a permission answered from the second
+  /// device). Attributed to the session's attached actor when one is
+  /// registered (ADR 0007 §2). If the round-trip was decided while the
+  /// announcement was in flight (deny-first cancel), the recorded answer
+  /// goes out as an op too — a decided request is never left pending.
+  Future<void> _announcePermission(final PendingPermission pending) async {
+    final router = permissionRouter;
+    if (router == null) return;
+    final String requestId;
+    try {
+      requestId = await router.announceRequest(
+        title: pending.request.title,
+        originActorId: current?.actorIds.firstOrNull,
+      );
+    } on Object catch (e) {
+      // The doc channel is down: the round-trip stays local (the host's
+      // own deadline is the backstop). Named, never silent.
+      error = 'permission not announced to the mesh: $e';
+      notifyListeners();
+      return;
+    }
+    _routedPermissionIds[pending] = requestId;
+    final decided = _permissionTurns[pending]?.allowed;
+    if (decided != null) {
+      _routedPermissionIds.remove(pending);
+      unawaited(_answerThroughDoc(requestId, decided));
+    }
     notifyListeners();
   }
 

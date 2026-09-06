@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 
 import 'document_node.dart';
 import 'fractional_order.dart';
+import 'perm_request.dart';
 
 /// Doc↔op layer over the convergence kernel — the ADR 0005 §2 op-mapping
 /// table, v1 (last_answer side of infra ADR 0029's contract):
@@ -14,6 +17,13 @@ import 'fractional_order.dart';
 ///   policy, never a kernel type.
 /// - Block text (incl. streamed agent text) → RGA `k: 'text/<blockId>'`
 ///   via `RgaTextStrategy`.
+/// - Permission round-trips (ADR 0005 §5) → LWW
+///   `k: 'perm/<requestId>'` — the request op and the answer op are two
+///   writes on ONE register; the answer is issued causally after the
+///   request (the HLC receive watermark covers it), so it wins on every
+///   replica. WIRE CHANGE (PLAN 5c): the `perm/` lane extends the
+///   composite's wire-stable registry name — fresh docs only, no
+///   migration for docs persisted under the previous lane map.
 ///
 /// One document = ONE [ConvergenceDoc] with the kernel's
 /// `CompositeMergeStrategy` (ADR 0030 §1): the lane map is part of the
@@ -73,6 +83,7 @@ final class DocReplica {
     'node/': const LwwMapStrategy(),
     'order/': const LwwMapStrategy(),
     'text/': const RgaTextStrategy(),
+    'perm/': const LwwMapStrategy(),
   });
 
   /// Key namespace for node/block field registers (LWW map lane).
@@ -83,6 +94,9 @@ final class DocReplica {
 
   /// Key namespace for block text sequences (RGA lane).
   static const String textKeyPrefix = 'text/';
+
+  /// Key namespace for permission round-trips (LWW lane, ADR 0005 §5).
+  static const String permKeyPrefix = 'perm/';
 
   /// The ONE kernel replica for the whole document (ADR 0030 §1):
   /// composite strategy, one version vector, one op log, one snapshot.
@@ -273,6 +287,101 @@ final class DocReplica {
     _observeIssued(op.hlc);
     return [op];
   }
+
+  /// Announces a pending permission request as a doc op
+  /// (`perm/<requestId>`, status `pending`) — the owner device's harness
+  /// gate made event-sourced (ADR 0005 §5). [originPeerId] is the
+  /// announcing device's pairing peer id; [originActorId] the acting
+  /// agent's roster actor id, when attributable (ADR 0007: a label,
+  /// never authority).
+  List<OpRecord> announcePermRequest({
+    required final String requestId,
+    required final String title,
+    required final String originPeerId,
+    final String? originActorId,
+    final DateTime? now,
+  }) {
+    final at = now ?? DateTime.now();
+    final record = PermRequestRecord(
+      requestId: requestId,
+      title: title,
+      originPeerId: originPeerId,
+      originActorId: originActorId,
+      createdAt: at.toUtc().toIso8601String(),
+    );
+    return [_issueMeta(_permKey(requestId), jsonEncode(record.toJson()), at)];
+  }
+
+  /// Answers [requestId] with a second op on the SAME register (the
+  /// answered record carries the request fields forward; the answer was
+  /// issued causally after the request, so the kernel's LWW lands it on
+  /// every replica). Throws [StateError] when this replica has not folded
+  /// a PENDING request under [requestId] — deny-by-default: there is
+  /// nothing to answer that has not been announced, and an answered
+  /// request is decided (first answer wins; second answers are refused
+  /// loudly, never silently re-decided).
+  List<OpRecord> answerPermRequest({
+    required final String requestId,
+    required final bool allow,
+    required final String responderPeerId,
+    final String? responderActorId,
+    final DateTime? now,
+  }) {
+    final request = permRequestOf(requestId);
+    if (request == null || !request.isPending) {
+      throw StateError(
+        'perm request $requestId is not pending in this replica '
+        '(absent or already answered)',
+      );
+    }
+    final at = now ?? DateTime.now();
+    final answered = request.answered(
+      allow: allow,
+      responderPeerId: responderPeerId,
+      responderActorId: responderActorId,
+      at: at.toUtc().toIso8601String(),
+    );
+    return [_issueMeta(_permKey(requestId), jsonEncode(answered.toJson()), at)];
+  }
+
+  /// The folded record for [requestId]; null when absent. A malformed
+  /// register value reads as absent (DESIGN §6) — the op stays in the doc
+  /// for inspection.
+  PermRequestRecord? permRequestOf(final String requestId) =>
+      PermRequestRecord.tryFromJson(
+        _decodedPermValue(_doc.state[_permKey(requestId)]),
+      );
+
+  /// All folded permission records, deterministic order (created-at, then
+  /// request id) — small multiples render identically on every replica.
+  List<PermRequestRecord> permRequests() {
+    final records = <PermRequestRecord>[];
+    for (final key in _doc.state.keys) {
+      if (!key.startsWith(permKeyPrefix)) continue;
+      final record = PermRequestRecord.tryFromJson(
+        _decodedPermValue(_doc.state[key]),
+      );
+      if (record != null) records.add(record);
+    }
+    records.sort((final a, final b) {
+      final byTime = a.createdAt.compareTo(b.createdAt);
+      return byTime != 0 ? byTime : a.requestId.compareTo(b.requestId);
+    });
+    return records;
+  }
+
+  static Object? _decodedPermValue(final Object? entry) {
+    if (entry is! Map || entry['del'] == true) return null;
+    final value = entry['v'];
+    if (value is! String) return null;
+    try {
+      return jsonDecode(value);
+    } on FormatException {
+      return null;
+    }
+  }
+
+  static String _permKey(final String requestId) => '$permKeyPrefix$requestId';
 
   // ---------------------------------------------------------------------------
   // Remote delivery & projection

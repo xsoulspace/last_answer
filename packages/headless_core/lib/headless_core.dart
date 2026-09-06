@@ -14,4 +14,5 @@ export 'src/document_repository.dart';
 export 'src/fractional_order.dart';
 export 'src/headless_agent_harness.dart';
 export 'src/in_memory_document_repository.dart';
+export 'src/perm_request.dart';
 export 'src/storage_document_repository.dart';

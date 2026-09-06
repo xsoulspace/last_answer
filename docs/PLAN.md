@@ -74,12 +74,49 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    tier. Different tool surface, different verification. Gate: one task
    delegated, graded honestly (evidence, not pass), failure classified.
 
-5. **Phase 5 — multiplayer over the convergence kernel** ([ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md), [ADR 0006](decisions/0006-session-is-not-world.md); kernel contract: dart_flutter_packages ADRs 0010/0011/0029). Two tracks, planned together, shipped in order:
+5. **Phase 5 — multiplayer over the convergence kernel**
+   ([ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md),
+   [ADR 0006](decisions/0006-session-is-not-world.md); kernel contract:
+   dart_flutter_packages ADRs 0010/0011/0029). Landed record:
+   [history.md](history.md) (2026-09-06 entries). Status per track:
 
-   - **5a — session registry split (local, no sync gate).** Session ≠ world (ADR 0006): `Workspace (≤1 daemon) → Sessions[] → Actors[]` registry replaces the flat session list; several sessions per workspace become visible and legal; one world per workspace stays mandatory and a second daemon binding is a surfaced hard error. Gate: workspace-grouped session overview on one grid; second session on one workspace works fully offline.
-   - **5b — doc ops over the kernel.** Turns, board rows, metadata, block fields, and fractional child-order keys become kernel ops (LWW map v1); block text content becomes sequence ops (streamed agent text merges as it connects — kernel ADR 0029). Anti-entropy gives late-join catch-up. Gate: two devices converge on one doc's transcript and board after reconnect (property-tested kernel strategies, no hand-rolled merge).
-   - **5c — presence + permission routing (the multiplayer gate).** Transport-level ephemeral frames drive live UI; kernel ephemeral ops answer agent queries ("who is here"); remote permission requests render in-flow identical to local (origin label, reject-first, recorded). Task assignment and permission answers ride the existing permission round-trip; agents run on the device that owns the workspace; world snapshots stay device-local. Gate: two devices, one doc, one workspace, two sessions open, a permission answered from the second device, transcript identical on both, zero new protocol.
-   - **5d — ecsly-world migration.** Once last_answer migrates onto `ecsly`/`ecsly_flutter` (architecture unification track), the doc graph becomes an ecsly world and multiplayer inherits through the ecsly-side sync plugin consuming the published kernel (ecsly-repo ADR; parents choose strategies, never hand-roll). Gate: one doc graph lives as an ecsly world whose replica converges on two devices via the kernel.
+   - **5a — session registry split — ✅ LANDED, gate green.**
+     `Workspace (≤1 daemon) → Sessions[] → Actors[]` registry;
+     workspace-grouped overview on the grid; second session per workspace
+     works fully offline.
+   - **5b — doc ops over the kernel — ✅ substrate landed, ⬜ wiring open.**
+     Landed: `DocReplica` in `packages/headless_core` (LWW fields,
+     fractional child order, RGA block text; convergence conformance).
+     Remaining: (a) kernel decision — composite strategy so one document
+     is ONE kernel doc (see history: two-lane deviation); (b) mesh wiring
+     — `DocReplica` ops flowing through `MeshStorageProvider` storage.
+     Gate remains: two devices converge on one doc's transcript and board
+     after reconnect.
+   - **5c — presence + permission routing — ✅ transport half landed,
+     ⬜ product half open.** Landed: `MeshEphemeralFrame` (never
+     persisted) + `MeshPresenceTracker` (kernel ephemeral registry).
+     Remaining: (a) presence link topology decision (app-layer channel vs
+     provider-session side-channel); (b) presence `details` reserved-key
+     namespace fix BEFORE product depends on it; (c) remote permission
+     routing + `PERM`-row origin label in the doc surface. Gate remains:
+     two devices, one doc, one workspace, two sessions open, a permission
+     answered from the second device, transcript identical on both, zero
+     new protocol.
+   - **5d — ecsly-world migration — ✅ ADR + plugin landed (ecsly repo),
+     ⬜ bridge open.** Landed: ecsly ADR 0001 +
+     `plugins/ecsly_world_sync` (fake-transport gated). Remaining: live
+     `World` → delta bridge (ecsly event channels), kernel publication
+     (then delete the path override), ecsly NORTH_STAR table row
+     (maintainer edit). Gate remains: one doc graph lives as an ecsly
+     world whose replica converges on two devices via the kernel.
+
+   **Kernel decisions this phase pulls (in order):**
+   1. Composite/dispatching strategy (one doc = one `ConvergenceDoc`,
+      one VV, one snapshot/compaction decision) — unblocks 5b wiring;
+      small, property-testable. ADR first.
+   2. YATA-style positional text merge (v2 strategy behind the same
+      `MergeStrategy` seam) — gated on the co-editing phase, NOT on 5b
+      wiring; scheduled, not speculative.
 
 6. **Harness-side open problems** (tracked in agentic_harness PLAN.md R8;
    this product pulls, never implements them itself): actor topology

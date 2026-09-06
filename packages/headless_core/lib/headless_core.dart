@@ -6,9 +6,11 @@
 library;
 
 export 'src/chat_document_service.dart';
+export 'src/doc_replica.dart';
 export 'src/document_agent_service.dart';
 export 'src/document_node.dart';
 export 'src/document_repository.dart';
+export 'src/fractional_order.dart';
 export 'src/headless_agent_harness.dart';
 export 'src/in_memory_document_repository.dart';
 export 'src/storage_document_repository.dart';

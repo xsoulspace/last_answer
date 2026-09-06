@@ -40,10 +40,37 @@ Landed:
   small multiples, quiet `+ new session` row) per DESIGN §3/§9.
   Gates green: `session_registry_test.dart` (3), `harness_host_test.dart`
   (4), `coding_agent_screen_test.dart` (7).
+- **Squad landing (three headless pi agents, reconciled + independently
+  re-verified)**:
+  - *5b* — `packages/headless_core`: `DocReplica` maps ADR 0005 §2 op
+    table onto kernel ops (LWW node fields, fractional child-order keys
+    with deterministic rebalancing, `RgaTextStrategy` block text);
+    7-delivery-order convergence conformance; 42/42 tests. Honest
+    deviation: two sibling kernel docs per document (LWW lane + RGA lane,
+    shared docId + HLC watermark) because the kernel fixes one strategy
+    per doc — recorded as a kernel-seam follow-up. TODO(kernel): YATA-style
+    positional sibling order for mid-text inserts (deterministic today,
+    not positionally faithful; streaming append unaffected).
+  - *5c (transport half)* — mesh_transport: `MeshEphemeralFrame`
+    (join/leave/ping, relayed like data, never persisted); mesh:
+    `MeshPresenceTracker` folding presence into kernel ephemeral ops —
+    "who is on this doc" is agent-queryable state; forged-actor and
+    durable-op-smuggling guards; 9/9 + 38/38 tests. Product half (remote
+    permission rendering) still open.
+  - *5d* — ecsly repo: ADR 0001 + `plugins/ecsly_world_sync`
+    (kernel-consuming world-sync adapter, stable-identity keys, fake
+    transport; path-override bootstrap recorded); 7/7 tests, analyze
+    clean.
+  All three gates re-run by the steward session, not taken on agent
+  claims. Non-claim: the squads raced duplicate instances of themselves
+  (spawn-layer error, since fixed); landed state is the reconciled result
+  and was verified independently.
 
-Non-claims: 5b/5c product wiring (doc ops over the mesh, presence frames,
-remote permission routing) is NOT landed — only the kernel substrate it
-pulls; 5d (ecsly-world migration) awaits the ecsly-repo sync ADR.
+Non-claims (updated after the squad run): mesh wiring of doc ops into
+last_answer's app/storage layer, the presence side-channel on real relay
+sessions, remote permission routing + UI (product half of 5c), and the
+last_answer→ecsly migration itself remain open — the substrates (doc ops,
+presence frames, ecsly world-sync plugin) are landed and gated.
 
 ## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
 

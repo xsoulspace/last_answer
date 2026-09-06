@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
@@ -163,8 +163,8 @@ final class _FakeHub {
 
 final _keyPairs = <String, SimpleKeyPair>{};
 
-Future<SimpleKeyPair> _keyPairOf(final String peerId) => _keyPairs
-    .putIfAbsent(peerId, PairingService.newIdentityKeyPair);
+Future<SimpleKeyPair> _keyPairOf(final String peerId) async =>
+    _keyPairs[peerId] ??= await PairingService.newIdentityKeyPair();
 
 Future<List<int>> _publicKeyOf(final String peerId) async =>
     (await (await _keyPairOf(peerId)).extractPublicKey()).bytes;
@@ -184,19 +184,21 @@ Future<void> _knowsEachOther(
   final MeshStorageService a,
   final MeshStorageService b,
 ) async {
-  await a.registerPeerIdentityKey(
+  a.registerPeerIdentityKey(
     peerId: b.selfId,
     identityKey: await _publicKeyOf(b.selfId),
   );
-  await b.registerPeerIdentityKey(
+  b.registerPeerIdentityKey(
     peerId: a.selfId,
     identityKey: await _publicKeyOf(a.selfId),
   );
 }
 
 void main() {
-  tearDown(() async {
-    for (final endpoint in _endpointsUnderTest) endpoint.dispose();
+  tearDown(() {
+    for (final endpoint in _endpointsUnderTest) {
+      endpoint.dispose();
+    }
   });
 
   test('attachRoster forces the roster replica id to the pairing peer id',
@@ -206,10 +208,8 @@ void main() {
       provider: _FakeProvider(),
     );
     addTearDown(service.dispose);
-    final roster = ActorRoster(replicaId: 'placeholder');
-    roster.upsert(
-      const ActorProfile(actorId: 'afm', displayName: 'AFM'),
-    );
+    final roster = ActorRoster(replicaId: 'placeholder')
+      ..upsert(const ActorProfile(actorId: 'afm', displayName: 'AFM'));
     service.attachRoster(roster);
     // ADR 0007 §2: the roster's replica id IS the pairing peer id; the
     // placeholder is replaced at attach time WITHOUT losing state.
@@ -240,21 +240,25 @@ void main() {
         'actor_rosters/$peerId.json';
 
     // Shuffled delivery: each side flushes, the other absorbs — and the
-    // copy order interleaves both ways across cycles. Convergence rests
-    // on the kernel (VV dedupe + order-free fold), not file ordering.
+    // Shuffled delivery: copies alternate directions across cycles, and
+    // later hops carry each side's MERGED log. Convergence rests on the
+    // kernel (VV dedupe + order-free fold), not file ordering.
     await a.sync(); // A flushes its roster file.
     providerB.files[fileOf('device-a')] =
-        providerA.files[fileOf('device-a')]!;
-    await a.sync(); // A absorbs B's (delivered out of order → empty yet).
+        providerA.files[fileOf('device-a')]!; // A's ops reach B.
+    await b.sync(); // B flushes, then absorbs A's ops.
+    providerA.files[fileOf('device-b')] =
+        providerB.files[fileOf('device-b')]!; // B's (merged) file → A.
+    await a.sync(); // A absorbs B's merged log.
+    providerB.files[fileOf('device-a')] =
+        providerA.files[fileOf('device-a')]!; // A's merged file → B.
+    await b.sync();
+    await a.sync(); // One extra cycle both ways: nothing changes.
     providerA.files[fileOf('device-b')] =
         providerB.files[fileOf('device-b')]!;
-    await b.sync(); // B flushes, then absorbs A's.
-    providerB.files[fileOf('device-a')] =
-        providerA.files[fileOf('device-a')]!;
-    await b.sync();
     await a.sync();
 
-    final namesOf = (final ActorRoster roster) =>
+    List<String> namesOf(final ActorRoster roster) =>
         roster.all.map((final p) => '${p.actorId}:${p.displayName}').toList();
     expect(namesOf(rosterA), containsAll(<String>['afm:AFM Coder', 'pi:pi']));
     expect(namesOf(rosterB), containsAll(<String>['afm:AFM Coder', 'pi:pi']));
@@ -288,8 +292,8 @@ void main() {
     expect(rosterB.contains('afm'), isFalse); // Tombstone won.
   });
 
-  test('presence join/ping/leave between two signed services — both '
-      'sides\' folds agree', () async {
+  test('presence join/ping/leave between two signed services — '
+      'folds agree on both sides', () async {
     final hub = _FakeHub();
     final endpointA = hub.endpoint('device-a');
     final endpointB = hub.endpoint('device-b');
@@ -316,11 +320,8 @@ void main() {
     await b.notifyPresenceActivity(_docId);
     await _settle();
 
-    final foldOf = (final MeshStorageService service) =>
-        service
-            .presence(_docId)
-            .map((final entry) => entry.peerId)
-            .toSet();
+    Set<String> foldOf(final MeshStorageService service) =>
+        service.presence(_docId).map((final entry) => entry.peerId).toSet();
     expect(foldOf(a), {'device-a', 'device-b'});
     expect(foldOf(b), {'device-a', 'device-b'});
     // Every observed frame verified against the registered peer key.

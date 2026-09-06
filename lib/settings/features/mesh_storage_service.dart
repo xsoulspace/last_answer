@@ -62,6 +62,7 @@ final class MeshStorageService {
   AddressedRelayClient? _transport;
 
   SimpleKeyPair? _identityKeyPair;
+  Future<SimpleKeyPair>? _identityFuture;
   MeshPairingSession? _advertisement;
 
   /// Last transport failure, surfaced for status lines / debugging.
@@ -83,9 +84,10 @@ final class MeshStorageService {
   final Set<String> _presenceDocs = {};
   MeshPresenceTracker? _presenceTracker;
   MeshFrameAuthenticator? _presenceAuthenticator;
-  EphemeralFrameTransport? _presenceTransport;
+  _PresenceLink? _presenceLink;
   AddressedRelayEphemeralTransport? _relayPresenceTransport;
   StreamSubscription<EphemeralLinkState>? _presenceLinkSub;
+  Future<void>? _presenceOpening;
   var _ownsPresenceTransport = false;
 
   // -- Roster riding the mesh as durable ops (ADR 0007 §1) ---------------
@@ -137,6 +139,7 @@ final class MeshStorageService {
       );
       try {
         transport = await _openClient(selfId: peerId, endpoint: relayEndpoint);
+        service._transport = transport;
         provider.attachTransport(transport);
         service._attachRelayPresenceLink(transport);
       } on Exception catch (error) {
@@ -300,9 +303,9 @@ final class MeshStorageService {
   /// otherwise the doc stays queued and joins on the next (re)connect.
   Future<void> joinDoc(final String docId) async {
     _presenceDocs.add(docId);
-    final transport = _presenceTransport;
-    if (transport != null &&
-        transport.connectionState == EphemeralLinkState.connected) {
+    final link = _presenceLink;
+    if (link != null &&
+        link.connectionState == EphemeralLinkState.connected) {
       await _openPresenceSessions();
     }
   }
@@ -393,23 +396,22 @@ final class MeshStorageService {
   }
 
   void _startPresenceLink(
-    final EphemeralFrameTransport transport, {
+    final EphemeralFrameTransport inner, {
     required final bool ownedByService,
   }) {
     unawaited(_stopPresenceLink(sendLeaves: false));
     _presenceTracker ??= MeshPresenceTracker(actorId: selfId);
     _presenceAuthenticator ??= MeshFrameAuthenticator();
     _seedAuthenticatorFromPeers();
-    _presenceTransport = transport;
+    final link = _PresenceLink(inner);
+    _presenceLink = link;
     _ownsPresenceTransport = ownedByService;
     _relayPresenceTransport =
-        ownedByService && transport is AddressedRelayEphemeralTransport
-            ? transport
+        ownedByService && inner is AddressedRelayEphemeralTransport
+            ? inner
             : null;
-    _presenceLinkSub = transport.connectionChanges.listen(
-      _onPresenceLinkChanged,
-    );
-    if (transport.connectionState == EphemeralLinkState.connected) {
+    _presenceLinkSub = link.connectionChanges.listen(_onPresenceLinkChanged);
+    if (link.connectionState == EphemeralLinkState.connected) {
       unawaited(_openPresenceSessions());
     }
   }
@@ -426,12 +428,35 @@ final class MeshStorageService {
     }
   }
 
-  Future<void> _openPresenceSessions() async {
-    final transport = _presenceTransport;
+  /// Serialized: concurrent triggers (attach-time connect, link
+  /// recovery, [joinDoc]) share ONE open cycle — a caller must never
+  /// observe a half-opened session, and the containsKey guard alone
+  /// cannot provide that (a second call would sail past a session whose
+  /// [MeshPresenceSession.open] is still in flight). The cycle never
+  /// throws: presence is best-effort observation, and a cycle killed by
+  /// a link replacement is simply re-run by the next connect event.
+  Future<void> _openPresenceSessions() {
+    final inFlight = _presenceOpening;
+    if (inFlight != null) return inFlight;
+    final cycle = _openPresenceSessionsNow()
+        .catchError((final Object _) {
+          // Link replaced or transport gone mid-cycle.
+        })
+        .whenComplete(() => _presenceOpening = null);
+    _presenceOpening = cycle;
+    return cycle;
+  }
+
+  Future<void> _openPresenceSessionsNow() async {
+    final link = _presenceLink;
     final authenticator = _presenceAuthenticator;
-    if (transport == null || authenticator == null) return;
+    if (link == null || authenticator == null) return;
+    final transport = link;
     final signer = MeshFrameSigner(identityKeyPair: await _ensureIdentity());
     for (final docId in _presenceDocs) {
+      if (!identical(_presenceLink, link)) {
+        return; // Link replaced mid-cycle — the next connect event reruns.
+      }
       if (_presenceSessions.containsKey(docId)) continue;
       final session = MeshPresenceSession(
         transport: transport,
@@ -464,24 +489,30 @@ final class MeshStorageService {
   }
 
   Future<void> _stopPresenceLink({required final bool sendLeaves}) async {
-    await _presenceLinkSub?.cancel();
+    // Tear the link down SYNCHRONOUSLY first: a replacement link may
+    // already be attaching by the time the awaits below settle, so every
+    // old-link resource is captured into locals up front and only those
+    // locals are touched afterwards. Cancellation is fire-and-forget:
+    // session callbacks are async-safe across link replacement.
+    unawaited(_presenceLinkSub?.cancel());
     _presenceLinkSub = null;
+    final sessions = List.of(_presenceSessions.values);
+    _presenceSessions.clear();
+    final oldLink = _presenceLink;
+    _presenceLink = null;
+    final oldRelayTransport = _relayPresenceTransport;
+    _relayPresenceTransport = null;
+    final owned = _ownsPresenceTransport;
+    _ownsPresenceTransport = false;
     if (sendLeaves) {
-      final sessions = List.of(_presenceSessions.values);
-      _presenceSessions.clear();
       for (final session in sessions) {
         await _closePresenceSession(session);
       }
-    } else {
-      _presenceSessions.clear();
     }
-    final relayTransport = _relayPresenceTransport;
-    _relayPresenceTransport = null;
-    if (_ownsPresenceTransport && relayTransport != null) {
-      unawaited(relayTransport.dispose());
+    await oldLink?.dispose();
+    if (owned && oldRelayTransport != null) {
+      unawaited(oldRelayTransport.dispose());
     }
-    _presenceTransport = null;
-    _ownsPresenceTransport = false;
   }
 
   // -- Peer frame authentication (ADR 0031 §3) ----------------------------
@@ -512,7 +543,11 @@ final class MeshStorageService {
     required final String peerId,
     required final List<int> identityKey,
   }) => _registerPeerIdentityKey(
-    MeshPeerRecord(peerId: peerId, displayName: peerId, identityKey: identityKey),
+    MeshPeerRecord(
+      peerId: peerId,
+      displayName: peerId,
+      identityKey: identityKey,
+    ),
   );
 
   // -- Roster over storage (ADR 0007 §1, same pattern as the doc-sync
@@ -579,8 +614,83 @@ final class MeshStorageService {
     if (provider is MeshStorageProvider) await provider.dispose();
   }
 
-  Future<SimpleKeyPair> _ensureIdentity() async =>
-      _identityKeyPair ??= await PairingService.newIdentityKeyPair();
+  /// Race-safe: concurrent callers share one key-generation future
+  /// instead of each starting their own (and racing the assignment).
+  Future<SimpleKeyPair> _ensureIdentity() {
+    final existing = _identityKeyPair;
+    if (existing != null) return Future<SimpleKeyPair>.value(existing);
+    return _identityFuture ??= PairingService.newIdentityKeyPair()
+        .then((final keyPair) {
+      _identityKeyPair = keyPair;
+      return keyPair;
+    });
+  }
+}
+
+/// Internal fan-in over the presence link's transport (ADR 0031 §2):
+/// gives every doc session a BROADCAST view of the transport's
+/// one-shot frame stream, so sessions can be closed on connection loss
+/// and re-opened on recovery without exhausting the underlying
+/// transport's single listen. Sends and link state pass straight
+/// through; the wrapper owns only its subscriptions.
+final class _PresenceLink implements EphemeralFrameTransport {
+  _PresenceLink(this._inner) {
+    _framesSub = _inner.frames.listen(_onInnerFrame);
+    _changesSub = _inner.connectionChanges.listen(_changes.add);
+  }
+
+  final EphemeralFrameTransport _inner;
+
+  /// Frames that arrived while NO session was listening (between doc
+  /// sessions, or across a disconnect). Replayed on the next listen —
+  /// the transport contract is "buffered until listened, never dropped"
+  /// and the kernel's op-id dedupe makes replaying stale frames
+  /// harmless.
+  final List<MeshEphemeralFrame> _pending = [];
+
+  late final _frames = StreamController<MeshEphemeralFrame>.broadcast(
+    onListen: _flushPending,
+  );
+  final _changes = StreamController<EphemeralLinkState>.broadcast();
+  StreamSubscription<MeshEphemeralFrame>? _framesSub;
+  StreamSubscription<EphemeralLinkState>? _changesSub;
+
+  void _flushPending() {
+    if (_pending.isEmpty) return;
+    final buffered = List.of(_pending);
+    _pending.clear();
+    buffered.forEach(_frames.add);
+  }
+
+  void _onInnerFrame(final MeshEphemeralFrame frame) {
+    if (_frames.hasListener) {
+      _frames.add(frame);
+    } else {
+      _pending.add(frame);
+    }
+  }
+
+  @override
+  Stream<MeshEphemeralFrame> get frames => _frames.stream;
+
+  @override
+  EphemeralLinkState get connectionState => _inner.connectionState;
+
+  @override
+  Stream<EphemeralLinkState> get connectionChanges => _changes.stream;
+
+  @override
+  Future<void> send(final MeshEphemeralFrame frame) => _inner.send(frame);
+
+  /// Stops consuming the inner transport and closes the broadcast
+  /// streams. Never awaited from teardown paths that must stay
+  /// synchronous-first.
+  Future<void> dispose() async {
+    await _framesSub?.cancel();
+    await _changesSub?.cancel();
+    unawaited(_frames.close());
+    unawaited(_changes.close());
+  }
 }
 
 /// Accepts base64 pairing codes with arbitrary whitespace/newlines and

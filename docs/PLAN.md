@@ -87,21 +87,30 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    - **5b — doc ops over the kernel — ✅ substrate landed, ⬜ wiring open.**
      Landed: `DocReplica` in `packages/headless_core` (LWW fields,
      fractional child order, RGA block text; convergence conformance).
-     Remaining: (a) kernel decision — composite strategy so one document
-     is ONE kernel doc (see history: two-lane deviation); (b) mesh wiring
-     — `DocReplica` ops flowing through `MeshStorageProvider` storage.
-     Gate remains: two devices converge on one doc's transcript and board
-     after reconnect.
+     Decided: kernel composite strategy — one document is ONE kernel doc
+     (infra ADR 0030; per-op tags deferred with a recorded trigger).
+     Remaining: (a) implement `CompositeMergeStrategy` + collapse
+     `DocReplica`'s two lanes into one kernel doc (gate for wiring);
+     (b) mesh wiring — `DocReplica` ops flowing through
+     `MeshStorageProvider` storage. Gate remains: two devices converge on
+     one doc's transcript and board after reconnect.
    - **5c — presence + permission routing — ✅ transport half landed,
      ⬜ product half open.** Landed: `MeshEphemeralFrame` (never
      persisted) + `MeshPresenceTracker` (kernel ephemeral registry).
-     Remaining: (a) presence link topology decision (app-layer channel vs
-     provider-session side-channel); (b) presence `details` reserved-key
-     namespace fix BEFORE product depends on it; (c) remote permission
-     routing + `PERM`-row origin label in the doc surface. Gate remains:
-     two devices, one doc, one workspace, two sessions open, a permission
-     answered from the second device, transcript identical on both, zero
-     new protocol.
+     Decided: shared connection, doc-scoped channels, app-owned session;
+     transport-agnostic presence foundation lives in the mesh package for
+     reuse by ecsly/games (infra ADR 0031); actor identity split from peer
+     identity, roster synced as durable ops ([ADR
+     0007](decisions/0007-actor-roster-and-multiplayer-identity.md)).
+     Remaining, in order: (a) presence foundation in `universal_storage_mesh`
+     — `EphemeralFrameTransport` interface + `MeshPresenceSession`, signed
+     frames bound to peer identity keys, nested `details` wire fix,
+     `PresenceConfig` presets with `ttl = 3 × ping` invariant; (b) actor
+     roster — synced `ActorProfile` ops, PROFILE `ACTORS` section on the
+     grid, actor gutter labels; (c) remote permission routing + `PERM`-row
+     origin label in the doc surface. Gate remains: two devices, one doc,
+     one workspace, two sessions open, a permission answered from the
+     second device, transcript identical on both, zero new protocol.
    - **5d — ecsly-world migration — ✅ ADR + plugin landed (ecsly repo),
      ⬜ bridge open.** Landed: ecsly ADR 0001 +
      `plugins/ecsly_world_sync` (fake-transport gated). Remaining: live
@@ -111,9 +120,8 @@ not canonical data yet. Everything below is ordered; do not skip #1.
      world whose replica converges on two devices via the kernel.
 
    **Kernel decisions this phase pulls (in order):**
-   1. Composite/dispatching strategy (one doc = one `ConvergenceDoc`,
-      one VV, one snapshot/compaction decision) — unblocks 5b wiring;
-      small, property-testable. ADR first.
+   1. Composite/dispatching strategy — ✅ DECIDED (infra ADR 0030);
+      implementation is 5b's next gate.
    2. YATA-style positional text merge (v2 strategy behind the same
       `MergeStrategy` seam) — gated on the co-editing phase, NOT on 5b
       wiring; scheduled, not speculative.

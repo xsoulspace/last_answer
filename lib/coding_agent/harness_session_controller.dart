@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 
 /// One structured beat inside a turn: a tool call the agent made.
@@ -87,6 +88,18 @@ final class HarnessSessionView {
   String? verdictLine;
   bool running = false;
 
+  /// ADR 0006 registry `Actors[]`, roster-backed (ADR 0007 §4): stable,
+  /// syncable ids — display identity resolves through the roster at read
+  /// time ([actors]), so a late-arriving profile lights the row up without
+  /// a registry rewrite.
+  final List<String> actorIds = [];
+
+  /// Resolves [actorIds] through [roster]. Unknown (not yet synced) ids
+  /// are skipped, never guessed — honest surfaces (DESIGN §6).
+  List<ActorProfile> actors(final ActorRoster roster) => [
+    for (final actorId in actorIds) ?roster.get(actorId),
+  ];
+
   bool get hasVerdict => verdictLine != null;
   bool get verdictPassed => verdictLine?.contains('PASS') ?? false;
   HarnessTurn? get openTurn => turns.isEmpty ? null : turns.last;
@@ -113,12 +126,20 @@ final class HarnessWorkspaceView {
 /// `session/request_permission` round-trip ([answerPermission]) — the
 /// controller adds no protocol of its own.
 final class HarnessSessionController extends ChangeNotifier {
-  HarnessSessionController({required HarnessHostConfig config})
-    : _config = config,
-      host = HarnessHost(config: config);
+  HarnessSessionController({
+    required HarnessHostConfig config,
+    final ActorRoster? roster,
+  }) : _config = config,
+       roster = roster ?? ActorRoster(replicaId: 'device'),
+       host = HarnessHost(config: config);
 
   HarnessHostConfig _config;
   HarnessHostConfig get config => _config;
+
+  /// ADR 0007 — the actor roster: one durable LWW kernel doc of actor
+  /// identities shared by every session projection. Identity, not
+  /// authority: joining with a profile grants nothing (ADR 0007 §3).
+  final ActorRoster roster;
 
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
@@ -343,6 +364,21 @@ final class HarnessSessionController extends ChangeNotifier {
   /// Selects a session from the list as the current one.
   void selectSession(final HarnessSessionView session) {
     current = session;
+    notifyListeners();
+  }
+
+  /// ADR 0007 — attaches a roster actor to a session projection (the
+  /// registry's `Actors[]`). Data-first: an id the roster does not (yet)
+  /// know still attaches — it renders once the roster resolves it.
+  void attachActor(final HarnessSessionView session, final String actorId) {
+    if (actorId.isEmpty || session.actorIds.contains(actorId)) return;
+    session.actorIds.add(actorId);
+    notifyListeners();
+  }
+
+  /// Detaches a roster actor from a session projection.
+  void detachActor(final HarnessSessionView session, final String actorId) {
+    if (!session.actorIds.remove(actorId)) return;
     notifyListeners();
   }
 

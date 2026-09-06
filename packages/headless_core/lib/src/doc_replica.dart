@@ -15,41 +15,39 @@ import 'fractional_order.dart';
 /// - Block text (incl. streamed agent text) → RGA `k: 'text/<blockId>'`
 ///   via `RgaTextStrategy`.
 ///
-/// One document = one [DocReplica]. The LWW namespace and the RGA
-/// namespace fold in two sibling kernel `ConvergenceDoc`s sharing the
-/// document id: `ConvergenceDoc` fixes a single merge strategy and its
-/// serialization registry (`ConvergenceDoc.strategyFor`) knows only
-/// kernel-registered strategies, so a composite dispatching strategy would
-/// break the kernel `fromJson` round-trip. [applyRemote] routes incoming
-/// ops by payload key prefix; a shared HLC watermark (fed through the
-/// kernel's `lastIssued` seam) keeps op ids unique across both docs.
+/// One document = ONE [ConvergenceDoc] with the kernel's
+/// `CompositeMergeStrategy` (ADR 0030 §1): the lane map is part of the
+/// composite's wire-stable registry name, so `ConvergenceDoc.fromJson`
+/// restores the full document without parent-side routing. Anti-entropy
+/// (version vector, `opsSince`, `needsSnapshotFor`, snapshots,
+/// compaction) is per-kernel-doc and therefore trivially per-document —
+/// one VV, one op log, one snapshot decision.
 ///
-/// last_answer never merges by hand: fold, ordering, dedupe, and
-/// serialization are entirely kernel-owned (ADR 0011 sub-star discipline).
+/// last_answer never merges by hand: fold, ordering, dedupe, lane
+/// dispatch, and serialization are entirely kernel-owned (ADR 0011
+/// sub-star discipline).
 final class DocReplica {
   DocReplica({required this.nodeId, required this.actorId})
-    : _meta = ConvergenceDoc(docId: nodeId.value, actorId: actorId),
-      _text = ConvergenceDoc(
+    : _doc = ConvergenceDoc(
         docId: nodeId.value,
         actorId: actorId,
-        strategy: const RgaTextStrategy(),
+        strategy: _lanes,
       );
 
-  DocReplica._(this._meta, this._text)
-    : nodeId = NodeId(_meta.docId),
-      actorId = _meta.actorId;
+  DocReplica._(this._doc)
+    : nodeId = NodeId(_doc.docId),
+      actorId = _doc.actorId;
 
-  /// Restores both kernel docs through `ConvergenceDoc.fromJson` plus the
-  /// shared HLC watermark, so a restored replica keeps issuing strictly
-  /// increasing op ids across both docs even on a frozen wall clock.
+  /// Restores the kernel doc through `ConvergenceDoc.fromJson` — the
+  /// composite lane map comes back from the strategy registry name, no
+  /// parent-side re-routing (ADR 0030 §1). The HLC receive watermark is
+  /// recomputed from the restored doc so local ops issued after the
+  /// restore keep ordering after every pre-restore op.
   factory DocReplica.fromJson(final Map<String, dynamic> json) {
-    final meta = ConvergenceDoc.fromJson(
-      Map<String, dynamic>.from(json['meta'] as Map<dynamic, dynamic>),
+    final doc = ConvergenceDoc.fromJson(
+      Map<String, dynamic>.from(json['doc'] as Map<dynamic, dynamic>),
     );
-    final text = ConvergenceDoc.fromJson(
-      Map<String, dynamic>.from(json['text'] as Map<dynamic, dynamic>),
-    );
-    final replica = DocReplica._(meta, text);
+    final replica = DocReplica._(doc);
     Hlc? last = json['last_issued'] == null
         ? null
         : Hlc.fromJson(
@@ -57,6 +55,10 @@ final class DocReplica {
               json['last_issued'] as Map<dynamic, dynamic>,
             ),
           );
+    final vvWatermark = doc.vv[replica.actorId];
+    if (vvWatermark != null && (last == null || vvWatermark > last)) {
+      last = vvWatermark;
+    }
     for (final op in replica.pendingOps) {
       if (op.actorId != replica.actorId) continue;
       if (last == null || op.hlc > last) last = op.hlc;
@@ -65,24 +67,33 @@ final class DocReplica {
     return replica;
   }
 
-  /// Key namespace for node/block field registers (LWW map).
+  /// Lane map for document ops (ADR 0030 §1): LWW lanes for node fields
+  /// and fractional child order, RGA lane for block text.
+  static final CompositeMergeStrategy _lanes = CompositeMergeStrategy({
+    'node/': const LwwMapStrategy(),
+    'order/': const LwwMapStrategy(),
+    'text/': const RgaTextStrategy(),
+  });
+
+  /// Key namespace for node/block field registers (LWW map lane).
   static const String nodeKeyPrefix = 'node/';
 
-  /// Key namespace for fractional child order registers (LWW map).
+  /// Key namespace for fractional child order registers (LWW map lane).
   static const String orderKeyPrefix = 'order/';
 
-  /// Key namespace for block text sequences (RGA).
+  /// Key namespace for block text sequences (RGA lane).
   static const String textKeyPrefix = 'text/';
 
-  /// Kernel replica for LWW data: node fields and fractional child order.
-  final ConvergenceDoc _meta;
+  /// The ONE kernel replica for the whole document (ADR 0030 §1):
+  /// composite strategy, one version vector, one op log, one snapshot.
+  final ConvergenceDoc _doc;
 
-  /// Kernel replica for RGA block text sequences.
-  final ConvergenceDoc _text;
-
-  /// Highest HLC issued across BOTH kernel docs — passed into every
-  /// `applyLocal` so the two docs never reuse a tick and op ids (derived
-  /// from `docId#wall#counter#actor`) stay unique per document.
+  /// Highest HLC issued or causally received by THIS replica. With one
+  /// kernel doc, op-id uniqueness is kernel-owned; this watermark now
+  /// serves only the HLC receive rule (causality): local ops issued after
+  /// folding remote ones must order after them, even on a frozen wall
+  /// clock — fed back into `applyLocal` via the kernel's `lastIssued`
+  /// seam.
   Hlc? _lastIssued;
 
   /// The document this replica projects.
@@ -179,7 +190,7 @@ final class DocReplica {
   /// stay until their own ops say otherwise; the projection drops the
   /// block as soon as its order entry is gone.
   List<OpRecord> removeBlock(final NodeId blockId, {final DateTime? now}) {
-    final op = _meta.applyLocal(
+    final op = _doc.applyLocal(
       {'k': _orderKey(nodeId, blockId), 'del': true},
       now ?? DateTime.now(),
       lastIssued: _lastIssued,
@@ -254,7 +265,7 @@ final class DocReplica {
     if (offset < 0 || offset + length > ids.length) {
       throw RangeError.range(offset + length, 0, ids.length, 'offset + length');
     }
-    final op = _text.applyLocal(
+    final op = _doc.applyLocal(
       {'k': _textKey(blockId), 'del': ids.sublist(offset, offset + length)},
       now ?? DateTime.now(),
       lastIssued: _lastIssued,
@@ -267,24 +278,12 @@ final class DocReplica {
   // Remote delivery & projection
   // ---------------------------------------------------------------------------
 
-  /// Folds remote ops into the owning kernel doc, routed by payload key
-  /// prefix (`text/…` → RGA doc, everything else → LWW doc). Idempotent
-  /// and delivery-order independent per the kernel contract. Returns how
-  /// many ops were newly applied.
+  /// Folds remote ops into the ONE kernel doc — lane dispatch happens
+  /// inside the composite strategy by key prefix, not here (ADR 0030 §1).
+  /// Idempotent and delivery-order independent per the kernel contract.
+  /// Returns how many ops were newly applied.
   int applyRemote(final Iterable<OpRecord> ops, {final DateTime? now}) {
-    final textOps = <OpRecord>[];
-    final metaOps = <OpRecord>[];
-    for (final op in ops) {
-      final k = op.payload['k'];
-      if (k is String && k.startsWith(textKeyPrefix)) {
-        textOps.add(op);
-      } else {
-        metaOps.add(op);
-      }
-    }
-    var applied = 0;
-    if (metaOps.isNotEmpty) applied += _meta.applyRemote(metaOps, now: now);
-    if (textOps.isNotEmpty) applied += _text.applyRemote(textOps, now: now);
+    final applied = _doc.applyRemote(ops, now: now);
     if (applied > 0) _absorbRemoteClock(ops, now: now);
     return applied;
   }
@@ -308,11 +307,12 @@ final class DocReplica {
     _observeIssued(base.receive(maxRemote, now ?? DateTime.now()));
   }
 
-  /// Rebuilds the document projection from folded kernel state.
+  /// Rebuilds the document projection from the folded kernel state.
   /// Deterministic: blocks in fractional-key order with ties broken by
   /// block id (concurrent writers landing the same key still converge to
   /// one projection), text via the kernel RGA traversal.
   DocumentNode document() {
+    final state = _doc.state;
     final blockIds = orderedChildren(nodeId.value);
     final blocks = <Block>[];
     for (final blockId in blockIds) {
@@ -326,7 +326,7 @@ final class DocReplica {
             BlockType.values,
             orElse: BlockType.paragraph,
           ),
-          content: RgaTextStrategy.readText(_text.state, _textKey(id)) ?? '',
+          content: RgaTextStrategy.readText(state, _textKey(id)) ?? '',
           level: _intField(id, 'level'),
           role: _optionalEnumField(id, 'role', ChatRole.values),
           messageId: _field(id, 'messageId'),
@@ -371,14 +371,14 @@ final class DocReplica {
 
   /// Visible text of [blockId]; empty when the block has no RGA state.
   String blockText(final NodeId blockId) =>
-      RgaTextStrategy.readText(_text.state, _textKey(blockId)) ?? '';
+      RgaTextStrategy.readText(_doc.state, _textKey(blockId)) ?? '';
 
   /// Child ids of [parentId] ordered by fractional key (ties broken by
   /// child id). [parentId] is the plain id string (`nodeId.value`).
   List<String> orderedChildren(final String parentId) {
     final prefix = '$orderKeyPrefix$parentId/';
     final entries = <(String, String)>[];
-    final state = _meta.state;
+    final state = _doc.state;
     for (final key in state.keys) {
       if (!key.startsWith(prefix)) continue;
       final value = LwwMapStrategy.readValue(state, key);
@@ -396,29 +396,26 @@ final class DocReplica {
   /// The fractional key currently registered for [childId] under
   /// [parentId]; null when absent or tombstoned.
   String? orderKeyOf(final NodeId parentId, final NodeId childId) =>
-      LwwMapStrategy.readValue(_meta.state, _orderKey(parentId, childId));
+      LwwMapStrategy.readValue(_doc.state, _orderKey(parentId, childId));
 
   // ---------------------------------------------------------------------------
   // Introspection / persistence
   // ---------------------------------------------------------------------------
 
-  /// Ops pending delta-shipping in both kernel docs.
-  List<OpRecord> get pendingOps => [..._meta.pendingOps, ..._text.pendingOps];
+  /// Ops pending delta-shipping in the kernel doc (all lanes).
+  List<OpRecord> get pendingOps => _doc.pendingOps;
 
-  /// Version vector of the LWW kernel doc (anti-entropy header half 1).
-  VersionVector get metaVersionVector => _meta.vv;
+  /// THE version vector of the document's kernel doc — one anti-entropy
+  /// header for every lane (ADR 0030 §1).
+  VersionVector get versionVector => _doc.vv;
 
-  /// Version vector of the RGA kernel doc (anti-entropy header half 2).
-  VersionVector get textVersionVector => _text.vv;
-
-  /// Full serialization for durable local persistence; both kernel docs
-  /// serialize through the kernel (`ConvergenceDoc.toJson`).
+  /// Full serialization for durable local persistence; the kernel doc
+  /// serializes through the kernel (`ConvergenceDoc.toJson`), carrying
+  /// the composite lane map in its registry name.
   Map<String, dynamic> toJson() => {
     'doc_id': nodeId.value,
     'actor_id': actorId,
-    if (_lastIssued != null) 'last_issued': _lastIssued!.toJson(),
-    'meta': _meta.toJson(),
-    'text': _text.toJson(),
+    'doc': _doc.toJson(),
   };
 
   // ---------------------------------------------------------------------------
@@ -439,7 +436,7 @@ final class DocReplica {
   ) => _issueMeta(_nodeKey(blockId, name), value, at);
 
   OpRecord _issueMeta(final String key, final String value, final DateTime at) {
-    final op = _meta.applyLocal(
+    final op = _doc.applyLocal(
       {'k': key, 'v': value},
       at,
       lastIssued: _lastIssued,
@@ -454,7 +451,7 @@ final class DocReplica {
     required final String? after,
     required final DateTime at,
   }) {
-    final op = _text.applyLocal(
+    final op = _doc.applyLocal(
       {'k': _textKey(blockId), 'after': after, 'text': text},
       at,
       lastIssued: _lastIssued,
@@ -541,7 +538,7 @@ final class DocReplica {
   /// the conformance tests cross-check this against `RgaTextStrategy
   /// .readText` via [blockText].
   List<String> _visibleElementIds(final NodeId blockId) {
-    final raw = _text.state[_textKey(blockId)];
+    final raw = _doc.state[_textKey(blockId)];
     if (raw is! Map) return const [];
     final nodesRaw = raw['nodes'];
     if (nodesRaw is! Map) return const [];
@@ -600,7 +597,7 @@ final class DocReplica {
   String? _docField(final String name) => _field(nodeId, name);
 
   String? _field(final NodeId id, final String name) =>
-      LwwMapStrategy.readValue(_meta.state, _nodeKey(id, name));
+      LwwMapStrategy.readValue(_doc.state, _nodeKey(id, name));
 
   int? _intField(final NodeId id, final String name) {
     final raw = _field(id, name);

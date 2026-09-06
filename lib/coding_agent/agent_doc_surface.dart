@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 
@@ -393,6 +394,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           transcriptTail: current?.transcript.toString() ?? '',
           turnCount: current?.turns.length ?? 0,
           lastGuidance: lastGuidance,
+          actors: controller.roster.all,
+          sessionActors: {
+            for (final session in controller.sessions)
+              '${session.viewId}': List.of(session.actorIds),
+          },
         );
         return ColoredBox(
           color: theme.colorScheme.surface,
@@ -1271,16 +1277,66 @@ class _Composer extends StatelessWidget {
 
 /// PROFILE — the honest profiler pane: what the host truly observes.
 /// Context load (per-turn spend from the verdict line), permission log,
-/// sessions. Small multiples, monospace, no axes, no boxes.
-class _ProfilePane extends StatelessWidget {
+/// sessions, actors. Small multiples, monospace, no axes, no boxes.
+class _ProfilePane extends StatefulWidget {
   const _ProfilePane({required this.controller});
 
   final HarnessSessionController controller;
 
   @override
+  State<_ProfilePane> createState() => _ProfilePaneState();
+}
+
+class _ProfilePaneState extends State<_ProfilePane> {
+  final _nameField = TextEditingController();
+  final _brainField = TextEditingController();
+  final _roleField = TextEditingController();
+  ActorKind _kind = ActorKind.model;
+  bool _adding = false;
+
+  @override
+  void dispose() {
+    _nameField.dispose();
+    _brainField.dispose();
+    _roleField.dispose();
+    super.dispose();
+  }
+
+  /// Commits the in-flow add. Validation happens HERE — the action path —
+  /// never as build-time field state (DESIGN forbidden list). Empty name
+  /// simply does nothing; the form stays open.
+  void _commit() {
+    final name = _nameField.text.trim();
+    if (name.isEmpty) return;
+    final roster = widget.controller.roster;
+    roster.upsert(
+      ActorProfile(
+        actorId: roster.newActorId(name),
+        displayName: name,
+        kind: _kind,
+        brainRef: _brainField.text.trim(),
+        role: _roleField.text.trim(),
+      ),
+    );
+    _closeForm();
+  }
+
+  void _closeForm() {
+    _nameField.clear();
+    _brainField.clear();
+    _roleField.clear();
+    setState(() {
+      _kind = ActorKind.model;
+      _adding = false;
+    });
+  }
+
+  @override
   Widget build(final BuildContext context) {
+    final controller = widget.controller;
     final theme = Theme.of(context);
     final current = controller.current;
+    final roster = controller.roster;
     final turns = current?.turns ?? const <HarnessTurn>[];
     var totalDecisions = 0;
     var totalTokens = 0;
@@ -1361,7 +1417,7 @@ class _ProfilePane extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            for (final session in controller.workspaces[i].sessions)
+            for (final session in controller.workspaces[i].sessions) ...[
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: InkWell(
@@ -1378,6 +1434,24 @@ class _ProfilePane extends StatelessWidget {
                   ),
                 ),
               ),
+              // ADR 0007 §4 — session rows list their actors: the
+              // registry's `Actors[]` resolved through the roster, as the
+              // small-caps gutter vocabulary (DESIGN §9). No avatars.
+              if (session.actors(roster) case final actors
+                  when actors.isNotEmpty)
+                Padding(
+                  key: Key('coding_agent.session.${session.viewId}.actors'),
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Text(
+                    '    ${actors.map((final a) => a.gutterLabel).join('  ')}',
+                    style: _label(theme).copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
               child: InkWell(
@@ -1395,6 +1469,244 @@ class _ProfilePane extends StatelessWidget {
               ),
             ),
           ],
+          const SizedBox(height: 14),
+          // ADR 0007 §4 — the ACTORS section: roster entries as small
+          // multiples on the grid (small-caps name = the gutter label,
+          // kind · brain · role in mono). Add/remove in flow — no cards,
+          // no chips, no forms-as-pages (DESIGN §4).
+          Text('ACTORS', style: _label(theme)),
+          const SizedBox(height: 6),
+          if (roster.isEmpty && !_adding) ...[
+            Text(
+              'no actors yet. two steps:',
+              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+            ),
+            Text(
+              '1. add an actor — a model, an agent runtime, or yourself.',
+              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+            ),
+            Text(
+              '2. actors recur across sessions; their names join the '
+              'gutter labels.',
+              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ],
+          for (final profile in roster.all)
+            _ActorRow(
+              profile: profile,
+              onRemove: () {
+                roster.remove(profile.actorId);
+                setState(() {});
+              },
+            ),
+          if (_adding) ...[
+            _ActorFieldRow(
+              label: 'NAME',
+              fieldKey: const Key('coding_agent.actors.name'),
+              controller: _nameField,
+              hint: 'display name',
+              onCommit: _commit,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 64,
+                    child: Text('KIND', style: _label(theme)),
+                  ),
+                  _TextToggle(
+                    label: 'model',
+                    active: _kind == ActorKind.model,
+                    onTap: () => setState(() => _kind = ActorKind.model),
+                    toggleKey: const Key('coding_agent.actors.kind.model'),
+                  ),
+                  const SizedBox(width: 6),
+                  _TextToggle(
+                    label: 'agent',
+                    active: _kind == ActorKind.agent,
+                    onTap: () => setState(() => _kind = ActorKind.agent),
+                    toggleKey: const Key('coding_agent.actors.kind.agent'),
+                  ),
+                  const SizedBox(width: 6),
+                  _TextToggle(
+                    label: 'human',
+                    active: _kind == ActorKind.human,
+                    onTap: () => setState(() => _kind = ActorKind.human),
+                    toggleKey: const Key('coding_agent.actors.kind.human'),
+                  ),
+                ],
+              ),
+            ),
+            _ActorFieldRow(
+              label: 'BRAIN',
+              fieldKey: const Key('coding_agent.actors.brain'),
+              controller: _brainField,
+              hint: 'backend / model identity',
+              onCommit: _commit,
+            ),
+            _ActorFieldRow(
+              label: 'ROLE',
+              fieldKey: const Key('coding_agent.actors.role'),
+              controller: _roleField,
+              hint: 'role — e.g. coder',
+              onCommit: _commit,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 2, bottom: 2),
+              child: Row(
+                children: [
+                  InkWell(
+                    key: const Key('coding_agent.actors.confirm'),
+                    onTap: _commit,
+                    child: Text('[add]', style: _mono(theme)),
+                  ),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    key: const Key('coding_agent.actors.cancel'),
+                    onTap: _closeForm,
+                    child: Text(
+                      '[cancel]',
+                      style: _mono(
+                        theme,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ] else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2),
+              child: InkWell(
+                key: const Key('coding_agent.actors.add'),
+                onTap: () => setState(() => _adding = true),
+                child: Text(
+                  '+ add actor',
+                  style: _mono(
+                    theme,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One roster entry — the small multiple: the gutter-vocabulary name,
+/// the kind · brain · role line, and a quiet in-flow remove.
+class _ActorRow extends StatelessWidget {
+  const _ActorRow({required this.profile, required this.onRemove});
+
+  final ActorProfile profile;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final detail = [
+      if (profile.brainRef.isNotEmpty) profile.brainRef,
+      if (profile.role.isNotEmpty) profile.role,
+    ].join(' · ');
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  profile.gutterLabel,
+                  key: Key('coding_agent.actors.${profile.actorId}'),
+                  style: _label(theme).copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              InkWell(
+                key: Key('coding_agent.actors.${profile.actorId}.remove'),
+                onTap: onRemove,
+                child: Text(
+                  '[remove]',
+                  style: _mono(
+                    theme,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            detail.isEmpty
+                ? profile.kind.name
+                : '${profile.kind.name} · $detail',
+            style: _mono(theme),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One inline add-form row: small-caps label column + hairline-underline
+/// field (same discipline as SETUP). ⏎ commits.
+class _ActorFieldRow extends StatelessWidget {
+  const _ActorFieldRow({
+    required this.label,
+    required this.fieldKey,
+    required this.controller,
+    required this.hint,
+    required this.onCommit,
+  });
+
+  final String label;
+  final Key fieldKey;
+  final TextEditingController controller;
+  final String hint;
+  final VoidCallback onCommit;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final underline = UnderlineInputBorder(
+      borderSide: BorderSide(color: theme.dividerColor),
+      borderRadius: BorderRadius.zero,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          SizedBox(width: 64, child: Text(label, style: _label(theme))),
+          Expanded(
+            child: TextField(
+              key: fieldKey,
+              controller: controller,
+              style: _mono(theme, color: theme.colorScheme.onSurface),
+              onSubmitted: (_) => onCommit(),
+              decoration: InputDecoration(
+                isDense: true,
+                hintText: hint,
+                hintStyle: _mono(theme, color: theme.colorScheme.outline),
+                enabledBorder: underline,
+                focusedBorder: underline.copyWith(
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSurface,
+                    width: 0.8,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -1458,6 +1770,8 @@ final class AgentDocDebugState {
     this.transcriptTail = '',
     this.turnCount = 0,
     this.lastGuidance,
+    this.actors = const [],
+    this.sessionActors = const {},
   });
 
   final String docId;
@@ -1483,6 +1797,13 @@ final class AgentDocDebugState {
   /// last turn was not guided).
   final String? lastGuidance;
 
+  /// ADR 0007 — the roster (one state, many projections, DESIGN §5): the
+  /// agent reads the same actor identities the PROFILE pane renders.
+  final List<ActorProfile> actors;
+
+  /// ADR 0006 registry `Actors[]`: session view id → attached actor ids.
+  final Map<String, List<String>> sessionActors;
+
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
@@ -1495,6 +1816,8 @@ final class AgentDocDebugState {
     'verdict': ?verdict,
     'turnCount': turnCount,
     'lastGuidance': ?lastGuidance,
+    'actors': [for (final a in actors) a.toJson()],
+    'sessionActors': sessionActors,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,

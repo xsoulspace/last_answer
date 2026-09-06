@@ -77,6 +77,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
   universal_storage_interface:
     path: ../dart_flutter_packages/pkgs/universal_storage_interface
+  # ADR 0007 — the actor roster syncs as a durable LWW kernel doc
+  # (ConvergenceDoc); the mesh layer attaches to its seams later.
+  universal_storage_convergence:
+    path: ../dart_flutter_packages/pkgs/universal_storage_convergence
   universal_storage_mesh:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh
   universal_storage_mesh_transport:

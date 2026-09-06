@@ -5,6 +5,16 @@ import 'package:headless_core/headless_core.dart';
 import 'package:test/test.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 
+/// DocReplica conformance suite (ADR 0005 §2 op mapping on the ADR 0030 §1
+/// one-kernel-doc composite shape).
+///
+/// One document = ONE `ConvergenceDoc` whose composite strategy dispatches
+/// `node/*` + `order/*` (LWW) and `text/*` (RGA) lanes by key prefix;
+/// anti-entropy is per-document (ONE version vector, ONE op log, ONE
+/// snapshot decision). Convergence guarantees are unchanged: every test
+/// asserting identical projections across delivery orders/batches must
+/// hold exactly as before the collapse.
+
 const _docId = NodeId('doc-1');
 final _now = DateTime.utc(2026, 9, 6, 12);
 final _later = DateTime.utc(2026, 9, 6, 12, 0, 1);
@@ -70,6 +80,46 @@ void main() {
   });
 
   group('DocReplica', () {
+    test('one kernel doc: a single version vector covers every lane', () {
+      final a = _replica('device-a')
+        ..createNode(now: _now)
+        ..addBlock(_para('b1', 'Body'), now: _now)
+        ..placeChild(
+          parentId: _docId,
+          childId: const NodeId('c1'),
+          index: 0,
+          now: _now,
+        );
+
+      // Ops from ALL lanes advance THE one version vector.
+      expect(a.versionVector.actors, ['device-a']);
+      expect(a.pendingOps.length, greaterThanOrEqualTo(6));
+      expect(a.pendingOps.every((op) => op.actorId == 'device-a'), isTrue);
+
+      // A lagging peer is fully covered by that single header — no
+      // half-covered lanes, no parent-side VV merging.
+      final b = _replica('device-b');
+      expect(b.versionVector.actors, isEmpty);
+      _deliver(b, a.pendingOps);
+      expect(b.versionVector.toJson(), a.versionVector.toJson());
+      expect(b.document(), a.document());
+    });
+
+    test("ops matching no lane surface the kernel's named error", () {
+      final replica = _replica('device-a');
+      final foreign = OpRecord(
+        docId: _docId.value,
+        hlc: Hlc(_now.millisecondsSinceEpoch, 0, 'device-x'),
+        payload: const {'k': 'other/namespace/key', 'v': 'x'},
+      );
+      expect(
+        () => replica.applyRemote([foreign], now: _later),
+        throwsA(isA<CompositeLaneMismatchError>()),
+      );
+      // Refused loudly, never folded into a lane or dropped silently.
+      expect(replica.document(), _replica('device-a').document());
+    });
+
     test('local edits fold into the projection immediately', () {
       final doc = _replica('device-a')
         ..createNode(now: _now)

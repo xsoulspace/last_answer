@@ -84,6 +84,28 @@ Every actionable element carries a stable surface key
 renames a key without migrating its tests is a bug. The keys ARE the
 agent's UI contract.
 
+## 9. Multiplayer presence is annotation
+
+Presence extends the existing grid vocabulary; it adds no visual
+machinery.
+
+- Peer identities are **gutter labels**: the role gutter's small-caps
+  vocabulary (`YOU`, `AFM`, `OR`, `SYS`, `PERM`) extends with peer/actor
+  labels (device name, agent name). Same size, same tracking, same
+  rules. No avatars, no colored dots, no presence bars, no toasts.
+- Joins and leaves are **SYS rows on a hairline**, like any system beat.
+  A peer going offline is data, not an alarm.
+- A remote permission request renders **exactly like a local one** — same
+  `PERM` row, same reject-first ordering — plus an origin label in the
+  gutter. Recorded as data on the turn, never dropped (ADR 0005 §5).
+- Connection truth lives on the **status rule** in tabular mono:
+  hosting / connected / peers / last-sync. The status rule remains the
+  one simple place.
+- Live activity (streaming, typing) is a `···` row under the acting
+  peer's gutter label — the existing live-state row, attributed. Nothing
+  that is not observable from the product side is shown (§6 applies to
+  peers as it does to agents).
+
 ## Forbidden (flag as review blockers)
 
 - Material chrome in doc surfaces (cards/chips/segmented controls/

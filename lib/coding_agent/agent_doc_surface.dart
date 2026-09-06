@@ -1341,22 +1341,60 @@ class _ProfilePane extends StatelessWidget {
           const SizedBox(height: 14),
           Text('SESSIONS', style: _label(theme)),
           const SizedBox(height: 6),
-          for (final session in controller.sessions)
+          // ADR 0006 registry on one grid: workspaces as small-caps
+          // section labels, sessions as indented small multiples, a quiet
+          // "+ new" row per workspace. No boxes, no avatars (DESIGN §3/§9).
+          if (controller.workspaces.isEmpty)
+            Text('no workspace bound', style: _mono(theme)),
+          for (var i = 0; i < controller.workspaces.length; i++) ...[
+            Padding(
+              padding: EdgeInsets.only(top: i == 0 ? 0 : 6, bottom: 2),
+              child: Text(
+                controller.workspaces[i].cwd
+                    .split('/')
+                    .where((p) => p.isNotEmpty)
+                    .last
+                    .toUpperCase(),
+                style: _label(theme),
+                key: Key('coding_agent.workspace.$i'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            for (final session in controller.workspaces[i].sessions)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: InkWell(
+                  key: Key('coding_agent.session.${session.viewId}'),
+                  onTap: () => controller.selectSession(session),
+                  child: Text(
+                    '${session == controller.current ? '▸ ' : '  '}'
+                    '${session.id} · '
+                    '${session.turns.length} '
+                    '${session.turns.length == 1 ? 'turn' : 'turns'}',
+                    style: _mono(theme),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
               child: InkWell(
-                key: Key('coding_agent.session.${session.id}'),
-                onTap: () => controller.selectSession(session),
+                key: Key('coding_agent.workspace.$i.new'),
+                onTap: () => unawaited(
+                  controller.openNewSession(controller.workspaces[i].cwd),
+                ),
                 child: Text(
-                  '${session == controller.current ? '▸ ' : '  '}'
-                  '${session.id} · '
-                  '${session.cwd.split('/').where((p) => p.isNotEmpty).last}',
-                  style: _mono(theme),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  '  + new session',
+                  style: _mono(
+                    theme,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
             ),
+          ],
         ],
       ),
     );

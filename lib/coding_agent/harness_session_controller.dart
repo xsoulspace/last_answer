@@ -67,10 +67,20 @@ final class HarnessTurn {
 
 /// One visible harness session: id, delegated workspace, the streamed
 /// transcript, structured turns, and the latest surfaced verdict.
+///
+/// A session is a TRANSCRIPT PROJECTION onto the workspace's world, not
+/// the world itself (ADR 0006): several sessions may sit on one workspace
+/// — one world, one daemon — and each carries its own turn stream.
+/// [viewId] is projection-local (unique per view even when two views
+/// share the host's per-workspace session id); [id] is the host session.
 final class HarnessSessionView {
-  HarnessSessionView({required this.id, required this.cwd});
+  HarnessSessionView({required this.id, required this.cwd})
+    : viewId = _nextViewId++;
+
+  static int _nextViewId = 1;
 
   final String id;
+  final int viewId;
   final String cwd;
   final StringBuffer transcript = StringBuffer();
   final List<HarnessTurn> turns = [];
@@ -82,8 +92,21 @@ final class HarnessSessionView {
   HarnessTurn? get openTurn => turns.isEmpty ? null : turns.last;
 }
 
-/// The UI-facing state over one [HarnessHost]: session list, streamed
-/// progress, pending permission round-trips, and surfaced verdicts.
+/// One bound workspace in the session registry (ADR 0006):
+/// `Workspace (≤1 world/daemon) → Sessions[] → Actors[]`. The backend
+/// keys sessions per cwd — a second `session/new` for the same workspace
+/// CONTINUES the live world — so every session listed here is a
+/// projection on one single-writer world.
+final class HarnessWorkspaceView {
+  HarnessWorkspaceView({required this.cwd});
+
+  final String cwd;
+  final List<HarnessSessionView> sessions = [];
+}
+
+/// The UI-facing state over one [HarnessHost]: the workspace-aware session
+/// registry, streamed progress, pending permission round-trips, and
+/// surfaced verdicts.
 ///
 /// The user is an actor in the world: their task inputs are host-injected
 /// decisions ([delegate]), their approvals ride the existing
@@ -101,7 +124,20 @@ final class HarnessSessionController extends ChangeNotifier {
   /// snapshot stores make the world survive the restart — R7c).
   HarnessHost host;
 
-  final List<HarnessSessionView> sessions = [];
+  /// ADR 0006 registry: workspaces (each with ≤1 world) and their
+  /// session projections. Several sessions per workspace are legal;
+  /// the world stays single-writer by backend construction.
+  final List<HarnessWorkspaceView> workspaces = [];
+
+  /// Flat view over all sessions (workspace order preserved). Kept for
+  /// consumers that do not care about grouping; the profile pane renders
+  /// the grouped registry.
+  Iterable<HarnessSessionView> get sessions sync* {
+    for (final workspace in workspaces) {
+      yield* workspace.sessions;
+    }
+  }
+
   HarnessSessionView? current;
   PendingPermission? pendingPermission;
   String? error;
@@ -155,14 +191,15 @@ final class HarnessSessionController extends ChangeNotifier {
     _permissionSub = null;
     pendingPermission = null;
     current = null;
-    sessions.clear();
+    workspaces.clear();
     final oldHost = host;
     host = HarnessHost(config: config);
     unawaited(oldHost.stop());
     notifyListeners();
   }
 
-  /// Creates (or resumes) the session for [cwd] and selects it.
+  /// Creates (or resumes) the first session projection for [cwd] and
+  /// selects it. The world for [cwd] is continued, never duplicated.
   Future<void> createSession(final String cwd) async {
     await ensureStarted();
     if (error != null) {
@@ -171,13 +208,61 @@ final class HarnessSessionController extends ChangeNotifier {
     }
     try {
       final id = await host.newSession(cwd);
-      final existing = sessions.where((s) => s.id == id).firstOrNull;
-      current = existing ?? HarnessSessionView(id: id, cwd: cwd);
-      if (existing == null) sessions.add(current!);
+      _adoptSession(cwd, id);
     } on Object catch (e) {
       error = '$e';
     }
     notifyListeners();
+  }
+
+  /// ADR 0006 — opens a NEW session projection on [cwd]'s world. Several
+  /// sessions per workspace are legal; the world (and its daemon) stays
+  /// single-writer. World-level effects (cancel, world state) are shared
+  /// across projections on the same workspace — recorded honestly, never
+  /// hidden.
+  Future<void> openNewSession(final String cwd) async {
+    await ensureStarted();
+    if (error != null) {
+      notifyListeners();
+      return;
+    }
+    try {
+      final id = await host.newSession(cwd);
+      _adoptSession(cwd, id, forceNew: true);
+    } on Object catch (e) {
+      error = '$e';
+    }
+    notifyListeners();
+  }
+
+  HarnessWorkspaceView _workspace(final String cwd) {
+    for (final workspace in workspaces) {
+      if (workspace.cwd == cwd) return workspace;
+    }
+    final workspace = HarnessWorkspaceView(cwd: cwd);
+    workspaces.add(workspace);
+    return workspace;
+  }
+
+  HarnessSessionView _adoptSession(
+    final String cwd,
+    final String id, {
+    final bool forceNew = false,
+  }) {
+    final workspace = _workspace(cwd);
+    if (!forceNew) {
+      final existing = workspace.sessions
+          .where((final s) => s.id == id)
+          .firstOrNull;
+      if (existing != null) {
+        current = existing;
+        return existing;
+      }
+    }
+    final view = HarnessSessionView(id: id, cwd: cwd);
+    workspace.sessions.add(view);
+    current = view;
+    return view;
   }
 
   /// Delegates a task sentence to [session] (default: the current one) as a

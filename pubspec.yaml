@@ -137,6 +137,13 @@ dev_dependencies:
 
   web: any
 dependency_overrides:
+  # Bootstrap (ADR-0010): oka_core/oka_android are not yet on pub.dev —
+  # resolve the split packages from the local oka checkout. Remove these
+  # overrides once oka_core/oka_android are published.
+  oka_android:
+    path: ../../oka/packages/oka_android
+  oka_core:
+    path: ../../oka/packages/oka_core
   ecsly:
     path: /Users/antonio/xs/ecsly/core_packages/ecsly
   dart_acp_toolkit:

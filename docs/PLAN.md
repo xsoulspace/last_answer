@@ -74,12 +74,12 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    tier. Different tool surface, different verification. Gate: one task
    delegated, graded honestly (evidence, not pass), failure classified.
 
-5. **Phase 5 — mesh multiplayer.** Board + transcripts sync across
-   devices; task assignment and permission answers ride the existing
-   permission round-trip; each device is a player; agents run on the
-   device that owns the workspace. World snapshots stay device-local.
-   Gate: two devices, one doc, one task, one permission answered from the
-   second device.
+5. **Phase 5 — multiplayer over the convergence kernel** ([ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md), [ADR 0006](decisions/0006-session-is-not-world.md); kernel contract: dart_flutter_packages ADRs 0010/0011/0029). Two tracks, planned together, shipped in order:
+
+   - **5a — session registry split (local, no sync gate).** Session ≠ world (ADR 0006): `Workspace (≤1 daemon) → Sessions[] → Actors[]` registry replaces the flat session list; several sessions per workspace become visible and legal; one world per workspace stays mandatory and a second daemon binding is a surfaced hard error. Gate: workspace-grouped session overview on one grid; second session on one workspace works fully offline.
+   - **5b — doc ops over the kernel.** Turns, board rows, metadata, block fields, and fractional child-order keys become kernel ops (LWW map v1); block text content becomes sequence ops (streamed agent text merges as it connects — kernel ADR 0029). Anti-entropy gives late-join catch-up. Gate: two devices converge on one doc's transcript and board after reconnect (property-tested kernel strategies, no hand-rolled merge).
+   - **5c — presence + permission routing (the multiplayer gate).** Transport-level ephemeral frames drive live UI; kernel ephemeral ops answer agent queries ("who is here"); remote permission requests render in-flow identical to local (origin label, reject-first, recorded). Task assignment and permission answers ride the existing permission round-trip; agents run on the device that owns the workspace; world snapshots stay device-local. Gate: two devices, one doc, one workspace, two sessions open, a permission answered from the second device, transcript identical on both, zero new protocol.
+   - **5d — ecsly-world migration.** Once last_answer migrates onto `ecsly`/`ecsly_flutter` (architecture unification track), the doc graph becomes an ecsly world and multiplayer inherits through the ecsly-side sync plugin consuming the published kernel (ecsly-repo ADR; parents choose strategies, never hand-roll). Gate: one doc graph lives as an ecsly world whose replica converges on two devices via the kernel.
 
 6. **Harness-side open problems** (tracked in agentic_harness PLAN.md R8;
    this product pulls, never implements them itself): actor topology

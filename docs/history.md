@@ -5,6 +5,46 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-09-06 — Multiplayer substrate: ADR 0005/0006 + kernel contract + Phase 5a session registry
+
+Decisions: [ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md)
+(doc multiplayer over the convergence kernel — event-sourced docs, dual-mode
+presence, sequence strategy pulled for streamed agent text,
+transport-membership ≠ agency),
+[ADR 0006](decisions/0006-session-is-not-world.md) (session ≠ world —
+`Workspace (≤1 daemon) → Sessions[] → Actors[]` registry; single-writer
+untouched). Infra counterpart: dart_flutter_packages ADR 0029 (kernel
+ephemeral-op contract + sequence strategy timing). PLAN Phase 5 rewritten
+into gated tracks 5a–5d. DESIGN §9: presence is annotation (gutter labels,
+SYS rows, no avatars/bars).
+
+Landed:
+
+- **Kernel (dart_flutter_packages `universal_storage_convergence`)**:
+  `RgaTextStrategy` (keyed multi-root RGA — streamed text merges causally,
+  order-independent fold, tombstones may precede their elements);
+  ephemeral op class (`OpRecord.ttl`, `applyLocalEphemeral`,
+  `sweepEphemeral`, `ephemeralState`/`pendingEphemeralOps`) — never folds
+  into durable state/snapshots/VV; `_lastIssued` monotonicity guard kills
+  the durable-after-ephemeral opId collision; strategy registry in
+  serialization. 23 kernel tests green (incl. all pre-existing property
+  tests; new ADR 0029 contract suite: convergence under shuffled delivery,
+  expiry commutativity/idempotence, compaction/snapshot exclusion,
+  round-trips).
+- **Phase 5a (this repo, local-first, no sync)**:
+  `HarnessWorkspaceView` registry + `openNewSession(cwd)` — several
+  session projections per workspace are visible and legal, one world per
+  workspace preserved (backend continues the world; second projection
+  shares the host session id, distinct `viewId`); profile pane renders the
+  workspace-grouped grid (small-caps workspace labels, indented session
+  small multiples, quiet `+ new session` row) per DESIGN §3/§9.
+  Gates green: `session_registry_test.dart` (3), `harness_host_test.dart`
+  (4), `coding_agent_screen_test.dart` (7).
+
+Non-claims: 5b/5c product wiring (doc ops over the mesh, presence frames,
+remote permission routing) is NOT landed — only the kernel substrate it
+pulls; 5d (ecsly-world migration) awaits the ecsly-repo sync ADR.
+
 ## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
 
 - **The measured trigger.** The R9.b dogfood attempt (fix the doc-payload

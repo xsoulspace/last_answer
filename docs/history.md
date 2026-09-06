@@ -5,6 +5,63 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
+
+- **The measured trigger.** The R9.b dogfood attempt (fix the doc-payload
+  persistence issue through the conversation surface) produced a classified
+  FAIL: the small model blind-wrote `lib/home/project_view.dart` into
+  garbage across 4 allowed whole-file writes (the outer mechanical oracle
+  held; the write was denied nothing because it targeted the "right" file),
+  and the operator script hand-answered ~15 permission round-trips in the
+  earlier gate run. Root cause (with the harness North Star): last_answer
+  embedded the harness but ran it on the conventional command profile —
+  reads as graded 68 s tasks instead of 34–54 ms zoom cuts, blind
+  whole-file writes instead of host-materialized auto-reverting edit
+  moves, transcript text instead of typed beats, per-write prompts instead
+  of consent plans. The harness had already solved every one of these
+  (ADRs 0023/0024/0027); the product boundary never let it through.
+- **ADR 0004** (`docs/decisions/0004-meaning-runtime-not-conversation.md`):
+  the agent doc's embedded runtime is the MEANING runtime (zoom reads,
+  edit moves, beats across ACP additively, workspace-level consent data,
+  multiplayer-not-turn-taking); the conventional command profile remains
+  only for scripted test seams and external CLI squad members as a
+  transitional projection — the durable answer to missing mechanics is
+  the format's ETL + materializers, never handing the model files.
+- **Host-side (xsoulspace_agentic_host, LLM-free tests green):**
+  `ConsentPlan.forWorkspace` — the workspace-level consent policy file
+  `<workspace>/.harnessd/consent.json` (pathGlob/verbs/maxUses, monotonic,
+  hard-capped) auto-applies at session creation; absent/malformed →
+  deny-by-default unchanged. Gate: `consent_workspace_file_test.dart`
+  (in-scope write lands with ZERO permission round-trips + audited; no
+  file → client asked; malformed → honest null).
+- **Product-side (last_answer):** `HarnessHostConfig` gains
+  `meaningProfile` (copyWith-carried); the agent-doc surface derives
+  `meaningProfile: true` for its bindings; the agent projection states
+  `runtimeProfile` (`meaning` | `commands`). Widget gate added. The
+  conventional profile remains the scripted-seam default so LLM-free
+  surface tests keep their tool registry.
+- **The R9.b issue itself is PARKED, not dropped:** the operator-written
+  acceptance test (`test/coding_agent/agent_doc_persistence_test.dart`,
+  verified failing-then-passing against the wiring fix) + the mechanical
+  check (`tool/agent_persistence_check.dart`) stay as R9.6's oracle — the
+  fix must come through the meaning surface.
+- **R9.1 gate: mechanically landed, AFM-quality row OPEN (honest).** Two
+  real-AFM meaning e2e runs recorded (harness `delegation_r9.md`): run 1
+  FAIL exposed the silent-empty point-zoom ray-cast (FIXED in
+  `meaning_query_tools.dart`: query-only point zoom degrades to local
+  with a named note; cuts echo query/focusId; empty ray-casts return
+  keyword id hints); run 2 confirmed the ray-cast works but FAILed on
+  cut fatness (38.3k tokens / 7 decisions vs the ~2k/decision flat
+  target — does not fit the 3.8k AFM window) and `repo_etl` re-scan
+  churn. Both open findings are the harness's next work items (per-
+  window cut budgets; no-op-not-error re-scan) — pulled, never absorbed.
+  The teaching prompt is budget-gated by
+  `meaning_profile_overhead_test.dart` (caught the first rewrite at
+  +86 tokens; final recipe lands exactly at the 1,600 cap). The A/B
+  today: conventional PASS (1 decision, 1,554 tokens, 41.5 s) vs
+  meaning FAIL — the honest starting line for "reach quality for AFM
+  with the agentic harness".
+
 ## 2026-09-05 — R9.a: the missing verbs (headless doc lifecycle + escalation)
 
 - **Three new MCP/intent entries** (`lib/coding_agent/agent_mcp_tools.dart`,

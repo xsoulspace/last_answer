@@ -127,6 +127,13 @@ dev_dependencies:
   mocktail: ^1.0.5
   msix: ^3.18.0
   xsoulspace_lints: ^0.1.2
+  # oka Dart pipeline hook (ADR-0010): the build config lives in
+  # tool/oka_pipeline.dart; `oka build` delegates there. oka_core provides
+  # okaRun; oka_android the Android pipeline/steps. No `oka` CLI dep needed.
+  oka_android:
+    path: ../../oka/packages/oka_android
+  oka_core:
+    path: ../../oka/packages/oka_core
 
   web: any
 dependency_overrides:

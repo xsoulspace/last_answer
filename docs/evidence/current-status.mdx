@@ -49,6 +49,37 @@ Use this ledger for the weakest true current claim. Historical evidence is prove
 2. Keep sibling `xsoulspace_foundation` codegen synchronized or pin Freezed 3.x consistently across workspaces.
 3. Exercise a real installed ACP client end-to-end (authentication and provider-specific behavior remain unverified).
 
+## R9 redefined — the meaning runtime (2026-09-06, ADR 0004)
+
+- Claim: the agent doc's embedded runtime is the harness's MEANING surface
+  (zoom reads, host-materialized auto-reverting edit moves, beats, consent
+  plans) — never the conventional command profile whose blind writes
+  corrupted a target file in the recorded R9.b FAIL. Weakest proof so far:
+  ADR 0004 + the classified corruption row (harness
+  [delegation_r9.md](../../../../dart_flutter_packages/pkgs/xsoulspace_agentic_harness/benchmark/runs/delegation_r9.md)
+  finding 6) + the landed host/product pieces below. The real-AFM meaning
+  e2e is RECORDED as two honest FAIL rows (discovery loop → fixed; cut
+  fatness + re-scan churn → open harness work) — the meaning A/B does not
+  beat the conventional profile yet, and that is the measured frontier
+  R9.1's gate closes on.
+- Landed (host, `xsoulspace_agentic_host`, 34/34 tests green):
+  `ConsentPlan.forWorkspace` — the workspace-level consent policy file
+  `<workspace>/.harnessd/consent.json` (pathGlob/verbs/maxUses) auto-applies
+  at session creation; absent/malformed → deny-by-default unchanged;
+  audited.
+- Landed (product): `HarnessHostConfig.meaningProfile` (copyWith-carried);
+  the agent-doc surface derives `meaningProfile: true`; the agent
+  projection states `runtimeProfile`; widget gate added. The R9.a intent
+  surface (`agent_doc_create`/`bind`/`guide`) and the headless gate script
+  (`tool/r9a_gate.sh`) landed 2026-09-05 — rows in delegation_r9.md.
+- Parked for R9.6: the doc-payload persistence issue with its verified
+  failing acceptance test + mechanical check — the fix must come through
+  the meaning surface.
+- Non-claims: the meaning A/B does NOT beat the conventional profile yet
+  (two classified FAIL rows — cut fatness and re-scan churn are the open
+  harness work); beats over ACP (R9.2, not started); consent UI (R9.3,
+  not started).
+
 ## R9.a — the missing verbs (2026-09-05)
 
 - Claim: the headless operator cycle (doc create → workspace bind →

@@ -87,65 +87,72 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    multi-workspace daemon (one process, several worlds), new-task goal
    isolation on a resumed world (the Phase-1 dogfood finding).
 
-## R9 — working through last_answer instead of pi (the console migration)
+## R9 — the console migration, REDEFINED (2026-09-06, ADR 0004)
 
-pi is the operator console today: I (the coding agent) fix this repo's
-issues by delegating through a terminal (CLI spawn, NDJSON, extension
-scripts). R9 flips the console: the SAME operator cycle runs through
-last_answer — its agent-doc surface, its intents, its verdicts — until
-pi is not needed for last_answer work. The gate is a RECORDED ROW, not a
-vibe: one full issue fixed with zero terminal usage.
+The original R9 framing (replay the pi operator cycle through the agent-doc
+surface) exposed a category error: last_answer embedded the harness but ran
+it on the conventional command profile, consuming a lossy text projection of
+a meaning-native engine. The recorded R9.b FAIL (blind writes corrupted the
+target file; ~15 hand-answered permission prompts per run; 68 s graded reads)
+is the measured trigger. Per [ADR 0004](decisions/0004-meaning-runtime-not-conversation.md):
+the agent doc's runtime is the MEANING runtime; the conversation is a
+projection, never the engine. pi is not demoted by replaying its cycle — pi
+is demoted when the meaning surface does the work better.
 
-What pi provides today that last_answer must absorb (gap analysis):
-
-1. **Headless doc lifecycle** — pi creates/binds docs from scripts.
-   Missing intents: `agent.doc.create` (title/format), `agent.doc.bind`
-   (workspace + check override). The Phase-1.5 run measured this exact
-   gap: semantic form-fill bypasses controller listeners, so binding MUST
-   be an intent, not a field fill. (Phase 3 core, small.)
-2. **Escalation as a first-class state** — the escalation round-trip
-   works (turn FAIL → guidance → PASS, measured) but lives in the
-   transcript. Add `agent.task.guide` as an intent + a first-class UI
-   state on the grid (the composer pre-filled with "continue with
-   guidance…"). This is R9's named completion criterion in
-   agents-in-docs.
-3. **Board as canonical rows** (Phase 2) — pi juggles multiple issues;
-   last_answer needs the task board (`TaskRowWire` in
-   agentic_executables_wire — NEVER in this product) + the squad view
-   (file locks, per-actor verdicts) so several delegated issues drain in
-   parallel on one doc.
-4. **Reliability pulls** (harness-side, filed in
-   delegation_phase1_5.md): unanswered-permission 5-minute stall loop,
-   cancel not turn-interrupting, intermittent first-write-without-
-   permission (F3), bridge crash on cancel mid-tool-call. Working through
-   last_answer daily will hit all four; they are the harness's own
-   backlog, pulled — not absorbed.
-5. **Driver ergonomics** — the canonical external-driver path is the
-   mcp_toolkit console (`flutter-mcp-toolkit exec --name fmt_client_tool
-   --toolName agent_*`) over the VM service; document it in
-   HANDOFF-agents-in-docs and keep `agent_doc_state` dense enough to
-   drive from (turns, permissions, verdict spend).
-
-Ordered next steps (each names its gate):
+Ordered next steps (each names its gate; ADR 0004 is the law):
 
 - **R9.a — intents for the missing verbs — DONE (2026-09-05).**
   `agent_doc_create` / `agent_doc_bind` / `agent_task_guide` registered
   (mcp_toolkit + intentcall, same `debugSurface` pattern); the headless
   gate (`tool/r9a_gate.sh`) ran create → bind → delegate → permission →
   verdict with ZERO field fills — final run PASS (`apple_foundation_afm`,
-  1,552 tokens, 43.6 s; run 1 honest FAIL with 10 off-task writes denied
-  through the intent path). Widget gates green on real intent entries +
-  real keys. Rows: harness `benchmark/runs/delegation_r9.md`.
-- **R9.b — the dogfood switch**: the next last_answer issue is fixed
-  exclusively through last_answer (operator via intents; AFM on-device;
-  no terminal). Gate: one PASS row + one classified FAIL row, both
-  recorded with backend/decisions/tokens/verdict/wall. From this moment
-  pi is demoted to squad member for this repo.
-- **R9.c — board + squad** (Phase 2): two agents (one embedded, one CLI)
-  on one doc, disjoint issues, board drains, idle; human gate re-run
-  with a CLI binding. Gate: scripted e2e + a recorded two-issue row.
-- **R9.d — escalation UX** completes R9 per the race-track definition:
-  guidance answered in-app, measured by rows.
+  1,552 tokens, 43.6 s). Rows: harness `benchmark/runs/delegation_r9.md`.
+- **R9.1 — the MEANING runtime (mechanically landed; AFM-quality gate
+  open).** The agent doc's embedded runtime derives `meaningProfile:
+  true` always; the doc's check override feeds the terminal gate; the
+  workspace consent file (`<workspace>/.harnessd/consent.json`)
+  auto-applies per session (host-side:
+  `ConsentPlan.forWorkspace` + `createSession` wiring + tests, 34/34
+  host tests green). Real-AFM e2e recorded: run 1 FAIL → the
+  silent-empty point-zoom ray-cast FIXED (degrade-to-local + query
+  echo + id hints); run 2 FAIL on cut fatness (38.3k tokens / 7
+  decisions — does not fit the 3.8k window) + `repo_etl` re-scan churn.
+  Those two are the harness's next work items (per-window cut budgets;
+  no-op-not-error re-scan) — R9.1's gate closes when the meaning A/B
+  row PASSes on the fixture. All rows: harness
+  `benchmark/runs/delegation_r9.md`. The corruption-shape argument
+  stands: edit moves verify and auto-revert; whole-file writes do not
+  exist on this path.
+- **R9.2 — beats cross the boundary (host, additive ACP).** Typed beat
+  events on `session/update` (decision+reasoning class, tool call
+  start/result, observation, verification, verdict, escalation) — no
+  second protocol. The text transcript becomes a derivation of beats.
+  Gate: scripted e2e — beats arrive typed at the client; re-derived
+  transcript matches.
+- **R9.3 — consent UI.** PROFILE pane edits the workspace consent file
+  and renders the plan + audit log (doc data). Gate: widget-gated edit →
+  plan answers in-scope writes with zero prompts; log visible.
+- **R9.4 — beat grid + the queue.** Beat rows replace the regex'd
+  transcript (batched, never chunk-per-block); human messages/guidance
+  QUEUE while a turn runs (host-injected when the actor is free).
+  Gate: widget-gated queue → drain; beat projection renders.
+- **R9.5 — board + squad (was R9.c).** `TaskRowWire` (agentic_executables_wire),
+  `AgentRuntimeHandle` union (embedded meaning runtime | spawned CLI agent
+  as a transitional projection per ADR 0004), per-actor beat streams.
+  Gate: embedded + one CLI agent, one doc, disjoint tasks drain, idle.
+- **R9.6 — the dogfood row (was R9.b).** The persistence issue (acceptance
+  test `test/coding_agent/agent_doc_persistence_test.dart` + mechanical
+  check `tool/agent_persistence_check.dart`, both landed and verified
+  failing) re-run through the meaning surface. Gate: one PASS row + the
+  classified FAIL row already recorded; pi demoted to squad member.
+
+(R9.a detail, kept for the record: the headless gate ran create → bind →
+delegate → permission → verdict with ZERO field fills — final run PASS
+(`apple_foundation_afm`, 1,552 tokens, 43.6 s; run 1 honest FAIL with 10
+off-task writes denied through the intent path). Widget gates green on
+real intent entries + real keys. Rows: harness
+`benchmark/runs/delegation_r9.md`. The old R9.b/R9.c/R9.d items are
+superseded by R9.1–R9.6 above.)
 
 Standing rule for R9: every cycle through last_answer that hits friction
 twice becomes a named failure class in the evidence ledger — the surface

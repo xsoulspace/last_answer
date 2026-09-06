@@ -169,9 +169,24 @@ final class ActorRoster {
 
   final String docId;
 
-  final ConvergenceDoc _doc;
+  ConvergenceDoc _doc;
 
   String get replicaId => _doc.actorId;
+
+  /// Mesh plumbing (ADR 0007 §2, PLAN 5c): forces the replica id — the
+  /// kernel actor id every local op carries — to the pairing peer id of
+  /// the attaching [MeshStorageService]. Rosters are often built with a
+  /// placeholder id before the mesh layer exists; the service replaces it
+  /// at attach time by re-deriving the doc from the same durable op log
+  /// under the forced id (ops are the source of truth; the kernel's VV
+  /// dedupe keeps re-application safe, and delivery order never affects
+  /// the fold).
+  void forceReplicaId(final String replicaId) {
+    if (_doc.actorId == replicaId) return;
+    final ops = _doc.pendingOps;
+    _doc = ConvergenceDoc(docId: docId, actorId: replicaId)
+      ..applyRemote(ops);
+  }
 
   static String _key(final String actorId) => '$keyPrefix$actorId';
 

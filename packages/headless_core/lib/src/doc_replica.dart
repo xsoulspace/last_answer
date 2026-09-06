@@ -405,6 +405,12 @@ final class DocReplica {
   /// Ops pending delta-shipping in the kernel doc (all lanes).
   List<OpRecord> get pendingOps => _doc.pendingOps;
 
+  /// Ops this replica holds that a remote whose version vector is
+  /// [remoteVv] has not observed — the kernel's VV diff, i.e. the
+  /// delta-shipping seam doc sync exchanges (ADR 0005 §1).
+  List<OpRecord> pendingOpsSince(final VersionVector remoteVv) =>
+      _doc.opsSince(remoteVv);
+
   /// THE version vector of the document's kernel doc — one anti-entropy
   /// header for every lane (ADR 0030 §1).
   VersionVector get versionVector => _doc.vv;

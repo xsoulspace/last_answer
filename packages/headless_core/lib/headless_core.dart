@@ -7,6 +7,7 @@ library;
 
 export 'src/chat_document_service.dart';
 export 'src/doc_replica.dart';
+export 'src/doc_replica_store.dart';
 export 'src/document_agent_service.dart';
 export 'src/document_node.dart';
 export 'src/document_repository.dart';

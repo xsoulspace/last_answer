@@ -65,6 +65,32 @@ Landed:
   claims. Non-claim: the squads raced duplicate instances of themselves
   (spawn-layer error, since fixed); landed state is the reconciled result
   and was verified independently.
+- **Squad 2 (three headless pi agents, parallel, no races; all gates
+  re-verified)**:
+  - *ADR 0030 landed* — `CompositeMergeStrategy` in the kernel
+    (longest-match prefix dispatch, `CompositeLaneMismatchError` named
+    error, wire-stable `composite:<lane-spec-id>` registry, dedupe marked
+    only after successful fold so refused ops retry on redelivery);
+    commutativity-by-inheritance property suite; `DocReplica` collapsed
+    to ONE kernel doc (two-lane deviation resolved; single
+    `versionVector`). Kernel 33/33, headless_core 44/44, ecsly world-sync
+    7/7 (change proven additive).
+  - *ADR 0031 landed* — nested `details` wire fix; Ed25519 frame signing
+    + authenticator (tampered/unsigned frames dropped as named data);
+    `EphemeralFrameTransport` interface + `MeshPresenceSession` lifecycle
+    + relay adapter (broadcast fan-out); `PresenceConfig` presets with
+    `ttl = 3 × ping` invariant. Transport 14/14, mesh 55/55, zero new
+    analyzer issues.
+  - *ADR 0007 landed* — `ActorProfile` + `ActorRoster` (kernel LWW doc,
+    sync seams exposed unwired), PROFILE `ACTORS` section on the grid
+    (real keys, §7 empty state), roster-backed session rows, gutter-label
+    helper. Roster tests 12/12; full coding_agent suite 32 pass + 1
+    PRE-EXISTING failure (`agent_doc_persistence_test`, proven failing at
+    the parent commit — needs separate investigation, likely from the
+    mesh-docs wiring commit).
+  Flag: another concurrent session committed squad 2's files mid-run
+  (`c603b9e9`, `a206c560`) — agents made no commits themselves; one
+  formatting-only diff remains uncommitted.
 
 Non-claims (updated after the squad run): mesh wiring of doc ops into
 last_answer's app/storage layer, the presence side-channel on real relay

@@ -67,7 +67,10 @@ void main() {
       final roster = ActorRoster(replicaId: 'device');
       // An invalid profile throws before any op is issued (assertion in
       // debug builds, ArgumentError in the action path otherwise).
-      expect(() => roster.upsert(_profile('', name: 'x')), throwsA(isA<Error>()));
+      expect(
+        () => roster.upsert(_profile('', name: 'x')),
+        throwsA(isA<Error>()),
+      );
       expect(
         () => roster.upsert(_profile('x', name: ' ')),
         throwsA(isA<Error>()),

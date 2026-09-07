@@ -1,4 +1,6 @@
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
@@ -12,10 +14,13 @@ import 'package:mcp_toolkit/mcp_toolkit.dart';
 Set<AgentCallEntry> agentMcpEntries() => {
   mcpToolkitTool(
     handler: (final parameters) {
-      final state = AgentDocSurface.debugState;
+      final state = AgentDocSurface.debugState ??
+          AgentDocSurface.shadowDoc?.toDebugState();
       if (state == null) {
         return MCPCallResult(
-          message: 'No agent doc surface is currently open.',
+          message:
+              'No agent doc surface is currently open. On a PAIRED peer, '
+              'open the shared doc with mesh_open_doc (viewer shadow).',
           parameters: {'ok': false},
         );
       }
@@ -82,7 +87,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
     ),
   ),
   mcpToolkitTool(
-    handler: (final parameters) {
+    handler: (final parameters) async {
       // Service-extension transport carries values as strings.
       final rawAllow = parameters['allow']?.toLowerCase();
       final allow = rawAllow == 'true';
@@ -94,16 +99,32 @@ Set<AgentCallEntry> agentMcpEntries() => {
         );
       }
       final surface = AgentDocSurface.debugSurface;
-      if (surface == null) {
+      if (surface != null) {
+        // The OWNER (host) path: the local pending round-trip, byte for
+        // byte as before — the answer may still ride the doc when routing
+        // is ON (the controller decides), but the verb contract is
+        // unchanged.
+        final result = surface.answerPermissionFromIntent(allow: allow);
         return MCPCallResult(
-          message: 'No agent doc surface is currently open.',
-          parameters: {'ok': false},
+          message: result.message,
+          parameters: {'ok': result.ok},
         );
       }
-      final result = surface.answerPermissionFromIntent(allow: allow);
+      // Task O (P1) — the PEER path: a shadow doc (mesh_open_doc) with a
+      // pending REMOTE permission answers through the doc router — the
+      // answer is an op on the shared `perm/<requestId>` register; the
+      // host's future completes when it folds back with the next sync.
+      final shadow = AgentDocSurface.shadowDoc;
+      if (shadow != null) {
+        final result = await shadow.answerRemotePermission(allow: allow);
+        return MCPCallResult(
+          message: result.message,
+          parameters: {'ok': result.ok},
+        );
+      }
       return MCPCallResult(
-        message: result.message,
-        parameters: {'ok': result.ok},
+        message: 'No agent doc surface is currently open.',
+        parameters: {'ok': false},
       );
     },
     definition: MCPToolDefinition(
@@ -357,6 +378,10 @@ Set<AgentCallEntry> agentMcpEntries() => {
       }
       try {
         final pairingCode = await service.createPairingCode();
+        // Task O — the projection must match the live service within one
+        // cycle: hosting just changed, so the open surface re-projects
+        // immediately (the T3 gate diffs debugState byte-for-byte).
+        StorageBackendsNotifier.onSyncCycle?.call();
         return MCPCallResult(
           message:
               'Hosting the relay at ${service.advertisedEndpoint}; a '
@@ -498,6 +523,10 @@ Set<AgentCallEntry> agentMcpEntries() => {
       final channel = _meshChannel(docId);
       await service.joinDoc(channel);
       final presence = service.presence(channel);
+      // Task O — presence changed: re-project the open surface now, not
+      // on the next frame (the agent projection must match the live
+      // service within one cycle).
+      StorageBackendsNotifier.onSyncCycle?.call();
       return MCPCallResult(
         message:
             'Joined $channel; ${presence.length} present '
@@ -557,6 +586,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
       }
       final channel = _meshChannel(docId);
       await service.leaveDoc(channel);
+      // Task O — presence changed: re-project the open surface now.
+      StorageBackendsNotifier.onSyncCycle?.call();
       return MCPCallResult(
         message: 'Left $channel (leave frame sent).',
         parameters: {'ok': true, 'docId': docId, 'docChannel': channel},
@@ -577,6 +608,244 @@ Set<AgentCallEntry> agentMcpEntries() => {
                 'Agent doc id (defaults to the open agent doc).',
           },
         },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) {
+      // Task O (P1) — flips the owner device's remote permission routing
+      // policy through the SAME state the PROFILE toggle renders (the
+      // controller's `remotePermissionRouting`; the toggle's onTap calls
+      // exactly this surface method — one state, many projections).
+      // Service-extension transport carries values as strings.
+      final raw = parameters['enabled']?.toString().toLowerCase();
+      final on = raw == 'true';
+      final off = raw == 'false';
+      if (!on && !off) {
+        return MCPCallResult(
+          message: 'enabled (bool) is required.',
+          parameters: {'ok': false},
+        );
+      }
+      final surface = AgentDocSurface.debugSurface;
+      if (surface == null) {
+        return MCPCallResult(
+          message:
+              'No agent doc surface is currently open — routing is a '
+              'policy of the doc session that OWNS the permissions.',
+          parameters: {'ok': false},
+        );
+      }
+      final result = surface.setRemoteRouting(enabled: on);
+      return MCPCallResult(
+        message: result.message,
+        parameters: {
+          'ok': result.ok,
+          'remotePermissionRouting':
+              AgentDocSurface.debugState?.remotePermissionRouting ?? false,
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'mesh_routing',
+      description:
+          'Enable or disable remote permission routing on the open agent '
+          'doc (the PROFILE ROUTING toggle, host-injected): ON announces '
+          'pending permissions as doc ops paired peers can answer '
+          '(reject-first); OFF keeps answering local, byte for byte.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'enabled': {
+            'type': 'boolean',
+            'description': 'True to announce pending permissions as doc '
+                'ops, false to answer locally only.',
+          },
+        },
+        'required': ['enabled'],
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      // Task O (P0) — the PEER opens the shared doc: a SHADOW agent doc
+      // bound to the shared id — no workspace, no daemon session (the
+      // peer is a viewer/answerer; the host owns the world). From here
+      // the peer's agent_doc_state is an honest ok:true projection of
+      // the SHARED doc id, live mesh status, and the routed permission
+      // round-trips folded from the mesh.
+      final docId = parameters['docId'];
+      if (docId is! String || docId.isEmpty) {
+        return MCPCallResult(
+          message:
+              'docId (string) is required — the shared agent doc id the '
+              'host reported.',
+          parameters: {'ok': false},
+        );
+      }
+      final notifier = StorageBackendsNotifier.instance;
+      final service = notifier.meshService;
+      final store = notifier.docReplicaStore;
+      if (service == null || store == null) {
+        return MCPCallResult(
+          message:
+              'No mesh replica is live on this device — pair first '
+              '(mesh_pair, or mesh_host on the main device).',
+          parameters: {'ok': false, 'viewer': true, 'docId': docId},
+        );
+      }
+      final channel = _meshChannel(docId);
+      // Open the SHARED replica in this device's store: absorbRemote
+      // only folds docs the store opened, so the shadow's permission
+      // round-trips converge only after this.
+      await store.open(NodeId(channel));
+      // The shadow's status reader: the app wiring when installed, else
+      // the live service directly — the projection is live either way.
+      AgentDocMeshStatus statusForShadow(final String channelId) =>
+          AgentDocSurface.meshWiring?.statusFor(channelId) ??
+          AgentDocMeshStatus(
+            hosting: service.isHosting,
+            connected: service.isConnected,
+            peerCount: service.peers.length,
+            presenceCount: service.presence(channelId).length,
+          );
+      final shadow = AgentDocShadow(
+        docId: docId,
+        meshDocId: channel,
+        router: PermissionDocRouter(
+          store: store,
+          docId: NodeId(channel),
+          selfId: service.selfId,
+        ),
+        roster: notifier.actorRoster,
+        statusFor: statusForShadow,
+      );
+      AgentDocSurface.shadowDoc = shadow;
+      // Presence follows the open doc (ADR 0031 §1) — the same channel
+      // the host's surface rides. Idempotent with mesh_join_doc.
+      await service.joinDoc(channel);
+      // Task O — presence changed: re-project the open surface now.
+      StorageBackendsNotifier.onSyncCycle?.call();
+      final state = shadow.toDebugState();
+      final mesh = state.meshStatus;
+      return MCPCallResult(
+        message:
+            'Shadow agent doc $docId open (viewer, no workspace, no '
+            'daemon session): ${mesh?.presenceCount ?? 0} present on '
+            '$channel; pending remote permission: '
+            '${state.pendingPermissionTitle ?? 'none'}.',
+        parameters: {'ok': true, ...state.toJson()},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'mesh_open_doc',
+      description:
+          'On a PAIRED peer: open the shared agent doc as a viewer shadow '
+          'bound to the shared docId (no workspace, no daemon session — '
+          'the host owns the world). After this, agent_doc_state returns '
+          'ok with the shared docId, viewer: true, live meshStatus, and '
+          'routed permissions as they fold in; agent_permission_answer '
+          'answers remote pending permissions through the doc.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'docId': {
+            'type': 'string',
+            'description':
+                'The shared agent doc id (the host surface reports it as '
+                'docId).',
+          },
+        },
+        'required': ['docId'],
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      // Task O (P2) — scripted block edits as REAL doc ops: one append
+      // op into the shared doc's replica (RGA text lane); the mesh sync
+      // cycle ships it and every replica folds it (kernel-owned
+      // convergence).
+      final text = parameters['text'];
+      if (text is! String || text.isEmpty) {
+        return MCPCallResult(
+          message: 'text (string) is required.',
+          parameters: {'ok': false},
+        );
+      }
+      final store = StorageBackendsNotifier.instance.docReplicaStore;
+      if (store == null) {
+        return MCPCallResult(
+          message:
+              'No mesh doc-replica store is live on this device — call '
+              'mesh_host or mesh_pair first.',
+          parameters: {'ok': false},
+        );
+      }
+      final requested = parameters['docId'];
+      final docId = requested is String && requested.isNotEmpty
+          ? requested
+          : AgentDocSurface.debugState?.docId ??
+                AgentDocSurface.shadowDoc?.docId;
+      if (docId == null) {
+        return MCPCallResult(
+          message:
+              'docId is required (no agent doc is open or shadowed to '
+              'default to).',
+          parameters: {'ok': false},
+        );
+      }
+      final channel = _meshChannel(docId);
+      final rawBlock = parameters['blockId'];
+      final blockId = rawBlock is String && rawBlock.isNotEmpty
+          ? rawBlock
+          : 'block-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}';
+      final ops = await store.edit(NodeId(channel), (final replica) {
+        final block = NodeId(blockId);
+        final exists = replica.orderKeyOf(NodeId(channel), block) != null;
+        return exists
+            ? replica.appendText(block, text)
+            : replica.addBlock(
+                Block(id: block, type: BlockType.paragraph, content: text),
+              );
+      });
+      return MCPCallResult(
+        message:
+            'Appended ${text.length} chars to $blockId in $channel '
+            '(${ops.length} ops); the mesh sync cycle ships it.',
+        parameters: {
+          'ok': true,
+          'docId': docId,
+          'docChannel': channel,
+          'blockId': blockId,
+          'ops': ops.length,
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_doc_edit',
+      description:
+          'Append text to a block of the open (or shadowed) agent doc as '
+          'a REAL doc op (RGA text lane in the shared replica): the block '
+          'is created when missing, appended to when present. The mesh '
+          'sync cycle ships the op to peers.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'text': {'type': 'string'},
+          'blockId': {
+            'type': 'string',
+            'description':
+                'Block to append to (created when missing; defaults to a '
+                'fresh block id).',
+          },
+          'docId': {
+            'type': 'string',
+            'description':
+                'Agent doc id (defaults to the open or shadowed doc).',
+          },
+        },
+        'required': ['text'],
       }),
     ),
   ),

@@ -55,6 +55,14 @@ final class AgentDocSurface extends StatefulWidget {
   /// set while the doc is open, cleared on dispose.
   static _AgentDocSurfaceState? debugSurface;
 
+  /// Task O — the peer-side SHADOW doc (`mesh_open_doc`): the honest
+  /// viewer/answerer projection a paired peer opens over a SHARED doc id
+  /// — no workspace, no daemon session (the peer observes the host's
+  /// world and answers routed permissions). Null until opened; the
+  /// `agent_doc_state` verb falls back to it when no real surface is
+  /// open, so the peer's projection stops being an error envelope.
+  static AgentDocShadow? shadowDoc;
+
   /// R9.a — app wiring for the `agent_doc_create` intent: creates a NEW
   /// agent doc AND opens it (the `OpenedProjectNotifier.createAgentProject`
   /// path, including the route push), returning the created doc. Installed
@@ -183,6 +191,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     if (!enabled) {
       _controller.remotePermissionRouting = false;
       setState(() => _routingError = null);
+      // Task O — the agent projection re-reads the policy synchronously.
+      AgentDocSurface.debugState = _projectState();
       return (ok: true, message: 'remote routing off — answering stays local.');
     }
     final wiring = AgentDocSurface.meshWiring;
@@ -201,6 +211,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
       return (ok: false, message: _routingError!);
     }
     setState(() => _routingError = null);
+    // Task O — the agent projection re-reads the policy synchronously:
+    // `mesh_routing` returns AFTER the projected state carries it.
+    AgentDocSurface.debugState = _projectState();
     return (
       ok: true,
       message:
@@ -213,7 +226,52 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   /// permission. Re-read the projection.
   void refreshAfterMeshSync() {
     _controller.refreshPermissions();
-    setState(() {});
+    // Task O — re-project IMMEDIATELY, not on the next frame: the
+    // MCP/intent projection must match the live service within one sync
+    // cycle (the T3 gate diffs debugState byte-for-byte) — a build-frame
+    // delay must never stand between an agent and the truth.
+    if (mounted) AgentDocSurface.debugState = _projectState();
+    if (mounted) setState(() {});
+  }
+
+  /// The typed state both projections render ([AgentDocSurface
+  /// .debugState]): extracted so the sync-cycle hook and the intent
+  /// surface re-project synchronously — build timing is not part of the
+  /// agent contract (DESIGN §5: one state, many projections).
+  AgentDocDebugState _projectState() {
+    final controller = _controller;
+    final current = controller.current;
+    String? lastGuidance;
+    for (final turn in (current?.turns ?? const <HarnessTurn>[]).reversed) {
+      if (turn.guidance != null) {
+        lastGuidance = turn.guidance;
+        break;
+      }
+    }
+    return AgentDocDebugState(
+      docId: _doc.id.value,
+      workspaces: _doc.agent?.workspaces ?? const [],
+      checkCommand: _doc.agent?.checkCommand ?? const <String>[],
+      backend: controller.config.backend,
+      runtimeProfile: controller.config.meaningProfile
+          ? 'meaning'
+          : 'commands',
+      sessionId: current?.id,
+      running: controller.isRunning,
+      pendingPermissionTitle: controller.pendingPermission?.request.title,
+      remotePermissions: controller.remotePermissions,
+      remotePermissionRouting: controller.remotePermissionRouting,
+      meshStatus: AgentDocSurface.meshWiring?.statusFor(_meshDocId),
+      verdict: current?.verdictLine,
+      transcriptTail: current?.transcript.toString() ?? '',
+      turnCount: current?.turns.length ?? 0,
+      lastGuidance: lastGuidance,
+      actors: controller.roster.all,
+      sessionActors: {
+        for (final session in controller.sessions)
+          '${session.viewId}': List.of(session.actorIds),
+      },
+    );
   }
 
   /// R9.a — intent surface: bind the workspace (absolute path) and the
@@ -443,39 +501,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     return ListenableBuilder(
       listenable: _controller,
       builder: (final context, final _) {
+        final current = _controller.current;
         final controller = _controller;
-        final current = controller.current;
-        String? lastGuidance;
-        for (final turn in (current?.turns ?? const <HarnessTurn>[]).reversed) {
-          if (turn.guidance != null) {
-            lastGuidance = turn.guidance;
-            break;
-          }
-        }
-        AgentDocSurface.debugState = AgentDocDebugState(
-          docId: _doc.id.value,
-          workspaces: _doc.agent?.workspaces ?? const [],
-          checkCommand: _doc.agent?.checkCommand ?? const <String>[],
-          backend: controller.config.backend,
-          runtimeProfile: controller.config.meaningProfile
-              ? 'meaning'
-              : 'commands',
-          sessionId: current?.id,
-          running: controller.isRunning,
-          pendingPermissionTitle: controller.pendingPermission?.request.title,
-          remotePermissions: controller.remotePermissions,
-          remotePermissionRouting: controller.remotePermissionRouting,
-          meshStatus: AgentDocSurface.meshWiring?.statusFor(_meshDocId),
-          verdict: current?.verdictLine,
-          transcriptTail: current?.transcript.toString() ?? '',
-          turnCount: current?.turns.length ?? 0,
-          lastGuidance: lastGuidance,
-          actors: controller.roster.all,
-          sessionActors: {
-            for (final session in controller.sessions)
-              '${session.viewId}': List.of(session.actorIds),
-          },
-        );
+        AgentDocSurface.debugState = _projectState();
         return ColoredBox(
           color: theme.colorScheme.surface,
           child: Column(
@@ -2013,6 +2041,7 @@ final class AgentDocDebugState {
     this.remotePermissions = const [],
     this.remotePermissionRouting = false,
     this.meshStatus,
+    this.viewer = false,
   });
 
   final String docId;
@@ -2061,6 +2090,13 @@ final class AgentDocDebugState {
   /// same status rule data the human sees (DESIGN §5/§9).
   final AgentDocMeshStatus? meshStatus;
 
+  /// Task O — the honest viewer marker (DESIGN §6: label what the host
+  /// sees vs what the peer observes). False on the host (it owns the
+  /// world); true on a peer's SHADOW doc (`mesh_open_doc`): the peer
+  /// observes the shared doc and answers routed permissions — it binds no
+  /// workspace and runs no daemon session.
+  final bool viewer;
+
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
@@ -2078,6 +2114,7 @@ final class AgentDocDebugState {
     'remotePermissions': [for (final p in remotePermissions) p.toJson()],
     'remotePermissionRouting': remotePermissionRouting,
     if (meshStatus != null) 'meshStatus': meshStatus!.toJson(),
+    'viewer': viewer,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,
@@ -2115,6 +2152,101 @@ final class AgentDocMeshStatus {
     'peerCount': peerCount,
     'presenceCount': presenceCount,
   };
+}
+
+/// Task O — the peer-side SHADOW agent doc (T3 gate, DESIGN §6): what a
+/// paired peer projects when it OPENS a shared doc it does not own. No
+/// workspace, no daemon session — the host owns the world; the peer is a
+/// viewer/answerer:
+///
+/// - `agent_doc_state` falls back to this projection when no real surface
+///   is open, so the peer's state stops being an error envelope and
+///   carries the SHARED doc id, live mesh status, and the routed
+///   permission round-trips folded into the shared replica;
+/// - `agent_permission_answer` routes through [router] — the answer is a
+///   doc op on the SAME `perm/<requestId>` register; the host's future
+///   completes when the answer op folds back with the next sync cycle.
+final class AgentDocShadow {
+  AgentDocShadow({
+    required this.docId,
+    required this.meshDocId,
+    required this.router,
+    this.roster,
+    final AgentDocMeshStatus Function(String channel)? statusFor,
+  }) : statusFor =
+           statusFor ??
+           // Default: the wiring when installed, else the honest zeros —
+           // a shadow with no reachable service must not fabricate a mesh.
+           ((final channel) =>
+               AgentDocSurface.meshWiring?.statusFor(channel) ??
+               const AgentDocMeshStatus());
+
+  /// The SHARED project doc id — the exact id the host's surface reports
+  /// (the doc channel derives from it: `agent-<docId>`).
+  final String docId;
+
+  /// The deterministic mesh replica id of the shared doc (`agent-<docId>`
+  /// — the channel the host's surface joins on open).
+  final String meshDocId;
+
+  /// The peer's doc channel over the mesh-attached [DocReplicaStore]:
+  /// `pendingRemote` is what the peer may answer, `remoteEntries` what it
+  /// renders (one state, many projections, DESIGN §5).
+  final PermissionDocRouter router;
+
+  /// The device's synced roster — origin labels resolve through it when
+  /// one is available (ADR 0007: identity, never authority).
+  final ActorRoster? roster;
+
+  /// Reads the live mesh status for a doc channel. The app wiring takes
+  /// precedence when installed; the fallback (what `mesh_open_doc`
+  /// installs from the live service) keeps the projection self-sufficient
+  /// — the shadow must carry hosting/connected/peers/presence either way.
+  final AgentDocMeshStatus Function(String channel) statusFor;
+
+  /// The viewer projection. Honest by construction: session-owned fields
+  /// (sessionId, turns, transcript) stay empty — the peer runs no daemon
+  /// session; turn ops are not yet synced (v1), so `turnCount` is 0.
+  AgentDocDebugState toDebugState() => AgentDocDebugState(
+    docId: docId,
+    // Viewer markers: no workspace is bound (DESIGN §6), no check
+    // override, and the runtime profile is the doc surface's default —
+    // the peer runs no daemon of its own.
+    workspaces: const [],
+    backend: const HarnessHostConfig().backend,
+    pendingPermissionTitle: router.pendingRemote().firstOrNull?.title,
+    remotePermissions: router.remoteEntries(),
+    meshStatus: statusFor(meshDocId),
+    actors: roster?.all ?? const [],
+    viewer: true,
+  );
+
+  /// Task O (P1) — answers the FIRST pending REMOTE permission through
+  /// the doc (reject-first is the law; deny-by-default preserved). The
+  /// answer op lands in the shared replica; the host's future completes
+  /// when it folds back with the next mesh sync cycle.
+  Future<({bool ok, String message})> answerRemotePermission({
+    required final bool allow,
+  }) async {
+    final pending = router.pendingRemote().firstOrNull;
+    if (pending == null) {
+      return (
+        ok: false,
+        message: 'no pending remote permission request.',
+      );
+    }
+    try {
+      await router.answerRequest(requestId: pending.requestId, allow: allow);
+    } on Object catch (error) {
+      return (ok: false, message: 'remote permission answer refused: $error');
+    }
+    return (
+      ok: true,
+      message:
+          '${allow ? 'allowed' : 'rejected'}: ${pending.title} '
+          '(the answer ships as a doc op with the next sync cycle).',
+    );
+  }
 }
 
 /// Task H — the app wiring contract between the doc surface and the live

@@ -351,6 +351,9 @@ Set<AgentCallEntry> storageMcpEntries() => {
         }
         await service.backup(payload);
         await service.sync();
+        // The sync cycle may have delivered remote doc ops — projections
+        // re-read the fold.
+        StorageBackendsNotifier.onSyncCycle?.call();
         final restored = await service.restore();
         return MCPCallResult(
           message:

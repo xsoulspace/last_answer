@@ -89,9 +89,9 @@ not canonical data yet. Everything below is ordered; do not skip #1.
      macOS app (relay host) + web app (second peer) on one doc; QR
      pairing; scripted concurrent edits; a permission answered from the
      web peer; debugSurface projections byte-identical after each
-     convergence point; zero new protocol. BLOCKER: fix the pre-existing
-     `agent_doc_persistence_test` failure first (it guards the
-     persistence path this gate stands on).
+     convergence point; zero new protocol. BLOCKERS CLEARED (2026-09-06): persistence + storage-checkbox
+     regressions fixed (history.md, squad 4); smoke gate PASSes live on
+     macOS. What remains is the human run on two devices.
    - **5.G2 — heavy-usage soak** (same runbook, T4 tier): chaos matrix
      over the two apps — partitions, kill-and-resume, streaming bursts,
      large docs, clock skew. Gate: every chaos row either converges to

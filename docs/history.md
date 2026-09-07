@@ -123,6 +123,36 @@ sessions, remote permission routing + UI (product half of 5c), and the
 last_answer→ecsly migration itself remain open — the substrates (doc ops,
 presence frames, ecsly world-sync plugin) are landed and gated.
 
+## 2026-09-06 — Squad 4: blockers cleared, app wiring live, device-gate tooling
+
+- **Persistence BLOCKER fixed** (`agent_doc_persistence_test`, green):
+  root cause commit `7e227bee` — `ProjectView` constructed
+  `AgentDocSurface` WITHOUT `onDocChanged`, so bind/check/backend changes
+  never persisted. Wired the same cascade DocView uses. Product fix, no
+  oracle edits.
+- **Storage checkbox BLOCKERS fixed** (16/16): commit `a0470266` promoted
+  `localDb` on primary-disable (enum-order bug) and defaulted restore to
+  the `localDb` live store (which holds no replicas). Promotion now skips
+  `localDb` (canonical order); restore sources the first enabled
+  replication target when primary is the live store.
+- **Seams became LIVE in the app**: `ensureMeshService` attaches one
+  `DocReplicaStore` + `ActorRoster` (replicaId = pairing peer id) per
+  replica; PROFILE ROUTING toggle (default OFF) attaches the
+  `PermissionDocRouter`; agent-doc open/close joins/leaves doc presence;
+  mesh status + presence project agent-readably; pairing-by-paste
+  verified (no UI change needed); shell-installed under the debug/profile
+  guard.
+- **Mesh mcp verbs**: `mesh_status` / `mesh_host` / `mesh_pair` /
+  `mesh_join_doc` / `mesh_leave_doc` (same pattern as `agent_*` intents).
+- **Device-gate tooling**: `tool/gates/multiplayer_smoke.sh` — PASS live
+  on macOS (relay hosted, self-presence folded, state-dump oracle);
+  `tool/gates/multiplayer_gate.sh` delivered (T3 two-app, dry-run
+  checked; the human runs it on two devices — runbook:
+  [multiplayer-device-gates](product/multiplayer-device-gates.md)).
+- Gates re-verified by the steward session: coding_agent 42/42, storage
+  16/16 (was 14/2), perm/routing/roster 9/9, headless_core 59/59, kernel
+  33/33.
+
 ## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
 
 - **The measured trigger.** The R9.b dogfood attempt (fix the doc-payload

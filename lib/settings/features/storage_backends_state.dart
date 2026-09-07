@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_platform_stub.dart'
     if (dart.library.io) 'storage_backends_platform_io.dart'
@@ -77,6 +79,22 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Builds the full app data payload (JSON string) for replication.
   /// Set at startup so MCP tools can back up without the widget tree.
   static Future<String> Function()? payloadBuilder;
+
+  /// Test seam: overrides [MeshStorageService.open] so tests exercise the
+  /// store/roster attach wiring without networking. Null in production.
+  @visibleForTesting
+  static Future<MeshStorageService> Function({
+    required String storePath,
+    required String peerId,
+    Uri? relayEndpoint,
+  })? meshServiceOpener;
+
+  /// App wiring: called after every mesh sync cycle (Sync now, join) so
+  /// projections holding routed doc state re-read the fold — a peer's
+  /// permission answer arrives with the sync, and the open agent-doc
+  /// surface must call [HarnessSessionController.refreshPermissions].
+  /// Installed by the app shell (debug/profile builds).
+  static void Function()? onSyncCycle;
 
   /// Applies a restored JSON payload to the live local DB.
   /// Set at startup so MCP tools can restore without the widget tree.
@@ -215,7 +233,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
   }
 
   /// Toggles [id]. Disabling local_db is ignored; disabling the primary
-  /// promotes another enabled backend (first in the canonical order).
+  /// promotes the first other enabled backend in canonical order
+  /// (local_db only when it is the last one standing — it is always
+  /// enabled, so it must never win the promotion over a real target).
   /// When [makePrimary] is set and [value] is true, [id] also becomes the
   /// primary backend.
   Future<void> setEnabled(
@@ -235,7 +255,12 @@ class StorageBackendsNotifier extends ChangeNotifier {
       if (id == StorageBackendId.localDb) return;
       _enabled.remove(id);
       if (_primary == id) {
-        _primary = StorageBackendId.values.firstWhere(_enabled.contains);
+        _primary = StorageBackendId.values.firstWhere(
+          (final candidate) =>
+              candidate != StorageBackendId.localDb &&
+              _enabled.contains(candidate),
+          orElse: () => StorageBackendId.localDb,
+        );
       }
     }
     await _persist();
@@ -498,20 +523,37 @@ class StorageBackendsNotifier extends ChangeNotifier {
     return _lastReport!;
   }
 
-  /// Reads the payload from [backend] (defaults to the primary backend)
-  /// and, when it succeeds and [apply] is set, applies it to the live
-  /// local DB via [restoreApplier].
+  /// The default restore source: the primary backend — unless it is the
+  /// built-in local_db live store (which never receives replicated
+  /// copies), then the first enabled, configured replication target in
+  /// canonical order (falling back to local_db when none is available).
+  StorageBackendId get _defaultRestoreSource {
+    if (_primary != StorageBackendId.localDb) return _primary;
+    return StorageBackendId.values.firstWhere(
+      (final id) =>
+          id != StorageBackendId.localDb &&
+          _enabled.contains(id) &&
+          isConfiguredFor(id),
+      orElse: () => StorageBackendId.localDb,
+    );
+  }
+
+  /// Reads the payload from [backend] (defaults to the primary backend,
+  /// or the first configured replication target when the primary is the
+  /// local_db live store) and, when it succeeds and [apply] is set,
+  /// applies it to the live local DB via [restoreApplier].
   Future<StorageOperationReport> restoreNow({
     final StorageBackendId? backend,
     final bool apply = true,
   }) async {
-    final report = await restore(backend ?? _primary);
+    final source = backend ?? _defaultRestoreSource;
+    final report = await restore(source);
     if (!report.ok || !apply) return report;
     final applier = restoreApplier;
     if (applier == null) {
       _lastReport = StorageOperationReport(
         ok: false,
-        backend: backend ?? _primary,
+        backend: source,
         message: 'No restore applier registered',
       );
       notifyListeners();
@@ -521,14 +563,14 @@ class StorageBackendsNotifier extends ChangeNotifier {
       await applier(_lastPayload);
       _lastReport = StorageOperationReport(
         ok: true,
-        backend: backend ?? _primary,
+        backend: source,
         message: 'restored and applied',
         bytes: report.bytes,
       );
     } catch (e) {
       _lastReport = StorageOperationReport(
         ok: false,
-        backend: backend ?? _primary,
+        backend: source,
         message: e.toString(),
       );
     }
@@ -542,6 +584,25 @@ class StorageBackendsNotifier extends ChangeNotifier {
   String get lastPayload => _lastPayload;
 
   MeshStorageService? _meshService;
+
+  /// The live replica the doc-sync seams are attached to (see
+  /// [_attachMeshSeams]); tracks identity so a rebuilt replica re-attaches
+  /// a fresh store instead of one bound to dead storage.
+  MeshStorageService? _meshSyncService;
+
+  /// The live doc-replica store participating in the mesh sync cycle —
+  /// agent docs' permission ops land here and ship with the mesh sync
+  /// cycle.
+  DocReplicaStore? _docReplicaStore;
+
+  /// The live actor roster riding the mesh as durable ops (ADR 0007 §1).
+  ActorRoster? _actorRoster;
+
+  /// The live doc-replica store (null until [ensureMeshService] ran).
+  DocReplicaStore? get docReplicaStore => _docReplicaStore;
+
+  /// The live actor roster (null before the mesh replica ever opened).
+  ActorRoster? get actorRoster => _actorRoster;
 
   /// Stable browser-safe peer identity persisted with backend config.
   String get meshPeerId {
@@ -565,17 +626,41 @@ class StorageBackendsNotifier extends ChangeNotifier {
           ? 'memory:$meshPeerId'
           : '$base/last-answer-mesh';
     }
-    final service = await MeshStorageService.open(
-      storePath: _meshStorePath,
-      relayEndpoint: _meshRelayEndpoint.isEmpty
-          ? null
-          : Uri.tryParse(_meshRelayEndpoint),
-      peerId: meshPeerId,
-    );
+    final service =
+        await (meshServiceOpener ?? MeshStorageService.open)(
+          storePath: _meshStorePath,
+          relayEndpoint: _meshRelayEndpoint.isEmpty
+              ? null
+              : Uri.tryParse(_meshRelayEndpoint),
+          peerId: meshPeerId,
+        );
     await _persist();
+    _attachMeshSeams(service);
     _meshService = service;
     notifyListeners();
     return service;
+  }
+
+  /// Task H — the doc replica store becomes LIVE (ADR 0005 §1 Phase 5b,
+  /// ADR 0007 §1): one [DocReplicaStore] over the service's storage is
+  /// attached to the sync cycle (agent docs get a deterministic replica
+  /// id per doc when they open one), and one [ActorRoster] rides the mesh
+  /// as durable ops ([attachRoster] forces its replica id to the pairing
+  /// peer id). Re-attachment on a rebuilt replica is safe: the store is
+  /// rebuilt per live replica (its storage is bound to the old one); the
+  /// roster survives (kernel state, re-derived from the replica files on
+  /// flush/absorb).
+  void _attachMeshSeams(final MeshStorageService service) {
+    if (identical(_meshSyncService, service)) return;
+    _meshSyncService = service;
+    _docReplicaStore = DocReplicaStore(
+      storage: service.storage,
+      actorId: meshPeerId,
+    );
+    final roster = _actorRoster ??= ActorRoster(replicaId: meshPeerId);
+    service
+      ..attachDocSync(_docReplicaStore!)
+      ..attachRoster(roster);
   }
 
   /// Seamless setup, step "this is my main device": hosts the relay,
@@ -613,6 +698,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
     if (!report.ok) return report;
     try {
       await service.sync();
+      // The sync cycle may have delivered remote doc ops (a routed
+      // permission answer) — projections re-read the fold.
+      onSyncCycle?.call();
     } on Exception catch (error) {
       report = StorageOperationReport(
         ok: false,
@@ -631,6 +719,12 @@ class StorageBackendsNotifier extends ChangeNotifier {
   Future<void> leaveMesh() async {
     final service = _meshService;
     _meshService = null;
+    // Flush the live doc replicas BEFORE the replica dies (its storage
+    // dies with it); the store re-derives from the replica files on the
+    // next attach.
+    await _docReplicaStore?.dispose();
+    _docReplicaStore = null;
+    _meshSyncService = null;
     await service?.dispose();
     _meshRole = MeshRole.none;
     await _persist();
@@ -639,6 +733,9 @@ class StorageBackendsNotifier extends ChangeNotifier {
 
   @override
   void dispose() {
+    unawaited(_docReplicaStore?.dispose());
+    _docReplicaStore = null;
+    _meshSyncService = null;
     unawaited(_meshService?.dispose());
     _meshService = null;
     super.dispose();

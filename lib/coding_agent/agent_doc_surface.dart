@@ -8,6 +8,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 
 /// ADR 0003 (Phase 1) — the agent-doc surface: the coding-agent machinery
 /// bound to a `ProjectModel.doc` (formatId: `agent`). The document carries
@@ -62,6 +63,22 @@ final class AgentDocSurface extends StatefulWidget {
   /// verb — a form fill cannot do it (Phase-1.5 measurement).
   static ProjectModelDoc Function()? createAgentProjectHook;
 
+  /// Task H — app wiring for the multiplayer seams, installed by the app
+  /// shell in debug/profile builds (same guard as [createAgentProjectHook]).
+  /// The live mesh replica is owned by `StorageBackendsNotifier`; this
+  /// wiring is how the doc surface REACHES it:
+  ///
+  /// - [AgentDocMeshWiring.routerFor] builds the doc channel for remote
+  ///   permission routing over the mesh-attached [DocReplicaStore] —
+  ///   [docId] is the deterministic per-doc replica id the surface derives
+  ///   (`agent-<projectDocId>`), so perm ops land in a SYNCED doc.
+  /// - [AgentDocMeshWiring.joinDoc]/[leaveDoc] carry presence (ADR 0031
+  ///   §1: doc-scoped join is the CALLER's job) — the surface calls them
+  ///   on open/dispose, so presence follows doc sessions.
+  /// - [AgentDocMeshWiring.statusFor] reads the mesh status the status
+  ///   projection exposes (hosting / connected / peers / presence).
+  static AgentDocMeshWiring? meshWiring;
+
   @override
   State<AgentDocSurface> createState() => _AgentDocSurfaceState();
 }
@@ -80,6 +97,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   String? _pickError;
   bool _setupOpen = false;
   bool _profileOpen = false;
+  String? _routingError;
+
+  /// Task H — the deterministic replica id of THIS doc in the mesh sync
+  /// cycle: flat (`agent-<projectDocId>`) so the per-doc replica file sits
+  /// directly in the store's directory, and identical on every paired
+  /// device (the project doc id is the shared key).
+  String get _meshDocId => 'agent-${_doc.id.value}';
 
   @override
   void initState() {
@@ -93,6 +117,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     // run (measured). Controller edits fire this for typing AND fill.
     _checkField.addListener(_onCheckChanged);
     unawaited(_controller.ensureStarted());
+    // Task H — presence follows the doc session (ADR 0031 §1): while the
+    // doc is open, this device is on the doc's presence channel; the
+    // leave goes out on dispose.
+    unawaited(AgentDocSurface.meshWiring?.joinDoc(_meshDocId));
   }
 
   HarnessHostConfig _configFor(final ProjectModelDoc doc) {
@@ -143,6 +171,49 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     }
     _controller.answerPermission(allow: allow);
     return (ok: true, message: allow ? 'allowed' : 'rejected');
+  }
+
+  /// Task H — PROFILE: remote permission routing (ADR 0005 §5, DESIGN §4 —
+  /// one simple place, on the grid). ON: the controller's doc router is
+  /// attached (over the mesh-attached live store, deterministic replica
+  /// id per doc) and the policy enabled — pending permissions are
+  /// announced as doc ops peers can answer. OFF: local answering,
+  /// byte-for-byte unchanged, nothing written.
+  ({bool ok, String message}) setRemoteRouting({required final bool enabled}) {
+    if (!enabled) {
+      _controller.remotePermissionRouting = false;
+      setState(() => _routingError = null);
+      return (ok: true, message: 'remote routing off — answering stays local.');
+    }
+    final wiring = AgentDocSurface.meshWiring;
+    if (wiring == null) {
+      setState(
+        () => _routingError = 'mesh wiring is not installed in this build.',
+      );
+      return (ok: false, message: _routingError!);
+    }
+    try {
+      _controller
+        ..attachPermissionRouter(wiring.routerFor(NodeId(_meshDocId)))
+        ..remotePermissionRouting = true;
+    } on Object catch (error) {
+      setState(() => _routingError = 'mesh is not live on this device: $error');
+      return (ok: false, message: _routingError!);
+    }
+    setState(() => _routingError = null);
+    return (
+      ok: true,
+      message:
+          'remote routing on — pending permissions are announced as doc ops.',
+    );
+  }
+
+  /// Task H — app wiring (after every mesh sync cycle): the folded doc
+  /// state may have changed under us — a peer answered a routed
+  /// permission. Re-read the projection.
+  void refreshAfterMeshSync() {
+    _controller.refreshPermissions();
+    setState(() {});
   }
 
   /// R9.a — intent surface: bind the workspace (absolute path) and the
@@ -251,6 +322,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     if (identical(AgentDocSurface.debugSurface, this)) {
       AgentDocSurface.debugSurface = null;
     }
+    unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
     if (_ownsController) _controller.dispose();
     _workspaceField.dispose();
@@ -392,6 +464,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
           running: controller.isRunning,
           pendingPermissionTitle: controller.pendingPermission?.request.title,
           remotePermissions: controller.remotePermissions,
+          remotePermissionRouting: controller.remotePermissionRouting,
+          meshStatus: AgentDocSurface.meshWiring?.statusFor(_meshDocId),
           verdict: current?.verdictLine,
           transcriptTail: current?.transcript.toString() ?? '',
           turnCount: current?.turns.length ?? 0,
@@ -459,7 +533,19 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
                     if (_profileOpen)
                       SizedBox(
                         width: 300,
-                        child: _ProfilePane(controller: controller),
+                        child: _ProfilePane(
+                          controller: controller,
+                          routingError: _routingError,
+                          onSetRouting: (final enabled) {
+                            final result = setRemoteRouting(enabled: enabled);
+                            if (!result.ok) {
+                              setState(
+                                () => _routingError =
+                                    _routingError ?? result.message,
+                              );
+                            }
+                          },
+                        ),
                       ),
                   ],
                 ),
@@ -1380,9 +1466,18 @@ class _Composer extends StatelessWidget {
 /// Context load (per-turn spend from the verdict line), permission log,
 /// sessions, actors. Small multiples, monospace, no axes, no boxes.
 class _ProfilePane extends StatefulWidget {
-  const _ProfilePane({required this.controller});
+  const _ProfilePane({
+    required this.controller,
+    required this.onSetRouting,
+    this.routingError,
+  });
 
   final HarnessSessionController controller;
+
+  /// Task H — remote permission routing toggle (DESIGN §4: one simple
+  /// place, on the grid).
+  final ValueChanged<bool> onSetRouting;
+  final String? routingError;
 
   @override
   State<_ProfilePane> createState() => _ProfilePaneState();
@@ -1495,6 +1590,48 @@ class _ProfilePaneState extends State<_ProfilePane> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+          const SizedBox(height: 14),
+          // Task H — ROUTING (ADR 0005 §5, DESIGN §4): remote permission
+          // routing as one text toggle on the grid. OFF is the honest
+          // default: answering stays local, nothing is written. A
+          // failed enable surfaces in-flow with the cause named (§7).
+          Text('ROUTING', style: _label(theme)),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'remote permission routing — pending round-trips '
+                  'answerable from paired peers',
+                  style: _mono(theme),
+                ),
+              ),
+              _TextToggle(
+                label: controller.remotePermissionRouting ? '[on]' : '[off]',
+                active: controller.remotePermissionRouting,
+                onTap: () => widget.onSetRouting(
+                  !controller.remotePermissionRouting,
+                ),
+                toggleKey: const Key('coding_agent.routing.toggle'),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              controller.remotePermissionRouting
+                  ? 'policy on — announced as doc ops'
+                  : 'policy off — answering stays local',
+              key: const Key('coding_agent.routing.status'),
+              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ),
+          if (widget.routingError != null)
+            Text(
+              'routing: ${widget.routingError}',
+              key: const Key('coding_agent.routing.error'),
+              style: _mono(theme, color: theme.colorScheme.error),
+            ),
           const SizedBox(height: 14),
           Text('SESSIONS', style: _label(theme)),
           const SizedBox(height: 6),
@@ -1874,6 +2011,8 @@ final class AgentDocDebugState {
     this.actors = const [],
     this.sessionActors = const {},
     this.remotePermissions = const [],
+    this.remotePermissionRouting = false,
+    this.meshStatus,
   });
 
   final String docId;
@@ -1912,6 +2051,16 @@ final class AgentDocDebugState {
   /// asking, from where, and what has been decided.
   final List<PermRequestRecord> remotePermissions;
 
+  /// Task H — whether remote permission routing is enabled (the PROFILE
+  /// toggle's state, projected for the agent — DESIGN §5).
+  final bool remotePermissionRouting;
+
+  /// Task H — the mesh status of this device relative to the open doc:
+  /// hosting / connected / peer count / presence count. Null when the app
+  /// wiring is not installed (mesh never set up) — an agent reads the
+  /// same status rule data the human sees (DESIGN §5/§9).
+  final AgentDocMeshStatus? meshStatus;
+
   Map<String, Object?> toJson() => {
     'docId': docId,
     'workspaces': workspaces,
@@ -1927,10 +2076,71 @@ final class AgentDocDebugState {
     'actors': [for (final a in actors) a.toJson()],
     'sessionActors': sessionActors,
     'remotePermissions': [for (final p in remotePermissions) p.toJson()],
+    'remotePermissionRouting': remotePermissionRouting,
+    if (meshStatus != null) 'meshStatus': meshStatus!.toJson(),
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,
   };
+}
+
+/// Task H — the mesh status of THIS device relative to one doc's channel
+/// (what the status rule reports, DESIGN §9: connection truth in tabular
+/// mono). Honest by construction: every value is read from the live mesh
+/// replica; when the replica is not open, the wiring reports the zeros.
+final class AgentDocMeshStatus {
+  const AgentDocMeshStatus({
+    this.hosting = false,
+    this.connected = false,
+    this.peerCount = 0,
+    this.presenceCount = 0,
+  });
+
+  /// Whether this device hosts the relay ("main device").
+  final bool hosting;
+
+  /// Whether the replica has a transport connected.
+  final bool connected;
+
+  /// Registered peers on the replica.
+  final int peerCount;
+
+  /// Live presence entries on the doc's channel ("who is here" right
+  /// now — [MeshStorageService.presence]).
+  final int presenceCount;
+
+  Map<String, Object?> toJson() => {
+    'hosting': hosting,
+    'connected': connected,
+    'peerCount': peerCount,
+    'presenceCount': presenceCount,
+  };
+}
+
+/// Task H — the app wiring contract between the doc surface and the live
+/// mesh replica (installed by the app shell; see
+/// [AgentDocSurface.meshWiring]).
+final class AgentDocMeshWiring {
+  const AgentDocMeshWiring({
+    required this.routerFor,
+    required this.joinDoc,
+    required this.leaveDoc,
+    required this.statusFor,
+  });
+
+  /// Builds the doc channel for remote permission routing over the
+  /// mesh-attached [DocReplicaStore]. Throws when the mesh replica is not
+  /// live on this device — the surface surfaces the failure in-flow.
+  final PermissionDocRouter Function(NodeId docId) routerFor;
+
+  /// Joins [docId]'s presence channel (doc opened).
+  final Future<void> Function(String docId) joinDoc;
+
+  /// Leaves [docId]'s presence channel (doc closed).
+  final Future<void> Function(String docId) leaveDoc;
+
+  /// Reads the mesh status for [docId]'s channel.
+  final AgentDocMeshStatus Function(String docId) statusFor;
 }
 
 /// The honest empty state (Phase 1.5): an agent doc with no bound

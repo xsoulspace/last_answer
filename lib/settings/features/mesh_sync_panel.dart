@@ -105,6 +105,9 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
       final service = await _notifier.ensureMeshService();
       await service.backup(await _notifier.buildPayload());
       await service.sync();
+      // The sync cycle may have delivered remote doc ops (a routed
+      // permission answer) — projections re-read the fold.
+      StorageBackendsNotifier.onSyncCycle?.call();
       final report = await _notifier.restoreNow(
         backend: StorageBackendId.mesh,
       );

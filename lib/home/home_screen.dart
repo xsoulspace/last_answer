@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/home/tags/tags.dart';
@@ -10,6 +11,48 @@ import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
 import 'package:lastanswer/other/other.dart';
 import 'package:lastanswer/settings/settings.dart';
+
+/// Task H — the multiplayer wiring over the LIVE mesh replica (attached
+/// in `StorageBackendsNotifier.ensureMeshService`): the app-level
+/// [DocReplicaStore] + [ActorRoster] seams, exposed to the agent-doc
+/// surface as one typed contract.
+AgentDocMeshWiring _agentDocMeshWiring() {
+  final notifier = StorageBackendsNotifier.instance;
+  return AgentDocMeshWiring(
+    routerFor: (final docId) {
+      final service = notifier.meshService;
+      final store = notifier.docReplicaStore;
+      if (service == null || store == null) {
+        throw StateError('mesh replica is not live on this device');
+      }
+      return PermissionDocRouter(
+        store: store,
+        docId: docId,
+        selfId: service.selfId,
+      );
+    },
+    // Presence follows doc sessions (ADR 0031 §1). Mesh setup is never
+    // started as a side effect of opening a doc: only a LIVE replica is
+    // joined.
+    joinDoc: (final docId) async {
+      final service = notifier.meshService;
+      if (service == null) return;
+      await service.joinDoc(docId);
+    },
+    leaveDoc: (final docId) async {
+      await notifier.meshService?.leaveDoc(docId);
+    },
+    statusFor: (final docId) {
+      final service = notifier.meshService;
+      return AgentDocMeshStatus(
+        hosting: service?.isHosting ?? false,
+        connected: service?.isConnected ?? false,
+        peerCount: service?.peers.length ?? 0,
+        presenceCount: service?.presence(docId).length ?? 0,
+      );
+    },
+  );
+}
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({required this.navigator, super.key});
@@ -27,6 +70,15 @@ class HomeScreen extends StatelessWidget {
         opened.createAgentProject(context);
         return opened.value.value as ProjectModelDoc;
       };
+      // Task H — the multiplayer seams become live: the doc surface reads
+      // the mesh status, joins/leaves presence per doc session, and (when
+      // the user enables routing in PROFILE) reaches the mesh-attached
+      // doc replica store. After every sync cycle the open surface
+      // re-reads the fold (a peer's routed permission answer arrives with
+      // the sync).
+      AgentDocSurface.meshWiring = _agentDocMeshWiring();
+      StorageBackendsNotifier.onSyncCycle = () =>
+          AgentDocSurface.debugSurface?.refreshAfterMeshSync();
       return true;
     }());
     final screenLayout = ScreenLayout.of(context);

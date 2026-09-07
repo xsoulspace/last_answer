@@ -189,6 +189,30 @@ presence frames, ecsly world-sync plugin) are landed and gated.
   problems — the convergence plumbing (pairing, signing, TOFU, presence,
   persistence) is proven on device.
 
+## 2026-09-07 — Squad 5: the T3 gate reached its last step on device
+
+`tool/gates/multiplayer_gate.sh` (updated: routing verb, edit verbs,
+divergence ledger) run on real apps. Landed (task O): `mesh_open_doc`
+viewer-shadow verb (the web peer opens the shared doc honestly — viewer
+marker, live meshStatus, no daemon), stale `debugState.meshStatus`
+refreshed on sync/hosting/presence changes, `mesh_routing` verb (policy
+lifted from surface-local to controller), remote-answer path in
+`agent_permission_answer`, `agent_doc_edit` verb (DocReplica op
+write-through). Gates: coding_agent 55/55, builds web+macOS green.
+
+**Measured gate result (real devices, macOS host + Chrome web peer):**
+boot, create/open/bind, mesh_host, boot-peer, mesh_pair (synced),
+mesh_join_doc, mesh_open_doc (viewer shadow), presence-host,
+edit-host/edit-peer (real doc ops), sync-cycle, **surface-diff EMPTY**,
+mesh_routing ON — ALL PASS. The gate reached its FINAL step
+(`perm-from-peer`) and stopped on a turn-level hang: the delegated
+AFM turn froze at the model call (transcript static 15+ min, no tool
+calls, no permission reached). Suspected external WIP — concurrent
+sessions are actively editing the AFM native bridge and meaning runtime
+this app links; the gate itself failed correctly (named row, no widened
+oracle). Re-run `bash tool/gates/multiplayer_gate.sh` when the tree
+settles; every other step is proven.
+
 ## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
 
 - **The measured trigger.** The R9.b dogfood attempt (fix the doc-payload

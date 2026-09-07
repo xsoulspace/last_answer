@@ -221,7 +221,7 @@ print(json.dumps({"docId": sys.argv[1]}))' "$DOC_ID")" || true)
 done
 [ "$(data_param "$OPEN_PEER_OUT" ok)" = "true" ] \
   || fail_step 'mesh_open_doc-peer' "$OPEN_PEER_OUT"
-[ "$(data_param "$OPEN_PEER_OUT" docId)" = "$DOC_ID" ] \
+[ "$(data_param "$OPEN_PEER_OUT" docId | tr -d '"')" = "$DOC_ID" ] \
   || fail_step 'mesh_open_doc-peer' "shadow bound to $(data_param "$OPEN_PEER_OUT" docId), expected $DOC_ID"
 [ "$(data_param "$OPEN_PEER_OUT" viewer)" = "true" ] \
   || fail_step 'mesh_open_doc-peer' 'the shadow must project viewer:true (DESIGN §6)'

@@ -89,13 +89,12 @@ not canonical data yet. Everything below is ordered; do not skip #1.
      macOS app (relay host) + web app (second peer) on one doc; QR
      pairing; scripted concurrent edits; a permission answered from the
      web peer; debugSurface projections byte-identical after each
-     convergence point; zero new protocol. RUN ON REAL DEVICES (2026-09-07): pairing, signing/TOFU, presence,
-     and web persistence all verified live (macOS host + Chrome web peer)
-     — see history.md, squad 4 continued. REMAINING for the PASS verdict:
-     (a) remote-doc-open wiring so the peer's surface projects the shared
-     doc (the diff oracle needs both sides holding the doc); (b) fix the
-     stale `debugState.meshStatus` snapshot; (c) then the diff goes empty
-     and 5.G2 (chaos soak) starts.
+     convergence point; zero new protocol. RUN ON REAL DEVICES (2026-09-07, squads 4–5): EVERY step passes —
+     boot/pair/join/open/edits/sync/surface-diff-empty/routing-ON —
+     except the final `perm-from-peer` step, blocked by a turn-level
+     model-call hang (suspected concurrent-session WIP in the AFM native
+     bridge / meaning runtime — re-run the gate when the tree settles).
+     See history.md for the full record.
    - **5.G2 — heavy-usage soak** (same runbook, T4 tier): chaos matrix
      over the two apps — partitions, kill-and-resume, streaming bursts,
      large docs, clock skew. Gate: every chaos row either converges to

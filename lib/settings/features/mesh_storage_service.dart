@@ -90,6 +90,12 @@ final class MeshStorageService {
   Future<void>? _presenceOpening;
   var _ownsPresenceTransport = false;
 
+  /// Passive presence observation (ADR 0031 §1–2): folds verified peer
+  /// frames for docs with no local session, so a doc that opened before
+  /// this replica existed (its joinDoc was dropped by the wiring) still
+  /// SEES peers — observation only, never announcement.
+  MeshPresenceObserver? _presenceObserver;
+
   // -- Roster riding the mesh as durable ops (ADR 0007 §1) ---------------
 
   /// Directory under storage holding one roster file per replica
@@ -333,20 +339,30 @@ final class MeshStorageService {
 
   /// Live presence for [docId] — the tracker fold over unexpired
   /// ephemeral ops (ADR 0029 §1, ADR 0031 §2). Agent-queryable state,
-  /// not UI state: "who is here" right now.
+  /// not UI state: "who is here" right now. Sweeps on read (expiry is
+  /// the crash backstop, ADR 0031 §1) — with no open doc sessions there
+  /// is no session ping cycle to sweep, so the read does it.
   List<MeshPresenceEntry> presence(
     final String docId, {
     final DateTime? now,
-  }) => _presenceTracker?.presence(docId, now: now) ?? const [];
+  }) =>
+      _presenceTracker?.presence(docId, now: now ?? DateTime.now()) ??
+      const [];
 
   /// How many inbound presence frames were dropped as named data
-  /// (ADR 0031 §3) across every open doc session.
-  int get rejectedPresenceFrameCount => _presenceSessions.values
-      .fold(0, (final n, final session) => n + session.rejectedFrameCount);
+  /// (ADR 0031 §3) across every open doc session and the passive
+  /// observer.
+  int get rejectedPresenceFrameCount =>
+      (_presenceObserver?.rejectedFrameCount ?? 0) +
+      _presenceSessions.values.fold(
+        0,
+        (final n, final session) => n + session.rejectedFrameCount,
+      );
 
   /// Every dropped presence frame with its rejection reason, oldest
-  /// first, across every open doc session.
+  /// first, across every open doc session and the passive observer.
   List<MeshFrameRejection> get presenceFrameRejections => [
+    ...?_presenceObserver?.rejections,
     for (final session in _presenceSessions.values) ...session.rejections,
   ];
 
@@ -411,6 +427,19 @@ final class MeshStorageService {
             ? inner
             : null;
     _presenceLinkSub = link.connectionChanges.listen(_onPresenceLinkChanged);
+    // Observe every channel the link carries (ADR 0031 §2): docs with a
+    // local session are skipped (the session verifies + folds them);
+    // everything else still folds so presence(doc) answers for docs this
+    // device never announced on.
+    unawaited(_presenceObserver?.dispose());
+    _presenceObserver =
+        MeshPresenceObserver(
+            tracker: _presenceTracker!,
+            authenticator: _presenceAuthenticator!,
+            selfId: selfId,
+            hasLocalSession: _presenceSessions.containsKey,
+          );
+    _presenceObserver!.attach(link.frames);
     if (link.connectionState == EphemeralLinkState.connected) {
       unawaited(_openPresenceSessions());
     }
@@ -496,6 +525,8 @@ final class MeshStorageService {
     // session callbacks are async-safe across link replacement.
     unawaited(_presenceLinkSub?.cancel());
     _presenceLinkSub = null;
+    unawaited(_presenceObserver?.dispose());
+    _presenceObserver = null;
     final sessions = List.of(_presenceSessions.values);
     _presenceSessions.clear();
     final oldLink = _presenceLink;

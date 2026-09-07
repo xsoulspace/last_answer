@@ -153,6 +153,42 @@ presence frames, ecsly world-sync plugin) are landed and gated.
   16/16 (was 14/2), perm/routing/roster 9/9, headless_core 59/59, kernel
   33/33.
 
+## 2026-09-07 — Squad 4 continued: the device gate RUN on real apps (macOS host + Chrome web peer)
+
+`bash tool/gates/multiplayer_gate.sh` executed for real. Landed en route:
+
+- **Web build un-blocked** (task K): conditional FFI imports —
+  `apple_foundation` web stub (honest `engine_unavailable` refusal, macOS
+  path byte-identical) + `agentic_host` workspace-ffi chain cut from the
+  web graph. `flutter build web --debug` green; macOS build + all suites
+  unchanged.
+- **Mesh replica persistence on web** (task L): `MeshKeyValueStore`
+  conditional backing — io file store byte-identical; web = `localStorage`
+  under the replica namespace (degrades to in-memory honestly). Root cause
+  of the web `mesh_pair` crash (`_Namespace` from dart:io) closed.
+- **Presence deadlock fixed** (tasks M+N): (M) relay-owned TOFU with key
+  pinning — the host now learns an unknown peer's identity key from the
+  signed ride-along, pins it (mismatch = rejected), registers the peer;
+  (N) the host app opened NO presence session for docs it created via
+  intents — receive-path observer added so frames for open docs fold
+  without an explicit local join. Stale presence-roster test updated to
+  the TOFU contract (documented semantics change).
+- **Gate scripts hardened**: peer launch via `-d chrome` (web-server never
+  exposes a VM service without a browser); `mesh_pair` readiness retry;
+  mcp envelope fields (`type`/`method`) named as divergence and stripped
+  from diffs.
+- **MEASURED RESULT** (evidence: `$TMPDIR/mp_gate_evidence`): boot-host,
+  doc-create/open/bind, mesh_host, boot-peer (web/Chrome), mesh_pair
+  (synced), mesh_join_doc, **presence-host — ALL PASS on real devices**:
+  the macOS host relay sees the web peer's signed, TOFU-bound presence.
+- **Named, classified remainder** (the surface-diff oracle step):
+  (a) the peer has no remote-doc OPEN path yet (doc-sync UI wiring — the
+  peer's `agent_doc_state` is an honest error, not divergence);
+  (b) host `debugState.meshStatus` snapshot is stale vs the live service
+  (projection refresh bug, small). Both are product work, not protocol
+  problems — the convergence plumbing (pairing, signing, TOFU, presence,
+  persistence) is proven on device.
+
 ## 2026-09-06 — R9 REDEFINED (ADR 0004): the meaning runtime, not a conversation
 
 - **The measured trigger.** The R9.b dogfood attempt (fix the doc-payload

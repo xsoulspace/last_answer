@@ -334,8 +334,8 @@ void main() {
     expect(foldOf(b), {'device-b'}); // Peer dropped immediately.
   });
 
-  test('unauthenticated frames are rejected as named data and counted',
-      () async {
+  test('unknown peer TOFU-binds on first signed frame; unsigned and '
+      'key-mismatched frames are rejected as named data', () async {
     final hub = _FakeHub();
     final endpointB = hub.endpoint('device-b');
     final endpointC = hub.endpoint('device-c');
@@ -346,8 +346,10 @@ void main() {
       selfId: 'device-b',
       provider: _FakeProvider(),
     );
-    // device-c signed its own frames, but b never learned its identity
-    // key (a sync-only peer — no key material was ever paired).
+    // device-c signs with its own keypair; b has never seen the key.
+    // Relay-owned TOFU (ADR 0031 §3 v1) binds peerId → key on the first
+    // VERIFIED frame and registers the peer — the asymmetric-pairing
+    // deadlock fix (history.md, squad 4 / task M).
     final c = await _service(
       selfId: 'device-c',
       provider: _FakeProvider(),
@@ -360,20 +362,14 @@ void main() {
     await c.joinDoc(_docId);
     await _settle();
 
-    // c's signed-but-unregistered frame: dropped, never folded.
+    // c's first signed frame: TOFU-bound, folded, no rejection.
     expect(
       b.presence(_docId).map((final entry) => entry.peerId),
-      ['device-b'],
+      containsAll(['device-b', 'device-c']),
     );
-    expect(b.rejectedPresenceFrameCount, 1);
-    expect(
-      b.presenceFrameRejections.single.reason,
-      MeshFrameRejectionReason.unauthenticated,
-    );
-    expect(b.presenceFrameRejections.single.frame.fromPeerId, 'device-c');
+    expect(b.rejectedPresenceFrameCount, 0);
 
-    // An UNSIGNED ghost frame injected raw: dropped for a different
-    // named reason.
+    // An UNSIGNED ghost frame injected raw: dropped for a named reason.
     final ghost = MeshPresenceTracker(actorId: 'device-ghost');
     final unsigned = ghost.announce(
       docId: _docId,
@@ -381,7 +377,7 @@ void main() {
     );
     endpointB._receive(unsigned);
     await _settle();
-    expect(b.rejectedPresenceFrameCount, 2);
+    expect(b.rejectedPresenceFrameCount, 1);
     expect(
       b.presenceFrameRejections.last.reason,
       MeshFrameRejectionReason.unsigned,
@@ -389,6 +385,29 @@ void main() {
     expect(
       b.presence(_docId).map((final entry) => entry.peerId),
       isNot(contains('device-ghost')),
+    );
+
+    // A frame claiming device-c but signed by a DIFFERENT key: the pin
+    // holds — rejected, c's presence entry unchanged (TOFU never
+    // overwrites a pin).
+    final rogue = MeshPresenceTracker(actorId: 'device-c');
+    final rogueFrame = rogue.announce(
+      docId: _docId,
+      event: MeshEphemeralEvent.join,
+    );
+    final rogueSigner = MeshFrameSigner(
+      identityKeyPair: await _keyPairOf('device-c-rogue'),
+    );
+    endpointB._receive(await rogueSigner.sign(rogueFrame));
+    await _settle();
+    expect(b.rejectedPresenceFrameCount, 2);
+    expect(
+      b.presenceFrameRejections.last.reason,
+      MeshFrameRejectionReason.unauthenticated,
+    );
+    expect(
+      b.presence(_docId).map((final entry) => entry.peerId),
+      contains('device-c'),
     );
   });
 

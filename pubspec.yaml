@@ -138,6 +138,12 @@ dev_dependencies:
     path: ../../oka/packages/oka_android
   oka_core:
     path: ../../oka/packages/oka_core
+  # Store publish targets (ADR-0014): declared in tool/oka_pipeline.dart,
+  # run via `oka run publish-play` / `oka run publish-huawei`.
+  oka_huawei:
+    path: ../../oka/packages/oka_huawei
+  oka_play:
+    path: ../../oka/packages/oka_play
 
   web: any
 dependency_overrides:
@@ -148,6 +154,10 @@ dependency_overrides:
     path: ../../oka/packages/oka_android
   oka_core:
     path: ../../oka/packages/oka_core
+  oka_huawei:
+    path: ../../oka/packages/oka_huawei
+  oka_play:
+    path: ../../oka/packages/oka_play
   ecsly:
     path: /Users/antonio/xs/ecsly/core_packages/ecsly
   dart_acp_toolkit:

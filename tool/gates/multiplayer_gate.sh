@@ -182,9 +182,14 @@ fi
 # verbatim; the service tolerates whitespace/newlines).
 PAIRING_FILE="$EVIDENCE/pairing_code.b64"
 printf '%s' "$PAIRING_CODE" | tr -d '"' > "$PAIRING_FILE"
-PAIR_OUT=$(call_on "$PEER_URI" mesh_pair "$(python3 -c '
+PAIR_OUT=""
+for _ in $(seq 1 10); do
+  PAIR_OUT=$(call_on "$PEER_URI" mesh_pair "$(python3 -c '
 import json, sys
-print(json.dumps({"pairingCode": open(sys.argv[1]).read()}))' "$PAIRING_FILE")" || true)
+print(json.dumps({"pairingCode": open(sys.argv[1]).read()}))' "$PAIRING_FILE")" 2>&1 || true)
+  [ "$(data_param "$PAIR_OUT" ok)" = "true" ] && break
+  sleep 5
+done
 rm -f "$PAIRING_FILE"
 [ "$(data_param "$PAIR_OUT" ok)" = "true" ] \
   || fail_step 'mesh_pair' "$PAIR_OUT"
@@ -244,6 +249,7 @@ host, peer = load(sys.argv[1]), load(sys.argv[2])
 for s in (host, peer):
     mesh = s.get('meshStatus') or {}
     mesh.pop('endpoint', None)
+    s.pop('type', None); s.pop('method', None)  # mcp envelope artifacts (named divergence)
 sys.exit(0 if host == peer else 1)
 PYEOF
 then
@@ -308,6 +314,7 @@ host, peer = load(sys.argv[1]), load(sys.argv[2])
 for s in (host, peer):
     (s.get('meshStatus') or {}).pop('endpoint', None)
     s.pop('docId', None)  # each surface reports its own local doc id
+    s.pop('type', None); s.pop('method', None)  # mcp envelope artifacts (named divergence)
 sys.exit(0 if host == peer else 1)
 PYEOF
 then

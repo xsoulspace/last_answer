@@ -168,7 +168,7 @@ row PASS 'mesh_host' "endpoint=$ENDPOINT"
 skip_step 'qr-scan' 'camera-less automation; the paste payload path is used (runbook: the scan itself stays human)'
 
 : > "$PEER_LOG"
-flutter run -d web-server --debug \
+flutter run -d chrome --debug \
   --dart-define-from-file=configs/envs/prod.json > "$PEER_LOG" 2>&1 &
 PEER_PID=$!
 if PEER_URI=$(wait_for_uri "$PEER_LOG"); then
@@ -183,7 +183,7 @@ fi
 PAIRING_FILE="$EVIDENCE/pairing_code.b64"
 printf '%s' "$PAIRING_CODE" | tr -d '"' > "$PAIRING_FILE"
 PAIR_OUT=$(call_on "$PEER_URI" mesh_pair "$(python3 -c '
-import json
+import json, sys
 print(json.dumps({"pairingCode": open(sys.argv[1]).read()}))' "$PAIRING_FILE")" || true)
 rm -f "$PAIRING_FILE"
 [ "$(data_param "$PAIR_OUT" ok)" = "true" ] \

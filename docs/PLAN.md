@@ -118,6 +118,78 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    multi-workspace daemon (one process, several worlds), new-task goal
    isolation on a resumed world (the Phase-1 dogfood finding).
 
+7. **Phase 6 — local-first model federation**
+   ([ADR 0008](decisions/0008-local-first-model-federation.md),
+   ACCEPTED 2026-09-08). Per-device brains through the EXISTING
+   inference abstraction (models bound per purpose: AFM on Apple,
+   Gemma/LiteRT + Vosk/Whisper/Sherpa/TTS elsewhere; network clients
+   default-OFF on ALL devices — offline-first), one shared meaning-world
+   per workspace (FS = single-writer projection target; any device's
+   actors propose moves), provenance-stamped ops. Ordered, each item
+   names its gate:
+
+   - **6.A — purpose-bound model registry on-device.**
+     `HarnessHostConfig.buildBackend()` composes installed inference
+     clients (AFM on Apple, Gemma elsewhere; voice clients enter as
+     purpose-bound models — dictation via Vosk/Whisper/Sherpa, readback
+     via TTS); network clients refuse without per-doc consent;
+     app picker binds models per purpose with provision
+     (download/consent) UX. Gate: scripted e2e with on-device client
+     parity + one device smoke run of one structured move.
+   - **6.B — mobile harness slice.** App-documents-dir workspace,
+     md/yaml/json/text materializers, structural verifier tier with an
+     honest `verification: structural` beat, snapshot store via injected
+     `StorageService`, mobile tool-surface trim. Evidence base:
+     [harness-mobile-feasibility](harness-mobile-feasibility.md). Gate:
+     one real edit move on Android verified structurally, verdict +
+     spend visible.
+   - **6.C — mesh console.** Task ops (`task/<turnId>`) + ephemeral
+     delta stream + sync-on-event triggers. Evidence base:
+     [mesh-remote-agent-analysis](reports/mesh-remote-agent-analysis.md).
+     Gate: extend `multiplayer-device-gates.md` T3 — phone delegates a
+     task op → macOS executes → phone sees the streaming verdict →
+     answers a permission promptly.
+   - **6.D — shared-world actors (the MMO gate).** N devices × local
+     models as actors on ONE shared meaning-world — including a code
+     workspace: phone actor proposes moves as ops, owner materializes
+     + grades with the toolchain oracle, verdict folds back as data;
+     provenance-stamped ops; task board as canonical rows (Phase 2
+     substrate). Gate: macOS (AFM) + Android (Gemma) actors co-edit one
+     doc offline-then-online; ops converge; both verdicts visible;
+     **zero cloud calls**. This is ADR 0008's falsifier row.
+   - **6.E — remote access.** ADR 0008 appendix paths, in order:
+     VPN/Tailscale documented as the zero-code workaround; opt-in cloud
+     WS bridge relay with per-doc E2E encryption from pairing keys;
+     push prompts (FCM/APNs) for backgrounded permission answers;
+     git-backed op-log bus as the asynchronous fallback. Gate: a
+     permission prompt answered from a cellular-connected phone before
+     the host's deny deadline.
+
+8. **Surface consolidation round** ([ADR 0010](decisions/0010-one-harness-doc-surface-unification.md)
+   — can run in parallel with Phase 2 where files do not collide):
+   delete GDD/PRD (ids, seeds, bar items, notifier methods, tests —
+   never used in production), slim the rail to `+ / Idea / Note`
+   (Tufte treatment; see [conversation model](product/conversation-model.md)).
+   Gate: analyze + tests green; rail has no dead ink and no species
+   choice at creation.
+9. **Queue + cooled turns** ([conversation model](product/conversation-model.md);
+   queue-as-graph law in [ADR 0011](decisions/0011-multiplayer-sessions-and-queue-as-graph.md)):
+   steer / send-immediately / edit-queued in `AgentDocSurface`, with
+   the widget-key contract (`coding_agent.queue.*`) and debugState
+   projection. Depends on the beat-boundary interrupt (harness-side,
+   filed in the Phase-1.5 evidence). Gate: scripted e2e — queue two
+   messages mid-turn, steer one, send-immediately the other after
+   interrupt, both turns carry verdicts with honest partial spend; the
+   cooled turn is editable and its span opens a child thread.
+10. **Session registry + profiler adoption** ([ADR 0009](decisions/0009-session-registry-and-many-worlds-debug-state.md),
+   [ADR 0010](decisions/0010-one-harness-doc-surface-unification.md) D4/D5):
+   registry in the host layer; MCP verbs gain the optional `docId`;
+   PROFILE pane + debugState become adapters over
+   `xsoulspace_agentic_harness_flutter_profiler`; doc glue extracts
+   toward `xsoulspace_agentic_doc`; capability flags gate inspector
+   layers. Gate: ADR 0009's three gates (two-surface, headless,
+   adapter-removal).
+
 ## R9 — the console migration, REDEFINED (2026-09-06, ADR 0004)
 
 The original R9 framing (replay the pi operator cycle through the agent-doc

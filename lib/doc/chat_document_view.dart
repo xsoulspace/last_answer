@@ -67,6 +67,11 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   }
 
   Future<void> _detectAgents() async {
+    // ACP agents are local CLI processes discovered via `which` — desktop
+    // only. On mobile/web there is nothing to detect, and spawning `which`
+    // on Android either hangs the detection chain or litters the system
+    // with useless process forks.
+    if (!PlatformInfo.isNativeDesktop) return;
     try {
       final installations = await _installationService.detectAll();
       if (!mounted) return;
@@ -89,7 +94,11 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     if (_runtime.isReady && _runtime.currentSessionId != null) return;
     final installation = _selectedInstallation;
     if (installation == null) {
-      throw StateError('No ACP agent detected');
+      throw StateError(
+        _acpSupported
+            ? 'No ACP agent detected'
+            : 'ACP agents need a desktop device',
+      );
     }
     await _runtime.start(AcpRuntimeConfig.fromInstallation(installation));
     final sessionId = await _runtime.newSession(Directory.current.path);
@@ -165,7 +174,10 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
           await _failAssistant(assistantBlockId, buffer);
         },
       );
-    } on Exception catch (error) {
+    } on Object catch (error) {
+      // `on Exception` would let StateError (an Error) escape — e.g. the
+      // "No ACP agent detected" throw from _ensureSession — and surface as
+      // an unhandled zone error instead of a visible message.
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
@@ -204,8 +216,10 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   Future<void> _safeReplaceMessage(hc.NodeId blockId, String content) async {
     try {
       await _chatService.replaceMessage(_current.id, blockId, content: content);
-    } on StateError {
-      // The current path changed before a late stream event arrived.
+    } on Object {
+      // The current path changed before a late stream event arrived (or the
+      // doc was closed mid-stream); never let a late stream event crash the
+      // view.
     }
   }
 
@@ -238,6 +252,11 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     _composerController.dispose();
     super.dispose();
   }
+
+  /// ACP runs local CLI agents over stdio — only possible on desktop
+  /// (macOS/windows/linux). Mobile and web must never shell out or offer
+  /// agent selection that cannot be satisfied.
+  bool get _acpSupported => PlatformInfo.isNativeDesktop;
 
   String get _statusLabel => switch (_runtime.status) {
     AcpRuntimeStatus.ready => 'Ready',
@@ -281,7 +300,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
               children: [
                 const Icon(Icons.circle, size: 10, color: Colors.greenAccent),
                 const Gap(6),
-                Text('ACP $_statusLabel'),
+                Text(_acpSupported ? 'ACP $_statusLabel' : 'ACP · desktop only'),
                 const Spacer(),
                 DropdownButton<AcpAgentInstallation>(
                   value: _selectedInstallation,
@@ -293,20 +312,21 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                         child: Text(installation.entry.displayName),
                       ),
                   ],
-                  onChanged: _isSending
+                  onChanged: !_acpSupported || _isSending
                       ? null
                       : (v) => setState(() => _selectedInstallation = v),
                 ),
-                if (_installations.isEmpty)
+                if (_installations.isEmpty && _acpSupported)
                   IconButton(
                     onPressed: _showInstallHelp,
                     icon: const Icon(Icons.download_outlined),
                   ),
-                IconButton(
-                  onPressed: _isSending ? null : _useLocalClient,
-                  tooltip: 'Use local executable',
-                  icon: const Icon(Icons.folder_open),
-                ),
+                if (_acpSupported)
+                  IconButton(
+                    onPressed: _isSending ? null : _useLocalClient,
+                    tooltip: 'Use local executable',
+                    icon: const Icon(Icons.folder_open),
+                  ),
               ],
             ),
           ),
@@ -468,21 +488,40 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   }
 
   Future<void> _useLocalClient() async {
-    final file = await openFile(
-      acceptedTypeGroups: [const XTypeGroup(label: 'Executables')],
-    );
+    final XFile? file;
+    try {
+      file = await openFile(
+        acceptedTypeGroups: [const XTypeGroup(label: 'Executables')],
+      );
+    } on Object catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
+      return;
+    }
     if (file == null) return;
-    final installation = await _installationService.detectLocalPath(file.path);
+    final AcpAgentInstallation? installation;
+    try {
+      installation = await _installationService.detectLocalPath(file.path);
+    } on Object catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
+      return;
+    }
     if (!mounted) return;
-    if (installation == null) {
+    final picked = installation;
+    if (picked == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Executable not found')));
       return;
     }
     setState(() {
-      _installations = [..._installations, installation];
-      _selectedInstallation = installation;
+      _installations = [..._installations, picked];
+      _selectedInstallation = picked;
     });
   }
 }

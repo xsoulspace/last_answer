@@ -106,6 +106,57 @@ machinery.
   that is not observable from the product side is shown (§6 applies to
   peers as it does to agents).
 
+## 10. Attention is a budget (ADHD-first, human-true)
+
+Attention is spent like money: monotonic, visible, never spent without
+consent. This section is written for ADHD users **literally, not as a
+metaphor** — the primary tuning instrument is an ADHD person, and the
+rules below are therapeutic before they are aesthetic.
+
+- **One decision per screen.** A creation flow never asks "which of
+  these am I?". Any surface offering N simultaneous choices where one
+  default would do is an attention overdraft — flag it.
+- **Externalize working memory.** Every state renders; nothing lives
+  only in the user's head. Queued messages are visible and editable,
+  not "trusted to send". Breadcrumbs, queue positions, binding state,
+  spend — all on screen, always.
+- **No state is only visible live.** Navigating away and back must
+  reconstruct everything (`···` rows, live beats included — resumed as
+  their durable residue). A state that vanishes on return is a bug.
+- **Collapsible, never absent.** Observability is layered, and every
+  layer is one tap away:
+  - **L0 — status rule**: one line (running/idle, spend, pending perm).
+  - **L1 — progress**: the `···` row + current activity in words
+    ("thinking" collapses here).
+  - **L2 — beats**: dim mono rows per tool/decision/thought.
+  - **L3 — full**: payloads, context assembly, the meaning cut, loop
+    warnings — expanded on tap only.
+  Capability flags gate which layers **exist** (per doc/user:
+  `inspector: none | summary | full`); view toggles gate which are
+  **open**. Transparency is always available, never mandatory.
+- **Latency to first action under the friction of starting.** Cold
+  start → typing in one gesture; Select→Do < 300 ms (pillars doc).
+- **Invariant geometry.** Fixed positions are motor memory: the rail
+  never rearranges; the composer never moves. Labels are verb-first,
+  concrete words — tested for cognitive load in EN/IT/RU, not just
+  correctness ("GDD" fails; "New" passes).
+- **Forgiveness is a feature.** The user abandons and returns
+  constantly; the system rewards return: queued messages editable,
+  denials recorded, children archived not deleted, per-turn edit
+  history.
+- **Time made visible.** Wall-clock on live turns, spend on verdicts,
+  queue position and age on queued rows. Honest surfaces (§6) are
+  directly therapeutic here: never remove them, extend them to
+  everything new.
+- **The doc renders as text first.** Harness layers are the ONLY
+  things allowed to be collapsed or gated. If a harness concept (beat,
+  verdict, projection) becomes mandatory reading for writing a note,
+  the product has become an abstract agentic harness — flag as review
+  blocker.
+- **Attention dials, not a mode.** Verbosity, motion, queue defaults
+  live in PROFILE (§4 — one simple place). No "ADHD mode" label: these
+  are ordinary attention settings anyone may use.
+
 ## Forbidden (flag as review blockers)
 
 - Material chrome in doc surfaces (cards/chips/segmented controls/

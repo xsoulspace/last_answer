@@ -18,8 +18,6 @@ enum DocStatus { open, collapsed }
 
 /// Known format ids. Any other value is a user-installed format template.
 abstract final class DocFormatIds {
-  static const gdd = 'gdd';
-  static const prd = 'prd';
   static const chat = 'chat';
 
   /// Agents in docs (ADR 0003): a document bound to one or more workspaces
@@ -83,20 +81,6 @@ abstract class AnchorSpanModel with _$AnchorSpanModel {
 
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
-  factory ProjectModel.emptyGdd() => ProjectModel.doc(
-    id: ProjectModelId.generate(),
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    formatId: DocFormatIds.gdd,
-    blocks: defaultGddTemplate(),
-  );
-  factory ProjectModel.emptyPrd() => ProjectModel.doc(
-    id: ProjectModelId.generate(),
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    formatId: DocFormatIds.prd,
-    blocks: defaultPrdTemplate(),
-  );
   factory ProjectModel.emptyChat() => ProjectModel.doc(
     id: ProjectModelId.generate(),
     createdAt: DateTime.now(),
@@ -229,68 +213,6 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     updatedAt: DateTime.now(),
   );
 }
-
-List<DocBlockModel> defaultGddTemplate() => [
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.list,
-    content: 'Overview',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Gameplay',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Art',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Tech',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-];
-
-List<DocBlockModel> defaultPrdTemplate() => [
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Problem',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Users',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Requirements',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-  DocBlockModel(
-    id: DocBlockId.generate(),
-    type: DocBlockType.heading,
-    content: 'Success Metrics',
-    level: 1,
-  ),
-  DocBlockModel(id: DocBlockId.generate(), type: DocBlockType.paragraph),
-];
 
 String _getTitle(String text, {int titleLimit = ProjectModel.titleLimit}) {
   if (text.length <= titleLimit) return text;

@@ -140,15 +140,6 @@ class _VerticalBar extends StatelessWidget {
           onNoteTap: () {
             context.read<OpenedProjectNotifier>().createNoteProject(context);
           },
-          onGddTap: () {
-            context.read<OpenedProjectNotifier>().createGddProject(context);
-          },
-          onPrdTap: () {
-            context.read<OpenedProjectNotifier>().createPrdProject(context);
-          },
-          onChatTap: () {
-            context.read<OpenedProjectNotifier>().createChatProject(context);
-          },
         ),
       ],
     ),

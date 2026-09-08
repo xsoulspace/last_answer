@@ -51,8 +51,12 @@ wasting the harness's graph-native determinism on a list.
 
 **D1 — A session is a multiplayer stage, not a 1:1 channel.**
 A session hosts any number of actors concurrently (ADR 0007 roster;
-presence keys `(peerId, actorId)`). The composer is the *human's* row of
-the stage, not the stage's owner. Parallel delegated tasks in one
+presence keys `(peerId, actorId)`) — and "any" is load-bearing: models
+on phones, web peers, and desktops, agent runtimes, mechanical actors,
+and **several humans side by side**. A session with two humans, two
+models on two devices, and a validator actor is the intended shape, not
+an edge case. The composer is the *human's* row of the stage, not the
+stage's owner — and with several humans, each human has their own. Parallel delegated tasks in one
 session/world follow ADR 0006's single-writer law and ADR 0008's lane
 law (Lane 1 code workspaces: one writer device, others contribute
 remote actors; Lane 2 doc worlds: the CRDT kernel is the single world,
@@ -90,6 +94,43 @@ Every beat and every queued row carries its actor's gutter label
 says so; a queued message says its queue state (`STEER`, position).
 Unattributable action is a review blocker (DESIGN §6).
 
+**D5 — Queues are lanes, and there are many.**
+A queue is not one global list. A **queue is a directed actor→actor
+lane**: a queued message is queued *for* a specific actor — the steer
+target. One session runs many lanes concurrently: human→model,
+human→mechanical, a second human→the same model, model→model
+(delegation chains). Each lane has its own frontier and its own
+observable state; every lane renders on the same grid, attributed per
+D4 and layered per DESIGN §10 (a lane you are not addressing collapses
+to an L0/L1 line; open it to L2/L3 when wanted). Branching partitions
+**lanes**, not just rows. The default composer lane is
+human→the session's active agent; every other lane is opt-in and
+equally first-class. There is no lane the human cannot observe.
+
+## Implementation mapping — the queue rides the frontier
+
+Harness ADR 0009's amendment (2026-09-08, "the frontier IS the
+prediction path") is the mechanical substrate this ADR predicted. The
+mapping is direct:
+
+| ADR 0011 concept | Harness ADR 0009 mechanism |
+|---|---|
+| A queued (steered) message | A **step** on the frontier graph: `claim` = the message text, `status: open`. Steps record *intent* (beats record what happened) — a queued message is exactly a step, not a beat. |
+| Enqueue = consent | Consent is given at enqueue; a **mechanical actor (the queue pump)** may work consented ready steps — amendment item 3 (accelerate-and-predict), zero tokens. |
+| Delivery of the next turn | Through the existing decision flow: `openFreshDecision` host-injected fresh decisions — **never a new loop** (amendment item 2). |
+| `StepAction(toolName, arguments)` | The pump's delivery is a mechanical action slot (`deliver_user_turn`-shaped), resolved — not composed. |
+| Branch candidates validated ahead of the model | `projectPlanFrontier` traversal over explicit edges; mechanical verification via `verify_step`-class predicates; `StepStatus` flips `open → verified/superseded`. |
+| Edit queued / cancel queued | Edit the step's claim before it is worked; cancel = `superseded` (queryable — revision history preserved for free). |
+| Send-now interrupt | Rejects the pending permission, stops the turn at the **beat boundary**, verdict lands with partial spend, then the immediate message is delivered via `openFreshDecision`. |
+| Lanes (D5) | Per directed actor→actor frontier region; entries keyed `(from, to)`. First implementation: the default lane only, data-shaped so lanes are additive. |
+
+Migration honesty: until `xsoulspace_agentic_doc` materializes queue
+entries as frontier entities, the first implementation carries queue
+state in the doc payload (durable, syncable) with step-shaped semantics
+(`open | superseded | delivered`); the ADR 0011 graph gate ("no
+app-level queue state survives snapshot/restore") is the migration
+gate, not the first gate.
+
 ## Open questions
 
 1. **Where does a branch of a not-yet-sent message live?** A queued
@@ -97,7 +138,11 @@ Unattributable action is a review blocker (DESIGN §6).
    home in the doc store (child-node-of-queued-beat vs device-local
    staging). Decide with the `xsoulspace_agentic_doc` materialization
    design; the gate below does not require it.
-2. **Parallel agents per session cap** — one model per actor is data
+2. **Lane identity in the doc store** — a lane is keyed by its directed
+   actor pair (`from→to`); whether the pair is stored on the beat, the
+   lane register, or both is a materialization decision for
+   `xsoulspace_agentic_doc` (ADR 0010 D4).
+3. **Parallel agents per session cap** — one model per actor is data
    (ADR 0007 `brainRef`), but concurrency limits per brain
    (`maxInFlight`) may serialize the stage. Treat as harness scheduling
    data, not product law.
@@ -108,9 +153,14 @@ Unattributable action is a review blocker (DESIGN §6).
    validates a branch candidate; the human advances branch B; the queue
    state after the fork is derivable from the beat graph alone (no
    app-level queue state survives a snapshot/restore).
-2. **Parallel-actor gate** (extends PLAN 6.D): two model actors + one
+2. **Multi-lane, multi-human gate**: two human actors and one model in
+   one session; each human queues into their own lane (different
+   steer targets, one lane targeting the mechanical actor); every lane
+   observable and attributed on every peer's grid; both verdicts land
+   with their own spend.
+3. **Parallel-actor gate** (extends PLAN 6.D): two model actors + one
    mechanical actor share one doc session; each beat names its actor;
    verdicts are per-actor; the roster shows all three.
-3. **Headless queue gate**: the entire queue/branch state is readable
+4. **Headless queue gate**: the entire lane/branch state is readable
    through the profiler protocol (ADR 0009 D3) with no UI in the
    process.

@@ -52,8 +52,6 @@ class ProjectTile extends StatelessWidget {
           dimension: 14,
           child: Icon(
             switch (doc.formatId) {
-              DocFormatIds.gdd => Icons.sports_esports,
-              DocFormatIds.prd => Icons.description,
               DocFormatIds.chat => Icons.forum_outlined,
               _ => Icons.article_outlined,
             },

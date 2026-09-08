@@ -85,8 +85,9 @@ nothing today**: no shipped values, no creation-time choice. GDD and
 PRD are deleted entirely — ids, seed constructors
 (`packages/core/lib/src/data_models/project.dart`), bar items and
 notifier methods (`vertical_projects_bar.dart`, `home_screen.dart`,
-`opened_project_notifier.dart`), and their widget tests. Since they were
-never in production, this is pure deletion with no data migration.
+`opened_project_notifier.dart`), and their widget tests. **No data
+migration** (owner, 2026-09-08): production runs ideas and notes only;
+nobody uses GDD/PRD/chat.
 
 **D4 — last_answer must not own harness truth.** The PROFILE pane and
 `debugState` migrate to the profiler package; last_answer's surfaces
@@ -115,9 +116,11 @@ for a plain doc: harness machinery invisible until first used.
    directly during migration (before the `AgentRuntimeHandle` union
    lands), or does chat retirement wait for Phase 2? Lean: wait — one
    runtime from day one of the merged surface.
-2. **Chat doc conversion**: open legacy `chat` docs render as plain docs
-   with message turns re-materialized? Lean: lazy — convert on open,
-   never on a migration flag.
+2. **RESOLVED (2026-09-08, owner): skip all migrations.** GDD, PRD and
+   chat formats have **no production users** (production runs ideas and
+   notes only). No conversion path is built: GDD/PRD ids are deleted
+   outright (D3); legacy `chat` docs read as plain docs with opaque
+   `formatId` metadata — no re-materialization, no conversion step.
 
 ## Gates
 

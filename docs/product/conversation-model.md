@@ -66,6 +66,13 @@ composing → queued(steer | immediate) → sending → materialized → cooled
   branches LLM-free; the human promotes a branch. Until the mechanical
   projection tier lands, the queue degrades honestly to a linear
   frontier.
+- **Queues are lanes, plural** (ADR 0011 D5): a queue is directed
+  actor→actor — a message is queued *for* a specific steer target.
+  One session runs many lanes (human→model, human→mechanical, a second
+  human→the same model, model→model). Every lane renders on the same
+  grid, attributed; a lane you are not addressing stays collapsed
+  (L0/L1) until opened. Default composer lane: human→active agent;
+  other lanes opt-in, equally first-class, always observable.
 - **Widget keys:** `coding_agent.queue.{steer,sendNow,cancel,edit,
   branch}` — the queue is in the debug-state projection (§5), so the
   headless inspector sees the same queue the human does.
@@ -86,6 +93,9 @@ composing → queued(steer | immediate) → sending → materialized → cooled
 
 - Peer turns render with peer gutter labels (§9); a peer's queued
   message renders exactly like a local one with an origin label.
+- **Several humans side by side** is a supported shape (ADR 0011 D1):
+  each human composes into their own lanes; every lane observable by
+  every peer, attributed per ADR 0011 D4.
 - Parallel model actors + mechanical actors in one session share the
   grid; every row names its actor (ADR 0011 D4).
 - Session registry (ADR 0009) — not widget statics — is how the surface

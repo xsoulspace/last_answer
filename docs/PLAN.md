@@ -167,9 +167,12 @@ not canonical data yet. Everything below is ordered; do not skip #1.
 
 8. **Surface consolidation round** ([ADR 0010](decisions/0010-one-harness-doc-surface-unification.md)
    — can run in parallel with Phase 2 where files do not collide):
-   delete GDD/PRD (ids, seeds, bar items, notifier methods, tests —
-   never used in production), slim the rail to `+ / Idea / Note`
-   (Tufte treatment; see [conversation model](product/conversation-model.md)).
+   delete GDD/PRD (ids, seeds, bar items, notifier methods, tests);
+   **no data migration** (owner: production runs ideas and notes
+   only); Chat creation also leaves the rail (the surface retires in
+   the merge, ADR 0010 D2 — `lib/doc/` sources stay, unreachable);
+   slim the rail to `+ / Idea / Note` (Tufte treatment; see
+   [conversation model](product/conversation-model.md)).
    Gate: analyze + tests green; rail has no dead ink and no species
    choice at creation.
 9. **Queue + cooled turns** ([conversation model](product/conversation-model.md);

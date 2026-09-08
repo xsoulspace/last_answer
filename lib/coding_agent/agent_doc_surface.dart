@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:file_selector/file_selector.dart';
@@ -9,6 +10,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/coding_agent/turn_queue.dart';
 
 /// ADR 0003 (Phase 1) — the agent-doc surface: the coding-agent machinery
 /// bound to a `ProjectModel.doc` (formatId: `agent`). The document carries
@@ -107,6 +109,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   bool _profileOpen = false;
   String? _routingError;
 
+  // PLAN 9 — the queue + cooled-turn editing state (pure view state; the
+  // DATA lives in the controller's queue and the doc payload blocks).
+  final _queueEditField = TextEditingController();
+  final _turnEditField = TextEditingController();
+  String? _editingStepId;
+  int? _editingTurnKey;
+  final _expandedTurnHistory = <int>{};
+  String _queueSignature = '';
+
   /// Task H — the deterministic replica id of THIS doc in the mesh sync
   /// cycle: flat (`agent-<projectDocId>`) so the per-doc replica file sits
   /// directly in the store's directory, and identical on every paired
@@ -124,7 +135,14 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     // override silently failed to reach the daemon in the Phase-1.5 GUI
     // run (measured). Controller edits fire this for typing AND fill.
     _checkField.addListener(_onCheckChanged);
+    // PLAN 9 — return-after-interruption reconstructs the queue (DESIGN
+    // §10): the durable copy lives in the doc payload's reserved blocks.
+    _restoreQueueFromDoc();
     unawaited(_controller.ensureStarted());
+    // PLAN 9 — the queue must survive into the doc payload on EVERY
+    // transition, including the flush pump's deliveries (controller-internal).
+    _queueSignature = _controller.queue.signature;
+    _controller.addListener(_onControllerChanged);
     // Task H — presence follows the doc session (ADR 0031 §1): while the
     // doc is open, this device is on the doc's presence channel; the
     // leave goes out on dispose.
@@ -271,6 +289,25 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
         for (final session in controller.sessions)
           '${session.viewId}': List.of(session.actorIds),
       },
+      // PLAN 9 — the queue in the projection (DESIGN §5/§8): headless
+      // drivers see the SAME queue the human sees — open steps with
+      // position + age, superseded/delivered steps queryable.
+      queue: [
+        for (final step in controller.queue.steps)
+          AgentDocQueueEntry(
+            id: step.id,
+            text: step.text,
+            status: step.status.name,
+            from: step.from,
+            to: step.to,
+            immediate: step.immediate,
+            createdAtMs: step.createdAt.millisecondsSinceEpoch,
+            position: step.status == QueueStepStatus.open
+                ? controller.queue.positionOf(step)
+                : null,
+            ageMs: DateTime.now().difference(step.createdAt).inMilliseconds,
+          ),
+      ],
     );
   }
 
@@ -382,12 +419,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     }
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
+    _controller.removeListener(_onControllerChanged);
     if (_ownsController) _controller.dispose();
     _workspaceField.dispose();
     _taskField.dispose();
     _keyField.dispose();
     _checkField.dispose();
     _composerFocus.dispose();
+    _queueEditField.dispose();
+    _turnEditField.dispose();
     super.dispose();
   }
 
@@ -463,6 +503,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     final workspace = _workspaceField.text.trim();
     final task = _taskField.text.trim();
     if (workspace.isEmpty || task.isEmpty) return;
+    // Messenger pattern: the sentence leaves the composer once accepted
+    // (it renders as the turn's YOU row / queued row from here on).
+    _taskField.clear();
     final current = _controller.current;
     await _syncConfigBeforeTurn();
     if (current == null || current.cwd != workspace) {
@@ -475,6 +518,168 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     }
     await _controller.delegate(task);
   }
+
+  // ---------------------------------------------------------------------
+  // PLAN 9 — queue + cooled turns. The composer never blocks while a
+  // turn runs (DESIGN §10: queued messages are visible and editable,
+  // never "trusted to send"); steer is the default, send-now is explicit.
+  // ---------------------------------------------------------------------
+
+  /// Composer submit: while a turn RUNS the message joins the queue
+  /// (steer by default; immediate = the explicit ⌘⏎ send-now — it stops
+  /// the running turn and delivers first on the flush). While IDLE the
+  /// submit sends immediately — today's behavior, byte for byte.
+  Future<void> _submitFromComposer({final bool immediate = false}) async {
+    if (_controller.isRunning) {
+      final task = _taskField.text.trim();
+      if (task.isEmpty) return;
+      _taskField.clear();
+      _controller.enqueueSteer(task, immediate: immediate);
+      setState(() {});
+      return;
+    }
+    await _delegate();
+  }
+
+  void _beginQueuedEdit(final String stepId) {
+    final step = _controller.queue.byId(stepId);
+    if (step == null) return;
+    _queueEditField.text = step.text;
+    setState(() => _editingStepId = stepId);
+  }
+
+  void _commitQueuedEdit() {
+    final id = _editingStepId;
+    final text = _queueEditField.text.trim();
+    setState(() {
+      _editingStepId = null;
+      _queueEditField.clear();
+    });
+    if (id == null || text.isEmpty) return;
+    _controller.editQueued(id, text);
+  }
+
+  void _beginTurnEdit(final HarnessTurn turn) {
+    _turnEditField.text = turn.taskSentence;
+    setState(() => _editingTurnKey = turn.startedAt.microsecondsSinceEpoch);
+  }
+
+  void _commitTurnEdit(final HarnessTurn turn) {
+    final text = _turnEditField.text.trim();
+    setState(() {
+      _editingTurnKey = null;
+      _turnEditField.clear();
+    });
+    if (text.isEmpty) return;
+    _controller.editCooledTurn(turn, text);
+  }
+
+  /// The reserved doc-payload blocks that carry the queue + per-turn edit
+  /// history (durable, syncable; step-shaped per ADR 0011). One block per
+  /// lane keeps further lanes additive (ADR 0011 D5).
+  static const _queueBlockPrefix = 'queue-lane-';
+  static const _turnHistoryBlockId = 'agent-turn-history';
+
+  /// The deterministic block id of one lane's queue payload block:
+  /// `queue-lane-<from>-to-<to>` — lanes additive (ADR 0011 D5).
+  static String _queueLaneBlockId(final QueueStep step) {
+    String sanitize(final String s) => s.toLowerCase().replaceAll(
+      RegExp('[^a-z0-9]'),
+      '_',
+    );
+    return '$_queueBlockPrefix${sanitize(step.from)}-to-${sanitize(step.to)}';
+  }
+
+  void _restoreQueueFromDoc() {
+    final history = <int, List<String>>{};
+    for (final block in _doc.blocks) {
+      final id = block.id.value;
+      if (id.startsWith(_queueBlockPrefix) && block.content.isNotEmpty) {
+        try {
+          _controller.queue.restoreJson(block.content);
+        } on Object {
+          // A corrupt payload block must never wedge the surface — the
+          // live queue (empty at startup) stays the truth.
+        }
+      } else if (id == _turnHistoryBlockId && block.content.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(block.content);
+          if (decoded is Map<String, Object?> && decoded['turns'] is Map) {
+            for (final entry
+                in (decoded['turns']! as Map<Object?, Object?>).entries) {
+              final key = int.tryParse('${entry.key}');
+              if (key == null || entry.value is! List) continue;
+              history[key] = [
+                for (final v in entry.value! as List<Object?>) '$v',
+              ];
+            }
+          }
+        } on Object {
+          // Same honesty: corrupt history is dropped, never fatal.
+        }
+      }
+    }
+    _controller.restoreTurnHistory(history);
+  }
+
+  /// Persists the queue + turn-edit history into the doc payload (called
+  /// on every queue transition — user actions AND the flush pump's
+  /// deliveries — via the controller listener).
+  void _persistQueueState() {
+    final controller = _controller;
+    final lanes = <String, List<QueueStep>>{};
+    for (final step in controller.queue.steps) {
+      lanes.putIfAbsent('${step.from}→${step.to}', () => []).add(step);
+    }
+    final reserved = <DocBlockModel>[
+      for (final lane in lanes.entries)
+        DocBlockModel(
+          id: DocBlockId(_queueLaneBlockId(lane.value.first)),
+          type: DocBlockType.paragraph,
+          content: jsonEncode({
+            'from': lane.value.first.from,
+            'to': lane.value.first.to,
+            'steps': [for (final s in lane.value) s.toJson()],
+          }),
+        ),
+      if (controller.turnHistory.isNotEmpty)
+        DocBlockModel(
+          id: const DocBlockId(_turnHistoryBlockId),
+          type: DocBlockType.paragraph,
+          content: _historyJson(controller),
+        ),
+    ];
+    final kept = [
+      for (final block in _doc.blocks)
+        if (!block.id.value.startsWith(_queueBlockPrefix) &&
+            block.id.value != _turnHistoryBlockId)
+          block,
+    ];
+    final blocks = [...kept, ...reserved];
+    if (blocks.length == _doc.blocks.length &&
+        blocks.indexed.every((final e) => identical(e.$2, _doc.blocks[e.$1]))) {
+      return; // nothing changed — no write, no listener noise.
+    }
+    _doc = _doc.copyWith(blocks: blocks);
+    widget.onDocChanged?.call(_doc);
+  }
+
+  /// Controller listener: persist whenever the queue or the per-turn edit
+  /// history changed — covers the flush pump's internal deliveries too.
+  void _onControllerChanged() {
+    final signature =
+        '${_controller.queue.signature}|${_historyJson(_controller)}';
+    if (signature == _queueSignature) return;
+    _queueSignature = signature;
+    _persistQueueState();
+  }
+
+  /// The turn-history JSON (string keys — JSON never carries int keys).
+  String _historyJson(final HarnessSessionController controller) => jsonEncode({
+    'turns': {
+      for (final e in controller.turnHistory.entries) '${e.key}': e.value,
+    },
+  });
 
   Future<void> _switchBackend(final String backend) async {
     // Doc payload first (the doc is the source of truth for the binding —
@@ -556,6 +761,24 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
                               : _expandedBeats.add(id);
                         }),
                         backend: controller.config.backend,
+                        expandedTurnHistory: _expandedTurnHistory,
+                        onToggleTurnHistory: (final key) => setState(() {
+                          _expandedTurnHistory.contains(key)
+                              ? _expandedTurnHistory.remove(key)
+                              : _expandedTurnHistory.add(key);
+                        }),
+                        editingStepId: _editingStepId,
+                        queueEditField: _queueEditField,
+                        onBeginQueuedEdit: _beginQueuedEdit,
+                        onCommitQueuedEdit: _commitQueuedEdit,
+                        onCancelQueued: (final id) =>
+                            _controller.cancelQueued(id),
+                        onSendNowQueued: (final id) =>
+                            _controller.sendNowQueued(id),
+                        editingTurnKey: _editingTurnKey,
+                        turnEditField: _turnEditField,
+                        onBeginTurnEdit: _beginTurnEdit,
+                        onCommitTurnEdit: _commitTurnEdit,
                       ),
                     ),
                     if (_profileOpen)
@@ -584,7 +807,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
                 taskField: _taskField,
                 composerFocus: _composerFocus,
                 running: _controller.isRunning,
-                onDelegate: _delegate,
+                onSubmit: _submitFromComposer,
                 onCancel: controller.cancelCurrent,
               ),
             ],
@@ -903,6 +1126,18 @@ class _Conversation extends StatelessWidget {
     required this.expandedBeats,
     required this.onToggleBeat,
     required this.backend,
+    required this.expandedTurnHistory,
+    required this.onToggleTurnHistory,
+    required this.editingStepId,
+    required this.queueEditField,
+    required this.onBeginQueuedEdit,
+    required this.onCommitQueuedEdit,
+    required this.onCancelQueued,
+    required this.onSendNowQueued,
+    required this.editingTurnKey,
+    required this.turnEditField,
+    required this.onBeginTurnEdit,
+    required this.onCommitTurnEdit,
     super.key,
   });
 
@@ -911,16 +1146,44 @@ class _Conversation extends StatelessWidget {
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
   final String backend;
+  final Set<int> expandedTurnHistory;
+  final void Function(int key) onToggleTurnHistory;
+  final String? editingStepId;
+  final TextEditingController queueEditField;
+  final void Function(String stepId) onBeginQueuedEdit;
+  final VoidCallback onCommitQueuedEdit;
+  final void Function(String stepId) onCancelQueued;
+  final void Function(String stepId) onSendNowQueued;
+  final int? editingTurnKey;
+  final TextEditingController turnEditField;
+  final void Function(HarnessTurn turn) onBeginTurnEdit;
+  final void Function(HarnessTurn turn) onCommitTurnEdit;
 
   @override
   Widget build(final BuildContext context) {
     final current = controller.current;
     final theme = Theme.of(context);
     final turns = current?.turns ?? const <HarnessTurn>[];
+    final queued = controller.queue.openInLane().toList();
     return ListView(
       reverse: true,
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
       children: [
+        // PLAN 9 — the queue rides the frontier (ADR 0011): queued rows
+        // render as YOU rows with a dim STEER/NOW gutter annotation +
+        // position + age — visible, editable, cancellable (DESIGN §10:
+        // never "trusted to send"). Bottom-most, nearest the composer.
+        for (final step in queued.reversed)
+          _QueuedRow(
+            step: step,
+            position: controller.queue.positionOf(step),
+            editing: editingStepId == step.id,
+            editField: queueEditField,
+            onBeginEdit: () => onBeginQueuedEdit(step.id),
+            onCommitEdit: onCommitQueuedEdit,
+            onCancel: () => onCancelQueued(step.id),
+            onSendNow: () => onSendNowQueued(step.id),
+          ),
         // PLAN 5c — remote permission rows (DESIGN §9): announced by the
         // owning device, visible AND answerable from this peer's flow —
         // same PERM row, same reject-first ordering, origin label in the
@@ -943,6 +1206,15 @@ class _Conversation extends StatelessWidget {
             backend: backend,
             expandedBeats: expandedBeats,
             onToggleBeat: onToggleBeat,
+            editing: editingTurnKey == turn.startedAt.microsecondsSinceEpoch,
+            editField: turnEditField,
+            onBeginEdit: () => onBeginTurnEdit(turn),
+            onCommitEdit: () => onCommitTurnEdit(turn),
+            historyExpanded: expandedTurnHistory.contains(
+              turn.startedAt.microsecondsSinceEpoch,
+            ),
+            onToggleHistory: () =>
+                onToggleTurnHistory(turn.startedAt.microsecondsSinceEpoch),
           ),
           const SizedBox(height: 14),
         ],
@@ -962,20 +1234,160 @@ class _Conversation extends StatelessWidget {
   }
 }
 
+/// One queued message (PLAN 9): a YOU row with a dim gutter annotation —
+/// `STEER` (default) or `NOW` (explicit send-now) + lane position + age
+/// (DESIGN §10: time made visible). In-flow, text-first actions: edit
+/// (the row re-opens in place — it is just text), cancel (superseded —
+/// queryable, never dropped), now (reject perm → stop turn → deliver
+/// first). No cards, no bubbles, no filled buttons.
+class _QueuedRow extends StatelessWidget {
+  const _QueuedRow({
+    required this.step,
+    required this.position,
+    required this.editing,
+    required this.editField,
+    required this.onBeginEdit,
+    required this.onCommitEdit,
+    required this.onCancel,
+    required this.onSendNow,
+  });
+
+  final QueueStep step;
+  final int position;
+  final bool editing;
+  final TextEditingController editField;
+  final VoidCallback onBeginEdit;
+  final VoidCallback onCommitEdit;
+  final VoidCallback onCancel;
+  final VoidCallback onSendNow;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final age = DateTime.now().difference(step.createdAt);
+    final ageLabel = age.inMinutes < 1
+        ? '<1m'
+        : age.inHours < 1
+        ? '${age.inMinutes}m'
+        : '${age.inHours}h';
+    final annotation = step.immediate ? 'NOW' : 'STEER';
+    return Padding(
+      key: Key('coding_agent.queue.row.${step.id}'),
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: _gutterWidth,
+                child: Text(
+                  '$annotation $position · $ageLabel',
+                  key: Key('coding_agent.queue.steer.${step.id}'),
+                  style: _label(theme).copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: editing
+                    ? CallbackShortcuts(
+                        bindings: {
+                          const SingleActivator(LogicalKeyboardKey.enter):
+                              onCommitEdit,
+                        },
+                        child: TextField(
+                          key: Key(
+                            'coding_agent.queue.edit.field.${step.id}',
+                          ),
+                          controller: editField,
+                          autofocus: true,
+                          minLines: 1,
+                          maxLines: 6,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          onSubmitted: (_) => onCommitEdit(),
+                        ),
+                      )
+                    : Text(
+                        step.text,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+          if (!editing)
+            Padding(
+              padding: const EdgeInsets.only(left: _gutterWidth, top: 1),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    key: Key('coding_agent.queue.edit.${step.id}'),
+                    onTap: onBeginEdit,
+                    child: Text('[edit]', style: _mono(theme)),
+                  ),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    key: Key('coding_agent.queue.sendNow.${step.id}'),
+                    onTap: onSendNow,
+                    child: Text('[now]', style: _mono(theme)),
+                  ),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    key: Key('coding_agent.queue.cancel.${step.id}'),
+                    onTap: onCancel,
+                    child: Text(
+                      '[cancel]',
+                      style: _mono(
+                        theme,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 /// One turn — the small multiple. Role gutter + text column; tool beats
-/// dim and monospace; tap a beat to expand it.
+/// dim and monospace; tap a beat to expand it. COOLED turns (verdict
+/// landed) are editable like document text: an edit adds a dim `EDITED`
+/// SYS annotation with tap-to-expand prior versions (PLAN 9). Live turns
+/// stay locked.
 class _TurnView extends StatelessWidget {
   const _TurnView({
     required this.turn,
     required this.backend,
     required this.expandedBeats,
     required this.onToggleBeat,
+    required this.editing,
+    required this.editField,
+    required this.onBeginEdit,
+    required this.onCommitEdit,
+    required this.historyExpanded,
+    required this.onToggleHistory,
   });
 
   final HarnessTurn turn;
   final String backend;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
+  final bool editing;
+  final TextEditingController editField;
+  final VoidCallback onBeginEdit;
+  final VoidCallback onCommitEdit;
+  final bool historyExpanded;
+  final VoidCallback onToggleHistory;
 
   String get _agentRole => switch (backend) {
     'apple_foundation_afm' => 'AFM',
@@ -986,19 +1398,79 @@ class _TurnView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
+    final turnKey = turn.startedAt.microsecondsSinceEpoch;
+    final cooled = turn.isDone && !editing;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _GridRow(
           role: 'YOU',
-          child: SelectableText(
-            turn.taskSentence,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              height: 1.4,
+          child: editing
+              ? CallbackShortcuts(
+                  bindings: {
+                    const SingleActivator(LogicalKeyboardKey.enter):
+                        onCommitEdit,
+                  },
+                  child: TextField(
+                    key: Key('coding_agent.turn.edit.field.$turnKey'),
+                    controller: editField,
+                    autofocus: true,
+                    minLines: 1,
+                    maxLines: 6,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    onSubmitted: (_) => onCommitEdit(),
+                  ),
+                )
+              : SelectableText(
+                  turn.taskSentence,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    height: 1.4,
+                  ),
+                ),
+        ),
+        if (cooled)
+          Padding(
+            padding: const EdgeInsets.only(left: _gutterWidth, bottom: 2),
+            child: InkWell(
+              key: Key('coding_agent.turn.edit.$turnKey'),
+              onTap: onBeginEdit,
+              child: Text(
+                '[edit]',
+                style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              ),
             ),
           ),
-        ),
+        if (turn.edited)
+          _GridRow(
+            role: 'SYS',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  key: Key('coding_agent.turn.history.toggle.$turnKey'),
+                  onTap: onToggleHistory,
+                  child: Text(
+                    'EDITED · ${turn.editHistory.length} prior '
+                    '${turn.editHistory.length == 1 ? 'version' : 'versions'}',
+                    style: _label(theme),
+                  ),
+                ),
+                if (historyExpanded)
+                  for (var i = 0; i < turn.editHistory.length; i++)
+                    Padding(
+                      key: Key('coding_agent.turn.history.$turnKey.$i'),
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        turn.editHistory[turn.editHistory.length - 1 - i],
+                        style: _mono(theme),
+                      ),
+                    ),
+              ],
+            ),
+          ),
         _GridRow(
           role: _agentRole,
           child: _TurnBody(
@@ -1102,6 +1574,13 @@ class _TurnBody extends StatelessWidget {
         ),
       );
     }
+    // PLAN 9 — a cooled turn carries its own verdict as durable record:
+    // the SYS card above is the session's LATEST verdict (attention row);
+    // this one stays with the turn — including an interrupted turn's
+    // honest partial spend — after later turns push the card off.
+    if (turn.isDone) {
+      children.add(_VerdictRow(turn: turn, showCard: false));
+    }
     if (turn.toolCalls.isNotEmpty && turn.permissions.isEmpty) {
       // (tool calls already render as beats; nothing extra)
     }
@@ -1177,8 +1656,26 @@ class _VerdictRow extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final passed = turn.verdictPassed;
-    final color = passed ? Colors.green.shade600 : theme.colorScheme.error;
+    // PLAN 9 — an interrupted turn's verdict lands with whatever partial
+    // spend exists. The backend emits no spend figures on cancel, so the
+    // row renders only what the client TRULY observed (beats + wall
+    // time) — zeros and guesses are never fabricated (DESIGN §6).
+    final interrupted = turn.interrupted;
+    final color = interrupted
+        ? theme.colorScheme.onSurfaceVariant
+        : passed
+        ? Colors.green.shade600
+        : theme.colorScheme.error;
     final spend = turn.spend;
+    final wallS = interrupted
+        ? ((turn.completedAt ?? DateTime.now()).millisecondsSinceEpoch -
+              turn.startedAt.millisecondsSinceEpoch) /
+              1000
+        : 0.0;
+    final interruptedSpend = interrupted
+        ? ' · ${turn.toolCalls.length} beats · '
+              '${wallS.toStringAsFixed(1)}s'
+        : '';
     return Container(
       key: showCard ? const Key('coding_agent.verdict.card') : null,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -1194,7 +1691,8 @@ class _VerdictRow extends StatelessWidget {
           Expanded(
             child: Text(
               spend == null
-                  ? (turn.verdictLine ?? '')
+                  ? '${(turn.verdictLine ?? '').split('(').first.trim()}'
+                        '$interruptedSpend'
                   : '${turn.verdictLine!.split('(').first.trim()} · '
                         'd${spend.decisions} r${spend.rounds} '
                         '${(spend.tokens / 1000).toStringAsFixed(1)}k tok '
@@ -1411,14 +1909,17 @@ class _Composer extends StatelessWidget {
     required this.taskField,
     required this.composerFocus,
     required this.running,
-    required this.onDelegate,
+    required this.onSubmit,
     required this.onCancel,
   });
 
   final TextEditingController taskField;
   final FocusNode composerFocus;
   final bool running;
-  final Future<void> Function() onDelegate;
+
+  /// PLAN 9 — `immediate: false` = steer (queued while running, sent
+  /// while idle); `immediate: true` = the explicit ⌘⏎ send-now.
+  final Future<void> Function({required bool immediate}) onSubmit;
   final VoidCallback onCancel;
 
   @override
@@ -1444,7 +1945,14 @@ class _Composer extends StatelessWidget {
                 child: CallbackShortcuts(
                   bindings: {
                     const SingleActivator(LogicalKeyboardKey.enter): () =>
-                        unawaited(onDelegate()),
+                        unawaited(onSubmit(immediate: false)),
+                    // PLAN 9 — send-now: reject the pending permission →
+                    // stop the running turn → the verdict lands with
+                    // partial spend → this message becomes the new turn.
+                    const SingleActivator(
+                      LogicalKeyboardKey.enter,
+                      meta: true,
+                    ): () => unawaited(onSubmit(immediate: true)),
                   },
                   child: TextField(
                     key: const Key('coding_agent.task'),
@@ -1452,12 +1960,15 @@ class _Composer extends StatelessWidget {
                     focusNode: composerFocus,
                     minLines: 1,
                     maxLines: 6,
-                    enabled: !running,
+                    // PLAN 9 — the composer NEVER blocks while a turn
+                    // runs: submitting queues the message (steer by
+                    // default). Queued rows are visible + editable above.
                     autofocus: true,
                     style: theme.textTheme.bodyMedium,
                     decoration: InputDecoration.collapsed(
                       hintText: running
-                          ? 'running — the turn is on the grid above'
+                          ? 'running — ⏎ steers (queues after this turn), '
+                                '⌘⏎ sends now'
                           : 'task sentence — ⏎ to delegate, ⇧⏎ newline',
                       hintStyle: _mono(theme),
                     ),
@@ -1465,13 +1976,19 @@ class _Composer extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              if (running)
+              if (running) ...[
+                TextButton(
+                  key: const Key('coding_agent.queue.sendNow.composer'),
+                  onPressed: () => unawaited(onSubmit(immediate: true)),
+                  child: Text('send now \u2318\u23ce', style: _mono(theme)),
+                ),
+                const SizedBox(width: 6),
                 TextButton(
                   key: const Key('coding_agent.cancel'),
                   onPressed: onCancel,
                   child: Text('stop', style: _mono(theme)),
-                )
-              else
+                ),
+              ] else
                 TextButton(
                   key: const Key('coding_agent.delegate'),
                   // Always enabled when idle — validation (non-empty
@@ -1479,7 +1996,7 @@ class _Composer extends StatelessWidget {
                   // in build-time button state: text edits never rebuild
                   // this widget, so a computed guard would strand the
                   // button disabled after typing (measured).
-                  onPressed: () => unawaited(onDelegate()),
+                  onPressed: () => unawaited(onSubmit(immediate: false)),
                   child: Text('run \u23ce', style: _mono(theme)),
                 ),
             ],
@@ -1991,10 +2508,18 @@ class _TurnStatRow extends StatelessWidget {
     final theme = Theme.of(context);
     final spend = turn.spend;
     final state = turn.hasVerdict
-        ? (turn.verdictPassed ? 'PASS' : 'FAIL')
+        ? turn.interrupted
+              ? 'INT'
+              : turn.verdictPassed
+              ? 'PASS'
+              : 'FAIL'
         : '···';
     final color = turn.hasVerdict
-        ? (turn.verdictPassed ? Colors.green.shade600 : theme.colorScheme.error)
+        ? turn.interrupted
+              ? theme.colorScheme.onSurfaceVariant
+              : turn.verdictPassed
+              ? Colors.green.shade600
+              : theme.colorScheme.error
         : theme.colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
@@ -2041,6 +2566,7 @@ final class AgentDocDebugState {
     this.remotePermissions = const [],
     this.remotePermissionRouting = false,
     this.meshStatus,
+    this.queue = const [],
     this.viewer = false,
   });
 
@@ -2090,6 +2616,11 @@ final class AgentDocDebugState {
   /// same status rule data the human sees (DESIGN §5/§9).
   final AgentDocMeshStatus? meshStatus;
 
+  /// PLAN 9 — the queue state (ADR 0011): every step — open (with lane
+  /// position + age), superseded (cancelled, queryable), delivered — the
+  /// same queue the grid renders (DESIGN §5: one state, many projections).
+  final List<AgentDocQueueEntry> queue;
+
   /// Task O — the honest viewer marker (DESIGN §6: label what the host
   /// sees vs what the peer observes). False on the host (it owns the
   /// world); true on a peer's SHADOW doc (`mesh_open_doc`): the peer
@@ -2114,10 +2645,54 @@ final class AgentDocDebugState {
     'remotePermissions': [for (final p in remotePermissions) p.toJson()],
     'remotePermissionRouting': remotePermissionRouting,
     if (meshStatus != null) 'meshStatus': meshStatus!.toJson(),
+    'queue': [for (final q in queue) q.toJson()],
     'viewer': viewer,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,
+  };
+}
+
+/// PLAN 9 — one queue step in the projection: lane key `(from, to)`
+/// (ADR 0011 D5), step status (`open | superseded | delivered`), the
+/// claim text, and — for open steps — the 1-based position in the lane
+/// and the age (DESIGN §10: time made visible).
+final class AgentDocQueueEntry {
+  const AgentDocQueueEntry({
+    required this.id,
+    required this.text,
+    required this.status,
+    required this.from,
+    required this.to,
+    required this.immediate,
+    required this.createdAtMs,
+    this.position,
+    this.ageMs,
+  });
+
+  final String id;
+  final String text;
+  final String status;
+  final String from;
+  final String to;
+  final bool immediate;
+  final int createdAtMs;
+
+  /// 1-based position among the lane's open steps; null when superseded
+  /// or delivered (no longer in the rendered queue).
+  final int? position;
+  final int? ageMs;
+
+  Map<String, Object?> toJson() => {
+    'id': id,
+    'text': text,
+    'status': status,
+    'from': from,
+    'to': to,
+    'immediate': immediate,
+    'createdAtMs': createdAtMs,
+    'position': ?position,
+    'ageMs': ?ageMs,
   };
 }
 

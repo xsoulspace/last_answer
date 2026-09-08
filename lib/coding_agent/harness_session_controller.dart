@@ -7,6 +7,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/coding_agent/turn_queue.dart';
 
 /// One structured beat inside a turn: a tool call the agent made.
 final class TurnToolCall {
@@ -39,8 +40,24 @@ final class TurnPermission {
 final class HarnessTurn {
   HarnessTurn(this.taskSentence, this.startedAt);
 
-  final String taskSentence;
+  /// PLAN 9 — mutable once the turn COOLS (verdict landed): cooled turns
+  /// are editable like document text (ADR 0010 D2); the pre-edit sentence
+  /// is appended to [editHistory] — simple before/after, no diff engine.
+  String taskSentence;
   final DateTime startedAt;
+
+  /// PLAN 9 — per-turn edit history (first slice): the prior version(s)
+  /// of [taskSentence], oldest first. Rendered as the dim `EDITED` SYS
+  /// annotation with tap-to-expand (same mechanic as beats).
+  final List<String> editHistory = [];
+
+  bool get edited => editHistory.isNotEmpty;
+
+  /// PLAN 9 — the turn was stopped before its verdict (send-now / stop):
+  /// the verdict LANDS with whatever partial spend exists — honest, never
+  /// fabricated (the harness emits no spend figures on cancel; the
+  /// client renders only what it truly observed: beats + wall time).
+  bool interrupted = false;
 
   /// R9.a — escalation guidance this turn continues (host-injected via
   /// `agent_task_guide`). First-class grid data, not a transcript line.
@@ -56,10 +73,13 @@ final class HarnessTurn {
   bool get isDone => completedAt != null;
 
   /// Spend parsed from the verdict line — the tokens source is the backend
-  /// verdict chunk (never a guess). Null until the turn ends.
+  /// verdict chunk (never a guess). Null until the turn ends. An
+  /// interrupted turn's verdict line carries NO spend figures (the
+  /// backend emits none on cancel) — returning null there keeps zeros
+  /// from ever being fabricated into a spend (DESIGN §6).
   ({int decisions, int rounds, int tokens, int wallMs})? get spend {
     final v = verdictLine;
-    if (v == null) return null;
+    if (v == null || !v.contains('decisions')) return null;
     int? figure(final String label) {
       final match = RegExp('$label (\\d+)').firstMatch(v);
       return match == null ? null : int.tryParse(match.group(1)!);
@@ -148,6 +168,10 @@ final class HarnessSessionController extends ChangeNotifier {
   /// identities shared by every session projection. Identity, not
   /// authority: joining with a profile grants nothing (ADR 0007 §3).
   final ActorRoster roster;
+
+  /// PLAN 9 — the user-message queue (ADR 0011): steps on the frontier,
+  /// carried in the doc payload by the surface; the pump is [_flushQueue].
+  final TurnQueue queue = TurnQueue();
 
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
@@ -323,6 +347,10 @@ final class HarnessSessionController extends ChangeNotifier {
 
   /// Delegates a task sentence to [session] (default: the current one) as a
   /// host-injected decision, streaming progress into its transcript.
+  ///
+  /// PLAN 9 — when the turn lands (verdict, failure, or cancel), the
+  /// queue flushes: each open queued step becomes the next turn's prompt,
+  /// sequentially — one verdict and one spend per turn stays honest.
   Future<AcpStopReason?> delegate(
     final String task, {
     final HarnessSessionView? session,
@@ -353,6 +381,16 @@ final class HarnessSessionController extends ChangeNotifier {
       );
       target.transcript.write('\n— turn ended ($stop) —\n');
       turn.text.write('\n— turn ended ($stop) —\n');
+      if (stop == AcpStopReason.cancelled) {
+        // Send-now / stop: the verdict LANDS with whatever partial spend
+        // exists — never fabricated (DESIGN §4/§6). The backend emits no
+        // verdict chunk on cancel; the surface renders the partial spend
+        // it truly observed (beats + wall time).
+        turn
+          ..interrupted = true
+          ..verdictLine = 'verdict: INTERRUPTED (stopped before completion)';
+        target.verdictLine = turn.verdictLine;
+      }
       return stop;
     } on Object catch (e) {
       error = '$e';
@@ -365,6 +403,110 @@ final class HarnessSessionController extends ChangeNotifier {
         ..transcript.write('\n');
       turn.completedAt = DateTime.now();
       notifyListeners();
+      // PLAN 9 — the verdict landed: flush the queue in order (steer
+      // default). Sequential turns; the loop guards itself against
+      // re-entry from the nested delegate calls.
+      if (!_flushing) unawaited(_flushQueue(target));
+    }
+  }
+
+  bool _flushing = false;
+
+  /// PLAN 9 — the queue pump: a MECHANICAL actor (LLM-free, ADR 0011 D2)
+  /// that delivers consented open steps through the EXISTING decision
+  /// flow ([delegate] — never a new loop). One verdict + one spend per
+  /// turn; send-now steps deliver first; superseded steps are skipped.
+  Future<void> _flushQueue(final HarnessSessionView session) async {
+    if (_flushing) return;
+    _flushing = true;
+    try {
+      while (current == session && !session.running) {
+        final next = queue.nextOpen();
+        if (next == null) break;
+        next
+          ..status = QueueStepStatus.delivered
+          ..deliveredAt = DateTime.now()
+          ..immediate = false;
+        notifyListeners();
+        await delegate(next.text, session: session);
+      }
+    } finally {
+      _flushing = false;
+    }
+  }
+
+  /// PLAN 9 — enqueue a queued message (steer is the DEFAULT while a
+  /// turn runs; the composer never blocks). Lane: the default
+  /// human→agent lane (ADR 0011 D5 first implementation).
+  QueueStep enqueueSteer(final String text, {final bool immediate = false}) {
+    final step = queue.enqueue(text, immediate: immediate);
+    notifyListeners();
+    return step;
+  }
+
+  /// Edit queued: the row re-opens in place — it is just text (the step's
+  /// claim edits before it is worked; ADR 0011 mapping).
+  void editQueued(final String stepId, final String text) {
+    final step = queue.byId(stepId);
+    if (step == null || step.status != QueueStepStatus.open) return;
+    step.text = text;
+    notifyListeners();
+  }
+
+  /// Cancel queued: mark SUPERSEDED in the payload history — queryable,
+  /// never silently dropped (DESIGN §4/§6).
+  void cancelQueued(final String stepId) {
+    final step = queue.byId(stepId);
+    if (step == null || step.status != QueueStepStatus.open) return;
+    step.status = QueueStepStatus.superseded;
+    notifyListeners();
+  }
+
+  /// Send-now (explicit, per message): reject the pending permission
+  /// FIRST → stop the running turn (the harness seam is cancel — a flag
+  /// observed at the loop's beat boundaries, never mid-tool) → the
+  /// verdict lands with partial spend → this step delivers FIRST on the
+  /// flush ([QueueStep.immediate]).
+  void sendNowQueued(final String stepId) {
+    final step = queue.byId(stepId);
+    if (step == null || step.status != QueueStepStatus.open) return;
+    step.immediate = true;
+    cancelCurrent();
+    notifyListeners();
+  }
+
+  /// PLAN 9 — cooled-turn edit: after the verdict lands the turn's YOU
+  /// sentence is editable like document text; the prior version lands in
+  /// [HarnessTurn.editHistory] (dim `EDITED` SYS annotation, tap to
+  /// expand). Live turns stay locked (current behavior).
+  void editCooledTurn(final HarnessTurn turn, final String newText) {
+    if (turn.taskSentence == newText) return;
+    turn
+      ..editHistory.add(turn.taskSentence)
+      ..taskSentence = newText;
+    notifyListeners();
+  }
+
+  /// Per-turn edit history keyed by turn start (microseconds since
+  /// epoch) — the durable copy the surface persists into the doc payload
+  /// and restores on open (return-after-interruption, DESIGN §10).
+  Map<int, List<String>> get turnHistory => {
+    for (final session in sessions)
+      for (final turn in session.turns)
+        if (turn.edited)
+          turn.startedAt.microsecondsSinceEpoch: List.of(turn.editHistory),
+  };
+
+  /// Applies restored edit history onto turns already in memory (same
+  /// process; a turn that re-opens after navigation keeps its history).
+  void restoreTurnHistory(final Map<int, List<String>> history) {
+    if (history.isEmpty) return;
+    for (final session in sessions) {
+      for (final turn in session.turns) {
+        final restored = history[turn.startedAt.microsecondsSinceEpoch];
+        if (restored == null || turn.edited) continue;
+        turn.editHistory.addAll(restored);
+      }
     }
   }
 

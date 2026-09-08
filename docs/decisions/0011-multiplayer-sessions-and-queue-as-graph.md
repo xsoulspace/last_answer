@@ -146,6 +146,32 @@ gate, not the first gate.
    (ADR 0007 `brainRef`), but concurrency limits per brain
    (`maxInFlight`) may serialize the stage. Treat as harness scheduling
    data, not product law.
+4. **The doc as graph materialization; the provenance lattice** —
+   direction recorded 2026-09-08 (owner): the doc surface is a
+   materialization of the beat graph (harness ADR 0023's
+   edit-as-rederivation applied to docs), and the next inspector layer
+   beyond DESIGN §10's L3 is a **casting trace**: for any generated
+   span, walk back decision → Situation (in-frame props, projected
+   beats, explicit absences, budget) → casting rays → actor/device —
+   per model, per actor. Sync law stays intact: the doc store remains
+   the CRDT substrate; provenance travels as REFERENCES (decision/situ-
+   ation/actor ids), and the trace re-derives lazily from the local
+   graph ("project a past I'm entitled to") — a device without the
+   graph gets the honest green-screen absence, never a fabricated
+   trace. A parallel-actor scroll view (lanes as geometry) is a VIEW
+   over the same node store, gated per DESIGN §10 — never the default
+   surface. Home: `xsoulspace_agentic_doc` + the profiler protocol
+   layer's headless `cutTrace` verb.
+5. **Decision-time replay (accepted direction, owner 2026-09-08)** —
+   the sibling of accelerate-and-predict applied backwards: from any
+   span, scrub the doc to the moment before the span was cast and see
+   the cut the model saw then — and the cut it would see if it
+   re-decided there now (the frontier re-derived against today's world
+   state, mechanically, before any token is spent). ADHD-useful
+   debugging primitive: *point at the sentence, see exactly what the
+   machine saw.* Gate: the provenance lattice (OQ4) landed and the
+   re-derivation is provably LLM-free until the human chooses to
+   re-run the decision.
 
 ## Gates
 

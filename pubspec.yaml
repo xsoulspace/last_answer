@@ -114,6 +114,10 @@ dependencies:
   xsoulspace_installation_store: any
   xsoulspace_monetization_interface: any
   file_selector: any
+  # harness_host.dart imports the OpenRouter binding directly (backend
+  # registration) — declared as the path dep it already resolves through.
+  xsoulspace_inference_openrouter:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openrouter
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

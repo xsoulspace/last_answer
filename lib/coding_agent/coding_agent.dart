@@ -8,3 +8,4 @@ export 'actor_roster.dart';
 export 'agent_doc_surface.dart';
 export 'harness_host.dart';
 export 'harness_session_controller.dart';
+export 'turn_queue.dart';

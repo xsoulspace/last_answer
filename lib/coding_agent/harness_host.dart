@@ -209,8 +209,8 @@ final class HarnessHostConfig {
                     OpenRouterInferenceClient(apiKey: key, defaultModel: model),
               },
             )
-            ..models[const ModelId('harnessd')] = Model(
-              id: const ModelId('harnessd'),
+            ..models[const ModelId('harnessd')] = const Model(
+              id: ModelId('harnessd'),
               name: OpenRouterModelNames.openRouter,
             );
       bindings['open_router'] = HarnessBackendBinding(

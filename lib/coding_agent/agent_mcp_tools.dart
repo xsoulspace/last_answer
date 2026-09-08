@@ -31,12 +31,22 @@ Set<AgentCallEntry> agentMcpEntries() => {
           ? ''
           : ' — the permission prompt (${state.pendingPermissionTitle}) is '
                 'awaiting an answer; call agent_permission_answer.';
+      // PLAN 9 — the queue rides the state output (ADR 0011): headless
+      // drivers see the same queue the human sees (DESIGN §5/§8).
+      final openQueue = state.queue
+          .where((final q) => q.status == 'open')
+          .toList();
+      final queueNote = openQueue.isEmpty
+          ? ''
+          : ', ${openQueue.length} queued message(s) '
+                '(steer: delivered after the running turn; JSON field '
+                'queue carries position/age/status)';
       return MCPCallResult(
         message:
             'Agent doc ${state.docId}: backend ${state.backend}, '
             'session ${state.sessionId ?? 'none'}, '
             '${state.running ? 'RUNNING' : 'idle'}'
-            '$verdict$permission',
+            '$verdict$permission$queueNote',
         parameters: {'ok': true, ...state.toJson()},
       );
     },
@@ -45,7 +55,10 @@ Set<AgentCallEntry> agentMcpEntries() => {
       description:
           'Get the state of the open agent doc: bound workspaces, '
           'backend, session id, running flag, pending permission title, '
-          'latest verdict, and the transcript tail.',
+          'latest verdict, the transcript tail, and the message queue '
+          '(queue[]: id, text, status open/superseded/delivered, lane '
+          'from→to, position, age — queued messages flush in order after '
+          'the running turn lands).',
       inputSchema: ObjectSchema.fromMap(_emptySchema()),
     ),
   ),

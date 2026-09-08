@@ -349,11 +349,13 @@ void main() {
       );
       // The built backend carries the same profile.
       expect(
-        HarnessHostConfig(meaningProfile: true).buildBackend().meaningProfile,
+        const HarnessHostConfig(
+          meaningProfile: true,
+        ).buildBackend().meaningProfile,
         isTrue,
       );
       expect(
-        HarnessHostConfig().buildBackend().meaningProfile,
+        const HarnessHostConfig().buildBackend().meaningProfile,
         isFalse,
         reason: 'the conventional profile stays available for scripted '
             'seams and CLI squad members — but is never the agent-doc path',

@@ -192,6 +192,16 @@ not canonical data yet. Everything below is ordered; do not skip #1.
    toward `xsoulspace_agentic_doc`; capability flags gate inspector
    layers. Gate: ADR 0009's three gates (two-surface, headless,
    adapter-removal).
+11. **Casting trace + decision-time replay** (FORWARD — gated on items
+    9+10; law recorded in [ADR 0011](decisions/0011-multiplayer-sessions-and-queue-as-graph.md)
+    OQ4/OQ5): span→decision→Situation→rays→actor provenance lattice;
+    headless `cutTrace` verb in the profiler protocol; the doc as beat-
+    graph materialization with parallel-actor scroll as a gated VIEW;
+    decision-time replay = scrub to before any span, see the cut the
+    model saw then and the mechanically re-derived cut it would see now
+    (LLM-free until the human re-runs the decision). Gate: ADR 0011
+    OQ4/OQ5 gates; trace re-derives on a device without the local graph
+    as honest green-screen absence.
 
 ## R9 — the console migration, REDEFINED (2026-09-06, ADR 0004)
 

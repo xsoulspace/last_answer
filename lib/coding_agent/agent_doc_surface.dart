@@ -11,6 +11,7 @@ import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// ADR 0003 (Phase 1) — the agent-doc surface: the coding-agent machinery
 /// bound to a `ProjectModel.doc` (formatId: `agent`). The document carries
@@ -93,7 +94,22 @@ final class AgentDocSurface extends StatefulWidget {
   State<AgentDocSurface> createState() => _AgentDocSurfaceState();
 }
 
-class _AgentDocSurfaceState extends State<AgentDocSurface> {
+/// ADR 0009 (D4) — the full agent-doc projection a registered SURFACE
+/// handle carries beside the host [SessionHandle] contract. The MCP verbs
+/// resolve their target through the session registry (D1/D2) — never a
+/// widget static; a resolved handle that IS an [AgentDocHandle] projects
+/// the complete doc state (the queue, the mesh status, the roster —
+/// everything [AgentDocDebugState] carries, DESIGN §5), while any other
+/// handle (a daemon runner, a scripted seam) exposes the host
+/// [SessionSnapshot] only.
+abstract interface class AgentDocHandle implements SessionHandle {
+  /// The live agent-doc projection — the same typed state the human
+  /// screen renders (one state, many projections, DESIGN §5).
+  AgentDocDebugState get debugState;
+}
+
+class _AgentDocSurfaceState extends State<AgentDocSurface>
+    implements AgentDocHandle {
   late ProjectModelDoc _doc = widget.doc;
   late final HarnessSessionController _controller =
       widget.controller ?? HarnessSessionController(config: _configFor(_doc));
@@ -124,10 +140,28 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   /// device (the project doc id is the shared key).
   String get _meshDocId => 'agent-${_doc.id.value}';
 
+  /// Marks THIS doc the device-local focused session (the "last
+  /// interaction" heuristic — ADR 0009 §Open questions 1: device-local,
+  /// never synced). Called on initState and on any delegate/permission/
+  /// composer ACTION with the surface — deliberate interactions only
+  /// (a passive focus gain — e.g. a spurious autofocus re-resolution on
+  /// a rebuild — must not steal the marker).
+  void _markFocused() {
+    HarnessSessionRegistry.instance.focused = _meshDocId;
+  }
+
   @override
   void initState() {
     super.initState();
     AgentDocSurface.debugSurface = this;
+    // ADR 0009 (D1) — presence in the host registry under the
+    // deterministic mesh replica id (the addressable session id). The
+    // registry — not a widget static — is the one index the MCP verbs and
+    // the profiler resolve through; registration grants observability and
+    // intent routing, never authority (ADR 0007 §3). Registration does
+    // not move focus: mark it explicitly.
+    HarnessSessionRegistry.instance.register(_meshDocId, this);
+    _markFocused();
     _workspaceField.text = _doc.agent?.workspaces.firstOrNull ?? '';
     _checkField.text = _doc.agent?.checkCommand.join(' ') ?? '';
     // Listen to the controller, NOT onChanged: programmatic/semantic value
@@ -166,6 +200,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   /// Intent surface: delegate a task sentence (host-injected decision)
   /// without touching the text fields. Returns (ok, message).
   ({bool ok, String message}) delegateFromIntent(final String task) {
+    // A host-injected decision targets THIS doc — the device-local focus
+    // follows the last interaction (ADR 0009 §Open questions 1).
+    _markFocused();
     final current = _controller.current;
     if (current?.running ?? false) {
       return (ok: false, message: 'a task is already running.');
@@ -192,12 +229,93 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   ({bool ok, String message}) answerPermissionFromIntent({
     required final bool allow,
   }) {
+    _markFocused();
     if (_controller.pendingPermission == null) {
       return (ok: false, message: 'no pending permission request.');
     }
     _controller.answerPermission(allow: allow);
     return (ok: true, message: allow ? 'allowed' : 'rejected');
   }
+
+  // -------------------------------------------------------------------
+  // ADR 0009 (D1) — the registry seam ([SessionHandle]): the SAME
+  // projection the human screen renders, exposed to the host layer's one
+  // index of live sessions. DESIGN §5/§6 — honest mapping: every field
+  // below is read from the typed state the pane truly shows; a figure
+  // with no source (spend before a verdict, a context cut with no
+  // session) stays null/empty, never fabricated.
+  // -------------------------------------------------------------------
+
+  /// The live agent-doc projection — the canonical typed state the human
+  /// screen and the MCP verbs read (one state, many projections —
+  /// DESIGN §5).
+  @override
+  AgentDocDebugState get debugState => _projectState();
+
+  @override
+  SessionSnapshot get state {
+    final projection = debugState;
+    final current = _controller.current;
+    final lastTurn = current?.turns.lastOrNull;
+    final spend = lastTurn?.spend;
+    // The beats the pane renders: the turn text's dim `[tool] …` rows
+    // (the same parse `_TurnBody` performs for the grid rows).
+    final beats = [
+      for (final raw in (lastTurn?.text.toString() ?? '').split('\n'))
+        if (raw.startsWith('['))
+          SessionBeat(
+            name:
+                RegExp(r'^\[([a-z0-9_\-]+)\]').firstMatch(raw)?.group(1) ??
+                'tool',
+            detail: raw.replaceFirst(RegExp(r'^\[[^\]]+\]\s?'), ''),
+          ),
+    ];
+    // The PROFILE pane's CONTEXT LOAD row, as data — figures the host
+    // truly observes (no session → honest absence, never a zero cut).
+    var decisions = 0;
+    var tokens = 0;
+    for (final turn in current?.turns ?? const <HarnessTurn>[]) {
+      final s = turn.spend;
+      if (s != null) {
+        decisions += s.decisions;
+        tokens += s.tokens;
+      }
+    }
+    final contextSummary = current == null
+        ? ''
+        : 'turns ${current.turns.length} · decisions $decisions · '
+              '${(tokens / 1000).toStringAsFixed(1)}k tok · '
+              '${current.transcript.length} chars';
+    return SessionSnapshot(
+      sessionId: current?.id ?? '',
+      kind: 'surface',
+      running: projection.running,
+      pendingPermissionTitle: projection.pendingPermissionTitle,
+      verdict: projection.verdict,
+      spend: spend == null
+          ? null
+          : SessionSpend(
+              decisions: spend.decisions,
+              rounds: spend.rounds,
+              tokens: spend.tokens,
+              wallMs: spend.wallMs,
+            ),
+      transcriptTail: projection.transcriptTail,
+      turnCount: projection.turnCount,
+      beats: beats,
+      contextSummary: contextSummary,
+    );
+  }
+
+  /// Intent action (host-layer contract, byte-compatible with the
+  /// debugSurface path — [delegateFromIntent] IS this decision).
+  @override
+  SessionIntentResult delegateTask(final String task) =>
+      delegateFromIntent(task);
+
+  @override
+  SessionIntentResult answerPermission({required final bool allow}) =>
+      answerPermissionFromIntent(allow: allow);
 
   /// Task H — PROFILE: remote permission routing (ADR 0005 §5, DESIGN §4 —
   /// one simple place, on the grid). ON: the controller's doc router is
@@ -417,6 +535,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
     if (identical(AgentDocSurface.debugSurface, this)) {
       AgentDocSurface.debugSurface = null;
     }
+    // ADR 0009 (D1) — leave the registry with the IDENTICAL GUARD: a
+    // stale teardown (this slot re-registered by a newer projection) is a
+    // no-op and never clobbers the live handle.
+    HarnessSessionRegistry.instance.unregister(_meshDocId, this);
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
     _controller.removeListener(_onControllerChanged);
@@ -530,6 +652,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface> {
   /// the running turn and delivers first on the flush). While IDLE the
   /// submit sends immediately — today's behavior, byte for byte.
   Future<void> _submitFromComposer({final bool immediate = false}) async {
+    // A composer submit is a user interaction with THIS doc — the
+    // device-local focus follows it (ADR 0009 §Open questions 1).
+    _markFocused();
     if (_controller.isRunning) {
       final task = _taskField.text.trim();
       if (task.isEmpty) return;

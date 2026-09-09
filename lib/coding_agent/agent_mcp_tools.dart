@@ -3,52 +3,91 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// ADR 0003 (Phase 3 core) — MCP/intent entries that let ANY agent (pi,
 /// opencode, another harness) inspect and drive the agent-doc surface
 /// headlessly. Same typed state the human screen renders — the UI is just
 /// another projection ([AgentDocSurface.debugState]).
 ///
+/// ADR 0009 (D1/D2) — the three doc verbs (`agent_doc_state`,
+/// `agent_task_delegate`, `agent_permission_answer`) resolve their target
+/// through the session REGISTRY (`HarnessSessionRegistry`, the host
+/// layer's one index of live sessions — never a widget static): an
+/// optional `docId` names the session exactly (doc surfaces register
+/// under their mesh replica id `agent-<docId>`; the raw doc id is the
+/// alias the other mesh verbs carry); absent, the ONLY live session; if
+/// several are live, the FOCUSED one (device-local last interaction); if
+/// still ambiguous, an error that NAMES the live sessions — never a
+/// silent wrong-target answer (DESIGN §6).
+///
 /// Registered in debug/profile builds (see `main.dart`), next to the doc
 /// and storage entries.
 Set<AgentCallEntry> agentMcpEntries() => {
   mcpToolkitTool(
     handler: (final parameters) {
-      final state = AgentDocSurface.debugState ??
-          AgentDocSurface.shadowDoc?.toDebugState();
-      if (state == null) {
+      try {
+        // D1 — the REGISTRY is the source of truth: the resolved handle
+        // carries the state, never a widget static. A registered doc
+        // surface projects the full doc state (the queue rides along);
+        // any other handle (a daemon runner, a scripted seam) exposes the
+        // host snapshot.
+        final handle = _resolveSession(parameters);
+        final snapshot = handle.state;
+        final Map<String, Object?> stateJson;
+        final String docId;
+        final String message;
+        if (handle is AgentDocHandle) {
+          final state = handle.debugState;
+          docId = state.docId;
+          stateJson = state.toJson();
+          message = _docStateMessage(state);
+        } else {
+          docId = snapshot.sessionId;
+          stateJson = snapshot.toJson();
+          final spend = snapshot.spend == null ? '' : ' · ${snapshot.spend}';
+          message =
+              'Session $docId (${snapshot.kind}): '
+              '${snapshot.running ? 'RUNNING' : 'idle'}, '
+              '${snapshot.turnCount} turn(s), '
+              '${snapshot.beats.length} beat(s)$spend'
+              '${snapshot.verdict == null
+                  ? ''
+                  : ', verdict: ${snapshot.verdict}'}'
+              '${snapshot.pendingPermissionTitle == null
+                  ? ''
+                  : ' — the permission prompt '
+                        '(${snapshot.pendingPermissionTitle}) is awaiting '
+                        'an answer'}';
+        }
         return MCPCallResult(
-          message:
-              'No agent doc surface is currently open. On a PAIRED peer, '
-              'open the shared doc with mesh_open_doc (viewer shadow).',
-          parameters: {'ok': false},
+          message: message,
+          parameters: {
+            'ok': true,
+            ...stateJson,
+            // The registry truth (D1): the addressable key the handle
+            // resolved under and the host-layer snapshot.
+            'docId': docId,
+            'registryKey': ?_registryKeyOf(handle),
+            'session': snapshot.toJson(),
+          },
         );
+      } on SessionResolutionException catch (error) {
+        // Task O — the peer SHADOW fallback: with NO live session, the
+        // viewer projection (mesh_open_doc) answers as before — the peer
+        // flow must not regress. With live sessions, the error NAMES them
+        // (never a silent wrong-target answer, DESIGN §6).
+        if (error.liveSessions.isEmpty) {
+          final shadow = AgentDocSurface.shadowDoc?.toDebugState();
+          if (shadow != null) {
+            return MCPCallResult(
+              message: _docStateMessage(shadow),
+              parameters: {'ok': true, ...shadow.toJson()},
+            );
+          }
+        }
+        return _resolutionError(error);
       }
-      final verdict = state.verdict == null
-          ? ''
-          : ', verdict: ${state.verdict}';
-      final permission = state.pendingPermissionTitle == null
-          ? ''
-          : ' — the permission prompt (${state.pendingPermissionTitle}) is '
-                'awaiting an answer; call agent_permission_answer.';
-      // PLAN 9 — the queue rides the state output (ADR 0011): headless
-      // drivers see the same queue the human sees (DESIGN §5/§8).
-      final openQueue = state.queue
-          .where((final q) => q.status == 'open')
-          .toList();
-      final queueNote = openQueue.isEmpty
-          ? ''
-          : ', ${openQueue.length} queued message(s) '
-                '(steer: delivered after the running turn; JSON field '
-                'queue carries position/age/status)';
-      return MCPCallResult(
-        message:
-            'Agent doc ${state.docId}: backend ${state.backend}, '
-            'session ${state.sessionId ?? 'none'}, '
-            '${state.running ? 'RUNNING' : 'idle'}'
-            '$verdict$permission$queueNote',
-        parameters: {'ok': true, ...state.toJson()},
-      );
     },
     definition: MCPToolDefinition(
       name: 'agent_doc_state',
@@ -58,8 +97,21 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'latest verdict, the transcript tail, and the message queue '
           '(queue[]: id, text, status open/superseded/delivered, lane '
           'from→to, position, age — queued messages flush in order after '
-          'the running turn lands).',
-      inputSchema: ObjectSchema.fromMap(_emptySchema()),
+          'the running turn lands). With several docs open, pass docId to '
+          'address one exactly; absent, the focused doc resolves '
+          '(ambiguity is refused with the live sessions named).',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'docId': {
+            'type': 'string',
+            'description':
+                'Agent doc id to address (the raw doc id, or the exact '
+                'registry key agent-<docId>). Absent: the only live doc, '
+                'else the focused one.',
+          },
+        },
+      }),
     ),
   ),
   mcpToolkitTool(
@@ -71,29 +123,38 @@ Set<AgentCallEntry> agentMcpEntries() => {
           parameters: {'ok': false},
         );
       }
-      final surface = AgentDocSurface.debugSurface;
-      if (surface == null) {
+      try {
+        // D2 — registry resolution (explicit docId → exact; absent →
+        // only/focused; ambiguous → the named error). The handle is the
+        // SAME intent seam the debugSurface path carried, byte for byte.
+        final result = _resolveSession(parameters).delegateTask(task);
         return MCPCallResult(
-          message: 'No agent doc surface is currently open.',
-          parameters: {'ok': false},
+          message: result.message,
+          parameters: {'ok': result.ok},
         );
+      } on SessionResolutionException catch (error) {
+        return _resolutionError(error);
       }
-      final result = surface.delegateFromIntent(task);
-      return MCPCallResult(
-        message: result.message,
-        parameters: {'ok': result.ok},
-      );
     },
     definition: MCPToolDefinition(
       name: 'agent_task_delegate',
       description:
           'Delegate a task sentence to the open agent doc (host-injected '
-          'decision; the turn runs with the doc-bound runtime). Returns '
-          'immediately; poll agent_doc_state for progress/verdict.',
+          'decision; the turn runs with the doc-bound runtime). With '
+          'several docs open, pass docId to address one exactly; absent, '
+          'the focused doc resolves. Returns immediately; poll '
+          'agent_doc_state for progress/verdict.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'properties': {
           'task': {'type': 'string'},
+          'docId': {
+            'type': 'string',
+            'description':
+                'Agent doc id to delegate to (the raw doc id, or the '
+                'exact registry key agent-<docId>). Absent: the only '
+                'live doc, else the focused one.',
+          },
         },
         'required': ['task'],
       }),
@@ -111,34 +172,37 @@ Set<AgentCallEntry> agentMcpEntries() => {
           parameters: {'ok': false},
         );
       }
-      final surface = AgentDocSurface.debugSurface;
-      if (surface != null) {
-        // The OWNER (host) path: the local pending round-trip, byte for
-        // byte as before — the answer may still ride the doc when routing
-        // is ON (the controller decides), but the verb contract is
-        // unchanged.
-        final result = surface.answerPermissionFromIntent(allow: allow);
+      try {
+        // The OWNER (host) path: registry resolution — the resolved
+        // surface's round-trip, byte for byte as before (the answer may
+        // still ride the doc when routing is ON — the controller
+        // decides); the verb contract is unchanged.
+        final result = _resolveSession(parameters).answerPermission(
+          allow: allow,
+        );
         return MCPCallResult(
           message: result.message,
           parameters: {'ok': result.ok},
         );
+      } on SessionResolutionException catch (error) {
+        // Task O (P1) — the PEER path: with NO live session, a shadow doc
+        // (mesh_open_doc) with a pending REMOTE permission answers
+        // through the doc router — the answer is an op on the shared
+        // `perm/<requestId>` register; the host's future completes when
+        // it folds back with the next sync. With live sessions, the error
+        // NAMES them (never a silent wrong-target answer).
+        if (error.liveSessions.isEmpty) {
+          final shadow = AgentDocSurface.shadowDoc;
+          if (shadow != null) {
+            final result = await shadow.answerRemotePermission(allow: allow);
+            return MCPCallResult(
+              message: result.message,
+              parameters: {'ok': result.ok},
+            );
+          }
+        }
+        return _resolutionError(error);
       }
-      // Task O (P1) — the PEER path: a shadow doc (mesh_open_doc) with a
-      // pending REMOTE permission answers through the doc router — the
-      // answer is an op on the shared `perm/<requestId>` register; the
-      // host's future completes when it folds back with the next sync.
-      final shadow = AgentDocSurface.shadowDoc;
-      if (shadow != null) {
-        final result = await shadow.answerRemotePermission(allow: allow);
-        return MCPCallResult(
-          message: result.message,
-          parameters: {'ok': result.ok},
-        );
-      }
-      return MCPCallResult(
-        message: 'No agent doc surface is currently open.',
-        parameters: {'ok': false},
-      );
     },
     definition: MCPToolDefinition(
       name: 'agent_permission_answer',
@@ -146,11 +210,19 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'Answer the pending permission round-trip of the open agent '
           'doc (allow = the write/edit proceeds; reject = it never '
           'lands). Deny-by-default: with no answer the write is '
-          'rejected.',
+          'rejected. With several docs open, pass docId to address one '
+          'exactly; absent, the focused doc resolves.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'properties': {
           'allow': {'type': 'boolean'},
+          'docId': {
+            'type': 'string',
+            'description':
+                'Agent doc id whose round-trip to answer (the raw doc '
+                'id, or the exact registry key agent-<docId>). Absent: '
+                'the only live doc, else the focused one.',
+          },
         },
         'required': ['allow'],
       }),
@@ -868,6 +940,71 @@ Set<AgentCallEntry> agentMcpEntries() => {
 /// deterministic mesh doc id (`AgentDocSurface` joins `agent-<docId>`
 /// on open), so agent verbs and the human flow ride ONE channel.
 String _meshChannel(final String docId) => 'agent-$docId';
+
+/// ADR 0009 (D2) — the optional session selector for the doc verbs: with
+/// `docId` the REGISTRY resolves that exact session (doc surfaces live
+/// under their mesh replica id `agent-<docId>`; the raw doc id is the
+/// alias the other mesh verbs carry); without it, the only live session,
+/// else the focused one. Ambiguous/empty resolution throws
+/// [SessionResolutionException] — the caller surfaces its message, which
+/// NAMES the live sessions (never a silent wrong-target answer).
+SessionHandle _resolveSession(final Map<String, String> parameters) {
+  final raw = parameters['docId'];
+  final docId = raw == null || raw.isEmpty ? null : raw.trim();
+  final registry = HarnessSessionRegistry.instance;
+  if (docId == null) return registry.resolve();
+  if (registry.sessions.containsKey(docId)) {
+    return registry.resolve(id: docId);
+  }
+  final meshKey = _meshChannel(docId);
+  if (registry.sessions.containsKey(meshKey)) {
+    return registry.resolve(id: meshKey);
+  }
+  // Neither form is live: resolve with the explicit id so the error
+  // names the live sessions.
+  return registry.resolve(id: docId);
+}
+
+/// The registry key [handle] lives under (identity lookup over the live
+/// sessions — the addressable id the verb output names).
+String? _registryKeyOf(final SessionHandle handle) {
+  for (final entry in HarnessSessionRegistry.instance.sessions.entries) {
+    if (identical(entry.value, handle)) return entry.key;
+  }
+  return null;
+}
+
+/// The honest resolution failure — the registry's message already NAMES
+/// the live sessions (ADR 0009 D2, DESIGN §6).
+MCPCallResult _resolutionError(final SessionResolutionException error) =>
+    MCPCallResult(
+      message: error.message,
+      parameters: {'ok': false, 'liveSessions': error.liveSessions},
+    );
+
+/// The `agent_doc_state` message for a full doc projection — today's
+/// shape, byte for byte.
+String _docStateMessage(final AgentDocDebugState state) {
+  final verdict = state.verdict == null ? '' : ', verdict: ${state.verdict}';
+  final permission = state.pendingPermissionTitle == null
+      ? ''
+      : ' — the permission prompt (${state.pendingPermissionTitle}) is '
+            'awaiting an answer; call agent_permission_answer.';
+  // PLAN 9 — the queue rides the state output (ADR 0011): headless
+  // drivers see the same queue the human sees (DESIGN §5/§8).
+  final openQueue = state.queue
+      .where((final q) => q.status == 'open')
+      .toList();
+  final queueNote = openQueue.isEmpty
+      ? ''
+      : ', ${openQueue.length} queued message(s) '
+            '(steer: delivered after the running turn; JSON field '
+            'queue carries position/age/status)';
+  return 'Agent doc ${state.docId}: backend ${state.backend}, '
+      'session ${state.sessionId ?? 'none'}, '
+      '${state.running ? 'RUNNING' : 'idle'}'
+      '$verdict$permission$queueNote';
+}
 
 Map<String, Object?> _emptySchema() => {
   'type': 'object',

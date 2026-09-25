@@ -12,7 +12,8 @@ part of 'characters_limit_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods',
+);
 
 /// @nodoc
 mixin _$CharacterLimitState {
@@ -27,8 +28,9 @@ mixin _$CharacterLimitState {
 /// @nodoc
 abstract class $CharacterLimitStateCopyWith<$Res> {
   factory $CharacterLimitStateCopyWith(
-          CharacterLimitState value, $Res Function(CharacterLimitState) then) =
-      _$CharacterLimitStateCopyWithImpl<$Res, CharacterLimitState>;
+    CharacterLimitState value,
+    $Res Function(CharacterLimitState) then,
+  ) = _$CharacterLimitStateCopyWithImpl<$Res, CharacterLimitState>;
   @useResult
   $Res call({String value, bool isEditing});
 }
@@ -45,29 +47,30 @@ class _$CharacterLimitStateCopyWithImpl<$Res, $Val extends CharacterLimitState>
 
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? value = null,
-    Object? isEditing = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-      isEditing: null == isEditing
-          ? _value.isEditing
-          : isEditing // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+  $Res call({Object? value = null, Object? isEditing = null}) {
+    return _then(
+      _value.copyWith(
+            value: null == value
+                ? _value.value
+                : value // ignore: cast_nullable_to_non_nullable
+                      as String,
+            isEditing: null == isEditing
+                ? _value.isEditing
+                : isEditing // ignore: cast_nullable_to_non_nullable
+                      as bool,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$CharacterLimitStateImplCopyWith<$Res>
     implements $CharacterLimitStateCopyWith<$Res> {
-  factory _$$CharacterLimitStateImplCopyWith(_$CharacterLimitStateImpl value,
-          $Res Function(_$CharacterLimitStateImpl) then) =
-      __$$CharacterLimitStateImplCopyWithImpl<$Res>;
+  factory _$$CharacterLimitStateImplCopyWith(
+    _$CharacterLimitStateImpl value,
+    $Res Function(_$CharacterLimitStateImpl) then,
+  ) = __$$CharacterLimitStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String value, bool isEditing});
@@ -77,26 +80,26 @@ abstract class _$$CharacterLimitStateImplCopyWith<$Res>
 class __$$CharacterLimitStateImplCopyWithImpl<$Res>
     extends _$CharacterLimitStateCopyWithImpl<$Res, _$CharacterLimitStateImpl>
     implements _$$CharacterLimitStateImplCopyWith<$Res> {
-  __$$CharacterLimitStateImplCopyWithImpl(_$CharacterLimitStateImpl _value,
-      $Res Function(_$CharacterLimitStateImpl) _then)
-      : super(_value, _then);
+  __$$CharacterLimitStateImplCopyWithImpl(
+    _$CharacterLimitStateImpl _value,
+    $Res Function(_$CharacterLimitStateImpl) _then,
+  ) : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? value = null,
-    Object? isEditing = null,
-  }) {
-    return _then(_$CharacterLimitStateImpl(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-      isEditing: null == isEditing
-          ? _value.isEditing
-          : isEditing // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+  $Res call({Object? value = null, Object? isEditing = null}) {
+    return _then(
+      _$CharacterLimitStateImpl(
+        value: null == value
+            ? _value.value
+            : value // ignore: cast_nullable_to_non_nullable
+                  as String,
+        isEditing: null == isEditing
+            ? _value.isEditing
+            : isEditing // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
   }
 }
 
@@ -135,12 +138,16 @@ class _$CharacterLimitStateImpl implements _CharacterLimitState {
   @pragma('vm:prefer-inline')
   _$$CharacterLimitStateImplCopyWith<_$CharacterLimitStateImpl> get copyWith =>
       __$$CharacterLimitStateImplCopyWithImpl<_$CharacterLimitStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _CharacterLimitState implements CharacterLimitState {
-  const factory _CharacterLimitState(
-      {final String value, final bool isEditing}) = _$CharacterLimitStateImpl;
+  const factory _CharacterLimitState({
+    final String value,
+    final bool isEditing,
+  }) = _$CharacterLimitStateImpl;
 
   @override
   String get value;

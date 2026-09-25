@@ -20,11 +20,11 @@ class SpecialEmojiController
     required this.focusNode,
     required this.textController,
     required final TickerProvider tickerProvider,
-  })  : _animationController = AnimationController(
-          vsync: tickerProvider,
-          duration: const Duration(milliseconds: 365),
-        ),
-        super(const SpecialEmojisKeyboardControllerState());
+  }) : _animationController = AnimationController(
+         vsync: tickerProvider,
+         duration: const Duration(milliseconds: 365),
+       ),
+       super(const SpecialEmojisKeyboardControllerState());
   final FocusNode focusNode;
   final TextEditingController textController;
   final AnimationController _animationController;
@@ -35,18 +35,17 @@ class SpecialEmojiController
     super.dispose();
   }
 
-  late final _animation = Tween<Offset>(
-    begin: Offset.zero,
-    end: const Offset(
-      0,
-      SpecialEmojisKeyboard.height,
-    ),
-  ).animate(
-    CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOutExpo,
-    ),
-  )..addListener(notifyListeners);
+  late final _animation =
+      Tween<Offset>(
+          begin: Offset.zero,
+          end: const Offset(0, SpecialEmojisKeyboard.height),
+        ).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeInOutExpo,
+          ),
+        )
+        ..addListener(notifyListeners);
   Offset get keyboardOffset => _animation.value;
   Future<void> closeEmojiKeyboard({final bool immediately = true}) async {
     if (immediately) {
@@ -105,15 +104,12 @@ class SpecialEmojiKeyboardProvider extends HookWidget {
         Positioned.fill(
           child: Column(
             children: [
-              Expanded(
-                child: GestureDetector(
-                  child: builder(context),
-                ),
-              ),
+              Expanded(child: GestureDetector(child: builder(context))),
               AnimatedBuilder(
                 animation: controller,
                 builder: (final context, final child) => SizedBox(
-                  height: controller.value.isKeyboardOpen ||
+                  height:
+                      controller.value.isKeyboardOpen ||
                           controller.value.isKeyboardOpening
                       ? keyboardOffset.dy
                       : 0,
@@ -158,16 +154,16 @@ class SpecialEmojisKeyboard extends HookWidget implements PreferredSizeWidget {
   @override
   Widget build(final BuildContext context) {
     final specialEmojisProvider = context.read<SpecialEmojiStateNotifier>();
-    final emojis = specialEmojisProvider.values;
+    final emojis = specialEmojisProvider.orderedValues;
     final theme = Theme.of(context);
     final emojiStyle = theme.textTheme.displayLarge?.copyWith(fontSize: 26);
 
     Widget buildEmojiButton(final EmojiModel emoji) => KeyboardEmojiButton(
-          key: ValueKey(emoji),
-          emoji: emoji,
-          style: emojiStyle,
-          onPressed: () => onChanged(emoji),
-        );
+      key: ValueKey(emoji),
+      emoji: emoji,
+      style: emojiStyle,
+      onPressed: () => onChanged(emoji),
+    );
 
     return Container(
       color: theme.highlightColor.withOpacity(0.1),

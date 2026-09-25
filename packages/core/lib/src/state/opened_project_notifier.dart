@@ -2,8 +2,8 @@ part of 'state.dart';
 
 class OpenedProjectNotifierDto {
   OpenedProjectNotifierDto(final BuildContext context)
-      : projectsNotifier = context.read(),
-        userNotifier = context.read();
+    : projectsNotifier = context.read(),
+      userNotifier = context.read();
   final ProjectsNotifier projectsNotifier;
   final UserNotifier userNotifier;
 }
@@ -11,8 +11,8 @@ class OpenedProjectNotifierDto {
 class OpenedProjectNotifier
     extends ValueNotifier<LoadableContainer<ProjectModel>> {
   OpenedProjectNotifier(final BuildContext context)
-      : dto = OpenedProjectNotifierDto(context),
-        super(LoadableContainer(value: ProjectModel.emptyNote));
+    : dto = OpenedProjectNotifierDto(context),
+      super(LoadableContainer(value: ProjectModel.emptyNote));
 
   final OpenedProjectNotifierDto dto;
 
@@ -27,6 +27,7 @@ class OpenedProjectNotifier
       ProjectTypes.note => ScreenPaths.note(noteId: project.id),
       ProjectTypes.idea => ScreenPaths.idea(ideaId: project.id),
       ProjectTypes.systemChangelog => ScreenPaths.changelog,
+      ProjectTypes.doc => ScreenPaths.doc(docId: project.id),
     };
     unawaited(context.push(path));
   }
@@ -46,6 +47,12 @@ class OpenedProjectNotifier
       },
       changelog: (final value) {
         // noop
+      },
+      doc: (final doc) {
+        final hasNoContent =
+            doc.title.isEmpty &&
+            doc.blocks.every((final b) => b.content.isEmpty);
+        if (hasNoContent) dto.projectsNotifier.deleteProject(doc);
       },
     );
   }
@@ -80,6 +87,15 @@ class OpenedProjectNotifier
     );
     if (title.isNotEmpty) dto.projectsNotifier.updateEditingProject(idea);
     loadProject(context: context, project: idea);
+  }
+
+  /// ADR 0003 — Agents live in docs (Phase 1): a new agent doc.
+  void createAgentProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyAgent());
+  }
+
+  void createChatProject(final BuildContext context) {
+    loadProject(context: context, project: ProjectModel.emptyChat());
   }
 
   void deleteProject() {

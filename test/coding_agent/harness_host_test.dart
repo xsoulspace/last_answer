@@ -1,0 +1,202 @@
+// TASK B — embedded-harness end-to-end gate (LLM-free, scripted mover):
+//
+// 1. the host starts the REAL daemon stack in-process (HarnessAcpBackend +
+//    AcpStdioServer over an in-memory channel) and runs one scripted
+//    session: delegate → WRITE permission round-trip (allow) → verdict
+//    surfaces as PASS and the write lands;
+// 2. the deny path: the same session rejects the write — the content never
+//    lands and the verdict surfaces as FAIL (failures are data);
+// 3. the daemon lifecycle is controllable from the host: start, per-
+//    workspace session continuation, stop.
+
+import 'dart:io';
+
+import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
+    show jevDecisionBinding;
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show CodingHostUpdate;
+
+import 'scripted_write_mover.dart';
+
+/// The scripted mover lives in [ScriptedWriteMover] (shared with the
+/// widget test) — one gated `write`, then done.
+
+void main() {
+  late Directory workspace;
+
+  setUp(() async {
+    workspace = await Directory.systemTemp.createTemp('lastanswer_harness');
+    // Bare main.dart (no pubspec) — the D8 workspace convention resolves to
+    // `dart run main.dart`, which needs no pub get: fully self-contained.
+    File('${workspace.path}/main.dart').writeAsStringSync(
+      "void main() { throw StateError('not implemented'); }\n",
+    );
+  });
+
+  tearDown(() {
+    try {
+      workspace.deleteSync(recursive: true);
+    } on Object {
+      // best effort
+    }
+  });
+
+  ScriptedWriteMover scriptedMover() =>
+      ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n");
+
+  HarnessHost scriptedHost() => HarnessHost(
+    config: HarnessHostConfig(handlerFactory: (_) => scriptedMover()),
+  );
+
+  test('delegate → permission (allow) → verdict surfaces as PASS, '
+      'the write lands', () async {
+    final host = scriptedHost();
+    addTearDown(host.stop);
+    await host.start();
+
+    final sessionId = await host.newSession(workspace.path);
+    expect(sessionId, isNotEmpty);
+
+    // The user-actor answers every permission request with allow.
+    host.permissionRequests.listen((final pending) => pending.allow());
+
+    final chunks = StringBuffer();
+    final updates = <CodingHostUpdate>[];
+    final stop = await host.delegateTask(
+      sessionId,
+      'Fix main.dart so `dart run main.dart` exits 0.',
+      onText: chunks.write,
+      onHostUpdate: updates.add,
+    );
+
+    expect(stop, AcpStopReason.endTurn, reason: chunks.toString());
+    expect(chunks.toString(), contains('verdict: PASS'));
+    expect(updates, isNotEmpty, reason: 'typed host updates reach the host');
+    expect(
+      File('${workspace.path}/main.dart').readAsStringSync(),
+      contains("print('ok')"),
+      reason: 'the allowed write must land',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  test('delegate → permission (reject) → the write never lands, '
+      'verdict surfaces as FAIL', () async {
+    final host = scriptedHost();
+    addTearDown(host.stop);
+    await host.start();
+
+    final sessionId = await host.newSession(workspace.path);
+    host.permissionRequests.listen((final pending) => pending.reject());
+
+    final chunks = StringBuffer();
+    await host.delegateTask(
+      sessionId,
+      'Fix main.dart so `dart run main.dart` exits 0.',
+      onText: chunks.write,
+    );
+
+    expect(chunks.toString(), contains('verdict: FAIL'));
+    expect(
+      File('${workspace.path}/main.dart').readAsStringSync(),
+      isNot(contains("print('ok')")),
+      reason: 'a rejected write must never land',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  test('daemon lifecycle: sessions are keyed per workspace and the host can '
+      'start/stop cleanly', () async {
+    final host = scriptedHost();
+    addTearDown(host.stop);
+    await host.start();
+    expect(host.isRunning, isTrue);
+
+    // Per-workspace keying (R7c): a second session/new for the same cwd
+    // continues ONE session — the world (and snapshot store) persist.
+    final first = await host.newSession(workspace.path);
+    final second = await host.newSession(workspace.path);
+    expect(second, first);
+
+    await host.stop();
+    expect(host.isRunning, isFalse);
+    expect(
+      Directory('${workspace.path}/.dart_tool/harnessd_store').existsSync(),
+      isTrue,
+      reason: 'the per-workspace snapshot store must exist',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  test('controller switchBackend: AFM → OpenRouter restarts the daemon and the '
+      'per-workspace world continues (snapshot restore)', () async {
+    final controller = HarnessSessionController(
+      config: HarnessHostConfig(
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+      ),
+    );
+    addTearDown(controller.dispose);
+    controller.host.permissionRequests.listen((final p) => p.allow());
+
+    expect(controller.config.backend, 'apple_foundation_afm');
+    await controller.createSession(workspace.path);
+    await controller.delegate('Fix main.dart.');
+    expect(controller.current?.verdictLine, contains('PASS'));
+
+    // Switch backend (OpenRouter needs no real key here: the scripted
+    // handlerFactory outranks the real router — LLM-free by design).
+    await controller.switchBackend(
+      controller.config.copyWith(backend: 'open_router', apiKey: 'test-key'),
+    );
+    expect(controller.config.backend, 'open_router');
+    expect(controller.sessions, isEmpty);
+
+    // The NEXT session for the same workspace restores the world from the
+    // per-workspace snapshot store (R7c loadSession) and the turn
+    // completes on the new backend. Session ids are per-daemon-instance
+    // (both counters start at sess_1) — the RESUME is the store restore,
+    // which is proven by the resumable-world assertion below.
+    await controller.createSession(workspace.path);
+    // ensureStarted re-wired the controller to the NEW host's permission
+    // round-trips; the test's user-actor must do the same.
+    controller.host.permissionRequests.listen((final p) => p.allow());
+    await controller.delegate('Confirm main.dart is fixed.');
+    expect(controller.current?.verdictLine, contains('PASS'));
+    expect(
+      controller.current!.transcript.toString(),
+      isNot(contains('no goal-carrying actor')),
+      reason: 'the restored world must carry a resumable goal actor (R7c)',
+    );
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
+  test(
+    'Jev config retains its optional binding and host shutdown disposes it',
+    () async {
+      final binding = jevDecisionBinding(apiKey: 'local-test-key');
+      final config = HarnessHostConfig(
+        backend: 'jev',
+        model: 'jev-1.13',
+        apiKey: 'local-test-key',
+        jevBinding: binding,
+      );
+      final backend = config.buildBackend();
+      expect(backend.bindings['jev'], same(binding.binding));
+      expect(
+        config.copyWith(apiKey: 'local-test-key').jevBinding,
+        same(binding),
+        reason: 'a same-key config sync must not allocate another provider',
+      );
+
+      final host = HarnessHost(config: config);
+      await host.stop();
+      expect(
+        binding.binding.buildRouter(model: 'jev-1.13', apiKey: null),
+        isNull,
+        reason: 'stop closes the optional provider without a network request',
+      );
+      await binding.dispose();
+    },
+  );
+}

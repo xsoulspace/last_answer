@@ -378,4 +378,225 @@ class SRu extends S {
 
   @override
   String get all => 'Все';
+
+  @override
+  String get githubSync => 'Синхронизация GitHub';
+
+  @override
+  String get connectGithub => 'Подключить GitHub…';
+
+  @override
+  String get disconnectGithub => 'Отключить GitHub';
+
+  @override
+  String get githubConnected => 'GitHub подключён';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Не удалось подключить GitHub: $error';
+  }
+
+  @override
+  String get chooseRepository => 'Выберите репозиторий';
+
+  @override
+  String get createNewRepository => 'Создать новый репозиторий';
+
+  @override
+  String get repoNameHint => 'имя-репозитория';
+
+  @override
+  String get subdirectory => 'Подкаталог';
+
+  @override
+  String get backupToGithub => 'Резервная копия в GitHub';
+
+  @override
+  String get restoreFromGithub => 'Восстановить из GitHub';
+
+  @override
+  String get githubBackupDone => 'Скопировано в GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Восстановлено из GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Вставить токен вручную';
+
+  @override
+  String get tokenGuideTitle => 'Создайте fine-grained токен';
+
+  @override
+  String get tokenStep1 => '1. Откройте github.com и войдите.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Нажмите «Generate new token» на странице токенов (кнопка ниже).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → «Only select repositories» → выберите репозиторий заметок.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → «Read and write». Больше ничего.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Установите срок действия, сгенерируйте и вставьте токен сюда.';
+
+  @override
+  String get tokenFieldLabel => 'Токен (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Подключить';
+
+  @override
+  String get openGithubTokens => 'Открыть страницу токенов GitHub';
+
+  @override
+  String get manageTokens => 'Управление токенами / отзыв';
+
+  @override
+  String get storage => 'Хранилище';
+
+  @override
+  String get storageSectionHint =>
+      'Заметки всегда хранятся в локальной базе на этом устройстве. Включите ниже любые другие места для дополнительных синхронизированных копий: каждое добавляет резервную копию, и их можно сочетать. Отметьте одно как основное (★): восстановление по умолчанию использует его.';
+
+  @override
+  String get storageLocalDb => 'Локальная база данных';
+
+  @override
+  String get storageLocalDbHint =>
+      'Всегда включена. Быстро и приватно — данные не покидают это устройство.';
+
+  @override
+  String get storageFilesystem => 'Папка на этом устройстве';
+
+  @override
+  String get storageFilesystemHint =>
+      'Хранит копию в выбранной вами папке — легко открыть любым файловым менеджером или включить в свои резервные копии.';
+
+  @override
+  String get storageGitOffline => 'Git-папка (офлайн)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Хранит копию в локальном Git-репозитории: каждый бэкап версионируется, можно смотреть историю и откатываться. Аккаунт не нужен.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Приватная облачная копия в вашем репозитории GitHub — защита при потере устройства. Настройте её в разделе «GitHub Sync» ниже.';
+
+  @override
+  String get storagePrimary =>
+      'Основное хранилище — восстановление по умолчанию использует его';
+
+  @override
+  String get storageSetAsPrimary => 'Сделать основным';
+
+  @override
+  String get storageFolderPathLabel => 'Путь к папке';
+
+  @override
+  String get storageGitPathLabel => 'Путь к папке репозитория';
+
+  @override
+  String get storagePathHint =>
+      'Если папки ещё нет, она будет создана автоматически.';
+
+  @override
+  String get storageBackupNow => 'Сохранить копию сейчас';
+
+  @override
+  String get storageRestoreNow => 'Восстановить из копии';
+
+  @override
+  String get storageBackupDone => 'Копия сохранена ✓';
+
+  @override
+  String get storageRestoreDone => 'Восстановлено ✓';
+
+  @override
+  String get storageNoBackupFound => 'В этом месте пока нет резервной копии.';
+
+  @override
+  String get storageOperationFailed =>
+      'Не удалось выполнить операцию с хранилищем';
+
+  @override
+  String get storageOpenGithubSetup => 'Открыть настройки GitHub';
+
+  @override
+  String get storageNotAvailable => 'Недоступно на этой платформе';
+
+  @override
+  String get storageMeshTitle => 'Синхронизация между устройствами';
+
+  @override
+  String get storageMeshHint =>
+      'Соедините свои устройства напрямую по Wi‑Fi — без аккаунта и облака. Покажите код, отсканируйте — готово.';
+
+  @override
+  String get storageMeshBecomeMain => 'Сделать это устройство основным';
+
+  @override
+  String get storageMeshJoinWithCode => 'У меня есть код';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Не закрывайте этот экран. На втором устройстве нажмите «$joinWithCode» и отсканируйте код или вставьте его.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Копировать код';
+
+  @override
+  String get storageMeshCodeCopied => 'Код скопирован';
+
+  @override
+  String get storageMeshPasteTitle => 'Вставьте код сопряжения';
+
+  @override
+  String get storageMeshScanQr => 'Сканировать QR-код';
+
+  @override
+  String get storageMeshConnectButton => 'Подключить';
+
+  @override
+  String get storageMeshMainBadge => 'Основное устройство';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Соединено с основным устройством. Заметки синхронизируются автоматически, пока оба в одной сети.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Подключено устройств: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Синхронизировать';
+
+  @override
+  String get storageMeshSyncDone => 'Устройства синхронизированы ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Не удалось подключиться: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Расширенные настройки (отладка)';
+
+  @override
+  String get storageMeshUnpair => 'Отвязать устройства';
+
+  @override
+  String get tokenSafety =>
+      'Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить.';
 }

@@ -44,7 +44,7 @@ class QuestionDropdown extends StatelessWidget {
       selectedTrailingIcon: const SizedBox(),
       trailingIcon: const SizedBox(),
       inputDecorationTheme: defaultDropdownMenuInputTheme,
-      onSelected: (final question) async {
+      onSelected: (final question) {
         if (question == null) return;
         onChanged(answer.copyWith(question: question));
       },
@@ -53,10 +53,8 @@ class QuestionDropdown extends StatelessWidget {
 }
 
 final defaultDropdownMenuStyle = MenuStyle(
-  shape: MaterialStatePropertyAll(
-    RoundedRectangleBorder(
-      borderRadius: defaultBorderRadius,
-    ),
+  shape: WidgetStatePropertyAll(
+    RoundedRectangleBorder(borderRadius: defaultBorderRadius),
   ),
 );
 

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "steward-continuity-boundary-lifecycle": {
+      "source": "arenukvern/skill_steward",
+      "sourceType": "github",
+      "skillPath": "skills/steward-continuity-boundary-lifecycle/SKILL.md",
+      "computedHash": "2f1d6ee46514888365a877535cb3d17258471f59941bc3c83cbcb31e6dddbdf3"
+    }
+  }
+}

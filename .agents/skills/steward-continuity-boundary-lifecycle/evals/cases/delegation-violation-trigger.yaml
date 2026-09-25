@@ -1,0 +1,12 @@
+id: steward-continuity-delegation-violation-trigger
+skill: steward-continuity-boundary-lifecycle
+routing: should_trigger
+input: "Audit this agent delegation: the tool result is written as if the steward personally cares and the report says 'the steward says' without evidence."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["delegation hygiene", "boundary violation"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["authority laundering", "personality inflation", "tool-execution"]

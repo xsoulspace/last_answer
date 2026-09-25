@@ -6,55 +6,116 @@ part of 'data_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$NotificationMessageModelImpl _$$NotificationMessageModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$NotificationMessageModelImpl(
-      id: json['id'] as String,
-      message:
-          LocalizedTextModel.fromJson(json['message'] as Map<String, dynamic>),
-      title: LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
-      created: DateTime.parse(json['created'] as String),
+_NotificationMessageModel _$NotificationMessageModelFromJson(
+  Map<String, dynamic> json,
+) => _NotificationMessageModel(
+  id: json['id'] as String,
+  message: LocalizedTextModel.fromJson(json['message'] as Map<String, dynamic>),
+  title: LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
+  created: DateTime.parse(json['created'] as String),
+);
+
+Map<String, dynamic> _$NotificationMessageModelToJson(
+  _NotificationMessageModel instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'message': instance.message,
+  'title': instance.title,
+  'created': instance.created.toIso8601String(),
+};
+
+_AgentDocModel _$AgentDocModelFromJson(Map<String, dynamic> json) =>
+    _AgentDocModel(
+      workspaces:
+          (json['workspaces'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      backend: json['backend'] as String? ?? 'apple_foundation_afm',
+      checkCommand:
+          (json['checkCommand'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
-Map<String, dynamic> _$$NotificationMessageModelImplToJson(
-        _$NotificationMessageModelImpl instance) =>
+Map<String, dynamic> _$AgentDocModelToJson(_AgentDocModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'message': instance.message,
-      'title': instance.title,
-      'created': instance.created.toIso8601String(),
+      'workspaces': instance.workspaces,
+      'backend': instance.backend,
+      'checkCommand': instance.checkCommand,
     };
 
-_$ProjectModelIdeaImpl _$$ProjectModelIdeaImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProjectModelIdeaImpl(
+_DocBlockModel _$DocBlockModelFromJson(Map<String, dynamic> json) =>
+    _DocBlockModel(
+      id: DocBlockId.fromJson(json['id'] as String),
+      type: $enumDecode(_$DocBlockTypeEnumMap, json['type']),
+      content: json['content'] as String? ?? '',
+      level: (json['level'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$DocBlockModelToJson(_DocBlockModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'type': _$DocBlockTypeEnumMap[instance.type]!,
+      'content': instance.content,
+      'level': instance.level,
+    };
+
+const _$DocBlockTypeEnumMap = {
+  DocBlockType.heading: 'heading',
+  DocBlockType.paragraph: 'paragraph',
+  DocBlockType.list: 'list',
+};
+
+_AnchorSpanModel _$AnchorSpanModelFromJson(Map<String, dynamic> json) =>
+    _AnchorSpanModel(
+      blockId: DocBlockId.fromJson(json['blockId'] as String),
+      prefixHash: json['prefixHash'] as String?,
+      suffixHash: json['suffixHash'] as String?,
+    );
+
+Map<String, dynamic> _$AnchorSpanModelToJson(_AnchorSpanModel instance) =>
+    <String, dynamic>{
+      'blockId': instance.blockId,
+      'prefixHash': instance.prefixHash,
+      'suffixHash': instance.suffixHash,
+    };
+
+ProjectModelIdea _$ProjectModelIdeaFromJson(Map<String, dynamic> json) =>
+    ProjectModelIdea(
       id: ProjectModelId.fromJson(json['id'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       title: json['title'] as String? ?? '',
-      type: $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+      type:
+          $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
           ProjectTypes.idea,
       archivedAt: json['archivedAt'] == null
           ? null
           : DateTime.parse(json['archivedAt'] as String),
-      answers: (json['answers'] as List<dynamic>?)
-              ?.map((e) =>
-                  IdeaProjectAnswerModel.fromJson(e as Map<String, dynamic>))
+      answers:
+          (json['answers'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    IdeaProjectAnswerModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
       draftAnswer: json['draftAnswer'] == null
           ? null
           : IdeaProjectAnswerModel.fromJson(
-              json['draftAnswer'] as Map<String, dynamic>),
-      tagsIds: (json['tagsIds'] as List<dynamic>?)
+              json['draftAnswer'] as Map<String, dynamic>,
+            ),
+      tagsIds:
+          (json['tagsIds'] as List<dynamic>?)
               ?.map((e) => ProjectTagModelId.fromJson(e as String))
               .toList() ??
           const [],
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$ProjectModelIdeaImplToJson(
-        _$ProjectModelIdeaImpl instance) =>
+Map<String, dynamic> _$ProjectModelIdeaToJson(ProjectModelIdea instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -72,30 +133,31 @@ const _$ProjectTypesEnumMap = {
   ProjectTypes.idea: 'idea',
   ProjectTypes.note: 'note',
   ProjectTypes.systemChangelog: 'systemChangelog',
+  ProjectTypes.doc: 'doc',
 };
 
-_$ProjectModelNoteImpl _$$ProjectModelNoteImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProjectModelNoteImpl(
+ProjectModelNote _$ProjectModelNoteFromJson(Map<String, dynamic> json) =>
+    ProjectModelNote(
       id: ProjectModelId.fromJson(json['id'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       note: json['note'] as String? ?? '',
-      type: $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+      type:
+          $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
           ProjectTypes.note,
-      charactersLimit: json['charactersLimit'] as int? ?? 0,
+      charactersLimit: (json['charactersLimit'] as num?)?.toInt() ?? 0,
       archivedAt: json['archivedAt'] == null
           ? null
           : DateTime.parse(json['archivedAt'] as String),
-      tagsIds: (json['tagsIds'] as List<dynamic>?)
+      tagsIds:
+          (json['tagsIds'] as List<dynamic>?)
               ?.map((e) => ProjectTagModelId.fromJson(e as String))
               .toList() ??
           const [],
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$ProjectModelNoteImplToJson(
-        _$ProjectModelNoteImpl instance) =>
+Map<String, dynamic> _$ProjectModelNoteToJson(ProjectModelNote instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -108,86 +170,147 @@ Map<String, dynamic> _$$ProjectModelNoteImplToJson(
       'runtimeType': instance.$type,
     };
 
-_$ProjectModelChangelogImpl _$$ProjectModelChangelogImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProjectModelChangelogImpl(
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      title: json['title'] == null
-          ? LocalizedTextModel.empty
-          : LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
-      id: json['id'] == null
-          ? ProjectModelId.systemChangelog
-          : ProjectModelId.fromJson(json['id'] as String),
-      type: $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
-          ProjectTypes.systemChangelog,
-      tagsIds: (json['tagsIds'] as List<dynamic>?)
-              ?.map((e) => ProjectTagModelId.fromJson(e as String))
-              .toList() ??
-          const [],
-      archivedAt: json['archivedAt'] == null
-          ? null
-          : DateTime.parse(json['archivedAt'] as String),
-      $type: json['runtimeType'] as String?,
-    );
+ProjectModelChangelog _$ProjectModelChangelogFromJson(
+  Map<String, dynamic> json,
+) => ProjectModelChangelog(
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  title: json['title'] == null
+      ? LocalizedTextModel.empty
+      : LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
+  id: json['id'] == null
+      ? ProjectModelId.systemChangelog
+      : ProjectModelId.fromJson(json['id'] as String),
+  type:
+      $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+      ProjectTypes.systemChangelog,
+  tagsIds:
+      (json['tagsIds'] as List<dynamic>?)
+          ?.map((e) => ProjectTagModelId.fromJson(e as String))
+          .toList() ??
+      const [],
+  archivedAt: json['archivedAt'] == null
+      ? null
+      : DateTime.parse(json['archivedAt'] as String),
+  $type: json['runtimeType'] as String?,
+);
 
-Map<String, dynamic> _$$ProjectModelChangelogImplToJson(
-        _$ProjectModelChangelogImpl instance) =>
+Map<String, dynamic> _$ProjectModelChangelogToJson(
+  ProjectModelChangelog instance,
+) => <String, dynamic>{
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+  'title': instance.title,
+  'id': instance.id,
+  'type': _$ProjectTypesEnumMap[instance.type]!,
+  'tagsIds': instance.tagsIds,
+  'archivedAt': instance.archivedAt?.toIso8601String(),
+  'runtimeType': instance.$type,
+};
+
+ProjectModelDoc _$ProjectModelDocFromJson(
+  Map<String, dynamic> json,
+) => ProjectModelDoc(
+  id: ProjectModelId.fromJson(json['id'] as String),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  formatId: json['formatId'] as String? ?? '',
+  title: json['title'] as String? ?? '',
+  type:
+      $enumDecodeNullable(_$ProjectTypesEnumMap, json['type']) ??
+      ProjectTypes.doc,
+  tagsIds:
+      (json['tagsIds'] as List<dynamic>?)
+          ?.map((e) => ProjectTagModelId.fromJson(e as String))
+          .toList() ??
+      const [],
+  archivedAt: json['archivedAt'] == null
+      ? null
+      : DateTime.parse(json['archivedAt'] as String),
+  blocks:
+      (json['blocks'] as List<dynamic>?)
+          ?.map((e) => DocBlockModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  parentDocId: json['parentDocId'] == null
+      ? null
+      : ProjectModelId.fromJson(json['parentDocId'] as String),
+  anchorSpan: json['anchorSpan'] == null
+      ? null
+      : AnchorSpanModel.fromJson(json['anchorSpan'] as Map<String, dynamic>),
+  spanSnapshot: json['spanSnapshot'] as String? ?? '',
+  agent: json['agent'] == null
+      ? null
+      : AgentDocModel.fromJson(json['agent'] as Map<String, dynamic>),
+  status:
+      $enumDecodeNullable(_$DocStatusEnumMap, json['status']) ?? DocStatus.open,
+  $type: json['runtimeType'] as String?,
+);
+
+Map<String, dynamic> _$ProjectModelDocToJson(ProjectModelDoc instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'formatId': instance.formatId,
       'title': instance.title,
-      'id': instance.id,
       'type': _$ProjectTypesEnumMap[instance.type]!,
       'tagsIds': instance.tagsIds,
       'archivedAt': instance.archivedAt?.toIso8601String(),
+      'blocks': instance.blocks,
+      'parentDocId': instance.parentDocId,
+      'anchorSpan': instance.anchorSpan,
+      'spanSnapshot': instance.spanSnapshot,
+      'agent': instance.agent,
+      'status': _$DocStatusEnumMap[instance.status]!,
       'runtimeType': instance.$type,
     };
 
-_$IdeaProjectAnswerModelImpl _$$IdeaProjectAnswerModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$IdeaProjectAnswerModelImpl(
-      id: IdeaProjectAnswerModelId.fromJson(json['id'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      question: IdeaProjectQuestionModel.fromJson(
-          json['question'] as Map<String, dynamic>),
-      text: json['text'] as String? ?? '',
-    );
+const _$DocStatusEnumMap = {
+  DocStatus.open: 'open',
+  DocStatus.collapsed: 'collapsed',
+};
 
-Map<String, dynamic> _$$IdeaProjectAnswerModelImplToJson(
-        _$IdeaProjectAnswerModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'question': instance.question,
-      'text': instance.text,
-    };
+_IdeaProjectAnswerModel _$IdeaProjectAnswerModelFromJson(
+  Map<String, dynamic> json,
+) => _IdeaProjectAnswerModel(
+  id: IdeaProjectAnswerModelId.fromJson(json['id'] as String),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  question: IdeaProjectQuestionModel.fromJson(
+    json['question'] as Map<String, dynamic>,
+  ),
+  text: json['text'] as String? ?? '',
+);
 
-_$IdeaProjectQuestionModelImpl _$$IdeaProjectQuestionModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$IdeaProjectQuestionModelImpl(
-      id: IdeaProjectQuestionModelId.fromJson(json['id'] as String),
-      title: LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
-    );
+Map<String, dynamic> _$IdeaProjectAnswerModelToJson(
+  _IdeaProjectAnswerModel instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'question': instance.question,
+  'text': instance.text,
+};
 
-Map<String, dynamic> _$$IdeaProjectQuestionModelImplToJson(
-        _$IdeaProjectQuestionModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-    };
+_IdeaProjectQuestionModel _$IdeaProjectQuestionModelFromJson(
+  Map<String, dynamic> json,
+) => _IdeaProjectQuestionModel(
+  id: IdeaProjectQuestionModelId.fromJson(json['id'] as String),
+  title: LocalizedTextModel.fromJson(json['title'] as Map<String, dynamic>),
+);
 
-_$LocalizedTextModelImpl _$$LocalizedTextModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$LocalizedTextModelImpl(
+Map<String, dynamic> _$IdeaProjectQuestionModelToJson(
+  _IdeaProjectQuestionModel instance,
+) => <String, dynamic>{'id': instance.id, 'title': instance.title};
+
+_LocalizedTextModel _$LocalizedTextModelFromJson(Map<String, dynamic> json) =>
+    _LocalizedTextModel(
       ru: json['ru'] as String,
-      en: json['en'] as String,
+      en: json['en'] as String? ?? '',
       it: json['it'] as String? ?? '',
       ga: json['ga'] as String? ?? '',
     );
 
-Map<String, dynamic> _$$LocalizedTextModelImplToJson(
-        _$LocalizedTextModelImpl instance) =>
+Map<String, dynamic> _$LocalizedTextModelToJson(_LocalizedTextModel instance) =>
     <String, dynamic>{
       'ru': instance.ru,
       'en': instance.en,
@@ -195,58 +318,51 @@ Map<String, dynamic> _$$LocalizedTextModelImplToJson(
       'ga': instance.ga,
     };
 
-_$ProjectTagModelImpl _$$ProjectTagModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProjectTagModelImpl(
+_ProjectTagModel _$ProjectTagModelFromJson(Map<String, dynamic> json) =>
+    _ProjectTagModel(
       id: ProjectTagModelId.fromJson(json['id'] as String),
       title: json['title'] as String? ?? '',
     );
 
-Map<String, dynamic> _$$ProjectTagModelImplToJson(
-        _$ProjectTagModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-    };
+Map<String, dynamic> _$ProjectTagModelToJson(_ProjectTagModel instance) =>
+    <String, dynamic>{'id': instance.id, 'title': instance.title};
 
-_$DbSaveModelImpl _$$DbSaveModelImplFromJson(Map<String, dynamic> json) =>
-    _$DbSaveModelImpl(
-      version: $enumDecodeNullable(_$DbSaveVersionEnumMap, json['version']) ??
-          DbSaveVersion.v1,
-      projects: (json['projects'] as List<dynamic>?)
-              ?.map(ProjectModel.fromJson)
-              .toList() ??
-          const [],
-      tags: (json['tags'] as List<dynamic>?)
-              ?.map((e) => ProjectTagModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-    );
+_DbSaveModel _$DbSaveModelFromJson(Map<String, dynamic> json) => _DbSaveModel(
+  version:
+      $enumDecodeNullable(_$DbSaveVersionEnumMap, json['version']) ??
+      DbSaveVersion.v1,
+  projects:
+      (json['projects'] as List<dynamic>?)
+          ?.map(ProjectModel.fromJson)
+          .toList() ??
+      const [],
+  tags:
+      (json['tags'] as List<dynamic>?)
+          ?.map((e) => ProjectTagModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+);
 
-Map<String, dynamic> _$$DbSaveModelImplToJson(_$DbSaveModelImpl instance) =>
+Map<String, dynamic> _$DbSaveModelToJson(_DbSaveModel instance) =>
     <String, dynamic>{
       'version': _$DbSaveVersionEnumMap[instance.version]!,
       'projects': instance.projects,
       'tags': instance.tags,
     };
 
-const _$DbSaveVersionEnumMap = {
-  DbSaveVersion.v1: 'v1',
-};
+const _$DbSaveVersionEnumMap = {DbSaveVersion.v1: 'v1'};
 
-_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
-    _$UserModelImpl(
-      settings: json['settings'] == null
-          ? UserSettingsModel.initial
-          : UserSettingsModel.fromJson(
-              json['settings'] as Map<String, dynamic>),
-      localDbVersion: $enumDecodeNullable(
-              _$LocalDbVersionEnumMap, json['localDbVersion']) ??
-          LocalDbVersion.newestVersion,
-      hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
-    );
+_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
+  settings: json['settings'] == null
+      ? UserSettingsModel.initial
+      : UserSettingsModel.fromJson(json['settings'] as Map<String, dynamic>),
+  localDbVersion:
+      $enumDecodeNullable(_$LocalDbVersionEnumMap, json['localDbVersion']) ??
+      LocalDbVersion.newestVersion,
+  hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
+);
 
-Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
+Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
       'settings': instance.settings,
       'localDbVersion': _$LocalDbVersionEnumMap[instance.localDbVersion]!,
@@ -256,17 +372,17 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
 const _$LocalDbVersionEnumMap = {
   LocalDbVersion.v3_16: 'v3_16',
   LocalDbVersion.v3_17: 'v3_17',
+  LocalDbVersion.v4: 'v4',
 };
 
-_$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$UserSettingsModelImpl(
+_UserSettingsModel _$UserSettingsModelFromJson(Map<String, dynamic> json) =>
+    _UserSettingsModel(
       themeMode: json['themeMode'] == null
           ? ThemeMode.system
-          : _themeModeFromJson(json['themeMode'] as int?),
+          : _themeModeFromJson((json['themeMode'] as num?)?.toInt()),
       isProjectsListReversed: json['isProjectsListReversed'] as bool? ?? true,
       charactersLimitForNewNotes:
-          json['charactersLimitForNewNotes'] as int? ?? 0,
+          (json['charactersLimitForNewNotes'] as num?)?.toInt() ?? 0,
       locale: _localeFromJson(json['locale'] as String),
       useTimestampForBackupFilename:
           json['useTimestampForBackupFilename'] as bool? ?? true,
@@ -274,8 +390,7 @@ _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
           json['isSocialNetworksRestricted'] as bool? ?? true,
     );
 
-Map<String, dynamic> _$$UserSettingsModelImplToJson(
-        _$UserSettingsModelImpl instance) =>
+Map<String, dynamic> _$UserSettingsModelToJson(_UserSettingsModel instance) =>
     <String, dynamic>{
       'themeMode': _themeModeToJson(instance.themeMode),
       'isProjectsListReversed': instance.isProjectsListReversed,

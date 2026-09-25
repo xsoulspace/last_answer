@@ -1,0 +1,236 @@
+---
+status: current
+evidence_type: ledger
+date: 2026-09-23
+scope: C0 consumer-baseline revalidation after the Xcode licence resolved
+claim_tested: Existing composition wiring and outstanding consumer acceptance work.
+proof_level: native validation run recorded (analyze, tests, macOS debug build + launch smoke); one scripted-seam test failing on a harness escalation-path regression
+commands_or_sources:
+  - "fvm flutter analyze (2026-09-23): 0 errors; 159 info/warning (mostly generated *.freezed.dart / unused)"
+  - "fvm flutter test (2026-09-23): 128 passed, 1 failed — agent_task_guide escalation round (see 2026-09-23 section)"
+  - "fvm flutter test packages/headless_core/test (2026-09-23): 59 passed, 0 failed"
+  - "fvm flutter build macos --debug (2026-09-23): built; xs_fm_bridge.framework bundled in last_answer.app/Contents/Frameworks; launch smoke alive 12 s (benign RuStore billing warnings only)"
+  - "fvm dart run build_runner build (2026-09-23): wrote 0 outputs (codegen fresh); the justfile `gen` recipe itself fails (bare `dart` is not the Flutter SDK dart)"
+  - "/opt/homebrew/bin/git diff --check: passed for documentation changes"
+result: C0-C6 planned; the Xcode licence prerequisite is resolved and the local test baseline runs again; one scripted-seam failure is owned by the ecsai_harness escalation path; typed outcomes, durable turns and real restart acceptance remain open.
+limitations: No fresh runtime, provider benchmark or real-AFM session evidence; the ecsai_harness checkout was mid-refactor (concurrent work) at recording time, so host-importing test files could not be re-run in a final stable window; older runs below are historical.
+non_claims:
+  - current passing tests beyond the 2026-09-23 run recorded here
+  - harness readiness
+  - product runtime correctness
+  - provider readiness
+  - AFM bridge loading or model capability (bundling + launch proven only)
+  - clean-checkout bootstrap (caches were warm; no fresh-clone run)
+  - steward maturity
+next_disposition: run C0 prerequisites and replace claims only with current acceptance evidence
+current_status_pointer: docs/evidence/current-status.mdx
+---
+
+# Current Evidence Status
+
+## 2026-09-22 planning review
+
+The forward completion path is now C0–C6 in [PLAN.md](../PLAN.md).
+Its local workload boundary preserves the multiplayer-world architecture;
+M0/C6 shared-world actor/projection/model-resource acceptance is required
+and remains unrun. Optional decision-provider reasoning/coding experiments
+are separate from consumer release acceptance.
+The review verified source wiring and identified outstanding typed outcome,
+durable turn history and restart acceptance work. Historical measurements
+below are provenance, not fresh release evidence. The old missing binding
+callback claim is superseded by current `lib/home/project_view.dart` wiring;
+C0 still requires a passing regression run. The Xcode-licence blockage
+recorded at review time is resolved — see the 2026-09-23 revalidation below.
+No current passing-test, runtime or provider-readiness claim follows from
+the review alone.
+
+## 2026-09-23 C0 revalidation (Xcode licence resolved)
+
+`fvm flutter doctor` shows Xcode ✓ (only the iOS 27 simulator runtime is
+missing, which does not block macOS). The previously blocked local gates
+now run. Measured on `emergency-refactoring` @ `ea51b0aa` (Last Answer),
+ecsai_harness @ `91f0d92` + uncommitted concurrent work:
+
+- `fvm flutter analyze`: 0 errors; 159 info/warning (pre-existing generated
+  `*.freezed.dart` / unused-element noise).
+- `fvm flutter test` (root): 128 passed, 1 failed. The failure is
+  `agent_intents_test.dart` "agent_task_guide: FAIL turn → guidance …
+  continuation turn PASSes": on the escalation round the harness puts the
+  guidance into `task.repairHint`, but the resumed world's first decision
+  prompt omits the repair hint (`coding_agent_runner.dart` `openFreshDecision`)
+  and the attempt arithmetic (persisted `AttemptCount` 3 vs widened budget 4)
+  leaves no re-send round — the guidance never reaches the mover, so no write
+  and no permission round-trip. Owner: `ecsai_harness`
+  `pkgs/xsoulspace_agentic_host` (escalation/resume prompt policy); product
+  surface and intent wiring behaved as designed.
+- `fvm flutter test packages/headless_core/test`: 59 passed, 0 failed.
+- Fixed stale test: `test/mesh_storage_presence_roster_test.dart` passed raw
+  signature bytes where a signed frame is expected
+  (`MeshFrameSigner.sign` returns `Uint8List`; the owning package's own test
+  uses `frame.withSignature(await signer.sign(frame))`). One-line fix;
+  7/7 green after.
+- `fvm flutter build macos --debug`: built. `xs_fm_bridge.framework` is
+  bundled in `last_answer.app/Contents/Frameworks` (the Runner
+  `bundle_afm_bridge.sh` phase ran). A 12 s launch smoke stayed alive with
+  only benign RuStore billing warnings.
+- Non-claims: no real AFM session was run (bundling + launch proven, not
+  bridge loading or model capability); no clean-checkout bootstrap (warm
+  caches); the focused coding_agent gates could not be re-run in a final
+  stable window because the ecsai_harness checkout was mid-refactor
+  (transient compile breakage in `mechanical_review_proposal.dart` and
+  `execution_meaning.dart`) — their passing state is the 128-pass root run
+  above; the `just gen` recipe fails as written (bare `dart`); the
+  escalation-path failure above is open.
+
+Use this ledger for the weakest true current claim. Historical evidence is provenance unless this file points to it.
+
+## Historical 2026-08-24 validation record
+
+The following metadata preserves the superseded historical record verbatim;
+it is not the current evidence status.
+
+```yaml
+status: current
+evidence_type: ledger
+date: 2026-08-24
+scope: repository claim and proof status
+claim_tested: Current weakest true repository claims.
+proof_level: native validation run recorded; no readiness or maturity claim yet
+commands_or_sources:
+  - "fvm flutter analyze (2026-08-24): 0 errors; 154 info/warning (mostly generated *.freezed.dart / unused)"
+  - "fvm flutter analyze --no-fatal-infos --no-fatal-warnings (2026-08-24): passed with 187 non-error diagnostics"
+  - "fvm flutter test (2026-08-24): 17 passed, 0 failed"
+  - "fvm flutter test packages/headless_core/test (2026-08-24): 16 passed, 0 failed"
+  - "fvm flutter test (2026-08-24): 25 passed, 0 failed; includes ACP runtime and chat document tests"
+  - "fvm flutter test packages/headless_core (2026-08-24): 29 passed, 0 failed; includes deterministic agent lifecycle"
+  - "fvm flutter analyze --no-fatal-infos --no-fatal-warnings (2026-08-24): passed with 232 non-error diagnostics"
+  - "packages/core: just gen-rewrite rebuilt codegen; fvm dart analyze 0 errors"
+  - "MCP toolkit live (macOS ws://127.0.0.1:<port>/<session>/ws): doc_state / doc_discuss_block / doc_collapse registered + exercised"
+  - "Maestro e2e/maestro/doc_discussion_lifecycle.yaml: ran on iPhone 17 Pro (iOS 26.4); lifecycle verified"
+  - "UI/AX: toolbar scrollable (overflow fixed), semantic labels + tooltips on Discuss/Ask AI/Apply conclusion, heading placeholder, open/child badges with key refs"
+  - "ADR 0001 gaps implemented: agent conclusion → head rewrite (`_rewriteHeadFromDiscussion` + `rewriteFromDiscussion` param on collapse/MCP); empty open-child cleanup on climb-up (`_climbUp` deletes empty open nodes, archives collapsed ones); breadcrumb jump uses `_climbUp` (not raw remove)"
+result: ADR 0001 v1 implemented: model, capability-gated filesystem body storage (`docs/{id}.json` only for active filesystem backend), lazy `getChildren`, recursive `doc_view.dart` (breadcrumbs + back-stack + collapse + badges), 3 new MCP tools, Maestro flow, UX/AX fixes, agent-rewrite + cleanup actions.
+limitations: Sub-block anchors and format packs are documented as deferred; Maestro timing fix is implemented but the simulator rerun was not performed in this loop. The sibling `xsoulspace_foundation` generated file was restored to its known-good revision (`1c156fe2`) so tests compile.
+non_claims:
+  - maturity
+  - harness readiness
+  - product runtime correctness
+  - steward presence readiness (P2+)
+next_disposition: keep as current status pointer until superseded
+current_status_pointer: docs/evidence/current-status.mdx
+```
+
+## Historical capabilities reported on 2026-08-24
+
+- **Model / storage**: `DocStatus`, `AnchorSpanModel`, `formatId` (replaces `DocKind`), `parentDocId`, `spanSnapshot`; capability-gated body files `docs/{id}.json`; lazy `getChildren`; `getById` reads body when filesystem storage is active.
+- **UI / navigation**: `DocView` back-stack (`_path`), breadcrumbs (`_BreadcrumbBar` with climb-up + collapse), block-level badges (open/collapsed counts), `Discuss` → child node, `Collapse` → archive + climb, `Apply conclusion` (rewrite head from discussion + collapse) — all wired.
+- **MCP**: `doc_state`, `doc_discuss_block`, `doc_collapse` (with optional `rewrite`) — all registered in `main.dart`, verified live on macOS.
+- **Maestro**: `e2e/maestro/doc_discussion_lifecycle.yaml` (iOS simulator) — flow covers GDD creation, focus, Discuss, child navigation, collapse/reopen, Apply conclusion.
+- **UX / AX**: scrollable toolbar (overflow fixed), `tooltip` on Discuss/Ask AI/Apply conclusion, `key` on badge buttons, heading placeholder (`hintText`), `ValueKey` on text fields.
+- **Cleanup**: `_climbUp` deletes empty open children (abandoned nodes) and archives collapsed ones; breadcrumb jump uses `_climbUp`.
+- **ACP chat documents**: local executable clients, PATH discovery, spawn/initialize, sessions, streaming, cancel/stop, persisted message blocks, and anchored threads are implemented. The headless harness validates the same install → start → session → stream → persist lifecycle without UI or an LLM.
+
+## Historical follow-ups (current ordering is C0–C6)
+
+1. Rerun Maestro on a booted iOS simulator after adding `waitForAnimationToEnd`.
+2. Keep sibling `xsoulspace_foundation` codegen synchronized or pin Freezed 3.x consistently across workspaces.
+3. Exercise a real installed ACP client end-to-end (authentication and provider-specific behavior remain unverified).
+
+## R9 redefined — the meaning runtime (2026-09-06, ADR 0004)
+
+- Claim: the agent doc's embedded runtime is the harness's MEANING surface
+  (zoom reads, host-materialized auto-reverting edit moves, beats, consent
+  plans) — never the conventional command profile whose blind writes
+  corrupted a target file in the recorded R9.b FAIL. Weakest proof so far:
+  ADR 0004 + the classified corruption row (harness
+  [delegation_r9.md](../../../../dart_flutter_packages/pkgs/xsoulspace_agentic_harness/benchmark/runs/delegation_r9.md)
+  finding 6) + the landed host/product pieces below. The real-AFM meaning
+  e2e is RECORDED as two honest FAIL rows (discovery loop → fixed; cut
+  fatness + re-scan churn → open harness work) — the meaning A/B does not
+  beat the conventional profile yet, and that is the measured frontier
+  R9.1's gate closes on.
+- Landed (host, `xsoulspace_agentic_host`, 34/34 tests green):
+  `ConsentPlan.forWorkspace` — the workspace-level consent policy file
+  `<workspace>/.harnessd/consent.json` (pathGlob/verbs/maxUses) auto-applies
+  at session creation; absent/malformed → deny-by-default unchanged;
+  audited.
+- Landed (product): `HarnessHostConfig.meaningProfile` (copyWith-carried);
+  the agent-doc surface derives `meaningProfile: true`; the agent
+  projection states `runtimeProfile`; widget gate added. The R9.a intent
+  surface (`agent_doc_create`/`bind`/`guide`) and the headless gate script
+  (`tool/r9a_gate.sh`) landed 2026-09-05 — rows in delegation_r9.md.
+- Parked for R9.6: the doc-payload persistence issue with its verified
+  failing acceptance test + mechanical check — the fix must come through
+  the meaning surface.
+- Non-claims: the meaning A/B does NOT beat the conventional profile yet
+  (two classified FAIL rows — cut fatness and re-scan churn are the open
+  harness work); beats over ACP (R9.2, not started); consent UI (R9.3,
+  not started).
+
+## R9.a — the missing verbs (2026-09-05)
+
+- Claim: the headless operator cycle (doc create → workspace bind →
+  delegate → permission answer → verdict) runs through last_answer's OWN
+  intents with zero GUI clicks and zero field fills. Weakest proof:
+  [delegation_r9.md](../../../../dart_flutter_packages/pkgs/xsoulspace_agentic_harness/benchmark/runs/delegation_r9.md)
+  — gate script `tool/r9a_gate.sh`, final run PASS (backend
+  `apple_foundation_afm`, 1 decision, 3 rounds, 1,552 tokens, 43.6 s,
+  fixture oracle exit 0, fixture restored); run 1 honest FAIL with 10
+  off-task `lib/main.dart` writes REJECTED through the intent permission
+  path (deny-by-default held). Widget gates:
+  `test/coding_agent/agent_intents_test.dart` (16/16 green, real intent
+  entries + real surface keys).
+- New intents: `agent_doc_create` (create + open, returns docId;
+  debug-only app hook on the home shell), `agent_doc_bind` (workspace +
+  check override onto the doc payload — never a form fill),
+  `agent_task_guide` (host-injected escalation, GUIDE grid row + composer
+  pre-fill, monotonic per turn). Projection grew `checkCommand` and
+  `lastGuidance`.
+- Non-claims: one-turn PASS not claimed (run 1 FAILED honestly); the
+  live FAIL → guide → PASS escalation row is R9.b/R9.d's; OpenRouter
+  intent path untested.
+
+## Phase 1.5 — the human gate (2026-09-05)
+
+- Claim: the AFM agent-doc pipeline works in the real macOS app with NO
+  terminal and NO env vars — the bridge dylib is bundled by the Runner
+  build phase (`macos/Runner/bundle_afm_bridge.sh`), the loader resolves it
+  from inside the `.app`, and the full GUI loop completed on this repo
+  (doc create → workspace bind → check override → delegate → permission
+  round-trips → escalation → verdict banner PASS → fixture oracle exit 0 →
+  fixture restored). Weakest proof:
+  [delegation_phase1_5.md](../../../../dart_flutter_packages/pkgs/xsoulspace_agentic_harness/benchmark/runs/delegation_phase1_5.md)
+  (backend `apple_foundation_afm`, decision path, tokens source, wall, n=1
+  per row; turn 1 honest FAIL + escalation recorded).
+- Fixed product-side: workspace directory picker (`file_selector`), honest
+  empty state, check-override field (controller-listener persistence),
+  cancel rejects a pending permission, doc-payload config re-derived before
+  every turn (backend + check), doc payload persisted before backend
+  switches, runtime API key carried through config re-derivation.
+- Filed (harness/bridge-side, see the evidence doc): unanswered-permission
+  5-minute stall loop, cancel not turn-interrupting, intermittent
+  first-write-without-permission (F3), bridge crash on cancel during a live
+  tool call (`postToolCall` barrier-sync), small-model off-task wandering
+  (outer oracle held every time).
+- **Re-validated against the harness refactor (ADR 0025/0026):** all
+  gates green — clean-env build + bundled dylib, AFM e2e PASS (1,323
+  tokens, 44.4 s), self-profile PASS (1,554 tokens, 41.5 s). Gate
+  hardened after the wandering model overwrote the gate's own test file
+  through the blanket auto-allow: the scripted user-actor now allows
+  ONLY fixture-path writes; the fixture check is plain `dart <file>` (the
+  `dart run` build-hook churn derailed three runs). Runtime labels: AFM =
+  real work, OpenRouter (deepseek-v4-flash) = backup.
+- Non-claims: one-turn GUI pass on a large repo; OpenRouter network path
+  from the GUI (missing-key error surface verified only); widget tests do
+  not run AFM.
+
+## Non-claims
+
+- Maturity, harness readiness, full product runtime correctness, steward presence (P2+).
+- Sub-block anchors, tree/map views, real-time multiplayer.
+
+## Rerun Route
+
+- Native gates: `fvm flutter analyze --no-fatal-infos --no-fatal-warnings` + `fvm flutter test` + `fvm flutter test packages/headless_core/test`.
+- ADR 0001 claim: `cd packages/core && just gen-rewrite`, then `maestro test e2e/maestro/doc_discussion_lifecycle.yaml` on booted iOS simulator.
+- MCP lifecycle: connect to running macOS debug app (`ws://127.0.0.1:<port>/<session>/ws`), call `doc_state` → `doc_discuss_block` → `doc_collapse` (with/without `rewrite`).

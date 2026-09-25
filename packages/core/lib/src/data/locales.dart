@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
-
-import '../../core.dart';
+import 'package:xsoulspace_locale/xsoulspace_locale.dart';
 
 typedef LanguageName = String;
 
 enum Languages {
   ru('ru'),
   en('en'),
-  it('it'),
+  it('it')
   // ga('ga')
   ;
 
@@ -38,26 +37,17 @@ class Locales {
   static const values = <Locale>[en, ru, it];
   // ga];
   static Locale byLanguage(final Languages language) => switch (language) {
-        Languages.en => en,
-        Languages.ru => ru,
-        Languages.it => it,
-        // Languages.ga => ga,
-      };
+    Languages.en => en,
+    Languages.ru => ru,
+    Languages.it => it,
+    // Languages.ga => ga,
+  };
 }
 
 final Map<Languages, NamedLocale> namedLocalesMap = {
-  Languages.en: const NamedLocale(
-    name: 'English',
-    locale: Locales.en,
-  ),
-  Languages.ru: const NamedLocale(
-    name: 'Русский',
-    locale: Locales.ru,
-  ),
-  Languages.it: const NamedLocale(
-    name: 'Italian',
-    locale: Locales.it,
-  ),
+  Languages.en: const NamedLocale(name: 'English', locale: Locales.en),
+  Languages.ru: const NamedLocale(name: 'Русский', locale: Locales.ru),
+  Languages.it: const NamedLocale(name: 'Italian', locale: Locales.it),
 };
 
 String getLanguageCodeByStr(final LanguageName language) {

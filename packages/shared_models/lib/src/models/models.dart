@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:serverpod_client/serverpod_client.dart';
+
+// import 'package:serverpod_client/serverpod_client.dart';
 
 part 'emoji.dart';
 part 'models.freezed.dart';

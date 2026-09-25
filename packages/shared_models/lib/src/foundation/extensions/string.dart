@@ -6,10 +6,6 @@ extension SharedModelsStringExtension on String {
   void onNotEmpty(final void Function(String value) callback) =>
       isEmpty ? null : callback(this);
 
-  /// Use this function to set "default value", which will be used, if
-  /// [this.isEmpty]
-  String useWhenEmpty(final String value) => isEmpty ? value : this;
-
   bool get isUrl {
     const uriSchemes = ['http', 'https'];
     final uri = Uri.tryParse(this);

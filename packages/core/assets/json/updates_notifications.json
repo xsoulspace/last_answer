@@ -1,5 +1,21 @@
 [
   {
+    "id": "7",
+    "message": {
+      "ru": "Чтобы сохранить приложение - пришлось мигрировать на новую структуру данных.\nОднако в результате - не все данные могли быть расшифрованы (но сохранены на устройстве). В будущих обновлениях такие случаи будут исправлены (на текущий момент веду работу).",
+      "en": "In order to save the application - I had to migrate to a new data structure.\nHowever, as a result - not all data could be decrypted (but saved on the device). In future updates such cases will be fixed (at the current moment I am working on it).",
+      "it": "Per salvare l'applicazione - ho dovuto migrare alla nuova struttura dei dati.\nTuttavia, come risultato - non tutti i dati potevano essere decifrati (ma salvati sul dispositivo). Nelle prossime aggiornamenti questi casi saranno corretti (al momento sto lavorando su di essi).",
+      "ga": ""
+    },
+    "title": {
+      "ru": "· восстановление данных",
+      "en": "· data recovery",
+      "it": "· recupero dati",
+      "ga": "· roinnteannaí data"
+    },
+    "created": "2025-10-31"
+  },
+  {
     "id": "6",
     "message": {
       "ru": "- feat: теперь обновления приложения видны в проектах\n- feat: запущен новый сайт!🚀 https://la.xsoulspace.dev На данный момент у него всего два страницы, но теперь он быстрый, удобный и полностью написан на Dart с использованием [Jaspr framework](https://github.com/schultek/jaspr) и [Tailwind](https://tailwindcss.com):)\n- fix: layout с ограничением количества символов для соцсетей стал более компактным и приятным.\n- fix: переключатель языка (работал только после перезагрузки).\n- fix: кнопки вертикального бара адаптированы под языки.",

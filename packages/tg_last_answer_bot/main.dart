@@ -10,7 +10,9 @@ Future<HttpServer> run(Handler handler, InternetAddress ip, int port) async {
 
   await botService.onLoad();
 
-  // 2. Use the provided `handler`, `ip`, and `port` to create a custom `HttpServer`.
+  // 2. Use the provided `handler`, `ip`, and `port` to create a custom
+  // `HttpServer`.
   // Or use the Dart Frog serve method to do that for you.
+  // ignore: unawaited_futures
   return serve(handler, ip, port)..whenComplete(botService.dispose);
 }

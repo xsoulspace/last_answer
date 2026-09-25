@@ -5,37 +5,37 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:universal_storage_interface/universal_storage_interface.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 import '../../core.dart';
 import '../state/user_remote_initializer.dart';
 
 class GlobalStatesInitializerDto {
-  GlobalStatesInitializerDto({
-    required this.context,
-  })  : emojiRepository = context.read(),
-        appFeaturesNotifier = context.read(),
-        lastUsedEmojiRepository = context.read(),
-        lastEmojiState = context.read(),
-        specialEmojiState = context.read(),
-        emojiProvider = context.read(),
-        notificationController = context.read(),
-        projectsNotifier = context.read(),
-        userNotifier = context.read(),
-        appNotifier = context.read(),
-        complexLocalDb = context.read(),
-        localDbDataSource = context.read(),
-        remoteClient = context.read(),
-        purchasesNotifier = context.read(),
-        purchasesAdsService = context.read(),
-        projectsRepository = context.read(),
-        tagsNotifier = context.read(),
-        assetBundle = DefaultAssetBundle.of(context);
-  final PurchasesAdsService purchasesAdsService;
+  GlobalStatesInitializerDto({required this.context})
+    : emojiRepository = context.read(),
+      appFeaturesNotifier = context.read(),
+      lastUsedEmojiRepository = context.read(),
+      lastEmojiState = context.read(),
+      specialEmojiState = context.read(),
+      emojiProvider = context.read(),
+      notificationController = context.read(),
+      projectsNotifier = context.read(),
+      userNotifier = context.read(),
+      appNotifier = context.read(),
+      localDb = context.read(),
+      // remoteClient = context.read(),
+      purchasesNotifier = context.read(),
+      // purchasesAdsService = context.read(),
+      projectsRepository = context.read(),
+      tagsNotifier = context.read(),
+      assetBundle = DefaultAssetBundle.of(context);
+  // final PurchasesAdsService purchasesAdsService;
   final BuildContext context;
   final AppFeaturesNotifier appFeaturesNotifier;
-  final RemoteClient remoteClient;
-  final LocalDbDataSource localDbDataSource;
-  final ComplexLocalDb complexLocalDb;
+  // final RemoteClient remoteClient;
+  final LocalDbI localDb;
   final EmojiRepository emojiRepository;
   final LastUsedEmojiRepository lastUsedEmojiRepository;
   final AssetBundle assetBundle;
@@ -52,20 +52,23 @@ class GlobalStatesInitializerDto {
 }
 
 class GlobalStatesInitializer implements StateInitializer {
-  GlobalStatesInitializer({
-    required this.dto,
-    required this.router,
-  });
+  GlobalStatesInitializer({required this.dto, required this.router});
   final GlobalStatesInitializerDto dto;
   final GoRouter router;
   late final _localUserInitializer = LocalUserInitializer(dto.context);
   late final _remoteUserInitializer = RemoteUserInitializer(dto.context);
   @override
   Future<void> onLoad() async {
-    await dto.complexLocalDb.open();
-    await dto.localDbDataSource.onLoad();
+    await dto.localDb.init();
+    final storageService = dto.context.read<StorageService>();
+    await storageService.initializeWithConfig(
+      const LocalDbStorageConfig(keyspacePrefix: 'last_answer_docs'),
+    );
+    // Migration now acts as the parsed-JSON loader and will populate the
+    // local DB structures expected by data sources.
+
     if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
-      await dto.remoteClient.onLoad();
+      // await dto.remoteClient.onLoad();
     }
     await dto.userNotifier.onLoad(
       local: _localUserInitializer,
@@ -82,7 +85,17 @@ class GlobalStatesInitializer implements StateInitializer {
       router.go(ScreenPaths.home);
       // router.go(ScreenPaths.intro);
     }
+    unawaited(_initMonetization());
     unawaited(_loadPost());
+  }
+
+  /// Initializes monetization: local restore first, then store init.
+  Future<void> _initMonetization() async {
+    final foundation = dto.context.read<MonetizationFoundation>();
+    await foundation.initLocal();
+    await foundation.init(
+      productIds: MonetizationProducts.subscriptionsForBuild,
+    );
   }
 
   /// ********************************************
@@ -91,19 +104,13 @@ class GlobalStatesInitializer implements StateInitializer {
   Future<void> _loadPost() async {
     final emojis = await dto.emojiRepository.getAllEmoji();
 
-    dto.emojiProvider.loadIterable(
-      values: emojis,
-      toKey: (final p0) => p0.emoji,
-    );
+    dto.emojiProvider.assignAllOrdered(emojis);
 
     final specialEmojis = await dto.emojiRepository.getSpecialEmoji();
-    dto.specialEmojiState.loadIterable(
-      values: specialEmojis,
-      toKey: (final p0) => p0.emoji,
-    );
+    dto.specialEmojiState.assignAllOrdered(specialEmojis);
 
-    final lastUsedEmojis = dto.lastUsedEmojiRepository.getAll();
-    dto.lastEmojiState.putAll(lastUsedEmojis);
+    final lastUsedEmojis = await dto.lastUsedEmojiRepository.getAll();
+    dto.lastEmojiState.assignAll(lastUsedEmojis);
 
     await dto.notificationController.onLoad();
   }

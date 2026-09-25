@@ -13,7 +13,7 @@ class BackgroundFrostBox extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ColoredBox(
-        color: theme.canvasColor.withOpacity(0),
+        color: theme.canvasColor.withValues(alpha: 0),
         child: const SizedBox.expand(),
       ).frosted(
         blur: theme.brightness == Brightness.dark ? 15 : 12,

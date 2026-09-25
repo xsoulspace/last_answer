@@ -1,6 +1,6 @@
-## 3.21 (next)
+## 3.22.0+51
 
-- chore: update dependencies. Flutter 3.32.2, Dart 3.8.1
+- chore: removed a lot of dependencies, data migrated to new structure from hive, isar to shared preferences.
 
 ## 3.20
 

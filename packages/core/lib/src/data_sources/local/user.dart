@@ -1,24 +1,23 @@
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+
 import '../../../core.dart';
 
 final class UserLocalDataSourceImpl implements UserLocalDataSource {
-  UserLocalDataSourceImpl({
-    required this.localDbDataSource,
-  });
-  final LocalDbDataSource localDbDataSource;
+  UserLocalDataSourceImpl({required this.localDbDataSource});
+  final LocalDbI localDbDataSource;
   @override
-  Future<UserModel> getUser() async =>
-      localDbDataSource.getItem(
-        key: SharedPreferencesKeys.user.name,
-        convertFromJson: UserModel.fromJson,
-      ) ??
-      UserModel.empty;
+  Future<UserModel> getUser() => localDbDataSource.getItem(
+    key: SharedPreferencesKeys.user.name,
+    fromJson: UserModel.fromJson,
+    defaultValue: UserModel.empty,
+  );
 
   @override
   Future<void> putUser({required final UserModel user}) async {
-    localDbDataSource.setItem(
+    await localDbDataSource.setItem(
       key: SharedPreferencesKeys.user.name,
       value: user,
-      convertToJson: (final item) => item.toJson(),
+      toJson: (final item) => item.toJson(),
     );
   }
 }

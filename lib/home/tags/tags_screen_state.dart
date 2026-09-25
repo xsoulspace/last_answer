@@ -1,14 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:life_hooks/life_hooks.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 part 'tags_screen_state.freezed.dart';
 
-enum TagsScreenType {
-  allTags,
-  editingTag,
-  addProjects,
-}
+enum TagsScreenType { allTags, editingTag, addProjects }
 
 @freezed
 class TagsScreenState with _$TagsScreenState {
@@ -25,33 +22,29 @@ class TagsScreenState with _$TagsScreenState {
 typedef _DtoDeclaration = ({
   TagsNotifier tagsNotifier,
   ProjectsNotifier projectsNotifier,
-  ProjectsRepository projectsRepository
+  ProjectsRepository projectsRepository,
 });
 
 extension type TagsScreenNotifierDto._(_DtoDeclaration _) {
   TagsScreenNotifierDto.of(final BuildContext context)
-      : this._(
-          (
-            tagsNotifier: context.read(),
-            projectsNotifier: context.read(),
-            projectsRepository: context.read(),
-          ),
-        );
+    : this._((
+        tagsNotifier: context.read(),
+        projectsNotifier: context.read(),
+        projectsRepository: context.read(),
+      ));
 }
 
 class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
   TagsScreenNotifier(final BuildContext context)
-      : dto = TagsScreenNotifierDto.of(context),
-        super(const TagsScreenState());
+    : dto = TagsScreenNotifierDto.of(context),
+      super(const TagsScreenState());
   final TagsScreenNotifierDto dto;
   final folderFieldFormHelper = FormHelper();
   final _removedProjects = <ProjectModel>{};
   late final addProjectsPagedController = ProjectsPagedController(
     requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
       projectsRepository: dto._.projectsRepository,
-      getDto: () => RequestProjectsDto(
-        search: value.addProjectsSearch ?? '',
-      ),
+      getDto: () => RequestProjectsDto(search: value.addProjectsSearch ?? ''),
     ),
   )..onLoad();
   late final _addProjectsSearchUpdatesController = StreamController<String?>()
@@ -99,10 +92,8 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
 
   // ignore: avoid_positional_boolean_parameters
   void setTagLoading(final bool isLoading) => value = value.copyWith(
-        selectedTag: value.selectedTag.copyWith(
-          isLoading: isLoading,
-        ),
-      );
+    selectedTag: value.selectedTag.copyWith(isLoading: isLoading),
+  );
 }
 
 extension TagsNotifierXAddProjectsView on TagsScreenNotifier {
@@ -137,10 +128,10 @@ extension TagsNotifierXNavigation on TagsScreenNotifier {
   }
 
   void onCloseTagManagement() => value = value.copyWith(
-        screenType: TagsScreenType.allTags,
-        selectedTag: const FieldContainer(value: ProjectTagModel.empty),
-        projects: const LoadableContainer(value: []),
-      );
+    screenType: TagsScreenType.allTags,
+    selectedTag: const FieldContainer(value: ProjectTagModel.empty),
+    projects: const LoadableContainer(value: []),
+  );
   void onOpenAddProjects() {
     value = value.copyWith(screenType: TagsScreenType.addProjects);
     addProjectsPagedController.loadFirstPage();
@@ -177,20 +168,16 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     _removedProjects.addAll(value.projects.value);
     _updateProjects([]);
     await _assignTagToProjects(tagId);
-    dto._.tagsNotifier.remove(key: tagId);
+    dto._.tagsNotifier.remove(tagId);
     if (isDeletingAppWideTag) {
-      final tags = dto._.tagsNotifier.values;
+      final tags = dto._.tagsNotifier.orderedValues;
       if (tags.isNotEmpty) {
         dto._.projectsNotifier.updateDto(
-          (final dto) => dto.copyWith(
-            tagId: tags.first.id,
-          ),
+          (final dto) => dto.copyWith(tagId: tags.first.id),
         );
       } else {
         dto._.projectsNotifier.updateDto(
-          (final dto) => dto.copyWith(
-            tagId: ProjectTagModelId.empty,
-          ),
+          (final dto) => dto.copyWith(tagId: ProjectTagModelId.empty),
         );
       }
     }
@@ -207,7 +194,7 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
         tag = tag.copyWith(id: ProjectTagModelId.generate());
       }
       final tagId = tag.id;
-      dto._.tagsNotifier.put(key: tagId, value: tag);
+      dto._.tagsNotifier.upsert(tag);
       await _assignTagToProjects(tagId);
       onCloseTagManagement();
     } finally {
@@ -216,21 +203,17 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
   }
 
   void onFolderTitleChanged(final String newTitle) => value = value.copyWith(
-        selectedTag: value.selectedTag.copyWith(
-          value: value.selectedTag.value.copyWith(
-            title: newTitle,
-          ),
-        ),
-      );
+    selectedTag: value.selectedTag.copyWith(
+      value: value.selectedTag.value.copyWith(title: newTitle),
+    ),
+  );
   Future<void> _assignTagToProjects(final ProjectTagModelId tagId) async {
     final projects = value.projects.value.toSet();
 
     /// added, updated
     final updatedProjects = {
       ...projects.map(
-        (final e) => e.copyWith(
-          tagsIds: {...e.tagsIds, tagId}.toList(),
-        ),
+        (final e) => e.copyWith(tagsIds: {...e.tagsIds, tagId}.toList()),
       ),
     };
     await dto._.projectsNotifier.updateProjects(
@@ -241,19 +224,20 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     /// removed
     final projectsToRemove = _removedProjects.difference(projects);
     final updatedRemovedProjects = projectsToRemove.map(
-      (final e) => e.copyWith(
-        tagsIds: [...e.tagsIds]..remove(tagId),
-      ),
+      (final e) => e.copyWith(tagsIds: [...e.tagsIds]..remove(tagId)),
     );
-    await dto._.projectsNotifier
-        .updateProjects(updatedRemovedProjects, shouldUpdatePager: false);
+    await dto._.projectsNotifier.updateProjects(
+      updatedRemovedProjects,
+      shouldUpdatePager: false,
+    );
     if (_isEditingAppWideTag) {
       final map = updatedRemovedProjects.toMap(
         toKey: (final i) => i.id,
         toValue: (final i) => i,
       );
-      dto._.projectsNotifier.projectsPagedController
-          .deleteItemsWhere((final e) => map.containsKey(e.id));
+      dto._.projectsNotifier.projectsPagedController.deleteItemsWhere(
+        (final e) => map.containsKey(e.id),
+      );
     }
 
     _removedProjects.clear();

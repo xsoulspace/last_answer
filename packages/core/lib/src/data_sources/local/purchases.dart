@@ -1,13 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../../core.dart';
 
 class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
   PurchasesLocalDataSourceImpl(final BuildContext context)
-      : db = context.read();
-  final LocalDbDataSource db;
+    : db = context.read();
+  final LocalDbI db;
 
   @override
   Future<PurchasesModel> receiveAdVideoReward(
@@ -23,21 +24,22 @@ class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
 
   @override
   Future<PurchasesModel> setPurchases(final PurchasesModel value) async {
-    db.setItem(
+    await db.setItem(
       value: value,
       key: SharedPreferencesKeys.purchases.name,
-      convertToJson: (final v) => v.toJson(),
+      toJson: (final v) => v.toJson(),
     );
     return value;
   }
 
   @override
   Future<PurchasesModel> getPurchases() async {
-    final item = db.getItem(
+    final item = await db.getItem(
       key: SharedPreferencesKeys.purchases.name,
-      convertFromJson: PurchasesModel.fromJson,
+      fromJson: PurchasesModel.fromJson,
+      defaultValue: PurchasesModel.empty,
     );
-    return item ?? PurchasesModel.empty;
+    return item;
   }
 
   @override
@@ -56,18 +58,18 @@ class PurchasesLocalDataSourceImpl implements PurchasesLocalDataSource {
     final purchases = await getPurchases();
     int daysLeft = purchases.daysOfSupporterLeft - 1;
     daysLeft = daysLeft < 0 ? 0 : daysLeft;
-    final updatedPurchases = purchases.copyWith(
-      daysOfSupporterLeft: daysLeft,
-    );
+    final updatedPurchases = purchases.copyWith(daysOfSupporterLeft: daysLeft);
     return setPurchases(updatedPurchases);
   }
 
   @override
   Future<bool> verifyDayRecord() async {
-    final millisecondsSinceEpoch =
-        db.getInt(key: SharedPreferencesKeys.supporterDayRecordMs.name);
-    final recordedDate =
-        DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch).onlyDate;
+    final millisecondsSinceEpoch = await db.getInt(
+      key: SharedPreferencesKeys.supporterDayRecordMs.name,
+    );
+    final recordedDate = DateTime.fromMillisecondsSinceEpoch(
+      millisecondsSinceEpoch,
+    ).onlyDate;
     final isSameDay = recordedDate == todayDate;
     if (!isSameDay) {
       db.setInt(

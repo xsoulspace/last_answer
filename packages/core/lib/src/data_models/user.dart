@@ -4,13 +4,14 @@ part of 'data_models.dart';
 
 enum LocalDbVersion {
   v3_16,
-  v3_17;
+  v3_17,
+  v4;
 
-  static const newestVersion = v3_17;
+  static const newestVersion = v4;
 }
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel({
     @Default(UserSettingsModel.initial) final UserSettingsModel settings,
     @Default(LocalDbVersion.newestVersion) final LocalDbVersion localDbVersion,
@@ -22,7 +23,7 @@ class UserModel with _$UserModel {
 }
 
 @freezed
-class UserSettingsModel with _$UserSettingsModel {
+abstract class UserSettingsModel with _$UserSettingsModel {
   const factory UserSettingsModel({
     @JsonKey(fromJson: _themeModeFromJson, toJson: _themeModeToJson)
     @Default(ThemeMode.system)

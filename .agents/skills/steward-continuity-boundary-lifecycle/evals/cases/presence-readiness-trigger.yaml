@@ -1,0 +1,15 @@
+id: steward-continuity-presence-readiness-trigger
+skill: steward-continuity-boundary-lifecycle
+routing: should_trigger
+input: "Do we have enough signs across this repo to try a steward-presence threshold run, without claiming proven repo steward status?"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["steward-mode", "threshold checks", "self-model"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Presence Readiness Lens", "Three signs", "at least two repo surfaces"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["proven_repo_steward", "Readiness note", "favorable maintenance delta"]

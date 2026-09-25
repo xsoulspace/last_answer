@@ -776,6 +776,402 @@ abstract class S {
   /// In en, this message translates to:
   /// **'All'**
   String get all;
+
+  /// No description provided for @githubSync.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Sync'**
+  String get githubSync;
+
+  /// No description provided for @connectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect GitHub…'**
+  String get connectGithub;
+
+  /// No description provided for @disconnectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect GitHub'**
+  String get disconnectGithub;
+
+  /// No description provided for @githubConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub connected'**
+  String get githubConnected;
+
+  /// No description provided for @githubConnectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect GitHub: {error}'**
+  String githubConnectFailed(String error);
+
+  /// No description provided for @chooseRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose repository'**
+  String get chooseRepository;
+
+  /// No description provided for @createNewRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new repository'**
+  String get createNewRepository;
+
+  /// No description provided for @repoNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'repository-name'**
+  String get repoNameHint;
+
+  /// No description provided for @subdirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Subdirectory'**
+  String get subdirectory;
+
+  /// No description provided for @backupToGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up to GitHub'**
+  String get backupToGithub;
+
+  /// No description provided for @restoreFromGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from GitHub'**
+  String get restoreFromGithub;
+
+  /// No description provided for @githubBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backed up to GitHub ✓'**
+  String get githubBackupDone;
+
+  /// No description provided for @githubRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored from GitHub ✓'**
+  String get githubRestoreDone;
+
+  /// No description provided for @pasteTokenInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a token instead'**
+  String get pasteTokenInstead;
+
+  /// No description provided for @tokenGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a fine-grained token'**
+  String get tokenGuideTitle;
+
+  /// No description provided for @tokenStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Open github.com and sign in.'**
+  String get tokenStep1;
+
+  /// No description provided for @tokenStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Click “Generate new token” on the token page (button below).'**
+  String get tokenStep2;
+
+  /// No description provided for @tokenStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Repository access → “Only select repositories” → pick your notes repo.'**
+  String get tokenStep3;
+
+  /// No description provided for @tokenStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Permissions → Contents → “Read and write”. Nothing else.'**
+  String get tokenStep4;
+
+  /// No description provided for @tokenStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Set an expiry date, generate, copy the token here.'**
+  String get tokenStep5;
+
+  /// No description provided for @tokenFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Token (ghu_… / github_pat_…)'**
+  String get tokenFieldLabel;
+
+  /// No description provided for @connectWithToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connectWithToken;
+
+  /// No description provided for @openGithubTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub token page'**
+  String get openGithubTokens;
+
+  /// No description provided for @manageTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage / revoke tokens'**
+  String get manageTokens;
+
+  /// No description provided for @storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storage;
+
+  /// No description provided for @storageSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.'**
+  String get storageSectionHint;
+
+  /// No description provided for @storageLocalDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Local database'**
+  String get storageLocalDb;
+
+  /// No description provided for @storageLocalDbHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on. Fast and private — data never leaves this device.'**
+  String get storageLocalDbHint;
+
+  /// No description provided for @storageFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder on this device'**
+  String get storageFilesystem;
+
+  /// No description provided for @storageFilesystemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.'**
+  String get storageFilesystemHint;
+
+  /// No description provided for @storageGitOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Git folder (offline)'**
+  String get storageGitOffline;
+
+  /// No description provided for @storageGitOfflineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.'**
+  String get storageGitOfflineHint;
+
+  /// No description provided for @storageGithubOption.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub'**
+  String get storageGithubOption;
+
+  /// No description provided for @storageGithubOptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.'**
+  String get storageGithubOptionHint;
+
+  /// No description provided for @storagePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary storage — restores use it by default'**
+  String get storagePrimary;
+
+  /// No description provided for @storageSetAsPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as primary'**
+  String get storageSetAsPrimary;
+
+  /// No description provided for @storageFolderPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder path'**
+  String get storageFolderPathLabel;
+
+  /// No description provided for @storageGitPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repository folder path'**
+  String get storageGitPathLabel;
+
+  /// No description provided for @storagePathHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The folder is created automatically if it doesn\'t exist yet.'**
+  String get storagePathHint;
+
+  /// No description provided for @storageBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get storageBackupNow;
+
+  /// No description provided for @storageRestoreNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from copy'**
+  String get storageRestoreNow;
+
+  /// No description provided for @storageBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved ✓'**
+  String get storageBackupDone;
+
+  /// No description provided for @storageRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored ✓'**
+  String get storageRestoreDone;
+
+  /// No description provided for @storageNoBackupFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup found in this location yet.'**
+  String get storageNoBackupFound;
+
+  /// No description provided for @storageOperationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage operation failed'**
+  String get storageOperationFailed;
+
+  /// No description provided for @storageOpenGithubSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub settings'**
+  String get storageOpenGithubSetup;
+
+  /// No description provided for @storageNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available on this platform'**
+  String get storageNotAvailable;
+
+  /// No description provided for @storageMeshTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync between devices'**
+  String get storageMeshTitle;
+
+  /// No description provided for @storageMeshHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.'**
+  String get storageMeshHint;
+
+  /// No description provided for @storageMeshBecomeMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this device as main'**
+  String get storageMeshBecomeMain;
+
+  /// No description provided for @storageMeshJoinWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'I have a pairing code'**
+  String get storageMeshJoinWithCode;
+
+  /// No description provided for @storageMeshWaitingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this screen open. On your second device tap “{joinWithCode}” and scan this code or paste it.'**
+  String storageMeshWaitingHint(String joinWithCode);
+
+  /// No description provided for @storageMeshCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get storageMeshCopyCode;
+
+  /// No description provided for @storageMeshCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing code copied'**
+  String get storageMeshCodeCopied;
+
+  /// No description provided for @storageMeshPasteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste pairing code'**
+  String get storageMeshPasteTitle;
+
+  /// No description provided for @storageMeshScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code'**
+  String get storageMeshScanQr;
+
+  /// No description provided for @storageMeshConnectButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get storageMeshConnectButton;
+
+  /// No description provided for @storageMeshMainBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Main device'**
+  String get storageMeshMainBadge;
+
+  /// No description provided for @storageMeshJoinedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to your main device. Notes sync automatically while both are on the same network.'**
+  String get storageMeshJoinedStatus;
+
+  /// No description provided for @storageMeshConnectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected devices: {count}'**
+  String storageMeshConnectedCount(int count);
+
+  /// No description provided for @storageMeshSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get storageMeshSyncNow;
+
+  /// No description provided for @storageMeshSyncDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices synced ✓'**
+  String get storageMeshSyncDone;
+
+  /// No description provided for @storageMeshPairingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect: {error}'**
+  String storageMeshPairingFailed(String error);
+
+  /// No description provided for @storageMeshAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced settings (debug)'**
+  String get storageMeshAdvanced;
+
+  /// No description provided for @storageMeshUnpair.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpair devices'**
+  String get storageMeshUnpair;
+
+  /// No description provided for @tokenSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.'**
+  String get tokenSafety;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

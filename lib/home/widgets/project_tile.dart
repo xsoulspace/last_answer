@@ -1,10 +1,8 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
-typedef ProjectSelectionChanged = void Function({
-  required bool? selected,
-  required ProjectModel project,
-});
+typedef ProjectSelectionChanged =
+    void Function({required bool? selected, required ProjectModel project});
 
 class ProjectTile extends StatelessWidget {
   const ProjectTile({
@@ -46,6 +44,17 @@ class ProjectTile extends StatelessWidget {
           dimension: 14,
           child: Icon(
             Icons.book_rounded,
+            size: 12.5,
+            color: theme.colorScheme.primary.withOpacity(0.5),
+          ),
+        ),
+        doc: (final doc) => SizedBox.square(
+          dimension: 14,
+          child: Icon(
+            switch (doc.formatId) {
+              DocFormatIds.chat => Icons.forum_outlined,
+              _ => Icons.article_outlined,
+            },
             size: 12.5,
             color: theme.colorScheme.primary.withOpacity(0.5),
           ),

@@ -12,7 +12,8 @@ part of 'tags_screen_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods',
+);
 
 /// @nodoc
 mixin _$TagsScreenState {
@@ -31,14 +32,16 @@ mixin _$TagsScreenState {
 /// @nodoc
 abstract class $TagsScreenStateCopyWith<$Res> {
   factory $TagsScreenStateCopyWith(
-          TagsScreenState value, $Res Function(TagsScreenState) then) =
-      _$TagsScreenStateCopyWithImpl<$Res, TagsScreenState>;
+    TagsScreenState value,
+    $Res Function(TagsScreenState) then,
+  ) = _$TagsScreenStateCopyWithImpl<$Res, TagsScreenState>;
   @useResult
-  $Res call(
-      {FieldContainer<ProjectTagModel> selectedTag,
-      String? addProjectsSearch,
-      LoadableContainer<List<ProjectModel>> projects,
-      TagsScreenType screenType});
+  $Res call({
+    FieldContainer<ProjectTagModel> selectedTag,
+    String? addProjectsSearch,
+    LoadableContainer<List<ProjectModel>> projects,
+    TagsScreenType screenType,
+  });
 
   $FieldContainerCopyWith<ProjectTagModel, $Res> get selectedTag;
   $LoadableContainerCopyWith<List<ProjectModel>, $Res> get projects;
@@ -62,31 +65,35 @@ class _$TagsScreenStateCopyWithImpl<$Res, $Val extends TagsScreenState>
     Object? projects = null,
     Object? screenType = null,
   }) {
-    return _then(_value.copyWith(
-      selectedTag: null == selectedTag
-          ? _value.selectedTag
-          : selectedTag // ignore: cast_nullable_to_non_nullable
-              as FieldContainer<ProjectTagModel>,
-      addProjectsSearch: freezed == addProjectsSearch
-          ? _value.addProjectsSearch
-          : addProjectsSearch // ignore: cast_nullable_to_non_nullable
-              as String?,
-      projects: null == projects
-          ? _value.projects
-          : projects // ignore: cast_nullable_to_non_nullable
-              as LoadableContainer<List<ProjectModel>>,
-      screenType: null == screenType
-          ? _value.screenType
-          : screenType // ignore: cast_nullable_to_non_nullable
-              as TagsScreenType,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            selectedTag: null == selectedTag
+                ? _value.selectedTag
+                : selectedTag // ignore: cast_nullable_to_non_nullable
+                      as FieldContainer<ProjectTagModel>,
+            addProjectsSearch: freezed == addProjectsSearch
+                ? _value.addProjectsSearch
+                : addProjectsSearch // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            projects: null == projects
+                ? _value.projects
+                : projects // ignore: cast_nullable_to_non_nullable
+                      as LoadableContainer<List<ProjectModel>>,
+            screenType: null == screenType
+                ? _value.screenType
+                : screenType // ignore: cast_nullable_to_non_nullable
+                      as TagsScreenType,
+          )
+          as $Val,
+    );
   }
 
   @override
   @pragma('vm:prefer-inline')
   $FieldContainerCopyWith<ProjectTagModel, $Res> get selectedTag {
-    return $FieldContainerCopyWith<ProjectTagModel, $Res>(_value.selectedTag,
-        (value) {
+    return $FieldContainerCopyWith<ProjectTagModel, $Res>(_value.selectedTag, (
+      value,
+    ) {
       return _then(_value.copyWith(selectedTag: value) as $Val);
     });
   }
@@ -94,26 +101,30 @@ class _$TagsScreenStateCopyWithImpl<$Res, $Val extends TagsScreenState>
   @override
   @pragma('vm:prefer-inline')
   $LoadableContainerCopyWith<List<ProjectModel>, $Res> get projects {
-    return $LoadableContainerCopyWith<List<ProjectModel>, $Res>(_value.projects,
-        (value) {
-      return _then(_value.copyWith(projects: value) as $Val);
-    });
+    return $LoadableContainerCopyWith<List<ProjectModel>, $Res>(
+      _value.projects,
+      (value) {
+        return _then(_value.copyWith(projects: value) as $Val);
+      },
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$TagsScreenStateImplCopyWith<$Res>
     implements $TagsScreenStateCopyWith<$Res> {
-  factory _$$TagsScreenStateImplCopyWith(_$TagsScreenStateImpl value,
-          $Res Function(_$TagsScreenStateImpl) then) =
-      __$$TagsScreenStateImplCopyWithImpl<$Res>;
+  factory _$$TagsScreenStateImplCopyWith(
+    _$TagsScreenStateImpl value,
+    $Res Function(_$TagsScreenStateImpl) then,
+  ) = __$$TagsScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {FieldContainer<ProjectTagModel> selectedTag,
-      String? addProjectsSearch,
-      LoadableContainer<List<ProjectModel>> projects,
-      TagsScreenType screenType});
+  $Res call({
+    FieldContainer<ProjectTagModel> selectedTag,
+    String? addProjectsSearch,
+    LoadableContainer<List<ProjectModel>> projects,
+    TagsScreenType screenType,
+  });
 
   @override
   $FieldContainerCopyWith<ProjectTagModel, $Res> get selectedTag;
@@ -126,8 +137,9 @@ class __$$TagsScreenStateImplCopyWithImpl<$Res>
     extends _$TagsScreenStateCopyWithImpl<$Res, _$TagsScreenStateImpl>
     implements _$$TagsScreenStateImplCopyWith<$Res> {
   __$$TagsScreenStateImplCopyWithImpl(
-      _$TagsScreenStateImpl _value, $Res Function(_$TagsScreenStateImpl) _then)
-      : super(_value, _then);
+    _$TagsScreenStateImpl _value,
+    $Res Function(_$TagsScreenStateImpl) _then,
+  ) : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
@@ -137,35 +149,38 @@ class __$$TagsScreenStateImplCopyWithImpl<$Res>
     Object? projects = null,
     Object? screenType = null,
   }) {
-    return _then(_$TagsScreenStateImpl(
-      selectedTag: null == selectedTag
-          ? _value.selectedTag
-          : selectedTag // ignore: cast_nullable_to_non_nullable
-              as FieldContainer<ProjectTagModel>,
-      addProjectsSearch: freezed == addProjectsSearch
-          ? _value.addProjectsSearch
-          : addProjectsSearch // ignore: cast_nullable_to_non_nullable
-              as String?,
-      projects: null == projects
-          ? _value.projects
-          : projects // ignore: cast_nullable_to_non_nullable
-              as LoadableContainer<List<ProjectModel>>,
-      screenType: null == screenType
-          ? _value.screenType
-          : screenType // ignore: cast_nullable_to_non_nullable
-              as TagsScreenType,
-    ));
+    return _then(
+      _$TagsScreenStateImpl(
+        selectedTag: null == selectedTag
+            ? _value.selectedTag
+            : selectedTag // ignore: cast_nullable_to_non_nullable
+                  as FieldContainer<ProjectTagModel>,
+        addProjectsSearch: freezed == addProjectsSearch
+            ? _value.addProjectsSearch
+            : addProjectsSearch // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        projects: null == projects
+            ? _value.projects
+            : projects // ignore: cast_nullable_to_non_nullable
+                  as LoadableContainer<List<ProjectModel>>,
+        screenType: null == screenType
+            ? _value.screenType
+            : screenType // ignore: cast_nullable_to_non_nullable
+                  as TagsScreenType,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$TagsScreenStateImpl implements _TagsScreenState {
-  const _$TagsScreenStateImpl(
-      {this.selectedTag = const FieldContainer(value: ProjectTagModel.empty),
-      this.addProjectsSearch,
-      this.projects = const LoadableContainer(value: []),
-      this.screenType = TagsScreenType.allTags});
+  const _$TagsScreenStateImpl({
+    this.selectedTag = const FieldContainer(value: ProjectTagModel.empty),
+    this.addProjectsSearch,
+    this.projects = const LoadableContainer(value: []),
+    this.screenType = TagsScreenType.allTags,
+  });
 
   @override
   @JsonKey()
@@ -201,22 +216,30 @@ class _$TagsScreenStateImpl implements _TagsScreenState {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, selectedTag, addProjectsSearch, projects, screenType);
+    runtimeType,
+    selectedTag,
+    addProjectsSearch,
+    projects,
+    screenType,
+  );
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TagsScreenStateImplCopyWith<_$TagsScreenStateImpl> get copyWith =>
       __$$TagsScreenStateImplCopyWithImpl<_$TagsScreenStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _TagsScreenState implements TagsScreenState {
-  const factory _TagsScreenState(
-      {final FieldContainer<ProjectTagModel> selectedTag,
-      final String? addProjectsSearch,
-      final LoadableContainer<List<ProjectModel>> projects,
-      final TagsScreenType screenType}) = _$TagsScreenStateImpl;
+  const factory _TagsScreenState({
+    final FieldContainer<ProjectTagModel> selectedTag,
+    final String? addProjectsSearch,
+    final LoadableContainer<List<ProjectModel>> projects,
+    final TagsScreenType screenType,
+  }) = _$TagsScreenStateImpl;
 
   @override
   FieldContainer<ProjectTagModel> get selectedTag;

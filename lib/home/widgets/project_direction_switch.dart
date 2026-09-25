@@ -2,9 +2,7 @@ import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
-  const ProjectsDirectionSwitch({
-    super.key,
-  });
+  const ProjectsDirectionSwitch({super.key});
 
   @override
   Widget build(final BuildContext context) {

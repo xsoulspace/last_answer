@@ -2,9 +2,7 @@ import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class CreateIdeaProjectScreen extends StatefulHookWidget {
-  const CreateIdeaProjectScreen({
-    super.key,
-  });
+  const CreateIdeaProjectScreen({super.key});
 
   @override
   State<CreateIdeaProjectScreen> createState() =>
@@ -36,10 +34,7 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
-      appBar: BackTextUniversalAppBar(
-        titleStr: '',
-        onBack: onBack,
-      ),
+      appBar: BackTextUniversalAppBar(titleStr: '', onBack: onBack),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 8),
         child: Center(

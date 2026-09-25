@@ -44,13 +44,11 @@ class PurchaseRequestDtoModel with _$PurchaseRequestDtoModel {
   factory PurchaseRequestDtoModel.fromJson(
     final Map<String, dynamic> json,
     // ignore: avoid_unused_constructor_parameters
-    final SerializationManager serializationManager,
-  ) =>
-      PurchaseRequestDtoModel.fromRawJson(json);
+    // final SerializationManager serializationManager,
+  ) => PurchaseRequestDtoModel.fromRawJson(json);
   factory PurchaseRequestDtoModel.fromRawJson(
     final Map<String, dynamic> json,
-  ) =>
-      _$PurchaseRequestDtoModelFromJson(json);
+  ) => _$PurchaseRequestDtoModelFromJson(json);
   const PurchaseRequestDtoModel._();
 }
 
@@ -68,9 +66,7 @@ class PurchaseActionModel with _$PurchaseActionModel {
   const PurchaseActionModel._();
   factory PurchaseActionModel.fromJson(final Map<String, dynamic> json) =>
       PurchaseActionModel.fromRawJson(json);
-  factory PurchaseActionModel.fromRawJson(
-    final Map<String, dynamic> json,
-  ) =>
+  factory PurchaseActionModel.fromRawJson(final Map<String, dynamic> json) =>
       _$PurchaseActionModelFromJson(json);
 
   static const empty = PurchaseActionModel.videoAward();

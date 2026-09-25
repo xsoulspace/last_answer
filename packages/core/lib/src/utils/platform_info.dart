@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class PlatformInfo {
   PlatformInfo._();
@@ -32,7 +32,7 @@ class PlatformInfo {
   static bool get isNative => !isWeb;
   static bool get isTransparentBackgroundSupported => isMacOS;
   static bool get isCupertino => isIOS || isMacOS;
-  static Future<bool> get isConnected async =>
-      InternetConnectionChecker.createInstance().hasConnection;
+  static Future<bool> get isConnected async => false;
+  // InternetConnectionChecker.createInstance().hasConnection;
   static Future<bool> get isDisconnected async => (await isConnected) == false;
 }

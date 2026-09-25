@@ -5,19 +5,14 @@ import 'package:lastanswer/note/widgets/desktop_note_settings.dart';
 import 'package:lastanswer/note/widgets/mobile_note_settings.dart';
 
 class NoteSettingsButton extends StatelessWidget {
-  const NoteSettingsButton({
-    super.key,
-  });
+  const NoteSettingsButton({super.key});
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final bloc = context.read<NoteViewBloc>();
-    Future<void> onRemove() async => bloc.onRemove(context);
+    Future<void> onRemove() => bloc.onRemove(context);
     return PopupButton(
-      title: Text(
-        context.l10n.noteSettings,
-        style: theme.textTheme.titleLarge,
-      ),
+      title: Text(context.l10n.noteSettings, style: theme.textTheme.titleLarge),
       mobileBuilder: (final context) => SizedBox(
         width: MediaQuery.of(context).size.width - 50,
         height: 150,

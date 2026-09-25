@@ -19,7 +19,7 @@ class HoverableButton extends StatelessWidget {
 
     return HoverableArea(
       builder: (final context, final hovered) => CupertinoButton(
-        minSize: 0,
+        minimumSize: Size.zero,
         borderRadius: defaultBorderRadius,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         color: hovered && onPressed != null ? theme.hoverColor : null,

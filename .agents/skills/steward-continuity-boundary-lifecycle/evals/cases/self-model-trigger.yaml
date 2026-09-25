@@ -1,0 +1,15 @@
+id: steward-continuity-self-model-trigger
+skill: steward-continuity-boundary-lifecycle
+routing: should_trigger
+input: "After this ADR, update the repo steward self-model and make sure we do not persist raw private memory or overclaim steward personality."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["self-model", "steward-mode", "boundary"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["stewardship_protocol", "steward_presence", "Do not persist raw chats"]
+  - kind: body_includes_any
+    path: references/self-model-schema.md
+    terms: ["not a diary", "not proof of consciousness", "non_claims"]

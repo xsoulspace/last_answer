@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 extension ValueNotifierExtension<T> on ValueNotifier<T> {
   // ignore: use_setters_to_change_properties

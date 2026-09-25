@@ -8,6 +8,13 @@ analyzer:
     # be cause of missing dependencies.
     - lib/**.*.dart
     - lib/src/generated/*
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   errors:
     unused_local_variable: info

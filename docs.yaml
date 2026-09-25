@@ -3,6 +3,15 @@ name: Word By Word Game
 sidebar:
   - - About
     - "/"
+  - - Product
+    - - - GDD/PRD Editor — Goal & Pillars
+        - "/product/gdd-prd-editor-goal-and-pillars"
+    - - - Agents in Docs — Goal & Phases
+        - "/product/agents-in-docs"
+    - - - Writable agent document + ACP-client-first
+        - "/decisions/0012-writable-agent-doc-and-acp-client-first"
+    - - - Decision & refinement tools
+        - "/product/refinement-tools"
   - - Legal
     - - - Privacy Policy
         - "/legal/privacy-policy"

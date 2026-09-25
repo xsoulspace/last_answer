@@ -36,7 +36,7 @@ class DangerZone extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: defaultPopupBorderRadius,
-              color: dangerBackgroundColor ?? theme.canvasColor.withOpacity(1),
+              color: dangerBackgroundColor ?? theme.canvasColor.withValues(alpha: 1),
             ),
             child: Text(
               context.l10n.danger,

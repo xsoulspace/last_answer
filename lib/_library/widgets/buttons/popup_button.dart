@@ -39,10 +39,8 @@ class _PopupButtonState extends State<PopupButton> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
-      (final _) async => onOpenPopup(
-        context: context,
-        onClose: () => popupVisible = false,
-      ),
+      (final _) =>
+          onOpenPopup(context: context, onClose: () => popupVisible = false),
     );
   }
 
@@ -122,7 +120,7 @@ class _PopupButtonState extends State<PopupButton> {
         ),
       ],
       builder: (final context, final controller, final child) => MouseRegion(
-        onEnter: (final _) async {
+        onEnter: (final _) {
           controller.open();
           popupHovered = true;
         },
@@ -153,15 +151,10 @@ class MobilePopupButtonDialog extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
 
-    final closeButton = RemoveActionButton(
-      onTap: onRemove,
-      useIcon: true,
-    );
+    final closeButton = RemoveActionButton(onTap: onRemove, useIcon: true);
 
     return NavigatorPopHandler(
-      onPop: () async {
-        close(context);
-      },
+      onPopWithResult: (_) => close(context),
       child: Dialog(
         alignment: Alignment.topCenter,
         insetPadding: EdgeInsets.zero,
@@ -175,17 +168,10 @@ class MobilePopupButtonDialog extends StatelessWidget {
             centerTitle: true,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 24,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    builder(context),
-                  ],
-                ),
+                Row(children: [builder(context)]),
                 Divider(
                   color: theme.highlightColor,
                   height: 10,
@@ -194,9 +180,7 @@ class MobilePopupButtonDialog extends StatelessWidget {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedPrimaryButton(
-                    onPressed: () => close(context),
-                  ),
+                  child: OutlinedPrimaryButton(onPressed: () => close(context)),
                 ),
               ],
             ),
@@ -230,9 +214,7 @@ class RemoveActionButton extends StatelessWidget {
           elevation: 0,
           backgroundColor: AppColors.accent3,
           padding: const EdgeInsets.all(14),
-          shape: RoundedRectangleBorder(
-            borderRadius: defaultPopupBorderRadius,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: defaultPopupBorderRadius),
         ),
         onPressed: onTap,
         child: isLoading
@@ -249,19 +231,17 @@ class RemoveActionButton extends StatelessWidget {
       style: TextButton.styleFrom(
         foregroundColor: AppColors.accent3,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: defaultPopupBorderRadius,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: defaultPopupBorderRadius),
       ),
       child: isLoading
           ? const UiCircularProgress()
           : useIcon
-              ? const Icon(Icons.delete_forever_rounded)
-              : Text(
-                  text ?? context.l10n.delete.sentenceCase,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  // ?.copyWith(color: AppColors.accent3),
-                ),
+          ? const Icon(Icons.delete_forever_rounded)
+          : Text(
+              text ?? context.l10n.delete.sentenceCase,
+              style: Theme.of(context).textTheme.bodyMedium,
+              // ?.copyWith(color: AppColors.accent3),
+            ),
     );
   }
 }
@@ -284,9 +264,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         foregroundColor: primaryColor,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         side: BorderSide(color: primaryColor),
       ),
       onPressed: onPressed,
@@ -294,9 +272,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
           ? const Icon(Icons.check)
           : Text(
               context.l10n.close.sentenceCase,
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: primaryColor,
-              ),
+              style: theme.textTheme.titleLarge?.copyWith(color: primaryColor),
             ),
     );
   }

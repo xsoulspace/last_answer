@@ -2,7 +2,7 @@ part of 'state.dart';
 
 class LocalUserInitializer {
   LocalUserInitializer(final BuildContext context)
-      : dto = GlobalStatesInitializerDto(context: context);
+    : dto = GlobalStatesInitializerDto(context: context);
   final GlobalStatesInitializerDto dto;
   Future<void> onUserLoad() async {
     await runMutations(dto);
@@ -13,7 +13,7 @@ class LocalUserInitializer {
 
   Future<void> _onLoadData() async {
     dto.projectsNotifier.onReset();
-    unawaited(dto.purchasesAdsService.onLoad());
+    // unawaited(dto.purchasesAdsService.onLoad());
 
     /// refreshing data, just to make sure all is loaded correctly
     await Future.delayed(const Duration(seconds: 1));

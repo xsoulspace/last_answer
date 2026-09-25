@@ -1,0 +1,87 @@
+---
+description: Last Answer — North Star
+---
+
+# North Star — last_answer
+
+> Product-level North Star. Infrastructure North Star lives in the
+> dart_flutter_packages monorepo (`docs/NORTH_STAR.mdx`); the composition
+> law (ADR 0003) keeps the two plans adjacent — they reference, never
+> import each other. [ADR 0012](decisions/0012-writable-agent-doc-and-acp-client-first.md)
+> clarifies the writable-document outcome and ACP-client-first ordering.
+
+## The star
+
+**Any document in last_answer is a writable shared place where humans and
+agents work on the same evolving content and workspace — under human
+control, with attributed history and honest oracles — and last_answer
+eventually becomes the operator console.** A conversation or ACP stream is a
+projection of work on the document, not the document itself.
+
+One sentence: *humans and agents change one living document; the work
+materializes in the workspace; diffs, threads, and verdicts stay on the
+grid; the human stays sovereign throughout.*
+
+## Value paths (each measurable)
+
+1. **Human sovereignty** — permissions deny-by-default and visible;
+   budgets monotonic and surfaced; every surface controllable from one
+   simple place (PROFILE / SETUP). Measure: no action the agent takes
+   that the human cannot see, veto, or stop.
+2. **Verifiable work** — every delegated task ends in a mechanical
+   verdict (PASS/FAIL) with spend stated (backend, decisions, tokens
+   source, wall, n). Failures are classified data, never dropped.
+   Measure: delegation rows in the harness evidence ledger.
+3. **Document-first, text-native** — the living document/workspace is
+   writable by humans and agents; conversation, harness activity, and
+   permissions are projections on one grid ([DESIGN.md](DESIGN.md)). The
+   same typed state is projected to the UI and agent surfaces. Measure:
+   edits, threads, and provenance remain addressable after a session ends.
+4. **Local-first** — the first external-agent path is Last Answer acting
+   as an ACP client to launch ACP agents (Codex, Pi, and compatible
+   runtimes), alongside the native harness. AFM remains the on-device
+   default where available; network use is explicit and never a silent
+   fallback. Remote peers join the same world through mesh first; VPN or
+   opt-in Internet/VPS relay is a later transport gate.
+5. **Later operator-console path (R9)** — eventually, every operator
+   cycle for THIS repo (issue → edit/delegate → permission → materialize
+   → verify) can run through last_answer, including a headless path. This
+   is not the first release: first prove the local writable document with
+   Last Answer as ACP client launching agents. An external ACP client
+   operating Last Answer is a separate later gate. Retire external
+   operator paths only on measured evidence, never by decree.
+6. **Attention-first** — the user's attention is a budget like money:
+   monotonic, visible, never spent without consent. One decision per
+   screen; every state renders (nothing held in working memory, nothing
+   visible only live); every surface survives interruption; return is
+   always rewarded. Written for ADHD users literally, not as metaphor
+   ([DESIGN §10](DESIGN.md)). Measure: default surface cost audited per
+   change — one decision per screen, collapsed-never-absent layers,
+   honest time.
+
+## Non-goals
+
+- No second protocol (ACP vocabulary is the universe — ADR 0003).
+- No external ACP client connecting to Last Answer until the outbound
+  Last Answer ACP-client-to-agent path proves the shared document,
+  permission, materialization, and recovery contract (ADR 0012).
+- No generic "agentify every doc" before one evidence-tier domain
+  proves out (Phase 5).
+- No cross-workspace task coordination until the one-world squad is
+  proven at scale.
+- No derived host/world snapshots in the doc store; shared document/meaning
+  operations are durable, while derived cuts re-derive.
+- The harness never becomes mandatory reading: the inspector and
+  harness layers are gated, collapsed-by-default projections over the
+  writable document surface — the product is not an abstract agentic harness
+  (DESIGN §10).
+
+## Where the frontier lives
+
+- Forward plan: [PLAN.md](PLAN.md) (production path, ordered, each item
+  names its gate).
+- Landed record: [history.md](history.md). Decisions:
+  [decisions/](decisions/) (ADR 0003 is the composition law; ADR 0012
+  clarifies the shared-document product and ACP direction).
+- Design law: [DESIGN.md](DESIGN.md).
+- Handoff briefs: [HANDOFF-agents-in-docs.md](HANDOFF-agents-in-docs.md).

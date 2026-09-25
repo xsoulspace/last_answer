@@ -376,4 +376,226 @@ class SIt extends S {
 
   @override
   String get all => 'All';
+
+  @override
+  String get githubSync => 'Sincronizzazione GitHub';
+
+  @override
+  String get connectGithub => 'Collega GitHub…';
+
+  @override
+  String get disconnectGithub => 'Disconnetti GitHub';
+
+  @override
+  String get githubConnected => 'GitHub collegato';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Impossibile collegare GitHub: $error';
+  }
+
+  @override
+  String get chooseRepository => 'Scegli repository';
+
+  @override
+  String get createNewRepository => 'Crea nuovo repository';
+
+  @override
+  String get repoNameHint => 'nome-repository';
+
+  @override
+  String get subdirectory => 'Sottocartella';
+
+  @override
+  String get backupToGithub => 'Backup su GitHub';
+
+  @override
+  String get restoreFromGithub => 'Ripristina da GitHub';
+
+  @override
+  String get githubBackupDone => 'Salvato su GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Ripristinato da GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Incolla un token';
+
+  @override
+  String get tokenGuideTitle => 'Crea un token fine-grained';
+
+  @override
+  String get tokenStep1 => '1. Apri github.com ed effettua il login.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Premi «Generate new token» nella pagina dei token (pulsante sotto).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → «Only select repositories» → scegli il repo delle note.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → «Read and write». Nient’altro.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Imposta una scadenza, genera e incolla il token qui.';
+
+  @override
+  String get tokenFieldLabel => 'Token (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Collega';
+
+  @override
+  String get openGithubTokens => 'Apri la pagina dei token GitHub';
+
+  @override
+  String get manageTokens => 'Gestisci / revoca i token';
+
+  @override
+  String get storage => 'Archiviazione';
+
+  @override
+  String get storageSectionHint =>
+      'Le note sono sempre salvate nel database locale su questo dispositivo. Attiva qui sotto altri posti in cui tenere copie sincronizzate: ognuno aggiunge un backup e possono essere combinati. Contrassegnane uno come primario (★): i ripristini lo usano per impostazione predefinita.';
+
+  @override
+  String get storageLocalDb => 'Database locale';
+
+  @override
+  String get storageLocalDbHint =>
+      'Sempre attivo. Veloce e privato: i dati non lasciano mai questo dispositivo.';
+
+  @override
+  String get storageFilesystem => 'Cartella su questo dispositivo';
+
+  @override
+  String get storageFilesystemHint =>
+      'Mantiene una copia in una cartella a tua scelta: facile da aprire con qualsiasi file manager o da includere nei tuoi backup.';
+
+  @override
+  String get storageGitOffline => 'Cartella Git (offline)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Mantiene una copia in un repository Git locale: ogni backup è versionato, quindi puoi vedere la cronologia e tornare indietro. Non serve un account.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Copia privata nel cloud nel tuo repository GitHub: protegge dalla perdita del dispositivo. Configurala nella sezione “GitHub Sync” qui sotto.';
+
+  @override
+  String get storagePrimary =>
+      'Archiviazione primaria: i ripristini la usano per impostazione predefinita';
+
+  @override
+  String get storageSetAsPrimary => 'Usa come primaria';
+
+  @override
+  String get storageFolderPathLabel => 'Percorso della cartella';
+
+  @override
+  String get storageGitPathLabel => 'Percorso della cartella del repository';
+
+  @override
+  String get storagePathHint =>
+      'La cartella viene creata automaticamente se non esiste ancora.';
+
+  @override
+  String get storageBackupNow => 'Salva copia ora';
+
+  @override
+  String get storageRestoreNow => 'Ripristina dalla copia';
+
+  @override
+  String get storageBackupDone => 'Copia salvata ✓';
+
+  @override
+  String get storageRestoreDone => 'Ripristinato ✓';
+
+  @override
+  String get storageNoBackupFound =>
+      'Nessun backup trovato in questa posizione.';
+
+  @override
+  String get storageOperationFailed =>
+      'Operazione di archiviazione non riuscita';
+
+  @override
+  String get storageOpenGithubSetup => 'Apri le impostazioni GitHub';
+
+  @override
+  String get storageNotAvailable => 'Non disponibile su questa piattaforma';
+
+  @override
+  String get storageMeshTitle => 'Sincronizza tra dispositivi';
+
+  @override
+  String get storageMeshHint =>
+      'Collega i tuoi dispositivi direttamente via Wi‑Fi — niente account, niente cloud. Mostra un codice, scansionalo, fatto.';
+
+  @override
+  String get storageMeshBecomeMain => 'Usa questo dispositivo come principale';
+
+  @override
+  String get storageMeshJoinWithCode => 'Ho un codice di abbinamento';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Tieni aperta questa schermata. Sul secondo dispositivo tocca “$joinWithCode” e scansiona questo codice o incollalo.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Copia il codice';
+
+  @override
+  String get storageMeshCodeCopied => 'Codice di abbinamento copiato';
+
+  @override
+  String get storageMeshPasteTitle => 'Incolla il codice di abbinamento';
+
+  @override
+  String get storageMeshScanQr => 'Scansiona il codice QR';
+
+  @override
+  String get storageMeshConnectButton => 'Connetti';
+
+  @override
+  String get storageMeshMainBadge => 'Dispositivo principale';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Connesso al dispositivo principale. Le note si sincronizzano automaticamente finché entrambi sono sulla stessa rete.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Dispositivi connessi: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Sincronizza ora';
+
+  @override
+  String get storageMeshSyncDone => 'Dispositivi sincronizzati ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Impossibile connettersi: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Impostazioni avanzate (debug)';
+
+  @override
+  String get storageMeshUnpair => 'Disaccoppia i dispositivi';
+
+  @override
+  String get tokenSafety =>
+      'Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.';
 }

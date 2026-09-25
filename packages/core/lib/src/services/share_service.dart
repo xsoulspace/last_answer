@@ -12,21 +12,18 @@ class ProjectSharer {
   const ProjectSharer.of(this.context);
   final BuildContext context;
 
-  Future<void> share(final Sharable sharable) async =>
-      ShareService.of(context).share(
-        title: sharable.toSharableTitle(context),
-        content: sharable.toShareString(context),
-        successTitle: context.l10n.yourProjectWasCopiedToClipboard,
-      );
-  Future<void> shareSave(final DbSaveModel json) async =>
+  Future<void> share(final Sharable sharable) => ShareService.of(context).share(
+    title: sharable.toSharableTitle(context),
+    content: sharable.toShareString(context),
+    successTitle: context.l10n.yourProjectWasCopiedToClipboard,
+  );
+  Future<void> shareSave(final DbSaveModel json) =>
       ShareService.of(context).share(
         title: 'Last Answer: ${FileServiceI.filenameWithTimestamp}',
         content: jsonEncode(json.toJson()),
         successTitle: context.l10n.allProjectsWereCopiedToClipboard,
       );
-  Future<DbSaveModel> getFromClipboard(
-    final BuildContext context,
-  ) async {
+  Future<DbSaveModel> getFromClipboard(final BuildContext context) async {
     final jsonStr = await ShareService.of(context).getFromClipboard();
     if (jsonStr.isEmpty) return DbSaveModel.empty;
     final json = jsonDecode(jsonStr);
@@ -68,20 +65,19 @@ class ShareService {
         MaterialBanner(
           content: Text(successTitle),
           leading: const Icon(Icons.done),
-          backgroundColor: AppColors.primary2.withOpacity(0.2),
+          backgroundColor: AppColors.primary2.withValues(alpha: 0.2),
           actions: [
-            TextButton(
-              onPressed: closeBanner,
-              child: Text(l10n.close),
-            ),
+            TextButton(onPressed: closeBanner, child: Text(l10n.close)),
           ],
         ),
       );
     } else {
-      await Share.share(
-        content,
-        subject: title,
-        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+      await SharePlus.instance.share(
+        ShareParams(
+          text: content,
+          subject: title,
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+        ),
       );
     }
   }

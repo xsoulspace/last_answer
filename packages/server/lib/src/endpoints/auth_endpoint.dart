@@ -1,6 +1,7 @@
 import 'package:server/src/endpoints/user_endpoint.dart';
 import 'package:server/src/generated/user.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 // This is an example endpoint of your server. It's best practice to use the
 // `Endpoint` ending of the class name, but it will be removed when accessing
@@ -18,16 +19,16 @@ import 'package:serverpod/serverpod.dart';
 // passwords, and information about the request being made to the server.
 class AuthEndpoint extends Endpoint {
   final _impl = UserEndpointImpl();
-  Future<void> signInVkID(final Session session, final String name) async {
+  Future<void> signInVkID(final Session session, final String name) {
     // Users.createUser(session, userInfo);
     // TODO(arenukvern): unimplemented
     throw UnimplementedError('unimplemented error');
   }
 
   Future<void> completeSignIn(final Session session) async {
-    final isSignedIn = await session.isUserSignedIn;
+    final isSignedIn = session.isUserSignedIn;
     if (!isSignedIn) throw Exception('User is unauthorized');
-    final auth = await session.authenticated;
+    final auth = session.authenticated;
     final userId = auth?.userId;
     if (userId == null) throw Exception('User is unauthorized');
     final user = await User.db.findFirstRow(

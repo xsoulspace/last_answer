@@ -3,10 +3,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:life_hooks/life_hooks.dart';
 
 class CupertinoCloseButton extends HookWidget {
-  const CupertinoCloseButton({
-    required this.onPressed,
-    super.key,
-  });
+  const CupertinoCloseButton({required this.onPressed, super.key});
   final VoidCallback onPressed;
 
   @override
@@ -19,15 +16,12 @@ class CupertinoCloseButton extends HookWidget {
       onEnter: (final _) => hovered.value = true,
       onExit: (final _) => hovered.value = false,
       child: CupertinoButton(
-        minSize: 0,
         borderRadius: defaultBorderRadius,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         color: hovered.value ? theme.hoverColor : null,
         onPressed: onPressed,
-        child: const Icon(
-          CupertinoIcons.clear_thick,
-          size: 24,
-        ),
+        minimumSize: Size.zero,
+        child: const Icon(CupertinoIcons.clear_thick, size: 24),
       ),
     );
   }

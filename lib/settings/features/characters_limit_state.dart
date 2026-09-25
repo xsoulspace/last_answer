@@ -4,9 +4,8 @@ import 'package:lastanswer/common_imports.dart';
 part 'characters_limit_state.freezed.dart';
 
 class CharactersLimitControllerDto {
-  CharactersLimitControllerDto({
-    required final BuildContext context,
-  }) : userNotifier = context.read<UserNotifier>();
+  CharactersLimitControllerDto({required final BuildContext context})
+    : userNotifier = context.read<UserNotifier>();
   final UserNotifier userNotifier;
 }
 
@@ -45,14 +44,13 @@ class CharactersLimitController extends ValueNotifier<CharacterLimitState> {
     required final int noteCharactersLimit,
     required this.dto,
   }) : super(
-          CharacterLimitState.fromDto(
-            noteCharactersLimit: noteCharactersLimit,
-            dto: dto,
-          ),
-        );
-  CharactersLimitController.fromSettings({
-    required this.dto,
-  }) : super(CharacterLimitState.fromDto(dto: dto));
+         CharacterLimitState.fromDto(
+           noteCharactersLimit: noteCharactersLimit,
+           dto: dto,
+         ),
+       );
+  CharactersLimitController.fromSettings({required this.dto})
+    : super(CharacterLimitState.fromDto(dto: dto));
   final CharactersLimitControllerDto dto;
   final focusNode = FocusNode();
   @override

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -8,8 +9,9 @@ import '../../../core.dart';
 import 'file_service_i.dart';
 
 class FileService implements FileServiceI {
-  final _instance =
-      PlatformInfo.isNativeDesktop ? FileServiceDesktop() : FileServiceMobile();
+  final _instance = PlatformInfo.isNativeDesktop
+      ? FileServiceDesktop()
+      : FileServiceMobile();
 
   @override
   Future<Map<String, dynamic>> openFile() => _instance.openFile();
@@ -17,17 +19,16 @@ class FileService implements FileServiceI {
   Future<bool> saveFile({
     required final Map<String, dynamic> data,
     required final String filename,
-  }) =>
-      _instance.saveFile(data: data, filename: filename);
+  }) => _instance.saveFile(data: data, filename: filename);
 }
 
 class FileServiceMobile implements FileServiceI {
   @override
   Future<Map<String, dynamic>> openFile() async {
-    await FilePicker.platform.clearTemporaryFiles();
+    await FilePicker.clearTemporaryFiles();
 
     /// json extension is not working on android
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.pickFiles();
     if (result == null || result.files.isEmpty) return {};
     final file = result.files.first;
     final dataStr = File(file.path!).readAsStringSync();
@@ -47,8 +48,7 @@ class FileServiceMobile implements FileServiceI {
     final isGranted = switch (status) {
       PermissionStatus.denied ||
       PermissionStatus.permanentlyDenied ||
-      PermissionStatus.restricted =>
-        false,
+      PermissionStatus.restricted => false,
       _ => true,
     };
     return isGranted;
@@ -64,7 +64,7 @@ class FileServiceMobile implements FileServiceI {
     /// https://gist.github.com/MSVCode/9ccedfa6692f8bc3b82fdc74fad65bc6
     ///
     /// Also there will be a need to write similar thing for iOS
-    final path = await FilePicker.platform.getDirectoryPath(
+    final path = await FilePicker.getDirectoryPath(
       dialogTitle: 'Select directory to save file',
     );
     if (path == null || path.isEmpty) return false;
@@ -78,7 +78,7 @@ class FileServiceMobile implements FileServiceI {
 class FileServiceDesktop implements FileServiceI {
   @override
   Future<Map<String, dynamic>> openFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
     );
@@ -95,11 +95,12 @@ class FileServiceDesktop implements FileServiceI {
     required final Map<String, dynamic> data,
     required final String filename,
   }) async {
-    final String? filePath = await FilePicker.platform.saveFile(
+    final String? filePath = await FilePicker.saveFile(
       dialogTitle: 'Select directory to save file',
       type: FileType.custom,
       allowedExtensions: ['json'],
       fileName: filename,
+      bytes: Uint8List.fromList([]),
     );
     return saveFileData(filePath: filePath, data: data);
   }

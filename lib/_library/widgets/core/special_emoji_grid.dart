@@ -13,14 +13,14 @@ class SpecialEmojisGrid extends StatelessWidget {
     final emojiStyle = Theme.of(context).textTheme.bodyMedium;
 
     Widget buildEmojiButton(final EmojiModel emoji) => EmojiButton(
-          key: ValueKey(emoji),
-          emoji: emoji,
-          style: emojiStyle,
-          onPressed: () => onChanged(emoji),
-        );
+      key: ValueKey(emoji),
+      emoji: emoji,
+      style: emojiStyle,
+      onPressed: () => onChanged(emoji),
+    );
 
     final specialEmojisNotifier = context.watch<SpecialEmojiStateNotifier>();
-    final emojis = specialEmojisNotifier.values;
+    final emojis = specialEmojisNotifier.orderedValues;
     const maxItemsInRow = 9;
 
     return ButtonPopup(

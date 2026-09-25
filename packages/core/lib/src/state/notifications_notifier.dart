@@ -1,7 +1,7 @@
 part of 'state.dart';
 
 @freezed
-class NotificationsNotifierState with _$NotificationsNotifierState {
+abstract class NotificationsNotifierState with _$NotificationsNotifierState {
   const factory NotificationsNotifierState({
     /// Should be ordered from newest to oldest and never be
     @Default([]) final List<NotificationMessageModel> updates,
@@ -12,9 +12,9 @@ class NotificationsNotifierState with _$NotificationsNotifierState {
 class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
     implements Loadable {
   NotificationsNotifier(final BuildContext context)
-      : _notificationRepository = context.read(),
-        _projectsRepository = context.read(),
-        super(const NotificationsNotifierState());
+    : _notificationRepository = context.read(),
+      _projectsRepository = context.read(),
+      super(const NotificationsNotifierState());
   final NotificationsRepository _notificationRepository;
   final ProjectsRepository _projectsRepository;
 
@@ -43,8 +43,8 @@ class NotificationsNotifier extends ValueNotifier<NotificationsNotifierState>
 
   @override
   Future<void> onLoad() async {
-    final notifications =
-        await _notificationRepository.getUpdatesNotifications();
+    final notifications = await _notificationRepository
+        .getUpdatesNotifications();
     await determineUnreadUpdates();
     setValue(value.copyWith(updates: notifications));
 

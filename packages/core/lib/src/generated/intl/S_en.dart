@@ -376,4 +376,223 @@ class SEn extends S {
 
   @override
   String get all => 'All';
+
+  @override
+  String get githubSync => 'GitHub Sync';
+
+  @override
+  String get connectGithub => 'Connect GitHub…';
+
+  @override
+  String get disconnectGithub => 'Disconnect GitHub';
+
+  @override
+  String get githubConnected => 'GitHub connected';
+
+  @override
+  String githubConnectFailed(String error) {
+    return 'Could not connect GitHub: $error';
+  }
+
+  @override
+  String get chooseRepository => 'Choose repository';
+
+  @override
+  String get createNewRepository => 'Create new repository';
+
+  @override
+  String get repoNameHint => 'repository-name';
+
+  @override
+  String get subdirectory => 'Subdirectory';
+
+  @override
+  String get backupToGithub => 'Back up to GitHub';
+
+  @override
+  String get restoreFromGithub => 'Restore from GitHub';
+
+  @override
+  String get githubBackupDone => 'Backed up to GitHub ✓';
+
+  @override
+  String get githubRestoreDone => 'Restored from GitHub ✓';
+
+  @override
+  String get pasteTokenInstead => 'Paste a token instead';
+
+  @override
+  String get tokenGuideTitle => 'Create a fine-grained token';
+
+  @override
+  String get tokenStep1 => '1. Open github.com and sign in.';
+
+  @override
+  String get tokenStep2 =>
+      '2. Click “Generate new token” on the token page (button below).';
+
+  @override
+  String get tokenStep3 =>
+      '3. Repository access → “Only select repositories” → pick your notes repo.';
+
+  @override
+  String get tokenStep4 =>
+      '4. Permissions → Contents → “Read and write”. Nothing else.';
+
+  @override
+  String get tokenStep5 =>
+      '5. Set an expiry date, generate, copy the token here.';
+
+  @override
+  String get tokenFieldLabel => 'Token (ghu_… / github_pat_…)';
+
+  @override
+  String get connectWithToken => 'Connect';
+
+  @override
+  String get openGithubTokens => 'Open GitHub token page';
+
+  @override
+  String get manageTokens => 'Manage / revoke tokens';
+
+  @override
+  String get storage => 'Storage';
+
+  @override
+  String get storageSectionHint =>
+      'Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.';
+
+  @override
+  String get storageLocalDb => 'Local database';
+
+  @override
+  String get storageLocalDbHint =>
+      'Always on. Fast and private — data never leaves this device.';
+
+  @override
+  String get storageFilesystem => 'Folder on this device';
+
+  @override
+  String get storageFilesystemHint =>
+      'Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.';
+
+  @override
+  String get storageGitOffline => 'Git folder (offline)';
+
+  @override
+  String get storageGitOfflineHint =>
+      'Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.';
+
+  @override
+  String get storageGithubOption => 'GitHub';
+
+  @override
+  String get storageGithubOptionHint =>
+      'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.';
+
+  @override
+  String get storagePrimary => 'Primary storage — restores use it by default';
+
+  @override
+  String get storageSetAsPrimary => 'Use as primary';
+
+  @override
+  String get storageFolderPathLabel => 'Folder path';
+
+  @override
+  String get storageGitPathLabel => 'Repository folder path';
+
+  @override
+  String get storagePathHint =>
+      'The folder is created automatically if it doesn\'t exist yet.';
+
+  @override
+  String get storageBackupNow => 'Back up now';
+
+  @override
+  String get storageRestoreNow => 'Restore from copy';
+
+  @override
+  String get storageBackupDone => 'Backup saved ✓';
+
+  @override
+  String get storageRestoreDone => 'Restored ✓';
+
+  @override
+  String get storageNoBackupFound => 'No backup found in this location yet.';
+
+  @override
+  String get storageOperationFailed => 'Storage operation failed';
+
+  @override
+  String get storageOpenGithubSetup => 'Open GitHub settings';
+
+  @override
+  String get storageNotAvailable => 'Not available on this platform';
+
+  @override
+  String get storageMeshTitle => 'Sync between devices';
+
+  @override
+  String get storageMeshHint =>
+      'Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.';
+
+  @override
+  String get storageMeshBecomeMain => 'Use this device as main';
+
+  @override
+  String get storageMeshJoinWithCode => 'I have a pairing code';
+
+  @override
+  String storageMeshWaitingHint(String joinWithCode) {
+    return 'Keep this screen open. On your second device tap “$joinWithCode” and scan this code or paste it.';
+  }
+
+  @override
+  String get storageMeshCopyCode => 'Copy code';
+
+  @override
+  String get storageMeshCodeCopied => 'Pairing code copied';
+
+  @override
+  String get storageMeshPasteTitle => 'Paste pairing code';
+
+  @override
+  String get storageMeshScanQr => 'Scan QR code';
+
+  @override
+  String get storageMeshConnectButton => 'Connect';
+
+  @override
+  String get storageMeshMainBadge => 'Main device';
+
+  @override
+  String get storageMeshJoinedStatus =>
+      'Connected to your main device. Notes sync automatically while both are on the same network.';
+
+  @override
+  String storageMeshConnectedCount(int count) {
+    return 'Connected devices: $count';
+  }
+
+  @override
+  String get storageMeshSyncNow => 'Sync now';
+
+  @override
+  String get storageMeshSyncDone => 'Devices synced ✓';
+
+  @override
+  String storageMeshPairingFailed(String error) {
+    return 'Could not connect: $error';
+  }
+
+  @override
+  String get storageMeshAdvanced => 'Advanced settings (debug)';
+
+  @override
+  String get storageMeshUnpair => 'Unpair devices';
+
+  @override
+  String get tokenSafety =>
+      'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.';
 }

@@ -1,0 +1,96 @@
+---
+status: current
+evidence_type: adoption-record
+date: 2026-09-07
+scope: oka publish-target adoption for Google Play + Huawei AppGallery (ADR-0014/0015)
+claim_tested: Publish targets declare + dry-run green without any credential present.
+proof_level: deterministic tool output recorded; no real upload attempted (none possible — no credentials on this machine, by design)
+commands_or_sources:
+  - "oka explain --targets (2026-09-07): publish-play + publish-huawei chains valid, no tools invoked"
+  - "oka run publish-play (2026-09-07): exit 0 (dry-run chain executed, zero HTTP)"
+  - "oka run publish-huawei (2026-09-07): exit 0 (dry-run chain executed, zero HTTP)"
+  - "dart run tool/verify_publish_dry_run.dart (2026-09-07, since deleted): both chains compile → validate → execute; PublishPlan captured verbatim below"
+  - "real-mode chains (dryRun: false) compile + validate but were never executed"
+  - "fvm flutter analyze (2026-09-07): 0 errors; 166 pre-existing info/warning (4 infos in tool/oka_pipeline.dart are the intentional explicit safe defaults dryRun/track)"
+  - "fvm flutter test (2026-09-07): 100 passed; 1 pre-existing failure in test/mesh_storage_presence_roster_test.dart — reproduces with the publish-target changes stashed (unrelated to this task)"
+result: tool/oka_pipeline.dart declares PlayPublishTarget (internal track, dev.xsoulspace.lastanswer) and HuaweiPublishTarget (beta track, GMS-free HuaweiBuildVariant over the same AndroidBuild/PipelineOverrides); pubspec.yaml gains oka_play + oka_huawei path deps. No app code (lib/) changed.
+limitations: AGC appId left empty (filled by a human after creating the app in AppGallery Connect); release-note files promo/store/whatsnew-{en,ru}.txt must be created before a real AGC submit. oka gap: `oka run <target>` prints nothing on dry-run success — the PublishPlan lands in StepResult data that the oka_run dispatch discards (plans captured here via the tooling path instead).
+non_claims:
+  - any store upload happened (no credentials exist on this machine — expected)
+  - publishing correctness against the real Play/AGC APIs
+  - app runtime correctness (no app code touched)
+  - steward presence readiness
+---
+
+# oka publish-target adoption (ADR-0014/0015)
+
+Last Answer declares its store publish targets in the composition root
+(`tool/oka_pipeline.dart`) — the single source of truth, including the
+one-time human setup walkthroughs as dartdoc.
+
+## Declared targets
+
+- `playPublishTarget` — Google Play, `internal` track, `dev.xsoulspace.lastanswer`, dry-run default. Credential: service-account JSON by path (`OKA_PLAY_SERVICE_ACCOUNT_JSON` env var → well-known `~/.oka/credentials/play/service-account-json` → typed path).
+- `huaweiPublishTarget` — AppGallery Connect, `beta` track, GMS-free `HuaweiBuildVariant` reusing the same `AndroidBuild`/`PipelineOverrides` consts (the oka composition declares no GMS coordinates, so `excludedGmsDeps` is empty and the same GMS-free AAB serves both stores). Credential: AGC API-client JSON by path (`OKA_HUAWEI_AGCONNECT_CREDENTIALS` env var — the name derived from the `huawei/agconnect-credentials` CredentialRef; the brief's guessed `OKA_HUAWEI_AGCREDENTIALS` is NOT the real one).
+
+## `oka explain --targets` (deterministic tool output, 2026-09-07)
+
+```
+  publish-play — Upload the AAB to Google Play (internal track, dry run)
+    stage-aab               → [aab-path]
+    publish-plan            ← [aab-path] → [publish-plan]
+    ✅ artifact chain valid
+
+  publish-huawei — Upload the AAB to Huawei AppGallery Connect (GMS-excluded variant, track beta)
+    huawei-stage-aab        → [aab-path]
+    publish-plan            ← [aab-path] → [publish-plan]
+    ✅ artifact chain valid
+```
+
+## Dry-run plans (captured via the compiled chains; zero HTTP, no credentials)
+
+```
+════ publish-play ════
+composition validation: ✅ valid
+step stage-aab: ok
+step publish-plan: ok
+target: publish-play (dry run — nothing was uploaded)
+endpoint: Google Play Publisher API (androidpublisher/v3)
+track: internal
+artifact: aab-path → …/.oka_cache/build/verify-dry-run/app-release.aab
+metadata.packageName: dev.xsoulspace.lastanswer
+credential: CredentialRef(play/service-account-json → [redacted])
+
+════ publish-huawei ════
+composition validation: ✅ valid
+step huawei-stage-aab: ok
+step publish-plan: ok
+target: publish-huawei (dry run — nothing was uploaded)
+endpoint: AppGallery Connect Publishing API (https://connect-api.cloud.huawei.com)
+track: beta
+artifact: aab-path → …/.oka_cache/build/verify-dry-run/app-release.aab
+metadata.appId:
+metadata.phasePercent: 100
+metadata.releaseNotes: en:promo/store/whatsnew-en.txt, ru:promo/store/whatsnew-ru.txt
+credential: CredentialRef(huawei/agconnect-credentials → [redacted])
+
+real-mode chain publish-play: ✅ compiles + validates (not executed)
+real-mode chain publish-huawei: ✅ compiles + validates (not executed)
+```
+
+`oka run publish-play` / `oka run publish-huawei` both exit 0 on this tree.
+
+## Human setup (SSOT: the dartdoc in tool/oka_pipeline.dart)
+
+Play: create a GCP service account (enable Google Play Android Developer API) → invite its email in Play Console → Users and permissions (Release to testing) → download the JSON key → store outside the repo or gitignored → `export OKA_PLAY_SERVICE_ACCOUNT_JSON=/path/to.json` → `oka run publish-play` (dry-run, credential-free) → `oka build aab --release` → flip `dryRun: false` here → `oka run publish-play --release --aab`.
+
+Huawei: AppGallery Connect account → My apps → New app (Android, `dev.xsoulspace.lastanswer`), copy the numeric app id into `release: appId:` → Users and permissions → API client → store `{"client_id", "client_secret"}` JSON outside the repo → `export OKA_HUAWEI_AGCONNECT_CREDENTIALS=/path/to.json` → create `promo/store/whatsnew-en.txt` + `promo/store/whatsnew-ru.txt` → `oka run publish-huawei` (dry-run) → `oka build aab --release` → flip `dryRun: false` → `oka run publish-huawei --release --aab`.
+
+On failure oka names every credential candidate tried (typed path → env var → well-known location) and the fix; a malformed service-account JSON names the missing fields, never values (exercised by oka_play/oka_huawei conformance tests).
+
+## oka gaps found (reported, not worked around)
+
+1. **`oka run <target>` is silent on dry-run success.** The plan produced by `PublishPlanStep` goes into `StepResult` data, but `okaRun`'s dispatch only prints `apk_path` — `Pipeline.run` drops all other step data. The ADR-0014 law says the dry-run "must … print exactly what a real run would do"; today the plan is only reachable via tooling. Suggested fix (oka side): print `PublishPlan.describeLines()` in `okaRun` when a `publish-plan` artifact is in state.
+2. **AAB path mismatch for real runs.** `StageAabStep`/`HuaweiStageAabStep` fall back to `<buildDir>/app-release.aab`, but the oka AAB build writes `<buildDir>/aab/app-<mode>.aab` (`toolchain.dart`, `packageAndSignAab`). A standalone `oka run publish-play --release --aab` after `oka build aab --release` would target a path that does not exist. The real upload needs the fallback corrected (or an explicit artifact-path override) in oka_play/oka_huawei — not an app-side workaround.
+
+Environment note (transient, not a gap): while the parallel `oka-h02-hotreload` agent was mid-edit in `../oka`, the oka workspace did not compile, which blocked this app's entrypoint; it resolved once that agent's edits settled. The two Dart SDKs on this machine (stable on PATH vs fvm beta) thrash the native-assets hooks cache — verification used the PATH (stable) SDK consistently, matching what the `oka` CLI invokes.

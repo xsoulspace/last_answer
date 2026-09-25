@@ -1,4 +1,4 @@
-import 'package:in_app_purchase/in_app_purchase.dart';
+// import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class SubscriptionView extends StatelessWidget {
@@ -48,7 +48,7 @@ class SubscriptionView extends StatelessWidget {
 
 class PurchasableProductTile extends StatelessWidget {
   const PurchasableProductTile({
-    required this.details,
+    // required this.details,
     required this.onPressed,
     required this.activeProductId,
     required this.isLoading,
@@ -56,23 +56,23 @@ class PurchasableProductTile extends StatelessWidget {
   });
   final bool isLoading;
   final VoidCallback onPressed;
-  final ProductDetails details;
+  // final ProductDetails details;
   final IAPId activeProductId;
   @override
   Widget build(final BuildContext context) => Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(details.title),
-            Text(details.description),
-            Text(details.price),
-            if (activeProductId.id == details.id)
-              const Text('Active')
-            else
-              TextButton(onPressed: onPressed, child: const Text('Purchase')),
-          ],
-        ),
-      );
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Text(details.title),
+        // Text(details.description),
+        // Text(details.price),
+        // if (activeProductId.id == details.id)
+        //   const Text('Active')
+        // else
+        TextButton(onPressed: onPressed, child: const Text('Purchase')),
+      ],
+    ),
+  );
 }
 
 class PaymentsHistoryListView extends StatelessWidget {
@@ -83,11 +83,7 @@ class PaymentsHistoryListView extends StatelessWidget {
     final userNotifier = context.watch<UserNotifier>();
     return ListView(
       primary: false,
-      children: const [
-        Gap(24),
-        Text('No payment history'),
-        Gap(24),
-      ],
+      children: const [Gap(24), Text('No payment history'), Gap(24)],
     );
   }
 }

@@ -18,7 +18,7 @@ export 'package:go_router/go_router.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:provider/provider.dart';
 export 'package:recase/recase.dart';
-export 'package:rxdart/rxdart.dart' hide Notification;
+export 'package:rxdart/rxdart.dart';
 export 'package:shared_models/shared_models.dart';
 export 'package:ui_kit/ui_kit.dart';
 export 'package:universal_io/io.dart';

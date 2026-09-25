@@ -19,18 +19,13 @@ class EmojiPopup extends StatelessWidget {
       icon: CupertinoIcons.smiley,
       useOnMobile: false,
       onWebClose: () => context.read<EmojiStateNotifier>().filterKeyword = '',
-      builder: (final context) => EmojiGrid(
-        onChanged: emojiInserter.insert,
-      ),
+      builder: (final context) => EmojiGrid(onChanged: emojiInserter.insert),
     );
   }
 }
 
 class EmojiGrid extends StatelessWidget {
-  const EmojiGrid({
-    required this.onChanged,
-    super.key,
-  });
+  const EmojiGrid({required this.onChanged, super.key});
   final ValueChanged<EmojiModel> onChanged;
 
   @override
@@ -46,32 +41,27 @@ class EmojiGrid extends StatelessWidget {
     const maxItemsInRow = 9;
     final emojiStyle = PlatformInfo.isNativeDesktop && Platform.isMacOS
         ? null
-        : Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontFamily: 'NotoColorEmoji',
-            );
+        : Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontFamily: 'NotoColorEmoji');
     Widget buildEmojiButton(final EmojiModel emoji) => EmojiButton(
-          key: ValueKey(emoji),
-          style: emojiStyle,
-          emoji: emoji,
-          onPressed: () {
-            onChanged(emoji);
-            List<EmojiModel> newLastEmojis = [...lastEmojisNotifier.values];
-            final emojiExists = newLastEmojis.contains(emoji);
-            if (!emojiExists) {
-              newLastEmojis.insert(0, emoji);
-            }
-            if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
-              newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
-            }
-            lastEmojisNotifier.loadIterable(
-              values: newLastEmojis,
-              toKey: (final c) => c.emoji,
-            );
-            context.read<LastEmojiStateNotifier>().assignEntries(
-                  newLastEmojis.map((final e) => MapEntry(e.emoji, e)),
-                );
-          },
-        );
+      key: ValueKey(emoji),
+      style: emojiStyle,
+      emoji: emoji,
+      onPressed: () {
+        onChanged(emoji);
+        List<EmojiModel> newLastEmojis = [...lastEmojisNotifier.orderedValues];
+        final emojiExists = newLastEmojis.contains(emoji);
+        if (!emojiExists) {
+          newLastEmojis.insert(0, emoji);
+        }
+        if (newLastEmojis.length > maxItemsInRow && !emojiExists) {
+          newLastEmojis = newLastEmojis.sublist(0, maxItemsInRow);
+        }
+        lastEmojisNotifier.assignAllOrdered(newLastEmojis);
+        context.read<LastEmojiStateNotifier>().upsertAll(newLastEmojis);
+      },
+    );
 
     return ButtonPopup(
       children: [
@@ -88,11 +78,7 @@ class EmojiGrid extends StatelessWidget {
         Visibility(
           visible: filteredEmoji.isNotEmpty,
           child: Padding(
-            padding: const EdgeInsets.only(
-              top: 6,
-              bottom: 1,
-              left: 9,
-            ),
+            padding: const EdgeInsets.only(top: 6, bottom: 1, left: 9),
             child: Text(
               context.l10n.frequentlyUsed,
               style: Theme.of(context).textTheme.titleSmall,
@@ -169,7 +155,6 @@ class EmojiInserter {
       final prefixText = controller.text.substring(0, cursorPos);
       controller
         ..text = prefixText + emojiChar + suffixText
-
         // Cursor move to end of added text
         ..selection = TextSelection(
           baseOffset: cursorPos + length,

@@ -34,9 +34,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
           ),
           titleBuilder: (final context, final hovered) => Opacity(
             opacity: hovered ? 1.0 : 0.7,
-            child: Text(
-              context.l10n.deleteThisNote.sentenceCase,
-            ),
+            child: Text(context.l10n.deleteThisNote.sentenceCase),
           ),
         ),
         const Gap(borderPadding * 2),

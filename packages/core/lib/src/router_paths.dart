@@ -11,8 +11,9 @@ class ScreenPaths {
   static String ideaAnswer({
     required final ProjectModelId ideaId,
     required final ProjectModelId answerId,
-  }) =>
-      '$home/i/${ideaId.value}/${answerId.value}';
+  }) => '$home/i/${ideaId.value}/${answerId.value}';
   static String note({required final ProjectModelId noteId}) =>
       '$home/n/${noteId.value}';
+  static String doc({required final ProjectModelId docId}) =>
+      '$home/d/${docId.value}';
 }

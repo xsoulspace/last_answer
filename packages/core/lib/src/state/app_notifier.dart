@@ -1,27 +1,23 @@
 part of 'state.dart';
 
-enum AppStatus {
-  offline,
-  online,
-  loading;
-}
+enum AppStatus { offline, online, loading }
 
 @freezed
-class AppFeaturesModel with _$AppFeaturesModel {
+abstract class AppFeaturesModel with _$AppFeaturesModel {
   const factory AppFeaturesModel({
     @Default(false) final bool isRemoteServicesEnabled,
   }) = _AppFeaturesModel;
 }
 
-@stateDistributor
+@resource
 class AppFeaturesNotifier extends ValueNotifier<AppFeaturesModel> {
   // ignore: avoid_unused_constructor_parameters
   AppFeaturesNotifier(final BuildContext context)
-      : super(const AppFeaturesModel());
+    : super(const AppFeaturesModel());
 }
 
 @freezed
-class AppNotifierState with _$AppNotifierState {
+abstract class AppNotifierState with _$AppNotifierState {
   const factory AppNotifierState({
     @Default(AppStatus.loading) final AppStatus status,
   }) = _AppNotifierState;
@@ -29,10 +25,10 @@ class AppNotifierState with _$AppNotifierState {
 
 class AppNotifierDto {
   AppNotifierDto(final BuildContext context)
-      : projectsNotifier = context.read(),
-        tagsNotifier = context.read(),
-        projectsRepository = context.read(),
-        tagsRepository = context.read();
+    : projectsNotifier = context.read(),
+      tagsNotifier = context.read(),
+      projectsRepository = context.read(),
+      tagsRepository = context.read();
   final ProjectsNotifier projectsNotifier;
   final ProjectsRepository projectsRepository;
   final TagsNotifier tagsNotifier;
@@ -41,8 +37,8 @@ class AppNotifierDto {
 
 class AppNotifier extends ValueNotifier<AppNotifierState> {
   AppNotifier(final BuildContext context)
-      : dto = AppNotifierDto(context),
-        super(const AppNotifierState());
+    : dto = AppNotifierDto(context),
+      super(const AppNotifierState());
 
   final AppNotifierDto dto;
 
@@ -58,7 +54,7 @@ class AppNotifier extends ValueNotifier<AppNotifierState> {
     final l10n = context.l10n;
 
     await dto.projectsRepository.putAll(projects: dbSave.projects);
-    dto.tagsRepository.putAll(
+    await dto.tagsRepository.putAll(
       dbSave.tags.toMap(
         toKey: (final item) => item.id,
         toValue: (final item) => item,
@@ -71,8 +67,6 @@ class AppNotifier extends ValueNotifier<AppNotifierState> {
       dto.tagsNotifier.onLocalUserLoad(),
     ]);
 
-    await toasts.showBottomToast(
-      message: l10n.projectsFromFileRestored,
-    );
+    await toasts.showBottomToast(message: l10n.projectsFromFileRestored);
   }
 }

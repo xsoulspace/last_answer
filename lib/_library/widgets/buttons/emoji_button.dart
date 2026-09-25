@@ -13,19 +13,14 @@ class EmojiButton extends StatelessWidget {
   final TextStyle? style;
   @override
   Widget build(final BuildContext context) => MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: CupertinoButton(
-          minSize: 0,
-          padding: EdgeInsets.zero,
-          onPressed: onPressed,
-          child: Center(
-            child: Text(
-              emoji.emoji,
-              style: style,
-            ),
-          ),
-        ),
-      );
+    cursor: SystemMouseCursors.click,
+    child: CupertinoButton(
+      minimumSize: Size.zero,
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Center(child: Text(emoji.emoji, style: style)),
+    ),
+  );
 }
 
 class KeyboardEmojiButton extends StatelessWidget {
@@ -43,23 +38,18 @@ class KeyboardEmojiButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return CupertinoButton(
-      minSize: 0,
+      minimumSize: Size.zero,
       onPressed: onPressed,
       padding: EdgeInsets.zero,
       child: Container(
         width: 35,
         height: 40,
         decoration: BoxDecoration(
-          color: theme.highlightColor.withOpacity(0.2),
+          color: theme.highlightColor.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(6),
         ),
         padding: const EdgeInsets.all(7),
-        child: FittedBox(
-          child: Text(
-            emoji.emoji,
-            style: style,
-          ),
-        ),
+        child: FittedBox(child: Text(emoji.emoji, style: style)),
       ),
     );
   }

@@ -804,6 +804,16 @@ Set<AgentCallEntry> agentMcpEntries() => {
         ),
         roster: notifier.actorRoster,
         statusFor: statusForShadow,
+        // PLAN 6.C — the console rows ride the shadow projection (the
+        // viewer READS the board; it never claims or runs requests).
+        tasksFor: () {
+          final board = notifier.taskBoard;
+          if (board == null) return const <Map<String, Object?>>[];
+          return [
+            for (final record in board.tasksFor(docId))
+              meshTaskRecordJson(record),
+          ];
+        },
       );
       AgentDocSurface.shadowDoc = shadow;
       // Presence follows the open doc (ADR 0031 §1) — the same channel
@@ -931,6 +941,173 @@ Set<AgentCallEntry> agentMcpEntries() => {
           },
         },
         'required': ['text'],
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      // PLAN 6.C — the mesh task console, dispatch side: the task is a
+      // REAL row on the shared CRDT board (kernel LWW via the mesh sync
+      // substrate) — the device with the bound workspace auto-runs it
+      // and writes the verdict back as board data. Read from the LIVE
+      // board the app owns (StorageBackendsNotifier), never a local
+      // stub — same discipline as the other mesh verbs.
+      final requestedDoc = parameters['docId'];
+      if (requestedDoc is! String || requestedDoc.isEmpty) {
+        return MCPCallResult(
+          message: 'docId (string) is required — the shared agent doc id.',
+          parameters: {'ok': false},
+        );
+      }
+      final task = parameters['task'];
+      if (task is! String || task.isEmpty) {
+        return MCPCallResult(
+          message: 'task (string) is required.',
+          parameters: {'ok': false},
+        );
+      }
+      final notifier = StorageBackendsNotifier.instance;
+      final board = notifier.taskBoard;
+      if (board == null) {
+        return MCPCallResult(
+          message:
+              'No mesh task board is attached on this device — host or '
+              'pair first (mesh_host, or mesh_pair on the peer); the '
+              'board mounts with the mesh replica.',
+          parameters: {'ok': false},
+        );
+      }
+      final service = notifier.meshService;
+      if (service == null) {
+        return MCPCallResult(
+          message:
+              'No mesh replica is open on this device — call mesh_host '
+              'or mesh_pair first.',
+          parameters: {'ok': false},
+        );
+      }
+      // Origin actor when the OPEN doc is the target (ADR 0007: identity,
+      // never authority — the same attached-actor attribution the routed
+      // permission announcements carry).
+      final state = AgentDocSurface.debugState;
+      final originActorId = state != null && state.docId == requestedDoc
+          ? state.sessionActors.values.expand((final ids) => ids).firstOrNull
+          : null;
+      final taskId = board.requestTask(
+        docId: requestedDoc,
+        task: task,
+        originPeerId: service.selfId,
+        originActorId: originActorId,
+      );
+      // One convergence cycle right away (mesh_pair's discipline: the
+      // failure is NAMED data, the request itself already landed).
+      var synced = true;
+      try {
+        await service.sync();
+        StorageBackendsNotifier.onSyncCycle?.call();
+      } on Exception {
+        synced = false;
+      }
+      return MCPCallResult(
+        message:
+            'Requested task $taskId on board ${board.boardId} '
+            '(status requested); the mesh sync cycle ships it to the '
+            'device that owns the doc${synced
+                ? ''
+                : ' — the cycle FAILED, retry with storage_mesh_sync'}.',
+        parameters: {
+          'ok': true,
+          'taskId': taskId,
+          'boardId': board.boardId,
+          'status': 'requested',
+          'synced': synced,
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'mesh_task_dispatch',
+      description:
+          'Dispatch an agent task for a shared agent doc through the mesh '
+          'task console: writes a requested row on the shared CRDT task '
+          'board (origin: this device); the paired device that owns the '
+          'doc (bound workspace + live harness) auto-runs it and writes '
+          'the verdict back as board data. Poll mesh_tasks for the '
+          'verdict.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'docId': {
+            'type': 'string',
+            'description': 'The shared agent doc id the task targets.',
+          },
+          'task': {
+            'type': 'string',
+            'description': 'The task sentence to run on the owner device.',
+          },
+        },
+        'required': ['docId', 'task'],
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) {
+      // PLAN 6.C — the mesh task console, read side: how the dispatching
+      // peer reads statuses and verdicts. Rows come from the LIVE board
+      // (empty list when the doc has none) — never a cached projection.
+      final board = StorageBackendsNotifier.instance.taskBoard;
+      if (board == null) {
+        return MCPCallResult(
+          message:
+              'No mesh task board is attached on this device — host or '
+              'pair first (mesh_host, or mesh_pair on the peer); the '
+              'board mounts with the mesh replica.',
+          parameters: {'ok': false, 'tasks': const <Never>[]},
+        );
+      }
+      final requested = parameters['docId'];
+      final docId = requested is String && requested.isNotEmpty
+          ? requested
+          : AgentDocSurface.debugState?.docId ??
+                AgentDocSurface.shadowDoc?.docId;
+      if (docId == null) {
+        return MCPCallResult(
+          message:
+              'docId is required (no agent doc is open or shadowed to '
+              'default to).',
+          parameters: {'ok': false},
+        );
+      }
+      final rows = [
+        for (final record in board.tasksFor(docId)) meshTaskRecordJson(record),
+      ];
+      final summary = rows
+          .map((final r) => '${r['taskId']}=${r['status']}')
+          .join(', ');
+      return MCPCallResult(
+        message:
+            '${rows.length} task row(s) for $docId on board '
+            '${board.boardId}'
+            '${rows.isEmpty ? '.' : ': $summary.'}',
+        parameters: {'ok': true, 'docId': docId, 'tasks': rows},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'mesh_tasks',
+      description:
+          'Read the mesh task console rows of a shared agent doc from the '
+          'shared CRDT task board (taskId, task, status '
+          'requested/running/completed/failed, origin, verdict): how the '
+          'dispatching peer reads progress and verdicts after the owner '
+          'device auto-runs a request.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'docId': {
+            'type': 'string',
+            'description':
+                'Agent doc id (defaults to the open or shadowed doc).',
+          },
+        },
       }),
     ),
   ),

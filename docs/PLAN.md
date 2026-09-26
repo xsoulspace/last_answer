@@ -11,8 +11,8 @@ optional decision-provider isolation follows
 
 ## Product outcome — a writable shared agentic document
 
-The product is a living, writable document/workspace on which a human and
-agents work together. The typed document/meaning graph is the shared
+The product is a living, writable document(s)/workspace(s) on which a human and
+agents work together. The typed document(s)/meaning graph(s) is the shared
 collaborative state; conversations, ACP streams, harness beats, task boards,
 permissions, diffs and threads are durable projections/observability of that
 work, not substitutes for the document. Workspace content must be addressable
@@ -300,20 +300,19 @@ execution order; follow C0–C6 and the staged sequence below.
   materializes code and runs its oracle.
 - **5.G2 — heavy-usage soak:** partitions, restart, streaming bursts, large
   docs and clock skew converge or produce a named expected divergence.
-- **5.G3 — snapshot-aware sync:** compacted replica and lagging peer recover
-  through `needsSnapshotFor`/`adoptSnapshot` across the actual store/mesh seam.
 - **5.G4 — positional co-editing:** kernel YATA v2 behind `MergeStrategy` when
   same-block co-authoring becomes the frontier; convergence alone does not
   prove positional intent.
-- **5.G5 — ecsly bridge/publication:** live World→delta bridge and published
-  kernel dependency; two-device convergence without the path override.
 - **Phase 6.A — purpose-bound local models:** provision/consent UI for AFM,
   Gemma and voice capabilities; scripted parity plus real structured move.
 - **6.B — mobile harness:** documents-directory workspace, text materializers,
   injected storage, trimmed tools and structural verification; real Android
   edit with visible result/spend. See [feasibility](harness-mobile-feasibility.md).
-- **6.C — mesh console:** phone task op→macOS execution→streamed phone verdict
-  and prompt permission response, over existing convergence/ACP contracts.
+- **6.C — mesh console:** token-level streamed phone verdict (the
+  dispatch→execution→verdict-row slice and the prompt permission response
+  are landed; see history 2026-09-26 and
+  [ADR 0013](decisions/0013-mesh-task-board-over-ecsly-world-sync.md)); the
+  full two-device run is the human gate.
 - **6.D — shared-world device actors:** macOS+Android offline/online editing,
   one owner materializing code, provenance and converged results, zero cloud
   calls (ADR 0008 falsifier).

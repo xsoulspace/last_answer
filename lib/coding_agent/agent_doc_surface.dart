@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:core/core.dart';
+import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
@@ -373,6 +375,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// permission. Re-read the projection.
   void refreshAfterMeshSync() {
     _controller.refreshPermissions();
+    // PLAN 6.C — the mesh task console: remote requests on the shared
+    // board become local delegated turns on THIS (host) surface — the
+    // same app wiring hook that re-reads routed permissions.
+    _autoRunPendingRemoteTasks();
     // Task O — re-project IMMEDIATELY, not on the next frame: the
     // MCP/intent projection must match the live service within one sync
     // cycle (the T3 gate diffs debugState byte-for-byte) — a build-frame
@@ -380,6 +386,143 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (mounted) AgentDocSurface.debugState = _projectState();
     if (mounted) setState(() {});
   }
+
+  // -------------------------------------------------------------------
+  // PLAN 6.C — the host side of the mesh task console: a peer's board
+  // request (`status: requested`, origin another device) is claimed
+  // (markRunning), delegated through the SAME route the composer and the
+  // `agent_task_delegate` verb use ([_syncConfigBeforeTurn] →
+  // createSession → [HarnessSessionController.delegate]), and its REAL
+  // turn outcome is written back as the board verdict (completeTask /
+  // failTask) — the mesh sync cycle ships it to the peer.
+  // -------------------------------------------------------------------
+
+  /// Remote requests already handled in THIS session (in-memory dedupe,
+  /// never persisted: the board's own terminal status is the durable
+  /// record, so a fresh session re-runs nothing the board settled).
+  final Set<String> _handledRemoteTasks = <String>{};
+
+  /// True while an auto-run delegate is in flight — refreshAfterMeshSync
+  /// fires after every sync cycle, including the cycles the auto-run's
+  /// own board writes (and the queue flush's follow-up turns) trigger.
+  bool _autoRunInFlight = false;
+
+  /// Claims and runs at most ONE pending remote request per cycle — a
+  /// delegated turn is single-writer. Guard rails: this surface must be
+  /// the host side (a live controller with a bound workspace — the
+  /// `AgentDocShadow` viewer never reaches this code path at all); a
+  /// busy controller leaves the request unclaimed for a later cycle;
+  /// `autoRunRemoteTasks: false` (tests) disables the whole block.
+  void _autoRunPendingRemoteTasks() {
+    final wiring = AgentDocSurface.meshWiring;
+    if (wiring == null || !wiring.autoRunRemoteTasks) return;
+    if (_autoRunInFlight || _controller.isRunning) return;
+    final board = wiring.taskBoard?.call();
+    final selfPeerId = wiring.selfPeerId?.call();
+    if (board == null || selfPeerId == null) return;
+    for (final record in board.pendingRequestsFor(
+      _doc.id.value,
+      selfPeerId: selfPeerId,
+    )) {
+      if (_handledRemoteTasks.contains(record.taskId)) continue;
+      try {
+        board.markRunning(record.taskId);
+      } on Object {
+        continue; // board write failed — leave it for the next cycle.
+      }
+      _handledRemoteTasks.add(record.taskId);
+      unawaited(_autoRunTask(board, record));
+      return;
+    }
+  }
+
+  /// The auto-run of ONE claimed request: delegate exactly like
+  /// `_delegate` does for a composer submit (config sync → session on the
+  /// bound workspace → workspace pinned into the payload → the
+  /// controller's delegate), then map the turn outcome onto the board
+  /// HONESTLY — only figures the controller truly exposed (an
+  /// interrupted turn carries no spend; nothing is invented, DESIGN §6).
+  /// Every exit writes a terminal board record: a request is never
+  /// silently dropped.
+  Future<void> _autoRunTask(
+    final MeshTaskBoard board,
+    final MeshTaskRecord record,
+  ) async {
+    _autoRunInFlight = true;
+    Map<String, Object?> verdictOf({
+      final AcpStopReason? stop,
+      final HarnessTurn? turn,
+    }) => {
+      if (turn?.verdictLine != null) 'verdict': turn!.verdictLine,
+      // The spend exists only when the verdict line carried figures —
+      // absent figures stay absent (never zeros, DESIGN §6).
+      if (turn?.spend case final spend?) ...{
+        'decisions': spend.decisions,
+        'rounds': spend.rounds,
+        'tokens': spend.tokens,
+        'wallMs': spend.wallMs,
+      },
+      if (stop != null) 'stopReason': stop.name,
+    };
+    try {
+      final workspace = _workspaceField.text.trim();
+      if (workspace.isEmpty) {
+        board.failTask(
+          record.taskId,
+          error: 'no workspace bound to the doc yet.',
+        );
+        return;
+      }
+      if (!await _syncConfigBeforeTurn()) {
+        board.failTask(
+          record.taskId,
+          error:
+              'backend config for the turn could not be synced: '
+              '${_controller.error ?? 'unknown config error'}',
+        );
+        return;
+      }
+      final session = _controller.current;
+      final turnIndex = session?.turns.length ?? 0;
+      if (session == null || session.cwd != workspace) {
+        await _controller.createSession(workspace);
+      }
+      final agent = _doc.agent ?? const AgentDocModel();
+      if (!agent.workspaces.contains(workspace)) {
+        _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
+      }
+      final stop = await _controller.delegate(record.task);
+      final turn = _controller.current?.turns.elementAtOrNull(turnIndex);
+      final verdict = verdictOf(stop: stop, turn: turn);
+      if (stop == null) {
+        // delegate returns null only when the turn failed (the
+        // controller recorded the error) — the named error rides along.
+        board.failTask(
+          record.taskId,
+          verdict: verdict,
+          error:
+              _controller.error ??
+              'the delegated turn failed with no stop reason.',
+        );
+        return;
+      }
+      if (stop == AcpStopReason.cancelled) {
+        board.failTask(
+          record.taskId,
+          verdict: verdict,
+          error: 'the delegated turn was cancelled before completion.',
+        );
+        return;
+      }
+      board.completeTask(record.taskId, verdict: verdict);
+    } on Object catch (error) {
+      board.failTask(record.taskId, error: 'auto-run failed: $error');
+    } finally {
+      _autoRunInFlight = false;
+      if (mounted) AgentDocSurface.debugState = _projectState();
+    }
+  }
+
 
   /// The typed state both projections render ([AgentDocSurface
   /// .debugState]): extracted so the sync-cycle hook and the intent
@@ -435,7 +578,23 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
             ageMs: DateTime.now().difference(step.createdAt).inMilliseconds,
           ),
       ],
+      // PLAN 6.C — the task console rows for this doc (empty when no
+      // board is attached): the same records the `mesh_tasks` verb reads.
+      tasks: _tasksProjection(),
     );
+  }
+
+  /// The mesh task board rows for THIS doc, through the app wiring (the
+  /// surface never reaches the storage layer directly — the wiring is
+  /// the seam, exactly like [AgentDocMeshStatus]). Empty when no board
+  /// is attached (mesh never set up / console not mounted).
+  List<Map<String, Object?>> _tasksProjection() {
+    final board = AgentDocSurface.meshWiring?.taskBoard?.call();
+    if (board == null) return const [];
+    return [
+      for (final record in board.tasksFor(_doc.id.value))
+        meshTaskRecordJson(record),
+    ];
   }
 
   /// R9.a — intent surface: bind the workspace (absolute path) and the
@@ -2766,6 +2925,14 @@ String _hm(final DateTime at) =>
     '${at.hour.toString().padLeft(2, '0')}:'
     '${at.minute.toString().padLeft(2, '0')}';
 
+/// PLAN 6.C — the one JSON shape of a mesh task record across every
+/// projection and verb (`mesh_tasks`, the host/peer debugState `tasks`
+/// rows): [MeshTaskRecord.toJson] — every surface renders the shared
+/// board identically (the convergence oracle diffs these rows
+/// byte-for-byte).
+Map<String, Object?> meshTaskRecordJson(final MeshTaskRecord record) =>
+    record.toJson();
+
 /// The agent/intent projection of the surface state (canonical, typed —
 /// an agent parses this, never a screenshot).
 final class AgentDocDebugState {
@@ -2788,6 +2955,7 @@ final class AgentDocDebugState {
     this.remotePermissionRouting = false,
     this.meshStatus,
     this.queue = const [],
+    this.tasks = const [],
     this.viewer = false,
   });
 
@@ -2842,6 +3010,12 @@ final class AgentDocDebugState {
   /// same queue the grid renders (DESIGN §5: one state, many projections).
   final List<AgentDocQueueEntry> queue;
 
+  /// PLAN 6.C — the mesh task console records for this doc (the shared
+  /// CRDT task board, meshTaskRecordJson shape): dispatches, runs, and
+  /// verdicts — the gate/agent-readable surface. Empty when no board is
+  /// attached on this device.
+  final List<Map<String, Object?>> tasks;
+
   /// Task O — the honest viewer marker (DESIGN §6: label what the host
   /// sees vs what the peer observes). False on the host (it owns the
   /// world); true on a peer's SHADOW doc (`mesh_open_doc`): the peer
@@ -2867,6 +3041,7 @@ final class AgentDocDebugState {
     'remotePermissionRouting': remotePermissionRouting,
     if (meshStatus != null) 'meshStatus': meshStatus!.toJson(),
     'queue': [for (final q in queue) q.toJson()],
+    'tasks': tasks,
     'viewer': viewer,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
@@ -2969,13 +3144,27 @@ final class AgentDocShadow {
     required this.router,
     this.roster,
     final AgentDocMeshStatus Function(String channel)? statusFor,
+    final List<Map<String, Object?>> Function()? tasksFor,
   }) : statusFor =
            statusFor ??
            // Default: the wiring when installed, else the honest zeros —
            // a shadow with no reachable service must not fabricate a mesh.
            ((final channel) =>
                AgentDocSurface.meshWiring?.statusFor(channel) ??
-               const AgentDocMeshStatus());
+               const AgentDocMeshStatus()),
+       tasksFor =
+           tasksFor ??
+           // Default: the app wiring's board when installed, else no rows
+           // — a shadow without a reachable board projects an empty
+           // console, never an invented one.
+           (() {
+             final board = AgentDocSurface.meshWiring?.taskBoard?.call();
+             if (board == null) return const <Map<String, Object?>>[];
+             return [
+               for (final record in board.tasksFor(docId))
+                 meshTaskRecordJson(record),
+             ];
+           });
 
   /// The SHARED project doc id — the exact id the host's surface reports
   /// (the doc channel derives from it: `agent-<docId>`).
@@ -3000,6 +3189,12 @@ final class AgentDocShadow {
   /// — the shadow must carry hosting/connected/peers/presence either way.
   final AgentDocMeshStatus Function(String channel) statusFor;
 
+  /// PLAN 6.C — reads the mesh task console rows for [docId] (the shared
+  /// board when this device has one attached). The wiring-installed
+  /// closure takes precedence; the fallback reads the wiring's board so
+  /// the viewer projection stays self-sufficient either way.
+  final List<Map<String, Object?>> Function() tasksFor;
+
   /// The viewer projection. Honest by construction: session-owned fields
   /// (sessionId, turns, transcript) stay empty — the peer runs no daemon
   /// session; turn ops are not yet synced (v1), so `turnCount` is 0.
@@ -3014,6 +3209,9 @@ final class AgentDocShadow {
     remotePermissions: router.remoteEntries(),
     meshStatus: statusFor(meshDocId),
     actors: roster?.all ?? const [],
+    // PLAN 6.C — the console rows fold in on the peer too (viewer safety:
+    // the shadow READS the board; it never claims or runs requests).
+    tasks: tasksFor(),
     viewer: true,
   );
 
@@ -3051,6 +3249,9 @@ final class AgentDocMeshWiring {
     required this.joinDoc,
     required this.leaveDoc,
     required this.statusFor,
+    this.taskBoard,
+    this.selfPeerId,
+    this.autoRunRemoteTasks = true,
   });
 
   /// Builds the doc channel for remote permission routing over the
@@ -3066,6 +3267,21 @@ final class AgentDocMeshWiring {
 
   /// Reads the mesh status for [docId]'s channel.
   final AgentDocMeshStatus Function(String docId) statusFor;
+
+  /// PLAN 6.C — the shared mesh task board attached to the live mesh
+  /// replica, null when none is attached (console verbs refuse honestly
+  /// and the surface's auto-run stays dormant).
+  final MeshTaskBoard? Function()? taskBoard;
+
+  /// PLAN 6.C — THIS device's mesh peer id: the identity the board's
+  /// `pendingRequestsFor(selfPeerId:)` filter uses so a device never
+  /// auto-runs its own dispatches. Null when no replica is live.
+  final String? Function()? selfPeerId;
+
+  /// PLAN 6.C — whether the host surface converts remote board requests
+  /// into local delegated turns (the host side of the console). Default
+  /// true; tests disable it to pin the shadow/peer behavior.
+  final bool autoRunRemoteTasks;
 }
 
 /// The honest empty state (Phase 1.5): an agent doc with no bound

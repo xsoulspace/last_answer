@@ -46,6 +46,11 @@ Future<StorageService> buildGitOfflineService(final String path) async {
   return StorageService(provider);
 }
 
+/// Gate/tooling override for the mesh store location (hermetic gate runs
+/// cannot rely on ~/Documents TCC grants). Empty when unset.
+String meshStorePathOverride() =>
+    Platform.environment['LAST_ANSWER_MESH_STORE'] ?? '';
+
 /// Default root for the filesystem backend.
 ///
 /// On Android prefers app-scoped external storage (writable via dart:io,

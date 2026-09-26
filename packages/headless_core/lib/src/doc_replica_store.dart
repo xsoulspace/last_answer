@@ -22,10 +22,14 @@ import 'document_node.dart';
 /// Op-exchange seams (per doc): [versionVectorOf] + [pendingOpsSince]
 /// produce the delta for a remote store ([pendingOpsSince] is the kernel's
 /// VV diff); [applyRemote] folds a remote delta (idempotent and
-/// delivery-order independent per the kernel contract). [absorbRemote]
-/// re-reads the persisted replica files — after a mesh anti-entropy cycle
-/// they may contain a peer's replica JSON — and folds any ops the local
-/// replicas have not seen.
+/// delivery-order independent per the kernel contract). When the local
+/// log was compacted away under a peer, [needsSnapshotFor] answers true
+/// and [snapshotFor] ships the state instead; a peer's snapshot is folded
+/// in through [adoptSnapshot]. [absorbRemote] re-reads the persisted
+/// replica files — after a mesh anti-entropy cycle they may contain a
+/// peer's replica JSON — and adopts the files' snapshots (the only
+/// content carrier of a compacted peer file), then folds any ops the
+/// local replicas have not seen. [compactAll] is the compaction policy.
 ///
 /// File-actor honesty: the per-doc file holds WHOEVER flushed last, so
 /// [open] only fast-paths `DocReplica.fromJson` when the file's
@@ -117,13 +121,53 @@ final class DocReplicaStore {
     return applied;
   }
 
-  /// Re-reads every persisted replica file under [dir] and folds ops the
-  /// local replicas have not seen (kernel VV dedupe makes this
-  /// idempotent). Call after a mesh anti-entropy cycle: the files may now
-  /// carry a peer's replica JSON. Files for docs this store never opened
-  /// are skipped — the app opens the docs it renders, and [open] derives
-  /// a peer-written file on first open. Returns how many ops were newly
-  /// applied in total.
+  // ---------------------------------------------------------------------------
+  // Snapshot seams (per doc) — the mesh layer's compaction contract:
+  // when [needsSnapshotFor] answers true, ship [snapshotFor] and let the
+  // remote [adoptSnapshot] it; op exchange alone cannot recover a
+  // compacted-away log.
+  // ---------------------------------------------------------------------------
+
+  /// True when a peer whose version vector is [remoteVv] cannot be served
+  /// ops for [docId] (its vector is fully covered but the local kernel
+  /// log was compacted). False when the doc was never opened.
+  bool needsSnapshotFor(final NodeId docId, final VersionVector remoteVv) =>
+      _replicas[docId.value]?.needsSnapshotFor(remoteVv) ?? false;
+
+  /// The current snapshot of the opened replica for [docId]; null when
+  /// the doc was never opened. Remembered by the replica and persisted
+  /// with the next [flush].
+  Snapshot? snapshotFor(final NodeId docId) =>
+      _replicas[docId.value]?.snapshotFor();
+
+  /// Adopts [snapshot] into the opened replica for [docId] — the kernel
+  /// adopts only when it carries unseen events, so this is safe and
+  /// idempotent. Returns whether it was adopted; adoption marks the
+  /// replica dirty for the next [flush]. False when the doc was never
+  /// opened (the mesh layer opens the docs it tracks before exchanging).
+  bool adoptSnapshot(final NodeId docId, final Snapshot snapshot) {
+    final replica = _replicas[docId.value];
+    if (replica == null) return false;
+    final adopted = replica.adoptSnapshot(snapshot);
+    if (adopted) _dirty.add(docId.value);
+    return adopted;
+  }
+
+  /// Re-reads every persisted replica file under [dir] and offers each
+  /// file's `snapshot` entry (if any) to the replica, then folds ops the
+  /// local replicas have not seen (kernel VV dedupe makes both
+  /// idempotent). The snapshot comes FIRST: the kernel adopts only while
+  /// the snapshot base vector is NOT yet covered by the replica's version
+  /// vector, so folding the file's tail ops first would advance the
+  /// vector past the base and silently refuse the snapshot content — the
+  /// only carrier of a compacted peer file's state. Adoption itself
+  /// re-folds local pending ops beyond the base, so nothing local is
+  /// lost. Call after a mesh anti-entropy cycle: the files may now carry
+  /// a peer's replica JSON. Files for docs this store never opened are
+  /// skipped — the app opens the docs it renders, and [open] derives a
+  /// peer-written file on first open. Returns how many ops were newly
+  /// applied in total; adopted snapshots mark the replica dirty for the
+  /// next [flush].
   Future<int> absorbRemote() async {
     final entries = await _storage.listDirectory(dir);
     var applied = 0;
@@ -134,13 +178,37 @@ final class DocReplicaStore {
       if (replica == null) continue; // Not a doc this store tracks.
       final raw = await _storage.readFile('$dir/${entry.name}');
       if (raw == null) continue;
+      var dirty = false;
+      final snapshot = _snapshotOf(raw);
+      if (snapshot != null && replica.adoptSnapshot(snapshot)) {
+        dirty = true;
+      }
       final n = replica.applyRemote(_opsOf(raw));
       if (n > 0) {
         applied += n;
-        _dirty.add(docId);
+        dirty = true;
       }
+      if (dirty) _dirty.add(docId);
     }
     return applied;
+  }
+
+  /// Compacts every loaded replica whose kernel op log exceeds
+  /// [maxLogOps]: the current state becomes the snapshot (served to
+  /// lagging peers through [needsSnapshotFor]/[snapshotFor]) and the
+  /// durable log is truncated. Flushes afterwards so the compacted state
+  /// persists. Returns how many replicas were compacted; idempotent — a
+  /// compacted log no longer exceeds the threshold.
+  Future<int> compactAll({final int maxLogOps = 512}) async {
+    var compacted = 0;
+    for (final entry in _replicas.entries) {
+      if (entry.value.pendingOps.length <= maxLogOps) continue;
+      entry.value.compact();
+      _dirty.add(entry.key);
+      compacted++;
+    }
+    if (compacted > 0) await flush();
+    return compacted;
   }
 
   /// Writes every dirty replica — one file per doc, batched. Returns how
@@ -165,9 +233,14 @@ final class DocReplicaStore {
   Future<void> dispose() => flush();
 
   /// Restores a replica from persisted [raw] JSON. Fast path: the file's
-  /// actor is this store's actor → `DocReplica.fromJson`. Otherwise a
-  /// fresh replica with THIS actor id re-derives the state from the
-  /// file's durable op log (event-sourced: ops are the source of truth).
+  /// actor is this store's actor → `DocReplica.fromJson` (which also
+  /// adopts the file's `snapshot` entry when present). Otherwise a fresh
+  /// replica with THIS actor id re-derives the state: the file's snapshot
+  /// is adopted first (a COMPACTED peer file carries its folded state
+  /// only there — the kernel adopts only unseen events), then the file's
+  /// durable op log is folded in, ops under the snapshot base excluded
+  /// (event-sourced: ops are the source of truth; the kernel's VV dedupe
+  /// makes re-application safe).
   DocReplica _restore(final NodeId docId, final String raw) {
     late final Map<String, dynamic> json;
     try {
@@ -178,8 +251,15 @@ final class DocReplicaStore {
     if (json['actor_id'] == actorId) {
       return DocReplica.fromJson(json);
     }
-    final replica = DocReplica(nodeId: docId, actorId: actorId)
-      ..applyRemote(_opsOf(raw));
+    final replica = DocReplica(nodeId: docId, actorId: actorId);
+    final snapshot = _snapshotJsonOf(json);
+    if (snapshot != null) replica.adoptSnapshot(snapshot);
+    final baseVv = snapshot?.baseVv;
+    replica.applyRemote(
+      baseVv == null
+          ? _opsOf(raw)
+          : _opsOf(raw).where((final op) => !baseVv.contains(op.hlc)).toList(),
+    );
     return replica;
   }
 
@@ -194,5 +274,16 @@ final class DocReplicaStore {
         .whereType<Map<dynamic, dynamic>>()
         .map((final e) => OpRecord.fromJson(Map<String, dynamic>.from(e)))
         .toList();
+  }
+
+  /// The `snapshot` entry of a persisted replica JSON; null when absent
+  /// (old format) or malformed.
+  static Snapshot? _snapshotOf(final String raw) =>
+      _snapshotJsonOf(jsonDecode(raw) as Map<dynamic, dynamic>);
+
+  static Snapshot? _snapshotJsonOf(final Map<dynamic, dynamic> json) {
+    final snapshot = json['snapshot'];
+    if (snapshot is! Map) return null;
+    return Snapshot.fromJson(Map<String, dynamic>.from(snapshot));
   }
 }

@@ -58,17 +58,33 @@ pattern — two `flutter run` processes, two mcp_toolkit channels):
    prepends to block B; both reorder children (fractional keys); both add
    blocks and open a thread against an anchored span.
 4. **Sync point** → dump both debugSurfaces → **diff** (must be empty).
-5. **The workspace materializer**: macOS (workspace owner) runs a
+5. **The mesh task console (PLAN 6.C)**: web dispatches an agent task for
+   the shared doc via `mesh_task_dispatch` — a `requested` row on the
+   shared CRDT task board (`MeshTaskBoard`, one `WorldSync` replica riding
+   the whole-file exchange as `task_boards/agent_world.json`). After a
+   sync cycle on both sides the macOS surface (the device with the bound
+   workspace + live harness) claims the row (`markRunning`) and auto-runs
+   the task through its normal delegate path; the REAL turn outcome is
+   written back as board data (`completeTask`/`failTask` — verdict,
+   spend figures the controller truly exposed, or a named error). Web
+   polls `mesh_tasks` (sync cycles between polls) until the row reads
+   `completed|failed`, then both boards' `mesh_tasks` must report the
+   SAME final status — that agreement is the convergence point. The
+   dispatched task must be read-only: the auto-run never answers
+   permission gates (the human keeps that sovereignty — a gated task
+   stalls and is failed honestly, not silently answered). The full
+   two-device run remains the human gate.
+6. **The workspace materializer**: macOS (workspace owner) runs a
    delegated code task whose edit proposal is tied to a workspace revision;
    web sees the same attributed diff and thread. Web answers REJECT first
    (reject-first is the law, DESIGN §4) — no file changes, and both peers
    record `PERM → reject · web`. Re-run with an explicit ALLOW: only the
    owner materializes the approved revision and runs the workspace oracle;
    the verified result and updated file projection converge back to web.
-6. **Presence + roster**: web's actor appears in macOS `presence(docId)`
+7. **Presence + roster**: web's actor appears in macOS `presence(docId)`
    and the PROFILE pane; macOS actor appears on web. Leave web (close
    tab) → macOS fold expires within ttl.
-7. **Verdict**: PASS only if every shared document/workspace projection
+8. **Verdict**: PASS only if every shared document/workspace projection
    diff is empty, every answer and edit is attributed on both sides, the
    rejected proposal changed no file, the owner materialized and verified
    only the approved revision, and activity/transcript projections agree.

@@ -102,6 +102,11 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_apple_foundation
   dart_acp_toolkit:
     path: ../../../mcp/cline/intentcall/packages/acp_toolkit
+  # Mesh task board (agent tasks riding the mesh) — WorldSync adapter over
+  # the convergence kernel; the kernel itself resolves through the root's
+  # universal_storage_convergence path dependency above.
+  ecsly_world_sync:
+    path: ../../ecsly/plugins/ecsly_world_sync
   headless_core:
     path: packages/headless_core
   universal_io: ^2.3.1

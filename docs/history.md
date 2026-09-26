@@ -5,6 +5,73 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-09-26 — mesh console slice: ecsly world-sync integrated, snapshot-aware sync (5.G3/5.G5), task board over the mesh
+
+[ADR 0013](decisions/0013-mesh-task-board-over-ecsly-world-sync.md). The
+cross-device journey — start on the computer, dispatch an agent task from
+a mobile peer, owner executes, verdict converges back — now has its
+substrate and its first live path.
+
+- **5.G3 snapshot-aware sync (headless_core + sync cycle):**
+  `DocReplica`/`DocReplicaStore` expose the kernel snapshot seams
+  (`needsSnapshotFor`/`snapshotFor`/`adoptSnapshot`/`compact`); replica
+  JSON carries the durable snapshot (old files restore byte-identically);
+  `absorbRemote` adopts remote snapshots (SNAPSHOT FIRST — ops-first
+  advances the VV past the snapshot base and the kernel's adopt gate then
+  silently refuses the compacted peer's only content carrier; caught by
+  test); `compactAll({maxLogOps})` runs each sync cycle as the periodic
+  policy. Gate test: a fresh store converges from a compacted peer file
+  through `absorbRemote` with zero ops folded. headless_core 70/70 (59
+  pre-existing + 11 new).
+- **5.G5 live World→delta bridge (ecsly repo):** new
+  `plugins/ecsly_world_sync_bridge` — `WorldSyncBridge` diffs
+  `captureWorldSnapshot` per flush into `ComponentDelta`s (stable
+  `<persistentId>/<Type>/<field>` keys; spawn/despawn become new keys/
+  tombstones; runtime `Entity` handles never travel), `WorldSyncMessage`
+  codec (vv/ops/snapshot) + `WorldSyncTransport` seam, `WorldSyncDriver`
+  anti-entropy (serves a `SnapshotMessage` when `needsSnapshotFor`),
+  `SnapshotPolicy` periodic compaction. 22/22 tests, analyze clean; ecsly
+  ADR 0002; `ecsly_world_sync` 7/7 unchanged. Honest findings recorded
+  there: no `structuralRevision` gating (it hides data-only writes);
+  entities without captured columns are invisible; every emit pays full
+  capture+diff until core ecsly grows change detection.
+- **Console slice (PLAN 6.C) over the ecsly substrate:** `MeshTaskBoard`
+  wraps one `WorldSync` kernel doc (`agent_world`); task rows are keyed
+  world state (`task/<docId>/<local>` with title/status/origin/createdAt/
+  verdict, one LWW op per field change) riding the mesh exchange as
+  `task_boards/agent_world.json` (flush→anti-entropy→snapshot-first
+  absorb, mirroring the roster). Found and fixed at board level:
+  `WorldSync` had NO HLC receive-watermark (covered by a failing-without-
+  it test). Verbs: `mesh_task_dispatch` / `mesh_tasks`; the host surface
+  auto-runs remote requests through the EXISTING delegate path
+  (deny-by-default permissions unchanged) and writes the real verdict
+  (`verdict`/`stopReason`, spend only when truly parsed, named errors —
+  never fabricated); peers read rows via `mesh_tasks` and the
+  `tasks`/viewer `debugState` projection. Periodic sync timer
+  (`startPeriodicSync`, 30 s) + per-cycle compaction. Suites: board 10,
+  storage 4, intents 7 (incl. real-harness scripted happy path, honest
+  failure, viewer-shadow never claims).
+- **Real-app gates green (macOS, terminal-launched):** T2
+  `multiplayer_smoke.sh` — launch, mesh_host, doc create/open/bind,
+  mesh_join_doc (presence), mesh_status (hosting+connected+presence),
+  sync-cycle, state-dump oracle, leave — ALL PASS. Two real product
+  defects found BY the gate and fixed: (1) the mesh store default under
+  `~/Documents` hit macOS TCC for terminal-launched apps — gates now set
+  `LAST_ANSWER_MESH_STORE` (io-platform env override, never persisted);
+  (2) a stale persisted relay endpoint (LAN IP of an old session)
+  re-dialed at startup blocked the `mesh_host` extension call for the
+  ~75 s OS TCP timeout and wedged every pipelined VM-service call —
+  eager relay connects are now bounded (5 s) and degrade to the already
+  documented deferred-connect path. Full app suite 151/151; analyze:
+  zero new issues. T3 `multiplayer_gate.sh` extended with the console
+  steps (peer dispatch → sync → host auto-run → `task-converged`
+  both-boards assertion); the two-device run remains the human gate.
+- **Non-claims:** no token-level verdict streaming to the peer; the full
+  two-device console journey has not been re-run on real hardware;
+  Last Answer still hosts no ecsly `World`s (the bridge is consumed where
+  worlds exist); kernel publication (removing ecsly's path-override
+  bootstrap) remains external work in the kernel's owning repo.
+
 ## 2026-09-06 — Multiplayer substrate: ADR 0005/0006 + kernel contract + Phase 5a session registry
 
 Decisions: [ADR 0005](decisions/0005-doc-multiplayer-over-convergence-kernel.md)

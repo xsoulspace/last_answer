@@ -53,11 +53,34 @@ final class DocReplica {
   /// parent-side re-routing (ADR 0030 §1). The HLC receive watermark is
   /// recomputed from the restored doc so local ops issued after the
   /// restore keep ordering after every pre-restore op.
+  ///
+  /// Restore order: a persisted `snapshot` entry (written by [toJson]) is
+  /// adopted FIRST — the kernel adopts only when it carries events the
+  /// restored doc has not seen, so for a self-consistent file this just
+  /// re-arms the snapshot cache and the HLC floor without disturbing the
+  /// folded state — and the watermark recomputation below then runs over
+  /// the post-adoption doc. Files without a `snapshot` key (the old
+  /// format) restore exactly as before.
   factory DocReplica.fromJson(final Map<String, dynamic> json) {
     final doc = ConvergenceDoc.fromJson(
       Map<String, dynamic>.from(json['doc'] as Map<dynamic, dynamic>),
     );
     final replica = DocReplica._(doc);
+    final snapshotJson = json['snapshot'];
+    if (snapshotJson != null) {
+      final snapshot = Snapshot.fromJson(
+        Map<String, dynamic>.from(snapshotJson as Map<dynamic, dynamic>),
+      );
+      replica._adoptSnapshot(
+        snapshot,
+        // Deterministic restore: anchor the HLC receive at the snapshot's
+        // own wall clock so restoring never advances the watermark past
+        // the file's own content.
+        now: DateTime.fromMillisecondsSinceEpoch(
+          snapshot.createdAt.wallMillis,
+        ),
+      );
+    }
     Hlc? last = json['last_issued'] == null
         ? null
         : Hlc.fromJson(
@@ -73,7 +96,10 @@ final class DocReplica {
       if (op.actorId != replica.actorId) continue;
       if (last == null || op.hlc > last) last = op.hlc;
     }
-    replica._lastIssued = last;
+    // Raise-only: a snapshot-carrying restore already seeded the watermark
+    // from the snapshot's `createdAt` (see [_adoptSnapshot]); the
+    // recomputation must never lower it.
+    if (last != null) replica._observeIssued(last);
     return replica;
   }
 
@@ -109,6 +135,15 @@ final class DocReplica {
   /// clock — fed back into `applyLocal` via the kernel's `lastIssued`
   /// seam.
   Hlc? _lastIssued;
+
+  /// Snapshot most recently taken ([snapshotFor], [compact]) or adopted
+  /// ([adoptSnapshot]) — persisted under `toJson`'s `snapshot` key so a
+  /// restore re-arms snapshot persistence without re-deriving it. Stale
+  /// after later local edits by design: the log carries everything since
+  /// its base vector, and live serving always recomputes via
+  /// [snapshotFor] — this is only the durable cache. Null while the
+  /// replica has never snapshotted (old-format `toJson` shape).
+  Snapshot? _lastSnapshot;
 
   /// The document this replica projects.
   final NodeId nodeId;
@@ -411,9 +446,18 @@ final class DocReplica {
       if (maxRemote == null || op.hlc > maxRemote) maxRemote = op.hlc;
     }
     if (maxRemote == null) return;
+    _absorbRemoteHlc(maxRemote, now: now);
+  }
+
+  /// HLC receive rule for one remote timestamp ([_absorbRemoteClock]'s
+  /// per-op core, also used by [_adoptSnapshot] for a snapshot's
+  /// `createdAt`): the watermark absorbs it while keeping THIS replica's
+  /// actor id, so later local ops order after the remote event even on a
+  /// frozen wall clock.
+  void _absorbRemoteHlc(final Hlc remote, {final DateTime? now}) {
     final base = _lastIssued ?? Hlc.zero(actorId);
-    if (base >= maxRemote) return; // watermark already covers the delivery
-    _observeIssued(base.receive(maxRemote, now ?? DateTime.now()));
+    if (base >= remote) return; // watermark already covers the delivery
+    _observeIssued(base.receive(remote, now ?? DateTime.now()));
   }
 
   /// Rebuilds the document projection from the folded kernel state.
@@ -524,13 +568,71 @@ final class DocReplica {
   /// header for every lane (ADR 0030 §1).
   VersionVector get versionVector => _doc.vv;
 
+  // ---------------------------------------------------------------------------
+  // Snapshots & compaction (kernel-owned — thin, honest passthroughs)
+  // ---------------------------------------------------------------------------
+
+  /// True when a peer whose version vector is [remoteVv] cannot be served
+  /// by the op log alone — the peer's vector is fully covered but this
+  /// doc's log was compacted away under it, so the caller must ship
+  /// [snapshotFor] instead. The kernel's compaction contract (ADR 0011 §1).
+  bool needsSnapshotFor(final VersionVector remoteVv) =>
+      _doc.needsSnapshotFor(remoteVv);
+
+  /// The current kernel state as a snapshot at this replica's watermark.
+  /// Remembered ([_lastSnapshot]) so [toJson] persists it under the
+  /// `snapshot` key and restores keep serving lagging peers across
+  /// restarts.
+  Snapshot snapshotFor() {
+    final snapshot = _doc.snapshotFor();
+    _lastSnapshot = snapshot;
+    return snapshot;
+  }
+
+  /// Adopts [snapshot] only when it carries events this replica has not
+  /// seen (kernel contract — offering it repeatedly is safe and
+  /// idempotent). Local pending ops beyond the snapshot base are kept and
+  /// re-folded; returns true when adopted.
+  ///
+  /// The offered snapshot is remembered for [toJson] even when refused: a
+  /// refusal proves its base vector is fully covered by this replica's
+  /// version vector, i.e. it describes state this replica already holds.
+  /// The snapshot's `createdAt` is absorbed into the HLC receive
+  /// watermark (receiver's actor kept) so later local ops order after the
+  /// snapshot content.
+  bool adoptSnapshot(final Snapshot snapshot) => _adoptSnapshot(snapshot);
+
+  bool _adoptSnapshot(final Snapshot snapshot, {final DateTime? now}) {
+    final adopted = _doc.adoptSnapshot(snapshot);
+    _lastSnapshot = snapshot;
+    if (!adopted) return false;
+    _absorbRemoteHlc(snapshot.createdAt, now: now);
+    return true;
+  }
+
+  /// Dual-mode compaction (kernel contract): the current state becomes
+  /// the snapshot and the pending log is truncated. Returns the number of
+  /// retired ops; lagging peers are served [snapshotFor]s afterwards
+  /// ([needsSnapshotFor]). The fresh post-compaction snapshot is
+  /// remembered for [toJson].
+  int compact() {
+    final retired = _doc.compact();
+    _lastSnapshot = _doc.snapshotFor();
+    return retired;
+  }
+
   /// Full serialization for durable local persistence; the kernel doc
   /// serializes through the kernel (`ConvergenceDoc.toJson`), carrying
-  /// the composite lane map in its registry name.
+  /// the composite lane map in its registry name. When the replica has
+  /// snapshotted (taken, adopted, or compacted), the current snapshot is
+  /// carried under the `snapshot` key; files from before snapshots (or
+  /// from replicas that never snapshotted) have no such key and restore
+  /// byte-identically through the old path.
   Map<String, dynamic> toJson() => {
     'doc_id': nodeId.value,
     'actor_id': actorId,
     'doc': _doc.toJson(),
+    if (_lastSnapshot != null) 'snapshot': _lastSnapshot!.toJson(),
   };
 
   // ---------------------------------------------------------------------------

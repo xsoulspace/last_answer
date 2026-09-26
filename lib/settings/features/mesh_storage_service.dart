@@ -6,6 +6,7 @@ import 'package:cryptography/cryptography.dart';
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/settings/features/mesh_relay_host_stub.dart'
     if (dart.library.io) 'mesh_relay_host_io.dart' as relay_host;
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -104,6 +105,16 @@ final class MeshStorageService {
 
   ActorRoster? _roster;
 
+  /// Directory under storage holding the task board files — one per
+  /// board id, same whole-file pattern as the roster directory.
+  static const _taskBoardDir = 'task_boards';
+
+  MeshTaskBoard? _taskBoard;
+  String? _taskBoardPath;
+
+  /// The live task board, null until [attachTaskBoard].
+  MeshTaskBoard? get taskBoard => _taskBoard;
+
   /// Endpoint peers should use to reach this device's hosted relay.
   Uri? advertisedEndpoint;
 
@@ -144,7 +155,10 @@ final class MeshStorageService {
         selfId: peerId,
       );
       try {
-        transport = await _openClient(selfId: peerId, endpoint: relayEndpoint);
+        // Bounded like [connectTo]: a stale/unreachable persisted relay
+        // must not block startup on the OS TCP timeout.
+        transport = await _openClient(selfId: peerId, endpoint: relayEndpoint)
+            .timeout(const Duration(seconds: 5));
         service._transport = transport;
         provider.attachTransport(transport);
         service._attachRelayPresenceLink(transport);
@@ -196,7 +210,12 @@ final class MeshStorageService {
     _transport = null;
     unawaited(old?.close());
     try {
-      final client = await _openClient(selfId: selfId, endpoint: endpoint);
+      // Bounded: an unreachable endpoint (stale persisted relay, LAN
+      // address blocked by macOS Local Network TCC for terminal-launched
+      // apps) must not wedge callers for the ~75 s OS TCP timeout — it
+      // degrades to the documented deferred-connect path instead.
+      final client = await _openClient(selfId: selfId, endpoint: endpoint)
+          .timeout(const Duration(seconds: 5));
       _transport = client;
       final provider = storage.provider;
       if (provider is MeshStorageProvider) provider.attachTransport(client);
@@ -303,6 +322,19 @@ final class MeshStorageService {
     _roster = roster;
   }
 
+  /// Attaches the mesh task board: durable kernel task rows that ride the
+  /// mesh exactly like the roster — [sync] flushes the board's whole
+  /// state into `task_boards/<boardId>.json` before anti-entropy and
+  /// folds a peer's board file after (snapshot-first, see [_absorbBoard]).
+  /// The board's replica id is fixed at construction
+  /// ([MeshTaskBoard.replicaId]); callers build it with this service's
+  /// pairing peer id, so no forcing happens here. The caller keeps
+  /// ownership (lifecycle, dispose); this service never disposes it.
+  void attachTaskBoard(final MeshTaskBoard board) {
+    _taskBoard = board;
+    _taskBoardPath = '$_taskBoardDir/${board.boardId}.json';
+  }
+
   /// Joins [docId]'s presence channel. Doc-scoped join is the CALLER's
   /// job (ADR 0031 §1): the service never decides which docs are open.
   /// When the presence link is up, the join frame goes out immediately;
@@ -378,16 +410,72 @@ final class MeshStorageService {
     await _syncCycle().timeout(timeout);
   }
 
+  // -- Periodic sync (background anti-entropy while the mesh is active) --
+
+  Timer? _periodicSyncTimer;
+
+  /// The sync cycle currently in flight, if any. The periodic tick skips
+  /// while a cycle — periodic or manual — is still running.
+  Future<void>? _syncInFlight;
+
+  /// Runs [sync] every [interval]. A tick landing while a sync cycle is
+  /// still in flight is skipped, never queued — the next tick picks the
+  /// work up. Timer errors are swallowed-and-logged honestly: a failed
+  /// background cycle surfaces via [connectError] or the next tick, never
+  /// through a dead timer.
+  void startPeriodicSync({
+    final Duration interval = const Duration(seconds: 30),
+  }) {
+    stopPeriodicSync();
+    _periodicSyncTimer = Timer.periodic(interval, (final _) {
+      unawaited(_periodicTick());
+    });
+  }
+
+  void stopPeriodicSync() {
+    _periodicSyncTimer?.cancel();
+    _periodicSyncTimer = null;
+  }
+
+  /// Whether a periodic [sync] timer is armed ([stopPeriodicSync] and
+  /// [dispose] disarm it).
+  bool get isPeriodicSyncRunning => _periodicSyncTimer?.isActive ?? false;
+
+  Future<void> _periodicTick() async {
+    if (_syncInFlight != null) return;
+    final cycle = sync()
+        .catchError((final Object error) {
+          // Background cycle: never let the timer die on a relay drop or
+          // timeout.
+          // ignore: avoid_print
+          print('mesh: periodic sync failed: $error');
+        })
+        .whenComplete(() => _syncInFlight = null);
+    _syncInFlight = cycle;
+    await cycle;
+  }
+
   Future<void> _syncCycle() async {
     for (final store in _docSyncs) {
       await store.flush();
     }
     await _flushRoster();
+    await _flushBoard();
     await storage.syncRemote();
     for (final store in _docSyncs) {
       await store.absorbRemote();
     }
     await _absorbRoster();
+    await _absorbBoard();
+    // Periodic compaction policies (cheap: fire only above the log-size
+    // threshold). DocReplicaStore.compactAll flushes when it compacted;
+    // the board owns one whole file, so the flush happens here.
+    for (final store in _docSyncs) {
+      await store.compactAll();
+    }
+    if (_taskBoard != null && _taskBoard!.compact() > 0) {
+      await _flushBoard();
+    }
   }
 
   // -- Presence link management (ADR 0031 §1–2) ---------------------------
@@ -633,9 +721,87 @@ final class MeshStorageService {
     ];
   }
 
+  // -- Task board over storage (same pattern as the roster seam) ----------
+
+  /// Flushes the board's whole state (WorldSync JSON + snapshot cache +
+  /// clocks) into one file — what anti-entropy ships, exactly like a
+  /// roster/doc replica file.
+  Future<void> _flushBoard() async {
+    final board = _taskBoard;
+    final path = _taskBoardPath;
+    if (board == null || path == null) return;
+    await storage.saveFile(
+      path,
+      jsonEncode(board.toJson()),
+      message: 'save task board ${board.boardId}',
+    );
+  }
+
+  /// Folds a peer's board file delivered by the exchange: the single
+  /// `task_boards/<boardId>.json` holds WHOEVER flushed last (whole-file
+  /// LWW), so a peer's flush shadows ours until the next flush rewrites
+  /// the merged log — replicas converge because every board folds the
+  /// union of ops (kernel VV dedupe makes re-folding idempotent and
+  /// delivery-order independent).
+  ///
+  /// SNAPSHOT FIRST — the `DocReplicaStore.absorbRemote` ordering insight:
+  /// the kernel adopts only snapshots its version vector does not already
+  /// cover, so folding the file's op log first would advance the vector
+  /// past the snapshot base and silently refuse the snapshot content —
+  /// the only carrier of a COMPACTED peer file's state. Adoption itself
+  /// re-folds local pending ops beyond the base, so nothing local is
+  /// lost. Our own file (matching `replica_id`) is skipped.
+  Future<void> _absorbBoard() async {
+    final board = _taskBoard;
+    final path = _taskBoardPath;
+    if (board == null || path == null) return;
+    final raw = await storage.readFile(path);
+    if (raw == null) return;
+    final json = _boardJsonOf(raw);
+    if (json == null) return;
+    if (json['replica_id'] == board.replicaId) return; // our own flush
+    var changed = false;
+    final snapshotJson = json['snapshot'];
+    if (snapshotJson is Map &&
+        board.adoptSnapshot(
+          Snapshot.fromJson(Map<String, dynamic>.from(snapshotJson)),
+        )) {
+      changed = true;
+    }
+    if (board.applyRemote(_boardOpsOf(json)) > 0) changed = true;
+    // The exchange shadowed our file with the peer's; write the merged
+    // state back so the next pass ships it.
+    if (changed) await _flushBoard();
+  }
+
+  /// Decoded board JSON of a persisted board file; null when malformed.
+  static Map<Object?, Object?>? _boardJsonOf(final String raw) {
+    final Object? decoded;
+    try {
+      decoded = jsonDecode(raw);
+    } on FormatException {
+      return null;
+    }
+    return decoded is Map ? decoded : null;
+  }
+
+  /// The durable op log of a persisted board JSON (inside the WorldSync
+  /// state under `world`).
+  static List<OpRecord> _boardOpsOf(final Map<Object?, Object?> json) {
+    final world = json['world'];
+    if (world is! Map) return const [];
+    final log = world['log'];
+    if (log is! List) return const [];
+    return [
+      for (final entry in log)
+        if (entry is Map) OpRecord.fromJson(Map<String, dynamic>.from(entry)),
+    ];
+  }
+
   Future<void> dispose() async {
     // Leave frames BEFORE the socket dies (ADR 0031 §1: leave on close;
     // a crash that skips this is covered by peers' ttl sweeps).
+    stopPeriodicSync();
     await _stopPresenceLink(sendLeaves: true);
     await stopHosting();
     final transport = _transport;

@@ -51,6 +51,12 @@ AgentDocMeshWiring _agentDocMeshWiring() {
         presenceCount: service?.presence(docId).length ?? 0,
       );
     },
+    // PLAN 6.C — the mesh task console seams: the shared board mounted
+    // with the live replica (null until mesh is set up), and THIS
+    // device's peer id — the identity that keeps a device from
+    // auto-running its own dispatches.
+    taskBoard: () => notifier.taskBoard,
+    selfPeerId: () => notifier.meshService?.selfId,
   );
 }
 

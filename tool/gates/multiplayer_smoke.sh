@@ -58,8 +58,10 @@ printf 'multiplayer smoke gate scratch workspace\n' > "$SCRATCH_WS/README.md"
 row PASS 'scratch-ws' "$SCRATCH_WS"
 
 # ── 2. Launch the debug app ──────────────────────────────────────────────
+# Hermetic mesh store: terminal-launched apps usually lack ~/Documents TCC.
 : > "$LOG"
-flutter run -d macos --debug > "$LOG" 2>&1 &
+LAST_ANSWER_MESH_STORE="${TMPDIR:-/tmp}/mp_smoke_mesh_store" \
+  flutter run -d macos --debug > "$LOG" 2>&1 &
 APP_PID=$!
 
 URI=""

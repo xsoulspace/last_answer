@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_platform_stub.dart'
     if (dart.library.io) 'storage_backends_platform_io.dart'
@@ -598,11 +599,17 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// The live actor roster riding the mesh as durable ops (ADR 0007 §1).
   ActorRoster? _actorRoster;
 
+  /// The live mesh task board riding the mesh as durable kernel rows.
+  MeshTaskBoard? _taskBoard;
+
   /// The live doc-replica store (null until [ensureMeshService] ran).
   DocReplicaStore? get docReplicaStore => _docReplicaStore;
 
   /// The live actor roster (null before the mesh replica ever opened).
   ActorRoster? get actorRoster => _actorRoster;
+
+  /// The live task board (null before the mesh replica ever opened).
+  MeshTaskBoard? get taskBoard => _taskBoard;
 
   /// Stable browser-safe peer identity persisted with backend config.
   String get meshPeerId {
@@ -620,15 +627,24 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// location on dart:io platforms so pairing survives restarts.
   Future<MeshStorageService> ensureMeshService() async {
     if (_meshService != null) return _meshService!;
-    if (_meshStorePath.isEmpty) {
-      final base = await platform.defaultFilesystemPath();
-      _meshStorePath = base.isEmpty
-          ? 'memory:$meshPeerId'
-          : '$base/last-answer-mesh';
+    final storeOverride = platform.meshStorePathOverride();
+    String effectiveStorePath;
+    if (storeOverride.isNotEmpty) {
+      // Gate/tooling directive: wins over any persisted path and is never
+      // persisted itself, so hermetic runs cannot poison the user store.
+      effectiveStorePath = storeOverride;
+    } else {
+      if (_meshStorePath.isEmpty) {
+        final base = await platform.defaultFilesystemPath();
+        _meshStorePath = base.isEmpty
+            ? 'memory:$meshPeerId'
+            : '$base/last-answer-mesh';
+      }
+      effectiveStorePath = _meshStorePath;
     }
     final service =
         await (meshServiceOpener ?? MeshStorageService.open)(
-          storePath: _meshStorePath,
+          storePath: effectiveStorePath,
           relayEndpoint: _meshRelayEndpoint.isEmpty
               ? null
               : Uri.tryParse(_meshRelayEndpoint),
@@ -644,11 +660,14 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Task H — the doc replica store becomes LIVE (ADR 0005 §1 Phase 5b,
   /// ADR 0007 §1): one [DocReplicaStore] over the service's storage is
   /// attached to the sync cycle (agent docs get a deterministic replica
-  /// id per doc when they open one), and one [ActorRoster] rides the mesh
+  /// id per doc when they open one), one [ActorRoster] rides the mesh
   /// as durable ops ([attachRoster] forces its replica id to the pairing
-  /// peer id). Re-attachment on a rebuilt replica is safe: the store is
-  /// rebuilt per live replica (its storage is bound to the old one); the
-  /// roster survives (kernel state, re-derived from the replica files on
+  /// peer id), and one [MeshTaskBoard] rides the whole-file exchange
+  /// (its replica id is fixed at construction — built here with the
+  /// pairing peer id). Re-attachment on a rebuilt replica is safe: the
+  /// store and board are rebuilt per live replica (kernel state
+  /// re-derives from the replica files on flush/absorb); the roster
+  /// survives (kernel state, re-derived from the replica files on
   /// flush/absorb).
   void _attachMeshSeams(final MeshStorageService service) {
     if (identical(_meshSyncService, service)) return;
@@ -658,17 +677,21 @@ class StorageBackendsNotifier extends ChangeNotifier {
       actorId: meshPeerId,
     );
     final roster = _actorRoster ??= ActorRoster(replicaId: meshPeerId);
+    _taskBoard = MeshTaskBoard(replicaId: meshPeerId);
     service
       ..attachDocSync(_docReplicaStore!)
-      ..attachRoster(roster);
+      ..attachRoster(roster)
+      ..attachTaskBoard(_taskBoard!);
   }
 
   /// Seamless setup, step "this is my main device": hosts the relay,
   /// persists the role + advertised endpoint, enables mesh replication,
   /// and publishes the current payload so joining devices receive it.
+  /// Hosting success also arms the periodic background sync.
   Future<MeshStorageService> becomeMainDevice() async {
     final service = await ensureMeshService();
     final endpoint = await service.startHosting(port: _meshPort);
+    service.startPeriodicSync();
     _meshRole = MeshRole.main;
     _meshRelayEndpoint = endpoint.toString();
     _enabled.add(StorageBackendId.mesh);
@@ -681,6 +704,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Seamless setup, step "I have a code": verifies the pairing code,
   /// registers and connects to its peer automatically, persists role +
   /// endpoint, then pulls the main device's payload into the live DB.
+  /// Joining success also arms the periodic background sync.
   Future<StorageOperationReport> joinWithCode(final String code) async {
     final service = await ensureMeshService();
     await service.acceptPairingCode(code);
@@ -689,6 +713,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
         service.connectedEndpoint?.toString() ?? _meshRelayEndpoint;
     _enabled.add(StorageBackendId.mesh);
     await _persist();
+    service.startPeriodicSync();
     // Bring this device up to date right away: publish our copy (in
     // case it has newer local edits) and pull the peer's copy in.
     var report = await replicate(
@@ -714,16 +739,19 @@ class StorageBackendsNotifier extends ChangeNotifier {
     return restoreNow(backend: StorageBackendId.mesh);
   }
 
-  /// Leaves the mesh: stops hosting, drops the live replica and clears
-  /// the seamless-setup state (manual advanced fields are preserved).
+  /// Leaves the mesh: stops the periodic sync, stops hosting, drops the
+  /// live replica and clears the seamless-setup state (manual advanced
+  /// fields are preserved).
   Future<void> leaveMesh() async {
     final service = _meshService;
     _meshService = null;
+    service?.stopPeriodicSync();
     // Flush the live doc replicas BEFORE the replica dies (its storage
     // dies with it); the store re-derives from the replica files on the
     // next attach.
     await _docReplicaStore?.dispose();
     _docReplicaStore = null;
+    _taskBoard = null;
     _meshSyncService = null;
     await service?.dispose();
     _meshRole = MeshRole.none;
@@ -735,6 +763,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
   void dispose() {
     unawaited(_docReplicaStore?.dispose());
     _docReplicaStore = null;
+    _taskBoard = null;
     _meshSyncService = null;
     unawaited(_meshService?.dispose());
     _meshService = null;

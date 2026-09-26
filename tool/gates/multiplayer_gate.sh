@@ -108,7 +108,8 @@ printf 'multiplayer T3 gate scratch workspace\n' > "$SCRATCH_WS/README.md"
 row PASS 'scratch-ws' "$SCRATCH_WS"
 
 : > "$HOST_LOG"
-flutter run -d macos --debug \
+LAST_ANSWER_MESH_STORE="${TMPDIR:-/tmp}/mp_gate_host_mesh_store" \
+  flutter run -d macos --debug \
   --dart-define-from-file=configs/envs/prod.json > "$HOST_LOG" 2>&1 &
 HOST_PID=$!
 if HOST_URI=$(wait_for_uri "$HOST_LOG"); then
@@ -293,6 +294,12 @@ def strip(s):
     s.pop('remotePermissions', None)  # each side lists only OTHERS' announcements;
                                       # the shared perm registers themselves ARE the
                                       # converged data (both replicas fold them)
+    # PLAN 6.C — the task console rows are SHARED board data and must
+    # converge; only the board-internal TIMING field is stripped (written
+    # once by the origin; may land between the two dumps).
+    for t in (s.get('tasks') or []):
+        if isinstance(t, dict):
+            t.pop('createdAtMs', None)
 strip(host); strip(peer)
 sys.exit(0 if host == peer else 1)
 PYEOF
@@ -303,6 +310,94 @@ else
   diff "$EVIDENCE/host_surface.json" "$EVIDENCE/peer_surface.json" || true
   fail_step 'surface-diff' 'non-empty debugSurface diff at a convergence point (divergence ledger has no entry for it — this is a BUG row)'
 fi
+
+# ════════════════════════════════════════════════════════════════════════
+# 4.5 THE MESH TASK CONSOLE (PLAN 6.C): the PEER dispatches an agent task
+#     for the shared doc (mesh_task_dispatch — a requested row on the
+#     shared CRDT task board); the HOST surface (bound workspace + live
+#     harness — the same delegate path the permission step exercises)
+#     auto-runs it and writes the verdict back as board data; the peer
+#     polls mesh_tasks (sync cycles between polls, same retry style as
+#     the perm step) until the row is completed|failed, then BOTH boards
+#     must report the SAME final status (the convergence point).
+# ════════════════════════════════════════════════════════════════════════
+task_field_of() { # $1 raw mesh_tasks output, $2 taskId, $3 field — echoes the value
+  printf '%s' "$1" | python3 -c '
+import json, sys
+r = json.load(sys.stdin)
+tid, field = sys.argv[1], sys.argv[2]
+for t in ((r.get("data") or {}).get("parameters", {}) or {}).get("tasks") or []:
+    if t.get("taskId") == tid:
+        print(json.dumps(t.get(field)))
+        break' "$2" "$3"
+}
+
+# A read-only task: the auto-run cannot answer permission gates (the
+# human keeps that sovereignty), so the dispatched task must never write.
+DISPATCH_OUT=$(call_on "$PEER_URI" mesh_task_dispatch "$(python3 -c '
+import json, sys
+print(json.dumps({"docId": sys.argv[1], "task": "Read README.md in the workspace and report its first line as the verdict."}))' "$DOC_ID")" || true)
+[ "$(data_param "$DISPATCH_OUT" ok)" = "true" ] \
+  || fail_step 'task-dispatch-peer' "$DISPATCH_OUT"
+TASK_ID=$(data_param "$DISPATCH_OUT" taskId)
+row PASS 'task-dispatch-peer' "taskId=$TASK_ID board=$(data_param "$DISPATCH_OUT" boardId)"
+
+# Both sides cycle: the request ships; the host surface claims it
+# (markRunning) and auto-runs it through its delegate path.
+call_on "$PEER_URI" storage_mesh_sync '{}' >/dev/null 2>&1 || true
+call_on "$HOST_URI" storage_mesh_sync '{}' >/dev/null 2>&1 || true
+row PASS 'task-sync' 'request shipped; host claims + auto-runs'
+
+FINAL_STATUS=""
+TASKS_PEER=""
+for _ in $(seq 1 90); do
+  call_on "$HOST_URI" storage_mesh_sync '{}' >/dev/null 2>&1 || true
+  TASKS_PEER=$(call_on "$PEER_URI" mesh_tasks "$(python3 -c '
+import json, sys
+print(json.dumps({"docId": sys.argv[1]}))' "$DOC_ID")" || true)
+  FINAL_STATUS=$(printf '%s' "$TASKS_PEER" | python3 -c '
+import json, sys
+r = json.load(sys.stdin)
+tid = sys.argv[1]
+for t in ((r.get("data") or {}).get("parameters", {}) or {}).get("tasks") or []:
+    if t.get("taskId") == tid:
+        print(t.get("status") or "")
+        break' "$TASK_ID" || true)
+  if [ "$FINAL_STATUS" = "completed" ] || [ "$FINAL_STATUS" = "failed" ]; then
+    break
+  fi
+  call_on "$PEER_URI" storage_mesh_sync '{}' >/dev/null 2>&1 || true
+  sleep 2
+done
+if [ "$FINAL_STATUS" != "completed" ] && [ "$FINAL_STATUS" != "failed" ]; then
+  fail_step 'task-auto-run' "peer never saw a terminal status (last: '$FINAL_STATUS')"
+fi
+row PASS 'task-auto-run' "peer saw status=$FINAL_STATUS for $TASK_ID"
+
+# The verdict row exists — the verdict map (verdict/tokens/decisions/
+# error …) rides the board record; empty on the wire = missing row.
+VERDICT=$(task_field_of "$TASKS_PEER" "$TASK_ID" verdict)
+[ -n "$VERDICT" ] && [ "$VERDICT" != "null" ] \
+  || fail_step 'task-verdict' "no verdict map on $TASK_ID"
+row PASS 'task-verdict' "verdict=$VERDICT"
+
+# CONVERGENCE POINT: BOTH boards report the SAME final status for the
+# task — the board is the shared data; the console must agree.
+TASKS_HOST=$(call_on "$HOST_URI" mesh_tasks "$(python3 -c '
+import json, sys
+print(json.dumps({"docId": sys.argv[1]}))' "$DOC_ID")" || true)
+HOST_STATUS=$(printf '%s' "$TASKS_HOST" | python3 -c '
+import json, sys
+r = json.load(sys.stdin)
+tid = sys.argv[1]
+for t in ((r.get("data") or {}).get("parameters", {}) or {}).get("tasks") or []:
+    if t.get("taskId") == tid:
+        print(t.get("status") or "")
+        break' "$TASK_ID" || true)
+if [ "$HOST_STATUS" != "$FINAL_STATUS" ]; then
+  fail_step 'task-converged' "host board says '$HOST_STATUS', peer board says '$FINAL_STATUS' for $TASK_ID"
+fi
+row PASS 'task-converged' "both boards: $TASK_ID=$HOST_STATUS"
 
 # ════════════════════════════════════════════════════════════════════════
 # 5. THE PERMISSION — answered FROM THE PEER (reject first, per DESIGN §4)
@@ -386,6 +481,11 @@ def strip(s):
         s.pop(k, None)  # host-owned daemon session projections (v1: turns not synced)
     s.pop('remotePermissionRouting', None)  # owner-side announce policy
     s.pop('remotePermissions', None)  # each side lists only OTHERS' announcements
+    # PLAN 6.C — same ledger entry as step 4: task console rows are
+    # shared board data; only the timing field is stripped.
+    for t in (s.get('tasks') or []):
+        if isinstance(t, dict):
+            t.pop('createdAtMs', None)
 strip(host); strip(peer)
 sys.exit(0 if host == peer else 1)
 PYEOF

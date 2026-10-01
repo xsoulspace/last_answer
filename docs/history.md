@@ -5,6 +5,60 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-10-01 — the two-device gate moved to flutter_mcp_harness; real-app substrate proven through dispatch
+
+- **The harness becomes the regular testing mechanism** (user direction):
+  `tool/gates/multiplayer_harness_gate.dart` (recipe `just
+  gate-multiplayer`, dep `flutter_mcp_harness` from
+  `~/mcp/cline/mcp_flutter/packages/harness`) owns build → launch →
+  VM-service attach → drive. It launches the macOS host binary and a
+  Chrome web peer, and drives the app's own verbs DIRECTLY as
+  `ext.mcp.toolkit.<verb>` service extensions — no bash, no
+  mcp-toolkit-CLI subprocess layer. Scenario steps mirror the T3
+  runbook; the divergence ledger matches it (plus two new named entries:
+  `registryKey` and the nested `session` projection — host-only since
+  the surface refactor; the bash gate's flat-field ledger predates
+  them).
+- **Measured on real apps** (macOS host + Chrome peer, evidence
+  `$TMPDIR/mp_hgate_evidence`): boot, doc create/open/bind, relay
+  hosting, pairing (paste payload, `synced=true`), doc join, viewer
+  shadow (`viewer:true`), host-side presence, concurrent CRDT edits on
+  both replicas, the ledger-stripped **surface-diff convergence oracle
+  — EMPTY**, and the peer's **`mesh_task_dispatch`** (a real
+  `requested` row minted on the shared board) — ALL PASS.
+- **Named findings, fixed in the scenario** (a) the whole-file LWW
+  board exchange needs BOTH sides to sync per poll cycle — a host-only
+  cycle lets the host's empty board file win every time and the request
+  never lands (the diagnostics dump named it: peer board had the row,
+  host board empty); (b) the web peer's DDC compiler died twice under
+  sustained ~2 s DWDS polling — cadence widened to 6 s and poll loops
+  made failure-tolerant.
+- **Named open item (instrumented, not fixed):** the host auto-run
+  claim did not complete on real apps in-window.
+  `_autoRunPendingRemoteTasks` now carries named observability —
+  `mesh task console:` prints per-row status/origin and this device's
+  peer id at the claim point — so the next run (after the
+  dart_flutter_packages CDP automation lands) names the stall from real
+  evidence. Headless + scripted-harness console gates stay green
+  (46/46 focused sweep; full suite 151/151 at the 2026-09-26 commit).
+- **External owning-repo fixes recorded** (needed for the web peer to
+  compile at all after the 09-25 sanitized-snapshot merge re-attached
+  the host chain into the web graph): ecsai_harness — JS-exact FNV
+  literals in five files (VM values identical), the
+  `mechanical_review_proposal` conditional-import seam, web-stub
+  `locks`/`owner`/`editSymbolTool` parity; dart_flutter_packages —
+  `native_client_web` token-budget mirror (`maxInputTokens` /
+  `estimateInputTokensFor`). last_answer pins the intentcall 0.7.0
+  train + local `mcp_toolkit`/`flutter_mcp_toolkit_core` via
+  `dependency_overrides`; drop them when the harness repo completes its
+  migration.
+- **Non-claims:** two-device console completion (verdict round-trip on
+  real apps not observed); any cause named for the auto-run stall;
+  DDC stability under sustained polling (mitigated, not fixed); T2's
+  real-device T3 rerun and the human gate remain open
+  ([evidence ledger](evidence/current-status.mdx) carries the current
+  row).
+
 ## 2026-09-26 — mesh console slice: ecsly world-sync integrated, snapshot-aware sync (5.G3/5.G5), task board over the mesh
 
 [ADR 0013](decisions/0013-mesh-task-board-over-ecsly-world-sync.md). The

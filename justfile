@@ -2,6 +2,12 @@
 fix:
     dart fix --apply
 
+# Multiplayer T3 gate as a flutter_mcp_harness scenario: two real app
+# instances (macOS host + Chrome web peer), mesh task console end to end.
+# Pass --skip-build to reuse existing build artifacts.
+gate-multiplayer *ARGS:
+    fvm dart tool/gates/multiplayer_harness_gate.dart {{ARGS}}
+
 clean:
     flutter clean
 repair:

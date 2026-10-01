@@ -129,6 +129,11 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+  # The multiplayer gate scenario (tool/gates/multiplayer_harness_gate.dart)
+  # drives two real app instances through flutter_mcp_harness — the
+  # user-directed regular cross-platform (incl. web) testing mechanism.
+  flutter_mcp_harness:
+    path: ../../../mcp/cline/mcp_flutter/packages/harness
   # Phase 1.5 widget tests fake the directory picker over its platform
   # interface (file_selector itself stays a runtime dependency).
   file_selector_platform_interface: ^2.7.0
@@ -158,6 +163,34 @@ dev_dependencies:
 
   web: any
 dependency_overrides:
+  # Oka and the ACP seat share the same composition contract as the harness.
+  # Keep one local source across their transitive version constraints.
+  resource_composition:
+    path: ../../oka/packages/resource_composition
+  # The local acp_toolkit checkout moved to the intentcall 0.7.0 release
+  # train (additive schema/core changes) while the harness repo still pins
+  # ^0.6.0 against its git-sourced acp_toolkit. Pin the train + the local
+  # mcp_toolkit 5.1.0 here so the app graph resolves; drop when the
+  # harness repo completes its migration.
+  mcp_toolkit:
+    path: ../../../mcp/cline/mcp_flutter/mcp_toolkit
+  # mcp_toolkit's sibling in the mcp_flutter workspace — the canonical
+  # ToolkitExtensionNames (its pub.dev copy lags the local checkout).
+  flutter_mcp_toolkit_core:
+    path: ../../../mcp/cline/mcp_flutter/packages/core
+  intentcall_schema: 0.7.0
+  intentcall_core: 0.7.0
+  intentcall_mcp: 0.7.0
+  intentcall_platform:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_platform
+  # intentcall_platform's own 0.7.0-train deps are unpublished/path-only
+  # in the local train checkout — resolve them from the same checkout.
+  intentcall_bridge:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_bridge
+  intentcall_platform_android:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_platform_android
+  intentcall_platform_apple:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_platform_apple
   # Bootstrap (ADR-0010): oka_core/oka_android are not yet on pub.dev —
   # resolve the split packages from the local oka checkout. Remove these
   # overrides once oka_core/oka_android are published.

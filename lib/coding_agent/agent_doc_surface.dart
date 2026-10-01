@@ -420,11 +420,29 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     final board = wiring.taskBoard?.call();
     final selfPeerId = wiring.selfPeerId?.call();
     if (board == null || selfPeerId == null) return;
-    for (final record in board.pendingRequestsFor(
+    final pending = board.pendingRequestsFor(
       _doc.id.value,
       selfPeerId: selfPeerId,
-    )) {
+    );
+    if (pending.isEmpty) {
+      final rows = board.tasksFor(_doc.id.value);
+      if (rows.isNotEmpty) {
+        // Named observability (PLAN 6.C): rows exist on THIS device's
+        // board but none is claimable here — per-row status/origin plus
+        // this device's peer id, so a stalled console names its reason.
+        // ignore: avoid_print
+        print(
+          'mesh task console: '
+          '${rows.map((r) => '${r.taskId}=${r.status} (origin '
+              '${r.originPeerId})').join(', ')} — selfPeerId=$selfPeerId',
+        );
+      }
+      return;
+    }
+    for (final record in pending) {
       if (_handledRemoteTasks.contains(record.taskId)) continue;
+      // ignore: avoid_print
+      print('mesh task console: claiming ${record.taskId}');
       try {
         board.markRunning(record.taskId);
       } on Object {

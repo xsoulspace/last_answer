@@ -1,32 +1,68 @@
 ---
 status: current
 evidence_type: ledger
-date: 2026-09-23
-scope: C0 consumer-baseline revalidation after the Xcode licence resolved
-claim_tested: Existing composition wiring and outstanding consumer acceptance work.
-proof_level: native validation run recorded (analyze, tests, macOS debug build + launch smoke); one scripted-seam test failing on a harness escalation-path regression
+date: 2026-10-01
+scope: mesh console on real apps — ecsly world-sync substrate, harness-based two-device gate, named open items
+claim_tested: the cross-device console journey (peer dispatch → host auto-run → verdict convergence) over the ecsly world-sync substrate on real app instances.
+proof_level: native validation recorded (analyze, focused suites, web debug build, two-real-app harness gate through surface-diff + dispatch); the host auto-run claim on real apps is instrumented but not yet green — named, not fixed
 commands_or_sources:
-  - "fvm flutter analyze (2026-09-23): 0 errors; 159 info/warning (mostly generated *.freezed.dart / unused)"
-  - "fvm flutter test (2026-09-23): 128 passed, 1 failed — agent_task_guide escalation round (see 2026-09-23 section)"
-  - "fvm flutter test packages/headless_core/test (2026-09-23): 59 passed, 0 failed"
-  - "fvm flutter build macos --debug (2026-09-23): built; xs_fm_bridge.framework bundled in last_answer.app/Contents/Frameworks; launch smoke alive 12 s (benign RuStore billing warnings only)"
-  - "fvm dart run build_runner build (2026-09-23): wrote 0 outputs (codegen fresh); the justfile `gen` recipe itself fails (bare `dart` is not the Flutter SDK dart)"
-  - "/opt/homebrew/bin/git diff --check: passed for documentation changes"
-result: C0-C6 planned; the Xcode licence prerequisite is resolved and the local test baseline runs again; one scripted-seam failure is owned by the ecsai_harness escalation path; typed outcomes, durable turns and real restart acceptance remain open.
-limitations: No fresh runtime, provider benchmark or real-AFM session evidence; the ecsai_harness checkout was mid-refactor (concurrent work) at recording time, so host-importing test files could not be re-run in a final stable window; older runs below are historical.
+  - "fvm flutter analyze --no-pub (2026-10-01): 159 info/warning = pre-existing baseline, zero new issues from the changed files"
+  - "fvm flutter test --no-pub (2026-10-01) mesh/console suites: 46 passed, 0 failed (board, intents, storage sync, attach, routing)"
+  - "fvm flutter test (2026-09-26, at commit e491df69): 151 passed, 0 failed (full suite)"
+  - "fvm flutter build web --debug (2026-10-01): built (exit 0) after the external-train overrides + the ecsai_harness/dart_flutter_packages compile fixes named below"
+  - "fvm dart tool/gates/multiplayer_harness_gate.dart (2026-10-01, runs 3–13, evidence $TMPDIR/mp_hgate_evidence): launch-host, doc create/open/bind, relay hosting, mesh_pair (paste payload, synced), mesh_join_doc, mesh_open_doc viewer shadow, presence-host, concurrent CRDT edits, storage_mesh_sync, surface-diff oracle (ledger-stripped identical), mesh_task_dispatch — ALL PASS on real macOS + Chrome apps"
+  - "named open findings (2026-10-01): (a) the whole-file LWW board exchange needs BOTH sides to sync per poll cycle — a host-only cycle lets the host's empty board file win and the request never lands (fixed in the scenario); (b) the peer's DDC compiler exited unexpectedly twice under sustained ~2 s DWDS polling (cadence widened to 6 s); (c) the host auto-run claim did not complete on real apps in-window — instrumented with named observability ('mesh task console:' prints naming per-row status/origin/selfPeerId at the claim point); headless + scripted-harness console gates stay green"
+result: the mesh substrate is proven on two real app instances through dispatch; the console verdict round-trip is proven headlessly and over a scripted harness, with the real-app host auto-run claim as the named remainder.
+limitations: the DDC/web peer driving layer is flaky under sustained polling (the dart_flutter_packages CDP automation work in progress is the chosen successor); ecsai_harness was mid-migration to the intentcall 0.7.0 train during recording, so last_answer pins the train + local mcp_toolkit via dependency_overrides until that lands.
 non_claims:
-  - current passing tests beyond the 2026-09-23 run recorded here
-  - harness readiness
-  - product runtime correctness
-  - provider readiness
-  - AFM bridge loading or model capability (bundling + launch proven only)
-  - clean-checkout bootstrap (caches were warm; no fresh-clone run)
-  - steward maturity
-next_disposition: run C0 prerequisites and replace claims only with current acceptance evidence
+  - two-device console completion (dispatch converged; verdict round-trip on real apps not observed)
+  - any fix for the host auto-run stall (instrumented, cause not yet named from real-app evidence)
+  - DDC stability under sustained polling (mitigated by cadence, not fixed)
+  - kernel publication (ecsly path-override bootstrap remains)
+  - C0–C6 consumer acceptance gates
+next_disposition: rerun the harness gate after the dart_flutter_packages CDP automation lands; the instrumentation names the claim state on the first stall
 current_status_pointer: docs/evidence/current-status.mdx
 ---
 
 # Current Evidence Status
+
+## 2026-10-01 mesh console on real apps (harness-based two-device gate)
+
+The two-device gate moved to `flutter_mcp_harness` — the user-directed
+regular cross-platform (incl. web) testing mechanism:
+`tool/gates/multiplayer_harness_gate.dart` (recipe: `just
+gate-multiplayer`). It owns the build, launches a macOS host binary and a
+Chrome web peer, attaches to both VM services, and drives the app's own
+verbs as service extensions — no bash/mcp-toolkit-CLI layer.
+
+Measured on real apps (macOS host + Chrome web peer, evidence
+`$TMPDIR/mp_hgate_evidence`): relay hosting, paste-payload pairing
+(synced), doc-channel join, viewer shadow, bidirectional presence,
+concurrent CRDT edits on both replicas, the ledger-stripped
+`surface-diff` convergence oracle, and the peer's `mesh_task_dispatch`
+ALL PASS. Two gate-infrastructure findings were fixed en route and the
+divergence ledger gained two named entries (`registryKey`, the nested
+`session` projection — host-only since the surface refactor; the bash
+gate's flat-field ledger predates it).
+
+Named open items (instrumented, not fixed): the host auto-run claim did
+not complete on real apps in-window — `_autoRunPendingRemoteTasks` now
+prints per-row status/origin/selfPeerId at the claim point so the first
+stall names its reason; the web peer's DDC compiler died twice under
+sustained fast DWDS polling (cadence widened; the
+dart_flutter_packages CDP automation work is the chosen successor for
+the peer-driving layer). The console verdict round-trip remains proven
+headlessly and over the scripted harness
+(`test/coding_agent/mesh_task_intents_test.dart`), not on real devices.
+
+External compile fixes recorded in their owning repos this window:
+ecsai_harness (web-build fixes — JS-exact FNV literals in five files,
+the `mechanical_review_proposal` conditional-import seam, web-stub
+`locks`/`owner`/`editSymbolTool` parity) and dart_flutter_packages
+(`native_client_web` token-budget mirror). last_answer pins the
+intentcall 0.7.0 train + local `mcp_toolkit`/`flutter_mcp_toolkit_core`
+via `dependency_overrides` until the harness repo completes its
+migration — drop those overrides then.
 
 ## 2026-09-22 planning review
 

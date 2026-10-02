@@ -129,11 +129,18 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+  # Hosted-chat port tests mock the transport (openrouter client's own dep).
+  http: ^1.6.0
   # The multiplayer gate scenario (tool/gates/multiplayer_harness_gate.dart)
   # drives two real app instances through flutter_mcp_harness — the
   # user-directed regular cross-platform (incl. web) testing mechanism.
   flutter_mcp_harness:
     path: ../../../mcp/cline/mcp_flutter/packages/harness
+  # The web peer of the same gate is driven through the CDP accessibility
+  # tree (ChromeAppTarget/CdpDriver + the AutomationAction vocabulary) —
+  # the compiled CDP automation stack, no VM service on the web side.
+  universal_browser_cdp: ^0.1.0
+  universal_automation_interface: ^0.1.0
   # Phase 1.5 widget tests fake the directory picker over its platform
   # interface (file_selector itself stays a runtime dependency).
   file_selector_platform_interface: ^2.7.0
@@ -167,6 +174,13 @@ dependency_overrides:
   # Keep one local source across their transitive version constraints.
   resource_composition:
     path: ../../oka/packages/resource_composition
+  # The CDP automation stack's web-driving layer (ChromeAppTarget's
+  # transport): 0.2.0 (ag-c, auto-wait + NavigateWait + semantic clicks)
+  # is committed locally but not yet published — drop when pub.dev has it.
+  universal_browser_cdp:
+    path: ../dart_flutter_packages/pkgs/universal_browser_cdp
+  universal_automation_interface:
+    path: ../dart_flutter_packages/pkgs/universal_automation_interface
   # The local acp_toolkit checkout moved to the intentcall 0.7.0 release
   # train (additive schema/core changes) while the harness repo still pins
   # ^0.6.0 against its git-sourced acp_toolkit. Pin the train + the local
@@ -178,9 +192,16 @@ dependency_overrides:
   # ToolkitExtensionNames (its pub.dev copy lags the local checkout).
   flutter_mcp_toolkit_core:
     path: ../../../mcp/cline/mcp_flutter/packages/core
-  intentcall_schema: 0.7.0
-  intentcall_core: 0.7.0
-  intentcall_mcp: 0.7.0
+  # The local intentcall train moved to 1.0.0 (automation-catalog actions:
+  # IntentAutomationAction.custom + InvokeAction) while the last release
+  # is 0.7.0 — pin the moved packages to the local checkouts so the whole
+  # graph sees ONE API. Drop when 1.0.0 publishes.
+  intentcall_schema:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_schema
+  intentcall_core:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_core
+  intentcall_mcp:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_mcp
   intentcall_platform:
     path: ../../../mcp/cline/intentcall/packages/intentcall_platform
   # intentcall_platform's own 0.7.0-train deps are unpublished/path-only
@@ -191,6 +212,10 @@ dependency_overrides:
     path: ../../../mcp/cline/intentcall/packages/intentcall_platform_android
   intentcall_platform_apple:
     path: ../../../mcp/cline/intentcall/packages/intentcall_platform_apple
+  # intentcall_platform's 1.0.0 train added a sync sibling that is not on
+  # pub.dev yet — same unpublished/path-only rule as the overrides above.
+  intentcall_platform_sync:
+    path: ../../../mcp/cline/intentcall/packages/intentcall_platform_sync
   # Bootstrap (ADR-0010): oka_core/oka_android are not yet on pub.dev —
   # resolve the split packages from the local oka checkout. Remove these
   # overrides once oka_core/oka_android are published.

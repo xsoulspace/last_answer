@@ -5,6 +5,59 @@
 > `docs/agent/history.md` + `benchmark/runs/delegation_m1_evidence.md`
 > (TASK B sections carry the full rows).
 
+## 2026-10-02 — the web peer went verb-free: the gate drives it through the CDP accessibility tree
+
+- **Driving split (the CDP redesign)**: host (macOS binary) stays on the
+  proven mcp-toolkit VM-service tier; the web peer is now
+  `flutter build web --debug` + a static file server + Chrome attached
+  over CDP (`ChromeAppTarget`/`CdpDriver` from `universal_browser_cdp`
+  0.2.0, path-overridden to the dfp `ag-c` checkout until it publishes).
+  NO VM service on the web side — the DWDS/DDD evaluation layer that
+  killed DDC compilers under polling is gone from the peer entirely.
+- **Measured on real apps** (13 gate runs, evidence
+  `$TMPDIR/mp_hgate_evidence/`): the peer tier is fully verb-free green
+  through pairing — boot, Settings (the concurrent Agents & Models tab is
+  the default; the gate pins General), mesh backend enable, pairing-code
+  dialog, code typed via `Input.insertText`, Connect, payload-join
+  ("Connected devices: 1", Unpair controls). Working CDP primitives for
+  Flutter web, after measuring the failures: semantic `ClickAction` is
+  DEAD (Chromium AX-cache backendDOMNodeIds go stale → "detached");
+  the live path is locate-by-text/aria-label in the `flt-semantics` DOM
+  → bounding-box center → `Input.dispatchMouseEvent`; typing needs
+  `Page.bringToFront` + raw `Input.insertText` (background windows have
+  no OS focus; key events land nowhere); effect-verified clicks
+  (`clickTextUntil`) because first clicks are swallowed and toggles
+  re-click themselves off; `history.back()`/top-left-button for in-app
+  route pops (no reloads — the web mesh store is memory).
+- **Harness fixes** (mcp_flutter, path dep): `ChromeAppTarget` gained
+  `extraArgs` defaulting to flutter-run's three anti-backgrounding flags
+  (occluded Chrome throttles rAF to a stop — the app freezes and its
+  semantics DOM never updates); `ToolkitDriver`/`IntentDriverRouter`
+  completed for the automation-catalog API (`InvokeAction`,
+  `IntentAutomationAction.custom`).
+- **App fixes landed (measured root causes)**: `MeshTaskConsoleView` —
+  the 6.C task console as a visible surface (dispatch composer + plain
+  data rows) mounted under the agent doc surface in `project_view.dart`;
+  `joinWithCode` pulls BEFORE its first backup (a fresh peer's empty
+  payload won the whole-file exchange and erased the host payload);
+  `restoreApplier` resolves a context below MaterialApp (the root
+  context has no ScaffoldMessenger — the join surfaced as "Could not
+  connect"); periodic sync cycles now refresh open projections
+  (`MeshStorageService.onCycle`); pairing field got its UI-contract key.
+- **Named open item**: the restored project list on the peer stayed
+  empty in the last runs — `last-answer-data.json` reaches the store
+  (host `storage_backup {backend: mesh}` PASS) but the pull side still
+  shows no projects; the payload file's transport through the mesh
+  provider's namespace-profiled `syncRemote` is the next investigation
+  (the doc-replica/roster/board files demonstrably cross; this root
+  file may sit outside the synced namespaces or need an explicit fetch).
+  Until it lands, `peer-open-doc` (surface + console visible from the
+  restored list) is the gate's first red step — everything before it is
+  green on real apps.
+- Deps: `universal_browser_cdp`/`universal_automation_interface` added
+  (dev) + path-overridden to 0.2.0; the intentcall train moved to the
+  local 1.0.0 checkouts (path) — drop when it publishes.
+
 ## 2026-10-01 — the two-device gate moved to flutter_mcp_harness; real-app substrate proven through dispatch
 
 - **The harness becomes the regular testing mechanism** (user direction):

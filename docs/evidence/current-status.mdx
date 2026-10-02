@@ -26,6 +26,30 @@ current_status_pointer: docs/evidence/current-status.mdx
 
 # Current Evidence Status
 
+## 2026-10-02 web peer over CDP (verb-free) — measured through pairing
+
+Measured on real apps (macOS host binary + Chrome web peer, 13 gate
+runs, evidence `$TMPDIR/mp_hgate_evidence/`), Last Answer @ master +
+uncommitted concurrent chat/ACP WIP in the tree:
+
+- `fvm flutter analyze --no-pub` (2026-10-02): 0 errors (164 infos —
+  generated-code + the concurrent WIP's noise).
+- `fvm flutter test --no-pub` focused mesh/console/perm sweep
+  (2026-10-02): 41 passed, 0 failed.
+- Gate steps PASS on real apps through pairing: launch-host,
+  host-create-bind, host-relay (+ `storage_backup {backend: mesh}`
+  publish), serve-launch-peer, peer-enable-mesh, peer-pair (code typed
+  via CDP `Input.insertText`; panel shows "Connected devices: 1").
+- First RED step: peer-open-doc — the peer's restored project list is
+  empty; the payload file (`last-answer-data.json`) transport through
+  the mesh provider's `syncRemote` namespaces is the named open
+  investigation. Doc-replica/roster/board files demonstrably cross the
+  mesh (the 10-01 runs converged them); this root file does not arrive.
+- Non-claims: no full-gate PASS claim (verdict rounds remain unrun on
+  the CDP peer); no claim that the payload transport works; the
+  one-off auto-open of the doc surface in an early run was a misclick
+  artifact, not a feature.
+
 ## 2026-10-01 mesh console on real apps (harness-based two-device gate)
 
 The two-device gate moved to `flutter_mcp_harness` — the user-directed

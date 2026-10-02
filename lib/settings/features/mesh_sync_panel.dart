@@ -405,6 +405,9 @@ class _PairingCodeDialogState extends State<_PairingCodeDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            // Widget keys are the agent's UI contract (DESIGN §6): the
+            // pairing flow is automation-reachable by key, not hint text.
+            key: const ValueKey('mesh.pairing.code'),
             controller: _controller,
             autofocus: true,
             maxLines: 4,

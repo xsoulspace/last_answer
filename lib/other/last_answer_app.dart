@@ -55,9 +55,15 @@ class _AppScaffoldState extends State<_AppScaffold> {
           jsonDecode(jsonPayload) as Map<String, dynamic>,
         );
         if (dbSave.isEmpty) return;
-        await context.read<AppNotifier>().restoreFromDbSave(
+        // Resolve a context BELOW MaterialApp: this State's own context
+        // sits above it, and restoreFromDbSave's completion toast needs
+        // a ScaffoldMessenger ancestor (it threw — measured on the web
+        // peer's join, surfacing as "Could not connect").
+        final uiContext = appRouter.routerDelegate.navigatorKey.currentContext;
+        if (uiContext == null) return;
+        await uiContext.read<AppNotifier>().restoreFromDbSave(
           dbSave: dbSave,
-          context: context,
+          context: uiContext,
         );
       };
       return true;

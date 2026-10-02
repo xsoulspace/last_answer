@@ -69,6 +69,14 @@ final class MeshStorageService {
   /// Last transport failure, surfaced for status lines / debugging.
   Object? connectError;
 
+  /// Invoked after every background sync cycle (success or failure) —
+  /// the embedding app refreshes its projections from the fold here
+  /// (the same re-read `joinWithCode` does inline). Without it a
+  /// periodic absorb would never reach an open surface: doc-op driven
+  /// UI (transcript, routed permissions) would freeze until the next
+  /// manual cycle.
+  void Function()? onCycle;
+
   // -- Presence over the shared relay connection (ADR 0031 §1–2) ----------
 
   /// Cadence policy for the presence sessions this service opens
@@ -450,7 +458,12 @@ final class MeshStorageService {
           // ignore: avoid_print
           print('mesh: periodic sync failed: $error');
         })
-        .whenComplete(() => _syncInFlight = null);
+        .whenComplete(() {
+          _syncInFlight = null;
+          // Refresh even after a failed cycle: the projection re-read is
+          // cheap and the fold may still have moved.
+          onCycle?.call();
+        });
     _syncInFlight = cycle;
     await cycle;
   }

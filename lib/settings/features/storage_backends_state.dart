@@ -672,6 +672,10 @@ class StorageBackendsNotifier extends ChangeNotifier {
   void _attachMeshSeams(final MeshStorageService service) {
     if (identical(_meshSyncService, service)) return;
     _meshSyncService = service;
+    // Background cycles refresh the open projections (same re-read the
+    // join path does inline) — transcript and routed permissions on an
+    // open surface move with the fold, not only with manual syncs.
+    service.onCycle = () => onSyncCycle?.call();
     _docReplicaStore = DocReplicaStore(
       storage: service.storage,
       actorId: meshPeerId,
@@ -714,20 +718,19 @@ class StorageBackendsNotifier extends ChangeNotifier {
     _enabled.add(StorageBackendId.mesh);
     await _persist();
     service.startPeriodicSync();
-    // Bring this device up to date right away: publish our copy (in
-    // case it has newer local edits) and pull the peer's copy in.
-    var report = await replicate(
-      backend: StorageBackendId.mesh,
-      jsonPayload: await buildPayload(),
-    );
-    if (!report.ok) return report;
+    // Pull FIRST: the mesh exchange is whole-file per payload, so a
+    // fresh peer publishing its (empty) copy before the first pull would
+    // WIN the exchange and erase the main device's payload — measured on
+    // the web peer (its project list stayed empty after pairing). After
+    // absorbing, the backup publishes the merged state, which keeps the
+    // publish-before-pull intent for a peer that had newer local edits.
     try {
       await service.sync();
       // The sync cycle may have delivered remote doc ops (a routed
       // permission answer) — projections re-read the fold.
       onSyncCycle?.call();
     } on Exception catch (error) {
-      report = StorageOperationReport(
+      final report = StorageOperationReport(
         ok: false,
         backend: StorageBackendId.mesh,
         message: error.toString(),
@@ -736,6 +739,11 @@ class StorageBackendsNotifier extends ChangeNotifier {
       notifyListeners();
       return report;
     }
+    var report = await replicate(
+      backend: StorageBackendId.mesh,
+      jsonPayload: await buildPayload(),
+    );
+    if (!report.ok) return report;
     return restoreNow(backend: StorageBackendId.mesh);
   }
 

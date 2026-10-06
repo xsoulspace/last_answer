@@ -104,9 +104,9 @@ void main() {
       );
       StorageBackendsNotifier.meshServiceOpener =
           ({
-            required final String storePath,
-            required final String peerId,
-            final Uri? relayEndpoint,
+            required final storePath,
+            required final peerId,
+            final relayEndpoint,
           }) async => service;
       final notifier = StorageBackendsNotifier.instance;
       addTearDown(notifier.leaveMesh);
@@ -164,9 +164,9 @@ void main() {
       );
       StorageBackendsNotifier.meshServiceOpener =
           ({
-            required final String storePath,
-            required final String peerId,
-            final Uri? relayEndpoint,
+            required final storePath,
+            required final peerId,
+            final relayEndpoint,
           }) async => service;
       final notifier = StorageBackendsNotifier.instance;
       addTearDown(notifier.leaveMesh);

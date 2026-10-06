@@ -173,7 +173,9 @@
   "storageMeshWaitingHint": "Keep this screen open. On your second device tap “{joinWithCode}” and scan this code or paste it.",
   "@storageMeshWaitingHint": {
     "placeholders": {
-      "joinWithCode": { "type": "String" }
+      "joinWithCode": {
+        "type": "String"
+      }
     }
   },
   "storageMeshCopyCode": "Copy code",
@@ -186,7 +188,9 @@
   "storageMeshConnectedCount": "Connected devices: {count}",
   "@storageMeshConnectedCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "storageMeshSyncNow": "Sync now",
@@ -194,10 +198,85 @@
   "storageMeshPairingFailed": "Could not connect: {error}",
   "@storageMeshPairingFailed": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "storageMeshAdvanced": "Advanced settings (debug)",
   "storageMeshUnpair": "Unpair devices",
-  "tokenSafety": "Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them."
+  "tokenSafety": "Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.",
+  "allow": "Allow",
+  "deny": "Deny",
+  "reject": "Reject",
+  "retry": "Retry",
+  "copy": "Copy",
+  "discuss": "Discuss",
+  "desktopOnly": "desktop only",
+  "agentSettingsTitle": "Agents & Models",
+  "agentConfigUnreadable": "Config unreadable, defaults in use: {error}",
+  "agentServersSection": "Agent servers",
+  "agentServerAdd": "Add server",
+  "agentServersEmptyHint": "No custom servers. Known agents (Gemini CLI, Codex CLI, Pi, Claude Code ACP) are discovered automatically on desktop.",
+  "agentServerNameHint": "name",
+  "agentServerCommandHint": "command",
+  "agentServerRemove": "Remove server",
+  "agentServerArgsHint": "arguments (comma-separated)",
+  "agentServerEnvHint": "env — NAME=value per line, $VAR expands from process environment",
+  "agentProvidersSection": "Providers",
+  "agentProviderKeyStored": "key stored on this device",
+  "agentProviderKeyHint": "API key (stored in secure storage)",
+  "agentProviderKeyRemove": "Remove stored key",
+  "agentProviderEnvHint": "key env var",
+  "agentProviderBaseUrlHint": "base URL",
+  "agentProviderModelsHint": "models (one per line)",
+  "agentProviderDefaultModelHint": "default model",
+  "agentChatDefaultsSection": "Chat defaults",
+  "agentChatProviderHint": "default provider",
+  "agentChatModelHint": "default model",
+  "agentChatSystemPromptHint": "default system prompt",
+  "agentChatNoTransport": "pick an agent or model above",
+  "agentChatAcpDesktopOnly": "ACP agents need a desktop device",
+  "agentChatNoAgentDetected": "no ACP agent detected",
+  "agentChatMissingKey": "No API key for this provider — add one in Agents & Models settings.",
+  "agentChatConsentDeclined": "Cloud use declined for this document.",
+  "agentChatConsentTitle": "Send this conversation to the cloud?",
+  "agentChatConsentBody": "The conversation text will be sent to {provider} using {model}. Remembered for this document only.",
+  "agentChatSystemPromptTitle": "System prompt for this document",
+  "agentChatCloudLabel": "cloud · {label}",
+  "agentChatStatusReady": "ready",
+  "agentChatStatusStarting": "starting",
+  "agentChatStatusError": "error",
+  "agentChatStatusStopped": "stopped",
+  "agentChatStatusIdle": "idle",
+  "agentChatPickTransport": "Select agent or model",
+  "agentChatUseLocalExecutable": "Use local executable",
+  "agentChatInstallTitle": "Install an ACP agent",
+  "agentChatRecheck": "Recheck",
+  "agentChatExecutableNotFound": "Executable not found",
+  "@agentConfigUnreadable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@agentChatConsentBody": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      },
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "@agentChatCloudLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "agentChatAuthRequired": "Authentication required — the agent owns its own sign-in. Follow the hint below, then send again."
 }

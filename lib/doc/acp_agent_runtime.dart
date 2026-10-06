@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 
+export 'package:dart_acp_toolkit/dart_acp_toolkit.dart'
+    show AcpAuthMethod, AcpAuthRequiredException, AcpRemoteError;
+
 /// A known desktop ACP agent and how to discover or install it.
 final class AcpAgentCatalogEntry {
   const AcpAgentCatalogEntry({
@@ -12,6 +15,7 @@ final class AcpAgentCatalogEntry {
     this.arguments = const [],
     this.installCommand,
     this.installHint,
+    this.authHint,
   });
 
   final String id;
@@ -24,6 +28,12 @@ final class AcpAgentCatalogEntry {
   /// The runtime never executes this automatically.
   final List<String>? installCommand;
   final String? installHint;
+
+  /// What the user runs to authenticate, for terminal-auth agents (the
+  /// credentials stay in the agent's own store — Last Answer never holds
+  /// them). Agents that complete OAuth over ACP answer
+  /// `session/authenticate` instead and do not need this.
+  final String? authHint;
 }
 
 /// Declarative catalog for common desktop ACP clients.
@@ -42,20 +52,45 @@ final class AcpAgentCatalog {
         '@zed-industries/claude-code-acp',
       ],
       installHint: 'Requires Node.js and global npm access.',
+      authHint: 'Run `claude /login` in a terminal (Anthropic OAuth); the '
+          'ACP adapter reuses the CLI credentials.',
     ),
     AcpAgentCatalogEntry(
       id: 'gemini',
       displayName: 'Gemini CLI',
       commandCandidates: ['gemini'],
+      // Bare `gemini` starts the interactive TUI and never speaks ACP —
+      // the protocol server rides behind this flag.
+      arguments: ['--experimental-acp'],
       installCommand: ['npm', 'install', '-g', '@google/gemini-cli'],
       installHint: 'Requires Node.js and Google authentication.',
+      authHint: 'Set GEMINI_API_KEY (or run gemini once in a terminal '
+          'and complete the Google OAuth sign-in); credentials stay in '
+          "the CLI's own store.",
     ),
     AcpAgentCatalogEntry(
       id: 'codex',
       displayName: 'Codex CLI',
-      commandCandidates: ['codex-acp', 'codex'],
-      installCommand: ['npm', 'install', '-g', '@openai/codex'],
-      installHint: 'Codex ACP support depends on the installed CLI version.',
+      // The ACP launcher is Zed's separate adapter package; the stock
+      // `codex` binary is the interactive CLI and never speaks ACP.
+      commandCandidates: ['codex-acp'],
+      installCommand: ['npm', 'install', '-g', '@zed-industries/codex-acp'],
+      installHint:
+          'Requires Node.js and the Codex CLI installed and logged in '
+          '(`codex login`).',
+      authHint: 'Run `codex login` in a terminal (ChatGPT or API key); '
+          'credentials stay in the CLI config.',
+    ),
+    AcpAgentCatalogEntry(
+      id: 'pi',
+      displayName: 'Pi (pi-acp)',
+      commandCandidates: ['pi-acp'],
+      installCommand: ['npm', 'install', '-g', 'pi-acp'],
+      installHint:
+          'ACP adapter for the pi coding agent; requires Node.js and '
+          "pi's own provider credentials.",
+      authHint: 'Run `pi auth <provider>` in a terminal to check or set '
+          'provider credentials; they stay in the pi config store.',
     ),
   ];
 
@@ -144,15 +179,28 @@ final class AcpPromptResult {
 }
 
 /// Creates or attaches an ACP client. Production code uses [AcpClient.spawn].
-typedef AcpClientFactory = Future<AcpClient> Function(AcpRuntimeConfig config);
+/// The permission delegate answers agent `session/request_permission` calls
+/// (null = the toolkit's safe default: reject); [onStderr] observes the
+/// agent's stderr lines (the pipe is drained regardless).
+typedef AcpClientFactory =
+    Future<AcpClient> Function(
+      AcpRuntimeConfig config,
+      AcpPermissionDelegate? permissionDelegate, {
+      void Function(String line)? onStderr,
+    });
 
-Future<AcpClient> spawnAcpClient(final AcpRuntimeConfig config) =>
-    AcpClient.spawn(
-      config.command,
-      config.arguments,
-      workingDirectory: config.workingDirectory,
-      environment: config.environment,
-    );
+Future<AcpClient> spawnAcpClient(
+  final AcpRuntimeConfig config,
+  final AcpPermissionDelegate? permissionDelegate, {
+  final void Function(String line)? onStderr,
+}) => AcpClient.spawn(
+  config.command,
+  config.arguments,
+  workingDirectory: config.workingDirectory,
+  environment: config.environment,
+  permissionHandler: permissionDelegate,
+  onStderr: onStderr,
+);
 
 /// Discovers desktop ACP agents without executing their commands.
 class AcpInstallationService {
@@ -212,6 +260,28 @@ Future<ProcessRunResult?> _runWhich(final String candidate) async {
   return ProcessRunResult(result.exitCode, '${result.stdout}');
 }
 
+/// One `session/request_permission` the agent raised mid-turn. Exactly one
+/// answer is honored; a second call is a no-op. Unanswered requests hold the
+/// agent's tool call until the user answers or the turn is cancelled.
+final class AcpPendingPermission {
+  AcpPendingPermission._(this.request);
+
+  final AcpPermissionRequest request;
+  final Completer<AcpPermissionOutcome> _completer =
+      Completer<AcpPermissionOutcome>();
+
+  bool get isAnswered => _completer.isCompleted;
+  Future<AcpPermissionOutcome> get future => _completer.future;
+
+  Future<AcpPermissionOutcome> allow() => _answer(AcpPermissionOutcome.allow);
+  Future<AcpPermissionOutcome> reject() => _answer(AcpPermissionOutcome.reject);
+
+  Future<AcpPermissionOutcome> _answer(final AcpPermissionOutcome outcome) {
+    if (!_completer.isCompleted) _completer.complete(outcome);
+    return _completer.future;
+  }
+}
+
 /// Owns one initialized ACP client process and its sessions.
 class AcpAgentRuntime {
   AcpAgentRuntime({this.clientFactory = spawnAcpClient});
@@ -224,6 +294,20 @@ class AcpAgentRuntime {
   Object? _error;
   final Map<String, AcpAgentSession> _sessions = {};
   String? _currentSessionId;
+  final List<AcpPendingPermission> _pendingPermissions = [];
+  final _permissionController =
+      StreamController<AcpPendingPermission>.broadcast();
+
+  /// Every `session/request_permission` the agent raises mid-turn, as an
+  /// awaitable pending request. UI surfaces render these in-flow and answer
+  /// via [AcpPendingPermission.allow] / [AcpPendingPermission.reject].
+  Stream<AcpPendingPermission> get permissionRequests =>
+      _permissionController.stream;
+
+  /// Currently unanswered requests (late subscribers read this snapshot
+  /// instead of replaying the broadcast stream).
+  List<AcpPendingPermission> get pendingPermissions =>
+      List.unmodifiable(_pendingPermissions);
 
   AcpRuntimeStatus get status => _status;
   Object? get error => _error;
@@ -231,8 +315,13 @@ class AcpAgentRuntime {
   Map<String, AcpAgentSession> get sessions => Map.unmodifiable(_sessions);
   String? get currentSessionId => _currentSessionId;
 
-  /// Starts and initializes the agent once.
-  Future<void> start(final AcpRuntimeConfig config) {
+  /// Starts and initializes the agent once. [onStderr] observes the
+  /// agent's stderr lines (diagnostics only — the client drains the pipe
+  /// regardless so a chatty agent cannot block on a full buffer).
+  Future<void> start(
+    final AcpRuntimeConfig config, {
+    final void Function(String line)? onStderr,
+  }) {
     if (_status == AcpRuntimeStatus.ready ||
         _status == AcpRuntimeStatus.starting) {
       return Future.value();
@@ -242,14 +331,21 @@ class AcpAgentRuntime {
     }
     _error = null;
     _status = AcpRuntimeStatus.starting;
-    final future = _start(config);
+    final future = _start(config, onStderr);
     _starting = future;
     return future;
   }
 
-  Future<void> _start(final AcpRuntimeConfig config) async {
+  Future<void> _start(
+    final AcpRuntimeConfig config, [
+    final void Function(String line)? onStderr,
+  ]) async {
     try {
-      final client = await clientFactory(config);
+      final client = await clientFactory(
+        config,
+        _handlePermission,
+        onStderr: onStderr,
+      );
       await client.initialize();
       _client = client;
       _status = AcpRuntimeStatus.ready;
@@ -260,6 +356,17 @@ class AcpAgentRuntime {
     } finally {
       _starting = null;
     }
+  }
+
+  Future<AcpPermissionOutcome> _handlePermission(
+    final AcpPermissionRequest request,
+  ) {
+    final pending = AcpPendingPermission._(request);
+    _pendingPermissions.add(pending);
+    _permissionController.add(pending);
+    return pending.future.whenComplete(() {
+      _pendingPermissions.remove(pending);
+    });
   }
 
   Future<String> newSession(final String workingDirectory) async {
@@ -328,6 +435,15 @@ class AcpAgentRuntime {
       _client = null;
       _status = AcpRuntimeStatus.stopped;
     }
+  }
+
+  /// Answers the agent's `auth_required` over ACP (session/authenticate)
+  /// with the chosen [methodId] — for agents that complete OAuth in
+  /// protocol (Gemini CLI). Terminal-auth agents need their own login
+  /// first; the chat surface then names the fix from the catalog hint.
+  Future<void> authenticate(final String methodId) async {
+    final client = await _requireClient();
+    await client.authenticate(methodId);
   }
 
   void cancel([final String? sessionId]) {

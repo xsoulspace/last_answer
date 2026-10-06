@@ -16,6 +16,7 @@ class SettingsScreen extends HookWidget {
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
     final tabsViews = [
       const GeneralSettingsView(),
+      const AgentSettingsView(),
       if (isAccountViewVisible)
         if (appFeaturesNotifier.value.isRemoteServicesEnabled)
           const MyAccountViewRemoteImpl()
@@ -31,12 +32,13 @@ class SettingsScreen extends HookWidget {
       leading: CupertinoCloseButton(onPressed: onBack),
       actions: const [FeedbackButton()],
       title: Text(context.l10n.settings),
-      bottom: TabBar(
-        tabs: [
-          Tab(text: context.l10n.generalSettingsShortTitle),
-          if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
-        ],
-      ),
+        bottom: TabBar(
+          tabs: [
+            Tab(text: context.l10n.generalSettingsShortTitle),
+            Tab(text: context.l10n.agentSettingsTitle),
+            if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
+          ],
+        ),
     );
 
     if (screenLayout.small) {

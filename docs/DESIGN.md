@@ -72,6 +72,34 @@ single workspace owner and verified there. The owner's filesystem and host
 snapshots remain device-local; authorized file projections can be addressed
 by other sessions without creating a second filesystem authority.
 
+## 5a. The app publishes its actions (the inversion contract)
+
+LA exposes its user-level actions as NAMED DATA over the flutter mcp
+toolkit — `app_intents` (the catalog: every intent's name, group and
+one-line summary) plus executable entries for each (`app_navigate`,
+`app_composer`, `app_inspector`, and the doc/mesh/storage/inspector
+families). The law is dependency inversion at the app level, the same
+one the world inspector already obeys (verbs render as data, the host
+owns execution, the customer is at most a user):
+
+- **The catalog is the contract.** A driver reads `app_intents` — never
+  the code — and every registered tool name must appear in it and vice
+  versa (enforced by test). A rename is a contract change, not a
+  refactor.
+- **LA knows no controller.** LA imports no driver/gesture package and
+  never will; a controller adapts to LA. Semantic grounding rides the
+  toolkit's own labeled a11y tree; the tools add the ACTION layer —
+  stable names that do not move when visible labels are re-worded.
+- **The same paths the hands take.** Intent handlers route through the
+  product's real seams (the composer's delegate path, the pane's
+  surface state, the router's published routes — allowlisted). No
+  second execution path is created for machines.
+- **Honest refusals.** No surface, unknown route, unknown action —
+  each refusal names the next move (which route to open, which actions
+  exist).
+- Debug/profile builds only (the toolkit is a VM-service debug
+  channel): intent authority never ships to a store build.
+
 ## 6. Honest surfaces
 
 Render only what the host truly observes. Live state shows beats and
@@ -143,6 +171,14 @@ rules below are therapeutic before they are aesthetic.
   Capability flags gate which layers **exist** (per doc/user:
   `inspector: none | summary | full`); view toggles gate which are
   **open**. Transparency is always available, never mandatory.
+  - The **world inspector pane** (under the agent doc) obeys the same
+    ladder: collapsed it is one L0 rule that leads with the top NEED
+    (`1 needs you · perm: …`) instead of raw counts; expanded it becomes
+    the embedded 3D workbench — the world as canvas, the ranked Answer
+    Rail, summonable slates (ledger/budget/view/time), a
+    `world ↔ history` projection toggle, and the ⌘K palette whose verbs
+    (allow/reject/delegate) execute through the session registry here,
+    product-side. The inspector itself renders read-only.
 - **Latency to first action under the friction of starting.** Cold
   start → typing in one gesture; Select→Do < 300 ms (pillars doc).
 - **Invariant geometry.** Fixed positions are motor memory: the rail

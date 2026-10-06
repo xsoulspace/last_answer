@@ -94,6 +94,45 @@ final class ChatDocumentService {
     update: (block) => block.copyWith(status: status),
   );
 
+  /// Updates the chat document's transport metadata (provider, model,
+  /// system prompt) carried on its title block. Passing a null field keeps
+  /// the current value; pass `clear*` to remove it.
+  Future<DocumentNode> updateChatMetadata(
+    NodeId nodeId, {
+    String? provider,
+    String? model,
+    String? systemPrompt,
+    bool clearProvider = false,
+    bool clearModel = false,
+    bool clearSystemPrompt = false,
+    DateTime? at,
+  }) => _update(
+    nodeId,
+    at: at,
+    blocks: (node) {
+      final titleIndex = node.blocks.indexWhere(
+        (block) => block.type == BlockType.heading,
+      );
+      if (titleIndex < 0) {
+        throw StateError('chat $nodeId has no title (heading) block');
+      }
+      return [
+        for (var i = 0; i < node.blocks.length; i++)
+          i == titleIndex
+              ? node.blocks[i].copyWith(
+                provider: clearProvider
+                    ? null
+                    : (provider ?? node.blocks[i].provider),
+                model: clearModel ? null : (model ?? node.blocks[i].model),
+                systemPrompt: clearSystemPrompt
+                    ? null
+                    : (systemPrompt ?? node.blocks[i].systemPrompt),
+              )
+              : node.blocks[i],
+      ];
+    },
+  );
+
   /// Opens an anchored child discussion using existing ADR 0001 invariants.
   Future<DocumentNode> startAgentThread({
     required NodeId parentNodeId,

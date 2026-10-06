@@ -1,6 +1,7 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/mesh_task_console_view.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/chat_document_view.dart';
 import 'package:lastanswer/doc/doc_view.dart';
@@ -59,6 +60,11 @@ class ProjectView extends StatelessWidget {
                 docId: doc.id.value,
                 key: ValueKey('mesh-console-$id'),
               ),
+              // The world inspector (inspector DESIGN.md rev. 3): the
+              // harness's 3D inspector embedded over the ONE session
+              // registry — observation here; verbs stay in the doc
+              // surface above.
+              WorldInspectorPane(key: ValueKey('world-inspector-$id')),
             ],
           ),
           _ => DocView(doc: doc, key: ValueKey(id)),

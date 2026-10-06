@@ -22,7 +22,11 @@ mixin _$Block {
  String? get messageId;/// Active backend session associated with a message or document stream.
  String? get sessionId;/// Tool call identifier when the assistant message represents one call.
  String? get toolCallId;/// Human-readable tool name/title when [toolCallId] is present.
- String? get title; MessageStatus get status;
+ String? get title;/// Hosted provider registry key; set on a chat document's title block
+/// (per-document transport selection).
+ String? get provider;/// Selected hosted model; set on a chat document's title block.
+ String? get model;/// Per-document system prompt; set on a chat document's title block.
+ String? get systemPrompt; MessageStatus get status;
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -35,16 +39,16 @@ $BlockCopyWith<Block> get copyWith => _$BlockCopyWithImpl<Block>(this as Block, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,status);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,systemPrompt,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, status: $status)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, systemPrompt: $systemPrompt, status: $status)';
 }
 
 
@@ -55,7 +59,7 @@ abstract mixin class $BlockCopyWith<$Res>  {
   factory $BlockCopyWith(Block value, $Res Function(Block) _then) = _$BlockCopyWithImpl;
 @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, MessageStatus status
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? systemPrompt, MessageStatus status
 });
 
 
@@ -72,7 +76,7 @@ class _$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
   return _then(Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -83,6 +87,9 @@ as ChatRole?,messageId: freezed == messageId ? _self.messageId : messageId // ig
 as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
 as String?,toolCallId: freezed == toolCallId ? _self.toolCallId : toolCallId // ignore: cast_nullable_to_non_nullable
 as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,provider: freezed == provider ? _self.provider : provider // ignore: cast_nullable_to_non_nullable
+as String?,model: freezed == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
+as String?,systemPrompt: freezed == systemPrompt ? _self.systemPrompt : systemPrompt // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MessageStatus,
   ));
@@ -169,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? systemPrompt,  MessageStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.systemPrompt,_that.status);case _:
   return orElse();
 
 }
@@ -190,10 +197,10 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? systemPrompt,  MessageStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _Block():
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.systemPrompt,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -210,10 +217,10 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  MessageStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? systemPrompt,  MessageStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.systemPrompt,_that.status);case _:
   return null;
 
 }
@@ -225,7 +232,7 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 @JsonSerializable()
 
 class _Block implements Block {
-  const _Block({required this.id, required this.type, this.content = '', this.level, this.role, this.messageId, this.sessionId, this.toolCallId, this.title, this.status = MessageStatus.complete});
+  const _Block({required this.id, required this.type, this.content = '', this.level, this.role, this.messageId, this.sessionId, this.toolCallId, this.title, this.provider, this.model, this.systemPrompt, this.status = MessageStatus.complete});
   factory _Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
 
 @override final  NodeId id;
@@ -243,6 +250,13 @@ class _Block implements Block {
 @override final  String? toolCallId;
 /// Human-readable tool name/title when [toolCallId] is present.
 @override final  String? title;
+/// Hosted provider registry key; set on a chat document's title block
+/// (per-document transport selection).
+@override final  String? provider;
+/// Selected hosted model; set on a chat document's title block.
+@override final  String? model;
+/// Per-document system prompt; set on a chat document's title block.
+@override final  String? systemPrompt;
 @override@JsonKey() final  MessageStatus status;
 
 /// Create a copy of Block
@@ -258,16 +272,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,status);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,systemPrompt,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, status: $status)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, systemPrompt: $systemPrompt, status: $status)';
 }
 
 
@@ -278,7 +292,7 @@ abstract mixin class _$BlockCopyWith<$Res> implements $BlockCopyWith<$Res> {
   factory _$BlockCopyWith(_Block value, $Res Function(_Block) _then) = __$BlockCopyWithImpl;
 @override @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, MessageStatus status
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? systemPrompt, MessageStatus status
 });
 
 
@@ -295,7 +309,7 @@ class __$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
   return _then(_Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -306,6 +320,9 @@ as ChatRole?,messageId: freezed == messageId ? _self.messageId : messageId // ig
 as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
 as String?,toolCallId: freezed == toolCallId ? _self.toolCallId : toolCallId // ignore: cast_nullable_to_non_nullable
 as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,provider: freezed == provider ? _self.provider : provider // ignore: cast_nullable_to_non_nullable
+as String?,model: freezed == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
+as String?,systemPrompt: freezed == systemPrompt ? _self.systemPrompt : systemPrompt // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MessageStatus,
   ));
@@ -587,14 +604,14 @@ as String?,
 /// @nodoc
 mixin _$DocumentNode {
 
- NodeId get id;/// Only 'doc' today; extensible later without model changes.
+ NodeId get id; DateTime get createdAt; DateTime get updatedAt;/// Only 'doc' today; extensible later without model changes.
  String get kind;/// Replaces sealed format enums: 'gdd', 'prd', or any template id.
 /// Null = unformatted doc.
  String? get formatId; List<Block> get blocks;/// Null = root/head document.
  NodeId? get parentDocId;/// Required when [parentDocId] != null.
  AnchorSpan? get anchorSpan; DocumentStatus get status;/// Snapshot of anchored text at creation — the "history note" that
 /// future-proofs against edits, sync bugs, and storage migrations.
- String? get spanSnapshot; DateTime get createdAt; DateTime get updatedAt;
+ String? get spanSnapshot;
 /// Create a copy of DocumentNode
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -607,16 +624,16 @@ $DocumentNodeCopyWith<DocumentNode> get copyWith => _$DocumentNodeCopyWithImpl<D
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DocumentNode&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&const DeepCollectionEquality().equals(other.blocks, blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.status, status) || other.status == status)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DocumentNode&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&const DeepCollectionEquality().equals(other.blocks, blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.status, status) || other.status == status)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,formatId,const DeepCollectionEquality().hash(blocks),parentDocId,anchorSpan,status,spanSnapshot,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,kind,formatId,const DeepCollectionEquality().hash(blocks),parentDocId,anchorSpan,status,spanSnapshot);
 
 @override
 String toString() {
-  return 'DocumentNode(id: $id, kind: $kind, formatId: $formatId, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, status: $status, spanSnapshot: $spanSnapshot, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'DocumentNode(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, kind: $kind, formatId: $formatId, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, status: $status, spanSnapshot: $spanSnapshot)';
 }
 
 
@@ -627,7 +644,7 @@ abstract mixin class $DocumentNodeCopyWith<$Res>  {
   factory $DocumentNodeCopyWith(DocumentNode value, $Res Function(DocumentNode) _then) = _$DocumentNodeCopyWithImpl;
 @useResult
 $Res call({
- NodeId id, String kind, String? formatId, List<Block> blocks, NodeId? parentDocId, AnchorSpan? anchorSpan, DocumentStatus status, String? spanSnapshot, DateTime createdAt, DateTime updatedAt
+ NodeId id, DateTime createdAt, DateTime updatedAt, String kind, String? formatId, List<Block> blocks, NodeId? parentDocId, AnchorSpan? anchorSpan, DocumentStatus status, String? spanSnapshot
 });
 
 
@@ -644,19 +661,19 @@ class _$DocumentNodeCopyWithImpl<$Res>
 
 /// Create a copy of DocumentNode
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? formatId = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? status = null,Object? spanSnapshot = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? kind = null,Object? formatId = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? status = null,Object? spanSnapshot = freezed,}) {
   return _then(DocumentNode(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as NodeId,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as NodeId,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,formatId: freezed == formatId ? _self.formatId : formatId // ignore: cast_nullable_to_non_nullable
 as String?,blocks: null == blocks ? _self.blocks : blocks // ignore: cast_nullable_to_non_nullable
 as List<Block>,parentDocId: freezed == parentDocId ? _self.parentDocId : parentDocId // ignore: cast_nullable_to_non_nullable
 as NodeId?,anchorSpan: freezed == anchorSpan ? _self.anchorSpan : anchorSpan // ignore: cast_nullable_to_non_nullable
 as AnchorSpan?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as DocumentStatus,spanSnapshot: freezed == spanSnapshot ? _self.spanSnapshot : spanSnapshot // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 /// Create a copy of DocumentNode
@@ -753,10 +770,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  DateTime createdAt,  DateTime updatedAt,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DocumentNode() when $default != null:
-return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot);case _:
   return orElse();
 
 }
@@ -774,10 +791,10 @@ return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocI
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  DateTime createdAt,  DateTime updatedAt,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot)  $default,) {final _that = this;
 switch (_that) {
 case _DocumentNode():
-return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -794,10 +811,10 @@ return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocI
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  DateTime createdAt,  DateTime updatedAt,  String kind,  String? formatId,  List<Block> blocks,  NodeId? parentDocId,  AnchorSpan? anchorSpan,  DocumentStatus status,  String? spanSnapshot)?  $default,) {final _that = this;
 switch (_that) {
 case _DocumentNode() when $default != null:
-return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.kind,_that.formatId,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.status,_that.spanSnapshot);case _:
   return null;
 
 }
@@ -809,10 +826,12 @@ return $default(_that.id,_that.kind,_that.formatId,_that.blocks,_that.parentDocI
 @JsonSerializable()
 
 class _DocumentNode implements DocumentNode {
-  const _DocumentNode({required this.id, this.kind = 'doc', this.formatId,  List<Block> blocks = const <Block>[], this.parentDocId, this.anchorSpan, this.status = DocumentStatus.open, this.spanSnapshot, required this.createdAt, required this.updatedAt}): _blocks = blocks;
+  const _DocumentNode({required this.id, required this.createdAt, required this.updatedAt, this.kind = 'doc', this.formatId,  List<Block> blocks = const <Block>[], this.parentDocId, this.anchorSpan, this.status = DocumentStatus.open, this.spanSnapshot}): _blocks = blocks;
   factory _DocumentNode.fromJson(Map<String, dynamic> json) => _$DocumentNodeFromJson(json);
 
 @override final  NodeId id;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 /// Only 'doc' today; extensible later without model changes.
 @override@JsonKey() final  String kind;
 /// Replaces sealed format enums: 'gdd', 'prd', or any template id.
@@ -833,8 +852,6 @@ class _DocumentNode implements DocumentNode {
 /// Snapshot of anchored text at creation — the "history note" that
 /// future-proofs against edits, sync bugs, and storage migrations.
 @override final  String? spanSnapshot;
-@override final  DateTime createdAt;
-@override final  DateTime updatedAt;
 
 /// Create a copy of DocumentNode
 /// with the given fields replaced by the non-null parameter values.
@@ -849,16 +866,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DocumentNode&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.status, status) || other.status == status)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DocumentNode&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.formatId, formatId) || other.formatId == formatId)&&const DeepCollectionEquality().equals(other._blocks, _blocks)&&(identical(other.parentDocId, parentDocId) || other.parentDocId == parentDocId)&&(identical(other.anchorSpan, anchorSpan) || other.anchorSpan == anchorSpan)&&(identical(other.status, status) || other.status == status)&&(identical(other.spanSnapshot, spanSnapshot) || other.spanSnapshot == spanSnapshot));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,formatId,const DeepCollectionEquality().hash(_blocks),parentDocId,anchorSpan,status,spanSnapshot,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,kind,formatId,const DeepCollectionEquality().hash(_blocks),parentDocId,anchorSpan,status,spanSnapshot);
 
 @override
 String toString() {
-  return 'DocumentNode(id: $id, kind: $kind, formatId: $formatId, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, status: $status, spanSnapshot: $spanSnapshot, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'DocumentNode(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, kind: $kind, formatId: $formatId, blocks: $blocks, parentDocId: $parentDocId, anchorSpan: $anchorSpan, status: $status, spanSnapshot: $spanSnapshot)';
 }
 
 
@@ -869,7 +886,7 @@ abstract mixin class _$DocumentNodeCopyWith<$Res> implements $DocumentNodeCopyWi
   factory _$DocumentNodeCopyWith(_DocumentNode value, $Res Function(_DocumentNode) _then) = __$DocumentNodeCopyWithImpl;
 @override @useResult
 $Res call({
- NodeId id, String kind, String? formatId, List<Block> blocks, NodeId? parentDocId, AnchorSpan? anchorSpan, DocumentStatus status, String? spanSnapshot, DateTime createdAt, DateTime updatedAt
+ NodeId id, DateTime createdAt, DateTime updatedAt, String kind, String? formatId, List<Block> blocks, NodeId? parentDocId, AnchorSpan? anchorSpan, DocumentStatus status, String? spanSnapshot
 });
 
 
@@ -886,19 +903,19 @@ class __$DocumentNodeCopyWithImpl<$Res>
 
 /// Create a copy of DocumentNode
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? kind = null,Object? formatId = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? status = null,Object? spanSnapshot = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? kind = null,Object? formatId = freezed,Object? blocks = null,Object? parentDocId = freezed,Object? anchorSpan = freezed,Object? status = null,Object? spanSnapshot = freezed,}) {
   return _then(_DocumentNode(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as NodeId,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as NodeId,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,formatId: freezed == formatId ? _self.formatId : formatId // ignore: cast_nullable_to_non_nullable
 as String?,blocks: null == blocks ? _self._blocks : blocks // ignore: cast_nullable_to_non_nullable
 as List<Block>,parentDocId: freezed == parentDocId ? _self.parentDocId : parentDocId // ignore: cast_nullable_to_non_nullable
 as NodeId?,anchorSpan: freezed == anchorSpan ? _self.anchorSpan : anchorSpan // ignore: cast_nullable_to_non_nullable
 as AnchorSpan?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as DocumentStatus,spanSnapshot: freezed == spanSnapshot ? _self.spanSnapshot : spanSnapshot // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 

@@ -1172,6 +1172,300 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.'**
   String get tokenSafety;
+
+  /// No description provided for @allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
+
+  /// No description provided for @deny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get deny;
+
+  /// No description provided for @reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @discuss.
+  ///
+  /// In en, this message translates to:
+  /// **'Discuss'**
+  String get discuss;
+
+  /// No description provided for @desktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'desktop only'**
+  String get desktopOnly;
+
+  /// No description provided for @agentSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Agents & Models'**
+  String get agentSettingsTitle;
+
+  /// No description provided for @agentConfigUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'Config unreadable, defaults in use: {error}'**
+  String agentConfigUnreadable(String error);
+
+  /// No description provided for @agentServersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent servers'**
+  String get agentServersSection;
+
+  /// No description provided for @agentServerAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add server'**
+  String get agentServerAdd;
+
+  /// No description provided for @agentServersEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No custom servers. Known agents (Gemini CLI, Codex CLI, Pi, Claude Code ACP) are discovered automatically on desktop.'**
+  String get agentServersEmptyHint;
+
+  /// No description provided for @agentServerNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name'**
+  String get agentServerNameHint;
+
+  /// No description provided for @agentServerCommandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'command'**
+  String get agentServerCommandHint;
+
+  /// No description provided for @agentServerRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove server'**
+  String get agentServerRemove;
+
+  /// No description provided for @agentServerArgsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'arguments (comma-separated)'**
+  String get agentServerArgsHint;
+
+  /// No description provided for @agentServerEnvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'env — NAME=value per line, \$VAR expands from process environment'**
+  String get agentServerEnvHint;
+
+  /// No description provided for @agentProvidersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get agentProvidersSection;
+
+  /// No description provided for @agentProviderKeyStored.
+  ///
+  /// In en, this message translates to:
+  /// **'key stored on this device'**
+  String get agentProviderKeyStored;
+
+  /// No description provided for @agentProviderKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'API key (stored in secure storage)'**
+  String get agentProviderKeyHint;
+
+  /// No description provided for @agentProviderKeyRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove stored key'**
+  String get agentProviderKeyRemove;
+
+  /// No description provided for @agentProviderEnvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'key env var'**
+  String get agentProviderEnvHint;
+
+  /// No description provided for @agentProviderBaseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'base URL'**
+  String get agentProviderBaseUrlHint;
+
+  /// No description provided for @agentProviderModelsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'models (one per line)'**
+  String get agentProviderModelsHint;
+
+  /// No description provided for @agentProviderDefaultModelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default model'**
+  String get agentProviderDefaultModelHint;
+
+  /// No description provided for @agentChatDefaultsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat defaults'**
+  String get agentChatDefaultsSection;
+
+  /// No description provided for @agentChatProviderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default provider'**
+  String get agentChatProviderHint;
+
+  /// No description provided for @agentChatModelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default model'**
+  String get agentChatModelHint;
+
+  /// No description provided for @agentChatSystemPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default system prompt'**
+  String get agentChatSystemPromptHint;
+
+  /// No description provided for @agentChatNoTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'pick an agent or model above'**
+  String get agentChatNoTransport;
+
+  /// No description provided for @agentChatAcpDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'ACP agents need a desktop device'**
+  String get agentChatAcpDesktopOnly;
+
+  /// No description provided for @agentChatNoAgentDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'no ACP agent detected'**
+  String get agentChatNoAgentDetected;
+
+  /// No description provided for @agentChatMissingKey.
+  ///
+  /// In en, this message translates to:
+  /// **'No API key for this provider — add one in Agents & Models settings.'**
+  String get agentChatMissingKey;
+
+  /// No description provided for @agentChatConsentDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud use declined for this document.'**
+  String get agentChatConsentDeclined;
+
+  /// No description provided for @agentChatConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send this conversation to the cloud?'**
+  String get agentChatConsentTitle;
+
+  /// No description provided for @agentChatConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The conversation text will be sent to {provider} using {model}. Remembered for this document only.'**
+  String agentChatConsentBody(String provider, String model);
+
+  /// No description provided for @agentChatSystemPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System prompt for this document'**
+  String get agentChatSystemPromptTitle;
+
+  /// No description provided for @agentChatCloudLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'cloud · {label}'**
+  String agentChatCloudLabel(String label);
+
+  /// No description provided for @agentChatStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'ready'**
+  String get agentChatStatusReady;
+
+  /// No description provided for @agentChatStatusStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'starting'**
+  String get agentChatStatusStarting;
+
+  /// No description provided for @agentChatStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'error'**
+  String get agentChatStatusError;
+
+  /// No description provided for @agentChatStatusStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'stopped'**
+  String get agentChatStatusStopped;
+
+  /// No description provided for @agentChatStatusIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'idle'**
+  String get agentChatStatusIdle;
+
+  /// No description provided for @agentChatPickTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select agent or model'**
+  String get agentChatPickTransport;
+
+  /// No description provided for @agentChatUseLocalExecutable.
+  ///
+  /// In en, this message translates to:
+  /// **'Use local executable'**
+  String get agentChatUseLocalExecutable;
+
+  /// No description provided for @agentChatInstallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Install an ACP agent'**
+  String get agentChatInstallTitle;
+
+  /// No description provided for @agentChatRecheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Recheck'**
+  String get agentChatRecheck;
+
+  /// No description provided for @agentChatExecutableNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Executable not found'**
+  String get agentChatExecutableNotFound;
+
+  /// No description provided for @agentChatAuthRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.'**
+  String get agentChatAuthRequired;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

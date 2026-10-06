@@ -32,6 +32,7 @@ _AgentDocModel _$AgentDocModelFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       backend: json['backend'] as String? ?? 'apple_foundation_afm',
+      externalAcpServer: json['externalAcpServer'] as String? ?? '',
       checkCommand:
           (json['checkCommand'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -43,6 +44,7 @@ Map<String, dynamic> _$AgentDocModelToJson(_AgentDocModel instance) =>
     <String, dynamic>{
       'workspaces': instance.workspaces,
       'backend': instance.backend,
+      'externalAcpServer': instance.externalAcpServer,
       'checkCommand': instance.checkCommand,
     };
 

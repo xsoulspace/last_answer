@@ -8,6 +8,12 @@ fix:
 gate-multiplayer *ARGS:
     fvm dart tool/gates/multiplayer_harness_gate.dart {{ARGS}}
 
+# CLI chat gate: detect → install if needed → attach a real ACP agent
+# (gemini / pi / codex / claude-code-acp) → auth guard → one prompt turn.
+# e.g. `just gate-chat --agent pi` (add --install to install the CLI).
+gate-chat *ARGS:
+    fvm dart tool/gates/chat_cli_gate.dart {{ARGS}}
+
 clean:
     flutter clean
 repair:

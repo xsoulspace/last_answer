@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/bootstrap.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
+import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';
 import 'package:lastanswer/mcp/storage_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
@@ -18,9 +20,11 @@ void main() {
       unawaited(
         binding.addEntries(
           entries: {
+            ...appMcpEntries(),
             ...storageMcpEntries(),
             ...docMcpEntries(),
             ...agentMcpEntries(),
+            ...worldInspectorMcpEntries(),
           },
         ),
       );

@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lastanswer/agent_config/agent_platform_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Device-local configuration for a hosted coding provider. Document payloads
@@ -57,6 +58,56 @@ final class ProviderConfigurationStore {
 
   final Future<SharedPreferences> Function() _preferences;
   final SecureValueStore _secureValues;
+
+  /// Per-provider secure-store key (the settings pane writes here). The
+  /// legacy OpenRouter key is read as a fallback so pre-existing setups
+  /// keep working.
+  static String providerKeyStoreId(String providerId) =>
+      'lastanswer.agent_config.provider.$providerId.key.v1';
+
+  Future<String?> readProviderKey(String providerId) async {
+    final value = (await _secureValues.read(
+      providerKeyStoreId(providerId),
+    ))?.trim();
+    if (value != null && value.isNotEmpty) return value;
+    if (providerId == AgentPlatformConfig.openRouterId) {
+      return (await _secureValues.read(_openRouterKey))?.trim();
+    }
+    return null;
+  }
+
+  Future<void> writeProviderKey(String providerId, String value) async {
+    final key = value.trim();
+    if (key.isEmpty) {
+      throw ArgumentError.value(value, 'value', 'must not be blank');
+    }
+    await _secureValues.write(providerKeyStoreId(providerId), key);
+  }
+
+  Future<void> removeProviderKey(String providerId) async {
+    await _secureValues.delete(providerKeyStoreId(providerId));
+    if (providerId == AgentPlatformConfig.openRouterId) {
+      await _secureValues.delete(_openRouterKey);
+    }
+  }
+
+  Future<bool> consentGranted({
+    required String documentId,
+    required String provider,
+    required String model,
+    required String workspace,
+  }) async =>
+      (await _preferences()).getBool(
+        _consentKey(documentId, provider, model, workspace),
+      ) ??
+      false;
+
+  /// Whether a key is already in the secure store (UI shows stored-state,
+  /// never the key itself).
+  Future<bool> hasProviderKey(String providerId) async {
+    final value = await readProviderKey(providerId);
+    return value != null && value.isNotEmpty;
+  }
 
   Future<bool> get hasOpenRouterCredential async =>
       (await _secureValues.read(_openRouterKey))?.trim().isNotEmpty ?? false;

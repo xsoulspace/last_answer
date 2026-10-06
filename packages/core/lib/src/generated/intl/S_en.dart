@@ -595,4 +595,162 @@ class SEn extends S {
   @override
   String get tokenSafety =>
       'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.';
+
+  @override
+  String get allow => 'Allow';
+
+  @override
+  String get deny => 'Deny';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String get discuss => 'Discuss';
+
+  @override
+  String get desktopOnly => 'desktop only';
+
+  @override
+  String get agentSettingsTitle => 'Agents & Models';
+
+  @override
+  String agentConfigUnreadable(String error) {
+    return 'Config unreadable, defaults in use: $error';
+  }
+
+  @override
+  String get agentServersSection => 'Agent servers';
+
+  @override
+  String get agentServerAdd => 'Add server';
+
+  @override
+  String get agentServersEmptyHint =>
+      'No custom servers. Known agents (Gemini CLI, Codex CLI, Pi, Claude Code ACP) are discovered automatically on desktop.';
+
+  @override
+  String get agentServerNameHint => 'name';
+
+  @override
+  String get agentServerCommandHint => 'command';
+
+  @override
+  String get agentServerRemove => 'Remove server';
+
+  @override
+  String get agentServerArgsHint => 'arguments (comma-separated)';
+
+  @override
+  String get agentServerEnvHint =>
+      'env — NAME=value per line, \$VAR expands from process environment';
+
+  @override
+  String get agentProvidersSection => 'Providers';
+
+  @override
+  String get agentProviderKeyStored => 'key stored on this device';
+
+  @override
+  String get agentProviderKeyHint => 'API key (stored in secure storage)';
+
+  @override
+  String get agentProviderKeyRemove => 'Remove stored key';
+
+  @override
+  String get agentProviderEnvHint => 'key env var';
+
+  @override
+  String get agentProviderBaseUrlHint => 'base URL';
+
+  @override
+  String get agentProviderModelsHint => 'models (one per line)';
+
+  @override
+  String get agentProviderDefaultModelHint => 'default model';
+
+  @override
+  String get agentChatDefaultsSection => 'Chat defaults';
+
+  @override
+  String get agentChatProviderHint => 'default provider';
+
+  @override
+  String get agentChatModelHint => 'default model';
+
+  @override
+  String get agentChatSystemPromptHint => 'default system prompt';
+
+  @override
+  String get agentChatNoTransport => 'pick an agent or model above';
+
+  @override
+  String get agentChatAcpDesktopOnly => 'ACP agents need a desktop device';
+
+  @override
+  String get agentChatNoAgentDetected => 'no ACP agent detected';
+
+  @override
+  String get agentChatMissingKey =>
+      'No API key for this provider — add one in Agents & Models settings.';
+
+  @override
+  String get agentChatConsentDeclined =>
+      'Cloud use declined for this document.';
+
+  @override
+  String get agentChatConsentTitle => 'Send this conversation to the cloud?';
+
+  @override
+  String agentChatConsentBody(String provider, String model) {
+    return 'The conversation text will be sent to $provider using $model. Remembered for this document only.';
+  }
+
+  @override
+  String get agentChatSystemPromptTitle => 'System prompt for this document';
+
+  @override
+  String agentChatCloudLabel(String label) {
+    return 'cloud · $label';
+  }
+
+  @override
+  String get agentChatStatusReady => 'ready';
+
+  @override
+  String get agentChatStatusStarting => 'starting';
+
+  @override
+  String get agentChatStatusError => 'error';
+
+  @override
+  String get agentChatStatusStopped => 'stopped';
+
+  @override
+  String get agentChatStatusIdle => 'idle';
+
+  @override
+  String get agentChatPickTransport => 'Select agent or model';
+
+  @override
+  String get agentChatUseLocalExecutable => 'Use local executable';
+
+  @override
+  String get agentChatInstallTitle => 'Install an ACP agent';
+
+  @override
+  String get agentChatRecheck => 'Recheck';
+
+  @override
+  String get agentChatExecutableNotFound => 'Executable not found';
+
+  @override
+  String get agentChatAuthRequired =>
+      'Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.';
 }

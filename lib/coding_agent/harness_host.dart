@@ -11,8 +11,15 @@ import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 // (HarnessEmbed); this module keeps product-side policy only: config
 // (backend switching, check override) + consent (PendingPermission).
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_inference_acp/xsoulspace_inference_acp.dart'
+    show AcpInferenceClient;
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart'
     show OpenRouterInferenceClient, OpenRouterModelNames;
+
+/// Model-name key for the external-ACP harness backend: the external agent
+/// process IS the generator; all tool execution stays inside the harness
+/// (ADR 0012 review boundary — the workspace owner materializes writes).
+enum ExternalAcpModelNames implements ModelName { externalAcp }
 
 /// TASK B (ADR 0015) — last_answer embeds the harness as its first domain
 /// host. This module owns the daemon lifecycle IN-PROCESS via the host
@@ -159,9 +166,15 @@ final class HarnessHostConfig {
     this.jevBinding,
     this.apiKey,
     this.checkCommand,
+    this.externalAcpCommand,
+    this.externalAcpArguments = const [],
+    this.externalAcpEnvironment,
+    this.externalAcpWorkingDirectory,
   });
 
-  /// `apple_foundation_afm`, `open_router`, or opt-in `jev`.
+  /// `apple_foundation_afm`, `open_router`, opt-in `jev`, or
+  /// `external_acp` (a user-registered ACP agent process from the agent
+  /// config used as the harness's generator).
   final String backend;
   final String model;
   final bool scripted;
@@ -172,6 +185,14 @@ final class HarnessHostConfig {
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
   final String? apiKey;
+
+  /// External-ACP backend launch parameters (from the agent config's
+  /// registered servers). Empty command = backend unavailable; the daemon
+  /// then refuses prompts with named data instead of hanging.
+  final String? externalAcpCommand;
+  final List<String> externalAcpArguments;
+  final Map<String, String>? externalAcpEnvironment;
+  final String? externalAcpWorkingDirectory;
 
   /// Explicit verification criterion overriding the D8 workspace
   /// convention (the doc binding's `--check`, ADR 0003). Empty/null → the
@@ -189,10 +210,13 @@ final class HarnessHostConfig {
   /// the conventional registry, whose tools the scripted mover emits).
   final bool meaningProfile;
 
-  /// The OpenRouter router needs a key from somewhere; AFM needs nothing
-  /// (on-device). Honest failure: an unresolvable key is a config error
-  /// surfaced BEFORE a session is created, never a mid-turn crash.
+  /// R7c of the external-ACP lane: an unresolvable command is a config
+  /// error surfaced BEFORE a session is created, never a mid-turn crash.
   bool get openRouterKeyResolvable {
+    if (backend == 'external_acp') {
+      final command = externalAcpCommand;
+      return command != null && command.isNotEmpty;
+    }
     if (backend != 'open_router' && backend != 'jev') return true;
     final key = apiKey ?? Platform.environment['OPENROUTER_API_KEY'];
     return key != null && key.isNotEmpty;
@@ -230,6 +254,30 @@ final class HarnessHostConfig {
     if (backend == 'jev' && jevBinding != null) {
       bindings['jev'] = jevBinding!.binding;
     }
+    final externalCommand = externalAcpCommand;
+    if (backend == 'external_acp' &&
+        (externalCommand?.isNotEmpty ?? false)) {
+      final command = externalAcpCommand!;
+      final router =
+          ModelRouter(
+              inferenceClientsBuilders: {
+                ExternalAcpModelNames.externalAcp: () => AcpInferenceClient(
+                  command: command,
+                  arguments: externalAcpArguments,
+                  workingDirectory: externalAcpWorkingDirectory,
+                  environment: externalAcpEnvironment,
+                ),
+              },
+            )
+            ..models[const ModelId('harnessd')] = const Model(
+              id: ModelId('harnessd'),
+              name: ExternalAcpModelNames.externalAcp,
+            );
+      bindings['external_acp'] = HarnessBackendBinding(
+        defaultModel: model,
+        buildRouter: ({required model, apiKey}) => router,
+      );
+    }
     return HarnessAcpBackend(
       backend: backend,
       bindings: bindings,
@@ -252,6 +300,10 @@ final class HarnessHostConfig {
     List<String>? checkCommand,
     bool? meaningProfile,
     JevClientBinding? jevBinding,
+    String? externalAcpCommand,
+    List<String>? externalAcpArguments,
+    Map<String, String>? externalAcpEnvironment,
+    String? externalAcpWorkingDirectory,
   }) => HarnessHostConfig(
     backend: backend ?? this.backend,
     model: model ?? this.model,
@@ -261,5 +313,12 @@ final class HarnessHostConfig {
     jevBinding: clearJevBinding ? null : jevBinding ?? this.jevBinding,
     apiKey: clearApiKey ? null : apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
+    externalAcpCommand: externalAcpCommand ?? this.externalAcpCommand,
+    externalAcpArguments:
+        externalAcpArguments ?? this.externalAcpArguments,
+    externalAcpEnvironment:
+        externalAcpEnvironment ?? this.externalAcpEnvironment,
+    externalAcpWorkingDirectory:
+        externalAcpWorkingDirectory ?? this.externalAcpWorkingDirectory,
   );
 }

@@ -177,10 +177,7 @@ Future<void> main(final List<String> args) => okaRun(
 /// into the shipped binary and echoed in logs — wrong tier for credential
 /// material (ADR-0014, three-tier table).
 const PlayPublishTarget playPublishTarget = PlayPublishTarget(
-  // Safe default: plan, never upload. Flip to false only for a real run.
-  dryRun: true,
   packageName: 'dev.xsoulspace.lastanswer',
-  releaseTrack: PlayTrack.internal,
 );
 
 /// Huawei AppGallery publish target (ADR-0014 P2; ADR-0015 verb/target
@@ -239,13 +236,7 @@ const PlayPublishTarget playPublishTarget = PlayPublishTarget(
 /// 7. Real upload: flip `dryRun: false` here and run
 ///    `oka run publish-huawei --release --aab`.
 const HuaweiPublishTarget huaweiPublishTarget = HuaweiPublishTarget(
-  // Safe default: plan, never upload. Flip to false only for a real run.
-  dryRun: true,
   release: HuaweiReleaseConfig(
-    // TODO(human): fill in the numeric AGC app id (appId:) after "New app"
-    // in AppGallery Connect (step 1 of the walkthrough above). Empty keeps
-    // the dry-run valid; a real submit without it fails naming the fix.
-    track: HuaweiReleaseConfig.defaultTrack,
     // Release notes are file paths (ADR-0014 tier rule — content is read
     // from disk at publish time, never inlined into typed config). Create
     // these before a real run (step 4 of the walkthrough above).

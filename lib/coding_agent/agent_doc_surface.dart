@@ -7,6 +7,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
@@ -40,6 +41,7 @@ final class AgentDocSurface extends StatefulWidget {
     this.onDocChanged,
     this.config,
     this.providerConfiguration,
+    this.agentConfig,
     super.key,
   });
 
@@ -56,6 +58,10 @@ final class AgentDocSurface extends StatefulWidget {
   /// backend/check are overridden by the doc payload).
   final HarnessHostConfig? config;
   final ProviderConfigurationStore? providerConfiguration;
+
+  /// Optional agent-config store override (tests inject an in-memory one;
+  /// the app tree provides the file-backed one).
+  final AgentConfigStore? agentConfig;
 
   /// The live surface state for the agent/intent projection
   /// (`DocView.debugDocState` pattern).
@@ -195,13 +201,52 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     unawaited(AgentDocSurface.meshWiring?.joinDoc(_meshDocId));
   }
 
+  AgentConfigStore? _localAgentConfig;
+
+  /// The registered-servers config (Zed-style `agent_servers` file). The
+  /// app tree provides a loaded store; tests may inject one.
+  AgentConfigStore get _agentConfigStore =>
+      widget.agentConfig ?? (_localAgentConfig ??= AgentConfigStore());
+
+  /// Resolves the doc's selected external-ACP server into host launch
+  /// parameters. Null command = unresolvable — the daemon then refuses
+  /// prompts with named data instead of hanging (R7c).
+  ({String? command, List<String> args, Map<String, String>? env})
+  _resolveExternalAcp(final AgentDocModel agent) {
+    final servers = _agentConfigStore.config.agentServers;
+    var server = agent.externalAcpServer.isEmpty
+        ? null
+        : servers[agent.externalAcpServer];
+    server ??= servers.length == 1 ? servers.values.first : null;
+    if (server == null || server.command.isEmpty) {
+      return (command: null, args: const <String>[], env: null);
+    }
+    final environment = _agentConfigStore.environment;
+    final env = <String, String>{
+      for (final entry in server.env.entries)
+        entry.key: _agentConfigStore
+            .expandEnv(entry.value, environment: environment)
+            .value,
+    };
+    return (command: server.command, args: server.args, env: env);
+  }
+
   HarnessHostConfig _configFor(final ProjectModelDoc doc) {
     final base = widget.config ?? const HarnessHostConfig();
     final agent = doc.agent ?? const AgentDocModel();
+    final external = agent.backend == 'external_acp'
+        ? _resolveExternalAcp(agent)
+        : null;
+    final workspace = _workspaceField.text.trim();
     return base.copyWith(
       backend: agent.backend,
       model: agent.backend == 'jev' ? 'jev-1.13' : base.model,
       checkCommand: agent.checkCommand.isEmpty ? null : agent.checkCommand,
+      externalAcpCommand: external?.command,
+      externalAcpArguments: external?.args,
+      externalAcpEnvironment: external?.env,
+      externalAcpWorkingDirectory:
+          external?.command == null || workspace.isEmpty ? null : workspace,
       // R9.1 — the agent doc's embedded runtime is the MEANING runtime:
       // reads are budgeted zoom cuts, mutations are host-materialized edit
       // moves (verify + auto-revert). The conventional command profile
@@ -236,6 +281,17 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       await _controller.delegate(task);
     }());
     return (ok: true, message: 'delegated: $task');
+  }
+
+  /// Intent surface: focus the composer (the app_composer tool's focus
+  /// action — the gesture-controller way to hand the keyboard over).
+  /// Marks the doc focused (an intent IS an interaction, ADR 0009 §1)
+  /// and requests focus; false when the surface unmounted first.
+  bool focusComposerFromIntent() {
+    if (!mounted) return false;
+    _markFocused();
+    _composerFocus.requestFocus();
+    return true;
   }
 
   /// Intent surface: answer the pending permission round-trip.
@@ -541,7 +597,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     }
   }
 
-
   /// The typed state both projections render ([AgentDocSurface
   /// .debugState]): extracted so the sync-cycle hook and the intent
   /// surface re-project synchronously — build timing is not part of the
@@ -780,6 +835,17 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           return false;
       }
     }
+    final externalParams = backend == 'external_acp'
+        ? _resolveExternalAcp(agent ?? const AgentDocModel())
+        : null;
+    if (backend == 'external_acp' &&
+        (externalParams?.command == null || externalParams!.command!.isEmpty)) {
+      _controller.error =
+          'no external ACP server configured - pick one in SETUP '
+          '(register servers in agent settings).';
+      if (mounted) setState(() {});
+      return false;
+    }
     await _controller.switchBackend(
       _controller.config.copyWith(
         backend: backend,
@@ -796,6 +862,12 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         checkCommand: agent == null || agent.checkCommand.isEmpty
             ? const <String>[]
             : agent.checkCommand,
+        externalAcpCommand: externalParams?.command,
+        externalAcpArguments: externalParams?.args,
+        externalAcpEnvironment: externalParams?.env,
+        externalAcpWorkingDirectory: backend == 'external_acp'
+            ? _workspaceField.text.trim()
+            : null,
       ),
     );
     return true;
@@ -1075,111 +1147,157 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         AgentDocSurface.debugState = _projectState();
         return ColoredBox(
           color: theme.colorScheme.surface,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _StatusRule(
-                backend: controller.config.backend,
-                workspace: _workspaceField.text.trim(),
-                running: controller.isRunning,
-                turnCount: current?.turns.length ?? 0,
-                toolCount: current?.openTurn?.toolCalls.length ?? 0,
-                setupOpen: _showSetup,
-                profileOpen: _profileOpen,
-                onToggleSetup: () => setState(() => _setupOpen = !_setupOpen),
-                onToggleProfile: () =>
-                    setState(() => _profileOpen = !_profileOpen),
-                onOpenSetup: () => setState(() => _setupOpen = true),
-                onCancel: controller.cancelCurrent,
-              ),
-              if (controller.error != null)
-                _Banner(
-                  key: const Key('coding_agent.error'),
-                  text: 'error: ${controller.error}',
-                  color: theme.colorScheme.errorContainer,
-                ),
-              if (_showSetup)
-                _SetupPane(
-                  workspaceField: _workspaceField,
-                  checkField: _checkField,
-                  keyField: _keyField,
-                  backend: controller.config.backend,
-                  busy: controller.isRunning,
-                  pickError: _pickError,
-                  onPick: _pickWorkspace,
-                  onBackend: (final b) => unawaited(_switchBackend(b)),
-                  hostedConsentGranted: _hostedConsentGranted,
-                  onHostedConsent: _grantHostedConsent,
-                ),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: _Conversation(
-                        key: const Key('coding_agent.transcript'),
-                        controller: controller,
-                        docWorkspace: _workspaceField.text.trim(),
-                        expandedBeats: _expandedBeats,
-                        onToggleBeat: (final id) => setState(() {
-                          _expandedBeats.contains(id)
-                              ? _expandedBeats.remove(id)
-                              : _expandedBeats.add(id);
-                        }),
+          child: LayoutBuilder(
+            builder: (final context, final box) {
+              // The setup pane YIELDS first (audit 3: the composer and the
+              // status rule are never the things that overflow): capped to
+              // what the surface can spare after status, composer and a
+              // minimum live transcript, scrolling when capped. Measured —
+              // the world inspector pane below takes its share first.
+              final setupCap = (box.maxHeight - 220).clamp(
+                0.0,
+                double.infinity,
+              );
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _StatusRule(
+                    backend: controller.config.backend,
+                    workspace: _workspaceField.text.trim(),
+                    running: controller.isRunning,
+                    turnCount: current?.turns.length ?? 0,
+                    toolCount: current?.openTurn?.toolCalls.length ?? 0,
+                    setupOpen: _showSetup,
+                    profileOpen: _profileOpen,
+                    onToggleSetup: () =>
+                        setState(() => _setupOpen = !_setupOpen),
+                    onToggleProfile: () =>
+                        setState(() => _profileOpen = !_profileOpen),
+                    onOpenSetup: () => setState(() => _setupOpen = true),
+                    onCancel: controller.cancelCurrent,
+                  ),
+                  if (controller.error != null)
+                    _Banner(
+                      key: const Key('coding_agent.error'),
+                      text: 'error: ${controller.error}',
+                      color: theme.colorScheme.errorContainer,
+                    ),
+                  if (_showSetup)
+                    _SetupPaneSlot(
+                      cap: setupCap,
+                      child: _SetupPane(
+                        workspaceField: _workspaceField,
+                        checkField: _checkField,
+                        keyField: _keyField,
                         backend: controller.config.backend,
-                        expandedTurnHistory: _expandedTurnHistory,
-                        onToggleTurnHistory: (final key) => setState(() {
-                          _expandedTurnHistory.contains(key)
-                              ? _expandedTurnHistory.remove(key)
-                              : _expandedTurnHistory.add(key);
-                        }),
-                        editingStepId: _editingStepId,
-                        queueEditField: _queueEditField,
-                        onBeginQueuedEdit: _beginQueuedEdit,
-                        onCommitQueuedEdit: _commitQueuedEdit,
-                        onCancelQueued: (final id) =>
-                            _controller.cancelQueued(id),
-                        onSendNowQueued: (final id) =>
-                            _controller.sendNowQueued(id),
-                        editingTurnKey: _editingTurnKey,
-                        turnEditField: _turnEditField,
-                        onBeginTurnEdit: _beginTurnEdit,
-                        onCommitTurnEdit: _commitTurnEdit,
+                        busy: controller.isRunning,
+                        pickError: _pickError,
+                        onPick: _pickWorkspace,
+                        onBackend: (final b) => unawaited(_switchBackend(b)),
+                        hostedConsentGranted: _hostedConsentGranted,
+                        onHostedConsent: _grantHostedConsent,
+                        agentServers: _agentConfigStore.config.agentServers,
+                        externalServer: _doc.agent?.externalAcpServer ?? '',
+                        onExternalServer: (final id) {
+                          final agentModel =
+                              _doc.agent ?? const AgentDocModel();
+                          _persist(agentModel.copyWith(externalAcpServer: id));
+                          unawaited(_syncConfigBeforeTurn());
+                        },
                       ),
                     ),
-                    if (_profileOpen)
-                      SizedBox(
-                        width: 300,
-                        child: _ProfilePane(
-                          controller: controller,
-                          routingError: _routingError,
-                          onSetRouting: (final enabled) {
-                            final result = setRemoteRouting(enabled: enabled);
-                            if (!result.ok) {
-                              setState(
-                                () => _routingError =
-                                    _routingError ?? result.message,
-                              );
-                            }
-                          },
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: _Conversation(
+                            key: const Key('coding_agent.transcript'),
+                            controller: controller,
+                            docWorkspace: _workspaceField.text.trim(),
+                            expandedBeats: _expandedBeats,
+                            onToggleBeat: (final id) => setState(() {
+                              _expandedBeats.contains(id)
+                                  ? _expandedBeats.remove(id)
+                                  : _expandedBeats.add(id);
+                            }),
+                            backend: controller.config.backend,
+                            expandedTurnHistory: _expandedTurnHistory,
+                            onToggleTurnHistory: (final key) => setState(() {
+                              _expandedTurnHistory.contains(key)
+                                  ? _expandedTurnHistory.remove(key)
+                                  : _expandedTurnHistory.add(key);
+                            }),
+                            editingStepId: _editingStepId,
+                            queueEditField: _queueEditField,
+                            onBeginQueuedEdit: _beginQueuedEdit,
+                            onCommitQueuedEdit: _commitQueuedEdit,
+                            onCancelQueued: (final id) =>
+                                _controller.cancelQueued(id),
+                            onSendNowQueued: (final id) =>
+                                _controller.sendNowQueued(id),
+                            editingTurnKey: _editingTurnKey,
+                            turnEditField: _turnEditField,
+                            onBeginTurnEdit: _beginTurnEdit,
+                            onCommitTurnEdit: _commitTurnEdit,
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-              ),
-              if (controller.pendingPermission != null)
-                _PendingPermission(controller: controller),
-              _Composer(
-                taskField: _taskField,
-                composerFocus: _composerFocus,
-                running: _controller.isRunning,
-                onSubmit: _submitFromComposer,
-                onCancel: controller.cancelCurrent,
-              ),
-            ],
+                        if (_profileOpen)
+                          SizedBox(
+                            width: 300,
+                            child: _ProfilePane(
+                              controller: controller,
+                              routingError: _routingError,
+                              onSetRouting: (final enabled) {
+                                final result = setRemoteRouting(
+                                  enabled: enabled,
+                                );
+                                if (!result.ok) {
+                                  setState(
+                                    () => _routingError =
+                                        _routingError ?? result.message,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (controller.pendingPermission != null)
+                    _PendingPermission(controller: controller),
+                  _Composer(
+                    taskField: _taskField,
+                    composerFocus: _composerFocus,
+                    running: _controller.isRunning,
+                    onSubmit: _submitFromComposer,
+                    onCancel: controller.cancelCurrent,
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
+    );
+  }
+}
+
+/// The setup pane's yielding slot: intrinsically sized, capped by the
+/// surface's spare height, scrollable when capped — the overflow rule
+/// (a painted stripe never blocks the composer or the status rule).
+class _SetupPaneSlot extends StatelessWidget {
+  const _SetupPaneSlot({required this.cap, required this.child});
+
+  final double cap;
+  final Widget child;
+
+  @override
+  Widget build(final BuildContext context) {
+    if (cap <= 0) return const SizedBox.shrink();
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: cap),
+      child: SingleChildScrollView(child: child),
     );
   }
 }
@@ -1259,21 +1377,16 @@ class _StatusRule extends StatelessWidget {
             children: [
               Text('AGENT', style: _label(theme)),
               const SizedBox(width: 10),
+              // One active-backend label instead of four toggles: the rule
+              // stays one line on narrow grids; SETUP holds the picker.
               _TextToggle(
-                label: 'AFM',
-                active: backend == 'apple_foundation_afm',
-                onTap: onOpenSetup,
-              ),
-              const SizedBox(width: 6),
-              _TextToggle(
-                label: 'OR',
-                active: backend == 'open_router',
-                onTap: onOpenSetup,
-              ),
-              const SizedBox(width: 6),
-              _TextToggle(
-                label: 'JEV',
-                active: backend == 'jev',
+                label: switch (backend) {
+                  'open_router' => 'OR',
+                  'jev' => 'JEV',
+                  'external_acp' => 'ACP',
+                  _ => 'AFM',
+                },
+                active: true,
                 onTap: onOpenSetup,
               ),
               const SizedBox(width: 14),
@@ -1375,6 +1488,9 @@ class _SetupPane extends StatelessWidget {
     required this.onBackend,
     required this.hostedConsentGranted,
     required this.onHostedConsent,
+    required this.agentServers,
+    required this.externalServer,
+    required this.onExternalServer,
   });
 
   final TextEditingController workspaceField;
@@ -1387,6 +1503,9 @@ class _SetupPane extends StatelessWidget {
   final ValueChanged<String> onBackend;
   final bool hostedConsentGranted;
   final Future<void> Function() onHostedConsent;
+  final Map<String, AgentServerConfig> agentServers;
+  final String externalServer;
+  final ValueChanged<String> onExternalServer;
 
   @override
   Widget build(final BuildContext context) {
@@ -1469,7 +1588,13 @@ class _SetupPane extends StatelessWidget {
               ),
             ],
           ),
-          Row(
+          // Wrap, not one rigid row: four runtimes plus the key field no
+          // longer fit one line on narrow grids; the second line carries
+          // the key field.
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               SizedBox(width: 84, child: Text('RUNTIME', style: _label(theme))),
               _TextToggle(
@@ -1477,35 +1602,77 @@ class _SetupPane extends StatelessWidget {
                 active: backend == 'apple_foundation_afm',
                 onTap: busy ? () {} : () => onBackend('apple_foundation_afm'),
               ),
-              const SizedBox(width: 8),
               _TextToggle(
                 label: 'OpenRouter · backup',
                 active: backend == 'open_router',
                 onTap: busy ? () {} : () => onBackend('open_router'),
               ),
-              const SizedBox(width: 8),
               _TextToggle(
                 label: 'Jev · decisions',
                 active: backend == 'jev',
                 onTap: busy ? () {} : () => onBackend('jev'),
               ),
+              _TextToggle(
+                label: 'ACP · external',
+                active: backend == 'external_acp',
+                onTap: busy ? () {} : () => onBackend('external_acp'),
+              ),
               if (backend == 'open_router' || backend == 'jev')
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: TextField(
-                      key: const Key('coding_agent.api_key'),
-                      controller: keyField,
-                      enabled: !busy,
-                      obscureText: true,
-                      style: _mono(theme, color: theme.colorScheme.onSurface),
-                      decoration: plain('sk-or-… (or OPENROUTER_API_KEY)'),
-                      onSubmitted: (_) => onBackend('open_router'),
-                    ),
+                SizedBox(
+                  width: 220,
+                  child: TextField(
+                    key: const Key('coding_agent.api_key'),
+                    controller: keyField,
+                    enabled: !busy,
+                    obscureText: true,
+                    style: _mono(theme, color: theme.colorScheme.onSurface),
+                    decoration: plain('sk-or-… (or OPENROUTER_API_KEY)'),
+                    onSubmitted: (_) => onBackend('open_router'),
                   ),
                 ),
             ],
           ),
+          if (backend == 'external_acp')
+            Row(
+              children: [
+                SizedBox(
+                  width: 84,
+                  child: Text('SERVER', style: _label(theme)),
+                ),
+                Expanded(
+                  child: DropdownButton<String>(
+                    key: const Key('coding_agent.external_server'),
+                    isExpanded: true,
+                    value: externalServer.isEmpty
+                        ? null
+                        : (agentServers.containsKey(externalServer)
+                              ? externalServer
+                              : null),
+                    hint: Text(
+                      agentServers.isEmpty
+                          ? 'register one in agent settings'
+                          : 'pick a configured server',
+                      style: _mono(theme, color: theme.colorScheme.outline),
+                    ),
+                    items: [
+                      for (final entry in agentServers.entries)
+                        DropdownMenuItem(
+                          value: entry.key,
+                          child: Text(
+                            '${entry.key} (${entry.value.command})',
+                            style: _mono(theme),
+                          ),
+                        ),
+                    ],
+                    onChanged: busy
+                        ? null
+                        : (final id) {
+                            if (id != null) onExternalServer(id);
+                          },
+                  ),
+                ),
+              ],
+            ),
           if (pickError != null)
             Text(
               'workspace picker: $pickError',

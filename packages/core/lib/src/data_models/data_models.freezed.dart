@@ -324,7 +324,9 @@ $LocalizedTextModelCopyWith<$Res> get title {
 /// @nodoc
 mixin _$AgentDocModel {
 
- List<String> get workspaces; String get backend;/// Explicit verification command overriding the workspace convention
+ List<String> get workspaces; String get backend;/// For the `external_acp` backend: registry key of the agent server
+/// configured in the agent config file, used as the harness's generator.
+ String get externalAcpServer;/// Explicit verification command overriding the workspace convention
 /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
 /// workspace convention decides.
  List<String> get checkCommand;
@@ -340,16 +342,16 @@ $AgentDocModelCopyWith<AgentDocModel> get copyWith => _$AgentDocModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgentDocModel&&const DeepCollectionEquality().equals(other.workspaces, workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&const DeepCollectionEquality().equals(other.checkCommand, checkCommand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgentDocModel&&const DeepCollectionEquality().equals(other.workspaces, workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other.checkCommand, checkCommand));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(workspaces),backend,const DeepCollectionEquality().hash(checkCommand));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(checkCommand));
 
 @override
 String toString() {
-  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, checkCommand: $checkCommand)';
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand)';
 }
 
 
@@ -360,7 +362,7 @@ abstract mixin class $AgentDocModelCopyWith<$Res>  {
   factory $AgentDocModelCopyWith(AgentDocModel value, $Res Function(AgentDocModel) _then) = _$AgentDocModelCopyWithImpl;
 @useResult
 $Res call({
- List<String> workspaces, String backend, List<String> checkCommand
+ List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand
 });
 
 
@@ -377,10 +379,11 @@ class _$AgentDocModelCopyWithImpl<$Res>
 
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? workspaces = null,Object? backend = null,Object? checkCommand = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,}) {
   return _then(AgentDocModel(
 workspaces: null == workspaces ? _self.workspaces : workspaces // ignore: cast_nullable_to_non_nullable
 as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
+as String,externalAcpServer: null == externalAcpServer ? _self.externalAcpServer : externalAcpServer // ignore: cast_nullable_to_non_nullable
 as String,checkCommand: null == checkCommand ? _self.checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
@@ -464,10 +467,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  List<String> checkCommand)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AgentDocModel() when $default != null:
-return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);case _:
   return orElse();
 
 }
@@ -485,10 +488,10 @@ return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  List<String> checkCommand)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)  $default,) {final _that = this;
 switch (_that) {
 case _AgentDocModel():
-return $default(_that.workspaces,_that.backend,_that.checkCommand);}
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -502,10 +505,10 @@ return $default(_that.workspaces,_that.backend,_that.checkCommand);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> workspaces,  String backend,  List<String> checkCommand)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)?  $default,) {final _that = this;
 switch (_that) {
 case _AgentDocModel() when $default != null:
-return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);case _:
   return null;
 
 }
@@ -517,7 +520,7 @@ return $default(_that.workspaces,_that.backend,_that.checkCommand);case _:
 @JsonSerializable()
 
 class _AgentDocModel implements AgentDocModel {
-  const _AgentDocModel({ List<String> workspaces = const [], this.backend = 'apple_foundation_afm',  List<String> checkCommand = const []}): _workspaces = workspaces,_checkCommand = checkCommand;
+  const _AgentDocModel({ List<String> workspaces = const [], this.backend = 'apple_foundation_afm', this.externalAcpServer = '',  List<String> checkCommand = const []}): _workspaces = workspaces,_checkCommand = checkCommand;
   factory _AgentDocModel.fromJson(Map<String, dynamic> json) => _$AgentDocModelFromJson(json);
 
  final  List<String> _workspaces;
@@ -528,6 +531,9 @@ class _AgentDocModel implements AgentDocModel {
 }
 
 @override@JsonKey() final  String backend;
+/// For the `external_acp` backend: registry key of the agent server
+/// configured in the agent config file, used as the harness's generator.
+@override@JsonKey() final  String externalAcpServer;
 /// Explicit verification command overriding the workspace convention
 /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
 /// workspace convention decides.
@@ -555,16 +561,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgentDocModel&&const DeepCollectionEquality().equals(other._workspaces, _workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&const DeepCollectionEquality().equals(other._checkCommand, _checkCommand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgentDocModel&&const DeepCollectionEquality().equals(other._workspaces, _workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other._checkCommand, _checkCommand));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_workspaces),backend,const DeepCollectionEquality().hash(_checkCommand));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(_checkCommand));
 
 @override
 String toString() {
-  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, checkCommand: $checkCommand)';
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand)';
 }
 
 
@@ -575,7 +581,7 @@ abstract mixin class _$AgentDocModelCopyWith<$Res> implements $AgentDocModelCopy
   factory _$AgentDocModelCopyWith(_AgentDocModel value, $Res Function(_AgentDocModel) _then) = __$AgentDocModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<String> workspaces, String backend, List<String> checkCommand
+ List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand
 });
 
 
@@ -592,10 +598,11 @@ class __$AgentDocModelCopyWithImpl<$Res>
 
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? workspaces = null,Object? backend = null,Object? checkCommand = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,}) {
   return _then(_AgentDocModel(
 workspaces: null == workspaces ? _self._workspaces : workspaces // ignore: cast_nullable_to_non_nullable
 as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
+as String,externalAcpServer: null == externalAcpServer ? _self.externalAcpServer : externalAcpServer // ignore: cast_nullable_to_non_nullable
 as String,checkCommand: null == checkCommand ? _self._checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));

@@ -94,6 +94,11 @@ dependencies:
   # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
   xsoulspace_agentic_harness:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness
+  # The world inspector pane (agent doc view): the harness's 3D inspector
+  # EMBEDDED — one renderer, no parallel beat/trace renderer in this repo
+  # (inspector DESIGN.md "Boundary 2026-10-05 rev. 3").
+  xsoulspace_agentic_harness_inspector:
+    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness_inspector
   xsoulspace_agentic_host:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_host
   xsoulspace_agentic_afm:
@@ -229,6 +234,14 @@ dependency_overrides:
     path: ../../oka/packages/oka_play
   ecsly:
     path: ../../ecsly/core_packages/ecsly
+  # The world inspector's 3D band (ecsly_flutter_scene → flutter_scene):
+  # resolve the dev-train scene stack from the same local checkouts the
+  # harness repo pins (Last Answer adds Flutter GPU — rev. 3 law: ONE
+  # inspector version, the 3D one). Drop when these publish.
+  ecsly_flutter:
+    path: ../../ecsly/core_packages/ecsly_flutter
+  ecsly_flutter_scene:
+    path: ../../ecsly/plugins/ecsly_flutter_scene
   dart_acp_toolkit:
     path: ../../../mcp/cline/intentcall/packages/acp_toolkit
   xsoulspace_inference_core:

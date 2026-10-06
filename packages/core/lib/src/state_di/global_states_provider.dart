@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headless_core/headless_core.dart' as headless_core;
+import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart' as acp_runtime;
+import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
 import 'package:lastanswer/doc/acp_doc_inference_port.dart';
+import 'package:lastanswer/doc/chat_inference_resolver.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_local_db/universal_storage_local_db.dart';
@@ -74,6 +79,27 @@ class GlobalStatesProvider extends StatelessWidget {
       ),
       Provider<acp_runtime.AcpAgentRuntime>(
         create: (final _) => acp_runtime.AcpAgentRuntime(),
+      ),
+      ListenableProvider<AgentConfigStore>(
+        create: (final _) {
+          final store = AgentConfigStore(
+            environment: kIsWeb ? const {} : Platform.environment,
+          );
+          unawaited(store.load());
+          return store;
+        },
+      ),
+      Provider<ProviderConfigurationStore>(
+        create: (final _) => ProviderConfigurationStore(),
+      ),
+      Provider<AcpAgentRuntimeRegistry>(
+        create: (final _) => AcpAgentRuntimeRegistry(),
+      ),
+      Provider<ChatInferenceResolver>(
+        create: (final context) => ChatInferenceResolver(
+          configStore: context.read<AgentConfigStore>(),
+          providerKeys: context.read<ProviderConfigurationStore>(),
+        ),
       ),
       Provider<DocInferencePort?>(create: _createDocInferencePort),
 

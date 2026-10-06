@@ -54,6 +54,15 @@ abstract class Block with _$Block {
 
     /// Human-readable tool name/title when [toolCallId] is present.
     String? title,
+
+    /// Hosted provider registry key (chat title block): transport pick.
+    String? provider,
+
+    /// Selected hosted model; set on a chat document's title block.
+    String? model,
+
+    /// Per-document system prompt; set on a chat document's title block.
+    String? systemPrompt,
     @Default(MessageStatus.complete) MessageStatus status,
   }) = _Block;
 

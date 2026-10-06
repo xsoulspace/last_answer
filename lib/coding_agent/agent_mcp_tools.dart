@@ -100,42 +100,12 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'the running turn lands). With several docs open, pass docId to '
           'address one exactly; absent, the focused doc resolves '
           '(ambiguity is refused with the live sessions named).',
-      inputSchema: ObjectSchema.fromMap({
-        'type': 'object',
-        'properties': {
-          'docId': {
-            'type': 'string',
-            'description':
-                'Agent doc id to address (the raw doc id, or the exact '
-                'registry key agent-<docId>). Absent: the only live doc, '
-                'else the focused one.',
-          },
-        },
-      }),
+      inputSchema: ObjectSchema.fromMap(harnessDocStateSchema),
     ),
   ),
   mcpToolkitTool(
-    handler: (final parameters) {
-      final task = parameters['task'];
-      if (task == null || task.isEmpty) {
-        return MCPCallResult(
-          message: 'task (string) is required.',
-          parameters: {'ok': false},
-        );
-      }
-      try {
-        // D2 — registry resolution (explicit docId → exact; absent →
-        // only/focused; ambiguous → the named error). The handle is the
-        // SAME intent seam the debugSurface path carried, byte for byte.
-        final result = _resolveSession(parameters).delegateTask(task);
-        return MCPCallResult(
-          message: result.message,
-          parameters: {'ok': result.ok},
-        );
-      } on SessionResolutionException catch (error) {
-        return _resolutionError(error);
-      }
-    },
+    handler: (final parameters) =>
+        _sessionResult(_sessionTools.taskDelegate(parameters)),
     definition: MCPToolDefinition(
       name: 'agent_task_delegate',
       description:
@@ -144,45 +114,27 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'several docs open, pass docId to address one exactly; absent, '
           'the focused doc resolves. Returns immediately; poll '
           'agent_doc_state for progress/verdict.',
-      inputSchema: ObjectSchema.fromMap({
-        'type': 'object',
-        'properties': {
-          'task': {'type': 'string'},
-          'docId': {
-            'type': 'string',
-            'description':
-                'Agent doc id to delegate to (the raw doc id, or the '
-                'exact registry key agent-<docId>). Absent: the only '
-                'live doc, else the focused one.',
-          },
-        },
-        'required': ['task'],
-      }),
+      inputSchema: ObjectSchema.fromMap(harnessTaskDelegateSchema),
     ),
   ),
   mcpToolkitTool(
     handler: (final parameters) async {
-      // Service-extension transport carries values as strings.
-      final rawAllow = parameters['allow']?.toLowerCase();
-      final allow = rawAllow == 'true';
-      final rejected = rawAllow == 'false';
-      if (!allow && !rejected) {
-        return MCPCallResult(
-          message: 'allow (bool) is required.',
-          parameters: {'ok': false},
+      final allow = HarnessSessionTools.parseAllow(
+        parameters['allow'],
+        acceptAliases: false,
+      );
+      if (allow == null) {
+        return _sessionResult(
+          _sessionTools.permissionAnswer(parameters, acceptAliases: false),
         );
       }
       try {
-        // The OWNER (host) path: registry resolution — the resolved
-        // surface's round-trip, byte for byte as before (the answer may
-        // still ride the doc when routing is ON — the controller
-        // decides); the verb contract is unchanged.
-        final result = _resolveSession(parameters).answerPermission(
-          allow: allow,
-        );
-        return MCPCallResult(
-          message: result.message,
-          parameters: {'ok': result.ok},
+        return _sessionResult(
+          _sessionTools.permissionAnswer(
+            parameters,
+            throwResolutionErrors: true,
+            acceptAliases: false,
+          ),
         );
       } on SessionResolutionException catch (error) {
         // Task O (P1) — the PEER path: with NO live session, a shadow doc
@@ -212,20 +164,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'lands). Deny-by-default: with no answer the write is '
           'rejected. With several docs open, pass docId to address one '
           'exactly; absent, the focused doc resolves.',
-      inputSchema: ObjectSchema.fromMap({
-        'type': 'object',
-        'properties': {
-          'allow': {'type': 'boolean'},
-          'docId': {
-            'type': 'string',
-            'description':
-                'Agent doc id whose round-trip to answer (the raw doc '
-                'id, or the exact registry key agent-<docId>). Absent: '
-                'the only live doc, else the focused one.',
-          },
-        },
-        'required': ['allow'],
-      }),
+      inputSchema: ObjectSchema.fromMap(harnessPermissionAnswerSchema),
     ),
   ),
   mcpToolkitTool(
@@ -1125,21 +1064,19 @@ String _meshChannel(final String docId) => 'agent-$docId';
 /// else the focused one. Ambiguous/empty resolution throws
 /// [SessionResolutionException] — the caller surfaces its message, which
 /// NAMES the live sessions (never a silent wrong-target answer).
-SessionHandle _resolveSession(final Map<String, String> parameters) {
-  final raw = parameters['docId'];
-  final docId = raw == null || raw.isEmpty ? null : raw.trim();
-  final registry = HarnessSessionRegistry.instance;
-  if (docId == null) return registry.resolve();
-  if (registry.sessions.containsKey(docId)) {
-    return registry.resolve(id: docId);
-  }
-  final meshKey = _meshChannel(docId);
-  if (registry.sessions.containsKey(meshKey)) {
-    return registry.resolve(id: meshKey);
-  }
-  // Neither form is live: resolve with the explicit id so the error
-  // names the live sessions.
-  return registry.resolve(id: docId);
+final _sessionTools = HarnessSessionTools(
+  registry: HarnessSessionRegistry.instance,
+  resolveDocAlias: _meshChannel,
+  includeExceptionTypeInErrors: false,
+);
+
+SessionHandle _resolveSession(final Map<String, String> parameters) =>
+    _sessionTools.resolve(parameters);
+
+MCPCallResult _sessionResult(final Map<String, Object?> result) {
+  final parameters = Map<String, Object?>.of(result);
+  final message = parameters.remove('message') as String? ?? 'ok';
+  return MCPCallResult(message: message, parameters: parameters);
 }
 
 /// The registry key [handle] lives under (identity lookup over the live
@@ -1154,9 +1091,8 @@ String? _registryKeyOf(final SessionHandle handle) {
 /// The honest resolution failure — the registry's message already NAMES
 /// the live sessions (ADR 0009 D2, DESIGN §6).
 MCPCallResult _resolutionError(final SessionResolutionException error) =>
-    MCPCallResult(
-      message: error.message,
-      parameters: {'ok': false, 'liveSessions': error.liveSessions},
+    _sessionResult(
+      HarnessSessionTools.resolutionError(error, includeExceptionType: false),
     );
 
 /// The `agent_doc_state` message for a full doc projection — today's

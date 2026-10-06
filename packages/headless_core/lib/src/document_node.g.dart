@@ -16,6 +16,9 @@ _Block _$BlockFromJson(Map<String, dynamic> json) => _Block(
   sessionId: json['sessionId'] as String?,
   toolCallId: json['toolCallId'] as String?,
   title: json['title'] as String?,
+  provider: json['provider'] as String?,
+  model: json['model'] as String?,
+  systemPrompt: json['systemPrompt'] as String?,
   status:
       $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
       MessageStatus.complete,
@@ -31,6 +34,9 @@ Map<String, dynamic> _$BlockToJson(_Block instance) => <String, dynamic>{
   'sessionId': instance.sessionId,
   'toolCallId': instance.toolCallId,
   'title': instance.title,
+  'provider': instance.provider,
+  'model': instance.model,
+  'systemPrompt': instance.systemPrompt,
   'status': _$MessageStatusEnumMap[instance.status]!,
 };
 
@@ -68,6 +74,8 @@ Map<String, dynamic> _$AnchorSpanToJson(_AnchorSpan instance) =>
 _DocumentNode _$DocumentNodeFromJson(Map<String, dynamic> json) =>
     _DocumentNode(
       id: json['id'] as NodeId,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
       kind: json['kind'] as String? ?? 'doc',
       formatId: json['formatId'] as String?,
       blocks:
@@ -83,13 +91,13 @@ _DocumentNode _$DocumentNodeFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$DocumentStatusEnumMap, json['status']) ??
           DocumentStatus.open,
       spanSnapshot: json['spanSnapshot'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$DocumentNodeToJson(_DocumentNode instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
       'kind': instance.kind,
       'formatId': instance.formatId,
       'blocks': instance.blocks,
@@ -97,8 +105,6 @@ Map<String, dynamic> _$DocumentNodeToJson(_DocumentNode instance) =>
       'anchorSpan': instance.anchorSpan,
       'status': _$DocumentStatusEnumMap[instance.status]!,
       'spanSnapshot': instance.spanSnapshot,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
     };
 
 const _$DocumentStatusEnumMap = {

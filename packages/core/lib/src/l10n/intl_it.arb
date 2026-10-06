@@ -173,7 +173,9 @@
   "storageMeshWaitingHint": "Tieni aperta questa schermata. Sul secondo dispositivo tocca “{joinWithCode}” e scansiona questo codice o incollalo.",
   "@storageMeshWaitingHint": {
     "placeholders": {
-      "joinWithCode": { "type": "String" }
+      "joinWithCode": {
+        "type": "String"
+      }
     }
   },
   "storageMeshCopyCode": "Copia il codice",
@@ -186,7 +188,9 @@
   "storageMeshConnectedCount": "Dispositivi connessi: {count}",
   "@storageMeshConnectedCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "storageMeshSyncNow": "Sincronizza ora",
@@ -194,10 +198,61 @@
   "storageMeshPairingFailed": "Impossibile connettersi: {error}",
   "@storageMeshPairingFailed": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "storageMeshAdvanced": "Impostazioni avanzate (debug)",
   "storageMeshUnpair": "Disaccoppia i dispositivi",
-  "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli."
+  "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.",
+  "allow": "Consenti",
+  "deny": "Nega",
+  "reject": "Rifiuta",
+  "retry": "Riprova",
+  "copy": "Copia",
+  "discuss": "Discuti",
+  "desktopOnly": "solo desktop",
+  "agentSettingsTitle": "Agenti e Modelli",
+  "agentConfigUnreadable": "Configurazione illeggibile, uso i valori predefiniti: {error}",
+  "agentServersSection": "Server agenti",
+  "agentServerAdd": "Aggiungi server",
+  "agentServersEmptyHint": "Nessun server personalizzato. Gli agenti noti (Gemini CLI, Codex CLI, Pi, Claude Code ACP) vengono rilevati automaticamente su desktop.",
+  "agentServerNameHint": "nome",
+  "agentServerCommandHint": "comando",
+  "agentServerRemove": "Rimuovi server",
+  "agentServerArgsHint": "argomenti (separati da virgola)",
+  "agentServerEnvHint": "env — NOME=valore per riga, $VAR viene espanso dall'ambiente",
+  "agentProvidersSection": "Provider",
+  "agentProviderKeyStored": "chiave salvata su questo dispositivo",
+  "agentProviderKeyHint": "Chiave API (salvata nell'archivio sicuro)",
+  "agentProviderKeyRemove": "Rimuovi chiave salvata",
+  "agentProviderEnvHint": "variabile d'ambiente della chiave",
+  "agentProviderBaseUrlHint": "URL di base",
+  "agentProviderModelsHint": "modelli (uno per riga)",
+  "agentProviderDefaultModelHint": "modello predefinito",
+  "agentChatDefaultsSection": "Predefiniti chat",
+  "agentChatProviderHint": "provider predefinito",
+  "agentChatModelHint": "modello predefinito",
+  "agentChatSystemPromptHint": "prompt di sistema predefinito",
+  "agentChatNoTransport": "scegli un agente o un modello sopra",
+  "agentChatAcpDesktopOnly": "Gli agenti ACP richiedono un desktop",
+  "agentChatNoAgentDetected": "nessun agente ACP rilevato",
+  "agentChatMissingKey": "Nessuna chiave API per questo provider — aggiungine una nelle impostazioni Agenti e Modelli.",
+  "agentChatConsentDeclined": "Uso del cloud rifiutato per questo documento.",
+  "agentChatConsentTitle": "Inviare questa conversazione al cloud?",
+  "agentChatConsentBody": "Il testo della conversazione verrà inviato a {provider} usando {model}. Vale solo per questo documento.",
+  "agentChatSystemPromptTitle": "Prompt di sistema per questo documento",
+  "agentChatCloudLabel": "cloud · {label}",
+  "agentChatStatusReady": "pronto",
+  "agentChatStatusStarting": "avvio",
+  "agentChatStatusError": "errore",
+  "agentChatStatusStopped": "fermo",
+  "agentChatStatusIdle": "inattivo",
+  "agentChatPickTransport": "Seleziona agente o modello",
+  "agentChatUseLocalExecutable": "Usa eseguibile locale",
+  "agentChatInstallTitle": "Installa un agente ACP",
+  "agentChatRecheck": "Ricontrolla",
+  "agentChatExecutableNotFound": "Eseguibile non trovato",
+  "agentChatAuthRequired": "Autenticazione richiesta — l'agente gestisce il proprio accesso. Segui l'indicazione qui sotto e invia di nuovo."
 }

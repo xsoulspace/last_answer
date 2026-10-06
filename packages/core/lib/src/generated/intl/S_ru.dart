@@ -599,4 +599,166 @@ class SRu extends S {
   @override
   String get tokenSafety =>
       'Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить.';
+
+  @override
+  String get allow => 'Разрешить';
+
+  @override
+  String get deny => 'Запретить';
+
+  @override
+  String get reject => 'Отклонить';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get copy => 'Копировать';
+
+  @override
+  String get discuss => 'Обсудить';
+
+  @override
+  String get desktopOnly => 'только компьютер';
+
+  @override
+  String get agentSettingsTitle => 'Агенты и модели';
+
+  @override
+  String agentConfigUnreadable(String error) {
+    return 'Файл конфигурации не читается, используются значения по умолчанию: $error';
+  }
+
+  @override
+  String get agentServersSection => 'Серверы агентов';
+
+  @override
+  String get agentServerAdd => 'Добавить сервер';
+
+  @override
+  String get agentServersEmptyHint =>
+      'Своих серверов нет. Известные агенты (Gemini CLI, Codex CLI, Pi, Claude Code ACP) находятся автоматически на компьютере.';
+
+  @override
+  String get agentServerNameHint => 'имя';
+
+  @override
+  String get agentServerCommandHint => 'команда';
+
+  @override
+  String get agentServerRemove => 'Удалить сервер';
+
+  @override
+  String get agentServerArgsHint => 'аргументы (через запятую)';
+
+  @override
+  String get agentServerEnvHint =>
+      'env — ИМЯ=значение, по строке; \$VAR подставляется из окружения';
+
+  @override
+  String get agentProvidersSection => 'Провайдеры';
+
+  @override
+  String get agentProviderKeyStored => 'ключ сохранён на этом устройстве';
+
+  @override
+  String get agentProviderKeyHint =>
+      'API-ключ (хранится в защищённом хранилище)';
+
+  @override
+  String get agentProviderKeyRemove => 'Удалить сохранённый ключ';
+
+  @override
+  String get agentProviderEnvHint => 'переменная окружения для ключа';
+
+  @override
+  String get agentProviderBaseUrlHint => 'базовый URL';
+
+  @override
+  String get agentProviderModelsHint => 'модели (по одной в строке)';
+
+  @override
+  String get agentProviderDefaultModelHint => 'модель по умолчанию';
+
+  @override
+  String get agentChatDefaultsSection => 'Настройки чата';
+
+  @override
+  String get agentChatProviderHint => 'провайдер по умолчанию';
+
+  @override
+  String get agentChatModelHint => 'модель по умолчанию';
+
+  @override
+  String get agentChatSystemPromptHint => 'системный промпт по умолчанию';
+
+  @override
+  String get agentChatNoTransport => 'выберите агента или модель выше';
+
+  @override
+  String get agentChatAcpDesktopOnly =>
+      'ACP-агенты работают только на компьютере';
+
+  @override
+  String get agentChatNoAgentDetected => 'ACP-агент не найден';
+
+  @override
+  String get agentChatMissingKey =>
+      'Нет API-ключа для этого провайдера — добавьте его в настройках «Агенты и модели».';
+
+  @override
+  String get agentChatConsentDeclined =>
+      'Отправка в облако запрещена для этого документа.';
+
+  @override
+  String get agentChatConsentTitle => 'Отправить этот диалог в облако?';
+
+  @override
+  String agentChatConsentBody(String provider, String model) {
+    return 'Текст диалога будет отправлен в $provider с моделью $model. Действует только для этого документа.';
+  }
+
+  @override
+  String get agentChatSystemPromptTitle =>
+      'Системный промпт для этого документа';
+
+  @override
+  String agentChatCloudLabel(String label) {
+    return 'облако · $label';
+  }
+
+  @override
+  String get agentChatStatusReady => 'готов';
+
+  @override
+  String get agentChatStatusStarting => 'запуск';
+
+  @override
+  String get agentChatStatusError => 'ошибка';
+
+  @override
+  String get agentChatStatusStopped => 'остановлен';
+
+  @override
+  String get agentChatStatusIdle => 'ожидание';
+
+  @override
+  String get agentChatPickTransport => 'Выберите агента или модель';
+
+  @override
+  String get agentChatUseLocalExecutable =>
+      'Указать локальный исполняемый файл';
+
+  @override
+  String get agentChatInstallTitle => 'Установить ACP-агента';
+
+  @override
+  String get agentChatRecheck => 'Проверить снова';
+
+  @override
+  String get agentChatExecutableNotFound => 'Исполняемый файл не найден';
+
+  @override
+  String get agentChatAuthRequired =>
+      'Требуется вход — агент выполняет авторизацию сам. Следуйте подсказке ниже и отправьте снова.';
 }

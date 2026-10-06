@@ -176,7 +176,9 @@
   "storageMeshWaitingHint": "Не закрывайте этот экран. На втором устройстве нажмите «{joinWithCode}» и отсканируйте код или вставьте его.",
   "@storageMeshWaitingHint": {
     "placeholders": {
-      "joinWithCode": { "type": "String" }
+      "joinWithCode": {
+        "type": "String"
+      }
     }
   },
   "storageMeshCopyCode": "Копировать код",
@@ -189,7 +191,9 @@
   "storageMeshConnectedCount": "Подключено устройств: {count}",
   "@storageMeshConnectedCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "storageMeshSyncNow": "Синхронизировать",
@@ -197,10 +201,61 @@
   "storageMeshPairingFailed": "Не удалось подключиться: {error}",
   "@storageMeshPairingFailed": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "storageMeshAdvanced": "Расширенные настройки (отладка)",
   "storageMeshUnpair": "Отвязать устройства",
-  "tokenSafety": "Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить."
+  "tokenSafety": "Безопасность: токен хранится только на этом устройстве в защищённом хранилище ОС и отправляется только на api.github.com. Давайте доступ лишь к нужным репозиториям, устанавливайте короткий срок действия и отзывайте токен в любой момент в настройках GitHub. Вы несёте ответственность за созданные токены — мы не можем их восстановить или сбросить.",
+  "allow": "Разрешить",
+  "deny": "Запретить",
+  "reject": "Отклонить",
+  "retry": "Повторить",
+  "copy": "Копировать",
+  "discuss": "Обсудить",
+  "desktopOnly": "только компьютер",
+  "agentSettingsTitle": "Агенты и модели",
+  "agentConfigUnreadable": "Файл конфигурации не читается, используются значения по умолчанию: {error}",
+  "agentServersSection": "Серверы агентов",
+  "agentServerAdd": "Добавить сервер",
+  "agentServersEmptyHint": "Своих серверов нет. Известные агенты (Gemini CLI, Codex CLI, Pi, Claude Code ACP) находятся автоматически на компьютере.",
+  "agentServerNameHint": "имя",
+  "agentServerCommandHint": "команда",
+  "agentServerRemove": "Удалить сервер",
+  "agentServerArgsHint": "аргументы (через запятую)",
+  "agentServerEnvHint": "env — ИМЯ=значение, по строке; $VAR подставляется из окружения",
+  "agentProvidersSection": "Провайдеры",
+  "agentProviderKeyStored": "ключ сохранён на этом устройстве",
+  "agentProviderKeyHint": "API-ключ (хранится в защищённом хранилище)",
+  "agentProviderKeyRemove": "Удалить сохранённый ключ",
+  "agentProviderEnvHint": "переменная окружения для ключа",
+  "agentProviderBaseUrlHint": "базовый URL",
+  "agentProviderModelsHint": "модели (по одной в строке)",
+  "agentProviderDefaultModelHint": "модель по умолчанию",
+  "agentChatDefaultsSection": "Настройки чата",
+  "agentChatProviderHint": "провайдер по умолчанию",
+  "agentChatModelHint": "модель по умолчанию",
+  "agentChatSystemPromptHint": "системный промпт по умолчанию",
+  "agentChatNoTransport": "выберите агента или модель выше",
+  "agentChatAcpDesktopOnly": "ACP-агенты работают только на компьютере",
+  "agentChatNoAgentDetected": "ACP-агент не найден",
+  "agentChatMissingKey": "Нет API-ключа для этого провайдера — добавьте его в настройках «Агенты и модели».",
+  "agentChatConsentDeclined": "Отправка в облако запрещена для этого документа.",
+  "agentChatConsentTitle": "Отправить этот диалог в облако?",
+  "agentChatConsentBody": "Текст диалога будет отправлен в {provider} с моделью {model}. Действует только для этого документа.",
+  "agentChatSystemPromptTitle": "Системный промпт для этого документа",
+  "agentChatCloudLabel": "облако · {label}",
+  "agentChatStatusReady": "готов",
+  "agentChatStatusStarting": "запуск",
+  "agentChatStatusError": "ошибка",
+  "agentChatStatusStopped": "остановлен",
+  "agentChatStatusIdle": "ожидание",
+  "agentChatPickTransport": "Выберите агента или модель",
+  "agentChatUseLocalExecutable": "Указать локальный исполняемый файл",
+  "agentChatInstallTitle": "Установить ACP-агента",
+  "agentChatRecheck": "Проверить снова",
+  "agentChatExecutableNotFound": "Исполняемый файл не найден",
+  "agentChatAuthRequired": "Требуется вход — агент выполняет авторизацию сам. Следуйте подсказке ниже и отправьте снова."
 }

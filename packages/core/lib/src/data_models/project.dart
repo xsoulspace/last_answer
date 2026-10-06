@@ -38,6 +38,10 @@ sealed class AgentDocModel with _$AgentDocModel {
     @Default([]) List<String> workspaces,
     @Default('apple_foundation_afm') String backend,
 
+    /// For the `external_acp` backend: registry key of the agent server
+    /// configured in the agent config file, used as the harness's generator.
+    @Default('') String externalAcpServer,
+
     /// Explicit verification command overriding the workspace convention
     /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
     /// workspace convention decides.

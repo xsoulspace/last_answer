@@ -598,4 +598,164 @@ class SIt extends S {
   @override
   String get tokenSafety =>
       'Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.';
+
+  @override
+  String get allow => 'Consenti';
+
+  @override
+  String get deny => 'Nega';
+
+  @override
+  String get reject => 'Rifiuta';
+
+  @override
+  String get retry => 'Riprova';
+
+  @override
+  String get copy => 'Copia';
+
+  @override
+  String get discuss => 'Discuti';
+
+  @override
+  String get desktopOnly => 'solo desktop';
+
+  @override
+  String get agentSettingsTitle => 'Agenti e Modelli';
+
+  @override
+  String agentConfigUnreadable(String error) {
+    return 'Configurazione illeggibile, uso i valori predefiniti: $error';
+  }
+
+  @override
+  String get agentServersSection => 'Server agenti';
+
+  @override
+  String get agentServerAdd => 'Aggiungi server';
+
+  @override
+  String get agentServersEmptyHint =>
+      'Nessun server personalizzato. Gli agenti noti (Gemini CLI, Codex CLI, Pi, Claude Code ACP) vengono rilevati automaticamente su desktop.';
+
+  @override
+  String get agentServerNameHint => 'nome';
+
+  @override
+  String get agentServerCommandHint => 'comando';
+
+  @override
+  String get agentServerRemove => 'Rimuovi server';
+
+  @override
+  String get agentServerArgsHint => 'argomenti (separati da virgola)';
+
+  @override
+  String get agentServerEnvHint =>
+      'env — NOME=valore per riga, \$VAR viene espanso dall\'ambiente';
+
+  @override
+  String get agentProvidersSection => 'Provider';
+
+  @override
+  String get agentProviderKeyStored => 'chiave salvata su questo dispositivo';
+
+  @override
+  String get agentProviderKeyHint =>
+      'Chiave API (salvata nell\'archivio sicuro)';
+
+  @override
+  String get agentProviderKeyRemove => 'Rimuovi chiave salvata';
+
+  @override
+  String get agentProviderEnvHint => 'variabile d\'ambiente della chiave';
+
+  @override
+  String get agentProviderBaseUrlHint => 'URL di base';
+
+  @override
+  String get agentProviderModelsHint => 'modelli (uno per riga)';
+
+  @override
+  String get agentProviderDefaultModelHint => 'modello predefinito';
+
+  @override
+  String get agentChatDefaultsSection => 'Predefiniti chat';
+
+  @override
+  String get agentChatProviderHint => 'provider predefinito';
+
+  @override
+  String get agentChatModelHint => 'modello predefinito';
+
+  @override
+  String get agentChatSystemPromptHint => 'prompt di sistema predefinito';
+
+  @override
+  String get agentChatNoTransport => 'scegli un agente o un modello sopra';
+
+  @override
+  String get agentChatAcpDesktopOnly => 'Gli agenti ACP richiedono un desktop';
+
+  @override
+  String get agentChatNoAgentDetected => 'nessun agente ACP rilevato';
+
+  @override
+  String get agentChatMissingKey =>
+      'Nessuna chiave API per questo provider — aggiungine una nelle impostazioni Agenti e Modelli.';
+
+  @override
+  String get agentChatConsentDeclined =>
+      'Uso del cloud rifiutato per questo documento.';
+
+  @override
+  String get agentChatConsentTitle => 'Inviare questa conversazione al cloud?';
+
+  @override
+  String agentChatConsentBody(String provider, String model) {
+    return 'Il testo della conversazione verrà inviato a $provider usando $model. Vale solo per questo documento.';
+  }
+
+  @override
+  String get agentChatSystemPromptTitle =>
+      'Prompt di sistema per questo documento';
+
+  @override
+  String agentChatCloudLabel(String label) {
+    return 'cloud · $label';
+  }
+
+  @override
+  String get agentChatStatusReady => 'pronto';
+
+  @override
+  String get agentChatStatusStarting => 'avvio';
+
+  @override
+  String get agentChatStatusError => 'errore';
+
+  @override
+  String get agentChatStatusStopped => 'fermo';
+
+  @override
+  String get agentChatStatusIdle => 'inattivo';
+
+  @override
+  String get agentChatPickTransport => 'Seleziona agente o modello';
+
+  @override
+  String get agentChatUseLocalExecutable => 'Usa eseguibile locale';
+
+  @override
+  String get agentChatInstallTitle => 'Installa un agente ACP';
+
+  @override
+  String get agentChatRecheck => 'Ricontrolla';
+
+  @override
+  String get agentChatExecutableNotFound => 'Eseguibile non trovato';
+
+  @override
+  String get agentChatAuthRequired =>
+      'Autenticazione richiesta — l\'agente gestisce il proprio accesso. Segui l\'indicazione qui sotto e invia di nuovo.';
 }

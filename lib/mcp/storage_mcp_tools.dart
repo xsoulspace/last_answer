@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
+    if (dart.library.io)
+        'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
+    as external_worlds;
 import 'package:lastanswer/settings/features/features.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
@@ -52,16 +56,34 @@ Set<AgentCallEntry> storageMcpEntries() => {
         await notifier.ensureMeshService();
       }
       final service = await notifier.ensureMeshService();
-      final pairingCode = await service.createPairingCode();
+      // ADR 0072 — a live world serving beyond loopback rides the
+      // SIGNED envelope (desktop host side); off-device scanners pair
+      // AND discover in one scan. Absent world → no field, same code.
+      Map<String, Object?>? announcement;
+      try {
+        announcement = await external_worlds.buildPairingApplicationData();
+      } on Object catch (_) {
+        announcement = null; // convenience, never a pair blocker
+      }
+      final pairingCode = await service.createPairingCode(
+        applicationData: announcement,
+      );
+      final announcedWorlds = (announcement?['worlds'] as List?)?.length ?? 0;
+      final hostNote = service.isHosting
+          ? 'this device hosts the relay at '
+              '${service.advertisedEndpoint}'
+          : 'no hosted relay';
+      final worldNote = announcedWorlds == 0
+          ? ''
+          : ' announces $announcedWorlds harness world(s) (ADR 0072)';
       return MCPCallResult(
-        message: service.isHosting
-            ? 'Signed mesh pairing code is ready; this device hosts the '
-                  'relay at ${service.advertisedEndpoint}.'
-            : 'Signed mesh pairing code is ready (no hosted relay).',
+        message: 'Signed mesh pairing code is ready; $hostNote.'
+            '$worldNote',
         parameters: {
           'pairingCode': pairingCode,
           'advertisedEndpoint': service.advertisedEndpoint?.toString(),
           'peers': service.peers.length,
+          'announcedWorlds': announcedWorlds,
         },
       );
     },
@@ -342,7 +364,8 @@ Set<AgentCallEntry> storageMcpEntries() => {
       try {
         final notifier = StorageBackendsNotifier.instance;
         final service = await notifier.ensureMeshService();
-        if (peerId.isNotEmpty && !service.peers.any((p) => p.peerId == peerId)) {
+        final known = service.peers.any((p) => p.peerId == peerId);
+        if (peerId.isNotEmpty && !known) {
           await service.registerPeer(peerId: peerId);
         }
         var payload = parameters['payload']?.toString() ?? '';

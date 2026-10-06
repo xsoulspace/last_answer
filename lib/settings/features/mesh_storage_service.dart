@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
 import 'package:lastanswer/settings/features/mesh_relay_host_stub.dart'
     if (dart.library.io) 'mesh_relay_host_io.dart' as relay_host;
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -236,13 +237,18 @@ final class MeshStorageService {
 
   /// Signed pairing code advertising this device; embeds the hosted
   /// relay endpoint (or current connection endpoint) so scanners never
-  /// type addresses.
-  Future<String> createPairingCode() async {
+  /// type addresses. [applicationData] rides the SIGNED envelope as
+  /// opaque payload (ADR 0072: e.g. the host's harness-world
+  /// announcement) — the mesh carries it, the scanner's app reads it.
+  Future<String> createPairingCode({
+    final Map<String, Object?>? applicationData,
+  }) async {
     final hint = (advertisedEndpoint ?? _transport?.endpoint)?.toString();
     _advertisement ??= MeshPairingSession(
       selfId: selfId,
       identityKeyPair: await _ensureIdentity(),
       transportHint: hint,
+      applicationData: applicationData,
     );
     return base64Encode(await _advertisement!.createQrPayload());
   }
@@ -257,6 +263,24 @@ final class MeshStorageService {
       identityKeyPair: await _ensureIdentity(),
     );
     final peer = await session.acceptQrPayload(payload);
+    // ADR 0072 — the verified envelope may carry the peer's harness
+    // worlds (signed application data): store them in the paired-worlds
+    // registry so the inspector can attach WITHOUT a filesystem scan.
+    // Failures here never break the pairing itself.
+    try {
+      final data = peer.endpointHints['data'];
+      if (data != null) {
+        final decoded = jsonDecode(data);
+        if (decoded is Map && decoded['worlds'] is List) {
+          await PairedWorlds.storeAnnouncement(
+            decoded['worlds'] as List?,
+          );
+        }
+      }
+    } on Object catch (_) {
+      // A malformed announcement is a dropped convenience, not a pair
+      // failure.
+    }
     final provider = storage.provider;
     if (provider is! MeshStorageProvider) {
       throw StateError('Mesh service is not initialized');

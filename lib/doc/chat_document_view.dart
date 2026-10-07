@@ -5,6 +5,7 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
+import 'package:lastanswer/doc/chat_permission_policy.dart';
 import 'package:lastanswer/doc/chat_inference_resolver.dart';
 import 'package:uuid/uuid.dart';
 
@@ -72,14 +73,18 @@ class ChatDocumentView extends StatefulWidget {
 /// plus the status the transcript header shows (live peers, session
 /// owner, this device's peer id).
 final class ChatDocumentSurfaceLink {
-  const ChatDocumentSurfaceLink({required this.refresh, required this.meshStatus});
+  const ChatDocumentSurfaceLink({
+    required this.refresh,
+    required this.meshStatus,
+  });
 
   final void Function() refresh;
 
   /// Live mesh snapshot: connected, presence count on this doc, the
   /// session owner's peer id (null = unclaimed), and THIS device's id.
   final ({bool live, int presenceCount, String? ownerPeerId, String? myPeerId})
-  Function() meshStatus;
+  Function()
+  meshStatus;
 }
 
 class _ChatDocumentViewState extends State<ChatDocumentView> {
@@ -185,10 +190,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
         continue; // board write failed — leave it for the next cycle.
       }
       unawaited(
-        _runLocalTurn(
-          userBlock.content,
-          appendUserBlock: false,
-        ).then((_) {
+        _runLocalTurn(userBlock.content, appendUserBlock: false).then((_) {
           try {
             board.completeTask(record.taskId);
           } on Object {
@@ -387,8 +389,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   /// peer owns this chat's agent session, THIS device composes into the
   /// shared doc and routes the TURN to the owner over the mesh task
   /// board — it never runs a second agent against the same conversation.
-  ({bool routeToOwner, String? myPeerId, String? ownerPeerId})
-  _turnRouting() {
+  ({bool routeToOwner, String? myPeerId, String? ownerPeerId}) _turnRouting() {
     final wiring = AgentDocSurface.meshWiring;
     final myPeerId = wiring?.selfPeerId?.call();
     if (wiring == null || myPeerId == null) {
@@ -575,16 +576,25 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     if (persisted != null && runtime.sessions.containsKey(persisted)) {
       runtime.switchTo(persisted);
       resumed = true;
-    } else {
+    } else if (persisted != null) {
+      // The session id lives on the SHARED doc: this process doesn't know
+      // it (restart, or this device just took ownership). Try to reload
+      // the conversation in the agent itself; agents without session/load
+      // answer -32601 and the honest context-reset row follows.
       try {
-        await runtime.newSession(workspace);
+        await runtime.resume(persisted, workingDirectory: workspace);
+        resumed = true;
       } on AcpAuthRequiredException catch (error) {
         // Zed-parity auth: the agent owns its credentials. Surface a
         // durable row naming the fix (terminal-auth agents) and, when the
         // agent advertises ACP methods, offer the in-protocol sign-in.
         await _appendAuthRow(transport, error);
         throw StateError(authRequiredMessage);
+      } on AcpRemoteError {
+        await runtime.newSession(workspace);
       }
+    } else {
+      await runtime.newSession(workspace);
     }
     if (!resumed && persisted != null && hadPriorTurns) {
       await _chatService.appendMessage(
@@ -939,12 +949,57 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     if (mounted) setState(() => _isSending = false);
   }
 
+  Widget _policyToggle(final ChatPermissionPolicy policy) {
+    final active = policy == _permissionPolicy;
+    return GestureDetector(
+      key: Key('chat.perm.mode.${policy.name}'),
+      behavior: HitTestBehavior.opaque,
+      onTap: _isSending ? null : () => unawaited(_setPermissionPolicy(policy)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+        child: Text(
+          policy.label,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            letterSpacing: 0.8,
+            fontWeight: active ? FontWeight.w700 : FontWeight.w400,
+            color: active
+                ? Theme.of(context).colorScheme.onSurface
+                : Theme.of(context).colorScheme.onSurfaceVariant,
+            decoration: active ? TextDecoration.underline : null,
+          ),
+        ),
+      ),
+    );
+  }
+
   // ------------------------------------------------------------------
   // ACP permission round-trip
   // ------------------------------------------------------------------
 
   Future<void> _onPermissionRequest(final AcpPendingPermission pending) async {
     if (!mounted) return;
+    // The stance decides FIRST (codex/zed/cursor logic): full access
+    // answers everything, workspace edits answers the working set
+    // (read/edit/move) — only `ask` waits for the user's buttons. The
+    // durable row records WHICH layer answered, never a silent allow.
+    final policy = _permissionPolicy;
+    if (policy.autoAllows(pending.request)) {
+      unawaited(pending.allow());
+      try {
+        await _chatService.appendMessage(
+          _current.id,
+          role: hc.ChatRole.assistant,
+          content: 'PERM → auto-allowed (${policy.label.toLowerCase()})',
+          blockId: _nextNodeId(),
+          toolCallId: pending.request.toolCallId,
+          title: pending.request.title,
+        );
+      } on StateError {
+        return;
+      }
+      await _reloadCurrent();
+      return;
+    }
     final blockId = _nextNodeId();
     _pendingPermissions[pending.request.toolCallId] = pending;
     try {
@@ -1063,6 +1118,36 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     return context.l10n.agentChatNoTransport;
   }
 
+  /// The chat's permission stance (title block; ask = deny-by-default).
+  ChatPermissionPolicy get _permissionPolicy => ChatPermissionPolicy.fromName(
+    _current.blocks.firstOrNull?.permissionMode,
+  );
+
+  Future<void> _setPermissionPolicy(final ChatPermissionPolicy policy) async {
+    if (policy == _permissionPolicy) return;
+    await _chatService.updateChatMetadata(
+      _current.id,
+      permissionMode: policy.name,
+    );
+    await _reloadCurrent();
+    // Best-effort agent side: when the agent advertises its own modes
+    // (claude-code's default/acceptEdits/bypassPermissions...), drive the
+    // matching one. The client-side policy stays the enforcement layer.
+    final sessionId = _runtime.currentSessionId;
+    final modes = sessionId == null ? null : _runtime.sessionModesOf(sessionId);
+    final agentModeId = modes == null
+        ? null
+        : policy.preferredAgentModeId(modes);
+    if (sessionId != null && agentModeId != null) {
+      try {
+        await _runtime.setMode(sessionId, agentModeId);
+      } on Object {
+        // The agent refused or lacks session/set_mode — the client-side
+        // policy already applies, nothing to surface.
+      }
+    }
+  }
+
   /// Multiplayer status: live LAN peers on this doc + who owns the
   /// agent session. Quiet when the mesh is not set up (single-device
   /// chat looks exactly like before).
@@ -1120,6 +1205,19 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                 const Gap(10),
                 Flexible(child: Text(_meshLabel)),
                 const Spacer(),
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Gap(8),
+                        for (final policy in ChatPermissionPolicy.values)
+                          _policyToggle(policy),
+                      ],
+                    ),
+                  ),
+                ),
                 if (_selected is HostedChatTransport)
                   IconButton(
                     key: const Key('chat.system.edit'),

@@ -75,6 +75,12 @@ abstract class Block with _$Block {
     /// board instead of running a local agent.
     String? ownerPeerId,
 
+    /// Permission policy for this chat (title block): `ask` (deny by
+    /// default, buttons per request), `workspaceEdits` (read/edit/move
+    /// auto-allowed, the rest ask), `fullAccess` (everything allowed).
+    /// See `ChatPermissionPolicy`.
+    String? permissionMode,
+
     /// Per-document system prompt; set on a chat document's title block.
     String? systemPrompt,
     @Default(MessageStatus.complete) MessageStatus status,

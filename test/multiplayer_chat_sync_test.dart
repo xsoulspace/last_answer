@@ -115,198 +115,192 @@ DocumentNode _withBlocks(final DocumentNode node, final List<Block> blocks) =>
     node.withBlocks(blocks);
 
 void main() {
-  test(
-    'two devices converge on one chat: owner claim + peer message + '
-    'checkpointed reply',
-    () async {
-      final medium = _SharedMedium();
-      final a = _device(medium, 'peer-a', 'actor-a'); // session owner
-      final b = _device(medium, 'peer-b', 'actor-b'); // composing peer
+  test('two devices converge on one chat: owner claim + peer message + '
+      'checkpointed reply', () async {
+    final medium = _SharedMedium();
+    final a = _device(medium, 'peer-a', 'actor-a'); // session owner
+    final b = _device(medium, 'peer-b', 'actor-b'); // composing peer
 
-      // A creates the chat and streams a checkpointed assistant reply.
-      final repoA = ReplicaDocumentRepository(a.store);
-      const titleId = NodeId('$_docId:title');
-      await repoA.save(
-        DocumentNode(
-          id: _docId,
-          formatId: 'chat',
-          blocks: [
-            const Block(
-              id: titleId,
-              type: BlockType.heading,
-              content: 'Fleet planning',
-              level: 1,
-              agentKey: 'codex',
-              workspace: '/tmp/fleet',
-              ownerPeerId: 'peer-a',
-            ),
-          ],
-          createdAt: _now,
-          updatedAt: _now,
-        ),
-      );
-      var nodeA = (await repoA.get(_docId) as DocFound).node;
-      nodeA = _withBlocks(nodeA, [
-        ...nodeA.blocks,
+    // A creates the chat and streams a checkpointed assistant reply.
+    final repoA = ReplicaDocumentRepository(a.store);
+    const titleId = NodeId('$_docId:title');
+    await repoA.save(
+      DocumentNode(
+        id: _docId,
+        formatId: 'chat',
+        blocks: [
+          const Block(
+            id: titleId,
+            type: BlockType.heading,
+            content: 'Fleet planning',
+            level: 1,
+            agentKey: 'codex',
+            workspace: '/tmp/fleet',
+            ownerPeerId: 'peer-a',
+          ),
+        ],
+        createdAt: _now,
+        updatedAt: _now,
+      ),
+    );
+    var nodeA = (await repoA.get(_docId) as DocFound).node;
+    nodeA = _withBlocks(nodeA, [
+      ...nodeA.blocks,
+      const Block(
+        id: NodeId('m1'),
+        type: BlockType.message,
+        content: '',
+        role: ChatRole.user,
+      ),
+      const Block(
+        id: NodeId('m2'),
+        type: BlockType.message,
+        content: 'thin',
+        role: ChatRole.assistant,
+      ),
+    ]);
+    await repoA.save(nodeA);
+    await a.service.sync(); // flush A's replica file into the medium.
+
+    // B syncs: receives the doc, composes through its OWN repository.
+    await b.service.sync();
+    final repoB = ReplicaDocumentRepository(b.store);
+    var nodeB = (await repoB.get(_docId) as DocFound).node;
+    expect(nodeB, isNotNull, reason: 'B must see the chat after sync');
+    expect(nodeB.blocks.first.ownerPeerId, 'peer-a');
+    expect(
+      nodeB.blocks.where((final b) => b.type == BlockType.message),
+      hasLength(2),
+    );
+
+    nodeB = _withBlocks(nodeB, [
+      ...nodeB.blocks,
+      const Block(
+        id: NodeId('m3'),
+        type: BlockType.message,
+        content: 'launch the second mac',
+        role: ChatRole.user,
+      ),
+    ]);
+    nodeB = nodeB.copyWith(
+      blocks: [
+        for (final block in nodeB.blocks)
+          block.id == titleId
+              ? block.copyWith(systemPrompt: 'be concise')
+              : block,
+      ],
+    );
+    await repoB.save(nodeB);
+    await b.service.sync();
+
+    // A syncs: B's message + metadata edit converge into A's view; B
+    // catches up on anything of A's it had not folded yet.
+    await a.service.sync();
+    await b.service.sync();
+    final nodeA2 = (await repoA.get(_docId) as DocFound).node;
+    final nodeB2 = (await repoB.get(_docId) as DocFound).node;
+
+    expect(
+      nodeA2.blocks.map(
+        (final b) => '${b.id.value}:${b.role?.name}:${b.content}',
+      ),
+      nodeB2.blocks.map(
+        (final b) => '${b.id.value}:${b.role?.name}:${b.content}',
+      ),
+      reason: 'both devices must project the same converged transcript',
+    );
+    expect(
+      nodeA2.blocks.where((final b) => b.content == 'launch the second mac'),
+      hasLength(1),
+    );
+    expect(nodeA2.blocks.first.systemPrompt, 'be concise');
+    expect(nodeA2.blocks.first.ownerPeerId, 'peer-a');
+
+    // Checkpoint growth: A extends the assistant text; B converges
+    // without duplicating the shared prefix.
+    final grown = nodeA2.copyWith(
+      blocks: [
+        for (final block in nodeA2.blocks)
+          block.id == const NodeId('m2')
+              ? block.copyWith(
+                  content: 'thin — expanding into the plan',
+                  status: MessageStatus.streaming,
+                )
+              : block,
+      ],
+    );
+    await repoA.save(grown);
+    await a.service.sync();
+    await b.service.sync();
+    final nodeB3 = (await repoB.get(_docId) as DocFound).node;
+    expect(
+      nodeB3.blocks.firstWhere((final b) => b.id == const NodeId('m2')).content,
+      'thin — expanding into the plan',
+    );
+    await a.store.dispose();
+    await b.store.dispose();
+  });
+
+  test('MeshAwareDocumentRepository seeds a plain-store chat into the '
+      'replica on first touch, then serves the replica', () async {
+    final medium = _SharedMedium();
+    final device = _device(medium, 'peer-a', 'actor-a');
+    final plain = InMemoryDocumentRepository();
+    const docId = NodeId('chat-legacy');
+    await plain.save(
+      DocumentNode(
+        id: docId,
+        formatId: 'chat',
+        blocks: [
+          const Block(
+            id: NodeId('t'),
+            type: BlockType.heading,
+            content: 'pre-mesh chat',
+            level: 1,
+          ),
+          const Block(
+            id: NodeId('u1'),
+            type: BlockType.message,
+            content: 'history from before the mesh',
+            role: ChatRole.user,
+          ),
+        ],
+        createdAt: _now,
+        updatedAt: _now,
+      ),
+    );
+
+    // Mesh not live yet → the plain path answers.
+    DocReplicaStore? live;
+    final repo = MeshAwareDocumentRepository(plain, () => live);
+    expect(await repo.get(docId), isA<DocFound>());
+
+    // Mesh goes live → the same repository routes to the replica,
+    // seeding the plain history once.
+    live = device.store;
+    final migrated = await repo.get(docId);
+    expect(migrated, isA<DocFound>());
+    final node = (migrated as DocFound).node;
+    expect(node.blocks, hasLength(2));
+    expect(
+      (await device.store.open(docId)).blockText(const NodeId('u1')),
+      'history from before the mesh',
+    );
+
+    // Writes now land in the replica.
+    await repo.save(
+      _withBlocks(node, [
+        ...node.blocks,
         const Block(
-          id: NodeId('m1'),
+          id: NodeId('a1'),
           type: BlockType.message,
-          content: '',
-          role: ChatRole.user,
-        ),
-        const Block(
-          id: NodeId('m2'),
-          type: BlockType.message,
-          content: 'thin',
+          content: 'post-mesh reply',
           role: ChatRole.assistant,
         ),
-      ]);
-      await repoA.save(nodeA);
-      await a.service.sync(); // flush A's replica file into the medium.
-
-      // B syncs: receives the doc, composes through its OWN repository.
-      await b.service.sync();
-      final repoB = ReplicaDocumentRepository(b.store);
-      var nodeB = (await repoB.get(_docId) as DocFound).node;
-      expect(nodeB, isNotNull, reason: 'B must see the chat after sync');
-      expect(nodeB.blocks.first.ownerPeerId, 'peer-a');
-      expect(
-        nodeB.blocks.where((final b) => b.type == BlockType.message),
-        hasLength(2),
-      );
-
-      nodeB = _withBlocks(nodeB, [
-        ...nodeB.blocks,
-        const Block(
-          id: NodeId('m3'),
-          type: BlockType.message,
-          content: 'launch the second mac',
-          role: ChatRole.user,
-        ),
-      ]);
-      nodeB = nodeB.copyWith(
-        blocks: [
-          for (final block in nodeB.blocks)
-            block.id == titleId
-                ? block.copyWith(systemPrompt: 'be concise')
-                : block,
-        ],
-      );
-      await repoB.save(nodeB);
-      await b.service.sync();
-
-      // A syncs: B's message + metadata edit converge into A's view; B
-      // catches up on anything of A's it had not folded yet.
-      await a.service.sync();
-      await b.service.sync();
-      final nodeA2 = (await repoA.get(_docId) as DocFound).node;
-      final nodeB2 = (await repoB.get(_docId) as DocFound).node;
-
-      expect(
-        nodeA2.blocks.map(
-          (final b) => '${b.id.value}:${b.role?.name}:${b.content}',
-        ),
-        nodeB2.blocks.map(
-          (final b) => '${b.id.value}:${b.role?.name}:${b.content}',
-        ),
-        reason: 'both devices must project the same converged transcript',
-      );
-      expect(
-        nodeA2.blocks.where((final b) => b.content == 'launch the second mac'),
-        hasLength(1),
-      );
-      expect(nodeA2.blocks.first.systemPrompt, 'be concise');
-      expect(nodeA2.blocks.first.ownerPeerId, 'peer-a');
-
-      // Checkpoint growth: A extends the assistant text; B converges
-      // without duplicating the shared prefix.
-      final grown = nodeA2.copyWith(
-        blocks: [
-          for (final block in nodeA2.blocks)
-            block.id == const NodeId('m2')
-                ? block.copyWith(
-                    content: 'thin — expanding into the plan',
-                    status: MessageStatus.streaming,
-                  )
-                : block,
-        ],
-      );
-      await repoA.save(grown);
-      await a.service.sync();
-      await b.service.sync();
-      final nodeB3 = (await repoB.get(_docId) as DocFound).node;
-      expect(
-        nodeB3.blocks.firstWhere((final b) => b.id == const NodeId('m2')).content,
-        'thin — expanding into the plan',
-      );
-      await a.store.dispose();
-      await b.store.dispose();
-    },
-  );
-
-  test(
-    'MeshAwareDocumentRepository seeds a plain-store chat into the '
-    'replica on first touch, then serves the replica',
-    () async {
-      final medium = _SharedMedium();
-      final device = _device(medium, 'peer-a', 'actor-a');
-      final plain = InMemoryDocumentRepository();
-      const docId = NodeId('chat-legacy');
-      await plain.save(
-        DocumentNode(
-          id: docId,
-          formatId: 'chat',
-          blocks: [
-            const Block(
-              id: NodeId('t'),
-              type: BlockType.heading,
-              content: 'pre-mesh chat',
-              level: 1,
-            ),
-            const Block(
-              id: NodeId('u1'),
-              type: BlockType.message,
-              content: 'history from before the mesh',
-              role: ChatRole.user,
-            ),
-          ],
-          createdAt: _now,
-          updatedAt: _now,
-        ),
-      );
-
-      // Mesh not live yet → the plain path answers.
-      DocReplicaStore? live;
-      final repo = MeshAwareDocumentRepository(plain, () => live);
-      expect(await repo.get(docId), isA<DocFound>());
-
-      // Mesh goes live → the same repository routes to the replica,
-      // seeding the plain history once.
-      live = device.store;
-      final migrated = await repo.get(docId);
-      expect(migrated, isA<DocFound>());
-      final node = (migrated as DocFound).node;
-      expect(node.blocks, hasLength(2));
-      expect(
-        (await device.store.open(docId)).blockText(const NodeId('u1')),
-        'history from before the mesh',
-      );
-
-      // Writes now land in the replica.
-      await repo.save(
-        _withBlocks(node, [
-          ...node.blocks,
-          const Block(
-            id: NodeId('a1'),
-            type: BlockType.message,
-            content: 'post-mesh reply',
-            role: ChatRole.assistant,
-          ),
-        ]),
-      );
-      final reread = await repo.get(docId);
-      expect((reread as DocFound).node.blocks.last.content, 'post-mesh reply');
-      await device.store.dispose();
-    },
-  );
+      ]),
+    );
+    final reread = await repo.get(docId);
+    expect((reread as DocFound).node.blocks.last.content, 'post-mesh reply');
+    await device.store.dispose();
+  });
 }

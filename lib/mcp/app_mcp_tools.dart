@@ -61,7 +61,8 @@ const List<AppIntentSpec> appIntentCatalog = [
   AppIntentSpec(
     name: 'app_intents',
     group: 'app',
-    summary: 'Read this catalog: every published intent as named data '
+    summary:
+        'Read this catalog: every published intent as named data '
         '(the discovery contract).',
   ),
   AppIntentSpec(
@@ -500,7 +501,8 @@ Set<AgentCallEntry> appMcpEntries() => {
             (parameters['hosted_chat_credential'] as bool?) ?? false,
       );
       return MCPCallResult(
-        message: 'This device\'s hosting capabilities, probed live '
+        message:
+            'This device\'s hosting capabilities, probed live '
             '(route by these facts, never by advertising).',
         parameters: {'ok': true, ...snapshot.toJson()},
       );

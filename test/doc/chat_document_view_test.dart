@@ -6,6 +6,8 @@ import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart' as hc;
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/agent_config/agent_config_persistence.dart';
 import 'package:lastanswer/agent_config/agent_platform_config.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
@@ -124,14 +126,15 @@ Future<void> _pumpChat(
   required AgentConfigStore configStore,
   required ChatInferenceResolver resolver,
   AcpAgentRuntimeRegistry? runtimeRegistry,
+  hc.InMemoryDocumentRepository? repository,
 }) async {
-  final repository = hc.InMemoryDocumentRepository();
+  final docRepository = repository ?? hc.InMemoryDocumentRepository();
   await tester.pumpWidget(
     MultiProvider(
       providers: [
-        Provider<hc.DocumentRepository>.value(value: repository),
+        Provider<hc.DocumentRepository>.value(value: docRepository),
         Provider<hc.ChatDocumentService>(
-          create: (_) => hc.ChatDocumentService(repository: repository),
+          create: (_) => hc.ChatDocumentService(repository: docRepository),
         ),
         Provider<AcpAgentRuntimeRegistry>(
           create: (_) => runtimeRegistry ?? AcpAgentRuntimeRegistry(),
@@ -345,6 +348,168 @@ void main() {
             'start a fresh one with no memory of the first',
       );
       expect(agent.promptCount, 2);
+    },
+  );
+
+  testWidgets(
+    'peer turn hop: a chat-turn task posted to the board is auto-run by '
+    'the OWNER device without duplicating the user message',
+    variant: TargetPlatformVariant.only(TargetPlatform.macOS),
+    (tester) async {
+      // withPermission: false — the permission switcher has its own test;
+      // this one isolates the board hop.
+      final agent = _FakeAcpAgent(
+        withPermission: false,
+        replyPrefix: 'peer reply',
+      );
+      addTearDown(agent.dispose);
+      final registry = AcpAgentRuntimeRegistry(
+        clientFactory: (config, delegate, {onStderr}) async =>
+            agent.buildClient(delegate),
+      );
+      // The shared task board, mounted with the OWNER's peer id — the
+      // same WorldSync-backed board the mesh cycle ships.
+      final board = MeshTaskBoard(replicaId: 'owner-1');
+      final savedWiring = AgentDocSurface.meshWiring;
+      AgentDocSurface.meshWiring = AgentDocMeshWiring(
+        routerFor: (_) => throw UnimplementedError(),
+        joinDoc: (_) async {},
+        leaveDoc: (_) async {},
+        statusFor: (_) => const AgentDocMeshStatus(
+          hosting: false,
+          connected: true,
+          peerCount: 2,
+          presenceCount: 2,
+        ),
+        taskBoard: () => board,
+        selfPeerId: () => 'owner-1',
+      );
+      addTearDown(() => AgentDocSurface.meshWiring = savedWiring);
+
+      final repository = hc.InMemoryDocumentRepository();
+      final chatService = hc.ChatDocumentService(repository: repository);
+      await _pumpChat(
+        tester,
+        configStore: await _configStoreWithAcpAgent(),
+        resolver: _acpOnlyResolver(),
+        runtimeRegistry: registry,
+        repository: repository,
+      );
+
+      await tester.tap(find.byKey(const Key('chat.transport.picker')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Fake ACP').last);
+      await tester.pumpAndSettle();
+
+      // The PEER composed a user block into the shared doc (it converged
+      // over the mesh) and requested the turn.
+      const docId = hc.NodeId('chat-doc');
+      const userBlockId = hc.NodeId('peer-msg-1');
+      await chatService.appendMessage(
+        docId,
+        role: hc.ChatRole.user,
+        content: 'hello from the peer',
+        blockId: userBlockId,
+      );
+      board.requestTask(
+        docId: 'chat-doc',
+        task: 'chat-turn peer-msg-1',
+        originPeerId: 'peer-2',
+      );
+
+      // The owner's sync-cycle hook claims and runs it.
+      ChatDocumentView.debugSurface?.refresh();
+      await pumpUntil(
+        tester,
+        () => find.textContaining('peer reply').evaluate().isNotEmpty,
+      );
+      await pumpUntil(
+        tester,
+        () =>
+            board.tasksFor('chat-doc').firstOrNull?.status ==
+            MeshTaskBoard.statusCompleted,
+      );
+
+      expect(
+        board.tasksFor('chat-doc').single.status,
+        MeshTaskBoard.statusCompleted,
+      );
+      // Exactly ONE user block — the peer's, not a re-appended copy.
+      final doc = (await repository.get(docId) as hc.DocFound).node;
+      expect(doc.blocks.where((b) => b.role == hc.ChatRole.user), hasLength(1));
+      expect(
+        doc.blocks.any((b) => b.content.contains('hello from the peer')),
+        isTrue,
+      );
+
+      // The OWNER sending locally claims the session on the shared doc.
+      await pumpUntil(
+        tester,
+        () => find.byIcon(Icons.send).evaluate().isNotEmpty,
+      );
+      await tester.enterText(find.byType(TextField).last, 'my own turn');
+      await tester.tap(find.byIcon(Icons.send));
+      await pumpUntil(
+        tester,
+        () => find.textContaining('peer reply 2').evaluate().isNotEmpty,
+      );
+      final claimed =
+          (await repository.get(docId) as hc.DocFound).node.blocks.first;
+      expect(
+        claimed.ownerPeerId,
+        'owner-1',
+        reason:
+            'a local turn must persist the ownership claim so future '
+            'PEER turns route to this device',
+      );
+    },
+  );
+
+  testWidgets(
+    'permission switcher: FULL auto-answers the mid-turn request without '
+    'the user tapping allow',
+    variant: TargetPlatformVariant.only(TargetPlatform.macOS),
+    (tester) async {
+      final agent = _FakeAcpAgent(replyPrefix: 'unblocked');
+      addTearDown(agent.dispose);
+      final registry = AcpAgentRuntimeRegistry(
+        clientFactory: (config, delegate, {onStderr}) async =>
+            agent.buildClient(delegate),
+      );
+      await _pumpChat(
+        tester,
+        configStore: await _configStoreWithAcpAgent(),
+        resolver: _acpOnlyResolver(),
+        runtimeRegistry: registry,
+      );
+
+      await tester.tap(find.byKey(const Key('chat.transport.picker')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Fake ACP').last);
+      await tester.pumpAndSettle();
+
+      // The user flips the stance to FULL before sending (the codex/
+      // zed/cursor-style switcher in the header).
+      await tester.tap(find.byKey(const Key('chat.perm.mode.fullAccess')));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField).last, 'run the tests');
+      await tester.tap(find.byIcon(Icons.send));
+
+      // The fake agent still opens with session/request_permission — but
+      // no allow tap happens. The policy answers; the turn completes.
+      await pumpUntil(
+        tester,
+        () => find.textContaining('unblocked').evaluate().isNotEmpty,
+      );
+      expect(agent.permissionAnswered, isTrue);
+      expect(
+        find.textContaining('PERM → auto-allowed (full)'),
+        findsWidgets,
+        reason: 'the durable row must record WHICH layer answered',
+      );
+      // No per-request buttons surfaced for an auto-answered request.
+      expect(find.byKey(const Key('chat.perm.tool-1.allow')), findsNothing);
     },
   );
 }

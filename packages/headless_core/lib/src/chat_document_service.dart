@@ -107,12 +107,14 @@ final class ChatDocumentService {
     String? agentKey,
     String? workspace,
     String? ownerPeerId,
+    String? permissionMode,
     bool clearProvider = false,
     bool clearModel = false,
     bool clearSystemPrompt = false,
     bool clearAgentKey = false,
     bool clearWorkspace = false,
     bool clearOwnerPeerId = false,
+    bool clearPermissionMode = false,
     DateTime? at,
   }) => _update(
     nodeId,
@@ -141,6 +143,12 @@ final class ChatDocumentService {
                   workspace: clearWorkspace
                       ? null
                       : (workspace ?? node.blocks[i].workspace),
+                  ownerPeerId: clearOwnerPeerId
+                      ? null
+                      : (ownerPeerId ?? node.blocks[i].ownerPeerId),
+                  permissionMode: clearPermissionMode
+                      ? null
+                      : (permissionMode ?? node.blocks[i].permissionMode),
                 )
               : node.blocks[i],
       ];

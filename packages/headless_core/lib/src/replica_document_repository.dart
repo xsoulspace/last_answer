@@ -43,9 +43,7 @@ class ReplicaDocumentRepository implements DocumentRepository {
   }
 
   @override
-  Future<void> save(final DocumentNode node) => _store.edit(node.id, (
-    replica,
-  ) {
+  Future<void> save(final DocumentNode node) => _store.edit(node.id, (replica) {
     final now = DateTime.now();
     final ops = <OpRecord>[];
     final current = replica.document();
@@ -62,7 +60,11 @@ class ReplicaDocumentRepository implements DocumentRepository {
       final parentDocId = node.parentDocId;
       if (parentDocId != null) {
         ops.addAll(
-          replica.setNodeField('parentDocId', value: parentDocId.value, now: now),
+          replica.setNodeField(
+            'parentDocId',
+            value: parentDocId.value,
+            now: now,
+          ),
         );
       }
       final anchor = node.anchorSpan;
@@ -97,11 +99,7 @@ class ReplicaDocumentRepository implements DocumentRepository {
       }
     }
     ops.addAll(
-      replica.setNodeField(
-        'status',
-        value: node.status.name,
-        now: now,
-      ),
+      replica.setNodeField('status', value: node.status.name, now: now),
     );
     // Span snapshot refreshes on every save (LWW; the fresh-born branch
     // above also wrote it — the kernel dedupes identical registers).
@@ -205,6 +203,7 @@ class ReplicaDocumentRepository implements DocumentRepository {
     field('agentKey', block.agentKey);
     field('workspace', block.workspace);
     field('ownerPeerId', block.ownerPeerId);
+    field('permissionMode', block.permissionMode);
     field('systemPrompt', block.systemPrompt);
     return ops;
   }
@@ -226,12 +225,19 @@ class ReplicaDocumentRepository implements DocumentRepository {
         ops.addAll(replica.setBlockField(block.id, name, value: '', now: now));
         return;
       }
-      ops.addAll(replica.setBlockField(block.id, name, value: newValue, now: now));
+      ops.addAll(
+        replica.setBlockField(block.id, name, value: newValue, now: now),
+      );
     }
 
     if (existing.type != block.type) {
       ops.addAll(
-        replica.setBlockField(block.id, 'type', value: block.type.name, now: now),
+        replica.setBlockField(
+          block.id,
+          'type',
+          value: block.type.name,
+          now: now,
+        ),
       );
     }
     field('level', block.level?.toString(), existing.level?.toString());
@@ -245,6 +251,7 @@ class ReplicaDocumentRepository implements DocumentRepository {
     field('agentKey', block.agentKey, existing.agentKey);
     field('workspace', block.workspace, existing.workspace);
     field('ownerPeerId', block.ownerPeerId, existing.ownerPeerId);
+    field('permissionMode', block.permissionMode, existing.permissionMode);
     field('systemPrompt', block.systemPrompt, existing.systemPrompt);
     if (existing.status != block.status) {
       ops.addAll(

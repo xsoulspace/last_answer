@@ -4,7 +4,12 @@ import 'dart:io';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 
 export 'package:dart_acp_toolkit/dart_acp_toolkit.dart'
-    show AcpAuthMethod, AcpAuthRequiredException, AcpRemoteError;
+    show
+        AcpAuthMethod,
+        AcpAuthRequiredException,
+        AcpRemoteError,
+        AcpSessionModes,
+        AcpSessionModeInfo;
 
 /// A known desktop ACP agent and how to discover or install it.
 final class AcpAgentCatalogEntry {
@@ -399,6 +404,45 @@ class AcpAgentRuntime {
     _sessions[sessionId] = session;
     _currentSessionId = sessionId;
     return sessionId;
+  }
+
+  /// Resumes a PREVIOUS conversation (`session/load`): the agent replays
+  /// its history and the session becomes this runtime's current —
+  /// [send] continues the same conversation. This is the multiplayer
+  /// handoff path (the session id lives on the shared chat doc) and the
+  /// process-restart recovery path. Throws [AcpRemoteError] (typically
+  /// -32601 for agents without the method) — callers fall back to
+  /// [newSession] with their own context-reset marker.
+  Future<String> resume(
+    final String sessionId, {
+    required final String workingDirectory,
+  }) async {
+    final client = await _requireClient();
+    final confirmed = await client.loadSession(
+      sessionId,
+      cwd: workingDirectory,
+    );
+    final session = AcpAgentSession(
+      id: confirmed,
+      workingDirectory: workingDirectory,
+    );
+    _sessions[confirmed] = session;
+    _currentSessionId = confirmed;
+    return confirmed;
+  }
+
+  /// The mode set the agent advertised for [sessionId] (null when the
+  /// agent does not implement session modes — the client-side permission
+  /// policy still applies).
+  AcpSessionModes? sessionModesOf(final String sessionId) =>
+      _client?.sessionModesOf(sessionId);
+
+  /// Switches the agent's OWN mode (`session/set_mode`) — the agent side
+  /// of the codex/zed/cursor-style switcher. Client-side policy stays
+  /// the enforcement layer regardless.
+  Future<void> setMode(final String sessionId, final String modeId) async {
+    final client = await _requireClient();
+    await client.setSessionMode(sessionId, modeId);
   }
 
   /// Switches the session used by [send] when no explicit ID is supplied.

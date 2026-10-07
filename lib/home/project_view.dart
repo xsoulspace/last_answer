@@ -34,7 +34,7 @@ class ProjectView extends StatelessWidget {
         appBar: _ChangelogViewAppBar(),
         child: ChangelogView(),
       ),
-          doc: (final doc) => _AdaptiveView(
+      doc: (final doc) => _AdaptiveView(
         appBar: const _ProjectViewAppBar(),
         child: switch (doc.formatId) {
           DocFormatIds.chat => ChatDocumentView(doc: doc, key: ValueKey(id)),
@@ -74,9 +74,7 @@ class ProjectView extends StatelessWidget {
                 onBindingChanged: (final binding) {
                   final agent = doc.agent ?? const AgentDocModel();
                   context.read<OpenedProjectNotifier>().updateProject(
-                    doc.copyWith(
-                      agent: agent.copyWith(worldBinding: binding),
-                    ),
+                    doc.copyWith(agent: agent.copyWith(worldBinding: binding)),
                   );
                 },
               ),

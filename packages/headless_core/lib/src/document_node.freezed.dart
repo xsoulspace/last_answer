@@ -32,7 +32,11 @@ mixin _$Block {
 /// (title block). Null = unclaimed; the first device to send a turn
 /// claims it. Peers route their turns to the owner over the mesh task
 /// board instead of running a local agent.
- String? get ownerPeerId;/// Per-document system prompt; set on a chat document's title block.
+ String? get ownerPeerId;/// Permission policy for this chat (title block): `ask` (deny by
+/// default, buttons per request), `workspaceEdits` (read/edit/move
+/// auto-allowed, the rest ask), `fullAccess` (everything allowed).
+/// See `ChatPermissionPolicy`.
+ String? get permissionMode;/// Per-document system prompt; set on a chat document's title block.
  String? get systemPrompt; MessageStatus get status;
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
@@ -46,16 +50,16 @@ $BlockCopyWith<Block> get copyWith => _$BlockCopyWithImpl<Block>(this as Block, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.agentKey, agentKey) || other.agentKey == agentKey)&&(identical(other.workspace, workspace) || other.workspace == workspace)&&(identical(other.ownerPeerId, ownerPeerId) || other.ownerPeerId == ownerPeerId)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.agentKey, agentKey) || other.agentKey == agentKey)&&(identical(other.workspace, workspace) || other.workspace == workspace)&&(identical(other.ownerPeerId, ownerPeerId) || other.ownerPeerId == ownerPeerId)&&(identical(other.permissionMode, permissionMode) || other.permissionMode == permissionMode)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,agentKey,workspace,ownerPeerId,systemPrompt,status);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,agentKey,workspace,ownerPeerId,permissionMode,systemPrompt,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, agentKey: $agentKey, workspace: $workspace, ownerPeerId: $ownerPeerId, systemPrompt: $systemPrompt, status: $status)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, agentKey: $agentKey, workspace: $workspace, ownerPeerId: $ownerPeerId, permissionMode: $permissionMode, systemPrompt: $systemPrompt, status: $status)';
 }
 
 
@@ -66,7 +70,7 @@ abstract mixin class $BlockCopyWith<$Res>  {
   factory $BlockCopyWith(Block value, $Res Function(Block) _then) = _$BlockCopyWithImpl;
 @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? agentKey, String? workspace, String? ownerPeerId, String? systemPrompt, MessageStatus status
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? agentKey, String? workspace, String? ownerPeerId, String? permissionMode, String? systemPrompt, MessageStatus status
 });
 
 
@@ -83,7 +87,7 @@ class _$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? agentKey = freezed,Object? workspace = freezed,Object? ownerPeerId = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? agentKey = freezed,Object? workspace = freezed,Object? ownerPeerId = freezed,Object? permissionMode = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
   return _then(Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -99,6 +103,7 @@ as String?,model: freezed == model ? _self.model : model // ignore: cast_nullabl
 as String?,agentKey: freezed == agentKey ? _self.agentKey : agentKey // ignore: cast_nullable_to_non_nullable
 as String?,workspace: freezed == workspace ? _self.workspace : workspace // ignore: cast_nullable_to_non_nullable
 as String?,ownerPeerId: freezed == ownerPeerId ? _self.ownerPeerId : ownerPeerId // ignore: cast_nullable_to_non_nullable
+as String?,permissionMode: freezed == permissionMode ? _self.permissionMode : permissionMode // ignore: cast_nullable_to_non_nullable
 as String?,systemPrompt: freezed == systemPrompt ? _self.systemPrompt : systemPrompt // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MessageStatus,
@@ -186,10 +191,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? systemPrompt,  MessageStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? permissionMode,  String? systemPrompt,  MessageStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.systemPrompt,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.permissionMode,_that.systemPrompt,_that.status);case _:
   return orElse();
 
 }
@@ -207,10 +212,10 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? systemPrompt,  MessageStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? permissionMode,  String? systemPrompt,  MessageStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _Block():
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.systemPrompt,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.permissionMode,_that.systemPrompt,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -227,10 +232,10 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? systemPrompt,  MessageStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NodeId id,  BlockType type,  String content,  int? level,  ChatRole? role,  String? messageId,  String? sessionId,  String? toolCallId,  String? title,  String? provider,  String? model,  String? agentKey,  String? workspace,  String? ownerPeerId,  String? permissionMode,  String? systemPrompt,  MessageStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _Block() when $default != null:
-return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.systemPrompt,_that.status);case _:
+return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.messageId,_that.sessionId,_that.toolCallId,_that.title,_that.provider,_that.model,_that.agentKey,_that.workspace,_that.ownerPeerId,_that.permissionMode,_that.systemPrompt,_that.status);case _:
   return null;
 
 }
@@ -242,7 +247,7 @@ return $default(_that.id,_that.type,_that.content,_that.level,_that.role,_that.m
 @JsonSerializable()
 
 class _Block implements Block {
-  const _Block({required this.id, required this.type, this.content = '', this.level, this.role, this.messageId, this.sessionId, this.toolCallId, this.title, this.provider, this.model, this.agentKey, this.workspace, this.ownerPeerId, this.systemPrompt, this.status = MessageStatus.complete});
+  const _Block({required this.id, required this.type, this.content = '', this.level, this.role, this.messageId, this.sessionId, this.toolCallId, this.title, this.provider, this.model, this.agentKey, this.workspace, this.ownerPeerId, this.permissionMode, this.systemPrompt, this.status = MessageStatus.complete});
   factory _Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
 
 @override final  NodeId id;
@@ -275,6 +280,11 @@ class _Block implements Block {
 /// claims it. Peers route their turns to the owner over the mesh task
 /// board instead of running a local agent.
 @override final  String? ownerPeerId;
+/// Permission policy for this chat (title block): `ask` (deny by
+/// default, buttons per request), `workspaceEdits` (read/edit/move
+/// auto-allowed, the rest ask), `fullAccess` (everything allowed).
+/// See `ChatPermissionPolicy`.
+@override final  String? permissionMode;
 /// Per-document system prompt; set on a chat document's title block.
 @override final  String? systemPrompt;
 @override@JsonKey() final  MessageStatus status;
@@ -292,16 +302,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.agentKey, agentKey) || other.agentKey == agentKey)&&(identical(other.workspace, workspace) || other.workspace == workspace)&&(identical(other.ownerPeerId, ownerPeerId) || other.ownerPeerId == ownerPeerId)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Block&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.content, content) || other.content == content)&&(identical(other.level, level) || other.level == level)&&(identical(other.role, role) || other.role == role)&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.toolCallId, toolCallId) || other.toolCallId == toolCallId)&&(identical(other.title, title) || other.title == title)&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.model, model) || other.model == model)&&(identical(other.agentKey, agentKey) || other.agentKey == agentKey)&&(identical(other.workspace, workspace) || other.workspace == workspace)&&(identical(other.ownerPeerId, ownerPeerId) || other.ownerPeerId == ownerPeerId)&&(identical(other.permissionMode, permissionMode) || other.permissionMode == permissionMode)&&(identical(other.systemPrompt, systemPrompt) || other.systemPrompt == systemPrompt)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,agentKey,workspace,ownerPeerId,systemPrompt,status);
+int get hashCode => Object.hash(runtimeType,id,type,content,level,role,messageId,sessionId,toolCallId,title,provider,model,agentKey,workspace,ownerPeerId,permissionMode,systemPrompt,status);
 
 @override
 String toString() {
-  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, agentKey: $agentKey, workspace: $workspace, ownerPeerId: $ownerPeerId, systemPrompt: $systemPrompt, status: $status)';
+  return 'Block(id: $id, type: $type, content: $content, level: $level, role: $role, messageId: $messageId, sessionId: $sessionId, toolCallId: $toolCallId, title: $title, provider: $provider, model: $model, agentKey: $agentKey, workspace: $workspace, ownerPeerId: $ownerPeerId, permissionMode: $permissionMode, systemPrompt: $systemPrompt, status: $status)';
 }
 
 
@@ -312,7 +322,7 @@ abstract mixin class _$BlockCopyWith<$Res> implements $BlockCopyWith<$Res> {
   factory _$BlockCopyWith(_Block value, $Res Function(_Block) _then) = __$BlockCopyWithImpl;
 @override @useResult
 $Res call({
- NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? agentKey, String? workspace, String? ownerPeerId, String? systemPrompt, MessageStatus status
+ NodeId id, BlockType type, String content, int? level, ChatRole? role, String? messageId, String? sessionId, String? toolCallId, String? title, String? provider, String? model, String? agentKey, String? workspace, String? ownerPeerId, String? permissionMode, String? systemPrompt, MessageStatus status
 });
 
 
@@ -329,7 +339,7 @@ class __$BlockCopyWithImpl<$Res>
 
 /// Create a copy of Block
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? agentKey = freezed,Object? workspace = freezed,Object? ownerPeerId = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? content = null,Object? level = freezed,Object? role = freezed,Object? messageId = freezed,Object? sessionId = freezed,Object? toolCallId = freezed,Object? title = freezed,Object? provider = freezed,Object? model = freezed,Object? agentKey = freezed,Object? workspace = freezed,Object? ownerPeerId = freezed,Object? permissionMode = freezed,Object? systemPrompt = freezed,Object? status = null,}) {
   return _then(_Block(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as NodeId,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -345,6 +355,7 @@ as String?,model: freezed == model ? _self.model : model // ignore: cast_nullabl
 as String?,agentKey: freezed == agentKey ? _self.agentKey : agentKey // ignore: cast_nullable_to_non_nullable
 as String?,workspace: freezed == workspace ? _self.workspace : workspace // ignore: cast_nullable_to_non_nullable
 as String?,ownerPeerId: freezed == ownerPeerId ? _self.ownerPeerId : ownerPeerId // ignore: cast_nullable_to_non_nullable
+as String?,permissionMode: freezed == permissionMode ? _self.permissionMode : permissionMode // ignore: cast_nullable_to_non_nullable
 as String?,systemPrompt: freezed == systemPrompt ? _self.systemPrompt : systemPrompt // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MessageStatus,

@@ -44,9 +44,7 @@ final class DocReplica {
         strategy: _lanes,
       );
 
-  DocReplica._(this._doc)
-    : nodeId = NodeId(_doc.docId),
-      actorId = _doc.actorId;
+  DocReplica._(this._doc) : nodeId = NodeId(_doc.docId), actorId = _doc.actorId;
 
   /// Restores the kernel doc through `ConvergenceDoc.fromJson` — the
   /// composite lane map comes back from the strategy registry name, no
@@ -76,9 +74,7 @@ final class DocReplica {
         // Deterministic restore: anchor the HLC receive at the snapshot's
         // own wall clock so restoring never advances the watermark past
         // the file's own content.
-        now: DateTime.fromMillisecondsSinceEpoch(
-          snapshot.createdAt.wallMillis,
-        ),
+        now: DateTime.fromMillisecondsSinceEpoch(snapshot.createdAt.wallMillis),
       );
     }
     Hlc? last = json['last_issued'] == null
@@ -509,6 +505,7 @@ final class DocReplica {
           workspace: _strField(id, 'workspace'),
           systemPrompt: _strField(id, 'systemPrompt'),
           ownerPeerId: _strField(id, 'ownerPeerId'),
+          permissionMode: _strField(id, 'permissionMode'),
           status: _enumField(
             id,
             'status',

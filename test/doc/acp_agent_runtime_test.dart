@@ -45,6 +45,8 @@ final class _FakeAgent {
   );
   bool cancelRequested = false;
   Completer<void>? waitingForCancel;
+  int loadCount = 0;
+  final promptSessionIds = <String>[];
 
   void respond(int id, Map<String, Object?> result) =>
       _send({'jsonrpc': '2.0', 'id': id, 'result': result});
@@ -64,7 +66,13 @@ final class _FakeAgent {
         respond(id!, {'protocolVersion': 1});
       case 'session/new':
         respond(id!, {'sessionId': 'session-1'});
+      case 'session/load':
+        loadCount += 1;
+        respond(id!, {'sessionId': 'session-1'});
       case 'session/prompt':
+        promptSessionIds.add(
+          (message['params'] as Map<dynamic, dynamic>)['sessionId'] as String,
+        );
         unawaited(_runPrompt(id!));
       case 'session/cancel':
         cancelRequested = true;
@@ -161,6 +169,38 @@ void main() {
     expect(agent.client.isClosed, isTrue);
   });
 
+  test('resume reloads a persisted session and continues it', () async {
+    // Connection one: a session is created, then the client goes away
+    // (process restart, or the session moved to another device's agent).
+    final firstAgent = _FakeAgent();
+    final first = AcpAgentRuntime(
+      clientFactory: (_, __, {onStderr}) async => firstAgent.client,
+    );
+    await first.start(config);
+    await first.newSession('/tmp/project');
+    await first.stop();
+
+    // Connection two: the persisted session id is RELOADED, not replaced.
+    final secondAgent = _FakeAgent();
+    final resumed = AcpAgentRuntime(
+      clientFactory: (_, __, {onStderr}) async => secondAgent.client,
+    );
+    await resumed.start(config);
+    final id = await resumed.resume('session-1', workingDirectory: '/tmp');
+    expect(id, 'session-1');
+    expect(secondAgent.loadCount, 1);
+    expect(resumed.currentSessionId, 'session-1');
+
+    final stream = resumed.send('continue');
+    await for (final _ in stream) {}
+    expect(
+      secondAgent.promptSessionIds.single,
+      'session-1',
+      reason: 'the turn must ride the RESUMED session, not a fresh one',
+    );
+    await resumed.stop();
+  });
+
   test('cancel notifies the active ACP session', () async {
     final agent = _FakeAgent();
     final runtime = AcpAgentRuntime(
@@ -188,7 +228,8 @@ void main() {
 
   test('reports error state when initialization fails', () async {
     final runtime = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async => throw StateError('spawn failed'),
+      clientFactory: (_, __, {onStderr}) async =>
+          throw StateError('spawn failed'),
     );
 
     await expectLater(runtime.start(config), throwsStateError);
@@ -295,16 +336,11 @@ void main() {
 
       expect(pendings.single.isAnswered, isTrue);
       expect(runtime.pendingPermissions, isEmpty);
-      final text = updates
-          .map((update) => update.textDelta ?? '')
-          .join();
+      final text = updates.map((update) => update.textDelta ?? '').join();
       expect(text, contains('outcome: allow'));
       // Tool titles ride as message updates — the chat renders them as
       // durable beat rows.
-      expect(
-        updates.any((update) => update.message == 'bash · ls'),
-        isTrue,
-      );
+      expect(updates.any((update) => update.message == 'bash · ls'), isTrue);
 
       await runtime.stop();
       await fromClient.close();
@@ -312,43 +348,45 @@ void main() {
     },
   );
 
-  test('registry keeps one runtime per doc and restarts on agent switch',
-      () async {
-    final startedCommands = <String>[];
-    final registry = AcpAgentRuntimeRegistry(
-      clientFactory: (config, permissionDelegate, {onStderr}) async {
-        startedCommands.add(config.command);
-        // Each start gets its own auto-responding in-process agent —
-        // initialize must complete for the runtime to become ready.
-        return _FakeAgent().client;
-      },
-    );
-    final first = registry.forDoc('doc-1');
-    expect(identical(registry.forDoc('doc-1'), first), isTrue);
-    expect(registry.forDoc('doc-2'), isNot(same(first)));
+  test(
+    'registry keeps one runtime per doc and restarts on agent switch',
+    () async {
+      final startedCommands = <String>[];
+      final registry = AcpAgentRuntimeRegistry(
+        clientFactory: (config, permissionDelegate, {onStderr}) async {
+          startedCommands.add(config.command);
+          // Each start gets its own auto-responding in-process agent —
+          // initialize must complete for the runtime to become ready.
+          return _FakeAgent().client;
+        },
+      );
+      final first = registry.forDoc('doc-1');
+      expect(identical(registry.forDoc('doc-1'), first), isTrue);
+      expect(registry.forDoc('doc-2'), isNot(same(first)));
 
-    await registry.ensureStarted(
-      'doc-1',
-      'gemini',
-      const AcpRuntimeConfig(command: 'gemini'),
-    );
-    await registry.ensureStarted(
-      'doc-1',
-      'gemini',
-      const AcpRuntimeConfig(command: 'gemini'),
-    );
-    // Idempotent while the selected agent is unchanged.
-    expect(startedCommands, ['gemini']);
-    // A switch restarts the process with the new agent.
-    await registry.ensureStarted(
-      'doc-1',
-      'codex',
-      const AcpRuntimeConfig(command: 'codex'),
-    );
-    expect(startedCommands, ['gemini', 'codex']);
-    await registry.disposeAll();
-    expect(registry.maybe('doc-1'), isNull);
-  });
+      await registry.ensureStarted(
+        'doc-1',
+        'gemini',
+        const AcpRuntimeConfig(command: 'gemini'),
+      );
+      await registry.ensureStarted(
+        'doc-1',
+        'gemini',
+        const AcpRuntimeConfig(command: 'gemini'),
+      );
+      // Idempotent while the selected agent is unchanged.
+      expect(startedCommands, ['gemini']);
+      // A switch restarts the process with the new agent.
+      await registry.ensureStarted(
+        'doc-1',
+        'codex',
+        const AcpRuntimeConfig(command: 'codex'),
+      );
+      expect(startedCommands, ['gemini', 'codex']);
+      await registry.disposeAll();
+      expect(registry.maybe('doc-1'), isNull);
+    },
+  );
 }
 
 /// Writes every line through as raw bytes (client stdin ↔ server input).
@@ -419,11 +457,7 @@ class _GatedBackend implements AcpAgentBackend, AcpPermissionRequesting {
         kind: 'edit',
       ),
     );
-    emit(
-      AgentMessageChunk(
-        content: AcpTextBlock('outcome: ${outcome.name}'),
-      ),
-    );
+    emit(AgentMessageChunk(content: AcpTextBlock('outcome: ${outcome.name}')));
     return AcpStopReason.endTurn;
   }
 

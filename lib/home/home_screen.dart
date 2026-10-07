@@ -88,8 +88,8 @@ class HomeScreen extends StatelessWidget {
       // Multiplayer chat: chat docs route to the SAME mesh-attached
       // replica store (convergence over the LAN mesh), and the open chat
       // surface re-reads the fold after every cycle.
-      hc.MeshAwareDocumentRepository.replicaStoreGetter =
-          () => StorageBackendsNotifier.instance.docReplicaStore;
+      hc.MeshAwareDocumentRepository.replicaStoreGetter = () =>
+          StorageBackendsNotifier.instance.docReplicaStore;
       StorageBackendsNotifier.onSyncCycle = () {
         AgentDocSurface.debugSurface?.refreshAfterMeshSync();
         ChatDocumentView.debugSurface?.refresh();

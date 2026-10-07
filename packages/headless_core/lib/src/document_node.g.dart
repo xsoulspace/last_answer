@@ -21,6 +21,7 @@ _Block _$BlockFromJson(Map<String, dynamic> json) => _Block(
   agentKey: json['agentKey'] as String?,
   workspace: json['workspace'] as String?,
   ownerPeerId: json['ownerPeerId'] as String?,
+  permissionMode: json['permissionMode'] as String?,
   systemPrompt: json['systemPrompt'] as String?,
   status:
       $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
@@ -42,6 +43,7 @@ Map<String, dynamic> _$BlockToJson(_Block instance) => <String, dynamic>{
   'agentKey': instance.agentKey,
   'workspace': instance.workspace,
   'ownerPeerId': instance.ownerPeerId,
+  'permissionMode': instance.permissionMode,
   'systemPrompt': instance.systemPrompt,
   'status': _$MessageStatusEnumMap[instance.status]!,
 };

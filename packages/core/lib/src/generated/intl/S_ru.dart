@@ -761,4 +761,37 @@ class SRu extends S {
   @override
   String get agentChatAuthRequired =>
       'Требуется вход — агент выполняет авторизацию сам. Следуйте подсказке ниже и отправьте снова.';
+
+  @override
+  String get worldBindingSheetTitle => 'Подключиться к миру';
+
+  @override
+  String get worldBindingEmbedded => 'Это приложение (встроенный мир)';
+
+  @override
+  String get worldBindingEmbeddedSubtitle =>
+      'Агентная среда внутри Last Answer';
+
+  @override
+  String get worldBindingNoWorlds =>
+      'Миры не найдены — свяжите устройство или добавьте endpoint.';
+
+  @override
+  String get worldBindingManual => 'Добавить endpoint…';
+
+  @override
+  String get worldBindingManualHint => 'http://host:port';
+
+  @override
+  String get worldBindingEndpointLabel => 'Endpoint';
+
+  @override
+  String get worldBindingInvalidEndpoint =>
+      'Введите корректный http(s) endpoint';
+
+  @override
+  String get worldBindingSeat => 'seat';
+
+  @override
+  String get worldBindingReadOnly => 'только чтение';
 }

@@ -5,6 +5,8 @@
 /// import; web answers honest absence, never a compile error.
 library;
 
+import 'package:core/core.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_host/src/world_manifest.dart'
     show WorldManifest;
@@ -27,3 +29,11 @@ Future<List<Map<String, Object?>>> pairedWorldsJson() async => const [];
 
 /// No live manifests on web.
 List<WorldManifest> liveWorlds() => const [];
+
+/// No filesystem discovery on web — the manual-endpoint route (web-safe
+/// by construction) is the connect surface there.
+Future<List<DiscoveredWorld>> discoverWorlds() async => const [];
+
+/// No device-local roster to re-resolve against on web.
+Future<DiscoveredWorld?> rediscover(final WorldBindingModel binding) async =>
+    null;

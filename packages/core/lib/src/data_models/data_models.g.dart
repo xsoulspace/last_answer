@@ -24,6 +24,22 @@ Map<String, dynamic> _$NotificationMessageModelToJson(
   'created': instance.created.toIso8601String(),
 };
 
+_WorldBindingModel _$WorldBindingModelFromJson(Map<String, dynamic> json) =>
+    _WorldBindingModel(
+      worldId: json['worldId'] as String,
+      endpoint: json['endpoint'] as String,
+      displayName: json['displayName'] as String? ?? '',
+      workspace: json['workspace'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$WorldBindingModelToJson(_WorldBindingModel instance) =>
+    <String, dynamic>{
+      'worldId': instance.worldId,
+      'endpoint': instance.endpoint,
+      'displayName': instance.displayName,
+      'workspace': instance.workspace,
+    };
+
 _AgentDocModel _$AgentDocModelFromJson(Map<String, dynamic> json) =>
     _AgentDocModel(
       workspaces:
@@ -38,6 +54,11 @@ _AgentDocModel _$AgentDocModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      worldBinding: json['worldBinding'] == null
+          ? null
+          : WorldBindingModel.fromJson(
+              json['worldBinding'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$AgentDocModelToJson(_AgentDocModel instance) =>
@@ -46,6 +67,7 @@ Map<String, dynamic> _$AgentDocModelToJson(_AgentDocModel instance) =>
       'backend': instance.backend,
       'externalAcpServer': instance.externalAcpServer,
       'checkCommand': instance.checkCommand,
+      'worldBinding': instance.worldBinding,
     };
 
 _DocBlockModel _$DocBlockModelFromJson(Map<String, dynamic> json) =>

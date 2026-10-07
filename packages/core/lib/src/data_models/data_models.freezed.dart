@@ -322,6 +322,272 @@ $LocalizedTextModelCopyWith<$Res> get title {
 
 
 /// @nodoc
+mixin _$WorldBindingModel {
+
+ String get worldId; String get endpoint; String get displayName; String get workspace;
+/// Create a copy of WorldBindingModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$WorldBindingModelCopyWith<WorldBindingModel> get copyWith => _$WorldBindingModelCopyWithImpl<WorldBindingModel>(this as WorldBindingModel, _$identity);
+
+  /// Serializes this WorldBindingModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WorldBindingModel&&(identical(other.worldId, worldId) || other.worldId == worldId)&&(identical(other.endpoint, endpoint) || other.endpoint == endpoint)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.workspace, workspace) || other.workspace == workspace));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,worldId,endpoint,displayName,workspace);
+
+@override
+String toString() {
+  return 'WorldBindingModel(worldId: $worldId, endpoint: $endpoint, displayName: $displayName, workspace: $workspace)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $WorldBindingModelCopyWith<$Res>  {
+  factory $WorldBindingModelCopyWith(WorldBindingModel value, $Res Function(WorldBindingModel) _then) = _$WorldBindingModelCopyWithImpl;
+@useResult
+$Res call({
+ String worldId, String endpoint, String displayName, String workspace
+});
+
+
+
+
+}
+/// @nodoc
+class _$WorldBindingModelCopyWithImpl<$Res>
+    implements $WorldBindingModelCopyWith<$Res> {
+  _$WorldBindingModelCopyWithImpl(this._self, this._then);
+
+  final WorldBindingModel _self;
+  final $Res Function(WorldBindingModel) _then;
+
+/// Create a copy of WorldBindingModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? worldId = null,Object? endpoint = null,Object? displayName = null,Object? workspace = null,}) {
+  return _then(WorldBindingModel(
+worldId: null == worldId ? _self.worldId : worldId // ignore: cast_nullable_to_non_nullable
+as String,endpoint: null == endpoint ? _self.endpoint : endpoint // ignore: cast_nullable_to_non_nullable
+as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,workspace: null == workspace ? _self.workspace : workspace // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [WorldBindingModel].
+extension WorldBindingModelPatterns on WorldBindingModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _WorldBindingModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _WorldBindingModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _WorldBindingModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _WorldBindingModel():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _WorldBindingModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _WorldBindingModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String worldId,  String endpoint,  String displayName,  String workspace)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _WorldBindingModel() when $default != null:
+return $default(_that.worldId,_that.endpoint,_that.displayName,_that.workspace);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String worldId,  String endpoint,  String displayName,  String workspace)  $default,) {final _that = this;
+switch (_that) {
+case _WorldBindingModel():
+return $default(_that.worldId,_that.endpoint,_that.displayName,_that.workspace);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String worldId,  String endpoint,  String displayName,  String workspace)?  $default,) {final _that = this;
+switch (_that) {
+case _WorldBindingModel() when $default != null:
+return $default(_that.worldId,_that.endpoint,_that.displayName,_that.workspace);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _WorldBindingModel implements WorldBindingModel {
+  const _WorldBindingModel({required this.worldId, required this.endpoint, this.displayName = '', this.workspace = ''});
+  factory _WorldBindingModel.fromJson(Map<String, dynamic> json) => _$WorldBindingModelFromJson(json);
+
+@override final  String worldId;
+@override final  String endpoint;
+@override@JsonKey() final  String displayName;
+@override@JsonKey() final  String workspace;
+
+/// Create a copy of WorldBindingModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$WorldBindingModelCopyWith<_WorldBindingModel> get copyWith => __$WorldBindingModelCopyWithImpl<_WorldBindingModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$WorldBindingModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WorldBindingModel&&(identical(other.worldId, worldId) || other.worldId == worldId)&&(identical(other.endpoint, endpoint) || other.endpoint == endpoint)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.workspace, workspace) || other.workspace == workspace));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,worldId,endpoint,displayName,workspace);
+
+@override
+String toString() {
+  return 'WorldBindingModel(worldId: $worldId, endpoint: $endpoint, displayName: $displayName, workspace: $workspace)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$WorldBindingModelCopyWith<$Res> implements $WorldBindingModelCopyWith<$Res> {
+  factory _$WorldBindingModelCopyWith(_WorldBindingModel value, $Res Function(_WorldBindingModel) _then) = __$WorldBindingModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String worldId, String endpoint, String displayName, String workspace
+});
+
+
+
+
+}
+/// @nodoc
+class __$WorldBindingModelCopyWithImpl<$Res>
+    implements _$WorldBindingModelCopyWith<$Res> {
+  __$WorldBindingModelCopyWithImpl(this._self, this._then);
+
+  final _WorldBindingModel _self;
+  final $Res Function(_WorldBindingModel) _then;
+
+/// Create a copy of WorldBindingModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? worldId = null,Object? endpoint = null,Object? displayName = null,Object? workspace = null,}) {
+  return _then(_WorldBindingModel(
+worldId: null == worldId ? _self.worldId : worldId // ignore: cast_nullable_to_non_nullable
+as String,endpoint: null == endpoint ? _self.endpoint : endpoint // ignore: cast_nullable_to_non_nullable
+as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,workspace: null == workspace ? _self.workspace : workspace // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$AgentDocModel {
 
  List<String> get workspaces; String get backend;/// For the `external_acp` backend: registry key of the agent server
@@ -329,7 +595,9 @@ mixin _$AgentDocModel {
  String get externalAcpServer;/// Explicit verification command overriding the workspace convention
 /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
 /// workspace convention decides.
- List<String> get checkCommand;
+ List<String> get checkCommand;/// The external harness world this doc observes (null = the embedded
+/// in-process world — the default path).
+ WorldBindingModel? get worldBinding;
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -342,16 +610,16 @@ $AgentDocModelCopyWith<AgentDocModel> get copyWith => _$AgentDocModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgentDocModel&&const DeepCollectionEquality().equals(other.workspaces, workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other.checkCommand, checkCommand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgentDocModel&&const DeepCollectionEquality().equals(other.workspaces, workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other.checkCommand, checkCommand)&&(identical(other.worldBinding, worldBinding) || other.worldBinding == worldBinding));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(checkCommand));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(checkCommand),worldBinding);
 
 @override
 String toString() {
-  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand)';
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand, worldBinding: $worldBinding)';
 }
 
 
@@ -362,11 +630,11 @@ abstract mixin class $AgentDocModelCopyWith<$Res>  {
   factory $AgentDocModelCopyWith(AgentDocModel value, $Res Function(AgentDocModel) _then) = _$AgentDocModelCopyWithImpl;
 @useResult
 $Res call({
- List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand
+ List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand, WorldBindingModel? worldBinding
 });
 
 
-
+$WorldBindingModelCopyWith<$Res>? get worldBinding;
 
 }
 /// @nodoc
@@ -379,16 +647,29 @@ class _$AgentDocModelCopyWithImpl<$Res>
 
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,Object? worldBinding = freezed,}) {
   return _then(AgentDocModel(
 workspaces: null == workspaces ? _self.workspaces : workspaces // ignore: cast_nullable_to_non_nullable
 as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
 as String,externalAcpServer: null == externalAcpServer ? _self.externalAcpServer : externalAcpServer // ignore: cast_nullable_to_non_nullable
 as String,checkCommand: null == checkCommand ? _self.checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,worldBinding: freezed == worldBinding ? _self.worldBinding : worldBinding // ignore: cast_nullable_to_non_nullable
+as WorldBindingModel?,
   ));
 }
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WorldBindingModelCopyWith<$Res>? get worldBinding {
+    if (_self.worldBinding == null) {
+    return null;
+  }
 
+  return $WorldBindingModelCopyWith<$Res>(_self.worldBinding!, (value) {
+    return _then(_self.copyWith(worldBinding: value));
+  });
+}
 }
 
 
@@ -467,10 +748,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand,  WorldBindingModel? worldBinding)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AgentDocModel() when $default != null:
-return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);case _:
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand,_that.worldBinding);case _:
   return orElse();
 
 }
@@ -488,10 +769,10 @@ return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand,  WorldBindingModel? worldBinding)  $default,) {final _that = this;
 switch (_that) {
 case _AgentDocModel():
-return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);}
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand,_that.worldBinding);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -505,10 +786,10 @@ return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> workspaces,  String backend,  String externalAcpServer,  List<String> checkCommand,  WorldBindingModel? worldBinding)?  $default,) {final _that = this;
 switch (_that) {
 case _AgentDocModel() when $default != null:
-return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand);case _:
+return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.checkCommand,_that.worldBinding);case _:
   return null;
 
 }
@@ -520,7 +801,7 @@ return $default(_that.workspaces,_that.backend,_that.externalAcpServer,_that.che
 @JsonSerializable()
 
 class _AgentDocModel implements AgentDocModel {
-  const _AgentDocModel({ List<String> workspaces = const [], this.backend = 'apple_foundation_afm', this.externalAcpServer = '',  List<String> checkCommand = const []}): _workspaces = workspaces,_checkCommand = checkCommand;
+  const _AgentDocModel({ List<String> workspaces = const [], this.backend = 'apple_foundation_afm', this.externalAcpServer = '',  List<String> checkCommand = const [], this.worldBinding = null}): _workspaces = workspaces,_checkCommand = checkCommand;
   factory _AgentDocModel.fromJson(Map<String, dynamic> json) => _$AgentDocModelFromJson(json);
 
  final  List<String> _workspaces;
@@ -547,6 +828,9 @@ class _AgentDocModel implements AgentDocModel {
   return EqualUnmodifiableListView(_checkCommand);
 }
 
+/// The external harness world this doc observes (null = the embedded
+/// in-process world — the default path).
+@override@JsonKey() final  WorldBindingModel? worldBinding;
 
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
@@ -561,16 +845,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgentDocModel&&const DeepCollectionEquality().equals(other._workspaces, _workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other._checkCommand, _checkCommand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgentDocModel&&const DeepCollectionEquality().equals(other._workspaces, _workspaces)&&(identical(other.backend, backend) || other.backend == backend)&&(identical(other.externalAcpServer, externalAcpServer) || other.externalAcpServer == externalAcpServer)&&const DeepCollectionEquality().equals(other._checkCommand, _checkCommand)&&(identical(other.worldBinding, worldBinding) || other.worldBinding == worldBinding));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(_checkCommand));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_workspaces),backend,externalAcpServer,const DeepCollectionEquality().hash(_checkCommand),worldBinding);
 
 @override
 String toString() {
-  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand)';
+  return 'AgentDocModel(workspaces: $workspaces, backend: $backend, externalAcpServer: $externalAcpServer, checkCommand: $checkCommand, worldBinding: $worldBinding)';
 }
 
 
@@ -581,11 +865,11 @@ abstract mixin class _$AgentDocModelCopyWith<$Res> implements $AgentDocModelCopy
   factory _$AgentDocModelCopyWith(_AgentDocModel value, $Res Function(_AgentDocModel) _then) = __$AgentDocModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand
+ List<String> workspaces, String backend, String externalAcpServer, List<String> checkCommand, WorldBindingModel? worldBinding
 });
 
 
-
+@override $WorldBindingModelCopyWith<$Res>? get worldBinding;
 
 }
 /// @nodoc
@@ -598,17 +882,30 @@ class __$AgentDocModelCopyWithImpl<$Res>
 
 /// Create a copy of AgentDocModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? workspaces = null,Object? backend = null,Object? externalAcpServer = null,Object? checkCommand = null,Object? worldBinding = freezed,}) {
   return _then(_AgentDocModel(
 workspaces: null == workspaces ? _self._workspaces : workspaces // ignore: cast_nullable_to_non_nullable
 as List<String>,backend: null == backend ? _self.backend : backend // ignore: cast_nullable_to_non_nullable
 as String,externalAcpServer: null == externalAcpServer ? _self.externalAcpServer : externalAcpServer // ignore: cast_nullable_to_non_nullable
 as String,checkCommand: null == checkCommand ? _self._checkCommand : checkCommand // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,worldBinding: freezed == worldBinding ? _self.worldBinding : worldBinding // ignore: cast_nullable_to_non_nullable
+as WorldBindingModel?,
   ));
 }
 
+/// Create a copy of AgentDocModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WorldBindingModelCopyWith<$Res>? get worldBinding {
+    if (_self.worldBinding == null) {
+    return null;
+  }
 
+  return $WorldBindingModelCopyWith<$Res>(_self.worldBinding!, (value) {
+    return _then(_self.copyWith(worldBinding: value));
+  });
+}
 }
 
 

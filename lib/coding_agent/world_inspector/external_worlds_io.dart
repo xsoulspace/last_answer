@@ -15,7 +15,9 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/http_source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_host/src/world_manifest.dart'
@@ -62,6 +64,77 @@ TraceSource? resolveExternal({final String? worldId}) {
 }
 
 List<WorldManifest> liveWorlds() => WorldManifestIO.scan();
+
+/// What the user can connect to RIGHT NOW (the picker's roster): this
+/// device's daemon worlds (manifest scan, http transports) plus the
+/// paired registry (ADR 0072). NO hardcoded worlds — an empty roster is
+/// the honest "nothing discovered yet" (the manual-endpoint route stays).
+Future<List<DiscoveredWorld>> discoverWorlds() async {
+  final worlds = <DiscoveredWorld>[];
+  for (final m in WorldManifestIO.scan()) {
+    final serve = m.serve;
+    final serveEndpoint = serve?['endpoint'];
+    String? base;
+    for (final t in m.transports) {
+      if (t.kind == 'http') base = t.options['base'] as String?;
+    }
+    final endpoint = serveEndpoint is String ? serveEndpoint : base;
+    if (endpoint == null || endpoint.isEmpty) continue;
+    final seatWs = serve?['seatWs'];
+    worlds.add(
+      DiscoveredWorld(
+        worldId: m.worldId,
+        endpoint: endpoint,
+        source: 'manifest',
+        displayName: m.displayName,
+        workspace: m.workspace ?? '',
+        token: _serveTokenFor(m),
+        seatWs: seatWs is String ? seatWs : '',
+      ),
+    );
+  }
+  for (final w in await PairedWorlds.load()) {
+    worlds.add(
+      DiscoveredWorld(
+        worldId: w.worldId,
+        endpoint: w.endpoint,
+        source: 'paired',
+        displayName: w.workspace ?? w.worldId,
+        workspace: w.workspace ?? '',
+        token: w.token,
+        seatWs: w.seatWs,
+      ),
+    );
+  }
+  return worlds;
+}
+
+/// Re-resolves a PERSISTED binding against the live roster (the doc
+/// payload never carries the token — device-local trust re-attaches at
+/// connect time). Null when the world is gone (honest: the pane says
+/// unreachable instead of guessing).
+Future<DiscoveredWorld?> rediscover(final WorldBindingModel binding) async {
+  for (final w in await discoverWorlds()) {
+    if (w.worldId == binding.worldId &&
+        (binding.endpoint.isEmpty || w.endpoint == binding.endpoint)) {
+      return w;
+    }
+  }
+  return null;
+}
+
+/// The facade's bearer token for a manifest world (mode-600 file,
+/// same-user readable by law). Empty when the facade is loopback/no-auth.
+String _serveTokenFor(final WorldManifest m) {
+  final serve = m.serve;
+  final tokenFile = serve?['tokenFile'];
+  if (tokenFile is! String || tokenFile.isEmpty) return '';
+  try {
+    return File(tokenFile).readAsStringSync().trim();
+  } on Object catch (_) {
+    return ''; // unreadable token = unreachable facade; honest absence
+  }
+}
 
 /// The HOST side of ADR 0072: the harness-world announcement embedded
 /// in this device's pairing code when a live world serves beyond

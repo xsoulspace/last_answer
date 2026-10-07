@@ -254,5 +254,15 @@
   "agentChatInstallTitle": "Installa un agente ACP",
   "agentChatRecheck": "Ricontrolla",
   "agentChatExecutableNotFound": "Eseguibile non trovato",
-  "agentChatAuthRequired": "Autenticazione richiesta — l'agente gestisce il proprio accesso. Segui l'indicazione qui sotto e invia di nuovo."
+  "agentChatAuthRequired": "Autenticazione richiesta — l'agente gestisce il proprio accesso. Segui l'indicazione qui sotto e invia di nuovo.",
+  "worldBindingSheetTitle": "Connetti a un mondo",
+  "worldBindingEmbedded": "Questa app (mondo integrato)",
+  "worldBindingEmbeddedSubtitle": "L'agente harness in esecuzione dentro Last Answer",
+  "worldBindingNoWorlds": "Nessun mondo trovato — associa un dispositivo o aggiungi un endpoint.",
+  "worldBindingManual": "Aggiungi endpoint…",
+  "worldBindingManualHint": "http://host:port",
+  "worldBindingEndpointLabel": "Endpoint",
+  "worldBindingInvalidEndpoint": "Inserisci un endpoint http(s) valido",
+  "worldBindingSeat": "seat",
+  "worldBindingReadOnly": "sola lettura"
 }

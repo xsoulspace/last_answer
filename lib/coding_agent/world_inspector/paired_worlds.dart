@@ -23,6 +23,7 @@ final class PairedWorld {
     required this.token,
     required this.pairedAt,
     this.workspace,
+    this.seatWs = '',
   });
 
   factory PairedWorld.fromJson(final Map<String, Object?> json) =>
@@ -31,6 +32,7 @@ final class PairedWorld {
         endpoint: json['endpoint'] as String? ?? '',
         token: json['token'] as String? ?? '',
         workspace: json['workspace'] as String?,
+        seatWs: json['seatWs'] as String? ?? '',
         pairedAt:
             DateTime.tryParse(json['pairedAt'] as String? ?? '') ??
             DateTime.fromMillisecondsSinceEpoch(0),
@@ -56,6 +58,11 @@ final class PairedWorld {
       workspace: json['workspace'] is String
           ? json['workspace'] as String
           : null,
+      // ADR 0072 §5 — the seat channel rides the announcement so the
+      // phone can EARN its seat without a second discovery hop. A
+      // loopback seatWs is unusable off-device; the seat client's
+      // connection will refuse it honestly.
+      seatWs: json['seatWs'] is String ? json['seatWs'] as String : '',
       pairedAt: DateTime.now().toUtc(),
     );
   }
@@ -67,6 +74,10 @@ final class PairedWorld {
   /// on the advertiser — an entry that cannot be reached off-device).
   final String token;
   final String? workspace;
+
+  /// The advertised seat channel (ADR 0072 §5), empty when the
+  /// advertiser runs without `--seat-ws` — the read rung only.
+  final String seatWs;
   final DateTime pairedAt;
 
   Map<String, Object?> toJson() => {
@@ -74,6 +85,7 @@ final class PairedWorld {
     'endpoint': endpoint,
     'token': token,
     'workspace': ?workspace,
+    'seatWs': ?seatWs.isEmpty ? null : seatWs,
     'pairedAt': pairedAt.toIso8601String(),
   }
     ..removeWhere((final _, final v) => v == null || v == '');

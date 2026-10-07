@@ -252,6 +252,10 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_apple_foundation
   xsoulspace_inference_openrouter:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openrouter
+  # The Laya decision-model composition (afm's D0/D1 lane, 2026-10-07):
+  # local dev train, not yet published — same hosted-`any` rule.
+  xsoulspace_inference_laya:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
   agentic_executables_wire:
     path: ../../agentic_executables/agentic_executables_wire
   ecsly_serialization:

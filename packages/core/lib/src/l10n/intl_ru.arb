@@ -257,5 +257,15 @@
   "agentChatInstallTitle": "Установить ACP-агента",
   "agentChatRecheck": "Проверить снова",
   "agentChatExecutableNotFound": "Исполняемый файл не найден",
-  "agentChatAuthRequired": "Требуется вход — агент выполняет авторизацию сам. Следуйте подсказке ниже и отправьте снова."
+  "agentChatAuthRequired": "Требуется вход — агент выполняет авторизацию сам. Следуйте подсказке ниже и отправьте снова.",
+  "worldBindingSheetTitle": "Подключиться к миру",
+  "worldBindingEmbedded": "Это приложение (встроенный мир)",
+  "worldBindingEmbeddedSubtitle": "Агентная среда внутри Last Answer",
+  "worldBindingNoWorlds": "Миры не найдены — свяжите устройство или добавьте endpoint.",
+  "worldBindingManual": "Добавить endpoint…",
+  "worldBindingManualHint": "http://host:port",
+  "worldBindingEndpointLabel": "Endpoint",
+  "worldBindingInvalidEndpoint": "Введите корректный http(s) endpoint",
+  "worldBindingSeat": "seat",
+  "worldBindingReadOnly": "только чтение"
 }

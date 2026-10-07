@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as external_worlds;
+import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_binding_sheet.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_seats.dart';
 import 'package:xsoulspace_agentic_harness_inspector/session_protocol.dart';
 // Deep imports are the package's DOCUMENTED web-safe pattern: the barrel
 // also carries dart:io transports (mcp_source/app_server) that must never
@@ -60,6 +64,9 @@ class WorldInspectorPane extends StatefulWidget {
     this.pollInterval = const Duration(milliseconds: 500),
     this.expandedHeight = 360.0,
     this.showScene = true,
+    this.binding,
+    this.bindingSourceBuilder,
+    this.onBindingChanged,
   });
 
   /// The registry to observe; null → the shared instance (the one index
@@ -73,6 +80,24 @@ class WorldInspectorPane extends StatefulWidget {
   /// and layout tests run without scene static resources (the InspectorApp
   /// law). Production leaves it true: ONE version, the 3D one.
   final bool showScene;
+
+  /// The doc's bound EXTERNAL world (the doc payload's `worldBinding`):
+  /// when set, the pane samples THAT world's http facade instead of the
+  /// in-process registry — the doc chooses what it connects to (user
+  /// decision, never a hardcoded world). Null = the embedded default.
+  final WorldBindingModel? binding;
+
+  /// Test seam: builds the read source for a binding. Null → the real
+  /// http facade route ([sourceForBinding]) — the same seam shape the
+  /// host config's handlerFactory uses (scripted fixture, never a
+  /// second protocol).
+  final TraceSource Function(WorldBindingModel binding)?
+  bindingSourceBuilder;
+
+  /// The binding changed through the pane's connect affordance — the
+  /// caller (the doc surface's composition point) persists it into the
+  /// doc payload.
+  final ValueChanged<WorldBindingModel?>? onBindingChanged;
 
   /// The latest projection, refreshed every build — the headless read for
   /// the `world_inspector_state` debug verb (equal readers, ADR 0009 D3).
@@ -116,6 +141,16 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
   RegistrySource? _source;
   Timer? _timer;
 
+  /// The bound world re-resolved against the live roster (token +
+  /// seatWs are device-local trust — the doc payload never carries
+  /// them). Null = the world answered nothing YET (first sample) or is
+  /// gone; the rule says which.
+  DiscoveredWorld? _discovered;
+
+  /// The bound world's last sample: null while nothing ever landed
+  /// (unreachable or not-yet-armed — the honest state the rule names).
+  InspectorTrace? _bindingTrace;
+
   /// The canvas-wide selection (P0 alignment) — rail taps write it; the
   /// scene band and the view slate read the same value.
   final ValueNotifier<String?> _selection = ValueNotifier<String?>(null);
@@ -138,16 +173,51 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     WorldInspectorPane.debugSurface = this;
     _source = RegistrySource(registry: _registry);
     WorldInspectorPane.externalOverride.addListener(_onExternalChanged);
+    _rebinding(widget.binding, null);
     _poll();
     _timer = Timer.periodic(widget.pollInterval, (_) => _poll());
+  }
+
+  /// Re-resolves the device-local trust for a (new) binding.
+  void _rebinding(final WorldBindingModel? next, final Object? _) {
+    if (next == null) {
+      _discovered = null;
+      _bindingTrace = null;
+      return;
+    }
+    unawaited(
+      external_worlds.rediscover(next).then((final world) {
+        if (mounted) setState(() => _discovered = world);
+      }),
+    );
+  }
+
+  @override
+  void didUpdateWidget(final WorldInspectorPane oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.binding != widget.binding) {
+      _rebinding(widget.binding, null);
+    }
   }
 
   void _onExternalChanged() {
     if (mounted) setState(() {});
   }
 
-  TraceSource get _activeSource =>
-      WorldInspectorPane.externalOverride.value ?? _source!;
+  /// Source precedence: the doc's binding first (the doc chose its
+  /// world), then the debug-verb override, then the embedded registry.
+  TraceSource get _activeSource {
+    final binding = widget.binding;
+    if (binding != null) {
+      final builder = widget.bindingSourceBuilder;
+      if (builder != null) return builder(binding);
+      return sourceForBinding(
+        binding,
+        token: _discovered?.token ?? '',
+      );
+    }
+    return WorldInspectorPane.externalOverride.value ?? _source!;
+  }
 
   @override
   void dispose() {
@@ -158,6 +228,18 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     _timer?.cancel();
     unawaited(_source?.close());
     super.dispose();
+  }
+
+  /// Opens the world picker (the ONE connect surface): pick a world,
+  /// add an endpoint, or return to the embedded world.
+  Future<void> _connect() async {
+    final choice = await showWorldBindingSheet(
+      context,
+      current: widget.binding,
+    );
+    if (!choice.picked) return;
+    widget.onBindingChanged?.call(choice.binding);
+    if (mounted) setState(() {});
   }
 
   /// Intent surface (`app_inspector`): expand/collapse the pane. Pass
@@ -183,19 +265,43 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
       _activeSource
           .sample()
           .then((trace) {
-            if (mounted && trace != null) setState(() => _trace = trace);
+            if (!mounted || trace == null) return;
+            if (widget.binding != null) {
+              setState(() => _bindingTrace = trace);
+            } else {
+              setState(() => _trace = trace);
+            }
           })
           .catchError((Object _) => null),
     );
   }
+
+  /// The trace the pane renders: the bound world's sample when bound,
+  /// the in-process registry's otherwise.
+  InspectorTrace? get _visibleTrace =>
+      widget.binding != null ? _bindingTrace : _trace;
+
+  /// True while a bound world has never produced a sample — unreachable
+  /// facade, wrong endpoint, or the world is gone. The rule names it.
+  bool get _bindingUnreachable =>
+      widget.binding != null && _bindingTrace == null;
 
   void _toggle() => setState(() => _expanded = !_expanded);
 
   /// The palette's roster — the product's verbs as data: answer/reject
   /// for every pending permission, delegate for every running session.
   /// The inspector RENDERS these; execution routes through the registry
-  /// HERE (verbs stay product-side, the boundary law).
+  /// HERE (verbs stay product-side, the boundary law). A bound world
+  /// with an advertised seat channel gains ONE write verb: delegate
+  /// through the seat (ADR 0072 §5) — the read-only pane's only
+  /// escalation, and only because the PAIRING earned it.
   List<InspectorCommand> _commands(List<WorldInspectorSession> sessions) => [
+    if (widget.binding != null && (_discovered?.hasSeat ?? false))
+      InspectorCommand(
+        id: 'delegate:seat',
+        label: 'delegate — ${widget.binding!.worldId} (via seat)',
+        hint: 'the typed line IS the task sentence',
+      ),
     for (final s in sessions) ...[
       if (s.pendingPermission != null) ...[
         InspectorCommand(
@@ -219,12 +325,73 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     ],
   ];
 
+  /// The earned seat for the bound world (cached — one grant per pane).
+  WorldSeatLease? _seatLease;
+
+  /// The WRITE rung for a bound world: delegate the task sentence
+  /// through the paired world's seat channel. The outcome surfaces
+  /// honestly (accepted / refused / failed — named, never silent).
+  Future<void> _delegateViaSeat(final String sentence) async {
+    final bound = widget.binding;
+    final world = _discovered;
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (bound == null || world == null || !world.hasSeat) return;
+    try {
+      _seatLease ??= await WorldSeatChannel.request(
+        seatWs: world.seatWs,
+        token: world.token,
+      );
+      final lease = _seatLease;
+      if (lease == null) {
+        messenger?.showSnackBar(
+          const SnackBar(content: Text('seat: no channel — read-only world')),
+        );
+        return;
+      }
+      final result = await WorldSeatChannel.call(
+        lease,
+        seatWs: world.seatWs,
+        token: world.token,
+        name: 'agent_task_delegate',
+        args: {'task': sentence},
+      );
+      final ok = result['ok'] == true;
+      messenger?.showSnackBar(
+        SnackBar(
+          content: Text(
+            'seat · ${bound.worldId}: '
+            '${ok
+            ? 'task accepted'
+            : 'refused — ${result['bounce'] ?? result}'}',
+          ),
+        ),
+      );
+    } on Object catch (e) {
+      // A refused/failed seat must not strand silently — and a stale
+      // credential is dropped so the next attempt earns a fresh one.
+      _seatLease = null;
+      messenger?.showSnackBar(
+        SnackBar(
+          content: Text(
+            'seat failed: ${e.toString().split('\n').first}',
+          ),
+        ),
+      );
+    }
+  }
+
   void _runCommand(InspectorCommand command, String query) {
     if (command.id == ':esc') {
       setState(() => _paletteOpen = false);
       return;
     }
     final parts = command.id.split(':');
+    if (parts.length == 2 && parts[0] == 'delegate' && parts[1] == 'seat') {
+      final sentence = query.trim();
+      setState(() => _paletteOpen = false);
+      if (sentence.isNotEmpty) unawaited(_delegateViaSeat(sentence));
+      return;
+    }
     final handle = parts.length == 3
         ? _registry.sessions[parts.sublist(2).join(':')]
         : _registry.sessions[parts.elementAt(1)];
@@ -240,14 +407,24 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final sessions =
-        _registry.sessions.values
-            .map(
-              (final handle) =>
-                  WorldInspectorSession.of(handle, keyOf: _keyOf(handle)),
-            )
-            .toList()
-          ..sort((final a, final b) => a.id.compareTo(b.id));
+    final bound = widget.binding;
+    // A bound EXTERNAL world is observed, never operated: the palette
+    // lists no verbs for it (the write rung rides the seat explicitly —
+    // G), and the registry's sessions are ANOTHER world's data.
+    final List<WorldInspectorSession> sessions;
+    if (bound == null) {
+      sessions =
+          _registry.sessions.values
+              .map(
+                (final handle) =>
+                    WorldInspectorSession.of(handle, keyOf: _keyOf(handle)),
+              )
+              .toList()
+            ..sort((final a, final b) => a.id.compareTo(b.id));
+    } else {
+      sessions = const <WorldInspectorSession>[];
+    }
+    final trace = _visibleTrace;
     final running = sessions.where((final s) => s.running).length;
     final pending = sessions
         .where((final s) => s.pendingPermission != null)
@@ -290,10 +467,15 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     WorldInspectorPane.lastProjection = WorldInspectorProjection(
       sessions: sessions,
       needs: needs,
-      sampledRows: _trace?.rows.length ?? 0,
-      sampledSession: '${_trace?.metrics['sessionId'] ?? ''}',
+      sampledRows: trace?.rows.length ?? 0,
+      sampledSession: '${trace?.metrics['sessionId'] ?? ''}',
       expanded: _expanded,
-      sampleError: RegistrySource.lastError,
+      sampleError: _bindingUnreachable
+          ? StateError(
+              'bound world ${bound?.worldId} unreachable — is the facade '
+              'armed at ${bound?.endpoint}?',
+            )
+          : RegistrySource.lastError,
     );
     return Column(
       key: const Key('world_inspector.root'),
@@ -318,7 +500,12 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
             child: Row(
               children: [
                 Text(
-                  WorldInspectorPane.externalOverride.value == null
+                  bound != null
+                      ? 'WORLD · ${(bound.displayName.isNotEmpty
+                            ? bound.displayName
+                            : bound.worldId)
+                        .toUpperCase()}'
+                      : WorldInspectorPane.externalOverride.value == null
                       ? 'WORLD'
                       : 'WORLD · EXTERNAL (read-only)',
                   key: const Key('world_inspector.rule'),
@@ -329,19 +516,56 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                     fontWeight: _expanded ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
+                // The connect affordance (the ONE connect surface): pick
+                // a world, add an endpoint, or return to the embedded
+                // one. Present in every state — changing the binding is
+                // always one tap away.
+                GestureDetector(
+                  key: const Key('world_inspector.connect'),
+                  behavior: HitTestBehavior.opaque,
+                  onTap: _connect,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 6, right: 4),
+                    child: Icon(
+                      Icons.link_outlined,
+                      size: 13,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Builder(
                     builder: (final context) {
-                      final attention = needs.length == 1
-                          ? '1 needs you'
-                          : '${needs.length} need you';
                       final quiet = _mono(
                         theme,
                         color: needs.isNotEmpty || pending > 0
                             ? theme.colorScheme.onSurface
                             : theme.colorScheme.onSurfaceVariant,
                       );
+                      if (bound != null) {
+                        // The bound world's honest line: what sampled,
+                        // or WHY nothing did (names the arm command).
+                        if (_bindingUnreachable) {
+                          return Text(
+                            'unreachable — arm `harnessd --serve` at '
+                            '${bound.endpoint}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: quiet,
+                          );
+                        }
+                        return Text(
+                          '${trace?.rows.length ?? 0} row(s) · '
+                          '${trace?.metrics['sessionId'] ?? bound.worldId}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: quiet,
+                        );
+                      }
+                      final attention = needs.length == 1
+                          ? '1 needs you'
+                          : '${needs.length} need you';
                       if (sessions.isEmpty) {
                         return Text(
                           'no live sessions — delegate a task from the doc',
@@ -444,7 +668,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                   textDirection: TextDirection.ltr,
                   children: [
                     Positioned.fill(
-                      child: _trace == null
+                      child: _visibleTrace == null
                           ? Padding(
                               padding: const EdgeInsets.all(12),
                               child: Text(
@@ -466,13 +690,18 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                                 final night =
                                     Theme.of(context).brightness ==
                                     Brightness.dark;
-                                final worldKey =
-                                    WorldInspectorPane.externalOverride.value ==
+                                // The bench remembers per world: a bound
+                                // doc keys by its world, the embedded
+                                // registry by 'doc'.
+                                final worldKey = bound?.worldId ??
+                                    (WorldInspectorPane
+                                            .externalOverride
+                                            .value ==
                                         null
                                     ? 'doc'
-                                    : 'external';
+                                    : 'external');
                                 return InspectorApp(
-                                  trace: _trace,
+                                  trace: _visibleTrace,
                                   theme: night
                                       ? InspectorTheme.night
                                       : InspectorTheme.day,
@@ -487,7 +716,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                                   // projection, altitude) across remounts.
                                   worldKey: worldKey,
                                   worldBand: AttachSceneBand(
-                                    trace: _trace,
+                                    trace: _visibleTrace,
                                     // Restore the remembered altitude as the
                                     // camera seed — the bench reopens where
                                     // it was left.

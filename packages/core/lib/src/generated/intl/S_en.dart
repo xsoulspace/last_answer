@@ -753,4 +753,36 @@ class SEn extends S {
   @override
   String get agentChatAuthRequired =>
       'Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.';
+
+  @override
+  String get worldBindingSheetTitle => 'Connect to a world';
+
+  @override
+  String get worldBindingEmbedded => 'This app (embedded world)';
+
+  @override
+  String get worldBindingEmbeddedSubtitle =>
+      'The agent harness running inside Last Answer';
+
+  @override
+  String get worldBindingNoWorlds =>
+      'No worlds discovered — pair a device or add an endpoint.';
+
+  @override
+  String get worldBindingManual => 'Add endpoint…';
+
+  @override
+  String get worldBindingManualHint => 'http://host:port';
+
+  @override
+  String get worldBindingEndpointLabel => 'Endpoint';
+
+  @override
+  String get worldBindingInvalidEndpoint => 'Enter a valid http(s) endpoint';
+
+  @override
+  String get worldBindingSeat => 'seat';
+
+  @override
+  String get worldBindingReadOnly => 'read-only';
 }

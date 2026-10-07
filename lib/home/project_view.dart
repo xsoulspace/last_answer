@@ -63,8 +63,21 @@ class ProjectView extends StatelessWidget {
               // The world inspector (inspector DESIGN.md rev. 3): the
               // harness's 3D inspector embedded over the ONE session
               // registry — observation here; verbs stay in the doc
-              // surface above.
-              WorldInspectorPane(key: ValueKey('world-inspector-$id')),
+              // surface above. The doc's worldBinding (user-chosen,
+              // never hardcoded) points the pane at an external world;
+              // null = the embedded default.
+              WorldInspectorPane(
+                key: ValueKey('world-inspector-$id'),
+                binding: doc.agent?.worldBinding,
+                onBindingChanged: (final binding) {
+                  final agent = doc.agent ?? const AgentDocModel();
+                  context.read<OpenedProjectNotifier>().updateProject(
+                    doc.copyWith(
+                      agent: agent.copyWith(worldBinding: binding),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
           _ => DocView(doc: doc, key: ValueKey(id)),

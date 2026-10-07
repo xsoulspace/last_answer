@@ -25,11 +25,32 @@ abstract final class DocFormatIds {
   static const agent = 'agent';
 }
 
+/// An EXTERNAL harness world a doc can bind to — discovered on this
+/// device (worlds manifests, ADR 0072 paired registry) or added by the
+/// user as a plain endpoint. There is NO hardcoded world: the OSS app
+/// connects to whatever the user chooses; the null binding is the
+/// default path (the embedded in-process world). The facade's bearer
+/// token is device-local trust and NEVER rides the mesh-synced payload
+/// — it resolves through the paired registry at connect time.
+@freezed
+sealed class WorldBindingModel with _$WorldBindingModel {
+  const factory WorldBindingModel({
+    required String worldId,
+    required String endpoint,
+    @Default('') String displayName,
+    @Default('') String workspace,
+  }) = _WorldBindingModel;
+
+  factory WorldBindingModel.fromJson(Map<String, dynamic> json) =>
+      _$WorldBindingModelFromJson(json);
+}
+
 /// Agent-doc payload (ADR 0003 — Agents live in docs, Phase 1).
 ///
 /// Doc data (mesh-synced, shareable): the workspace set the doc binds to,
-/// the default backend for its runtime bindings, and an optional workspace
-/// oracle override (the product equivalent of the CLI's `--check`). World
+/// the default backend for its runtime bindings, an optional workspace
+/// oracle override (the product equivalent of the CLI's `--check`), and
+/// the optional EXTERNAL world the doc observes. World
 /// snapshots and the meaning tree are NEVER here — they stay device-local
 /// under the workspace (`<workspace>/.dart_tool/harnessd_store/`).
 @freezed
@@ -46,6 +67,10 @@ sealed class AgentDocModel with _$AgentDocModel {
     /// (D8): the same escape hatch the CLI spells `--check`. Empty = the
     /// workspace convention decides.
     @Default([]) List<String> checkCommand,
+
+    /// The external harness world this doc observes (null = the embedded
+    /// in-process world — the default path).
+    @Default(null) WorldBindingModel? worldBinding,
   }) = _AgentDocModel;
 
   factory AgentDocModel.fromJson(Map<String, dynamic> json) =>
@@ -93,14 +118,18 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
   );
 
   /// ADR 0003 — Agents live in docs: a new agent doc binds to no workspace
-  /// yet; the first session pins it (Phase 1).
-  factory ProjectModel.emptyAgent() => ProjectModel.doc(
-    id: ProjectModelId.generate(),
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    formatId: DocFormatIds.agent,
-    agent: const AgentDocModel(),
-  );
+  /// yet; the first session pins it (Phase 1). [worldBinding] opts the doc
+  /// into observing an EXTERNAL harness world instead of the embedded one
+  /// (user-chosen — discovery or a plain endpoint; never a hardcoded
+  /// world).
+  factory ProjectModel.emptyAgent({final WorldBindingModel? worldBinding}) =>
+      ProjectModel.doc(
+        id: ProjectModelId.generate(),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        formatId: DocFormatIds.agent,
+        agent: AgentDocModel(worldBinding: worldBinding),
+      );
   @Implements<Archivable>()
   @Implements<Sharable>()
   const factory ProjectModel.idea({

@@ -278,5 +278,15 @@
       }
     }
   },
-  "agentChatAuthRequired": "Authentication required — the agent owns its own sign-in. Follow the hint below, then send again."
+  "agentChatAuthRequired": "Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.",
+  "worldBindingSheetTitle": "Connect to a world",
+  "worldBindingEmbedded": "This app (embedded world)",
+  "worldBindingEmbeddedSubtitle": "The agent harness running inside Last Answer",
+  "worldBindingNoWorlds": "No worlds discovered — pair a device or add an endpoint.",
+  "worldBindingManual": "Add endpoint…",
+  "worldBindingManualHint": "http://host:port",
+  "worldBindingEndpointLabel": "Endpoint",
+  "worldBindingInvalidEndpoint": "Enter a valid http(s) endpoint",
+  "worldBindingSeat": "seat",
+  "worldBindingReadOnly": "read-only"
 }

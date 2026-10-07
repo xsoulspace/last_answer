@@ -89,9 +89,17 @@ class OpenedProjectNotifier
     loadProject(context: context, project: idea);
   }
 
-  /// ADR 0003 — Agents live in docs (Phase 1): a new agent doc.
-  void createAgentProject(final BuildContext context) {
-    loadProject(context: context, project: ProjectModel.emptyAgent());
+  /// ADR 0003 — Agents live in docs (Phase 1): a new agent doc. A null
+  /// [worldBinding] (the default) binds the embedded in-process world; a
+  /// binding opts the doc into an external, user-chosen harness world.
+  void createAgentProject(
+    final BuildContext context, {
+    final WorldBindingModel? worldBinding,
+  }) {
+    loadProject(
+      context: context,
+      project: ProjectModel.emptyAgent(worldBinding: worldBinding),
+    );
   }
 
   void createChatProject(final BuildContext context) {

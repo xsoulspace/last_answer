@@ -758,4 +758,37 @@ class SIt extends S {
   @override
   String get agentChatAuthRequired =>
       'Autenticazione richiesta — l\'agente gestisce il proprio accesso. Segui l\'indicazione qui sotto e invia di nuovo.';
+
+  @override
+  String get worldBindingSheetTitle => 'Connetti a un mondo';
+
+  @override
+  String get worldBindingEmbedded => 'Questa app (mondo integrato)';
+
+  @override
+  String get worldBindingEmbeddedSubtitle =>
+      'L\'agente harness in esecuzione dentro Last Answer';
+
+  @override
+  String get worldBindingNoWorlds =>
+      'Nessun mondo trovato — associa un dispositivo o aggiungi un endpoint.';
+
+  @override
+  String get worldBindingManual => 'Aggiungi endpoint…';
+
+  @override
+  String get worldBindingManualHint => 'http://host:port';
+
+  @override
+  String get worldBindingEndpointLabel => 'Endpoint';
+
+  @override
+  String get worldBindingInvalidEndpoint =>
+      'Inserisci un endpoint http(s) valido';
+
+  @override
+  String get worldBindingSeat => 'seat';
+
+  @override
+  String get worldBindingReadOnly => 'sola lettura';
 }

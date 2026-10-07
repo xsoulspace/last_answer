@@ -1466,6 +1466,66 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.'**
   String get agentChatAuthRequired;
+
+  /// No description provided for @worldBindingSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to a world'**
+  String get worldBindingSheetTitle;
+
+  /// No description provided for @worldBindingEmbedded.
+  ///
+  /// In en, this message translates to:
+  /// **'This app (embedded world)'**
+  String get worldBindingEmbedded;
+
+  /// No description provided for @worldBindingEmbeddedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The agent harness running inside Last Answer'**
+  String get worldBindingEmbeddedSubtitle;
+
+  /// No description provided for @worldBindingNoWorlds.
+  ///
+  /// In en, this message translates to:
+  /// **'No worlds discovered — pair a device or add an endpoint.'**
+  String get worldBindingNoWorlds;
+
+  /// No description provided for @worldBindingManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Add endpoint…'**
+  String get worldBindingManual;
+
+  /// No description provided for @worldBindingManualHint.
+  ///
+  /// In en, this message translates to:
+  /// **'http://host:port'**
+  String get worldBindingManualHint;
+
+  /// No description provided for @worldBindingEndpointLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Endpoint'**
+  String get worldBindingEndpointLabel;
+
+  /// No description provided for @worldBindingInvalidEndpoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid http(s) endpoint'**
+  String get worldBindingInvalidEndpoint;
+
+  /// No description provided for @worldBindingSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'seat'**
+  String get worldBindingSeat;
+
+  /// No description provided for @worldBindingReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'read-only'**
+  String get worldBindingReadOnly;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -81,6 +81,15 @@ final class DocReplicaStore {
   /// The opened replica for [docId], or null when never opened.
   DocReplica? replicaOf(final NodeId docId) => _replicas[docId.value];
 
+  /// Ids of every replica opened in THIS process. Index-level listing is
+  /// process-scoped by design: a store never scans the whole replica
+  /// directory (peers' files arrive through the sync cycle), so
+  /// repository `allIds()` over a replica store answers only what this
+  /// device has opened.
+  List<NodeId> get openedDocIds => [
+    for (final id in _replicas.keys) NodeId(id),
+  ];
+
   /// Runs a local edit against the opened replica for [docId] and returns
   /// the issued ops. The replica is marked dirty; persistence happens in
   /// [flush] (batched — this never writes per op).

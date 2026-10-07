@@ -90,6 +90,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  # The local laya-serve runtime the agent doc's laya backend probes —
+  # composed through afm's layaDecisionBinding (local dev train).
+  xsoulspace_inference_laya:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
   # The engine and host live in ecsai_harness.
   # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
   xsoulspace_agentic_harness:
@@ -170,6 +174,10 @@ dev_dependencies:
   # run via `oka run publish-play` / `oka run publish-huawei`.
   oka_huawei:
     path: ../../oka/packages/oka_huawei
+  # ADR 0072 device gate: the Android app target (oka dev owning session
+  # → runner-session.json → LaunchedApp) for tool/gates.
+  oka_harness:
+    path: ../../oka/packages/oka_harness
   oka_play:
     path: ../../oka/packages/oka_play
 
@@ -179,6 +187,10 @@ dependency_overrides:
   # Keep one local source across their transitive version constraints.
   resource_composition:
     path: ../../oka/packages/resource_composition
+  # oka_harness (the device gate's AndroidAppTarget) must see the SAME
+  # flutter_mcp_harness this repo pins (the mcp_flutter checkout).
+  flutter_mcp_harness:
+    path: ../../../mcp/cline/mcp_flutter/packages/harness
   # The CDP automation stack's web-driving layer (ChromeAppTarget's
   # transport): 0.2.0 (ag-c, auto-wait + NavigateWait + semantic clicks)
   # is committed locally but not yet published — drop when pub.dev has it.

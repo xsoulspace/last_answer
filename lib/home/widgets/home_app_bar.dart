@@ -62,6 +62,13 @@ class HomeAppBar extends StatelessWidget {
       actions:
           [
                 IconButton(
+                  onPressed: () => context
+                      .read<OpenedProjectNotifier>()
+                      .createChatProject(context),
+                  tooltip: context.l10n.chat,
+                  icon: const Icon(Icons.forum_outlined),
+                ),
+                IconButton(
                   onPressed: () => unawaited(_newAgentDoc(context)),
                   tooltip: 'New agent doc',
                   icon: const Icon(Icons.smart_toy_outlined),

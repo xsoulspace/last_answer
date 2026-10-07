@@ -45,6 +45,7 @@
   "lastAnswer": "Last Answer",
   "idea": "Idea",
   "note": "Note",
+  "chat": "Chat",
   "answer": "Answer",
   "cancel": "Cancel",
   "close": "Close",
@@ -288,5 +289,8 @@
   "worldBindingEndpointLabel": "Endpoint",
   "worldBindingInvalidEndpoint": "Enter a valid http(s) endpoint",
   "worldBindingSeat": "seat",
-  "worldBindingReadOnly": "read-only"
+  "worldBindingReadOnly": "read-only",
+  "agentChatWorkspaceTooltip": "Agent working folder",
+  "agentChatPickWorkspace": "Choose the agent's working folder",
+  "agentChatContextReset": "The agent process restarted — earlier messages are history only."
 }

@@ -1,6 +1,7 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
@@ -58,8 +59,27 @@ class ChatDocumentView extends StatefulWidget {
 
   final ProjectModelDoc doc;
 
+  /// The OPEN chat surface's multiplayer link — the shell's sync-cycle
+  /// hook calls [ChatDocumentSurfaceLink.refresh] so peer writes land in
+  /// the live transcript (the AgentDocSurface.debugSurface pattern).
+  static ChatDocumentSurfaceLink? debugSurface;
+
   @override
   State<ChatDocumentView> createState() => _ChatDocumentViewState();
+}
+
+/// Typed projection of the open chat's mesh participation: refresh hook
+/// plus the status the transcript header shows (live peers, session
+/// owner, this device's peer id).
+final class ChatDocumentSurfaceLink {
+  const ChatDocumentSurfaceLink({required this.refresh, required this.meshStatus});
+
+  final void Function() refresh;
+
+  /// Live mesh snapshot: connected, presence count on this doc, the
+  /// session owner's peer id (null = unclaimed), and THIS device's id.
+  final ({bool live, int presenceCount, String? ownerPeerId, String? myPeerId})
+  Function() meshStatus;
 }
 
 class _ChatDocumentViewState extends State<ChatDocumentView> {
@@ -90,8 +110,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 
   /// The runtime owning this document's ACP agent (created eagerly so the
   /// permission stream can be observed before the first turn starts).
-  AcpAgentRuntime get _runtime =>
-      _runtimeRegistry.forDoc(widget.doc.id.value);
+  AcpAgentRuntime get _runtime => _runtimeRegistry.forDoc(widget.doc.id.value);
 
   bool get _acpSupported => PlatformInfo.isNativeDesktop;
 
@@ -102,6 +121,83 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     _permissionSubscription = _runtime.permissionRequests.listen(
       _onPermissionRequest,
     );
+    // Multiplayer-chat link: the shell's sync-cycle hook refreshes the
+    // OPEN chat (peer writes arrive with each LAN mesh cycle), and the
+    // doc joins its presence channel (ADR 0031 §1 — join is the caller's
+    // job; a live replica only, never a setup side effect).
+    ChatDocumentView.debugSurface = _surfaceLink;
+    unawaited(AgentDocSurface.meshWiring?.joinDoc(widget.doc.id.value));
+  }
+
+  ChatDocumentSurfaceLink get _surfaceLink => ChatDocumentSurfaceLink(
+    refresh: refreshAfterMeshSync,
+    meshStatus: () {
+      final wiring = AgentDocSurface.meshWiring;
+      final status = wiring?.statusFor(widget.doc.id.value);
+      return (
+        live: wiring != null && (status?.connected ?? false),
+        presenceCount: status?.presenceCount ?? 0,
+        ownerPeerId: _current.blocks.firstOrNull?.ownerPeerId,
+        myPeerId: wiring?.selfPeerId?.call(),
+      );
+    },
+  );
+
+  /// Sync-cycle hook (wired from the shell): re-read the fold, then —
+  /// when THIS device owns the chat's agent session — claim peer turn
+  /// requests from the mesh task board.
+  void refreshAfterMeshSync() {
+    if (!mounted) return;
+    unawaited(_reloadCurrent().then((_) => _autoRunPeerTurnTasks()));
+  }
+
+  static const String _turnTaskPrefix = 'chat-turn';
+  final Set<String> _handledRemoteTurns = {};
+
+  /// Owner side of the peer-turn hop: pending `chat-turn` requests for
+  /// THIS doc run here exactly once each (the peer composed the user
+  /// block; it is already in the shared transcript).
+  Future<void> _autoRunPeerTurnTasks() async {
+    final wiring = AgentDocSurface.meshWiring;
+    final board = wiring?.taskBoard?.call();
+    final myPeerId = wiring?.selfPeerId?.call();
+    if (board == null || myPeerId == null || _isSending) return;
+    final owner = _current.blocks.firstOrNull?.ownerPeerId;
+    if (owner != null && owner != myPeerId) return;
+    final pending = board.pendingRequestsFor(
+      widget.doc.id.value,
+      selfPeerId: myPeerId,
+    );
+    for (final record in pending) {
+      if (_handledRemoteTurns.contains(record.taskId)) continue;
+      final marker = record.task.startsWith('$_turnTaskPrefix ')
+          ? record.task.substring(_turnTaskPrefix.length + 1)
+          : null;
+      if (marker == null) continue;
+      final userBlock = _current.blocks
+          .where((block) => block.id.value == marker)
+          .firstOrNull;
+      if (userBlock == null || userBlock.content.trim().isEmpty) continue;
+      _handledRemoteTurns.add(record.taskId);
+      try {
+        board.markRunning(record.taskId);
+      } on Object {
+        continue; // board write failed — leave it for the next cycle.
+      }
+      unawaited(
+        _runLocalTurn(
+          userBlock.content,
+          appendUserBlock: false,
+        ).then((_) {
+          try {
+            board.completeTask(record.taskId);
+          } on Object {
+            // Terminal write failed — the request stays visible.
+          }
+        }),
+      );
+      return; // one turn per cycle — the next claim follows completion.
+    }
   }
 
   Future<void> _initialize() async {
@@ -195,19 +291,30 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     setState(() => _transports = transports);
   }
 
-  /// Selection precedence: the doc's persisted (provider, model), then the
-  /// config chat defaults, then the first detected ACP agent.
+  /// Selection precedence: the doc's persisted ACP agent, then its
+  /// persisted (provider, model), then the config chat defaults, then the
+  /// first detected ACP agent.
   void _restoreSelectedTransport() {
     if (_selected != null && _transports.contains(_selected)) return;
     final title = _current.blocks.firstOrNull;
     ChatTransport? selected;
-    final provider = title?.provider;
-    final model = title?.model;
-    if (provider != null && model != null) {
-      selected = _transports.whereType<HostedChatTransport>().firstWhereOrNull(
-        (transport) =>
-            transport.providerId == provider && transport.model == model,
+    final agentKey = title?.agentKey;
+    if (agentKey != null) {
+      selected = _transports.whereType<AcpChatTransport>().firstWhereOrNull(
+        (transport) => transport.agentKey == agentKey,
       );
+    }
+    if (selected == null) {
+      final provider = title?.provider;
+      final model = title?.model;
+      if (provider != null && model != null) {
+        selected = _transports
+            .whereType<HostedChatTransport>()
+            .firstWhereOrNull(
+              (transport) =>
+                  transport.providerId == provider && transport.model == model,
+            );
+      }
     }
     selected ??= () {
       final target = _resolver.defaultTarget();
@@ -225,14 +332,25 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 
   Future<void> _selectTransport(final ChatTransport transport) async {
     setState(() => _selected = transport);
-    if (transport case final HostedChatTransport hosted) {
-      await _chatService.updateChatMetadata(
-        _current.id,
-        provider: hosted.providerId,
-        model: hosted.model,
-      );
-      await _reloadCurrent();
+    // Persist the pick on the doc, replacing the OTHER family's record so
+    // reopening the doc restores exactly what this conversation used.
+    switch (transport) {
+      case final HostedChatTransport hosted:
+        await _chatService.updateChatMetadata(
+          _current.id,
+          provider: hosted.providerId,
+          model: hosted.model,
+          clearAgentKey: true,
+        );
+      case final AcpChatTransport acp:
+        await _chatService.updateChatMetadata(
+          _current.id,
+          agentKey: acp.agentKey,
+          clearProvider: true,
+          clearModel: true,
+        );
     }
+    await _reloadCurrent();
   }
 
   Future<void> _persistRoot(hc.DocumentNode node) async {
@@ -264,6 +382,25 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   // sending
   // ------------------------------------------------------------------
 
+  /// Multiplayer turn routing (ADR 0012: transport membership never
+  /// grants execution authority). When the LAN mesh is live and another
+  /// peer owns this chat's agent session, THIS device composes into the
+  /// shared doc and routes the TURN to the owner over the mesh task
+  /// board — it never runs a second agent against the same conversation.
+  ({bool routeToOwner, String? myPeerId, String? ownerPeerId})
+  _turnRouting() {
+    final wiring = AgentDocSurface.meshWiring;
+    final myPeerId = wiring?.selfPeerId?.call();
+    if (wiring == null || myPeerId == null) {
+      return (routeToOwner: false, myPeerId: null, ownerPeerId: null);
+    }
+    final owner = _current.blocks.firstOrNull?.ownerPeerId;
+    if (owner == null || owner == myPeerId) {
+      return (routeToOwner: false, myPeerId: myPeerId, ownerPeerId: owner);
+    }
+    return (routeToOwner: true, myPeerId: myPeerId, ownerPeerId: owner);
+  }
+
   Future<void> _send() async {
     final text = _composerController.text.trim();
     if (text.isEmpty || _isSending || !mounted) return;
@@ -276,6 +413,67 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     final hc.NodeId? reuseAssistantBlockId,
   }) async {
     if (_isSending || !mounted) return;
+    final routing = _turnRouting();
+    if (reuseAssistantBlockId == null && routing.routeToOwner) {
+      // Peer compose: the message lands in the shared doc; the turn
+      // request rides the task board to the owner device. The reply is
+      // the OWNER's write — it converges back over the mesh.
+      final userBlockId = _nextNodeId();
+      await _chatService.appendMessage(
+        _current.id,
+        role: hc.ChatRole.user,
+        content: text,
+        blockId: userBlockId,
+      );
+      final board = AgentDocSurface.meshWiring?.taskBoard?.call();
+      if (board == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('mesh task board is not live')),
+        );
+        return;
+      }
+      board.requestTask(
+        docId: widget.doc.id.value,
+        task: '$_turnTaskPrefix ${userBlockId.value}',
+        originPeerId: routing.myPeerId ?? '',
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'queued for the session owner (${routing.ownerPeerId})',
+          ),
+        ),
+      );
+      await _reloadCurrent();
+      return;
+    }
+    await _runLocalTurn(text, reuseAssistantBlockId: reuseAssistantBlockId);
+    // Ownership claim: the first device to actually run a turn takes the
+    // session (the title block carries it; peers route to it from then
+    // on). Written through the same LWW doc ops, so it converges.
+    if (reuseAssistantBlockId == null && routing.myPeerId != null) {
+      final owner = _current.blocks.firstOrNull?.ownerPeerId;
+      if (owner == null) {
+        try {
+          await _chatService.updateChatMetadata(
+            _current.id,
+            ownerPeerId: routing.myPeerId,
+          );
+        } on StateError {
+          // Doc path changed mid-claim; the next turn claims instead.
+        }
+      }
+    }
+  }
+
+  Future<void> _runLocalTurn(
+    final String text, {
+    final hc.NodeId? reuseAssistantBlockId,
+    final bool appendUserBlock = true,
+  }) async {
+    if (_isSending || !mounted) return;
     // L10n strings are captured before any await: after an async gap the
     // context must not be touched (and the widget may be gone).
     final noTransportMessage = context.l10n.agentChatNoTransport;
@@ -284,7 +482,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     _turnFailed = false;
     try {
       final assistantBlockId = reuseAssistantBlockId ?? _nextNodeId();
-      if (reuseAssistantBlockId == null) {
+      if (reuseAssistantBlockId == null && appendUserBlock) {
         await _chatService.appendMessage(
           _current.id,
           role: hc.ChatRole.user,
@@ -332,6 +530,15 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     }
   }
 
+  /// The ACP working directory for this chat: the user-picked workspace
+  /// persisted on the title block, else the user's home. `Directory.current`
+  /// of a GUI-launched app is meaningless (`/` on macOS Finder) — never an
+  /// honest anchor for a coding agent's file tools.
+  String get _acpWorkspace =>
+      _current.blocks.firstOrNull?.workspace ??
+      Platform.environment['HOME'] ??
+      Directory.current.path;
+
   Future<Stream<TurnUpdate>> _acpStream(
     final AcpChatTransport transport,
     final String text,
@@ -340,35 +547,79 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       throw StateError(context.l10n.agentChatAcpDesktopOnly);
     }
     final authRequiredMessage = context.l10n.agentChatAuthRequired;
-    final config = transport.config ??
+    final workspace = _acpWorkspace;
+    final config =
+        transport.config ??
         AcpRuntimeConfig.fromInstallation(
           transport.installation ??
               (throw StateError(context.l10n.agentChatNoAgentDetected)),
-          workingDirectory: Directory.current.path,
+          workingDirectory: workspace,
         );
     final runtime = await _runtimeRegistry.ensureStarted(
       widget.doc.id.value,
       transport.agentKey,
       config,
     );
-    final String sessionId;
-    try {
-      sessionId = await runtime.newSession(Directory.current.path);
-    } on AcpAuthRequiredException catch (error) {
-      // Zed-parity auth: the agent owns its credentials. Surface a
-      // durable row naming the fix (terminal-auth agents) and, when the
-      // agent advertises ACP methods, offer the in-protocol sign-in.
-      await _appendAuthRow(transport, error);
-      throw StateError(authRequiredMessage);
-    }
-    final titleBlock = _current.blocks.first.copyWith(sessionId: sessionId);
-    await _replaceBlocks([titleBlock, ..._current.blocks.skip(1)]);
-    return runtime.send(text).map(
-      (update) => TurnUpdate(
-        textDelta: update.textDelta,
-        toolTitle: update.textDelta == null ? update.message : null,
-      ),
+    // Session continuity: the persisted sessionId is RESUMED while the
+    // process still owns it, so consecutive messages continue one agent
+    // conversation. Only a dead session (process restarted, agent
+    // switched) falls back to session/new — and says so in the transcript.
+    final title = _current.blocks.first;
+    final persisted = title.sessionId;
+    final hadPriorTurns = _current.blocks.any(
+      (block) =>
+          block.type == hc.BlockType.message &&
+          block.role == hc.ChatRole.assistant,
     );
+    var resumed = false;
+    if (persisted != null && runtime.sessions.containsKey(persisted)) {
+      runtime.switchTo(persisted);
+      resumed = true;
+    } else {
+      try {
+        await runtime.newSession(workspace);
+      } on AcpAuthRequiredException catch (error) {
+        // Zed-parity auth: the agent owns its credentials. Surface a
+        // durable row naming the fix (terminal-auth agents) and, when the
+        // agent advertises ACP methods, offer the in-protocol sign-in.
+        await _appendAuthRow(transport, error);
+        throw StateError(authRequiredMessage);
+      }
+    }
+    if (!resumed && persisted != null && hadPriorTurns) {
+      await _chatService.appendMessage(
+        _current.id,
+        role: hc.ChatRole.assistant,
+        content: context.l10n.agentChatContextReset,
+        blockId: _nextNodeId(),
+      );
+      await _reloadCurrent();
+    }
+    final currentTitle = _current.blocks.first;
+    final titleChanged =
+        currentTitle.agentKey != transport.agentKey ||
+        currentTitle.workspace != workspace ||
+        currentTitle.sessionId != runtime.currentSessionId;
+    if (titleChanged) {
+      await _replaceBlocks([
+        currentTitle.copyWith(
+          agentKey: transport.agentKey,
+          workspace: workspace,
+          sessionId: runtime.currentSessionId,
+        ),
+        ..._current.blocks.skip(1),
+      ]);
+    }
+    return runtime
+        .send(text)
+        .map(
+          (update) => TurnUpdate(
+            textDelta: update.textDelta,
+            toolTitle: update.textDelta == null ? update.message : null,
+            toolStatus: update.toolStatus,
+            planLines: update.planEntries,
+          ),
+        );
   }
 
   /// Appends the durable AUTH row: the agent's catalog hint (the exact
@@ -395,13 +646,16 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       final runtime = _runtimeRegistry.maybe(widget.doc.id.value);
       if (runtime != null) {
         unawaited(
-          runtime.authenticate(method.methodId).then((_) async {
-            await _safeReplaceMessage(
-              _current.blocks.last.id,
-              'AUTH → signed in via ${method.name ?? method.methodId}',
-            );
-            if (mounted) unawaited(_reloadCurrent());
-          }).catchError((final Object _) {}),
+          runtime
+              .authenticate(method.methodId)
+              .then((_) async {
+                await _safeReplaceMessage(
+                  _current.blocks.last.id,
+                  'AUTH → signed in via ${method.name ?? method.methodId}',
+                );
+                if (mounted) unawaited(_reloadCurrent());
+              })
+              .catchError((final Object _) {}),
         );
       }
     }
@@ -444,8 +698,8 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     final HostedChatTransport transport,
   ) async* {
     final title = _current.blocks.firstOrNull;
-    final systemPrompt = title?.systemPrompt ??
-        _configStore.config.chat.systemPrompt;
+    final systemPrompt =
+        title?.systemPrompt ?? _configStore.config.chat.systemPrompt;
     final messages = <ChatMessage>[
       if (systemPrompt.isNotEmpty)
         ChatMessage(role: 'system', content: systemPrompt),
@@ -502,15 +756,45 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     return granted ?? false;
   }
 
+  /// Latest tool-call state per title, in first-seen order (DESIGN §6:
+  /// render what the host observed). Re-assignments UPDATE the row instead
+  /// of stacking pending → in_progress → completed lines.
+  final Map<String, String> _toolBeats = {};
+  List<String>? _planLines;
+
   void _onTurnUpdate(final TurnUpdate update, final hc.NodeId blockId) {
     if (update.textDelta != null) {
       _turnBuffer.write(update.textDelta);
-    } else if (update.toolTitle != null) {
-      _turnBuffer
-        ..writeln()
-        ..write('[tool] ${update.toolTitle}');
     }
-    unawaited(_safeReplaceMessage(blockId, _turnBuffer.toString()));
+    if (update.toolTitle != null) {
+      _toolBeats[update.toolTitle!] = update.toolStatus ?? '';
+    }
+    if (update.planLines != null) {
+      _planLines = update.planLines;
+    }
+    unawaited(_safeReplaceMessage(blockId, _turnSnapshot()));
+  }
+
+  /// The streamed assistant row: free text plus one line per observed tool
+  /// beat and the latest plan, split back into durable blocks at turn end.
+  String _turnSnapshot() {
+    final buffer = StringBuffer(_turnBuffer);
+    for (final entry in _toolBeats.entries) {
+      buffer
+        ..writeln()
+        ..write(
+          entry.value.isEmpty
+              ? '[tool] ${entry.key}'
+              : '[tool] ${entry.key} · ${entry.value}',
+        );
+    }
+    final plan = _planLines;
+    if (plan != null && plan.isNotEmpty) {
+      buffer
+        ..writeln()
+        ..write('[plan] ${plan.join(' | ')}');
+    }
+    return buffer.toString();
   }
 
   String? _contentOf(final hc.NodeId blockId) {
@@ -521,19 +805,27 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   }
 
   Future<void> _finishTurn(final hc.NodeId blockId) async {
-    // Split accumulated [tool] lines out of the assistant text into their
-    // own durable beat blocks (DESIGN §6: render what the host observed).
-    final content = _turnBuffer.isNotEmpty
-        ? _turnBuffer.toString()
+    // Split accumulated [tool]/[plan] lines out of the assistant text into
+    // their own durable beat blocks (DESIGN §6: render what the host
+    // observed).
+    final snapshot = _turnSnapshot();
+    final content = snapshot.trim().isNotEmpty
+        ? snapshot
         : _contentOf(blockId) ?? '';
-    final toolTitles = <String>[];
+    final toolBeats = <String, String>{};
+    String? planLine;
     final textLines = <String>[];
     for (final line in content.split('\n')) {
       if (line.startsWith('[tool] ')) {
-        final title = line.substring('[tool] '.length).trim();
-        if (title.isNotEmpty && !toolTitles.contains(title)) {
-          toolTitles.add(title);
-        }
+        final body = line.substring('[tool] '.length).trim();
+        final separator = body.lastIndexOf(' · ');
+        final title = separator < 0 ? body : body.substring(0, separator);
+        final status = separator < 0 ? '' : body.substring(separator + 3);
+        if (title.isNotEmpty) toolBeats[title] = status;
+        continue;
+      }
+      if (line.startsWith('[plan] ')) {
+        planLine = line.substring('[plan] '.length).trim();
         continue;
       }
       textLines.add(line);
@@ -544,20 +836,36 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       blockId,
       status: hc.MessageStatus.complete,
     );
-    for (final title in toolTitles) {
+    for (final entry in toolBeats.entries) {
       try {
         await _chatService.appendMessage(
           _current.id,
           role: hc.ChatRole.assistant,
-          content: '',
+          content: entry.value,
           blockId: _nextNodeId(),
-          toolCallId: title,
-          title: title,
+          toolCallId: entry.key,
+          title: entry.key,
         );
       } on StateError {
         break;
       }
     }
+    if (planLine != null && planLine.isNotEmpty) {
+      try {
+        await _chatService.appendMessage(
+          _current.id,
+          role: hc.ChatRole.assistant,
+          content: planLine,
+          blockId: _nextNodeId(),
+          toolCallId: 'plan',
+          title: 'plan',
+        );
+      } on StateError {
+        // The doc path changed mid-turn; the plan line stays in the text.
+      }
+    }
+    _toolBeats.clear();
+    _planLines = null;
     _streamSubscription = null;
     if (mounted) {
       setState(() => _isSending = false);
@@ -565,10 +873,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     }
   }
 
-  Future<void> _failTurn(
-    final hc.NodeId blockId,
-    final Object error,
-  ) async {
+  Future<void> _failTurn(final hc.NodeId blockId, final Object error) async {
     await _chatService.updateMessageStatus(
       _current.id,
       blockId,
@@ -638,9 +943,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   // ACP permission round-trip
   // ------------------------------------------------------------------
 
-  Future<void> _onPermissionRequest(
-    final AcpPendingPermission pending,
-  ) async {
+  Future<void> _onPermissionRequest(final AcpPendingPermission pending) async {
     if (!mounted) return;
     final blockId = _nextNodeId();
     _pendingPermissions[pending.request.toolCallId] = pending;
@@ -694,9 +997,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 
   Future<void> _editSystemPrompt() async {
     final title = _current.blocks.firstOrNull;
-    final controller = TextEditingController(
-      text: title?.systemPrompt ?? '',
-    );
+    final controller = TextEditingController(text: title?.systemPrompt ?? '');
     await showDialog<void>(
       context: context,
       builder: (final context) => AlertDialog(
@@ -730,6 +1031,10 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 
   @override
   void dispose() {
+    if (identical(ChatDocumentView.debugSurface, _surfaceLink)) {
+      ChatDocumentView.debugSurface = null;
+    }
+    unawaited(AgentDocSurface.meshWiring?.leaveDoc(widget.doc.id.value));
     unawaited(_streamSubscription?.cancel());
     unawaited(_permissionSubscription?.cancel());
     for (final controller in _messageControllers.values) {
@@ -756,6 +1061,22 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
       }}';
     }
     return context.l10n.agentChatNoTransport;
+  }
+
+  /// Multiplayer status: live LAN peers on this doc + who owns the
+  /// agent session. Quiet when the mesh is not set up (single-device
+  /// chat looks exactly like before).
+  String get _meshLabel {
+    final status = ChatDocumentView.debugSurface?.meshStatus();
+    if (status == null || !status.live) return '';
+    final mine = status.myPeerId;
+    final owner = status.ownerPeerId;
+    final ownerLabel = owner == null
+        ? 'unclaimed'
+        : owner == mine
+        ? 'owned here'
+        : 'owned by ${owner.substring(0, owner.length.clamp(0, 6))}…';
+    return 'mesh · ${status.presenceCount} here · $ownerLabel';
   }
 
   @override
@@ -796,6 +1117,8 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                 const Icon(Icons.circle, size: 10, color: Colors.greenAccent),
                 const Gap(6),
                 Text(_statusLabel),
+                const Gap(10),
+                Flexible(child: Text(_meshLabel)),
                 const Spacer(),
                 if (_selected is HostedChatTransport)
                   IconButton(
@@ -824,6 +1147,13 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                           },
                   ),
                 ),
+                if (_selected is AcpChatTransport)
+                  IconButton(
+                    key: const Key('chat.workspace.pick'),
+                    tooltip: context.l10n.agentChatWorkspaceTooltip,
+                    onPressed: _isSending ? null : _pickWorkspace,
+                    icon: const Icon(Icons.create_new_folder_outlined),
+                  ),
                 if (_acpSupported &&
                     _transports.whereType<AcpChatTransport>().isEmpty)
                   IconButton(
@@ -976,22 +1306,21 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
   }
 
   /// Reject-first permission buttons (DESIGN §4: deny-by-default is
-  /// shown, never assumed).
+  /// shown, never assumed). Deliberately enabled WHILE the turn is
+  /// streaming: `session/request_permission` only arrives mid-turn, and
+  /// the agent holds the turn until it is answered — disabling these here
+  /// deadlocked every permission round-trip.
   List<Widget> _permissionButtons(final AcpPendingPermission pending) {
     final tid = pending.request.toolCallId;
     return [
       TextButton(
         key: Key('chat.perm.$tid.reject'),
-        onPressed: _isSending
-            ? null
-            : () => unawaited(_answerPermission(pending, false)),
+        onPressed: () => unawaited(_answerPermission(pending, false)),
         child: Text(context.l10n.reject),
       ),
       TextButton(
         key: Key('chat.perm.$tid.allow'),
-        onPressed: _isSending
-            ? null
-            : () => unawaited(_answerPermission(pending, true)),
+        onPressed: () => unawaited(_answerPermission(pending, true)),
         child: Text(context.l10n.allow),
       ),
     ];
@@ -1022,6 +1351,24 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     );
     if (!mounted) return;
     setState(() => _path.add(child));
+  }
+
+  /// Picks the ACP working directory for this chat (persisted on the title
+  /// block; takes effect from the next session/new onward).
+  Future<void> _pickWorkspace() async {
+    final String? path;
+    try {
+      path = await getDirectoryPath();
+    } on Object catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
+      return;
+    }
+    if (path == null || !mounted) return;
+    await _chatService.updateChatMetadata(_current.id, workspace: path);
+    await _reloadCurrent();
   }
 
   Future<void> _showInstallHelp() async {
@@ -1102,8 +1449,15 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
 /// One streamed event of a chat turn — transport-agnostic (ACP agent or
 /// hosted model).
 final class TurnUpdate {
-  const TurnUpdate({this.textDelta, this.toolTitle});
+  const TurnUpdate({
+    this.textDelta,
+    this.toolTitle,
+    this.toolStatus,
+    this.planLines,
+  });
 
   final String? textDelta;
   final String? toolTitle;
+  final String? toolStatus;
+  final List<String>? planLines;
 }

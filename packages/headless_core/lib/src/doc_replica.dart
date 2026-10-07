@@ -172,6 +172,23 @@ final class DocReplica {
     final DateTime? now,
   }) => [_issueField(name, value, now ?? DateTime.now())];
 
+  /// Writes one block field register (`node/<blockId>/<name>`, LWW) —
+  /// the whole-node → ops diff path uses this for metadata fields that
+  /// [addBlock] does not carry (chat transport picks: `provider`, `model`,
+  /// `agentKey`, `workspace`, `systemPrompt`) and for in-place updates of
+  /// any other block field.
+  List<OpRecord> setBlockField(
+    final NodeId blockId,
+    final String name, {
+    required final String value,
+    final DateTime? now,
+  }) => [_issueBlockField(blockId, name, value, now ?? DateTime.now())];
+
+  /// The current LWW value of one block field register, or null when the
+  /// field was never written (or tombstoned).
+  String? blockFieldOf(final NodeId blockId, final String name) =>
+      _field(blockId, name);
+
   /// Anchors this (child) document to a block of its parent
   /// (ADR 0001, block-granularity v1).
   List<OpRecord> setAnchor(final NodeId blockId, {final DateTime? now}) => [
@@ -482,10 +499,16 @@ final class DocReplica {
           content: RgaTextStrategy.readText(state, _textKey(id)) ?? '',
           level: _intField(id, 'level'),
           role: _optionalEnumField(id, 'role', ChatRole.values),
-          messageId: _field(id, 'messageId'),
-          sessionId: _field(id, 'sessionId'),
-          toolCallId: _field(id, 'toolCallId'),
-          title: _field(id, 'title'),
+          messageId: _strField(id, 'messageId'),
+          sessionId: _strField(id, 'sessionId'),
+          toolCallId: _strField(id, 'toolCallId'),
+          title: _strField(id, 'title'),
+          provider: _strField(id, 'provider'),
+          model: _strField(id, 'model'),
+          agentKey: _strField(id, 'agentKey'),
+          workspace: _strField(id, 'workspace'),
+          systemPrompt: _strField(id, 'systemPrompt'),
+          ownerPeerId: _strField(id, 'ownerPeerId'),
           status: _enumField(
             id,
             'status',
@@ -521,6 +544,12 @@ final class DocReplica {
       updatedAt: _timeField(nodeId, 'updatedAt'),
     );
   }
+
+  /// Whether the node's birth was ever issued ([createNode]) — the raw
+  /// register is the existence marker: a fresh replica's projected times
+  /// are epoch (see [_timeField]), never null, so the projection cannot
+  /// distinguish "empty doc" from "no doc".
+  bool get wasBorn => _docField('createdAt') != null;
 
   /// Visible text of [blockId]; empty when the block has no RGA state.
   String blockText(final NodeId blockId) =>
@@ -812,6 +841,14 @@ final class DocReplica {
   // ---------------------------------------------------------------------------
 
   String? _docField(final String name) => _field(nodeId, name);
+
+  /// Optional-string field read: the repository's LWW tombstone encoding
+  /// for "field cleared" is the empty string — projected as null so
+  /// `block.provider == null` stays the honest not-set marker.
+  String? _strField(final NodeId id, final String name) {
+    final raw = _field(id, name);
+    return raw == null || raw.isEmpty ? null : raw;
+  }
 
   String? _field(final NodeId id, final String name) =>
       LwwMapStrategy.readValue(_doc.state, _nodeKey(id, name));

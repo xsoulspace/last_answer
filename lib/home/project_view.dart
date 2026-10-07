@@ -34,7 +34,7 @@ class ProjectView extends StatelessWidget {
         appBar: _ChangelogViewAppBar(),
         child: ChangelogView(),
       ),
-      doc: (final doc) => _AdaptiveView(
+          doc: (final doc) => _AdaptiveView(
         appBar: const _ProjectViewAppBar(),
         child: switch (doc.formatId) {
           DocFormatIds.chat => ChatDocumentView(doc: doc, key: ValueKey(id)),
@@ -65,9 +65,11 @@ class ProjectView extends StatelessWidget {
               // registry — observation here; verbs stay in the doc
               // surface above. The doc's worldBinding (user-chosen,
               // never hardcoded) points the pane at an external world;
-              // null = the embedded default.
-              WorldInspectorPane(
-                key: ValueKey('world-inspector-$id'),
+              // null = the embedded default. Full-screenable: the
+              // mission-control surface for the whole fleet (multiplayer
+              // recommendation 5).
+              _WorldInspectorRegion(
+                key: ValueKey('world-inspector-region-$id'),
                 binding: doc.agent?.worldBinding,
                 onBindingChanged: (final binding) {
                   final agent = doc.agent ?? const AgentDocModel();
@@ -103,6 +105,107 @@ class _AdaptiveView extends StatelessWidget {
       ],
     );
   }
+}
+
+/// The embedded inspector pane plus its full-screen affordance. The
+/// full-screen route hosts a FRESH pane (it self-polls and converges
+/// within one tick); the binding pick in either surface persists into
+/// the doc payload through the same callback.
+class _WorldInspectorRegion extends StatelessWidget {
+  const _WorldInspectorRegion({
+    required this.binding,
+    required this.onBindingChanged,
+    super.key,
+  });
+
+  final WorldBindingModel? binding;
+  final ValueChanged<WorldBindingModel?> onBindingChanged;
+
+  Future<void> _openFullScreen(final BuildContext context) =>
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          fullscreenDialog: true,
+          builder: (final routeContext) => _WorldInspectorFullScreenPage(
+            binding: binding,
+            onBindingChanged: onBindingChanged,
+          ),
+        ),
+      );
+
+  @override
+  Widget build(final BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton(
+            key: const Key('world_inspector.fullscreen.open'),
+            tooltip: 'World inspector full screen',
+            icon: const Icon(Icons.fullscreen, size: 20),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => unawaited(_openFullScreen(context)),
+          ),
+        ],
+      ),
+      WorldInspectorPane(binding: binding, onBindingChanged: onBindingChanged),
+    ],
+  );
+}
+
+/// The inspector as the MAIN surface (multiplayer recommendation: the
+/// mission-control view for the whole fleet — every session the registry
+/// knows, every routed permission, the task board).
+class _WorldInspectorFullScreenPage extends StatelessWidget {
+  const _WorldInspectorFullScreenPage({
+    required this.binding,
+    required this.onBindingChanged,
+  });
+
+  final WorldBindingModel? binding;
+  final ValueChanged<WorldBindingModel?> onBindingChanged;
+
+  @override
+  Widget build(final BuildContext context) => Scaffold(
+    body: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 12),
+                child: Text(
+                  'WORLD INSPECTOR',
+                  style: TextStyle(
+                    fontSize: 11,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                key: const Key('world_inspector.fullscreen.close'),
+                tooltip: 'Back to the doc',
+                icon: const Icon(Icons.close, size: 20),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              const Gap(8),
+            ],
+          ),
+          Expanded(
+            child: WorldInspectorPane(
+              expandedHeight: double.infinity,
+              binding: binding,
+              onBindingChanged: onBindingChanged,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _ProjectViewAppBar extends StatelessWidget {

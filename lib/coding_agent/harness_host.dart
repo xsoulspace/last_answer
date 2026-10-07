@@ -98,6 +98,7 @@ final class HarnessHost {
     _embed = null;
     await embed?.stop();
     await config.jevBinding?.dispose();
+    await config.layaBinding?.dispose();
     if (!_permissionController.isClosed) await _permissionController.close();
   }
 
@@ -164,6 +165,7 @@ final class HarnessHostConfig {
     this.scripted = false,
     this.handlerFactory,
     this.jevBinding,
+    this.layaBinding,
     this.apiKey,
     this.checkCommand,
     this.externalAcpCommand,
@@ -172,7 +174,8 @@ final class HarnessHostConfig {
     this.externalAcpWorkingDirectory,
   });
 
-  /// `apple_foundation_afm`, `open_router`, opt-in `jev`, or
+  /// `apple_foundation_afm`, `open_router`, opt-in `jev`, opt-in local
+  /// `laya` (a laya-serve System One endpoint on this machine), or
   /// `external_acp` (a user-registered ACP agent process from the agent
   /// config used as the harness's generator).
   final String backend;
@@ -181,6 +184,11 @@ final class HarnessHostConfig {
   final GenerationHandler Function(ModelRouter router)? handlerFactory;
 
   final JevClientBinding? jevBinding;
+
+  /// Opt-in local decision capability (`laya` backend): a `layaDecisionBinding`
+  /// bound to a laya-compatible System One endpoint on this machine. No key,
+  /// no consent gate — local-only policy admits it via capability facts.
+  final JevClientBinding? layaBinding;
 
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
@@ -254,9 +262,11 @@ final class HarnessHostConfig {
     if (backend == 'jev' && jevBinding != null) {
       bindings['jev'] = jevBinding!.binding;
     }
+    if (backend == 'laya' && layaBinding != null) {
+      bindings['laya'] = layaBinding!.binding;
+    }
     final externalCommand = externalAcpCommand;
-    if (backend == 'external_acp' &&
-        (externalCommand?.isNotEmpty ?? false)) {
+    if (backend == 'external_acp' && (externalCommand?.isNotEmpty ?? false)) {
       final command = externalAcpCommand!;
       final router =
           ModelRouter(
@@ -297,9 +307,11 @@ final class HarnessHostConfig {
     String? apiKey,
     bool clearApiKey = false,
     bool clearJevBinding = false,
+    bool clearLayaBinding = false,
     List<String>? checkCommand,
     bool? meaningProfile,
     JevClientBinding? jevBinding,
+    JevClientBinding? layaBinding,
     String? externalAcpCommand,
     List<String>? externalAcpArguments,
     Map<String, String>? externalAcpEnvironment,
@@ -311,11 +323,11 @@ final class HarnessHostConfig {
     scripted: scripted,
     handlerFactory: handlerFactory,
     jevBinding: clearJevBinding ? null : jevBinding ?? this.jevBinding,
+    layaBinding: clearLayaBinding ? null : layaBinding ?? this.layaBinding,
     apiKey: clearApiKey ? null : apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
     externalAcpCommand: externalAcpCommand ?? this.externalAcpCommand,
-    externalAcpArguments:
-        externalAcpArguments ?? this.externalAcpArguments,
+    externalAcpArguments: externalAcpArguments ?? this.externalAcpArguments,
     externalAcpEnvironment:
         externalAcpEnvironment ?? this.externalAcpEnvironment,
     externalAcpWorkingDirectory:

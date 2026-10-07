@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:core/core.dart';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
@@ -16,8 +17,10 @@ import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show jevDecisionBinding;
+    show jevDecisionBinding, layaDecisionBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
+    show LayaRuntimeState, LayaServeRuntime;
 
 /// ADR 0003 (Phase 1) — the agent-doc surface: the coding-agent machinery
 /// bound to a `ProjectModel.doc` (formatId: `agent`). The document carries
@@ -78,6 +81,12 @@ final class AgentDocSurface extends StatefulWidget {
   /// `agent_doc_state` verb falls back to it when no real surface is
   /// open, so the peer's projection stops being an error envelope.
   static AgentDocShadow? shadowDoc;
+
+  /// Test seam for the laya readiness probe: builds the runtime the
+  /// surface owns for the laya backend. Null = the real loopback runtime.
+  /// Tests inject a fake-HTTP runtime so the gate is drivable without a
+  /// live laya-serve.
+  static LayaServeRuntime Function(Uri endpoint)? layaRuntimeFactory;
 
   /// R9.a — app wiring for the `agent_doc_create` intent: creates a NEW
   /// agent doc AND opens it (the `OpenedProjectNotifier.createAgentProject`
@@ -140,6 +149,50 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   bool _profileOpen = false;
   String? _routingError;
   bool _hostedConsentGranted = false;
+
+  // Laya backend — the surface owns the runtime so the readiness probe
+  // (attach-only, never spawns) has a stable object to answer through.
+  LayaServeRuntime? _layaRuntime;
+  bool _layaProbing = false;
+  bool _layaReady = false;
+  String? _layaStatus;
+
+  /// The doc's laya runtime, rebuilt when the previous one was disposed
+  /// (the host disposes the config's bindings on stop, which disposes the
+  /// wrapped provider's runtime — a stopped runtime must never be reused).
+  LayaServeRuntime get _layaRuntimeForBinding {
+    final existing = _layaRuntime;
+    if (existing != null && existing.status.$1 != LayaRuntimeState.stopped) {
+      return existing;
+    }
+    return _layaRuntime =
+        (AgentDocSurface.layaRuntimeFactory ?? _defaultLayaRuntime)(
+          _layaEndpoint(),
+        );
+  }
+
+  static LayaServeRuntime _defaultLayaRuntime(final Uri endpoint) =>
+      LayaServeRuntime(healthEndpoint: endpoint.replace(path: '/health'));
+
+  /// Probes the laya-serve endpoint (attach-only) and records the honest
+  /// snapshot for the LOCAL setup row. The pre-turn gate reuses it: a
+  /// decision backend that cannot reach its server fails here with a named
+  /// message instead of mid-turn with a typed unavailable.
+  Future<bool> _ensureLayaReady() async {
+    if (_layaProbing) return _layaReady;
+    setState(() => _layaProbing = true);
+    final runtime = _layaRuntimeForBinding;
+    final ok = await runtime.ensureRunning();
+    if (!mounted) return ok;
+    setState(() {
+      _layaProbing = false;
+      _layaReady = ok;
+      _layaStatus = ok
+          ? 'laya-serve answering at ${_layaEndpoint()}'
+          : runtime.status.$2 ?? 'no laya-serve at ${_layaEndpoint()}';
+    });
+    return ok;
+  }
 
   // PLAN 9 — the queue + cooled-turn editing state (pure view state; the
   // DATA lives in the controller's queue and the doc payload blocks).
@@ -240,7 +293,17 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     final workspace = _workspaceField.text.trim();
     return base.copyWith(
       backend: agent.backend,
-      model: agent.backend == 'jev' ? 'jev-1.13' : base.model,
+      layaBinding: agent.backend == 'laya'
+          ? layaDecisionBinding(
+              runtime: _layaRuntimeForBinding,
+              endpoint: _layaEndpoint(),
+            )
+          : null,
+      model: agent.backend == 'jev'
+          ? 'jev-1.13'
+          : agent.backend == 'laya'
+          ? 'laya'
+          : base.model,
       checkCommand: agent.checkCommand.isEmpty ? null : agent.checkCommand,
       externalAcpCommand: external?.command,
       externalAcpArguments: external?.args,
@@ -846,6 +909,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       if (mounted) setState(() {});
       return false;
     }
+    if (backend == 'laya' && !await _ensureLayaReady()) {
+      _controller.error =
+          'no laya-serve answering at ${_layaEndpoint()} - start it '
+          '(LAYA_DECISION_ENDPOINT overrides the address).';
+      if (mounted) setState(() {});
+      return false;
+    }
     await _controller.switchBackend(
       _controller.config.copyWith(
         backend: backend,
@@ -859,6 +929,16 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                   : jevDecisionBinding(apiKey: apiKey)
             : null,
         clearJevBinding: backend != 'jev',
+        layaBinding: backend == 'laya'
+            ? _controller.config.backend == 'laya' &&
+                      _controller.config.layaBinding != null
+                  ? _controller.config.layaBinding
+                  : layaDecisionBinding(
+                      runtime: _layaRuntimeForBinding,
+                      endpoint: _layaEndpoint(),
+                    )
+            : null,
+        clearLayaBinding: backend != 'laya',
         checkCommand: agent == null || agent.checkCommand.isEmpty
             ? const <String>[]
             : agent.checkCommand,
@@ -891,6 +971,14 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
 
   static bool _listEquals(final List<String> a, final List<String> b) =>
       a.length == b.length && a.indexed.every((final e) => b[e.$1] == e.$2);
+
+  /// Local laya decision endpoint: `LAYA_DECISION_ENDPOINT` wins, else the
+  /// documented laya-serve default. Loopback only — the capability reports
+  /// local/none capability facts to the host's local-only policy.
+  static Uri _layaEndpoint() => Uri.parse(
+    Platform.environment['LAYA_DECISION_ENDPOINT'] ??
+        'http://127.0.0.1:8000/v1/systemone',
+  );
 
   /// Phase 1.5 — the human path: pick a workspace directory with the
   /// system dialog (the raw text field stays for power users). The picked
@@ -1114,11 +1202,23 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         backend: backend,
         model: backend == 'jev'
             ? 'jev-1.13'
+            : backend == 'laya'
+            ? 'laya'
             : 'deepseek/deepseek-v4-flash-0731',
         clearApiKey: true,
         clearJevBinding: backend != 'jev',
+        clearLayaBinding: backend != 'laya',
+        layaBinding: backend == 'laya' && _controller.config.layaBinding == null
+            ? layaDecisionBinding(
+                runtime: _layaRuntimeForBinding,
+                endpoint: _layaEndpoint(),
+              )
+            : null,
       ),
     );
+    // Switching to laya probes the endpoint right away so the LOCAL row
+    // carries the honest snapshot instead of waiting for a first turn.
+    if (backend == 'laya') unawaited(_ensureLayaReady());
   }
 
   Future<void> _grantHostedConsent() async {
@@ -1196,6 +1296,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                         onBackend: (final b) => unawaited(_switchBackend(b)),
                         hostedConsentGranted: _hostedConsentGranted,
                         onHostedConsent: _grantHostedConsent,
+                        layaStatusText: _layaStatus,
+                        layaReady: _layaReady,
+                        layaProbing: _layaProbing,
+                        onCheckLaya: _ensureLayaReady,
                         agentServers: _agentConfigStore.config.agentServers,
                         externalServer: _doc.agent?.externalAcpServer ?? '',
                         onExternalServer: (final id) {
@@ -1488,6 +1592,10 @@ class _SetupPane extends StatelessWidget {
     required this.onBackend,
     required this.hostedConsentGranted,
     required this.onHostedConsent,
+    required this.layaStatusText,
+    required this.layaReady,
+    required this.layaProbing,
+    required this.onCheckLaya,
     required this.agentServers,
     required this.externalServer,
     required this.onExternalServer,
@@ -1503,6 +1611,13 @@ class _SetupPane extends StatelessWidget {
   final ValueChanged<String> onBackend;
   final bool hostedConsentGranted;
   final Future<void> Function() onHostedConsent;
+
+  /// The laya-serve readiness snapshot: null = never probed.
+  final String? layaStatusText;
+  final bool layaReady;
+  final bool layaProbing;
+  final Future<void> Function() onCheckLaya;
+
   final Map<String, AgentServerConfig> agentServers;
   final String externalServer;
   final ValueChanged<String> onExternalServer;
@@ -1573,6 +1688,33 @@ class _SetupPane extends StatelessWidget {
                 ),
               ],
             ),
+          if (backend == 'laya')
+            Row(
+              children: [
+                SizedBox(width: 84, child: Text('LOCAL', style: _label(theme))),
+                Expanded(
+                  child: Text(
+                    layaStatusText ?? 'laya-serve expected - not probed yet',
+                    style: _mono(
+                      theme,
+                      color: layaReady
+                          ? theme.colorScheme.onSurface
+                          : theme.colorScheme.outline,
+                    ),
+                  ),
+                ),
+                _TextToggle(
+                  label: layaProbing
+                      ? '[…]'
+                      : layaReady
+                      ? '[ready]'
+                      : '[check]',
+                  active: layaReady,
+                  onTap: busy ? () {} : () => unawaited(onCheckLaya()),
+                  toggleKey: const Key('coding_agent.laya_check'),
+                ),
+              ],
+            ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1611,6 +1753,11 @@ class _SetupPane extends StatelessWidget {
                 label: 'Jev · decisions',
                 active: backend == 'jev',
                 onTap: busy ? () {} : () => onBackend('jev'),
+              ),
+              _TextToggle(
+                label: 'Laya · local',
+                active: backend == 'laya',
+                onTap: busy ? () {} : () => onBackend('laya'),
               ),
               _TextToggle(
                 label: 'ACP · external',
@@ -1959,6 +2106,7 @@ class _TurnView extends StatelessWidget {
   String get _agentRole => switch (backend) {
     'apple_foundation_afm' => 'AFM',
     'open_router' => 'OR',
+    'laya' => 'Laya',
     _ => 'AGT',
   };
 

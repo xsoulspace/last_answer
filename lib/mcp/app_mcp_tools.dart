@@ -22,7 +22,9 @@ library;
 
 import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/device_capabilities.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
+import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/router.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
@@ -485,6 +487,41 @@ Set<AgentCallEntry> appMcpEntries() => {
               'palette_open',
               'palette_close',
             ],
+          },
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      final snapshot = await DeviceCapabilitySnapshot.gather(
+        installationService: AcpInstallationService(),
+        hostedChatCredential:
+            (parameters['hosted_chat_credential'] as bool?) ?? false,
+      );
+      return MCPCallResult(
+        message: 'This device\'s hosting capabilities, probed live '
+            '(route by these facts, never by advertising).',
+        parameters: {'ok': true, ...snapshot.toJson()},
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'device_capabilities',
+      description:
+          'What THIS device can host for the fleet: detected ACP agents, '
+          'the Apple-foundation AFM lane, laya-serve reachability '
+          '(probed), hosted-chat credential presence, and the LAN mesh '
+          'state. Route decisions and tasks by these capability facts '
+          '— transport membership alone never grants authority.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'hosted_chat_credential': {
+            'type': 'boolean',
+            'description':
+                'Whether a hosted-model credential is resolvable on '
+                'this device (the secure-store lookup is the '
+                "caller's side).",
           },
         },
       }),

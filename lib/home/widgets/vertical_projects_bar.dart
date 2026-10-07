@@ -5,10 +5,15 @@ class VerticalProjectsBar extends StatelessWidget {
   const VerticalProjectsBar({
     required this.onIdeaTap,
     required this.onNoteTap,
+    this.onChatTap,
     super.key,
   });
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
+
+  /// Null on hosts without the chat surface yet; the item hides instead of
+  /// dead-ending.
+  final VoidCallback? onChatTap;
   @override
   Widget build(final BuildContext context) => Container(
     margin: const EdgeInsets.only(bottom: 22),
@@ -25,11 +30,17 @@ class VerticalProjectsBar extends StatelessWidget {
         BarItem(
           onTap: onNoteTap,
           label: context.l10n.note,
-          child: IconButton(
-            onPressed: onNoteTap,
-            icon: const Icon(Icons.book),
-          ),
+          child: IconButton(onPressed: onNoteTap, icon: const Icon(Icons.book)),
         ),
+        if (onChatTap != null)
+          BarItem(
+            onTap: onChatTap!,
+            label: context.l10n.chat,
+            child: IconButton(
+              onPressed: onChatTap,
+              icon: const Icon(Icons.forum_outlined),
+            ),
+          ),
       ],
     ),
   );

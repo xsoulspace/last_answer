@@ -61,6 +61,20 @@ abstract class Block with _$Block {
     /// Selected hosted model; set on a chat document's title block.
     String? model,
 
+    /// ACP agent key for a chat bound to an ACP transport; set on a chat
+    /// document's title block so the agent pick survives round-trips.
+    String? agentKey,
+
+    /// Working directory for ACP sessions of this chat; set on a chat
+    /// document's title block. Empty/absent → the app default.
+    String? workspace,
+
+    /// Mesh peer id of the device that owns this chat's agent session
+    /// (title block). Null = unclaimed; the first device to send a turn
+    /// claims it. Peers route their turns to the owner over the mesh task
+    /// board instead of running a local agent.
+    String? ownerPeerId,
+
     /// Per-document system prompt; set on a chat document's title block.
     String? systemPrompt,
     @Default(MessageStatus.complete) MessageStatus status,
@@ -94,7 +108,10 @@ abstract class DocumentNode with _$DocumentNode {
   const factory DocumentNode({
     required NodeId id,
 
-    required DateTime createdAt, required DateTime updatedAt, /// Only 'doc' today; extensible later without model changes.
+    required DateTime createdAt,
+    required DateTime updatedAt,
+
+    /// Only 'doc' today; extensible later without model changes.
     @Default('doc') String kind,
 
     /// Replaces sealed format enums: 'gdd', 'prd', or any template id.

@@ -49,7 +49,14 @@ const PipelineOverrides _androidOverrides = PipelineOverrides(
   // generated adaptive icon entirely.
   resDirs: ['android/app/src/main/res'],
   resourceConfigs: ['en', 'ru'],
-  excludePlugins: ['integration_test'],
+  excludePlugins: [
+    'integration_test',
+    // The RuStore billing SDK's artifactory (vkpartner/oreo) is
+    // unreachable from this network — 404 on every path (2026-10-06) —
+    // so its Android plugin cannot compile. Billing is unused in the
+    // paired-device proof; restore when the artifactory answers.
+    'rustore_billing_api',
+  ],
   manifest: ManifestSpec(
     permissions: [
       AndroidPermission.internet,

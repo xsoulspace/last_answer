@@ -52,7 +52,8 @@ final class AcpAgentCatalog {
         '@zed-industries/claude-code-acp',
       ],
       installHint: 'Requires Node.js and global npm access.',
-      authHint: 'Run `claude /login` in a terminal (Anthropic OAuth); the '
+      authHint:
+          'Run `claude /login` in a terminal (Anthropic OAuth); the '
           'ACP adapter reuses the CLI credentials.',
     ),
     AcpAgentCatalogEntry(
@@ -64,7 +65,8 @@ final class AcpAgentCatalog {
       arguments: ['--experimental-acp'],
       installCommand: ['npm', 'install', '-g', '@google/gemini-cli'],
       installHint: 'Requires Node.js and Google authentication.',
-      authHint: 'Set GEMINI_API_KEY (or run gemini once in a terminal '
+      authHint:
+          'Set GEMINI_API_KEY (or run gemini once in a terminal '
           'and complete the Google OAuth sign-in); credentials stay in '
           "the CLI's own store.",
     ),
@@ -78,7 +80,8 @@ final class AcpAgentCatalog {
       installHint:
           'Requires Node.js and the Codex CLI installed and logged in '
           '(`codex login`).',
-      authHint: 'Run `codex login` in a terminal (ChatGPT or API key); '
+      authHint:
+          'Run `codex login` in a terminal (ChatGPT or API key); '
           'credentials stay in the CLI config.',
     ),
     AcpAgentCatalogEntry(
@@ -89,7 +92,8 @@ final class AcpAgentCatalog {
       installHint:
           'ACP adapter for the pi coding agent; requires Node.js and '
           "pi's own provider credentials.",
-      authHint: 'Run `pi auth <provider>` in a terminal to check or set '
+      authHint:
+          'Run `pi auth <provider>` in a terminal to check or set '
           'provider credentials; they stay in the pi config store.',
     ),
   ];
@@ -164,10 +168,26 @@ final class AcpAgentSession {
 
 /// Streaming update from an active prompt turn.
 final class AcpPromptUpdate {
-  const AcpPromptUpdate({this.textDelta, this.message});
+  const AcpPromptUpdate({
+    this.textDelta,
+    this.message,
+    this.toolStatus,
+    this.planEntries,
+  });
 
   final String? textDelta;
+
+  /// Tool-call title (or raw id when the agent sent none).
   final String? message;
+
+  /// Tool-call lifecycle (`pending`/`in_progress`/`completed`/`failed`) —
+  /// carried alongside [message] so surfaces can show WHERE a tool is,
+  /// not just that it exists.
+  final String? toolStatus;
+
+  /// Agent plan entries (`session/update` kind `plan`), replaced wholesale
+  /// on every plan update.
+  final List<String>? planEntries;
 }
 
 /// Completed prompt turn.
@@ -417,7 +437,18 @@ class AcpAgentRuntime {
             }
           } else if (update is ToolCallUpdate) {
             controller.add(
-              AcpPromptUpdate(message: update.title ?? update.toolCallId),
+              AcpPromptUpdate(
+                message: update.title ?? update.toolCallId,
+                toolStatus: update.status,
+              ),
+            );
+          } else if (update is Plan) {
+            controller.add(
+              AcpPromptUpdate(
+                planEntries: [
+                  for (final entry in update.entries) entry.content,
+                ],
+              ),
             );
           }
         },

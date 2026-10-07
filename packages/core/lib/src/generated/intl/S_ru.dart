@@ -153,6 +153,9 @@ class SRu extends S {
   String get note => 'Заметка';
 
   @override
+  String get chat => 'Чат';
+
+  @override
   String get answer => 'Ответ';
 
   @override
@@ -794,4 +797,14 @@ class SRu extends S {
 
   @override
   String get worldBindingReadOnly => 'только чтение';
+
+  @override
+  String get agentChatWorkspaceTooltip => 'Рабочая папка агента';
+
+  @override
+  String get agentChatPickWorkspace => 'Выбрать рабочую папку агента';
+
+  @override
+  String get agentChatContextReset =>
+      'Процесс агента перезапущен — предыдущие сообщения — только история.';
 }

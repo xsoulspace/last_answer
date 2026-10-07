@@ -146,6 +146,117 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
     ),
   ),
   mcpToolkitTool(
+    handler: (final parameters) async {
+      // ADR 0072 §5 — the PHONE side of the seat rung: reads the paired
+      // registry (the announcement the signed pairing carried), requests
+      // the seat in-app, and drives agent_doc_state over the channel.
+      // DEBUG ONLY (the toolkit is a VM-service debug channel).
+      // Args win; absent → the paired registry's first world answers
+      // (host/port/token from the SIGNED announcement).
+      final rawHost = parameters['host'];
+      final rawPort = parameters['port'];
+      final rawToken = parameters['token'];
+      String? host = rawHost is String ? rawHost : null;
+      // Switch-case promotion (the ternary form fights this analyzer
+      // across the dynamic map boundary — measured).
+      int? port = rawPort == null ? null : int.tryParse(rawPort);
+      String? token = rawToken is String ? rawToken : null;
+      if (host == null || port == null || (token == null || token.isEmpty)) {
+        final paired = await external_worlds.pairedWorldsJson();
+        if (paired.isEmpty) {
+          return MCPCallResult(
+            message:
+                'No paired worlds — pair first (storage_mesh_pairing_code '
+                'on the host, storage_mesh_accept_pairing here).',
+            parameters: {'ok': false, 'paired': paired},
+          );
+        }
+        final world = paired.first;
+        // The announcement shape: {worldId, endpoint, token, seatWs?}.
+        final seatWs = world['seatWs'];
+        final t = world['token'];
+        if (seatWs is! String ||
+            seatWs.isEmpty ||
+            t is! String ||
+            t.isEmpty) {
+          return MCPCallResult(
+            message:
+                'The paired world announces no usable seat channel — arm '
+                'the daemon with --seat-ws (ADR 0072 §5).',
+            parameters: {'ok': false, 'paired': paired},
+          );
+        }
+        final uri = Uri.tryParse(seatWs);
+        if (uri == null || !uri.hasScheme || uri.host.isEmpty) {
+          return MCPCallResult(
+            message: 'Bad seatWs endpoint in the announcement: $seatWs',
+            parameters: {'ok': false},
+          );
+        }
+        host = uri.host;
+        port = uri.port;
+        token = t;
+      }
+      final seatHost = host;
+      final seatPort = port;
+      final seatToken = token;
+      if (seatHost.isEmpty || seatPort <= 0 || seatToken.isEmpty) {
+        return MCPCallResult(
+          message: 'Seat endpoint incomplete after resolution.',
+          parameters: {'ok': false},
+        );
+      }
+      final rawActor = parameters['actor'];
+      final actor = rawActor is String ? rawActor : 'phone-1';
+      final client = HarnessSeatWsClient(
+        host: seatHost,
+        port: seatPort,
+        token: seatToken,
+      );
+      try {
+        final seat = await client
+          .requestSeat(actor: actor)
+          .timeout(const Duration(seconds: 15));
+        final state = await client
+            .callTool('agent_doc_state', <String, Object?>{})
+            .timeout(const Duration(seconds: 30));
+        return MCPCallResult(
+          message:
+              'Seat granted (allowlist: ${seat.tools.toList()..sort()}); '
+              'agent_doc_state over the seat channel: '
+              'ok=${state['ok']} docId=${state['docId']}.',
+          parameters: {
+            'ok': true,
+            'allowlist': seat.tools.toList()..sort(),
+            'state': state,
+          },
+        );
+      } on Object catch (e) {
+        return MCPCallResult(
+          message: 'Seat channel failed: ${e.toString().split('\n').first}',
+          parameters: {'ok': false},
+        );
+      }
+    },
+    definition: MCPToolDefinition(
+      name: 'world_inspector_seat_probe',
+      description:
+          'DEBUG ONLY — the paired-device seat rung (ADR 0072 §5): '
+          "request this device's seat from the host seat channel and "
+          'drive agent_doc_state over it. Args optional when a paired '
+          'world is announced: host, port, token, actor.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'host': {'type': 'string'},
+          'port': {'type': 'integer'},
+          'token': {'type': 'string'},
+          'actor': {'type': 'string'},
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
     handler: (final parameters) {
       final registry = HarnessSessionRegistry.instance;
       final seeded = seedScriptedSessions();

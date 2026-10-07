@@ -153,6 +153,9 @@ class SIt extends S {
   String get note => 'Nota';
 
   @override
+  String get chat => 'Chat';
+
+  @override
   String get answer => 'Risposta';
 
   @override
@@ -791,4 +794,15 @@ class SIt extends S {
 
   @override
   String get worldBindingReadOnly => 'sola lettura';
+
+  @override
+  String get agentChatWorkspaceTooltip => 'Cartella di lavoro dell\'agente';
+
+  @override
+  String get agentChatPickWorkspace =>
+      'Scegli la cartella di lavoro dell\'agente';
+
+  @override
+  String get agentChatContextReset =>
+      'Il processo dell\'agente è stato riavviato — i messaggi precedenti sono solo cronologia.';
 }

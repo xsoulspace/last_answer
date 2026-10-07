@@ -38,6 +38,7 @@
   "noProjectsYet": "Тут пока пусто",
   "idea": "Идея",
   "note": "Заметка",
+  "chat": "Чат",
   "subscription": "Подписка",
   "freeSubscription": "Бесплатно",
   "patronSubscription": "Patron",
@@ -267,5 +268,8 @@
   "worldBindingEndpointLabel": "Endpoint",
   "worldBindingInvalidEndpoint": "Введите корректный http(s) endpoint",
   "worldBindingSeat": "seat",
-  "worldBindingReadOnly": "только чтение"
+  "worldBindingReadOnly": "только чтение",
+  "agentChatWorkspaceTooltip": "Рабочая папка агента",
+  "agentChatPickWorkspace": "Выбрать рабочую папку агента",
+  "agentChatContextReset": "Процесс агента перезапущен — предыдущие сообщения — только история."
 }

@@ -1,10 +1,12 @@
 import 'dart:math' as math;
 
+import 'package:headless_core/headless_core.dart' as hc;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/doc/chat_document_view.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/home/tags/tags.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
@@ -83,8 +85,15 @@ class HomeScreen extends StatelessWidget {
       // re-reads the fold (a peer's routed permission answer arrives with
       // the sync).
       AgentDocSurface.meshWiring = _agentDocMeshWiring();
-      StorageBackendsNotifier.onSyncCycle = () =>
-          AgentDocSurface.debugSurface?.refreshAfterMeshSync();
+      // Multiplayer chat: chat docs route to the SAME mesh-attached
+      // replica store (convergence over the LAN mesh), and the open chat
+      // surface re-reads the fold after every cycle.
+      hc.MeshAwareDocumentRepository.replicaStoreGetter =
+          () => StorageBackendsNotifier.instance.docReplicaStore;
+      StorageBackendsNotifier.onSyncCycle = () {
+        AgentDocSurface.debugSurface?.refreshAfterMeshSync();
+        ChatDocumentView.debugSurface?.refresh();
+      };
       return true;
     }());
     final screenLayout = ScreenLayout.of(context);
@@ -145,6 +154,9 @@ class _VerticalBar extends StatelessWidget {
           },
           onNoteTap: () {
             context.read<OpenedProjectNotifier>().createNoteProject(context);
+          },
+          onChatTap: () {
+            context.read<OpenedProjectNotifier>().createChatProject(context);
           },
         ),
       ],

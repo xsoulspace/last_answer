@@ -65,8 +65,16 @@ class GlobalStatesProvider extends StatelessWidget {
       Provider(create: ProjectsRepository.new),
       Provider(create: AdsRepository.new),
       Provider<headless_core.DocumentRepository>(
-        create: (final context) => headless_core.StorageDocumentRepository(
-          service: context.read<StorageService>(),
+        create: (final context) => headless_core.MeshAwareDocumentRepository(
+          headless_core.StorageDocumentRepository(
+            service: context.read<StorageService>(),
+          ),
+          // The live mesh replica store arrives when the user pairs the
+          // device (LAN mesh); until then chats use the plain local store.
+          // The seam is installed by the app shell (home screen) in
+          // debug/profile builds, mirroring AgentDocSurface.meshWiring.
+          () => headless_core.MeshAwareDocumentRepository.replicaStoreGetter
+              ?.call(),
         ),
       ),
       Provider(

@@ -153,6 +153,9 @@ class SEn extends S {
   String get note => 'Note';
 
   @override
+  String get chat => 'Chat';
+
+  @override
   String get answer => 'Answer';
 
   @override
@@ -785,4 +788,14 @@ class SEn extends S {
 
   @override
   String get worldBindingReadOnly => 'read-only';
+
+  @override
+  String get agentChatWorkspaceTooltip => 'Agent working folder';
+
+  @override
+  String get agentChatPickWorkspace => 'Choose the agent\'s working folder';
+
+  @override
+  String get agentChatContextReset =>
+      'The agent process restarted — earlier messages are history only.';
 }

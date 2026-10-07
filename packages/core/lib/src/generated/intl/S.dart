@@ -375,6 +375,12 @@ abstract class S {
   /// **'Note'**
   String get note;
 
+  /// No description provided for @chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chat;
+
   /// No description provided for @answer.
   ///
   /// In en, this message translates to:
@@ -1526,6 +1532,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'read-only'**
   String get worldBindingReadOnly;
+
+  /// No description provided for @agentChatWorkspaceTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent working folder'**
+  String get agentChatWorkspaceTooltip;
+
+  /// No description provided for @agentChatPickWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the agent\'s working folder'**
+  String get agentChatPickWorkspace;
+
+  /// No description provided for @agentChatContextReset.
+  ///
+  /// In en, this message translates to:
+  /// **'The agent process restarted — earlier messages are history only.'**
+  String get agentChatContextReset;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

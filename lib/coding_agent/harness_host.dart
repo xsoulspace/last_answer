@@ -257,7 +257,21 @@ final class HarnessHostConfig {
       );
     }
     if (backend == 'apple_foundation_afm') {
-      bindings['apple_foundation_afm'] = appleFoundationBinding().binding;
+      final afm = appleFoundationBinding().binding;
+      // The binding's input profile is a REAL-model guard (on-device
+      // context window minus generation reserve). An LLM-free run never
+      // reaches a model, and the rendered decision surface (tool menu +
+      // context cut) exceeds that profile, so the ADR 0020 input gate
+      // would bounce every decision before any move — the harness's own
+      // convention for model-less providers is no input limit
+      // (test_provider). Real-model runs keep the profile.
+      bindings['apple_foundation_afm'] = handlerFactory == null
+          ? afm
+          : HarnessBackendBinding(
+              defaultModel: afm.defaultModel,
+              buildRouter: afm.buildRouter,
+              cancelActiveGeneration: afm.cancelActiveGeneration,
+            );
     }
     if (backend == 'jev' && jevBinding != null) {
       bindings['jev'] = jevBinding!.binding;

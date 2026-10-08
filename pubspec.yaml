@@ -282,6 +282,10 @@ dependency_overrides:
   # local dev train, not yet published — same hosted-`any` rule.
   xsoulspace_inference_laya:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
+  # afm's local small text-model lane (mlx, loopback): committed locally,
+  # not yet published — same hosted-`any` rule.
+  xsoulspace_inference_mlx:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_mlx
   agentic_executables_wire:
     path: ../../agentic_executables/agentic_executables_wire
   ecsly_serialization:
@@ -329,10 +333,6 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/universal_storage_convergence
   universal_storage_mesh:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh
-  # ADR 0047 — the world layer: interest policies, zone catalogs, the
-  # host-driven pulse contract; the mesh session consumes it.
-  universal_storage_world:
-    path: ../dart_flutter_packages/pkgs/universal_storage_world
   universal_storage_mesh_transport:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
   shelf: ^1.4.2

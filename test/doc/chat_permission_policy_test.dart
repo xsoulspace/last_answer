@@ -87,18 +87,18 @@ void main() {
 
   test('core adaptation preserves identity and unknown wire kinds', () {
     final request = ChatPermissionPolicy.workspaceEdits.coreRequestOf(
-      requestOf('camera'),
+      requestOf('teleport'),
     );
     // Unknown wire kinds coerce to other with the raw token preserved —
     // the closed vocabulary never lies about what it did not model.
     expect(request.kind, PermissionKind.other);
-    expect(request.wireKind, 'camera');
+    expect(request.wireKind, 'teleport');
     expect(request.id, 'tool-1');
     expect(request.origin, 'acp-session:session-1');
     expect(request.details, 'dart test');
     // And the stance escalates what the vocabulary does not model.
     expect(
-      ChatPermissionPolicy.workspaceEdits.decide(requestOf('camera')),
+      ChatPermissionPolicy.workspaceEdits.decide(requestOf('teleport')),
       isA<PermissionEscalate>(),
     );
   });

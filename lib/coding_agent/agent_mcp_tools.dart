@@ -1,6 +1,7 @@
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/settings/features/live_mesh_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
@@ -374,6 +375,107 @@ Set<AgentCallEntry> agentMcpEntries() => {
             'description':
                 'Agent doc id whose presence channel to read '
                 '(defaults to the open agent doc).',
+          },
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      final live = StorageBackendsNotifier.instance.liveMesh;
+      if (live == null) {
+        return MCPCallResult(
+          message:
+              'The live plane is not attached on this device (mesh '
+              'unconfigured, or the plane failed to open — the mesh '
+              'itself keeps working).',
+          parameters: {'ok': false, 'live': false},
+        );
+      }
+      final action = parameters['action'];
+      if (action == 'publish') {
+        // Agents always publish (the privacy law gates HUMANS, not
+        // agents — watching agents is the point of the plane).
+        final requested = parameters['verb'];
+        final verb = requested is String && LiveVerbs.all.contains(requested)
+            ? requested
+            : LiveVerbs.thinking;
+        final docId = parameters['docId'] is String
+            ? parameters['docId'] as String
+            : null;
+        final detail = parameters['detail'] is String
+            ? parameters['detail'] as String
+            : null;
+        final peerId = StorageBackendsNotifier.instance.meshPeerId;
+        await live.publish(
+          LiveActor(
+            actorId: 'agent-$peerId',
+            displayName: 'Agent',
+            isAgent: true,
+            verb: verb,
+            docId: docId,
+            detail: detail,
+            since: DateTime.now().toUtc(),
+          ),
+        );
+        return MCPCallResult(
+          message: docId == null
+              ? 'Published live activity: $verb.'
+              : 'Published live activity: $verb on $docId.',
+          parameters: {'ok': true, 'verb': verb, 'docId': docId},
+        );
+      }
+      final actors = live.actors;
+      final summary = actors.isEmpty
+          ? 'Nobody is live right now.'
+          : 'Live actors: '
+              '${actors.map((final a) => a.docId == null ? '${a.displayName} (${a.verb})' : '${a.displayName} (${a.verb} on ${a.docId})').join(', ')}'
+              '.';
+      return MCPCallResult(
+        message: summary,
+        parameters: {
+          'ok': true,
+          'live': true,
+          'actors': [for (final actor in actors) actor.toJson()],
+          'cursors': [
+            for (final cursor in live.cursors.values) cursor.toJson(),
+          ],
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'live_presence',
+      description:
+          'The live multiplayer picture: who is on the mesh right now '
+          "and what each actor — human or agent — is doing (verb, doc "
+          "focus). action=publish announces THIS agent's activity so "
+          'the human and other devices can watch it work. Privacy law: '
+          'human activity appears only when its device opted in to '
+          'sharing; agent activity always flows.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'action': {
+            'type': 'string',
+            'enum': ['read', 'publish'],
+            'description':
+                "read (default) returns the live picture; publish "
+                "announces this agent's activity.",
+          },
+          'verb': {
+            'type': 'string',
+            'enum': LiveVerbs.all,
+            'description':
+                'publish: what this agent is doing (default thinking).',
+          },
+          'docId': {
+            'type': 'string',
+            'description': 'publish: the doc this agent is working on.',
+          },
+          'detail': {
+            'type': 'string',
+            'description':
+                'publish: short human-readable detail of the activity.',
           },
         },
       }),

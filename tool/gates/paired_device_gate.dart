@@ -163,7 +163,7 @@ Future<void> main(final List<String> args) async {
         } on Object catch (_) {}
       }
       return false;
-    }, attempts: 30);
+    }, attempts: 120);
     expect(
       token != null && facadeEndpoint != null && seatWs != null,
       'daemon-up',

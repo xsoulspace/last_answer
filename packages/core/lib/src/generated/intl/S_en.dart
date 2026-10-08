@@ -593,6 +593,13 @@ class SEn extends S {
   String get storageMeshAdvanced => 'Advanced settings (debug)';
 
   @override
+  String get liveSharingTitle => 'Share my activity live';
+
+  @override
+  String get liveSharingSubtitle =>
+      'Paired devices see what you\'re working on (doc + activity, never content). Agents are always visible to you. Nothing leaves this device until you turn this on.';
+
+  @override
   String get storageMeshUnpair => 'Unpair devices';
 
   @override

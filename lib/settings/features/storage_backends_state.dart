@@ -6,6 +6,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/settings/features/live_mesh_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_platform_stub.dart'
     if (dart.library.io) 'storage_backends_platform_io.dart'
     as platform;
@@ -623,6 +624,47 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Active mesh replica, created by [ensureMeshService].
   MeshStorageService? get meshService => _meshService;
 
+  LiveMeshService? _liveMesh;
+
+  /// The live multiplayer plane (ADR 0050 adoption): who is here and what
+  /// each actor is doing. Attached best-effort when a mesh role lands —
+  /// null when the mesh is unconfigured or the plane failed to open (the
+  /// mesh itself never depends on it).
+  LiveMeshService? get liveMesh => _liveMesh;
+
+  /// Opens and arms the live plane for the current mesh role. The relay
+  /// endpoint is the one the mesh already established; paired peers arm
+  /// the owner's adoption gate. Failures are swallowed BY DESIGN: the
+  /// live plane is additive, never load-bearing.
+  Future<void> _attachLivePlane({
+    required final bool isOwner,
+    final String? ownerId,
+  }) async {
+    final service = _meshService;
+    if (service == null) return;
+    final endpoint = isOwner
+        ? service.advertisedEndpoint
+        : service.connectedEndpoint;
+    if (endpoint == null) return;
+    try {
+      final live = await LiveMeshService.open(
+        selfId: meshPeerId,
+        endpoint: endpoint,
+        isOwner: isOwner,
+        pairedPeerIds: service.peers.map((final p) => p.peerId).toSet(),
+      );
+      if (isOwner) {
+        live.host();
+      } else {
+        await live.join(ownerId: ownerId ?? '');
+      }
+      _liveMesh = live;
+      notifyListeners();
+    } on Object {
+      // The live plane is additive: its failure never breaks the mesh.
+    }
+  }
+
   /// Opens the mesh replica once, choosing a persistent default store
   /// location on dart:io platforms so pairing survives restarts.
   Future<MeshStorageService> ensureMeshService() async {
@@ -698,6 +740,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
     service.startPeriodicSync();
     _meshRole = MeshRole.main;
     _meshRelayEndpoint = endpoint.toString();
+    unawaited(_attachLivePlane(isOwner: true));
     _enabled.add(StorageBackendId.mesh);
     if (_primary == StorageBackendId.localDb) _primary = StorageBackendId.mesh;
     await _persist();
@@ -711,10 +754,11 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// Joining success also arms the periodic background sync.
   Future<StorageOperationReport> joinWithCode(final String code) async {
     final service = await ensureMeshService();
-    await service.acceptPairingCode(code);
+    final ownerPeer = await service.acceptPairingCode(code);
     _meshRole = MeshRole.joined;
     _meshRelayEndpoint =
         service.connectedEndpoint?.toString() ?? _meshRelayEndpoint;
+    unawaited(_attachLivePlane(isOwner: false, ownerId: ownerPeer.peerId));
     _enabled.add(StorageBackendId.mesh);
     await _persist();
     service.startPeriodicSync();
@@ -773,6 +817,8 @@ class StorageBackendsNotifier extends ChangeNotifier {
     _docReplicaStore = null;
     _taskBoard = null;
     _meshSyncService = null;
+    unawaited(_liveMesh?.dispose());
+    _liveMesh = null;
     unawaited(_meshService?.dispose());
     _meshService = null;
     super.dispose();

@@ -5,6 +5,8 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
+import 'package:lastanswer/settings/features/live_mesh_service.dart';
+import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:lastanswer/doc/chat_permission_policy.dart';
 import 'package:lastanswer/doc/chat_inference_resolver.dart';
 import 'package:uuid/uuid.dart';
@@ -131,6 +133,12 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     // doc joins its presence channel (ADR 0031 §1 — join is the caller's
     // job; a live replica only, never a setup side effect).
     ChatDocumentView.debugSurface = _surfaceLink;
+    // The live plane's HUMAN half: this surface is where the human is.
+    // Every call is gated at the source — while sharing is off, nothing
+    // leaves the device.
+    unawaited(
+      _humanLive?.noteOpen(widget.doc.id.value),
+    );
     unawaited(AgentDocSurface.meshWiring?.joinDoc(widget.doc.id.value));
   }
 
@@ -1084,12 +1092,36 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
     await _reloadCurrent();
   }
 
+  /// The live-plane human publisher for THIS device, null while the
+  /// plane is not attached (mesh unconfigured or the role not set up).
+  HumanLivePresence? get _humanLive {
+    final notifier = StorageBackendsNotifier.instance;
+    final live = notifier.liveMesh;
+    if (live == null) return null;
+    return HumanLivePresence(
+      service: live,
+      actorId: notifier.meshPeerId,
+    );
+  }
+
+  /// Composer activity: the human is typing here, and their caret sits
+  /// at [offset]. The publisher throttles and the service gates — a
+  /// quiet call either way.
+  void _noteHumanActivity() {
+    final live = _humanLive;
+    if (live == null) return;
+    final docId = widget.doc.id.value;
+    unawaited(live.noteTyping(docId));
+    unawaited(live.noteCursor(docId, offset: _composerController.selection.baseOffset));
+  }
+
   @override
   void dispose() {
     if (identical(ChatDocumentView.debugSurface, _surfaceLink)) {
       ChatDocumentView.debugSurface = null;
     }
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(widget.doc.id.value));
+    unawaited(_humanLive?.noteClosed());
     unawaited(_streamSubscription?.cancel());
     unawaited(_permissionSubscription?.cancel());
     for (final controller in _messageControllers.values) {
@@ -1161,6 +1193,15 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
         : owner == mine
         ? 'owned here'
         : 'owned by ${owner.substring(0, owner.length.clamp(0, 6))}…';
+    // The live plane (ADR 0050 adoption): who is doing what, right now.
+    final live = StorageBackendsNotifier.instance.liveMesh?.actors;
+    if (live != null && live.isNotEmpty) {
+      final who = live
+          .take(3)
+          .map((final actor) => '${actor.displayName} ${actor.verb}')
+          .join(' · ');
+      return 'mesh · $ownerLabel · $who';
+    }
     return 'mesh · ${status.presenceCount} here · $ownerLabel';
   }
 
@@ -1381,6 +1422,7 @@ class _ChatDocumentViewState extends State<ChatDocumentView> {
                 Expanded(
                   child: TextField(
                     controller: _composerController,
+                    onChanged: (final _) => _noteHumanActivity(),
                     minLines: 1,
                     maxLines: 6,
                   ),

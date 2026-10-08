@@ -4,19 +4,28 @@ import 'dart:typed_data';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter/foundation.dart' show visibleForTesting;
-import 'package:headless_core/headless_core.dart';
+import 'package:headless_core/headless_core.dart' show DocReplicaStore;
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
 import 'package:lastanswer/settings/features/mesh_relay_host_stub.dart'
     if (dart.library.io) 'mesh_relay_host_io.dart' as relay_host;
-import 'package:universal_storage_convergence/universal_storage_convergence.dart';
+import 'package:lastanswer/settings/features/mesh_sync_participants.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_mesh/universal_storage_mesh.dart';
 import 'package:universal_storage_mesh_transport/universal_storage_mesh_transport.dart';
+import 'package:universal_storage_world/universal_storage_world.dart';
 
 /// Owns one cross-platform mesh replica, its WebSocket transport, and
 /// (on dart:io platforms) the locally hosted relay of a "main device".
+///
+/// ADR 0047 §3: the SYNC BRAIN lives in the package now — this service is
+/// the app's thin wiring around a [MeshWorldSession]: it owns the
+/// app-specific halves (relay hosting, pairing with harness-world
+/// announcements, the payload backup file) and adapts Last Answer's
+/// durable state ([DocReplicaStore]s, [RosterParticipant], the
+/// [TaskBoardParticipant]) onto the session's participant seam. Presence,
+/// the sync cycle, and scheduling are the session's.
 ///
 /// The user-facing contract is intentionally tiny:
 ///  - [createPairingCode] → show as QR / offer to copy.
@@ -27,7 +36,12 @@ final class MeshStorageService {
     required this.storage,
     required this.selfId,
     this._transport,
-  });
+  }) : _session = MeshWorldSession(storage: storage, selfId: selfId) {
+    // Pairing and presence funnel through ONE identity keypair: peers
+    // register us by the pairing key, so presence frames must be signed
+    // by that same identity (ADR 0031 §3).
+    _session.identityKeyPairProvider = _ensureIdentity;
+  }
 
   /// Production code goes through [open]; tests inject a
   /// provider-agnostic [StorageService] to exercise the doc-sync seam
@@ -41,20 +55,22 @@ final class MeshStorageService {
     // Private field, named parameter: an initializing formal is impossible
     // here (private named params do not exist).
     final SimpleKeyPair? identityKeyPair,
-  }) :
-        // ignore: prefer_initializing_formals
-        _identityKeyPair = identityKeyPair;
+  }) : _identityKeyPair = identityKeyPair,
+       // Private field, named parameter: an initializing formal is
+       // impossible here (private named params do not exist).
+       // ignore: prefer_initializing_formals
+       _session = MeshWorldSession(storage: storage, selfId: selfId) {
+    _session.identityKeyPairProvider = _ensureIdentity;
+  }
 
   final StorageService storage;
   final String selfId;
 
-  static const _dataFile = 'last-answer-data.json';
+  /// The extracted sync brain (ADR 0047 §3): participants, pulse cycle,
+  /// presence, interest. This service owns only app wiring around it.
+  final MeshWorldSession _session;
 
-  /// Doc-replica stores participating in the sync cycle (ADR 0005 §1
-  /// Phase 5b): attached via [attachDocSync]; [sync] flushes their pending
-  /// ops into storage before anti-entropy and absorbs remote doc data
-  /// after. The caller keeps ownership (lifecycle, dispose).
-  final List<DocReplicaStore> _docSyncs = [];
+  static const _dataFile = 'last-answer-data.json';
 
   /// Whether this platform can host a relay ("main device" capable):
   /// true wherever dart:io exists, false on web.
@@ -71,58 +87,17 @@ final class MeshStorageService {
   Object? connectError;
 
   /// Invoked after every background sync cycle (success or failure) —
-  /// the embedding app refreshes its projections from the fold here
-  /// (the same re-read `joinWithCode` does inline). Without it a
-  /// periodic absorb would never reach an open surface: doc-op driven
-  /// UI (transcript, routed permissions) would freeze until the next
-  /// manual cycle.
-  void Function()? onCycle;
+  /// the embedding app refreshes its projections from the fold here.
+  void Function()? get onCycle => _session.onCycle;
+  set onCycle(final void Function()? value) => _session.onCycle = value;
 
-  // -- Presence over the shared relay connection (ADR 0031 §1–2) ----------
+  // -- Presence (delegated to the session, ADR 0031 §1–2) ------------------
 
   /// Cadence policy for the presence sessions this service opens
-  /// (ADR 0031 §5: policy-with-bounds, chosen by the embedding app —
-  /// constructor-level, never a free knob). Document viewing is the
-  /// default here, so `background`.
-  PresenceConfig presenceConfig = PresenceConfig.background;
-
-  final Map<String, MeshPresenceSession> _presenceSessions = {};
-
-  /// Docs the CALLER asked to join (ADR 0031 §1: presence is doc-scoped;
-  /// the service never decides which docs are open). Re-opened whenever
-  /// the presence link (re)connects.
-  final Set<String> _presenceDocs = {};
-  MeshPresenceTracker? _presenceTracker;
-  MeshFrameAuthenticator? _presenceAuthenticator;
-  _PresenceLink? _presenceLink;
-  AddressedRelayEphemeralTransport? _relayPresenceTransport;
-  StreamSubscription<EphemeralLinkState>? _presenceLinkSub;
-  Future<void>? _presenceOpening;
-  var _ownsPresenceTransport = false;
-
-  /// Passive presence observation (ADR 0031 §1–2): folds verified peer
-  /// frames for docs with no local session, so a doc that opened before
-  /// this replica existed (its joinDoc was dropped by the wiring) still
-  /// SEES peers — observation only, never announcement.
-  MeshPresenceObserver? _presenceObserver;
-
-  // -- Roster riding the mesh as durable ops (ADR 0007 §1) ---------------
-
-  /// Directory under storage holding one roster file per replica
-  /// (whole-file, like the doc-sync seam's replica files).
-  static const _rosterDir = 'actor_rosters';
-
-  ActorRoster? _roster;
-
-  /// Directory under storage holding the task board files — one per
-  /// board id, same whole-file pattern as the roster directory.
-  static const _taskBoardDir = 'task_boards';
-
-  MeshTaskBoard? _taskBoard;
-  String? _taskBoardPath;
-
-  /// The live task board, null until [attachTaskBoard].
-  MeshTaskBoard? get taskBoard => _taskBoard;
+  /// (ADR 0031 §5: policy-with-bounds, chosen by the embedding app).
+  PresenceConfig get presenceConfig => _session.presenceConfig;
+  set presenceConfig(final PresenceConfig value) =>
+      _session.presenceConfig = value;
 
   /// Endpoint peers should use to reach this device's hosted relay.
   Uri? advertisedEndpoint;
@@ -170,7 +145,7 @@ final class MeshStorageService {
             .timeout(const Duration(seconds: 5));
         service._transport = transport;
         provider.attachTransport(transport);
-        service._attachRelayPresenceLink(transport);
+        service._session.attachRelayPresenceLink(transport);
       } on Exception catch (error) {
         transport = null;
         // Deferred: pairing and "Sync now" surface it to the user.
@@ -228,7 +203,7 @@ final class MeshStorageService {
       _transport = client;
       final provider = storage.provider;
       if (provider is MeshStorageProvider) provider.attachTransport(client);
-      _attachRelayPresenceLink(client);
+      _session.attachRelayPresenceLink(client);
     } on Object catch (error) {
       connectError = error;
       rethrow;
@@ -323,373 +298,103 @@ final class MeshStorageService {
 
   Future<String?> restore() => storage.readFile(_dataFile);
 
-  /// Registers [store] with the mesh sync cycle. Every [sync] then:
-  ///
-  /// 1. flushes the store's pending doc ops into storage (batched; one
-  ///    file per doc) so anti-entropy ships the latest replica state;
-  /// 2. runs the provider's anti-entropy exchange (peer files may be
-  ///    overwritten with a peer's replica JSON — whole-file LWW);
-  /// 3. calls [DocReplicaStore.absorbRemote] so the local replicas fold
-  ///    any ops the exchange delivered. Convergence rests on the kernel
-  ///    (VV dedupe + order-independent fold), not on file ordering; the
-  ///    next cycle's flush rewrites shadowed files with the merged log.
-  ///
-  /// Registration only — nothing is written until the next [sync]. The
-  /// store's storage should be the SAME [StorageService] this service
-  /// owns (or one backed by the same provider) so flushed files actually
+  /// Registers [store] with the mesh sync cycle (ADR 0047 §3): every
+  /// [sync] flushes its pending ops before anti-entropy, folds delivered
+  /// state after, and compacts last. Registration only — nothing is
+  /// written until the next cycle. The store's storage should be the
+  /// SAME [StorageService] this service owns so flushed files actually
   /// participate in anti-entropy. This service never disposes the store.
   void attachDocSync(final DocReplicaStore store) {
-    _docSyncs.add(store);
+    _session.attachParticipant(DocSyncParticipant(store));
   }
 
   /// Attaches the actor roster (ADR 0007 §1): ordinary durable kernel
-  /// state that rides the mesh — [sync] flushes its pending ops into
-  /// storage before anti-entropy and folds durable roster ops delivered
-  /// by the exchange after. The roster's replica id is forced to this
-  /// service's pairing peer id (ADR 0007 §2) — callers may have built it
-  /// with a placeholder id. The caller keeps ownership (lifecycle,
-  /// dispose); this service never disposes it.
+  /// state that rides the mesh as a [RosterParticipant]. The roster's
+  /// replica id is forced to this service's pairing peer id (ADR 0007
+  /// §2). The caller keeps ownership (lifecycle, dispose).
   void attachRoster(final ActorRoster roster) {
     roster.forceReplicaId(selfId);
-    _roster = roster;
+    _session.attachParticipant(RosterParticipant(roster));
   }
 
-  /// Attaches the mesh task board: durable kernel task rows that ride the
-  /// mesh exactly like the roster — [sync] flushes the board's whole
-  /// state into `task_boards/<boardId>.json` before anti-entropy and
-  /// folds a peer's board file after (snapshot-first, see [_absorbBoard]).
-  /// The board's replica id is fixed at construction
-  /// ([MeshTaskBoard.replicaId]); callers build it with this service's
-  /// pairing peer id, so no forcing happens here. The caller keeps
-  /// ownership (lifecycle, dispose); this service never disposes it.
+  /// Attaches the mesh task board as a [TaskBoardParticipant]; the
+  /// board's replica id is fixed at construction
+  /// ([MeshTaskBoard.replicaId]). The caller keeps ownership (lifecycle,
+  /// dispose).
   void attachTaskBoard(final MeshTaskBoard board) {
     _taskBoard = board;
-    _taskBoardPath = '$_taskBoardDir/${board.boardId}.json';
+    _session.attachParticipant(TaskBoardParticipant(board));
   }
+
+  MeshTaskBoard? _taskBoard;
+
+  /// The live task board, null until [attachTaskBoard].
+  MeshTaskBoard? get taskBoard => _taskBoard;
 
   /// Joins [docId]'s presence channel. Doc-scoped join is the CALLER's
-  /// job (ADR 0031 §1): the service never decides which docs are open.
-  /// When the presence link is up, the join frame goes out immediately;
-  /// otherwise the doc stays queued and joins on the next (re)connect.
-  Future<void> joinDoc(final String docId) async {
-    _presenceDocs.add(docId);
-    final link = _presenceLink;
-    if (link != null &&
-        link.connectionState == EphemeralLinkState.connected) {
-      await _openPresenceSessions();
-    }
-  }
+  /// job (ADR 0031 §1).
+  Future<void> joinDoc(final String docId) => _session.joinDoc(docId);
 
-  /// Leaves [docId]'s presence channel: a signed leave frame goes out so
-  /// peers drop this peer immediately (ADR 0031 §1).
-  Future<void> leaveDoc(final String docId) async {
-    _presenceDocs.remove(docId);
-    final session = _presenceSessions.remove(docId);
-    if (session != null) await _closePresenceSession(session);
-  }
+  /// Leaves [docId]'s presence channel (signed leave frame).
+  Future<void> leaveDoc(final String docId) => _session.leaveDoc(docId);
 
   /// Liveness refresh on the doc's channel (ADR 0031 §5: ping on
-  /// activity). Best-effort: a dead link swallows the ping — peers'
-  /// ttl sweeps are the crash backstop.
-  Future<void> notifyPresenceActivity(final String docId) async {
-    final session = _presenceSessions[docId];
-    if (session == null) return;
-    try {
-      await session.notifyActivity();
-    } on Object {
-      // Link down mid-ping: presence is observation, never durability.
-    }
-  }
+  /// activity). Best-effort.
+  Future<void> notifyPresenceActivity(final String docId) =>
+      _session.notifyPresenceActivity(docId);
 
   /// Live presence for [docId] — the tracker fold over unexpired
-  /// ephemeral ops (ADR 0029 §1, ADR 0031 §2). Agent-queryable state,
-  /// not UI state: "who is here" right now. Sweeps on read (expiry is
-  /// the crash backstop, ADR 0031 §1) — with no open doc sessions there
-  /// is no session ping cycle to sweep, so the read does it.
+  /// ephemeral ops (ADR 0029 §1, ADR 0031 §2). Agent-queryable state.
   List<MeshPresenceEntry> presence(
     final String docId, {
     final DateTime? now,
-  }) =>
-      _presenceTracker?.presence(docId, now: now ?? DateTime.now()) ??
-      const [];
+  }) => _session.presence(docId, now: now);
 
   /// How many inbound presence frames were dropped as named data
-  /// (ADR 0031 §3) across every open doc session and the passive
-  /// observer.
+  /// (ADR 0031 §3).
   int get rejectedPresenceFrameCount =>
-      (_presenceObserver?.rejectedFrameCount ?? 0) +
-      _presenceSessions.values.fold(
-        0,
-        (final n, final session) => n + session.rejectedFrameCount,
-      );
+      _session.rejectedPresenceFrameCount;
 
   /// Every dropped presence frame with its rejection reason, oldest
-  /// first, across every open doc session and the passive observer.
-  List<MeshFrameRejection> get presenceFrameRejections => [
-    ...?_presenceObserver?.rejections,
-    for (final session in _presenceSessions.values) ...session.rejections,
-  ];
+  /// first.
+  List<MeshFrameRejection> get presenceFrameRejections =>
+      _session.presenceFrameRejections;
 
-  /// Anti-entropy exchange with every known peer, wrapped in the doc-sync
-  /// seam above: attached [DocReplicaStore]s flush before the exchange
-  /// and absorb remote doc data after.
-  ///
-  /// Wrapped in a timeout because an addressed relay silently drops
-  /// frames addressed to offline peers; without it "Sync now" hangs.
+  /// Anti-entropy exchange with every known peer, wrapped in the
+  /// participant seam. Wrapped in a timeout because an addressed relay
+  /// silently drops frames addressed to offline peers; without it
+  /// "Sync now" hangs.
   Future<void> sync({
     final Duration timeout = const Duration(minutes: 1),
-  }) async {
-    await _syncCycle().timeout(timeout);
-  }
+  }) => _session.sync(timeout: timeout);
 
-  // -- Periodic sync (background anti-entropy while the mesh is active) --
+  /// Publishes what this replica wants DELIVERED (ADR 0048 §2): the
+  /// interest policy is resolved immediately and re-published every
+  /// cycle; null clears back to the wildcard.
+  void setInterest(final InterestPolicy? policy) =>
+      _session.setInterest(policy);
 
-  Timer? _periodicSyncTimer;
-
-  /// The sync cycle currently in flight, if any. The periodic tick skips
-  /// while a cycle — periodic or manual — is still running.
-  Future<void>? _syncInFlight;
+  // -- Periodic sync (the pulse convenience adapter; ADR 0047 §4) ----------
 
   /// Runs [sync] every [interval]. A tick landing while a sync cycle is
   /// still in flight is skipped, never queued — the next tick picks the
-  /// work up. Timer errors are swallowed-and-logged honestly: a failed
-  /// background cycle surfaces via [connectError] or the next tick, never
-  /// through a dead timer.
+  /// work up.
   void startPeriodicSync({
     final Duration interval = const Duration(seconds: 30),
-  }) {
-    stopPeriodicSync();
-    _periodicSyncTimer = Timer.periodic(interval, (final _) {
-      unawaited(_periodicTick());
-    });
-  }
+  }) => _session.startPeriodicPulse(interval: interval);
 
-  void stopPeriodicSync() {
-    _periodicSyncTimer?.cancel();
-    _periodicSyncTimer = null;
-  }
+  void stopPeriodicSync() => _session.stopPeriodicPulse();
 
   /// Whether a periodic [sync] timer is armed ([stopPeriodicSync] and
   /// [dispose] disarm it).
-  bool get isPeriodicSyncRunning => _periodicSyncTimer?.isActive ?? false;
-
-  Future<void> _periodicTick() async {
-    if (_syncInFlight != null) return;
-    final cycle = sync()
-        .catchError((final Object error) {
-          // Background cycle: never let the timer die on a relay drop or
-          // timeout.
-          // ignore: avoid_print
-          print('mesh: periodic sync failed: $error');
-        })
-        .whenComplete(() {
-          _syncInFlight = null;
-          // Refresh even after a failed cycle: the projection re-read is
-          // cheap and the fold may still have moved.
-          onCycle?.call();
-        });
-    _syncInFlight = cycle;
-    await cycle;
-  }
-
-  Future<void> _syncCycle() async {
-    for (final store in _docSyncs) {
-      await store.flush();
-    }
-    await _flushRoster();
-    await _flushBoard();
-    await storage.syncRemote();
-    for (final store in _docSyncs) {
-      await store.absorbRemote();
-    }
-    await _absorbRoster();
-    await _absorbBoard();
-    // Periodic compaction policies (cheap: fire only above the log-size
-    // threshold). DocReplicaStore.compactAll flushes when it compacted;
-    // the board owns one whole file, so the flush happens here.
-    for (final store in _docSyncs) {
-      await store.compactAll();
-    }
-    if (_taskBoard != null && _taskBoard!.compact() > 0) {
-      await _flushBoard();
-    }
-  }
-
-  // -- Presence link management (ADR 0031 §1–2) ---------------------------
-
-  /// Owns the presence channel over the relay client's connection: one
-  /// adapter, one tracker, one authenticator — shared by every doc
-  /// session (sessions filter frames by [MeshPresenceSession.docId]).
-  void _attachRelayPresenceLink(final AddressedRelayClient client) {
-    _startPresenceLink(
-      AddressedRelayEphemeralTransport(client: client),
-      ownedByService: true,
-    );
-  }
+  bool get isPeriodicSyncRunning => _session.isPeriodicPulseRunning;
 
   /// Test seam: attaches a provider-agnostic [EphemeralFrameTransport]
-  /// (ADR 0031 §2 — any transport plugs in without touching the session)
-  /// so presence wiring is exercised without networking. The caller
-  /// keeps ownership of the injected transport.
+  /// (ADR 0031 §2 — any transport plugs in without touching the session).
+  /// The caller keeps ownership of the injected transport.
   @visibleForTesting
-  void attachPresenceTransport(final EphemeralFrameTransport transport) {
-    _startPresenceLink(transport, ownedByService: false);
-  }
-
-  void _startPresenceLink(
-    final EphemeralFrameTransport inner, {
-    required final bool ownedByService,
-  }) {
-    unawaited(_stopPresenceLink(sendLeaves: false));
-    _presenceTracker ??= MeshPresenceTracker(actorId: selfId);
-    _presenceAuthenticator ??= MeshFrameAuthenticator();
-    _seedAuthenticatorFromPeers();
-    final link = _PresenceLink(inner);
-    _presenceLink = link;
-    _ownsPresenceTransport = ownedByService;
-    _relayPresenceTransport =
-        ownedByService && inner is AddressedRelayEphemeralTransport
-            ? inner
-            : null;
-    _presenceLinkSub = link.connectionChanges.listen(_onPresenceLinkChanged);
-    // Observe every channel the link carries (ADR 0031 §2): docs with a
-    // local session are skipped (the session verifies + folds them);
-    // everything else still folds so presence(doc) answers for docs this
-    // device never announced on.
-    unawaited(_presenceObserver?.dispose());
-    _presenceObserver =
-        MeshPresenceObserver(
-            tracker: _presenceTracker!,
-            authenticator: _presenceAuthenticator!,
-            selfId: selfId,
-            hasLocalSession: _presenceSessions.containsKey,
-          );
-    _presenceObserver!.attach(link.frames);
-    if (link.connectionState == EphemeralLinkState.connected) {
-      unawaited(_openPresenceSessions());
-    }
-  }
-
-  void _onPresenceLinkChanged(final EphemeralLinkState state) {
-    switch (state) {
-      case EphemeralLinkState.connected:
-        // Re-join the docs the caller asked for; the link came back.
-        unawaited(_openPresenceSessions());
-      case EphemeralLinkState.disconnected:
-        // Stop join/ping/leave lifecycle with the link; pings stop
-        // immediately and peers expire this peer via their ttl sweep.
-        _closeAllPresenceSessions();
-    }
-  }
-
-  /// Serialized: concurrent triggers (attach-time connect, link
-  /// recovery, [joinDoc]) share ONE open cycle — a caller must never
-  /// observe a half-opened session, and the containsKey guard alone
-  /// cannot provide that (a second call would sail past a session whose
-  /// [MeshPresenceSession.open] is still in flight). The cycle never
-  /// throws: presence is best-effort observation, and a cycle killed by
-  /// a link replacement is simply re-run by the next connect event.
-  Future<void> _openPresenceSessions() {
-    final inFlight = _presenceOpening;
-    if (inFlight != null) return inFlight;
-    final cycle = _openPresenceSessionsNow()
-        .catchError((final Object _) {
-          // Link replaced or transport gone mid-cycle.
-        })
-        .whenComplete(() => _presenceOpening = null);
-    _presenceOpening = cycle;
-    return cycle;
-  }
-
-  Future<void> _openPresenceSessionsNow() async {
-    final link = _presenceLink;
-    final authenticator = _presenceAuthenticator;
-    if (link == null || authenticator == null) return;
-    final transport = link;
-    final signer = MeshFrameSigner(identityKeyPair: await _ensureIdentity());
-    for (final docId in _presenceDocs) {
-      if (!identical(_presenceLink, link)) {
-        return; // Link replaced mid-cycle — the next connect event reruns.
-      }
-      if (_presenceSessions.containsKey(docId)) continue;
-      final session = MeshPresenceSession(
-        transport: transport,
-        tracker: _presenceTracker!,
-        docId: docId,
-        presenceConfig: presenceConfig,
-        signer: signer,
-        authenticator: authenticator,
-      );
-      _presenceSessions[docId] = session;
-      await session.open();
-    }
-  }
-
-  void _closeAllPresenceSessions() {
-    final sessions = List.of(_presenceSessions.values);
-    _presenceSessions.clear();
-    for (final session in sessions) {
-      unawaited(_closePresenceSession(session));
-    }
-  }
-
-  Future<void> _closePresenceSession(final MeshPresenceSession session) async {
-    try {
-      await session.close(); // leave frame; best-effort
-    } on Object {
-      // Link died mid-leave: peers' ttl sweeps are the backstop
-      // (ADR 0031 §1).
-    }
-  }
-
-  Future<void> _stopPresenceLink({required final bool sendLeaves}) async {
-    // Tear the link down SYNCHRONOUSLY first: a replacement link may
-    // already be attaching by the time the awaits below settle, so every
-    // old-link resource is captured into locals up front and only those
-    // locals are touched afterwards. Cancellation is fire-and-forget:
-    // session callbacks are async-safe across link replacement.
-    unawaited(_presenceLinkSub?.cancel());
-    _presenceLinkSub = null;
-    unawaited(_presenceObserver?.dispose());
-    _presenceObserver = null;
-    final sessions = List.of(_presenceSessions.values);
-    _presenceSessions.clear();
-    final oldLink = _presenceLink;
-    _presenceLink = null;
-    final oldRelayTransport = _relayPresenceTransport;
-    _relayPresenceTransport = null;
-    final owned = _ownsPresenceTransport;
-    _ownsPresenceTransport = false;
-    if (sendLeaves) {
-      for (final session in sessions) {
-        await _closePresenceSession(session);
-      }
-    }
-    await oldLink?.dispose();
-    if (owned && oldRelayTransport != null) {
-      unawaited(oldRelayTransport.dispose());
-    }
-  }
-
-  // -- Peer frame authentication (ADR 0031 §3) ----------------------------
-
-  /// Registers [peer]'s public identity key in the frame authenticator.
-  /// Peers recorded WITHOUT key bytes stay sync-only: their frames are
-  /// rejected as unauthenticated named data, never folded.
-  void _registerPeerIdentityKey(final MeshPeerRecord peer) {
-    if (peer.identityKey.isEmpty) return;
-    _presenceAuthenticator ??= MeshFrameAuthenticator();
-    _presenceAuthenticator!.registerIdentityKey(
-      peerId: peer.peerId,
-      identityKey: peer.identityKey,
-    );
-  }
-
-  void _seedAuthenticatorFromPeers() {
-    final authenticator = _presenceAuthenticator;
-    if (authenticator == null) return;
-    peers.forEach(_registerPeerIdentityKey);
-  }
+  void attachPresenceTransport(final EphemeralFrameTransport transport) =>
+      _session.attachPresenceLink(transport);
 
   /// Test seam: registers a peer's public identity key directly — what
   /// pairing achieves via [acceptPairingCode]/[registerPeer] — so frame
@@ -698,148 +403,22 @@ final class MeshStorageService {
   void registerPeerIdentityKey({
     required final String peerId,
     required final List<int> identityKey,
-  }) => _registerPeerIdentityKey(
-    MeshPeerRecord(
-      peerId: peerId,
-      displayName: peerId,
-      identityKey: identityKey,
-    ),
+  }) => _session.registerPeerIdentityKey(
+    peerId: peerId,
+    identityKey: identityKey,
   );
 
-  // -- Roster over storage (ADR 0007 §1, same pattern as the doc-sync
-  //    seam) --------------------------------------------------------------
-
-  /// Flushes the roster's durable state (including its pending ops) into
-  /// one whole file — what anti-entropy ships, exactly like a doc
-  /// replica file.
-  Future<void> _flushRoster() async {
-    final roster = _roster;
-    if (roster == null) return;
-    await storage.saveFile(
-      '$_rosterDir/${roster.replicaId}.json',
-      jsonEncode(roster.toJson()),
-      message: 'save actor roster ${roster.replicaId}',
+  void _registerPeerIdentityKey(final MeshPeerRecord peer) {
+    _session.registerPeerIdentityKey(
+      peerId: peer.peerId,
+      identityKey: peer.identityKey,
     );
-  }
-
-  /// Folds durable roster ops delivered by the exchange: every peer's
-  /// roster file carries its durable op log; the kernel's VV dedupe makes
-  /// re-folding idempotent and delivery-order independent, so whole-file
-  /// LWW cannot desync replicas.
-  Future<void> _absorbRoster() async {
-    final roster = _roster;
-    if (roster == null) return;
-    final entries = await storage.listDirectory(_rosterDir);
-    for (final entry in entries) {
-      if (entry.isDirectory || !entry.name.endsWith('.json')) continue;
-      if (entry.name == '${roster.replicaId}.json') continue; // our own
-      final raw = await storage.readFile('$_rosterDir/${entry.name}');
-      if (raw == null) continue;
-      final ops = _rosterOpsOf(raw);
-      if (ops.isEmpty) continue;
-      roster.applyRemote(ops);
-    }
-  }
-
-  /// The durable op log of a persisted roster JSON.
-  static List<OpRecord> _rosterOpsOf(final String raw) {
-    final Object? decoded;
-    try {
-      decoded = jsonDecode(raw);
-    } on FormatException {
-      return const [];
-    }
-    if (decoded is! Map) return const [];
-    final log = decoded['log'];
-    if (log is! List) return const [];
-    return [
-      for (final entry in log)
-        if (entry is Map) OpRecord.fromJson(Map<String, dynamic>.from(entry)),
-    ];
-  }
-
-  // -- Task board over storage (same pattern as the roster seam) ----------
-
-  /// Flushes the board's whole state (WorldSync JSON + snapshot cache +
-  /// clocks) into one file — what anti-entropy ships, exactly like a
-  /// roster/doc replica file.
-  Future<void> _flushBoard() async {
-    final board = _taskBoard;
-    final path = _taskBoardPath;
-    if (board == null || path == null) return;
-    await storage.saveFile(
-      path,
-      jsonEncode(board.toJson()),
-      message: 'save task board ${board.boardId}',
-    );
-  }
-
-  /// Folds a peer's board file delivered by the exchange: the single
-  /// `task_boards/<boardId>.json` holds WHOEVER flushed last (whole-file
-  /// LWW), so a peer's flush shadows ours until the next flush rewrites
-  /// the merged log — replicas converge because every board folds the
-  /// union of ops (kernel VV dedupe makes re-folding idempotent and
-  /// delivery-order independent).
-  ///
-  /// SNAPSHOT FIRST — the `DocReplicaStore.absorbRemote` ordering insight:
-  /// the kernel adopts only snapshots its version vector does not already
-  /// cover, so folding the file's op log first would advance the vector
-  /// past the snapshot base and silently refuse the snapshot content —
-  /// the only carrier of a COMPACTED peer file's state. Adoption itself
-  /// re-folds local pending ops beyond the base, so nothing local is
-  /// lost. Our own file (matching `replica_id`) is skipped.
-  Future<void> _absorbBoard() async {
-    final board = _taskBoard;
-    final path = _taskBoardPath;
-    if (board == null || path == null) return;
-    final raw = await storage.readFile(path);
-    if (raw == null) return;
-    final json = _boardJsonOf(raw);
-    if (json == null) return;
-    if (json['replica_id'] == board.replicaId) return; // our own flush
-    var changed = false;
-    final snapshotJson = json['snapshot'];
-    if (snapshotJson is Map &&
-        board.adoptSnapshot(
-          Snapshot.fromJson(Map<String, dynamic>.from(snapshotJson)),
-        )) {
-      changed = true;
-    }
-    if (board.applyRemote(_boardOpsOf(json)) > 0) changed = true;
-    // The exchange shadowed our file with the peer's; write the merged
-    // state back so the next pass ships it.
-    if (changed) await _flushBoard();
-  }
-
-  /// Decoded board JSON of a persisted board file; null when malformed.
-  static Map<Object?, Object?>? _boardJsonOf(final String raw) {
-    final Object? decoded;
-    try {
-      decoded = jsonDecode(raw);
-    } on FormatException {
-      return null;
-    }
-    return decoded is Map ? decoded : null;
-  }
-
-  /// The durable op log of a persisted board JSON (inside the WorldSync
-  /// state under `world`).
-  static List<OpRecord> _boardOpsOf(final Map<Object?, Object?> json) {
-    final world = json['world'];
-    if (world is! Map) return const [];
-    final log = world['log'];
-    if (log is! List) return const [];
-    return [
-      for (final entry in log)
-        if (entry is Map) OpRecord.fromJson(Map<String, dynamic>.from(entry)),
-    ];
   }
 
   Future<void> dispose() async {
     // Leave frames BEFORE the socket dies (ADR 0031 §1: leave on close;
     // a crash that skips this is covered by peers' ttl sweeps).
-    stopPeriodicSync();
-    await _stopPresenceLink(sendLeaves: true);
+    await _session.dispose();
     await stopHosting();
     final transport = _transport;
     _transport = null;
@@ -858,72 +437,6 @@ final class MeshStorageService {
       _identityKeyPair = keyPair;
       return keyPair;
     });
-  }
-}
-
-/// Internal fan-in over the presence link's transport (ADR 0031 §2):
-/// gives every doc session a BROADCAST view of the transport's
-/// one-shot frame stream, so sessions can be closed on connection loss
-/// and re-opened on recovery without exhausting the underlying
-/// transport's single listen. Sends and link state pass straight
-/// through; the wrapper owns only its subscriptions.
-final class _PresenceLink implements EphemeralFrameTransport {
-  _PresenceLink(this._inner) {
-    _framesSub = _inner.frames.listen(_onInnerFrame);
-    _changesSub = _inner.connectionChanges.listen(_changes.add);
-  }
-
-  final EphemeralFrameTransport _inner;
-
-  /// Frames that arrived while NO session was listening (between doc
-  /// sessions, or across a disconnect). Replayed on the next listen —
-  /// the transport contract is "buffered until listened, never dropped"
-  /// and the kernel's op-id dedupe makes replaying stale frames
-  /// harmless.
-  final List<MeshEphemeralFrame> _pending = [];
-
-  late final _frames = StreamController<MeshEphemeralFrame>.broadcast(
-    onListen: _flushPending,
-  );
-  final _changes = StreamController<EphemeralLinkState>.broadcast();
-  StreamSubscription<MeshEphemeralFrame>? _framesSub;
-  StreamSubscription<EphemeralLinkState>? _changesSub;
-
-  void _flushPending() {
-    if (_pending.isEmpty) return;
-    final buffered = List.of(_pending);
-    _pending.clear();
-    buffered.forEach(_frames.add);
-  }
-
-  void _onInnerFrame(final MeshEphemeralFrame frame) {
-    if (_frames.hasListener) {
-      _frames.add(frame);
-    } else {
-      _pending.add(frame);
-    }
-  }
-
-  @override
-  Stream<MeshEphemeralFrame> get frames => _frames.stream;
-
-  @override
-  EphemeralLinkState get connectionState => _inner.connectionState;
-
-  @override
-  Stream<EphemeralLinkState> get connectionChanges => _changes.stream;
-
-  @override
-  Future<void> send(final MeshEphemeralFrame frame) => _inner.send(frame);
-
-  /// Stops consuming the inner transport and closes the broadcast
-  /// streams. Never awaited from teardown paths that must stay
-  /// synchronous-first.
-  Future<void> dispose() async {
-    await _framesSub?.cancel();
-    await _changesSub?.cancel();
-    unawaited(_frames.close());
-    unawaited(_changes.close());
   }
 }
 

@@ -596,6 +596,13 @@ class SIt extends S {
   String get storageMeshAdvanced => 'Impostazioni avanzate (debug)';
 
   @override
+  String get liveSharingTitle => 'Condividi la mia attività in diretta';
+
+  @override
+  String get liveSharingSubtitle =>
+      'I dispositivi collegati vedono su cosa stai lavorando (documento e attività, mai il contenuto). Gli agenti sono sempre visibili per te. Nulla lascia questo dispositivo finché non attivi l\'opzione.';
+
+  @override
   String get storageMeshUnpair => 'Disaccoppia i dispositivi';
 
   @override

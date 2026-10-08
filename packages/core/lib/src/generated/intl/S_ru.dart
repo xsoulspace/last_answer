@@ -597,6 +597,13 @@ class SRu extends S {
   String get storageMeshAdvanced => 'Расширенные настройки (отладка)';
 
   @override
+  String get liveSharingTitle => 'Делиться моей активностью в реальном времени';
+
+  @override
+  String get liveSharingSubtitle =>
+      'Подключённые устройства видят, над чем вы работаете (документ и активность, но не содержимое). Агенты всегда видны вам. Пока выключено — с этого устройства ничего не уходит.';
+
+  @override
   String get storageMeshUnpair => 'Отвязать устройства';
 
   @override

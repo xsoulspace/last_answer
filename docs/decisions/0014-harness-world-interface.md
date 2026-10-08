@@ -176,3 +176,20 @@ There is deliberately no `hard`.
 - Sector membership of a NEW doc: derived from its first workspace bind
   (automatic) or asked at creation (explicit)? Leaning derived; creation
   flows must stay one step.
+
+## Implementation status (2026-10-08): the runtime substrate landed package-side
+
+The sector LENS design here is unchanged, but its Stage-1+ mechanics now
+exist one layer down, product-agnostically — `dart_flutter_packages`
+[ADR 0047](../../../dart_flutter_packages/docs/decisions/0047_world_layer_zone_journeys.md)
+(the world layer: `universal_storage_world`, `MeshWorldSession`,
+`ZoneCatalog` as the runtime census this ADR's manifest configures,
+`JourneyState` as the border-crossing machine) and
+[ADR 0048](../../../dart_flutter_packages/docs/decisions/0048_interest_managed_exchange.md)
+(interest-managed mesh exchange — the `sub` frame is the mechanism under
+"sectors are lenses, not fences": a sector is now literally a subscription
+predicate, with zero authority attached). The harness side of the census
+contract is [ADR 0083](https://github.com/xsoulspace/ecsai_harness/blob/main/docs/decisions/0083_beat_census_delta_contract.md) (the beat census contract, harness repo). What
+remains LAST ANSWER-side is exactly this ADR's UI plan: the palette sector
+verbs, inspector overlays, and the `.xsoulspace/world.json` loader — the
+default palette behavior is shipped behavior and stays the default.

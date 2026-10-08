@@ -83,7 +83,7 @@ void main() {
     expect(_okOf(filtered), isTrue);
     final inspector = ((filtered.data['intents'] ?? const []) as List)
         .cast<Map>();
-    expect(inspector, hasLength(4));
+    expect(inspector, hasLength(6));
     expect(inspector.every((final i) => i['group'] == 'inspector'), isTrue);
   });
 

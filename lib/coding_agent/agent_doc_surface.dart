@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/device_decision_routes.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
@@ -17,7 +18,7 @@ import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show jevDecisionBinding, layaDecisionBinding;
+    show jevDecisionBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
     show LayaRuntimeState, LayaServeRuntime;
@@ -294,7 +295,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     return base.copyWith(
       backend: agent.backend,
       layaBinding: agent.backend == 'laya'
-          ? layaDecisionBinding(
+          ? layaBindingForDevice(
+              platform: Platform.operatingSystem,
               runtime: _layaRuntimeForBinding,
               endpoint: _layaEndpoint(),
             )
@@ -933,7 +935,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
             ? _controller.config.backend == 'laya' &&
                       _controller.config.layaBinding != null
                   ? _controller.config.layaBinding
-                  : layaDecisionBinding(
+                  : layaBindingForDevice(
+                      platform: Platform.operatingSystem,
                       runtime: _layaRuntimeForBinding,
                       endpoint: _layaEndpoint(),
                     )
@@ -1209,7 +1212,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         clearJevBinding: backend != 'jev',
         clearLayaBinding: backend != 'laya',
         layaBinding: backend == 'laya' && _controller.config.layaBinding == null
-            ? layaDecisionBinding(
+            ? layaBindingForDevice(
+                platform: Platform.operatingSystem,
                 runtime: _layaRuntimeForBinding,
                 endpoint: _layaEndpoint(),
               )

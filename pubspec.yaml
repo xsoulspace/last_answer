@@ -90,6 +90,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_world
   universal_storage_mesh_transport:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
+  # ADR 0050 — the realtime event plane (live presence/activity for the
+  # multiplayer feel): committed locally, not yet published.
+  universal_storage_realtime:
+    path: ../dart_flutter_packages/pkgs/universal_storage_realtime
   xsoulspace_inference_acp:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
@@ -98,6 +102,7 @@ dependencies:
   # composed through afm's layaDecisionBinding (local dev train).
   xsoulspace_inference_laya:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
+  http: ^1.6.0
   # The shared permission contract: ChatPermissionPolicy's stance
   # decisions are core policies; the doc router and ACP round-trip stay
   # product-side.
@@ -201,6 +206,10 @@ dependency_overrides:
   # sees ONE source. Drop when pub.dev has it.
   universal_storage_world:
     path: ../dart_flutter_packages/pkgs/universal_storage_world
+  # Same one-source law: the mesh lane's chunk store (ADR 0049) is committed
+  # locally, not yet published. Drop when pub.dev has it.
+  universal_storage_chunks:
+    path: ../dart_flutter_packages/pkgs/universal_storage_chunks
   # oka_harness (the device gate's AndroidAppTarget) must see the SAME
   # flutter_mcp_harness this repo pins (the mcp_flutter checkout).
   flutter_mcp_harness:
@@ -282,6 +291,7 @@ dependency_overrides:
   # local dev train, not yet published — same hosted-`any` rule.
   xsoulspace_inference_laya:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
+  http: ^1.6.0
   # afm's local small text-model lane (mlx, loopback): committed locally,
   # not yet published — same hosted-`any` rule.
   xsoulspace_inference_mlx:

@@ -205,6 +205,8 @@
     }
   },
   "storageMeshAdvanced": "Impostazioni avanzate (debug)",
+  "liveSharingTitle": "Condividi la mia attività in diretta",
+  "liveSharingSubtitle": "I dispositivi collegati vedono su cosa stai lavorando (documento e attività, mai il contenuto). Gli agenti sono sempre visibili per te. Nulla lascia questo dispositivo finché non attivi l'opzione.",
   "storageMeshUnpair": "Disaccoppia i dispositivi",
   "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.",
   "allow": "Consenti",

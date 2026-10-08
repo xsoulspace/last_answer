@@ -1167,6 +1167,18 @@ abstract class S {
   /// **'Advanced settings (debug)'**
   String get storageMeshAdvanced;
 
+  /// No description provided for @liveSharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my activity live'**
+  String get liveSharingTitle;
+
+  /// No description provided for @liveSharingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paired devices see what you\'re working on (doc + activity, never content). Agents are always visible to you. Nothing leaves this device until you turn this on.'**
+  String get liveSharingSubtitle;
+
   /// No description provided for @storageMeshUnpair.
   ///
   /// In en, this message translates to:

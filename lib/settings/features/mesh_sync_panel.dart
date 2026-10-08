@@ -226,6 +226,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
                 ),
               ],
             ),
+            _sharingTile(l10n),
             _advancedSection(l10n),
           ],
         ),
@@ -262,6 +263,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
                 ),
               ],
             ),
+            _sharingTile(l10n),
             _advancedSection(l10n),
           ],
         ),
@@ -277,6 +279,27 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
       Text(text, style: context.textTheme.labelMedium),
     ],
   );
+
+  /// The live plane's human sharing toggle (the privacy law's front
+  /// door): flips [LiveMeshService.shareHumanActivity] through
+  /// [LiveMeshService.setSharing], which also RETRACTS what already
+  /// left when switched off. Hidden while the plane is not attached —
+  /// no mesh role, nothing to share through.
+  Widget _sharingTile(final S l10n) {
+    final live = _notifier.liveMesh;
+    if (live == null) return const SizedBox.shrink();
+    return SwitchListTile(
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      title: Text(l10n.liveSharingTitle),
+      subtitle: Text(l10n.liveSharingSubtitle),
+      value: live.shareHumanActivity,
+      onChanged: (final value) {
+        unawaited(live.setSharing(value));
+        setState(() {});
+      },
+    );
+  }
 
   Widget _advancedSection(final S l10n) => Theme(
     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),

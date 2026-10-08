@@ -205,6 +205,8 @@
     }
   },
   "storageMeshAdvanced": "Advanced settings (debug)",
+  "liveSharingTitle": "Share my activity live",
+  "liveSharingSubtitle": "Paired devices see what you're working on (doc + activity, never content). Agents are always visible to you. Nothing leaves this device until you turn this on.",
   "storageMeshUnpair": "Unpair devices",
   "tokenSafety": "Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.",
   "allow": "Allow",

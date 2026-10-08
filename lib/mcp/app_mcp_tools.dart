@@ -183,6 +183,13 @@ const List<AppIntentSpec> appIntentCatalog = [
     group: 'mesh',
     summary: 'Toggle remote permission routing.',
   ),
+  AppIntentSpec(
+    name: 'live_presence',
+    group: 'mesh',
+    summary:
+        'Read the live multiplayer picture (who is here, what each '
+        'actor is doing) or publish this agent\'s activity.',
+  ),
   // Storage — backends and sync.
   AppIntentSpec(
     name: 'storage_state',
@@ -254,6 +261,18 @@ const List<AppIntentSpec> appIntentCatalog = [
     name: 'world_inspector_detach',
     group: 'inspector',
     summary: 'Detach back to the in-process registry.',
+  ),
+  AppIntentSpec(
+    name: 'device_capabilities',
+    group: 'inspector',
+    summary: 'What this device can host for the fleet: ACP agents, AFM '
+        'lane, probed laya-serve, hosted credential, LAN mesh state.',
+  ),
+  AppIntentSpec(
+    name: 'world_inspector_seat_probe',
+    group: 'inspector',
+    summary: 'DEBUG ONLY — request this device\'s seat from the host '
+        'seat channel and drive agent_doc_state over it (ADR 0072 §5).',
   ),
 ];
 

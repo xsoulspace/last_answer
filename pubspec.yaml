@@ -84,6 +84,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/universal_storage_convergence
   universal_storage_mesh:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+  # ADR 0047 — the world layer: interest policies, zone catalogs, the
+  # host-driven pulse contract; the mesh session consumes it.
+  universal_storage_world:
+    path: ../dart_flutter_packages/pkgs/universal_storage_world
   universal_storage_mesh_transport:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
   xsoulspace_inference_acp:
@@ -94,6 +98,11 @@ dependencies:
   # composed through afm's layaDecisionBinding (local dev train).
   xsoulspace_inference_laya:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_laya
+  # The shared permission contract: ChatPermissionPolicy's stance
+  # decisions are core policies; the doc router and ACP round-trip stay
+  # product-side.
+  xsoulspace_permission_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
   # The engine and host live in ecsai_harness.
   # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
   xsoulspace_agentic_harness:
@@ -187,6 +196,11 @@ dependency_overrides:
   # Keep one local source across their transitive version constraints.
   resource_composition:
     path: ../../oka/packages/resource_composition
+  # universal_storage_mesh declares this hosted; the package is committed
+  # locally but not yet published — pin the local checkout so the graph
+  # sees ONE source. Drop when pub.dev has it.
+  universal_storage_world:
+    path: ../dart_flutter_packages/pkgs/universal_storage_world
   # oka_harness (the device gate's AndroidAppTarget) must see the SAME
   # flutter_mcp_harness this repo pins (the mcp_flutter checkout).
   flutter_mcp_harness:
@@ -315,6 +329,10 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/universal_storage_convergence
   universal_storage_mesh:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+  # ADR 0047 — the world layer: interest policies, zone catalogs, the
+  # host-driven pulse contract; the mesh session consumes it.
+  universal_storage_world:
+    path: ../dart_flutter_packages/pkgs/universal_storage_world
   universal_storage_mesh_transport:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
   shelf: ^1.4.2

@@ -1,6 +1,7 @@
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/doc/chat_permission_policy.dart';
+import 'package:xsoulspace_permission_core/xsoulspace_permission_core.dart';
 
 AcpPermissionRequest requestOf(final String kind) => AcpPermissionRequest(
   sessionId: 'session-1',
@@ -67,5 +68,38 @@ void main() {
     // An agent without modes: the client-side policy is the only layer.
     const none = AcpSessionModes(available: []);
     expect(ChatPermissionPolicy.fullAccess.preferredAgentModeId(none), isNull);
+  });
+
+  test('decide speaks the shared contract: escalate, not a soft deny', () {
+    expect(
+      ChatPermissionPolicy.ask.decide(requestOf('read')),
+      isA<PermissionEscalate>(),
+    );
+    expect(
+      ChatPermissionPolicy.workspaceEdits.decide(requestOf('edit')),
+      isA<PermissionAllow>(),
+    );
+    expect(
+      ChatPermissionPolicy.workspaceEdits.decide(requestOf('execute')),
+      isA<PermissionEscalate>(),
+    );
+  });
+
+  test('core adaptation preserves identity and unknown wire kinds', () {
+    final request = ChatPermissionPolicy.workspaceEdits.coreRequestOf(
+      requestOf('camera'),
+    );
+    // Unknown wire kinds coerce to other with the raw token preserved —
+    // the closed vocabulary never lies about what it did not model.
+    expect(request.kind, PermissionKind.other);
+    expect(request.wireKind, 'camera');
+    expect(request.id, 'tool-1');
+    expect(request.origin, 'acp-session:session-1');
+    expect(request.details, 'dart test');
+    // And the stance escalates what the vocabulary does not model.
+    expect(
+      ChatPermissionPolicy.workspaceEdits.decide(requestOf('camera')),
+      isA<PermissionEscalate>(),
+    );
   });
 }

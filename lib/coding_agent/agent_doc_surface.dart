@@ -18,7 +18,7 @@ import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show jevDecisionBinding;
+    show jevDecisionBinding, lfmTextBinding, qwenTextBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
     show LayaRuntimeState, LayaServeRuntime;
@@ -301,10 +301,25 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
               endpoint: _layaEndpoint(),
             )
           : null,
+      // ADR 0059 — the local text casts bind through the afm composition
+      // root's factories; macOS only (the native engines are Metal). On
+      // any other platform the binding stays null and the daemon refuses
+      // prompts with named data instead of loading an engine that cannot
+      // exist.
+      lfmBinding: agent.backend == 'lfm' && Platform.isMacOS
+          ? lfmTextBinding()
+          : null,
+      qwenBinding: agent.backend == 'qwen' && Platform.isMacOS
+          ? qwenTextBinding()
+          : null,
       model: agent.backend == 'jev'
           ? 'jev-1.13'
           : agent.backend == 'laya'
           ? 'laya'
+          : agent.backend == 'lfm'
+          ? 'lfm25'
+          : agent.backend == 'qwen'
+          ? 'qwen3'
           : base.model,
       checkCommand: agent.checkCommand.isEmpty ? null : agent.checkCommand,
       externalAcpCommand: external?.command,
@@ -942,6 +957,23 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     )
             : null,
         clearLayaBinding: backend != 'laya',
+        // ADR 0059 — the local text casts: one binding per switch, kept
+        // while the backend stays (the engine must not reload per turn);
+        // macOS only.
+        lfmBinding: backend == 'lfm'
+            ? _controller.config.backend == 'lfm' &&
+                      _controller.config.lfmBinding != null
+                  ? _controller.config.lfmBinding
+                  : (Platform.isMacOS ? lfmTextBinding() : null)
+            : null,
+        clearLfmBinding: backend != 'lfm',
+        qwenBinding: backend == 'qwen'
+            ? _controller.config.backend == 'qwen' &&
+                      _controller.config.qwenBinding != null
+                  ? _controller.config.qwenBinding
+                  : (Platform.isMacOS ? qwenTextBinding() : null)
+            : null,
+        clearQwenBinding: backend != 'qwen',
         checkCommand: agent == null || agent.checkCommand.isEmpty
             ? const <String>[]
             : agent.checkCommand,
@@ -1763,6 +1795,21 @@ class _SetupPane extends StatelessWidget {
                 active: backend == 'laya',
                 onTap: busy ? () {} : () => onBackend('laya'),
               ),
+              // ADR 0059 — the local text casts (in-process native
+              // engines; Metal/Apple-Silicon only, so the chips exist on
+              // macOS alone).
+              if (Platform.isMacOS) ...[
+                _TextToggle(
+                  label: 'LFM · local text',
+                  active: backend == 'lfm',
+                  onTap: busy ? () {} : () => onBackend('lfm'),
+                ),
+                _TextToggle(
+                  label: 'Qwen · local text',
+                  active: backend == 'qwen',
+                  onTap: busy ? () {} : () => onBackend('qwen'),
+                ),
+              ],
               _TextToggle(
                 label: 'ACP · external',
                 active: backend == 'external_acp',

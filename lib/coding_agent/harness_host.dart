@@ -5,7 +5,7 @@ import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 // ADR 0036: composition root is xsoulspace_agentic_afm; the FFI client
 // stays in xsoulspace_inference_apple_foundation.
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show JevClientBinding, appleFoundationBinding;
+    show JevClientBinding, NativeTextClientBinding, appleFoundationBinding;
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 // ADR 0026: the in-process ACP transport lives in the HOST package
 // (HarnessEmbed); this module keeps product-side policy only: config
@@ -99,6 +99,8 @@ final class HarnessHost {
     await embed?.stop();
     await config.jevBinding?.dispose();
     await config.layaBinding?.dispose();
+    config.lfmBinding?.dispose();
+    config.qwenBinding?.dispose();
     if (!_permissionController.isClosed) await _permissionController.close();
   }
 
@@ -166,6 +168,8 @@ final class HarnessHostConfig {
     this.handlerFactory,
     this.jevBinding,
     this.layaBinding,
+    this.lfmBinding,
+    this.qwenBinding,
     this.apiKey,
     this.checkCommand,
     this.externalAcpCommand,
@@ -175,9 +179,11 @@ final class HarnessHostConfig {
   });
 
   /// `apple_foundation_afm`, `open_router`, opt-in `jev`, opt-in local
-  /// `laya` (a laya-serve System One endpoint on this machine), or
-  /// `external_acp` (a user-registered ACP agent process from the agent
-  /// config used as the harness's generator).
+  /// `laya` (a laya-serve System One endpoint on this machine), opt-in
+  /// local text casts `lfm` / `qwen` (ADR 0059 — lazy in-process native
+  /// engines, macOS only), or `external_acp` (a user-registered ACP
+  /// agent process from the agent config used as the harness's
+  /// generator).
   final String backend;
   final String model;
   final bool scripted;
@@ -189,6 +195,14 @@ final class HarnessHostConfig {
   /// bound to a laya-compatible System One endpoint on this machine. No key,
   /// no consent gate — local-only policy admits it via capability facts.
   final JevClientBinding? layaBinding;
+
+  /// ADR 0059 — opt-in local text casts (`lfm` / `qwen` backends): lazy
+  /// in-process native engines (`MlxNativeTextClient` behind the afm
+  /// composition root's bindings). No key, no consent gate — loopback /
+  /// in-process only; weights load on the first cast and an absent cached
+  /// snapshot surfaces as typed unavailability at use time, never a hang.
+  final NativeTextClientBinding? lfmBinding;
+  final NativeTextClientBinding? qwenBinding;
 
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
@@ -279,6 +293,12 @@ final class HarnessHostConfig {
     if (backend == 'laya' && layaBinding != null) {
       bindings['laya'] = layaBinding!.binding;
     }
+    if (backend == 'lfm' && lfmBinding != null) {
+      bindings['lfm'] = lfmBinding!.binding;
+    }
+    if (backend == 'qwen' && qwenBinding != null) {
+      bindings['qwen'] = qwenBinding!.binding;
+    }
     final externalCommand = externalAcpCommand;
     if (backend == 'external_acp' && (externalCommand?.isNotEmpty ?? false)) {
       final command = externalAcpCommand!;
@@ -322,10 +342,14 @@ final class HarnessHostConfig {
     bool clearApiKey = false,
     bool clearJevBinding = false,
     bool clearLayaBinding = false,
+    bool clearLfmBinding = false,
+    bool clearQwenBinding = false,
     List<String>? checkCommand,
     bool? meaningProfile,
     JevClientBinding? jevBinding,
     JevClientBinding? layaBinding,
+    NativeTextClientBinding? lfmBinding,
+    NativeTextClientBinding? qwenBinding,
     String? externalAcpCommand,
     List<String>? externalAcpArguments,
     Map<String, String>? externalAcpEnvironment,
@@ -338,6 +362,8 @@ final class HarnessHostConfig {
     handlerFactory: handlerFactory,
     jevBinding: clearJevBinding ? null : jevBinding ?? this.jevBinding,
     layaBinding: clearLayaBinding ? null : layaBinding ?? this.layaBinding,
+    lfmBinding: clearLfmBinding ? null : lfmBinding ?? this.lfmBinding,
+    qwenBinding: clearQwenBinding ? null : qwenBinding ?? this.qwenBinding,
     apiKey: clearApiKey ? null : apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
     externalAcpCommand: externalAcpCommand ?? this.externalAcpCommand,

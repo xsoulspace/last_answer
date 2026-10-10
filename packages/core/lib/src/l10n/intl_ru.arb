@@ -273,5 +273,10 @@
   "worldBindingReadOnly": "только чтение",
   "agentChatWorkspaceTooltip": "Рабочая папка агента",
   "agentChatPickWorkspace": "Выбрать рабочую папку агента",
-  "agentChatContextReset": "Процесс агента перезапущен — предыдущие сообщения — только история."
+  "agentChatContextReset": "Процесс агента перезапущен — предыдущие сообщения — только история.",
+  "supervisorSectionTitle": "Автоматизации",
+  "supervisorSectionEmpty": "На этом устройстве ещё нет объявленных автоматизаций.",
+  "supervisorSectionUnsupported": "Автоматизации недоступны на этой платформе.",
+  "supervisorSectionRefresh": "Обновить состояние автоматизаций",
+  "supervisorSectionDrifted": "изменена — сходимость ожидается"
 }

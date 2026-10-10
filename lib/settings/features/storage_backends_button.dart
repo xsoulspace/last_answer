@@ -122,6 +122,8 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
             _tile(id),
           ..._configSection(id),
         ],
+        const SizedBox(height: 16),
+        const SupervisorPanel(),
         if (_canBackup) ...[
           const SizedBox(height: 8),
           Wrap(

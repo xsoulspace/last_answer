@@ -270,5 +270,10 @@
   "worldBindingReadOnly": "sola lettura",
   "agentChatWorkspaceTooltip": "Cartella di lavoro dell'agente",
   "agentChatPickWorkspace": "Scegli la cartella di lavoro dell'agente",
-  "agentChatContextReset": "Il processo dell'agente è stato riavviato — i messaggi precedenti sono solo cronologia."
+  "agentChatContextReset": "Il processo dell'agente è stato riavviato — i messaggi precedenti sono solo cronologia.",
+  "supervisorSectionTitle": "Automazioni",
+  "supervisorSectionEmpty": "Nessuna automazione dichiarata su questo dispositivo.",
+  "supervisorSectionUnsupported": "Le automazioni non sono disponibili su questa piattaforma.",
+  "supervisorSectionRefresh": "Aggiorna lo stato delle automazioni",
+  "supervisorSectionDrifted": "modificata — convergenza in attesa"
 }

@@ -8,4 +8,6 @@ export 'mesh_sync_panel.dart';
 export 'projects_export_import_buttons.dart';
 export 'storage_backends_button.dart';
 export 'storage_backends_state.dart';
+export 'supervisor_panel.dart';
+export 'supervisor_service.dart';
 export 'theme_switcher_button.dart';

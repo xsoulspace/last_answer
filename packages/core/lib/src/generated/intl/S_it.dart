@@ -812,4 +812,21 @@ class SIt extends S {
   @override
   String get agentChatContextReset =>
       'Il processo dell\'agente è stato riavviato — i messaggi precedenti sono solo cronologia.';
+
+  @override
+  String get supervisorSectionTitle => 'Automazioni';
+
+  @override
+  String get supervisorSectionEmpty =>
+      'Nessuna automazione dichiarata su questo dispositivo.';
+
+  @override
+  String get supervisorSectionUnsupported =>
+      'Le automazioni non sono disponibili su questa piattaforma.';
+
+  @override
+  String get supervisorSectionRefresh => 'Aggiorna lo stato delle automazioni';
+
+  @override
+  String get supervisorSectionDrifted => 'modificata — convergenza in attesa';
 }

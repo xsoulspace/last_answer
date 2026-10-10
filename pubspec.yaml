@@ -108,6 +108,11 @@ dependencies:
   # product-side.
   xsoulspace_permission_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
+  # The on-device supervisor read surface (oka ADR-0041 §6): declared
+  # automations + this device's records, one status view. resource_composition
+  # is already overridden below to the same local checkout.
+  oka_supervisor:
+    path: ../../oka/packages/oka_supervisor
   # The engine and host live in ecsai_harness.
   # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
   xsoulspace_agentic_harness:

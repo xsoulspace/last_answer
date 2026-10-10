@@ -814,4 +814,21 @@ class SRu extends S {
   @override
   String get agentChatContextReset =>
       'Процесс агента перезапущен — предыдущие сообщения — только история.';
+
+  @override
+  String get supervisorSectionTitle => 'Автоматизации';
+
+  @override
+  String get supervisorSectionEmpty =>
+      'На этом устройстве ещё нет объявленных автоматизаций.';
+
+  @override
+  String get supervisorSectionUnsupported =>
+      'Автоматизации недоступны на этой платформе.';
+
+  @override
+  String get supervisorSectionRefresh => 'Обновить состояние автоматизаций';
+
+  @override
+  String get supervisorSectionDrifted => 'изменена — сходимость ожидается';
 }

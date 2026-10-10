@@ -294,5 +294,10 @@
   "worldBindingReadOnly": "read-only",
   "agentChatWorkspaceTooltip": "Agent working folder",
   "agentChatPickWorkspace": "Choose the agent's working folder",
-  "agentChatContextReset": "The agent process restarted — earlier messages are history only."
+  "agentChatContextReset": "The agent process restarted — earlier messages are history only.",
+  "supervisorSectionTitle": "Automations",
+  "supervisorSectionEmpty": "No automations declared on this device yet.",
+  "supervisorSectionUnsupported": "Automations are not available on this platform.",
+  "supervisorSectionRefresh": "Refresh automation state",
+  "supervisorSectionDrifted": "changed — converge pending"
 }

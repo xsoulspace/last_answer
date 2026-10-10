@@ -805,4 +805,21 @@ class SEn extends S {
   @override
   String get agentChatContextReset =>
       'The agent process restarted — earlier messages are history only.';
+
+  @override
+  String get supervisorSectionTitle => 'Automations';
+
+  @override
+  String get supervisorSectionEmpty =>
+      'No automations declared on this device yet.';
+
+  @override
+  String get supervisorSectionUnsupported =>
+      'Automations are not available on this platform.';
+
+  @override
+  String get supervisorSectionRefresh => 'Refresh automation state';
+
+  @override
+  String get supervisorSectionDrifted => 'changed — converge pending';
 }

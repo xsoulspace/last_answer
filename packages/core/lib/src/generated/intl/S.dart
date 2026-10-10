@@ -1562,6 +1562,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'The agent process restarted — earlier messages are history only.'**
   String get agentChatContextReset;
+
+  /// No description provided for @supervisorSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automations'**
+  String get supervisorSectionTitle;
+
+  /// No description provided for @supervisorSectionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No automations declared on this device yet.'**
+  String get supervisorSectionEmpty;
+
+  /// No description provided for @supervisorSectionUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Automations are not available on this platform.'**
+  String get supervisorSectionUnsupported;
+
+  /// No description provided for @supervisorSectionRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh automation state'**
+  String get supervisorSectionRefresh;
+
+  /// No description provided for @supervisorSectionDrifted.
+  ///
+  /// In en, this message translates to:
+  /// **'changed — converge pending'**
+  String get supervisorSectionDrifted;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

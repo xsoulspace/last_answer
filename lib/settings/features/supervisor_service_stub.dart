@@ -1,8 +1,8 @@
 import 'package:lastanswer/settings/features/supervisor_view.dart';
 
-/// Non-IO stand-in for the supervisor read surface: hosting records and
-/// plan stores needs dart:io, so web reports unsupported instead of
-/// crashing.
+/// Non-IO stand-in for the supervisor surface: hosting records, plan
+/// stores and authoring need dart:io, so web reports unsupported
+/// instead of crashing.
 final class SupervisorService {
   SupervisorService({required this.storeRoot, required this.appRoot});
 
@@ -16,4 +16,12 @@ final class SupervisorService {
 
   Future<SupervisorView> load() =>
       Future<SupervisorView>.value(SupervisorView(supported: false));
+
+  Future<void> saveAutomation(final SupervisorAutomationDraft draft) =>
+      Future<void>.error(UnsupportedError('supervisor authoring needs io'));
+
+  Future<void> deleteAutomation({
+    required final String plan,
+    required final String id,
+  }) => Future<void>.error(UnsupportedError('supervisor authoring needs io'));
 }

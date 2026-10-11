@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/settings/features/supervisor_service_io.dart';
+import 'package:lastanswer/settings/features/supervisor_view.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:path/path.dart' as p;
 
@@ -125,5 +126,91 @@ void main() {
     final view = await service.load(registryRoot: registryRoot);
     expect(view.corruptRecords, hasLength(1));
     expect(view.corruptRecords.single, endsWith('broken.json'));
+  });
+
+  test('saveAutomation creates a one-spec plan that loads back', () async {
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-backup',
+        isService: false,
+        command: '/usr/bin/backup',
+        intervalSeconds: 86400,
+      ),
+    );
+    final view = await service.load(registryRoot: registryRoot);
+    expect(view.plans, ['nightly-backup']);
+    final automation = view.automations.single;
+    expect(automation.id, 'nightly-backup');
+    expect(automation.shape, 'job');
+    expect(automation.trigger, 'interval:86400s');
+    expect(automation.plan, 'nightly-backup');
+    expect(automation.command, '/usr/bin/backup');
+    expect(automation.intervalSeconds, 86400);
+    expect(automation.revision, 1);
+  });
+
+  test('saveAutomation edits in place and bumps the revision', () async {
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-backup',
+        isService: false,
+        command: '/usr/bin/backup',
+        intervalSeconds: 86400,
+      ),
+    );
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-backup',
+        isService: false,
+        command: '/usr/local/bin/backup',
+        intervalSeconds: 3600,
+        plan: 'nightly-backup',
+        revision: 1,
+      ),
+    );
+    final view = await service.load(registryRoot: registryRoot);
+    expect(view.plans, ['nightly-backup']);
+    final automation = view.automations.single;
+    expect(automation.trigger, 'interval:3600s');
+    expect(automation.command, '/usr/local/bin/backup');
+    expect(automation.revision, 2, reason: 'the reset is the revision bump');
+  });
+
+  test('deleteAutomation drops the spec and keeps plan siblings', () async {
+    SpecStore(plans).save(
+      'demo',
+      const DesiredState(
+        specs: [
+          ComponentSpec(id: 'a', providerName: 'process'),
+          ComponentSpec(id: 'b', providerName: 'process'),
+        ],
+      ),
+    );
+    await service.deleteAutomation(plan: 'demo', id: 'a');
+    final view = await service.load(registryRoot: registryRoot);
+    expect(view.plans, ['demo']);
+    expect(
+      view.automations.map((final automation) => automation.id),
+      ['b'],
+    );
+  });
+
+  test('deleteAutomation removes an emptied plan file', () async {
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(id: 'solo', isService: true),
+    );
+    await service.deleteAutomation(plan: 'solo', id: 'solo');
+    final view = await service.load(registryRoot: registryRoot);
+    expect(view.plans, isEmpty);
+    expect(view.automations, isEmpty);
+  });
+
+  test('saveAutomation rejects names that cannot be plan files', () {
+    expect(
+      () => service.saveAutomation(
+        const SupervisorAutomationDraft(id: '../escape', isService: true),
+      ),
+      throwsFormatException,
+    );
   });
 }

@@ -1592,6 +1592,114 @@ abstract class S {
   /// In en, this message translates to:
   /// **'changed — converge pending'**
   String get supervisorSectionDrifted;
+
+  /// No description provided for @supervisorSectionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New automation'**
+  String get supervisorSectionAdd;
+
+  /// No description provided for @supervisorSectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit automation'**
+  String get supervisorSectionEdit;
+
+  /// No description provided for @supervisorSectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get supervisorSectionName;
+
+  /// No description provided for @supervisorSectionKindService.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on'**
+  String get supervisorSectionKindService;
+
+  /// No description provided for @supervisorSectionKindJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get supervisorSectionKindJob;
+
+  /// No description provided for @supervisorSectionOnDemand.
+  ///
+  /// In en, this message translates to:
+  /// **'On demand'**
+  String get supervisorSectionOnDemand;
+
+  /// No description provided for @supervisorSectionRepeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeating'**
+  String get supervisorSectionRepeating;
+
+  /// No description provided for @supervisorSectionEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Every'**
+  String get supervisorSectionEvery;
+
+  /// No description provided for @supervisorSectionUnitMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get supervisorSectionUnitMinutes;
+
+  /// No description provided for @supervisorSectionUnitHours.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get supervisorSectionUnitHours;
+
+  /// No description provided for @supervisorSectionUnitDays.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get supervisorSectionUnitDays;
+
+  /// No description provided for @supervisorSectionCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Command'**
+  String get supervisorSectionCommand;
+
+  /// No description provided for @supervisorSectionArgs.
+  ///
+  /// In en, this message translates to:
+  /// **'Arguments'**
+  String get supervisorSectionArgs;
+
+  /// No description provided for @supervisorSectionCommandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Desktop only, e.g. /usr/bin/backup'**
+  String get supervisorSectionCommandHint;
+
+  /// No description provided for @supervisorSectionSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get supervisorSectionSchedule;
+
+  /// No description provided for @supervisorSectionNextRun.
+  ///
+  /// In en, this message translates to:
+  /// **'next run: {time}'**
+  String supervisorSectionNextRun(String time);
+
+  /// No description provided for @supervisorSectionDeleteWarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove "{name}" from this device\'s plans?'**
+  String supervisorSectionDeleteWarn(String name);
+
+  /// No description provided for @supervisorSectionAuthorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved as a plan on this device. It runs when the supervisor converges.'**
+  String get supervisorSectionAuthorHint;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

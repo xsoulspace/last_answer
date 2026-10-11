@@ -829,4 +829,62 @@ class SIt extends S {
 
   @override
   String get supervisorSectionDrifted => 'modificata — convergenza in attesa';
+
+  @override
+  String get supervisorSectionAdd => 'Nuova automazione';
+
+  @override
+  String get supervisorSectionEdit => 'Modifica automazione';
+
+  @override
+  String get supervisorSectionName => 'Nome';
+
+  @override
+  String get supervisorSectionKindService => 'Sempre attivo';
+
+  @override
+  String get supervisorSectionKindJob => 'Pianificato';
+
+  @override
+  String get supervisorSectionOnDemand => 'Su richiesta';
+
+  @override
+  String get supervisorSectionRepeating => 'Ripetuto';
+
+  @override
+  String get supervisorSectionEvery => 'Ogni';
+
+  @override
+  String get supervisorSectionUnitMinutes => 'minuti';
+
+  @override
+  String get supervisorSectionUnitHours => 'ore';
+
+  @override
+  String get supervisorSectionUnitDays => 'giorni';
+
+  @override
+  String get supervisorSectionCommand => 'Comando';
+
+  @override
+  String get supervisorSectionArgs => 'Argomenti';
+
+  @override
+  String get supervisorSectionCommandHint => 'Solo desktop, es. /usr/bin/backup';
+
+  @override
+  String get supervisorSectionSchedule => 'Pianificazione';
+
+  @override
+  String supervisorSectionNextRun(String time) {
+    return 'prossima esecuzione: $time';
+  }
+
+  @override
+  String supervisorSectionDeleteWarn(String name) {
+    return 'Rimuovere "$name" dai piani di questo dispositivo?';
+  }
+
+  @override
+  String get supervisorSectionAuthorHint => 'Salvato come piano su questo dispositivo. Viene eseguito quando il supervisor converge.';
 }

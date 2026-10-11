@@ -831,4 +831,62 @@ class SRu extends S {
 
   @override
   String get supervisorSectionDrifted => 'изменена — сходимость ожидается';
+
+  @override
+  String get supervisorSectionAdd => 'Новая автоматизация';
+
+  @override
+  String get supervisorSectionEdit => 'Изменить автоматизацию';
+
+  @override
+  String get supervisorSectionName => 'Название';
+
+  @override
+  String get supervisorSectionKindService => 'Постоянно';
+
+  @override
+  String get supervisorSectionKindJob => 'По расписанию';
+
+  @override
+  String get supervisorSectionOnDemand => 'Вручную';
+
+  @override
+  String get supervisorSectionRepeating => 'Повторение';
+
+  @override
+  String get supervisorSectionEvery => 'Каждые';
+
+  @override
+  String get supervisorSectionUnitMinutes => 'минуты';
+
+  @override
+  String get supervisorSectionUnitHours => 'часы';
+
+  @override
+  String get supervisorSectionUnitDays => 'дни';
+
+  @override
+  String get supervisorSectionCommand => 'Команда';
+
+  @override
+  String get supervisorSectionArgs => 'Аргументы';
+
+  @override
+  String get supervisorSectionCommandHint => 'Только десктоп, напр. /usr/bin/backup';
+
+  @override
+  String get supervisorSectionSchedule => 'Расписание';
+
+  @override
+  String supervisorSectionNextRun(String time) {
+    return 'следующий запуск: $time';
+  }
+
+  @override
+  String supervisorSectionDeleteWarn(String name) {
+    return 'Удалить «$name» из планов этого устройства?';
+  }
+
+  @override
+  String get supervisorSectionAuthorHint => 'Сохранено как план на этом устройстве. Запускается при конвергенции супервизора.';
 }

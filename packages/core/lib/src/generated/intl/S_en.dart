@@ -822,4 +822,62 @@ class SEn extends S {
 
   @override
   String get supervisorSectionDrifted => 'changed — converge pending';
+
+  @override
+  String get supervisorSectionAdd => 'New automation';
+
+  @override
+  String get supervisorSectionEdit => 'Edit automation';
+
+  @override
+  String get supervisorSectionName => 'Name';
+
+  @override
+  String get supervisorSectionKindService => 'Always on';
+
+  @override
+  String get supervisorSectionKindJob => 'Scheduled';
+
+  @override
+  String get supervisorSectionOnDemand => 'On demand';
+
+  @override
+  String get supervisorSectionRepeating => 'Repeating';
+
+  @override
+  String get supervisorSectionEvery => 'Every';
+
+  @override
+  String get supervisorSectionUnitMinutes => 'minutes';
+
+  @override
+  String get supervisorSectionUnitHours => 'hours';
+
+  @override
+  String get supervisorSectionUnitDays => 'days';
+
+  @override
+  String get supervisorSectionCommand => 'Command';
+
+  @override
+  String get supervisorSectionArgs => 'Arguments';
+
+  @override
+  String get supervisorSectionCommandHint => 'Desktop only, e.g. /usr/bin/backup';
+
+  @override
+  String get supervisorSectionSchedule => 'Schedule';
+
+  @override
+  String supervisorSectionNextRun(String time) {
+    return 'next run: $time';
+  }
+
+  @override
+  String supervisorSectionDeleteWarn(String name) {
+    return 'Remove "$name" from this device\'s plans?';
+  }
+
+  @override
+  String get supervisorSectionAuthorHint => 'Saved as a plan on this device. It runs when the supervisor converges.';
 }

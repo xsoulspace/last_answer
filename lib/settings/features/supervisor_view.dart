@@ -13,6 +13,11 @@ final class SupervisorAutomationView {
     this.epoch,
     this.restartCount,
     this.lastRun,
+    this.plan,
+    this.command,
+    this.args,
+    this.intervalSeconds,
+    this.revision,
   });
 
   /// A spec declared in a device plan with no record on this device.
@@ -41,6 +46,54 @@ final class SupervisorAutomationView {
   final int? epoch;
   final int? restartCount;
   final String? lastRun;
+
+  /// Editable-surface fields (oka ADR-0041 §6, the CREATE half): the
+  /// plan the spec lives in and the declaration details the editor
+  /// round-trips. Null when the platform cannot edit (web stub).
+  final String? plan;
+  final String? command;
+  final String? args;
+
+  /// Non-null for `interval` triggers (the schedule period).
+  final int? intervalSeconds;
+  final int? revision;
+}
+
+/// What the editor submits for one automation. The io service turns
+/// this into a validated [plan document](SpecCodec) — the UI never
+/// writes JSON by hand.
+final class SupervisorAutomationDraft {
+  const SupervisorAutomationDraft({
+    required this.id,
+    required this.isService,
+    this.command,
+    this.args,
+    this.intervalSeconds,
+    this.plan,
+    this.revision,
+  });
+
+  /// Stable automation name; also the plan name for new automations
+  /// (one automation per plan file, the common authoring shape).
+  final String id;
+
+  /// true = service (desired: running), false = job (desired: succeeded
+  /// once per revision / schedule).
+  final bool isService;
+
+  /// Process provider command (desktop only), e.g. `/usr/bin/backup`.
+  final String? command;
+  final String? args;
+
+  /// Schedule period in seconds for repeating jobs; null = on demand.
+  final int? intervalSeconds;
+
+  /// The plan this automation lives in (edit); null = create.
+  final String? plan;
+
+  /// The policy revision to supersede; the service bumps it — the reset
+  /// is the revision bump (ADR-0040).
+  final int? revision;
 }
 
 /// Everything the pane renders, one load.

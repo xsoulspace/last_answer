@@ -347,6 +347,19 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/universal_storage_local_db
   universal_storage_convergence:
     path: ../dart_flutter_packages/pkgs/universal_storage_convergence
+  # dfp ADR 0063 — the anti-entropy session core; mesh + ecsly_world_sync
+  # consume it, not yet published, so the path source must win the solve.
+  universal_storage_convergence_session:
+    path: ../dart_flutter_packages/pkgs/universal_storage_convergence_session
+  # Parallel migration (2026-10-11): xsoulspace_agentic_harness gained a
+  # meaning-core dependency that is not published yet; same path-source
+  # override pattern.
+  xsoulspace_meaning_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_meaning_core
+  # Same cascade: xsoulspace_agentic_host depends on the (unpublished)
+  # live-apply journal; path source until it publishes.
+  universal_storage_live_apply:
+    path: ../dart_flutter_packages/pkgs/universal_storage_live_apply
   universal_storage_mesh:
     path: ../dart_flutter_packages/pkgs/universal_storage_mesh
   universal_storage_mesh_transport:

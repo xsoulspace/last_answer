@@ -88,7 +88,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
       if (mounted) {
         setState(
           () => _permissionBlocked =
-              '${error}'.contains('Operation not permitted'),
+              error.toString().contains('Operation not permitted'),
         );
       }
       if (!mounted) return;

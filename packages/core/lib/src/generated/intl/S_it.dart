@@ -962,4 +962,10 @@ class SIt extends S {
 
   @override
   String get supervisorSectionStateIdle => 'Non ancora eseguita';
+
+  @override
+  String get storageMeshPermissionBlocked => 'macOS ha bloccato l\'accesso alla cartella note. Consenti a Last Answer in Impostazioni di sistema → Privacy e sicurezza → File e cartelle, quindi riprova.';
+
+  @override
+  String get storageMeshRetrySharing => 'Riprova';
 }

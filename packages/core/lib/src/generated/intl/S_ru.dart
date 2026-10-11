@@ -964,4 +964,10 @@ class SRu extends S {
 
   @override
   String get supervisorSectionStateIdle => 'Ещё не запускалась';
+
+  @override
+  String get storageMeshPermissionBlocked => 'macOS заблокировал доступ к папке с заметками. Разрешите Last Answer в Системных настройках → Конфиденциальность и безопасность → Файлы и папки, затем повторите.';
+
+  @override
+  String get storageMeshRetrySharing => 'Повторить';
 }

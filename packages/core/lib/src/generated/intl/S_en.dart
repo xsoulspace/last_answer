@@ -955,4 +955,10 @@ class SEn extends S {
 
   @override
   String get supervisorSectionStateIdle => 'Not running yet';
+
+  @override
+  String get storageMeshPermissionBlocked => 'macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.';
+
+  @override
+  String get storageMeshRetrySharing => 'Try again';
 }

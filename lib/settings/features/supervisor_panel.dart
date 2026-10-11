@@ -638,8 +638,13 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     return '$hour:$minute';
   }
 
+  /// Agent tasks are jobs regardless of the stale service flag: the
+  /// schedule surfaces follow what the user is editing, not the kind
+  /// toggle left over from create-init.
+  bool get _isJob => _isAgent || !_isService;
+
   int? get _periodSeconds {
-    if (_isService) return null;
+    if (!_isJob) return null;
     if (!_repeating) return null;
     final value = int.tryParse(_interval.text.trim());
     if (value == null || value <= 0) return null;
@@ -661,8 +666,8 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     final id = _name.text.trim();
     if (id.isEmpty || id.contains('/') || id.contains('..')) return false;
     final period = _periodSeconds;
-    if (!_isService && _repeating && period == null) return false;
-    if (!_isService && _repeating && _at.text.trim().isNotEmpty) {
+    if (_isJob && _repeating && period == null) return false;
+    if (_isJob && _repeating && _at.text.trim().isNotEmpty) {
       if (_atMinutes == null) return false;
     }
     if (_isAgent && _instructions.text.trim().isEmpty) return false;
@@ -787,7 +792,7 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                     setState(() => _repeating = selection.first),
               ),
             ],
-            if (!_isService && _repeating) ...[
+            if (_isJob && _repeating) ...[
               const SizedBox(height: 12),
               Row(
                 children: [

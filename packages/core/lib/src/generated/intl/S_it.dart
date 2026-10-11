@@ -887,4 +887,79 @@ class SIt extends S {
 
   @override
   String get supervisorSectionAuthorHint => 'Salvato come piano su questo dispositivo. Viene eseguito quando il supervisor converge.';
+
+  @override
+  String get storageMeshNotSharing => 'Condivisione non attiva';
+
+  @override
+  String get storageMeshStartSharing => 'Avvia condivisione';
+
+  @override
+  String get supervisorGroupServices => 'Servizi';
+
+  @override
+  String get supervisorGroupSchedules => 'Pianificazioni';
+
+  @override
+  String get supervisorGroupAgents => 'Agenti';
+
+  @override
+  String get supervisorSectionKindCommand => 'Comando';
+
+  @override
+  String get supervisorSectionKindAgent => 'Attività agente';
+
+  @override
+  String get supervisorSectionInstructions => 'Istruzioni';
+
+  @override
+  String get supervisorSectionInstructionsHint => 'Cosa deve fare l\'agente';
+
+  @override
+  String get supervisorSectionAnchorAt => 'alle';
+
+  @override
+  String get supervisorSectionTimeHint => 'HH:mm, es. 03:00';
+
+  @override
+  String get supervisorScheduleDaily => 'Ogni giorno';
+
+  @override
+  String supervisorScheduleDailyAt(String time) {
+    return 'Ogni giorno alle $time';
+  }
+
+  @override
+  String get supervisorScheduleWeekly => 'Ogni settimana';
+
+  @override
+  String supervisorScheduleEveryDays(int n) {
+    return 'Ogni $n giorni';
+  }
+
+  @override
+  String supervisorScheduleEveryHours(int n) {
+    return 'Ogni $n ore';
+  }
+
+  @override
+  String supervisorScheduleEveryMinutes(int n) {
+    return 'Ogni $n minuti';
+  }
+
+  @override
+  String supervisorScheduleAt(String time) {
+    return 'alle $time';
+  }
+
+  @override
+  String supervisorSectionStats(String state, int count, String last) {
+    return '$state · riavvii $count · ultima esecuzione $last';
+  }
+
+  @override
+  String get supervisorSectionStateActive => 'Attiva';
+
+  @override
+  String get supervisorSectionStateIdle => 'Non ancora eseguita';
 }

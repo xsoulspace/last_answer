@@ -17,6 +17,9 @@ final class SupervisorAutomationView {
     this.command,
     this.args,
     this.intervalSeconds,
+    this.atMinutes,
+    this.isAgent = false,
+    this.instructions,
     this.revision,
   });
 
@@ -35,6 +38,10 @@ final class SupervisorAutomationView {
 
   final String id;
   final String shape;
+
+  /// Raw trigger description (`interval:86400s@03:00`, `none`, ...).
+  /// Rows render the human summary ([schedulePhrase] builders live in
+  /// the panel, where l10n exists); this stays the canonical form.
   final String trigger;
 
   /// A record exists on this device (the supervisor started it here).
@@ -54,13 +61,22 @@ final class SupervisorAutomationView {
   final String? command;
   final String? args;
 
-  /// Non-null for `interval` triggers (the schedule period).
+  /// Schedule period in seconds for repeating jobs; null = on demand.
   final int? intervalSeconds;
+
+  /// Wall-clock anchor in minutes since midnight (from the plan's
+  /// interval `at`); null = unanchored.
+  final int? atMinutes;
+
+  /// Declared on the `agent` provider (instructions payload) rather
+  /// than a desktop process command.
+  final bool isAgent;
+  final String? instructions;
   final int? revision;
 }
 
 /// What the editor submits for one automation. The io service turns
-/// this into a validated [plan document](SpecCodec) — the UI never
+/// this into a validated plan document (SpecCodec) — the UI never
 /// writes JSON by hand.
 final class SupervisorAutomationDraft {
   const SupervisorAutomationDraft({
@@ -69,6 +85,9 @@ final class SupervisorAutomationDraft {
     this.command,
     this.args,
     this.intervalSeconds,
+    this.atMinutes,
+    this.isAgent = false,
+    this.instructions,
     this.plan,
     this.revision,
   });
@@ -77,8 +96,8 @@ final class SupervisorAutomationDraft {
   /// (one automation per plan file, the common authoring shape).
   final String id;
 
-  /// true = service (desired: running), false = job (desired: succeeded
-  /// once per revision / schedule).
+  /// true = service (desired: running); false = job (desired:
+  /// succeeded once per revision / schedule). Agent tasks are jobs.
   final bool isService;
 
   /// Process provider command (desktop only), e.g. `/usr/bin/backup`.
@@ -87,6 +106,14 @@ final class SupervisorAutomationDraft {
 
   /// Schedule period in seconds for repeating jobs; null = on demand.
   final int? intervalSeconds;
+
+  /// Wall-clock anchor, minutes since midnight; null = unanchored.
+  final int? atMinutes;
+
+  /// true = agent task (instructions on the `agent` provider) instead
+  /// of a desktop command.
+  final bool isAgent;
+  final String? instructions;
 
   /// The plan this automation lives in (edit); null = create.
   final String? plan;

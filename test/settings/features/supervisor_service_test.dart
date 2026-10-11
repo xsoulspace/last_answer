@@ -205,6 +205,62 @@ void main() {
     expect(view.automations, isEmpty);
   });
 
+  test('agent task: instructions land on the agent provider', () async {
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-agent',
+        isService: false,
+        isAgent: true,
+        instructions: 'Check the backups and report.',
+        intervalSeconds: 86400,
+        atMinutes: 180,
+      ),
+    );
+    final view = await service.load(registryRoot: registryRoot);
+    final automation = view.automations.single;
+    expect(automation.isAgent, isTrue);
+    expect(automation.instructions, 'Check the backups and report.');
+    expect(automation.trigger, 'interval:86400s@03:00');
+    expect(automation.atMinutes, 180);
+    expect(automation.shape, 'job');
+    // The document really carries the agent provider + anchor.
+    final doc = SpecStore(
+      plans,
+    ).load('nightly-agent')!.specs.single;
+    expect(doc.providerName, 'agent');
+    expect(doc.env['instructions'], 'Check the backups and report.');
+    final trigger = doc.trigger as IntervalTrigger;
+    expect(trigger.at, '03:00');
+  });
+
+  test('anchored command job round-trips the wall clock', () async {
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-backup',
+        isService: false,
+        command: '/usr/bin/backup',
+        intervalSeconds: 86400,
+        atMinutes: 180,
+      ),
+    );
+    await service.saveAutomation(
+      const SupervisorAutomationDraft(
+        id: 'nightly-backup',
+        isService: false,
+        command: '/usr/bin/backup',
+        intervalSeconds: 86400,
+        atMinutes: 240,
+        plan: 'nightly-backup',
+        revision: 1,
+      ),
+    );
+    final view = await service.load(registryRoot: registryRoot);
+    final automation = view.automations.single;
+    expect(automation.trigger, 'interval:86400s@04:00');
+    expect(automation.atMinutes, 240);
+    expect(automation.revision, 2);
+  });
+
   test('saveAutomation rejects names that cannot be plan files', () {
     expect(
       () => service.saveAutomation(

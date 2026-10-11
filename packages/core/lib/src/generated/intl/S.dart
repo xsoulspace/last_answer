@@ -1700,6 +1700,144 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Saved as a plan on this device. It runs when the supervisor converges.'**
   String get supervisorSectionAuthorHint;
+
+  /// No description provided for @storageMeshNotSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sharing right now'**
+  String get storageMeshNotSharing;
+
+  /// No description provided for @storageMeshStartSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Start sharing'**
+  String get storageMeshStartSharing;
+
+  /// No description provided for @supervisorGroupServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get supervisorGroupServices;
+
+  /// No description provided for @supervisorGroupSchedules.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules'**
+  String get supervisorGroupSchedules;
+
+  /// No description provided for @supervisorGroupAgents.
+  ///
+  /// In en, this message translates to:
+  /// **'Agents'**
+  String get supervisorGroupAgents;
+
+  /// No description provided for @supervisorSectionKindCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Command'**
+  String get supervisorSectionKindCommand;
+
+  /// No description provided for @supervisorSectionKindAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent task'**
+  String get supervisorSectionKindAgent;
+
+  /// No description provided for @supervisorSectionInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions'**
+  String get supervisorSectionInstructions;
+
+  /// No description provided for @supervisorSectionInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What the agent should do'**
+  String get supervisorSectionInstructionsHint;
+
+  /// No description provided for @supervisorSectionAnchorAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at'**
+  String get supervisorSectionAnchorAt;
+
+  /// No description provided for @supervisorSectionTimeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'HH:mm, e.g. 03:00'**
+  String get supervisorSectionTimeHint;
+
+  /// No description provided for @supervisorScheduleDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get supervisorScheduleDaily;
+
+  /// No description provided for @supervisorScheduleDailyAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily at {time}'**
+  String supervisorScheduleDailyAt(String time);
+
+  /// No description provided for @supervisorScheduleWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get supervisorScheduleWeekly;
+
+  /// No description provided for @supervisorScheduleEveryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} days'**
+  String supervisorScheduleEveryDays(int n);
+
+  /// No description provided for @supervisorScheduleEveryHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} hours'**
+  String supervisorScheduleEveryHours(int n);
+
+  /// No description provided for @supervisorScheduleEveryMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} minutes'**
+  String supervisorScheduleEveryMinutes(int n);
+
+  /// No description provided for @supervisorScheduleAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at {time}'**
+  String supervisorScheduleAt(String time);
+
+  /// No description provided for @supervisorSectionStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{state} · restarts {count} · last run {last}'**
+  String supervisorSectionStats(String state, int count, String last);
+
+  /// No description provided for @supervisorSectionStateActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get supervisorSectionStateActive;
+
+  /// No description provided for @supervisorSectionStateIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not running yet'**
+  String get supervisorSectionStateIdle;
+
+  /// No description provided for @storageMeshPermissionBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.'**
+  String get storageMeshPermissionBlocked;
+
+  /// No description provided for @storageMeshRetrySharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get storageMeshRetrySharing;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

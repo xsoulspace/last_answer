@@ -77,6 +77,12 @@ final class SupervisorService {
             IntervalTrigger(:final period) => period.inSeconds,
             _ => null,
           },
+          atMinutes: switch (spec.trigger) {
+            IntervalTrigger(:final at) when at != null => _atMinutes(at),
+            _ => null,
+          },
+          isAgent: spec.providerName == 'agent',
+          instructions: spec.env['instructions'],
           revision: spec.policy.revision,
         ),
       );
@@ -101,7 +107,7 @@ final class SupervisorService {
     };
     for (final status in statuses) {
       final declared = byId[status.componentId];
-      final merged = SupervisorAutomationView(
+      byId[status.componentId] = SupervisorAutomationView(
         id: status.componentId,
         shape: declared?.shape ?? (status.shape ?? 'service'),
         trigger: declared?.trigger ?? (status.trigger ?? 'none'),
@@ -114,9 +120,11 @@ final class SupervisorService {
         command: declared?.command,
         args: declared?.args,
         intervalSeconds: declared?.intervalSeconds,
+        atMinutes: declared?.atMinutes,
+        isAgent: declared?.isAgent ?? false,
+        instructions: declared?.instructions,
         revision: declared?.revision,
       );
-      byId[status.componentId] = merged;
     }
     // Declared rows keep declaration order; records-only rows follow.
     view.automations
@@ -173,23 +181,47 @@ final class SupervisorService {
       throw const FormatException('automation name is not a valid plan name');
     }
     final period = draft.intervalSeconds;
+    final trigger = (period == null || draft.isService)
+        ? const NoTrigger()
+        : IntervalTrigger(
+            period: Duration(seconds: period),
+            at: draft.atMinutes == null ? null : _atLabel(draft.atMinutes!),
+          );
     return ComponentSpec(
       id: draft.id,
-      providerName: 'process',
+      providerName: draft.isAgent ? 'agent' : 'process',
       policy: SupervisionPolicy(
-        shape: draft.isService
+        shape: draft.isService && !draft.isAgent
             ? SupervisionShape.service
             : SupervisionShape.job,
         revision: (draft.revision ?? 0) + 1,
       ),
-      trigger: (period == null || draft.isService)
-          ? const NoTrigger()
-          : IntervalTrigger(period: Duration(seconds: period)),
-      env: {
-        if (draft.command != null && draft.command!.isNotEmpty)
-          'command': draft.command!,
-        if (draft.args != null && draft.args!.isNotEmpty) 'args': draft.args!,
-      },
+      trigger: trigger,
+      env: draft.isAgent
+          ? {
+              if (draft.instructions != null &&
+                  draft.instructions!.isNotEmpty)
+                'instructions': draft.instructions!,
+            }
+          : {
+              if (draft.command != null && draft.command!.isNotEmpty)
+                'command': draft.command!,
+              if (draft.args != null && draft.args!.isNotEmpty)
+                'args': draft.args!,
+            },
     );
   }
+}
+
+/// "HH:mm" → minutes since midnight.
+int _atMinutes(final String anchor) {
+  final (hour, minute) = IntervalTrigger.parseAnchor(anchor);
+  return hour * 60 + minute;
+}
+
+/// Minutes since midnight → "HH:mm".
+String _atLabel(final int minutes) {
+  final hour = (minutes ~/ 60).toString().padLeft(2, '0');
+  final minute = (minutes % 60).toString().padLeft(2, '0');
+  return '$hour:$minute';
 }

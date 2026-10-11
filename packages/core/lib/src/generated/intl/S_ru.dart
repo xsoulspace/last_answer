@@ -889,4 +889,79 @@ class SRu extends S {
 
   @override
   String get supervisorSectionAuthorHint => 'Сохранено как план на этом устройстве. Запускается при конвергенции супервизора.';
+
+  @override
+  String get storageMeshNotSharing => 'Сейчас ничего не раздаётся';
+
+  @override
+  String get storageMeshStartSharing => 'Включить раздачу';
+
+  @override
+  String get supervisorGroupServices => 'Сервисы';
+
+  @override
+  String get supervisorGroupSchedules => 'Расписания';
+
+  @override
+  String get supervisorGroupAgents => 'Агенты';
+
+  @override
+  String get supervisorSectionKindCommand => 'Команда';
+
+  @override
+  String get supervisorSectionKindAgent => 'Задача агента';
+
+  @override
+  String get supervisorSectionInstructions => 'Инструкции';
+
+  @override
+  String get supervisorSectionInstructionsHint => 'Что должен сделать агент';
+
+  @override
+  String get supervisorSectionAnchorAt => 'в';
+
+  @override
+  String get supervisorSectionTimeHint => 'ЧЧ:мм, напр. 03:00';
+
+  @override
+  String get supervisorScheduleDaily => 'Ежедневно';
+
+  @override
+  String supervisorScheduleDailyAt(String time) {
+    return 'Ежедневно в $time';
+  }
+
+  @override
+  String get supervisorScheduleWeekly => 'Еженедельно';
+
+  @override
+  String supervisorScheduleEveryDays(int n) {
+    return 'Каждые $n дн.';
+  }
+
+  @override
+  String supervisorScheduleEveryHours(int n) {
+    return 'Каждые $n ч.';
+  }
+
+  @override
+  String supervisorScheduleEveryMinutes(int n) {
+    return 'Каждые $n мин.';
+  }
+
+  @override
+  String supervisorScheduleAt(String time) {
+    return 'в $time';
+  }
+
+  @override
+  String supervisorSectionStats(String state, int count, String last) {
+    return '$state · перезапуски $count · последний запуск $last';
+  }
+
+  @override
+  String get supervisorSectionStateActive => 'Активна';
+
+  @override
+  String get supervisorSectionStateIdle => 'Ещё не запускалась';
 }

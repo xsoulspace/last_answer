@@ -2,11 +2,11 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features/supervisor_service.dart';
 import 'package:lastanswer/settings/features/supervisor_view.dart';
 
-/// The device's declared automations and what this device knows about
-/// them (oka ADR-0041 §6, the SEE + CREATE halves): one row per
-/// component from the on-device plans plus the machine registry's
-/// records — visible as a schedule, editable as a plan document.
-/// Authoring writes validated plan files; running remains the
+/// The device's declared automations, grouped the way a person thinks
+/// about them — Services (always on), Schedules (jobs), Agents (agent
+/// tasks) — each row a human phrase plus its week at a glance. Authoring
+/// happens in one sheet, one or two taps per decision; everything writes
+/// validated plan documents (oka ADR-0041 §6). Running remains the
 /// converge/resident rung's business, never this pane's.
 class SupervisorPanel extends StatefulWidget {
   const SupervisorPanel({super.key});
@@ -67,8 +67,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
   }
 
   Future<void> _openEditor([final SupervisorAutomationView? existing]) async {
-    final service = _service;
-    if (service == null || !mounted) return;
+    if (!mounted) return;
     final l10n = context.l10n;
     final result = await showModalBottomSheet<_EditorOutcome>(
       context: context,
@@ -147,16 +146,24 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
                 ),
               );
             }
+            final services = <SupervisorAutomationView>[];
+            final schedules = <SupervisorAutomationView>[];
+            final agents = <SupervisorAutomationView>[];
+            for (final automation in view.automations) {
+              if (automation.isAgent) {
+                agents.add(automation);
+              } else if (automation.shape == 'service') {
+                services.add(automation);
+              } else {
+                schedules.add(automation);
+              }
+            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final automation in view.automations)
-                  _AutomationRow(
-                    automation: automation,
-                    onEdit: automation.plan == null
-                        ? null
-                        : () => unawaited(_openEditor(automation)),
-                  ),
+                _group(l10n.supervisorGroupServices, services),
+                _group(l10n.supervisorGroupSchedules, schedules),
+                _group(l10n.supervisorGroupAgents, agents),
                 for (final corrupt in view.corruptRecords)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
@@ -171,6 +178,37 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
             );
           },
         ),
+      ],
+    );
+  }
+
+  Widget _group(
+    final String title,
+    final List<SupervisorAutomationView> rows,
+  ) {
+    if (rows.isEmpty) return const SizedBox.shrink();
+    final outline = context.theme.colorScheme.outline;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 6, bottom: 2),
+          child: Text(
+            title.toUpperCase(),
+            style: context.textTheme.bodySmall?.copyWith(
+              color: outline,
+              fontSize: 10,
+              letterSpacing: 0.6,
+            ),
+          ),
+        ),
+        for (final automation in rows)
+          _AutomationRow(
+            automation: automation,
+            onEdit: automation.plan == null
+                ? null
+                : () => unawaited(_openEditor(automation)),
+          ),
       ],
     );
   }
@@ -190,15 +228,6 @@ class _AutomationRow extends StatelessWidget {
         : automation.present
         ? Colors.green
         : context.theme.colorScheme.outline;
-    final meta = <String>[
-      automation.shape,
-      automation.trigger,
-      if (automation.drifted) l10n.supervisorSectionDrifted,
-      if (automation.lastRun != null) 'last run: ${automation.lastRun}',
-    ].join(' · ');
-    final badge = automation.restartCount == null
-        ? 'e${automation.epoch}'
-        : 'e${automation.epoch} · r${automation.restartCount}';
     final row = Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Column(
@@ -214,33 +243,56 @@ class _AutomationRow extends StatelessWidget {
                   children: [
                     Text(automation.id, style: context.textTheme.bodyMedium),
                     Text(
-                      meta,
+                      _metaText(l10n),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.theme.colorScheme.outline,
                       ),
                     ),
+                    if (automation.isAgent &&
+                        (automation.instructions ?? '').isNotEmpty)
+                      Text(
+                        automation.instructions!
+                            .split('\n')
+                            .firstWhere(
+                              (final line) => line.trim().isNotEmpty,
+                              orElse: () => '',
+                            )
+                            .trim(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.theme.colorScheme.outline,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                   ],
                 ),
               ),
-              if (automation.epoch != null)
+              if (automation.drifted)
                 Text(
-                  badge,
+                  l10n.supervisorSectionDrifted,
                   style: context.textTheme.bodySmall?.copyWith(
-                    color: context.theme.colorScheme.outline,
+                    color: context.theme.colorScheme.error,
                   ),
                 ),
               if (onEdit != null)
-                Icon(
-                  Icons.edit_outlined,
-                  size: 16,
-                  color: context.theme.colorScheme.outline,
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Icon(
+                    Icons.edit_outlined,
+                    size: 16,
+                    color: context.theme.colorScheme.outline,
+                  ),
                 ),
             ],
           ),
           if (automation.intervalSeconds != null)
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: _ScheduleStrip(periodSeconds: automation.intervalSeconds!),
+              child: _ScheduleStrip(
+                periodSeconds: automation.intervalSeconds!,
+                atMinutes: automation.atMinutes,
+              ),
             ),
         ],
       ),
@@ -248,23 +300,66 @@ class _AutomationRow extends StatelessWidget {
     if (onEdit == null) return row;
     return InkWell(onTap: onEdit, child: row);
   }
+
+  /// The human schedule phrase: "Always on", "Daily at 03:00",
+  /// "Every 3 days at 03:00", "Every 6 hours", "On demand".
+  String _metaText(final S l10n) {
+    if (!automation.isAgent && automation.shape == 'service') {
+      return l10n.supervisorSectionKindService;
+    }
+    return _intervalText(l10n);
+  }
+
+  String _intervalText(final S l10n) {
+    final interval = automation.intervalSeconds;
+    if (interval == null) return l10n.supervisorSectionOnDemand;
+    final at = automation.atMinutes == null
+        ? null
+        : _clock(automation.atMinutes!);
+    if (interval == 86400) {
+      return at == null
+          ? l10n.supervisorScheduleDaily
+          : l10n.supervisorScheduleDailyAt(at);
+    }
+    if (interval == 604800) return l10n.supervisorScheduleWeekly;
+    if (interval % 86400 == 0) {
+      final phrase = l10n.supervisorScheduleEveryDays(interval ~/ 86400);
+      return at == null ? phrase : '$phrase ${l10n.supervisorScheduleAt(at)}';
+    }
+    if (interval % 3600 == 0) {
+      return l10n.supervisorScheduleEveryHours(interval ~/ 3600);
+    }
+    if (interval >= 60) {
+      return l10n.supervisorScheduleEveryMinutes(interval ~/ 60);
+    }
+    return l10n.supervisorScheduleEveryMinutes(1);
+  }
+
+  static String _clock(final int minutes) {
+    final hour = (minutes ~/ 60).toString().padLeft(2, '0');
+    final minute = (minutes % 60).toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
 }
 
 /// The schedule as a small calendar: the next seven days, dots on days
 /// with planned runs. Present-grade projection — computed from the
-/// declared period, anchored at "now"; the converge rung owns actual
-/// firings (ADR-0040/0042).
+/// declared period (and wall-clock anchor when set); the converge rung
+/// owns actual firings (ADR-0040/0042).
 class _ScheduleStrip extends StatelessWidget {
-  const _ScheduleStrip({required this.periodSeconds, this.detailed = false});
+  const _ScheduleStrip({required this.periodSeconds, this.atMinutes});
 
   final int periodSeconds;
-  final bool detailed;
+  final int? atMinutes;
 
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
     final outline = context.theme.colorScheme.outline;
-    final schedule = _PlannedSchedule(periodSeconds: periodSeconds);
+    final schedule = _PlannedSchedule(
+      periodSeconds: periodSeconds,
+      atMinutes: atMinutes,
+    );
     final first = schedule.firstRun;
     final style = context.textTheme.bodySmall;
     return Column(
@@ -289,21 +384,12 @@ class _ScheduleStrip extends StatelessWidget {
               ),
           ],
         ),
-        if (detailed) ...[
-          const SizedBox(height: 6),
+        if (first != null) ...[
+          const SizedBox(height: 4),
           Text(
-            first == null
-                ? l10n.supervisorSectionSchedule
-                : l10n.supervisorSectionNextRun(_formatTime(first)),
+            l10n.supervisorSectionNextRun(_formatTime(first)),
             style: style?.copyWith(color: outline),
           ),
-          if (first != null)
-            Text(
-              [
-                for (final run in schedule.upcoming(3)) _formatTime(run),
-              ].join(' · '),
-              style: style?.copyWith(color: outline),
-            ),
         ],
       ],
     );
@@ -313,14 +399,16 @@ class _ScheduleStrip extends StatelessWidget {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final day = DateTime(time.year, time.month, time.day);
-    final clock =
-        '${time.hour.toString().padLeft(2, '0')}:'
-        '${time.minute.toString().padLeft(2, '0')}';
+    final clock = _clockOf(time);
     final days = day.difference(today).inDays;
     if (days <= 0) return clock;
     if (days == 1) return '+1d $clock';
     return '+${days}d $clock';
   }
+
+  static String _clockOf(final DateTime time) =>
+      '${time.hour.toString().padLeft(2, '0')}:'
+      '${time.minute.toString().padLeft(2, '0')}';
 }
 
 /// Day cell: weekday letter, day number, one dot per planned run
@@ -340,11 +428,11 @@ class _DayCell extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final today = DateTime.now();
+    final now = DateTime.now();
     final isToday =
-        date.day == today.day &&
-        date.month == today.month &&
-        date.year == today.year;
+        date.day == now.day &&
+        date.month == now.month &&
+        date.year == now.year;
     final style = context.textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 3),
@@ -392,33 +480,53 @@ class _DayCell extends StatelessWidget {
   }
 }
 
-/// Prospective run times for an interval schedule, anchored at "now".
-/// Pure date math — no clock, no convergence.
+/// Prospective run times for an interval schedule, anchored at "now"
+/// (plus the wall-clock anchor when set). Pure date math.
 final class _PlannedSchedule {
-  _PlannedSchedule({required int periodSeconds})
+  _PlannedSchedule({required int periodSeconds, this.atMinutes})
     : period = Duration(seconds: periodSeconds);
 
   final Duration period;
+  final int? atMinutes;
+
+  bool get _anchored =>
+      atMinutes != null &&
+      period >= const Duration(days: 1) &&
+      period.inSeconds % 86400 == 0;
+
+  int get _cadenceDays => period.inDays;
 
   DateTime get today {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day);
   }
 
+  DateTime? _todayAtAnchor() {
+    final anchor = atMinutes;
+    if (anchor == null) return null;
+    return DateTime(today.year, today.month, today.day, anchor ~/ 60,
+        anchor % 60);
+  }
+
   /// The next planned run after "now" (null only for non-positive
   /// periods, which validated plans reject).
   DateTime? get firstRun {
     if (period <= Duration.zero) return null;
-    return DateTime.now().add(period);
+    if (!_anchored) return DateTime.now().add(period);
+    final slot = _todayAtAnchor()!;
+    final cadence = Duration(days: _cadenceDays);
+    if (slot.isAfter(DateTime.now())) return slot;
+    return slot.add(cadence);
   }
 
   List<DateTime> upcoming(final int count) {
-    if (period <= Duration.zero) return const <DateTime>[];
-    var time = DateTime.now().add(period);
-    final runs = <DateTime>[];
-    for (var i = 0; i < count; i++) {
-      runs.add(time);
-      time = time.add(period);
+    final first = firstRun;
+    if (first == null) return const <DateTime>[];
+    final step =
+        _anchored ? Duration(days: _cadenceDays) : period;
+    final runs = <DateTime>[first];
+    for (var i = 1; i < count; i++) {
+      runs.add(runs.last.add(step));
     }
     return runs;
   }
@@ -427,6 +535,12 @@ final class _PlannedSchedule {
   /// "dense": the strip renders a bar instead of dots).
   int runsPerDay(final int dayOffset) {
     if (period <= Duration.zero) return 0;
+    if (_anchored) {
+      final first = firstRun!;
+      final day = today.add(Duration(days: dayOffset));
+      final span = day.difference(DateTime(first.year, first.month, first.day));
+      return span.inDays >= 0 && span.inDays % _cadenceDays == 0 ? 1 : 0;
+    }
     final dayStart = today.add(Duration(days: dayOffset));
     final dayEnd = dayStart.add(const Duration(days: 1));
     var time = DateTime.now().add(period);
@@ -453,9 +567,10 @@ final class _EditorOutcome {
   final SupervisorAutomationDraft? draft;
 }
 
-/// Add/edit sheet: name, kind, schedule (with a live calendar
-/// preview), and the desktop command. Submits a typed draft; the
-/// service owns validation and the plan-document write.
+/// Add/edit sheet: what it is (command or agent task), when it runs
+/// (one schedule row, human units, optional wall-clock anchor), and
+/// what it does. Submits a typed draft; the service owns validation
+/// and the plan-document write.
 class _AutomationEditorSheet extends StatefulWidget {
   const _AutomationEditorSheet({required this.title, this.existing});
 
@@ -470,11 +585,13 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
   late final TextEditingController _name;
   late final TextEditingController _command;
   late final TextEditingController _args;
+  late final TextEditingController _instructions;
+  late final TextEditingController _interval;
+  late final TextEditingController _at;
+  late bool _isAgent;
   late bool _isService;
   late bool _repeating;
-  late int _intervalValue;
   late int _intervalUnit; // 60 (min) | 3600 (h) | 86400 (d)
-  late final TextEditingController _interval;
 
   bool get _editing => widget.existing != null;
 
@@ -485,12 +602,17 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     _name = TextEditingController(text: existing?.id ?? '');
     _command = TextEditingController(text: existing?.command ?? '');
     _args = TextEditingController(text: existing?.args ?? '');
-    _isService = existing?.shape != 'job';
+    _instructions = TextEditingController(text: existing?.instructions ?? '');
+    _isAgent = existing?.isAgent ?? false;
+    _isService = (existing?.shape ?? 'service') != 'job' && !_isAgent;
     final interval = existing?.intervalSeconds;
     _repeating = interval != null;
-    _intervalValue = _splitPeriod(interval ?? 86400).$1;
-    _intervalUnit = _splitPeriod(interval ?? 86400).$2;
-    _interval = TextEditingController(text: '$_intervalValue');
+    final split = _splitPeriod(interval ?? 86400);
+    _interval = TextEditingController(text: '${split.$1}');
+    _intervalUnit = split.$2;
+    _at = TextEditingController(
+      text: existing?.atMinutes == null ? '' : _clock(existing!.atMinutes!),
+    );
   }
 
   @override
@@ -498,37 +620,70 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     _name.dispose();
     _command.dispose();
     _args.dispose();
+    _instructions.dispose();
     _interval.dispose();
+    _at.dispose();
     super.dispose();
   }
 
-  (int, int) _splitPeriod(final int seconds) {
+  static (int, int) _splitPeriod(final int seconds) {
     if (seconds % 86400 == 0) return (seconds ~/ 86400, 86400);
     if (seconds % 3600 == 0) return (seconds ~/ 3600, 3600);
     return (seconds, 60);
   }
 
+  static String _clock(final int minutes) {
+    final hour = (minutes ~/ 60).toString().padLeft(2, '0');
+    final minute = (minutes % 60).toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   int? get _periodSeconds {
-    if (_isService || !_repeating) return null;
+    if (_isService) return null;
+    if (!_repeating) return null;
     final value = int.tryParse(_interval.text.trim());
     if (value == null || value <= 0) return null;
     return value * _intervalUnit;
   }
 
-  Future<void> _submit() async {
+  int? get _atMinutes {
+    final text = _at.text.trim();
+    if (text.isEmpty) return null;
+    final match = RegExp(r'^(\d{1,2}):(\d{2})$').firstMatch(text);
+    if (match == null) return null;
+    final hour = int.parse(match.group(1)!);
+    final minute = int.parse(match.group(2)!);
+    if (hour > 23 || minute > 59) return null;
+    return hour * 60 + minute;
+  }
+
+  bool get _canSave {
     final id = _name.text.trim();
+    if (id.isEmpty || id.contains('/') || id.contains('..')) return false;
     final period = _periodSeconds;
-    if (id.isEmpty || id.contains('/') || id.contains('..')) return;
-    if (!_isService && _repeating && period == null) return;
+    if (!_isService && _repeating && period == null) return false;
+    if (!_isService && _repeating && _at.text.trim().isNotEmpty) {
+      if (_atMinutes == null) return false;
+    }
+    if (_isAgent && _instructions.text.trim().isEmpty) return false;
+    return true;
+  }
+
+  Future<void> _submit() async {
+    if (!_canSave) return;
+    final id = _name.text.trim();
     if (!mounted) return;
     Navigator.of(context).pop(
       _EditorOutcome.save(
         SupervisorAutomationDraft(
           id: id,
-          isService: _isService,
-          command: _command.text.trim(),
-          args: _args.text.trim(),
-          intervalSeconds: period,
+          isService: !_isAgent && _isService,
+          command: _isAgent ? null : _command.text.trim(),
+          args: _isAgent ? null : _args.text.trim(),
+          intervalSeconds: _periodSeconds,
+          atMinutes: _periodSeconds != null ? _atMinutes : null,
+          isAgent: _isAgent,
+          instructions: _isAgent ? _instructions.text.trim() : null,
           plan: widget.existing?.plan,
           revision: widget.existing?.revision ?? 0,
         ),
@@ -555,6 +710,7 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     final l10n = context.l10n;
     final outline = context.theme.colorScheme.outline;
     final period = _periodSeconds;
+    final existing = widget.existing;
     return Padding(
       padding: EdgeInsets.only(
         left: 20,
@@ -581,22 +737,40 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
             SegmentedButton<bool>(
               segments: [
                 ButtonSegment(
-                  value: true,
-                  icon: const Icon(Icons.play_circle_outline),
-                  label: Text(l10n.supervisorSectionKindService),
+                  value: false,
+                  icon: const Icon(Icons.terminal),
+                  label: Text(l10n.supervisorSectionKindCommand),
                 ),
                 ButtonSegment(
-                  value: false,
-                  icon: const Icon(Icons.schedule),
-                  label: Text(l10n.supervisorSectionKindJob),
+                  value: true,
+                  icon: const Icon(Icons.auto_awesome),
+                  label: Text(l10n.supervisorSectionKindAgent),
                 ),
               ],
-              selected: {_isService},
+              selected: {_isAgent},
               onSelectionChanged: (final selection) =>
-                  setState(() => _isService = selection.first),
+                  setState(() => _isAgent = selection.first),
             ),
             const SizedBox(height: 12),
-            if (!_isService) ...[
+            if (!_isAgent) ...[
+              SegmentedButton<bool>(
+                segments: [
+                  ButtonSegment(
+                    value: true,
+                    icon: const Icon(Icons.play_circle_outline),
+                    label: Text(l10n.supervisorSectionKindService),
+                  ),
+                  ButtonSegment(
+                    value: false,
+                    icon: const Icon(Icons.schedule),
+                    label: Text(l10n.supervisorSectionKindJob),
+                  ),
+                ],
+                selected: {_isService},
+                onSelectionChanged: (final selection) =>
+                    setState(() => _isService = selection.first),
+              ),
+            ] else ...[
               SegmentedButton<bool>(
                 segments: [
                   ButtonSegment(
@@ -612,77 +786,133 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                 onSelectionChanged: (final selection) =>
                     setState(() => _repeating = selection.first),
               ),
-              if (_repeating) ...[
-                const SizedBox(height: 12),
+            ],
+            if (!_isService && _repeating) ...[
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Text(l10n.supervisorSectionEvery),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 64,
+                    child: TextField(
+                      controller: _interval,
+                      keyboardType: TextInputType.number,
+                      onChanged: (_) => setState(() {}),
+                      decoration: const InputDecoration(isDense: true),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButton<int>(
+                    value: _intervalUnit,
+                    underline: const SizedBox.shrink(),
+                    items: [
+                      DropdownMenuItem(
+                        value: 60,
+                        child: Text(l10n.supervisorSectionUnitMinutes),
+                      ),
+                      DropdownMenuItem(
+                        value: 3600,
+                        child: Text(l10n.supervisorSectionUnitHours),
+                      ),
+                      DropdownMenuItem(
+                        value: 86400,
+                        child: Text(l10n.supervisorSectionUnitDays),
+                      ),
+                    ],
+                    onChanged: (final unit) =>
+                        setState(() => _intervalUnit = unit ?? 60),
+                  ),
+                ],
+              ),
+              if (_intervalUnit == 86400) ...[
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text(l10n.supervisorSectionEvery),
+                    Text(l10n.supervisorSectionAnchorAt),
                     const SizedBox(width: 8),
                     SizedBox(
-                      width: 64,
+                      width: 90,
                       child: TextField(
-                        controller: _interval,
-                        keyboardType: TextInputType.number,
+                        controller: _at,
+                        keyboardType: TextInputType.datetime,
                         onChanged: (_) => setState(() {}),
-                        decoration: const InputDecoration(isDense: true),
+                        decoration: InputDecoration(
+                          hintText: '03:00',
+                          isDense: true,
+                          errorText: _at.text.trim().isNotEmpty &&
+                                  _atMinutes == null
+                              ? l10n.supervisorSectionTimeHint
+                              : null,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    DropdownButton<int>(
-                      value: _intervalUnit,
-                      underline: const SizedBox.shrink(),
-                      items: [
-                        DropdownMenuItem(
-                          value: 60,
-                          child: Text(l10n.supervisorSectionUnitMinutes),
-                        ),
-                        DropdownMenuItem(
-                          value: 3600,
-                          child: Text(l10n.supervisorSectionUnitHours),
-                        ),
-                        DropdownMenuItem(
-                          value: 86400,
-                          child: Text(l10n.supervisorSectionUnitDays),
-                        ),
-                      ],
-                      onChanged: (final unit) =>
-                          setState(() => _intervalUnit = unit ?? 60),
                     ),
                   ],
                 ),
-                if (period != null) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.supervisorSectionSchedule,
-                    style: context.textTheme.titleSmall,
-                  ),
-                  const SizedBox(height: 6),
-                  _ScheduleStrip(periodSeconds: period, detailed: true),
-                ],
+              ],
+              if (period != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  l10n.supervisorSectionSchedule,
+                  style: context.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 6),
+                _ScheduleStrip(
+                  periodSeconds: period,
+                  atMinutes: _intervalUnit == 86400 ? _atMinutes : null,
+                ),
               ],
             ],
-            const SizedBox(height: 12),
-            TextField(
-              controller: _command,
-              decoration: InputDecoration(
-                labelText: l10n.supervisorSectionCommand,
-                hintText: l10n.supervisorSectionCommandHint,
-                isDense: true,
+            if (_isAgent) ...[
+              const SizedBox(height: 12),
+              TextField(
+                controller: _instructions,
+                minLines: 3,
+                maxLines: 6,
+                onChanged: (_) => setState(() {}),
+                decoration: InputDecoration(
+                  labelText: l10n.supervisorSectionInstructions,
+                  hintText: l10n.supervisorSectionInstructionsHint,
+                  isDense: true,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _args,
-              decoration: InputDecoration(
-                labelText: l10n.supervisorSectionArgs,
-                isDense: true,
+            ] else ...[
+              const SizedBox(height: 12),
+              TextField(
+                controller: _command,
+                decoration: InputDecoration(
+                  labelText: l10n.supervisorSectionCommand,
+                  hintText: l10n.supervisorSectionCommandHint,
+                  isDense: true,
+                ),
               ),
-            ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _args,
+                decoration: InputDecoration(
+                  labelText: l10n.supervisorSectionArgs,
+                  isDense: true,
+                ),
+              ),
+            ],
+            if (existing != null) ...[
+              const SizedBox(height: 10),
+              Text(
+                l10n.supervisorSectionStats(
+                  existing.present
+                      ? l10n.supervisorSectionStateActive
+                      : l10n.supervisorSectionStateIdle,
+                  existing.restartCount ?? 0,
+                  existing.lastRun ?? '—',
+                ),
+                style: context.textTheme.bodySmall?.copyWith(color: outline),
+              ),
+            ],
             const SizedBox(height: 16),
             Row(
               children: [
                 FilledButton(
-                  onPressed: () => unawaited(_submit()),
+                  onPressed: _canSave ? () => unawaited(_submit()) : null,
                   child: Text(l10n.save),
                 ),
                 const SizedBox(width: 8),

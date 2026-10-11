@@ -880,4 +880,79 @@ class SEn extends S {
 
   @override
   String get supervisorSectionAuthorHint => 'Saved as a plan on this device. It runs when the supervisor converges.';
+
+  @override
+  String get storageMeshNotSharing => 'Not sharing right now';
+
+  @override
+  String get storageMeshStartSharing => 'Start sharing';
+
+  @override
+  String get supervisorGroupServices => 'Services';
+
+  @override
+  String get supervisorGroupSchedules => 'Schedules';
+
+  @override
+  String get supervisorGroupAgents => 'Agents';
+
+  @override
+  String get supervisorSectionKindCommand => 'Command';
+
+  @override
+  String get supervisorSectionKindAgent => 'Agent task';
+
+  @override
+  String get supervisorSectionInstructions => 'Instructions';
+
+  @override
+  String get supervisorSectionInstructionsHint => 'What the agent should do';
+
+  @override
+  String get supervisorSectionAnchorAt => 'at';
+
+  @override
+  String get supervisorSectionTimeHint => 'HH:mm, e.g. 03:00';
+
+  @override
+  String get supervisorScheduleDaily => 'Daily';
+
+  @override
+  String supervisorScheduleDailyAt(String time) {
+    return 'Daily at $time';
+  }
+
+  @override
+  String get supervisorScheduleWeekly => 'Weekly';
+
+  @override
+  String supervisorScheduleEveryDays(int n) {
+    return 'Every $n days';
+  }
+
+  @override
+  String supervisorScheduleEveryHours(int n) {
+    return 'Every $n hours';
+  }
+
+  @override
+  String supervisorScheduleEveryMinutes(int n) {
+    return 'Every $n minutes';
+  }
+
+  @override
+  String supervisorScheduleAt(String time) {
+    return 'at $time';
+  }
+
+  @override
+  String supervisorSectionStats(String state, int count, String last) {
+    return '$state · restarts $count · last run $last';
+  }
+
+  @override
+  String get supervisorSectionStateActive => 'Active';
+
+  @override
+  String get supervisorSectionStateIdle => 'Not running yet';
 }

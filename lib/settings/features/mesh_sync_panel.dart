@@ -26,6 +26,8 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
   final _peerIdController = TextEditingController();
   var _advancedInitialized = false;
   Uint8List? _qrPayload;
+  var _qrBusy = false;
+  var _permissionBlocked = false;
 
   @override
   void initState() {
@@ -52,21 +54,43 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
 
   Future<void> _refreshQr() async {
     if (_notifier.meshRole != MeshRole.main) return;
+    if (mounted) setState(() => _qrBusy = true);
     try {
       final service = await _notifier.ensureMeshService();
       final code = await service.createPairingCode();
       if (!mounted) return;
-      setState(() => _qrPayload = base64Decode(code));
+      setState(() {
+        _qrPayload = base64Decode(code);
+        _qrBusy = false;
+      });
     } on Object {
-      if (mounted) setState(() => _qrPayload = null);
+      // A stale relay endpoint (the advertised port is ephemeral and
+      // died with the previous run) lands here. Rendered as an
+      // understandable, one-tap-away-from-fixed card — never an endless
+      // spinner.
+      if (mounted) {
+        setState(() {
+          _qrPayload = null;
+          _qrBusy = false;
+        });
+      }
     }
   }
 
   Future<void> _becomeMain() async {
     try {
+      setState(() => _permissionBlocked = false);
       await _notifier.becomeMainDevice();
       await _refreshQr();
     } on Object catch (error) {
+      // macOS TCC denies ~/Documents until the user grants it once —
+      // that denial is the usual reason hosting cannot start.
+      if (mounted) {
+        setState(
+          () => _permissionBlocked =
+              '${error}'.contains('Operation not permitted'),
+        );
+      }
       if (!mounted) return;
       await Toasts.of(
         context,
@@ -199,16 +223,22 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
             _roleBadge(l10n.storageMeshMainBadge, Icons.star_rounded),
             const SizedBox(height: 12),
             Center(
-              child: _qrPayload == null
+              child: _qrBusy
                   ? const CircularProgressIndicator()
+                  : _qrPayload == null
+                  ? _PairingIdleCard(
+                    onStart: () => unawaited(_becomeMain()),
+                    permissionBlocked: _permissionBlocked,
+                  )
                   : _QrCard(payload: _qrPayload!),
             ),
             const SizedBox(height: 12),
-            Text(
-              l10n.storageMeshWaitingHint(l10n.storageMeshJoinWithCode),
-              style: context.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
+            if (_qrPayload != null)
+              Text(
+                l10n.storageMeshWaitingHint(l10n.storageMeshJoinWithCode),
+                style: context.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 12,
@@ -353,6 +383,66 @@ bool get _cameraAvailable {
   return defaultTargetPlatform == TargetPlatform.android ||
       defaultTargetPlatform == TargetPlatform.iOS ||
       defaultTargetPlatform == TargetPlatform.macOS;
+}
+
+/// The pairing slot's honest idle state: sharing is off (the relay
+/// port from a previous run is gone), and one tap restarts it.
+class _PairingIdleCard extends StatelessWidget {
+  const _PairingIdleCard({
+    required this.onStart,
+    this.permissionBlocked = false,
+  });
+
+  final VoidCallback onStart;
+  final bool permissionBlocked;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: context.colorScheme.outline.withValues(alpha: 0.3),
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.qr_code_2,
+            size: 36,
+            color: context.colorScheme.outline,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.storageMeshNotSharing,
+            style: context.textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          if (permissionBlocked) ...[
+            const SizedBox(height: 6),
+            Text(
+              l10n.storageMeshPermissionBlocked,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.colorScheme.error,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+          const SizedBox(height: 10),
+          FilledButton.icon(
+            onPressed: onStart,
+            icon: const Icon(Icons.share_outlined),
+            label: Text(permissionBlocked
+                ? l10n.storageMeshRetrySharing
+                : l10n.storageMeshStartSharing),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _QrCard extends StatelessWidget {

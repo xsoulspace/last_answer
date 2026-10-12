@@ -1,0 +1,17 @@
+{
+  "$comment": "Desktop-automation wiring for Last Answer (ADR 0064 background actuation). The resident serve is converged by oka's supervisor (ecsai_harness tool/uatk_serve.sh) and stays up across agent sessions; plans drive the running macOS app by bundle anchor without stealing focus.",
+  "residentServe": {
+    "endpoint": "http://127.0.0.1:8192/mcp",
+    "transport": "osAccessibility",
+    "converge": "~/xs/ecsai_harness/tool/uatk_serve.sh",
+    "jobsDirectory": "~/.uatk/jobs"
+  },
+  "app": {
+    "bundleId": "dev.xsoulspace.lastAnswer",
+    "productName": "last_answer",
+    "anchor": "ax://bundle/dev.xsoulspace.lastAnswer"
+  },
+  "plans": {
+    "desktopSmoke": "e2e/automation/last-answer-desktop.yaml"
+  }
+}

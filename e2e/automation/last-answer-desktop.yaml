@@ -1,0 +1,20 @@
+# Desktop smoke for Last Answer, driven by the universal automation
+# toolkit (ADR 0064 in dart_flutter_packages). The bundle anchor keeps
+# the app in the background: observation, semantic writes, and typed
+# events never move the user's focus. Pointed to by
+# configs/automation.json (plans.desktopSmoke).
+#
+#   dart run ~/xs/storage_problem/dart_flutter_packages/pkgs/universal_automation_toolkit/bin/universal_automation.dart \
+#     run --plan e2e/automation/last-answer-desktop.yaml
+sessions:
+  app:
+    transport: osAccessibility
+    uri: ax://bundle/dev.xsoulspace.lastAnswer
+scenarios:
+  main:
+    steps:
+      - observe:
+          save: observe
+      - verify:
+          - exists: {role: application}
+      - screenshot: build/automation/last-answer-window.png

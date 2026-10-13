@@ -1,0 +1,2254 @@
+{
+  "docs/evidence/conventional-local-coding-2026-10-13/legacy_preview_diagnostic_test.dart": [
+    3142,
+    1791885942116694490
+  ],
+  "integration_test/coding_agent_afm_e2e_test.dart": [
+    5660,
+    1790355525452379126
+  ],
+  "integration_test/coding_agent_afm_meaning_e2e_test.dart": [
+    5830,
+    1790355525452519995
+  ],
+  "integration_test/coding_agent_self_profile_test.dart": [
+    7163,
+    1790355525452642324
+  ],
+  "integration_test/meaning_ordinary_launch_test.dart": [
+    10404,
+    1791807960683318670
+  ],
+  "ios/Flutter/ephemeral/flutter_lldb_helper.py": [
+    1276,
+    1790380324843257631
+  ],
+  "lib/_library/hooks/hooks.dart": [
+    176,
+    1790355525454164267
+  ],
+  "lib/_library/hooks/use_keyboard_visibility.dart": [
+    1742,
+    1772418795419521222
+  ],
+  "lib/_library/widgets/buttons/adaptive_back_button.dart": [
+    1038,
+    1787600041478416233
+  ],
+  "lib/_library/widgets/buttons/app_icon_button.dart": [
+    1206,
+    1790355525454301053
+  ],
+  "lib/_library/widgets/buttons/cupertino_close_button.dart": [
+    929,
+    1790355525454429840
+  ],
+  "lib/_library/widgets/buttons/cupertino_icon_button.dart": [
+    776,
+    1790355525454629333
+  ],
+  "lib/_library/widgets/buttons/discord_button.dart": [
+    743,
+    1787600041478961874
+  ],
+  "lib/_library/widgets/buttons/emoji_button.dart": [
+    1465,
+    1790355525454854866
+  ],
+  "lib/_library/widgets/buttons/icon_idea_button.dart": [
+    929,
+    1787600041479607186
+  ],
+  "lib/_library/widgets/buttons/icon_share_button.dart": [
+    1443,
+    1787600041480079908
+  ],
+  "lib/_library/widgets/buttons/popup_button.dart": [
+    7663,
+    1790355525455052858
+  ],
+  "lib/_library/widgets/buttons/special_emoji_button.dart": [
+    739,
+    1787600041480411876
+  ],
+  "lib/_library/widgets/buttons/svg_icon_button.dart": [
+    15263,
+    1787600041480969476
+  ],
+  "lib/_library/widgets/core/background_frost_box.dart": [
+    681,
+    1790355525455205603
+  ],
+  "lib/_library/widgets/core/button_popup.dart": [
+    1306,
+    1787600041482194888
+  ],
+  "lib/_library/widgets/core/danger_zone.dart": [
+    1604,
+    1790355525455409595
+  ],
+  "lib/_library/widgets/core/dismissible_tile.dart": [
+    1272,
+    1790355525455534465
+  ],
+  "lib/_library/widgets/core/emoji_grid.dart": [
+    5624,
+    1790355525455691126
+  ],
+  "lib/_library/widgets/core/faded_rail_page.dart": [
+    4334,
+    1787600041483417925
+  ],
+  "lib/_library/widgets/core/focus_bubble_container.dart": [
+    2194,
+    1790355525455809122
+  ],
+  "lib/_library/widgets/core/hero_id.dart": [
+    853,
+    1787600041483826895
+  ],
+  "lib/_library/widgets/core/hoverable_area.dart": [
+    729,
+    1787600041484096403
+  ],
+  "lib/_library/widgets/core/hoverable_list_tile.dart": [
+    616,
+    1787600041484319535
+  ],
+  "lib/_library/widgets/core/macos_appbar.dart": [
+    2155,
+    1787600041484554126
+  ],
+  "lib/_library/widgets/core/remove_title_dialog.dart": [
+    1583,
+    1787600041484816467
+  ],
+  "lib/_library/widgets/core/responsive_widget.dart": [
+    3711,
+    1787600041485154852
+  ],
+  "lib/_library/widgets/core/right_scrollbar.dart": [
+    761,
+    1772418795422363642
+  ],
+  "lib/_library/widgets/core/safe_areas.dart": [
+    439,
+    1772418795422452014
+  ],
+  "lib/_library/widgets/core/scroll_keyboard_closer.dart": [
+    717,
+    1787600041485369400
+  ],
+  "lib/_library/widgets/core/special_emoji_grid.dart": [
+    1203,
+    1790355525456010531
+  ],
+  "lib/_library/widgets/core/special_emoji_keyboard.dart": [
+    5914,
+    1790355525456152359
+  ],
+  "lib/_library/widgets/core/special_emoji_keyboard.freezed.dart": [
+    6920,
+    1790355525456334644
+  ],
+  "lib/_library/widgets/core/state_loader.dart": [
+    3146,
+    1787600041485592907
+  ],
+  "lib/_library/widgets/core/unspash_service.dart": [
+    27,
+    1772418795423371808
+  ],
+  "lib/_library/widgets/core/unsplash_image.dart": [
+    184,
+    1772418795423465429
+  ],
+  "lib/_library/widgets/widgets.dart": [
+    1716,
+    1790355525456455972
+  ],
+  "lib/agent_config/agent_config.dart": [
+    119,
+    1790899269344689280
+  ],
+  "lib/agent_config/agent_config_persistence.dart": [
+    3222,
+    1791893075352027884
+  ],
+  "lib/agent_config/agent_config_persistence_io.dart": [
+    1932,
+    1791893075482086948
+  ],
+  "lib/agent_config/agent_config_persistence_prefs.dart": [
+    1121,
+    1791893075482523662
+  ],
+  "lib/agent_config/agent_config_settings_pane.dart": [
+    19103,
+    1791891721641073123
+  ],
+  "lib/agent_config/agent_platform_config.dart": [
+    9501,
+    1790899039270044967
+  ],
+  "lib/agent_config/chatgpt_subscription_pane.dart": [
+    7619,
+    1791894869457267194
+  ],
+  "lib/app_scaffold.dart": [
+    499,
+    1787600041485969335
+  ],
+  "lib/bootstrap.dart": [
+    584,
+    1790355525456570510
+  ],
+  "lib/coding_agent/actor_roster.dart": [
+    12462,
+    1790355525456756461
+  ],
+  "lib/coding_agent/agent_doc_surface.dart": [
+    157713,
+    1791904399270115282
+  ],
+  "lib/coding_agent/agent_mcp_tools.dart": [
+    50212,
+    1791805461322090830
+  ],
+  "lib/coding_agent/chatgpt_credentials.dart": [
+    11156,
+    1791896968844515273
+  ],
+  "lib/coding_agent/chatgpt_gateway.dart": [
+    467,
+    1791891556519109124
+  ],
+  "lib/coding_agent/chatgpt_gateway_contract.dart": [
+    1371,
+    1791905089428066138
+  ],
+  "lib/coding_agent/chatgpt_gateway_io.dart": [
+    7035,
+    1791905292240951067
+  ],
+  "lib/coding_agent/chatgpt_gateway_stub.dart": [
+    1363,
+    1791893417640239279
+  ],
+  "lib/coding_agent/chatgpt_harness_binding.dart": [
+    1015,
+    1791893176276819530
+  ],
+  "lib/coding_agent/chatgpt_secure_storage.dart": [
+    881,
+    1791897034390585849
+  ],
+  "lib/coding_agent/chatgpt_subscription_controller.dart": [
+    6540,
+    1791905089429415110
+  ],
+  "lib/coding_agent/coding_agent.dart": [
+    451,
+    1790355525457295024
+  ],
+  "lib/coding_agent/desired_coding_model.dart": [
+    619,
+    1791904153450007604
+  ],
+  "lib/coding_agent/device_capabilities.dart": [
+    4354,
+    1791379618822141903
+  ],
+  "lib/coding_agent/device_decision_routes.dart": [
+    2912,
+    1791474406570526451
+  ],
+  "lib/coding_agent/harness_host.dart": [
+    26296,
+    1791896628831075861
+  ],
+  "lib/coding_agent/harness_session_controller.dart": [
+    36854,
+    1791903240662371682
+  ],
+  "lib/coding_agent/meaning_experiment_controller.dart": [
+    11261,
+    1791805734457648263
+  ],
+  "lib/coding_agent/meaning_experiment_entry.dart": [
+    4357,
+    1791806201069574376
+  ],
+  "lib/coding_agent/meaning_experiment_preparation.dart": [
+    1602,
+    1791805490235493335
+  ],
+  "lib/coding_agent/meaning_experiment_preparation_io.dart": [
+    5089,
+    1791805642805751785
+  ],
+  "lib/coding_agent/meaning_experiment_preparation_stub.dart": [
+    219,
+    1791805401685846528
+  ],
+  "lib/coding_agent/meaning_experiment_view.dart": [
+    14607,
+    1791833214181797510
+  ],
+  "lib/coding_agent/meaning_greeting_binding.dart": [
+    1065,
+    1791808319560086693
+  ],
+  "lib/coding_agent/meaning_greeting_binding_io.dart": [
+    3649,
+    1791808478739116172
+  ],
+  "lib/coding_agent/meaning_greeting_binding_stub.dart": [
+    616,
+    1791808320081666325
+  ],
+  "lib/coding_agent/mesh_task_board.dart": [
+    25375,
+    1790381563887656221
+  ],
+  "lib/coding_agent/mesh_task_console_view.dart": [
+    6738,
+    1790903262050751321
+  ],
+  "lib/coding_agent/permission_doc_router.dart": [
+    4785,
+    1790355525457679135
+  ],
+  "lib/coding_agent/product_candidate_verification.dart": [
+    4380,
+    1791891512955056332
+  ],
+  "lib/coding_agent/product_coding_change_view.dart": [
+    17416,
+    1791894664203364224
+  ],
+  "lib/coding_agent/product_dart_runtime.dart": [
+    11899,
+    1791826043174126747
+  ],
+  "lib/coding_agent/product_workspace_tooling.dart": [
+    12129,
+    1791903442746770429
+  ],
+  "lib/coding_agent/provider_configuration.dart": [
+    6055,
+    1791309335882522091
+  ],
+  "lib/coding_agent/runtime_sha256.dart": [
+    2288,
+    1791826043173657285
+  ],
+  "lib/coding_agent/turn_queue.dart": [
+    5610,
+    1790355525457923459
+  ],
+  "lib/coding_agent/world_inspector/external_worlds_io.dart": [
+    7645,
+    1791333346592998784
+  ],
+  "lib/coding_agent/world_inspector/external_worlds_stub.dart": [
+    1627,
+    1791333346593502709
+  ],
+  "lib/coding_agent/world_inspector/paired_worlds.dart": [
+    5306,
+    1791332523713064651
+  ],
+  "lib/coding_agent/world_inspector/scripted_session_handle.dart": [
+    5727,
+    1791229655785455048
+  ],
+  "lib/coding_agent/world_inspector/world_binding.dart": [
+    3119,
+    1791333441154685186
+  ],
+  "lib/coding_agent/world_inspector/world_binding_sheet.dart": [
+    8044,
+    1791333441155642630
+  ],
+  "lib/coding_agent/world_inspector/world_inspector_pane.dart": [
+    39418,
+    1791336278629347789
+  ],
+  "lib/coding_agent/world_inspector/world_inspector_tools.dart": [
+    12723,
+    1791323279316861051
+  ],
+  "lib/coding_agent/world_inspector/world_seat_io.dart": [
+    2181,
+    1791333368133590264
+  ],
+  "lib/coding_agent/world_inspector/world_seat_lease.dart": [
+    295,
+    1791332737187635292
+  ],
+  "lib/coding_agent/world_inspector/world_seat_stub.dart": [
+    1166,
+    1791333273425506576
+  ],
+  "lib/coding_agent/world_inspector/world_seats.dart": [
+    1444,
+    1791333253008404504
+  ],
+  "lib/common_imports.dart": [
+    952,
+    1790355525458179741
+  ],
+  "lib/doc/acp_agent_runtime.dart": [
+    18029,
+    1791501010260961508
+  ],
+  "lib/doc/acp_agent_runtime_registry.dart": [
+    1906,
+    1790898973269885653
+  ],
+  "lib/doc/acp_doc_inference_port.dart": [
+    2315,
+    1791584144524585385
+  ],
+  "lib/doc/acp_session_reference_store.dart": [
+    4668,
+    1791895432715652118
+  ],
+  "lib/doc/chat_document_view.dart": [
+    57263,
+    1791501010266489386
+  ],
+  "lib/doc/chat_inference_resolver.dart": [
+    4613,
+    1790898973269642617
+  ],
+  "lib/doc/chat_permission_policy.dart": [
+    4893,
+    1791413376670955732
+  ],
+  "lib/doc/doc_view.dart": [
+    25800,
+    1791902382539179042
+  ],
+  "lib/doc/openrouter_doc_inference_port.dart": [
+    2912,
+    1791584144525097468
+  ],
+  "lib/firebase_options.dart": [
+    3488,
+    1784763832849781413
+  ],
+  "lib/home/home.dart": [
+    102,
+    1772418795424025155
+  ],
+  "lib/home/home_screen.dart": [
+    15119,
+    1791904127081282103
+  ],
+  "lib/home/project_route.dart": [
+    4447,
+    1791901818119053162
+  ],
+  "lib/home/project_view.dart": [
+    10132,
+    1791901770550815977
+  ],
+  "lib/home/project_widgets/project_text_field.dart": [
+    5473,
+    1790355525459593021
+  ],
+  "lib/home/project_widgets/project_title_field.dart": [
+    1474,
+    1790355525459780597
+  ],
+  "lib/home/project_widgets/project_widgets.dart": [
+    69,
+    1772418795424739958
+  ],
+  "lib/home/tags/tags.dart": [
+    60,
+    1772418795424870994
+  ],
+  "lib/home/tags/tags_screen.dart": [
+    13601,
+    1790355525459963715
+  ],
+  "lib/home/tags/tags_screen_state.dart": [
+    7939,
+    1790355525460137501
+  ],
+  "lib/home/tags/tags_screen_state.freezed.dart": [
+    8565,
+    1790355525460372950
+  ],
+  "lib/home/widgets/home_app_bar.dart": [
+    3871,
+    1791808243771875489
+  ],
+  "lib/home/widgets/project_direction_switch.dart": [
+    1334,
+    1790355525460704521
+  ],
+  "lib/home/widgets/project_tile.dart": [
+    2857,
+    1790355525460826183
+  ],
+  "lib/home/widgets/vertical_projects_bar.dart": [
+    2132,
+    1791370551471299859
+  ],
+  "lib/home/widgets/widgets.dart": [
+    133,
+    1772418795425985363
+  ],
+  "lib/idea/create_idea_screen.dart": [
+    3264,
+    1790355525461090381
+  ],
+  "lib/idea/idea.dart": [
+    34,
+    1772418795426206854
+  ],
+  "lib/idea/idea_answer_screen.dart": [
+    3193,
+    1787600041488650207
+  ],
+  "lib/idea/idea_answer_screen_bloc.dart": [
+    1697,
+    1787600041488970967
+  ],
+  "lib/idea/idea_view.dart": [
+    3897,
+    1787600041489269309
+  ],
+  "lib/idea/idea_view_bloc.dart": [
+    4754,
+    1791901856124225920
+  ],
+  "lib/idea/idea_view_bloc.freezed.dart": [
+    4347,
+    1787600041490422260
+  ],
+  "lib/idea/widgets/answer_creator.dart": [
+    6858,
+    1772418795426946905
+  ],
+  "lib/idea/widgets/answer_creator.freezed.dart": [
+    6371,
+    1787600041490749395
+  ],
+  "lib/idea/widgets/answer_field_bubble.dart": [
+    1761,
+    1784759411532169945
+  ],
+  "lib/idea/widgets/answer_tile.dart": [
+    5329,
+    1790355525461251625
+  ],
+  "lib/idea/widgets/question_dropdown.dart": [
+    2065,
+    1790355525461383745
+  ],
+  "lib/idea/widgets/questions_chips.dart": [
+    1698,
+    1772418795427522881
+  ],
+  "lib/main.dart": [
+    1108,
+    1791811839698547753
+  ],
+  "lib/main_prod.dart": [
+    255,
+    1790355525461616112
+  ],
+  "lib/mcp/app_mcp_tools.dart": [
+    19067,
+    1791892716672168533
+  ],
+  "lib/mcp/chatgpt_mcp_tools.dart": [
+    4295,
+    1791893712951366715
+  ],
+  "lib/mcp/doc_mcp_tools.dart": [
+    4521,
+    1790355525461774772
+  ],
+  "lib/mcp/storage_mcp_tools.dart": [
+    19236,
+    1791312739507169221
+  ],
+  "lib/note/note.dart": [
+    1,
+    1772418795427848409
+  ],
+  "lib/note/note_view.dart": [
+    2921,
+    1791902382537558276
+  ],
+  "lib/note/note_view_bloc.dart": [
+    3555,
+    1791901856162035348
+  ],
+  "lib/note/widgets/desktop_note_settings.dart": [
+    2645,
+    1790355525462402624
+  ],
+  "lib/note/widgets/mobile_note_settings.dart": [
+    1406,
+    1772418795428290598
+  ],
+  "lib/note/widgets/note_project_side_actionbar.dart": [
+    2157,
+    1790355525462809317
+  ],
+  "lib/note/widgets/note_settings_button.dart": [
+    1282,
+    1790355525462950686
+  ],
+  "lib/note/widgets/widgets.dart": [
+    0,
+    1787600041491491417
+  ],
+  "lib/other/app_info.dart": [
+    4845,
+    1790355525463125430
+  ],
+  "lib/other/feedback.dart": [
+    1498,
+    1790355525463440710
+  ],
+  "lib/other/intro_screen.dart": [
+    605,
+    1772418795428886948
+  ],
+  "lib/other/last_answer_app.dart": [
+    3966,
+    1791891753363938580
+  ],
+  "lib/other/loading_screen.dart": [
+    712,
+    1787600041492544574
+  ],
+  "lib/other/other.dart": [
+    155,
+    1772418795429164436
+  ],
+  "lib/other/update_notification_dialog.dart": [
+    5888,
+    1787600041493165926
+  ],
+  "lib/router.dart": [
+    4673,
+    1791901542040828732
+  ],
+  "lib/settings/features/characters_limit.dart": [
+    5543,
+    1790355525464096268
+  ],
+  "lib/settings/features/characters_limit_state.dart": [
+    4059,
+    1790355525464238096
+  ],
+  "lib/settings/features/characters_limit_state.freezed.dart": [
+    5206,
+    1790355525464424339
+  ],
+  "lib/settings/features/features.dart": [
+    465,
+    1791616280147955239
+  ],
+  "lib/settings/features/github_sync_button.dart": [
+    11371,
+    1790355525464712537
+  ],
+  "lib/settings/features/github_sync_state.dart": [
+    12446,
+    1790355525464875072
+  ],
+  "lib/settings/features/live_mesh_service.dart": [
+    17087,
+    1791501010272644181
+  ],
+  "lib/settings/features/locale_switcher_button.dart": [
+    988,
+    1790355525465028733
+  ],
+  "lib/settings/features/mesh_qr_scan_page.dart": [
+    1193,
+    1790355525465110022
+  ],
+  "lib/settings/features/mesh_relay_host_io.dart": [
+    2177,
+    1790355525465195852
+  ],
+  "lib/settings/features/mesh_relay_host_stub.dart": [
+    571,
+    1790355525465273807
+  ],
+  "lib/settings/features/mesh_relay_io.dart": [
+    126,
+    1790355525465353679
+  ],
+  "lib/settings/features/mesh_storage_service.dart": [
+    17990,
+    1791501010275900099
+  ],
+  "lib/settings/features/mesh_sync_panel.dart": [
+    17908,
+    1791732013338321835
+  ],
+  "lib/settings/features/mesh_sync_participants.dart": [
+    5736,
+    1791416168093530667
+  ],
+  "lib/settings/features/projects_export_import_buttons.dart": [
+    2982,
+    1790355525465792913
+  ],
+  "lib/settings/features/storage_backends_button.dart": [
+    9971,
+    1791616280148315890
+  ],
+  "lib/settings/features/storage_backends_platform_io.dart": [
+    2899,
+    1790396140023831384
+  ],
+  "lib/settings/features/storage_backends_platform_stub.dart": [
+    1450,
+    1790396140038062614
+  ],
+  "lib/settings/features/storage_backends_state.dart": [
+    31548,
+    1791501010278337850
+  ],
+  "lib/settings/features/supervisor_panel.dart": [
+    32188,
+    1791732618281372109
+  ],
+  "lib/settings/features/supervisor_service.dart": [
+    93,
+    1791616086654739833
+  ],
+  "lib/settings/features/supervisor_service_io.dart": [
+    8140,
+    1791730516665412493
+  ],
+  "lib/settings/features/supervisor_service_stub.dart": [
+    984,
+    1791708186174383484
+  ],
+  "lib/settings/features/supervisor_view.dart": [
+    3933,
+    1791730477449083031
+  ],
+  "lib/settings/features/theme_switcher_button.dart": [
+    1126,
+    1790355525466352225
+  ],
+  "lib/settings/settings.dart": [
+    215,
+    1772418795430581001
+  ],
+  "lib/settings/settings_screen.dart": [
+    2742,
+    1791309335900392039
+  ],
+  "lib/settings/views/agent_settings_view.dart": [
+    953,
+    1790899425729128015
+  ],
+  "lib/settings/views/changelog_view.dart": [
+    976,
+    1772418795430822240
+  ],
+  "lib/settings/views/general_settings_bloc.dart": [
+    930,
+    1787600041493706400
+  ],
+  "lib/settings/views/general_settings_view.dart": [
+    4464,
+    1790355525466658505
+  ],
+  "lib/settings/views/iap_views.dart": [
+    2881,
+    1790355525466782917
+  ],
+  "lib/settings/views/my_account_view_local_impl.dart": [
+    443,
+    1787600041493822529
+  ],
+  "lib/settings/views/my_account_view_remote_impl.dart": [
+    4234,
+    1787600041494217874
+  ],
+  "lib/settings/views/supporter_view/supporter_base_view.dart": [
+    2641,
+    1787600041494464923
+  ],
+  "lib/settings/views/supporter_view/supporter_view.dart": [
+    213,
+    1787600041494726014
+  ],
+  "lib/settings/views/supporter_view/supporter_view_io.dart": [
+    3537,
+    1790355525466925037
+  ],
+  "lib/settings/views/supporter_view/supporter_view_noop.dart": [
+    326,
+    1787600041495116359
+  ],
+  "lib/settings/views/supporter_view/supporter_view_web.dart": [
+    1239,
+    1790355525467045991
+  ],
+  "lib/settings/views/views.dart": [
+    187,
+    1791309335901942356
+  ],
+  "lib/settings/widgets/settings_button.dart": [
+    1425,
+    1787600041495726586
+  ],
+  "lib/settings/widgets/settings_list_container.dart": [
+    823,
+    1787600041495839797
+  ],
+  "lib/settings/widgets/settings_list_tile.dart": [
+    1603,
+    1772418795433131975
+  ],
+  "lib/settings/widgets/settings_text.dart": [
+    328,
+    1787600041495951551
+  ],
+  "lib/settings/widgets/widgets.dart": [
+    133,
+    1772418795433767282
+  ],
+  "lib/ui_pay/paywall_flow.dart": [
+    3015,
+    1790355525467173486
+  ],
+  "lib/ui_pay/paywall_screen.dart": [
+    12707,
+    1790355525467315105
+  ],
+  "lib/ui_pay/ui_pay.dart": [
+    58,
+    1790355525467382853
+  ],
+  "lib/workbench/behaviour_connection.dart": [
+    3794,
+    1791810772015664162
+  ],
+  "lib/workbench/workbench_candidate_main.dart": [
+    1280,
+    1791814309715731570
+  ],
+  "lib/workbench/workbench_harness_tools.dart": [
+    4222,
+    1791817167347376939
+  ],
+  "lib/workbench/workbench_investigation.dart": [
+    4732,
+    1791817167348550160
+  ],
+  "lib/workbench/workbench_mcp_tools.dart": [
+    2763,
+    1791814269597354189
+  ],
+  "lib/workbench/workbench_scene.dart": [
+    2360,
+    1791810824965776761
+  ],
+  "lib/workbench/workbench_screen.dart": [
+    43770,
+    1791832645636080465
+  ],
+  "lib/workbench/workbench_strings.dart": [
+    4610,
+    1791826996303039453
+  ],
+  "packages/core/lib/core.dart": [
+    451,
+    1784767872960649269
+  ],
+  "packages/core/lib/envs.dart": [
+    1626,
+    1790355525469792137
+  ],
+  "packages/core/lib/src/data/data.dart": [
+    53,
+    1772418795503365567
+  ],
+  "packages/core/lib/src/data/idea_questions.dart": [
+    1350,
+    1787568670561012005
+  ],
+  "packages/core/lib/src/data/locales.dart": [
+    1471,
+    1790355525469968964
+  ],
+  "packages/core/lib/src/data_models/data_models.dart": [
+    388,
+    1790355525470111417
+  ],
+  "packages/core/lib/src/data_models/data_models.freezed.dart": [
+    153356,
+    1791332616845554596
+  ],
+  "packages/core/lib/src/data_models/data_models.g.dart": [
+    15258,
+    1791332616847277206
+  ],
+  "packages/core/lib/src/data_models/notification.dart": [
+    478,
+    1790355525470844389
+  ],
+  "packages/core/lib/src/data_models/project.dart": [
+    13415,
+    1791332319816515071
+  ],
+  "packages/core/lib/src/data_models/save.dart": [
+    550,
+    1790355525471317538
+  ],
+  "packages/core/lib/src/data_models/user.dart": [
+    1977,
+    1790355525471577195
+  ],
+  "packages/core/lib/src/data_repositories/ads_repository.dart": [
+    484,
+    1787568670561233920
+  ],
+  "packages/core/lib/src/data_repositories/data_repositories.dart": [
+    168,
+    1790355525471800437
+  ],
+  "packages/core/lib/src/data_repositories/emoji_repository.dart": [
+    1084,
+    1790355525471935557
+  ],
+  "packages/core/lib/src/data_repositories/notifications_repository.dart": [
+    738,
+    1787568670561359794
+  ],
+  "packages/core/lib/src/data_repositories/projects_repository.dart": [
+    2803,
+    1790355525472075551
+  ],
+  "packages/core/lib/src/data_repositories/purchases_repository.dart": [
+    2418,
+    1790355525472224713
+  ],
+  "packages/core/lib/src/data_repositories/user_repository.dart": [
+    1176,
+    1790355525472355374
+  ],
+  "packages/core/lib/src/data_sources/data_sources.dart": [
+    165,
+    1790355525472486619
+  ],
+  "packages/core/lib/src/data_sources/interfaces/ads.dart": [
+    187,
+    1772418795505626179
+  ],
+  "packages/core/lib/src/data_sources/interfaces/auth.dart": [
+    114,
+    1772418795505719383
+  ],
+  "packages/core/lib/src/data_sources/interfaces/complex_local_db.dart": [
+    165,
+    1772418795505810921
+  ],
+  "packages/core/lib/src/data_sources/interfaces/dictionaries.dart": [
+    56,
+    1772418795505893793
+  ],
+  "packages/core/lib/src/data_sources/interfaces/emoji.dart": [
+    359,
+    1790355525472617823
+  ],
+  "packages/core/lib/src/data_sources/interfaces/interfaces.dart": [
+    267,
+    1790355525472740110
+  ],
+  "packages/core/lib/src/data_sources/interfaces/notifications.dart": [
+    228,
+    1772418795506275818
+  ],
+  "packages/core/lib/src/data_sources/interfaces/projects.dart": [
+    1099,
+    1790355525472872605
+  ],
+  "packages/core/lib/src/data_sources/interfaces/purchases.dart": [
+    912,
+    1772418795506466768
+  ],
+  "packages/core/lib/src/data_sources/interfaces/remote_client.dart": [
+    386,
+    1790355525473021683
+  ],
+  "packages/core/lib/src/data_sources/interfaces/tags.dart": [
+    229,
+    1790355525473141095
+  ],
+  "packages/core/lib/src/data_sources/interfaces/user.dart": [
+    361,
+    1772418795506783172
+  ],
+  "packages/core/lib/src/data_sources/local/ads.dart": [
+    760,
+    1790355525473270131
+  ],
+  "packages/core/lib/src/data_sources/local/dictionaries.dart": [
+    171,
+    1772418795507030869
+  ],
+  "packages/core/lib/src/data_sources/local/doc_body_storage.dart": [
+    1007,
+    1790355525473353170
+  ],
+  "packages/core/lib/src/data_sources/local/emoji.dart": [
+    1060,
+    1787568670561880082
+  ],
+  "packages/core/lib/src/data_sources/local/last_used_emoji.dart": [
+    1204,
+    1790355525473474165
+  ],
+  "packages/core/lib/src/data_sources/local/local.dart": [
+    292,
+    1790355525473609952
+  ],
+  "packages/core/lib/src/data_sources/local/notifications.dart": [
+    1456,
+    1790355525473855401
+  ],
+  "packages/core/lib/src/data_sources/local/projects_web.dart": [
+    7619,
+    1790355525474067352
+  ],
+  "packages/core/lib/src/data_sources/local/purchases.dart": [
+    2730,
+    1790355525474215888
+  ],
+  "packages/core/lib/src/data_sources/local/shared_preferences_keys.dart": [
+    347,
+    1772418795508022285
+  ],
+  "packages/core/lib/src/data_sources/local/tags.dart": [
+    925,
+    1790355525474351466
+  ],
+  "packages/core/lib/src/data_sources/local/user.dart": [
+    688,
+    1790355525474481169
+  ],
+  "packages/core/lib/src/data_sources/mocks/auth.dart": [
+    0,
+    1787568670562022956
+  ],
+  "packages/core/lib/src/data_sources/mocks/mocks.dart": [
+    65,
+    1772418795511474805
+  ],
+  "packages/core/lib/src/data_sources/mocks/purchases.dart": [
+    0,
+    1787568670562159955
+  ],
+  "packages/core/lib/src/data_sources/mocks/user.dart": [
+    0,
+    1787568670562251955
+  ],
+  "packages/core/lib/src/data_sources/mutations/migrate_from_hive_isar.dart": [
+    4206,
+    1790355525474605373
+  ],
+  "packages/core/lib/src/data_sources/mutations/mutations.dart": [
+    930,
+    1790355525474732160
+  ],
+  "packages/core/lib/src/data_sources/mutations/parsers/__init.dart": [
+    126,
+    1790355525474942194
+  ],
+  "packages/core/lib/src/data_sources/mutations/parsers/byte_utils.dart": [
+    10728,
+    1790355525475067939
+  ],
+  "packages/core/lib/src/data_sources/mutations/parsers/hive_parser.dart": [
+    3382,
+    1790355525475152186
+  ],
+  "packages/core/lib/src/data_sources/mutations/parsers/isar_parser.dart": [
+    6285,
+    1790355525475266765
+  ],
+  "packages/core/lib/src/data_sources/mutations/parsers/parsers.dart": [
+    6572,
+    1790355525475388844
+  ],
+  "packages/core/lib/src/data_sources/remote/auth.dart": [
+    481,
+    1790355525475531338
+  ],
+  "packages/core/lib/src/data_sources/remote/purchases.dart": [
+    1006,
+    1790355525475670250
+  ],
+  "packages/core/lib/src/data_sources/remote/remote.dart": [
+    97,
+    1790355525475782662
+  ],
+  "packages/core/lib/src/data_sources/remote/serverpod_client.dart": [
+    1282,
+    1790355525475929656
+  ],
+  "packages/core/lib/src/data_sources/remote/user.dart": [
+    691,
+    1790355525476038694
+  ],
+  "packages/core/lib/src/foundation/extensions/build_context.dart": [
+    424,
+    1772418795512354559
+  ],
+  "packages/core/lib/src/foundation/extensions/extensions.dart": [
+    128,
+    1772418795512431806
+  ],
+  "packages/core/lib/src/foundation/extensions/go_router.dart": [
+    559,
+    1772418795512509594
+  ],
+  "packages/core/lib/src/foundation/extensions/string.dart": [
+    183,
+    1772418795512590382
+  ],
+  "packages/core/lib/src/foundation/extensions/value_notifier.dart": [
+    783,
+    1790355525476159481
+  ],
+  "packages/core/lib/src/foundation/extensions/widget.dart": [
+    139,
+    1772418795512744459
+  ],
+  "packages/core/lib/src/foundation/foundation.dart": [
+    58,
+    1772418795512932160
+  ],
+  "packages/core/lib/src/foundation/utils.dart": [
+    1,
+    1772418795513012406
+  ],
+  "packages/core/lib/src/generated/assets.gen.dart": [
+    12434,
+    1787568670563409988
+  ],
+  "packages/core/lib/src/generated/generated.dart": [
+    74,
+    1772418795513302810
+  ],
+  "packages/core/lib/src/generated/intl/S.dart": [
+    60916,
+    1791897938865577654
+  ],
+  "packages/core/lib/src/generated/intl/S_en.dart": [
+    27378,
+    1791897938767958225
+  ],
+  "packages/core/lib/src/generated/intl/S_it.dart": [
+    29092,
+    1791897938775041464
+  ],
+  "packages/core/lib/src/generated/intl/S_ru.dart": [
+    36946,
+    1791897938807120721
+  ],
+  "packages/core/lib/src/generated/l10n.dart": [
+    22,
+    1772418795514136108
+  ],
+  "packages/core/lib/src/router_paths.dart": [
+    663,
+    1790355525478234820
+  ],
+  "packages/core/lib/src/services/auth/auth.dart": [
+    60,
+    1772418795516329515
+  ],
+  "packages/core/lib/src/services/auth/auth_provider.dart": [
+    423,
+    1790355525478369815
+  ],
+  "packages/core/lib/src/services/auth/auth_provider.freezed.dart": [
+    7630,
+    1790355525478593514
+  ],
+  "packages/core/lib/src/services/auth/providers/google_auth_provider.dart": [
+    949,
+    1790355525478830089
+  ],
+  "packages/core/lib/src/services/auth/providers/providers.dart": [
+    36,
+    1772418795516757538
+  ],
+  "packages/core/lib/src/services/auth/widgets/google_sign_in_button.dart": [
+    5185,
+    1790355525479021998
+  ],
+  "packages/core/lib/src/services/auth/widgets/vk_id_sign_in_button.dart": [
+    34,
+    1790355525479157160
+  ],
+  "packages/core/lib/src/services/auth/widgets/widgets.dart": [
+    73,
+    1772418795517100107
+  ],
+  "packages/core/lib/src/services/doc_inference_port.dart": [
+    546,
+    1790355525479237574
+  ],
+  "packages/core/lib/src/services/file_service/file_service.dart": [
+    130,
+    1772418795517249059
+  ],
+  "packages/core/lib/src/services/file_service/file_service_i.dart": [
+    875,
+    1772418795517350763
+  ],
+  "packages/core/lib/src/services/file_service/file_service_io.dart": [
+    3294,
+    1790355525479377027
+  ],
+  "packages/core/lib/src/services/file_service/file_service_web.dart": [
+    1198,
+    1791146129655557449
+  ],
+  "packages/core/lib/src/services/services.dart": [
+    274,
+    1790355525479625267
+  ],
+  "packages/core/lib/src/services/share_service.dart": [
+    2969,
+    1790355525479842717
+  ],
+  "packages/core/lib/src/services/telegram/bot_telegram_service.dart": [
+    688,
+    1790355525479974296
+  ],
+  "packages/core/lib/src/services/telegram/telegram.dart": [
+    36,
+    1772418795518949862
+  ],
+  "packages/core/lib/src/state/ads_notifier.dart": [
+    745,
+    1790355525480203662
+  ],
+  "packages/core/lib/src/state/app_notifier.dart": [
+    2081,
+    1790355525480388322
+  ],
+  "packages/core/lib/src/state/emoji_state_notifier.dart": [
+    861,
+    1790355525480619105
+  ],
+  "packages/core/lib/src/state/logic/locale_logic.dart": [
+    1740,
+    1787568670563738027
+  ],
+  "packages/core/lib/src/state/logic/logic.dart": [
+    28,
+    1772418795519485005
+  ],
+  "packages/core/lib/src/state/map_state_notifier.dart": [
+    1008,
+    1790355525480796723
+  ],
+  "packages/core/lib/src/state/notifications_notifier.dart": [
+    2139,
+    1790355525480930843
+  ],
+  "packages/core/lib/src/state/opened_project_notifier.dart": [
+    4011,
+    1791904127082774202
+  ],
+  "packages/core/lib/src/state/projects_notifier.dart": [
+    7355,
+    1790355525481248581
+  ],
+  "packages/core/lib/src/state/projects_paged_controller.dart": [
+    263,
+    1790355525481380618
+  ],
+  "packages/core/lib/src/state/projects_paged_requests_builder.dart": [
+    1230,
+    1790355525481647691
+  ],
+  "packages/core/lib/src/state/purchases_notifier.dart": [
+    2711,
+    1790355525481810019
+  ],
+  "packages/core/lib/src/state/state.dart": [
+    1200,
+    1790355525481963596
+  ],
+  "packages/core/lib/src/state/state.freezed.dart": [
+    46698,
+    1790355525482271376
+  ],
+  "packages/core/lib/src/state/tags_notifier.dart": [
+    477,
+    1790355525482425204
+  ],
+  "packages/core/lib/src/state/user_local_initializer.dart": [
+    828,
+    1790355525482563615
+  ],
+  "packages/core/lib/src/state/user_notifier.dart": [
+    4591,
+    1790355525482754358
+  ],
+  "packages/core/lib/src/state/user_remote_initializer.dart": [
+    939,
+    1790355525482959809
+  ],
+  "packages/core/lib/src/state_di/global_services_initializer.dart": [
+    1444,
+    1790355525483112678
+  ],
+  "packages/core/lib/src/state_di/global_states_initializer.dart": [
+    4483,
+    1790355525483283255
+  ],
+  "packages/core/lib/src/state_di/global_states_provider.dart": [
+    8069,
+    1791377786462893576
+  ],
+  "packages/core/lib/src/state_di/monetization.dart": [
+    2748,
+    1790355525483536829
+  ],
+  "packages/core/lib/src/state_di/path_utils.dart": [
+    1950,
+    1790355525483618576
+  ],
+  "packages/core/lib/src/state_di/state_di.dart": [
+    232,
+    1790355525483752404
+  ],
+  "packages/core/lib/src/theme/app_colors.dart": [
+    1470,
+    1772418795521702994
+  ],
+  "packages/core/lib/src/theme/app_text_styles.dart": [
+    121,
+    1772418795521785408
+  ],
+  "packages/core/lib/src/theme/material_theme.dart": [
+    851,
+    1772418795521876945
+  ],
+  "packages/core/lib/src/theme/theme.dart": [
+    198,
+    1772418795521956775
+  ],
+  "packages/core/lib/src/theme/widget_params.dart": [
+    137,
+    1772418795522032314
+  ],
+  "packages/core/lib/src/utils/close_keyboard.dart": [
+    860,
+    1772418795522160100
+  ],
+  "packages/core/lib/src/utils/color_extension.dart": [
+    803,
+    1790355525483889232
+  ],
+  "packages/core/lib/src/utils/greetings.dart": [
+    1619,
+    1772418795522333509
+  ],
+  "packages/core/lib/src/utils/platform_info.dart": [
+    1723,
+    1790355525484022435
+  ],
+  "packages/core/lib/src/utils/theme_definder.dart": [
+    1101,
+    1787568670564150316
+  ],
+  "packages/core/lib/src/utils/utils.dart": [
+    145,
+    1772418795522906901
+  ],
+  "packages/core_server_client/lib/core_server_client.dart": [
+    94,
+    1772418795523659286
+  ],
+  "packages/core_server_client/lib/src/protocol/client.dart": [
+    3775,
+    1772418795523836612
+  ],
+  "packages/core_server_client/lib/src/protocol/protocol.dart": [
+    4062,
+    1772418795523992272
+  ],
+  "packages/core_server_client/lib/src/protocol/purchase.dart": [
+    2909,
+    1772418795524117392
+  ],
+  "packages/core_server_client/lib/src/protocol/purchases.dart": [
+    3462,
+    1772418795524221970
+  ],
+  "packages/core_server_client/lib/src/protocol/user.dart": [
+    2663,
+    1772418795524309800
+  ],
+  "packages/headless_core/lib/headless_agent_harness.dart": [
+    42,
+    1790355525485029314
+  ],
+  "packages/headless_core/lib/headless_core.dart": [
+    849,
+    1791810131815186457
+  ],
+  "packages/headless_core/lib/src/chat_document_service.dart": [
+    7247,
+    1791405888768151554
+  ],
+  "packages/headless_core/lib/src/doc_replica.dart": [
+    34845,
+    1791405210661733166
+  ],
+  "packages/headless_core/lib/src/doc_replica_store.dart": [
+    12929,
+    1791375562422193355
+  ],
+  "packages/headless_core/lib/src/document_agent_service.dart": [
+    8455,
+    1790355525485847700
+  ],
+  "packages/headless_core/lib/src/document_node.dart": [
+    5922,
+    1791405111090856321
+  ],
+  "packages/headless_core/lib/src/document_node.freezed.dart": [
+    43575,
+    1791405144970227070
+  ],
+  "packages/headless_core/lib/src/document_node.g.dart": [
+    4172,
+    1791405144970860969
+  ],
+  "packages/headless_core/lib/src/document_repository.dart": [
+    1738,
+    1790355525486428136
+  ],
+  "packages/headless_core/lib/src/fractional_order.dart": [
+    4750,
+    1791170753032065402
+  ],
+  "packages/headless_core/lib/src/headless_agent_harness.dart": [
+    5554,
+    1790355525486803539
+  ],
+  "packages/headless_core/lib/src/in_memory_document_repository.dart": [
+    956,
+    1790355525486915618
+  ],
+  "packages/headless_core/lib/src/mesh_aware_document_repository.dart": [
+    3283,
+    1791377813435275371
+  ],
+  "packages/headless_core/lib/src/perm_request.dart": [
+    5529,
+    1790355525487113777
+  ],
+  "packages/headless_core/lib/src/replica_document_repository.dart": [
+    9938,
+    1791501010295469359
+  ],
+  "packages/headless_core/lib/src/storage_document_repository.dart": [
+    3428,
+    1790355525487221857
+  ],
+  "packages/headless_core/lib/src/workbench.dart": [
+    16858,
+    1791816992762076529
+  ],
+  "packages/headless_core/test/chat_document_service_test.dart": [
+    3592,
+    1790355525487457098
+  ],
+  "packages/headless_core/test/doc_replica_perm_test.dart": [
+    5752,
+    1790355525487644466
+  ],
+  "packages/headless_core/test/doc_replica_snapshot_test.dart": [
+    19580,
+    1790378326923189959
+  ],
+  "packages/headless_core/test/doc_replica_store_test.dart": [
+    11752,
+    1790355525487769044
+  ],
+  "packages/headless_core/test/doc_replica_test.dart": [
+    17153,
+    1790355525487867166
+  ],
+  "packages/headless_core/test/document_agent_service_test.dart": [
+    5194,
+    1790355525487975037
+  ],
+  "packages/headless_core/test/document_node_test.dart": [
+    2584,
+    1790355525488067325
+  ],
+  "packages/headless_core/test/document_repository_test.dart": [
+    3622,
+    1790355525488154238
+  ],
+  "packages/headless_core/test/headless_agent_harness_test.dart": [
+    3392,
+    1790355525488235693
+  ],
+  "packages/landing/lib/app.dart": [
+    7119,
+    1790355525488702134
+  ],
+  "packages/landing/lib/sections/download_screen.dart": [
+    3810,
+    1790355525488855170
+  ],
+  "packages/landing/lib/sections/home_screen.dart": [
+    7102,
+    1790355525489104869
+  ],
+  "packages/landing/lib/sections/sections.dart": [
+    58,
+    1772418795526209844
+  ],
+  "packages/landing/lib/ui_kit/bars.dart": [
+    1047,
+    1790355525489227114
+  ],
+  "packages/landing/lib/ui_kit/buttons.dart": [
+    4692,
+    1790355525489470730
+  ],
+  "packages/landing/lib/ui_kit/containers.dart": [
+    1293,
+    1790355525489613558
+  ],
+  "packages/landing/lib/ui_kit/material_icons.dart": [
+    883,
+    1790355525489729679
+  ],
+  "packages/landing/lib/ui_kit/spacers.dart": [
+    422,
+    1790355525489842175
+  ],
+  "packages/landing/lib/ui_kit/ui_kit.dart": [
+    122,
+    1772418795527071349
+  ],
+  "packages/landing/tailwind.config.js": [
+    229,
+    1772418795527264966
+  ],
+  "packages/landing/web/main.dart": [
+    268,
+    1772418795657006856
+  ],
+  "packages/move_to/lib/purchases_ads/ad_instance.dart": [
+    399,
+    1790355525490280825
+  ],
+  "packages/move_to/lib/purchases_ads/purchases_ads.dart": [
+    135,
+    1790355525490357864
+  ],
+  "packages/move_to/lib/purchases_ads/purchases_ads_base.dart": [
+    632,
+    1790355525490442152
+  ],
+  "packages/move_to/lib/purchases_ads/purchases_ads_io.dart": [
+    4490,
+    1790355525490639603
+  ],
+  "packages/move_to/lib/purchases_ads/purchases_ads_noop.dart": [
+    503,
+    1790355525490723433
+  ],
+  "packages/move_to/lib/purchases_ads/purchases_ads_web.dart": [
+    1976,
+    1790355525490799014
+  ],
+  "packages/move_to/lib/purchases_ads/yandex/yandex.dart": [
+    1107,
+    1790355525490914926
+  ],
+  "packages/server/bin/main.dart": [
+    212,
+    1772418795658074769
+  ],
+  "packages/server/lib/envs.dart": [
+    704,
+    1772418795661679824
+  ],
+  "packages/server/lib/server.dart": [
+    1319,
+    1790355525491230164
+  ],
+  "packages/server/lib/src/endpoints/auth_endpoint.dart": [
+    1933,
+    1790355525491360534
+  ],
+  "packages/server/lib/src/endpoints/modules/google_play_client.dart": [
+    1230,
+    1772418795662076557
+  ],
+  "packages/server/lib/src/endpoints/modules/modules.dart": [
+    995,
+    1772418795662158303
+  ],
+  "packages/server/lib/src/endpoints/purchases_endpoint.dart": [
+    2359,
+    1772418795662239841
+  ],
+  "packages/server/lib/src/endpoints/user_endpoint.dart": [
+    5035,
+    1772418795662349962
+  ],
+  "packages/server/lib/src/extensions/extensions.dart": [
+    23,
+    1772418795662471873
+  ],
+  "packages/server/lib/src/extensions/session.dart": [
+    394,
+    1790355525491492363
+  ],
+  "packages/server/lib/src/future_calls/future_calls.dart": [
+    417,
+    1772418795662700822
+  ],
+  "packages/server/lib/src/future_calls/google_play_handler_future_call.dart": [
+    1442,
+    1772418795662798193
+  ],
+  "packages/server/lib/src/generated/endpoints.dart": [
+    4135,
+    1772418795662982018
+  ],
+  "packages/server/lib/src/generated/protocol.dart": [
+    10666,
+    1772418795663137886
+  ],
+  "packages/server/lib/src/generated/purchase.dart": [
+    9189,
+    1772418795663366002
+  ],
+  "packages/server/lib/src/generated/purchases.dart": [
+    10073,
+    1772418795663509704
+  ],
+  "packages/server/lib/src/generated/user.dart": [
+    8098,
+    1772418795663646156
+  ],
+  "packages/server/lib/src/web/routes/root.dart": [
+    270,
+    1790355525491620358
+  ],
+  "packages/server/lib/src/web/widgets/default_page_widget.dart": [
+    239,
+    1772418795664292462
+  ],
+  "packages/shared_models/lib/shared_models.dart": [
+    74,
+    1772418795665583616
+  ],
+  "packages/shared_models/lib/src/foundation/annotations.dart": [
+    0,
+    1790355525492448160
+  ],
+  "packages/shared_models/lib/src/foundation/exceptions/exceptions.dart": [
+    326,
+    1772418795665904644
+  ],
+  "packages/shared_models/lib/src/foundation/exceptions/exceptions.freezed.dart": [
+    4891,
+    1772418795666030930
+  ],
+  "packages/shared_models/lib/src/foundation/extensions/datetime.dart": [
+    236,
+    1772418795666153883
+  ],
+  "packages/shared_models/lib/src/foundation/extensions/extensions.dart": [
+    89,
+    1772418795666231171
+  ],
+  "packages/shared_models/lib/src/foundation/extensions/iterable.dart": [
+    685,
+    1790355525492606654
+  ],
+  "packages/shared_models/lib/src/foundation/extensions/num.dart": [
+    284,
+    1772418795666631821
+  ],
+  "packages/shared_models/lib/src/foundation/extensions/string.dart": [
+    582,
+    1790355525492720816
+  ],
+  "packages/shared_models/lib/src/foundation/foundation.dart": [
+    224,
+    1790355525492834520
+  ],
+  "packages/shared_models/lib/src/foundation/interfaces.dart": [
+    170,
+    1790355525492944558
+  ],
+  "packages/shared_models/lib/src/foundation/models.dart": [
+    27,
+    1790355525493053470
+  ],
+  "packages/shared_models/lib/src/foundation/network/models/models.dart": [
+    145,
+    1772418795667775731
+  ],
+  "packages/shared_models/lib/src/foundation/network/models/models.g.dart": [
+    1958,
+    1772418795667867727
+  ],
+  "packages/shared_models/lib/src/foundation/network/models/network_requests.dart": [
+    445,
+    1772418795667948473
+  ],
+  "packages/shared_models/lib/src/foundation/network/models/network_responses.dart": [
+    1047,
+    1772418795668028762
+  ],
+  "packages/shared_models/lib/src/foundation/network/network.dart": [
+    29,
+    1772418795668106050
+  ],
+  "packages/shared_models/lib/src/foundation/typedefs.dart": [
+    216,
+    1772418795668188713
+  ],
+  "packages/shared_models/lib/src/foundation/utils.dart": [
+    181,
+    1772418795668266460
+  ],
+  "packages/shared_models/lib/src/models/emoji.dart": [
+    326,
+    1772418795668387830
+  ],
+  "packages/shared_models/lib/src/models/models.dart": [
+    302,
+    1790355525493172799
+  ],
+  "packages/shared_models/lib/src/models/models.freezed.dart": [
+    42973,
+    1772418795668622069
+  ],
+  "packages/shared_models/lib/src/models/models.g.dart": [
+    4605,
+    1772418795668916349
+  ],
+  "packages/shared_models/lib/src/models/purchase.dart": [
+    2641,
+    1790355525493298045
+  ],
+  "packages/shared_models/lib/src/models/remote_user.dart": [
+    2982,
+    1772418795669082925
+  ],
+  "packages/shared_models/lib/src/models/user.dart": [
+    500,
+    1772418795669166130
+  ],
+  "packages/tg_last_answer_bot/envs.dart": [
+    204,
+    1772418795669983137
+  ],
+  "packages/tg_last_answer_bot/main.dart": [
+    565,
+    1790355525493856690
+  ],
+  "packages/tg_last_answer_bot/routes/index.dart": [
+    141,
+    1772418795670522030
+  ],
+  "packages/tg_last_answer_bot/services/services.dart": [
+    36,
+    1772418795670663941
+  ],
+  "packages/tg_last_answer_bot/services/telegram_bot_service.dart": [
+    1666,
+    1790355525494092140
+  ],
+  "packages/tg_last_answer_bot/test/routes/index_test.dart": [
+    621,
+    1772418795670946096
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/ai_layout_builder.dart": [
+    13570,
+    1790355525495316094
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart": [
+    20338,
+    1790355525495427964
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/ai_layout_models.dart": [
+    8865,
+    1790355525496042941
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/ai_layout_presets.dart": [
+    13964,
+    1790355525496191852
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/ai_layouts.dart": [
+    798,
+    1790355525496267600
+  ],
+  "packages/ui_kit/lib/src/ai_layouts/examples/ai_layout_example.dart": [
+    11112,
+    1790355525496427219
+  ],
+  "packages/ui_kit/lib/src/fields/fields.dart": [
+    29,
+    1772418795671856974
+  ],
+  "packages/ui_kit/lib/src/fields/ui_text_field.dart": [
+    2270,
+    1772418795671948220
+  ],
+  "packages/ui_kit/lib/src/generic/generic.dart": [
+    31,
+    1772418795672070548
+  ],
+  "packages/ui_kit/lib/src/generic/loadable_widget.dart": [
+    759,
+    1772418795672158419
+  ],
+  "packages/ui_kit/lib/src/graphics/graphics.dart": [
+    53,
+    1772418795672280455
+  ],
+  "packages/ui_kit/lib/src/graphics/ui_divider.dart": [
+    0,
+    1772418795672318870
+  ],
+  "packages/ui_kit/lib/src/graphics/ui_progress.dart": [
+    455,
+    1772418795672425241
+  ],
+  "packages/ui_kit/lib/src/modals/modals.dart": [
+    3045,
+    1790355525496553339
+  ],
+  "packages/ui_kit/lib/src/modals/toasts.dart": [
+    450,
+    1790355525496669834
+  ],
+  "packages/ui_kit/lib/ui_kit.dart": [
+    233,
+    1790355525496786997
+  ],
+  "test/agent_config/agent_config_settings_pane_test.dart": [
+    3371,
+    1791501010300237528
+  ],
+  "test/agent_config/agent_config_store_test.dart": [
+    2653,
+    1790899269345749255
+  ],
+  "test/agent_config/agent_platform_config_test.dart": [
+    3127,
+    1790892858924063307
+  ],
+  "test/agent_config/chatgpt_subscription_pane_test.dart": [
+    4786,
+    1791894942857384496
+  ],
+  "test/agent_doc_mesh_wiring_test.dart": [
+    12067,
+    1790355525497650964
+  ],
+  "test/agent_doc_perm_surface_test.dart": [
+    8575,
+    1790355525497775376
+  ],
+  "test/coding_agent/actor_roster_test.dart": [
+    11334,
+    1790355525497934662
+  ],
+  "test/coding_agent/actor_roster_widget_test.dart": [
+    8130,
+    1790355525498034491
+  ],
+  "test/coding_agent/agent_doc_persistence_test.dart": [
+    3417,
+    1790355525498118447
+  ],
+  "test/coding_agent/agent_doc_queue_test.dart": [
+    15859,
+    1791894147982066483
+  ],
+  "test/coding_agent/agent_doc_semantic_regions_test.dart": [
+    7563,
+    1791834427997810384
+  ],
+  "test/coding_agent/agent_intents_test.dart": [
+    15906,
+    1791500445364929721
+  ],
+  "test/coding_agent/chatgpt_credentials_test.dart": [
+    9581,
+    1791897540626908232
+  ],
+  "test/coding_agent/chatgpt_gateway_test.dart": [
+    3864,
+    1791905371085459387
+  ],
+  "test/coding_agent/chatgpt_subscription_controller_test.dart": [
+    7121,
+    1791896714222657489
+  ],
+  "test/coding_agent/coding_agent_screen_test.dart": [
+    16152,
+    1791500445366901803
+  ],
+  "test/coding_agent/conventional_change_host_test.dart": [
+    7623,
+    1791889374028241197
+  ],
+  "test/coding_agent/device_decision_routes_test.dart": [
+    2663,
+    1791474406570693621
+  ],
+  "test/coding_agent/harness_host_external_acp_test.dart": [
+    2098,
+    1790899313003645240
+  ],
+  "test/coding_agent/harness_host_laya_test.dart": [
+    5932,
+    1791370551556329191
+  ],
+  "test/coding_agent/harness_host_native_text_test.dart": [
+    2966,
+    1791584335729418220
+  ],
+  "test/coding_agent/harness_host_subscription_test.dart": [
+    4060,
+    1791894038924875024
+  ],
+  "test/coding_agent/harness_host_test.dart": [
+    7701,
+    1791500445368669553
+  ],
+  "test/coding_agent/harness_session_startup_test.dart": [
+    1702,
+    1791903796439199993
+  ],
+  "test/coding_agent/meaning_details_lifecycle_test.dart": [
+    4074,
+    1791833675659211240
+  ],
+  "test/coding_agent/meaning_experiment_document_test.dart": [
+    5905,
+    1791808583340429166
+  ],
+  "test/coding_agent/meaning_experiment_entry_refusal_test.dart": [
+    1397,
+    1791806201094220683
+  ],
+  "test/coding_agent/meaning_experiment_host_test.dart": [
+    4478,
+    1791808583291853857
+  ],
+  "test/coding_agent/meaning_experiment_recovery_state_test.dart": [
+    12102,
+    1791806474520106507
+  ],
+  "test/coding_agent/meaning_experiment_restart_test.dart": [
+    5448,
+    1791808583308186656
+  ],
+  "test/coding_agent/meaning_experiment_view_test.dart": [
+    8294,
+    1791806633147135293
+  ],
+  "test/coding_agent/meaning_fixture_delivery_test.dart": [
+    1391,
+    1791805613847445409
+  ],
+  "test/coding_agent/meaning_native_test_composition.dart": [
+    1545,
+    1791808684320503977
+  ],
+  "test/coding_agent/mesh_intents_test.dart": [
+    10203,
+    1790355525498931958
+  ],
+  "test/coding_agent/mesh_open_doc_intents_test.dart": [
+    19918,
+    1790355525499017579
+  ],
+  "test/coding_agent/mesh_task_board_test.dart": [
+    11559,
+    1790380953558439544
+  ],
+  "test/coding_agent/mesh_task_intents_test.dart": [
+    22774,
+    1791500445372022135
+  ],
+  "test/coding_agent/permission_retirement_test.dart": [
+    3585,
+    1791871781324813431
+  ],
+  "test/coding_agent/product_candidate_verification_test.dart": [
+    2497,
+    1791894664099600861
+  ],
+  "test/coding_agent/product_coding_change_view_test.dart": [
+    8573,
+    1791895224734962385
+  ],
+  "test/coding_agent/product_external_binding_test.dart": [
+    1809,
+    1791889365589007544
+  ],
+  "test/coding_agent/product_runtime_digest_test.dart": [
+    3665,
+    1791825747965947419
+  ],
+  "test/coding_agent/product_workspace_tooling_test.dart": [
+    4909,
+    1791895432545018619
+  ],
+  "test/coding_agent/provider_configuration_test.dart": [
+    4127,
+    1791904399270911790
+  ],
+  "test/coding_agent/pump_until.dart": [
+    866,
+    1790355525499473479
+  ],
+  "test/coding_agent/scripted_write_mover.dart": [
+    1188,
+    1791500445375593342
+  ],
+  "test/coding_agent/session_registry_gate_test.dart": [
+    18316,
+    1791500445377402800
+  ],
+  "test/coding_agent/session_registry_test.dart": [
+    3438,
+    1790355525499897130
+  ],
+  "test/coding_agent/shared_session_adapter_test.dart": [
+    2960,
+    1790723299057796407
+  ],
+  "test/coding_agent/world_binding_http_test.dart": [
+    2654,
+    1791501010306467823
+  ],
+  "test/coding_agent/world_binding_test.dart": [
+    4131,
+    1791501010308375116
+  ],
+  "test/coding_agent/world_inspector_test.dart": [
+    15699,
+    1791501010313579994
+  ],
+  "test/doc/acp_agent_runtime_test.dart": [
+    15231,
+    1791501010315533745
+  ],
+  "test/doc/acp_doc_inference_port_test.dart": [
+    3207,
+    1791729766078736860
+  ],
+  "test/doc/acp_session_reference_store_test.dart": [
+    3823,
+    1791894743787014023
+  ],
+  "test/doc/chat_document_view_test.dart": [
+    23358,
+    1791501010321636415
+  ],
+  "test/doc/chat_inference_resolver_test.dart": [
+    4328,
+    1790899313004025189
+  ],
+  "test/doc/chat_permission_policy_test.dart": [
+    3882,
+    1791501010327521793
+  ],
+  "test/doc/openrouter_doc_inference_port_test.dart": [
+    3831,
+    1790897928927470617
+  ],
+  "test/github_device_flow_real_test.dart": [
+    4320,
+    1790355525500230784
+  ],
+  "test/home/project_action_identity_test.dart": [
+    5244,
+    1791904127084062882
+  ],
+  "test/home/project_route_test.dart": [
+    6893,
+    1791902580623484710
+  ],
+  "test/live_mesh_service_test.dart": [
+    8765,
+    1791501010330618878
+  ],
+  "test/mcp/app_intents_test.dart": [
+    8096,
+    1791419911838513726
+  ],
+  "test/mcp/chatgpt_account_tools_test.dart": [
+    2282,
+    1791893926974499978
+  ],
+  "test/mcp/paired_world_attach_test.dart": [
+    4499,
+    1791501010332859004
+  ],
+  "test/mcp/paired_worlds_test.dart": [
+    2977,
+    1791501010336593839
+  ],
+  "test/mesh_presence_topology_test.dart": [
+    4595,
+    1790355525500419610
+  ],
+  "test/mesh_storage_doc_sync_test.dart": [
+    6371,
+    1790355525500540147
+  ],
+  "test/mesh_storage_e2e_test.dart": [
+    3091,
+    1790355525500638769
+  ],
+  "test/mesh_storage_presence_roster_test.dart": [
+    16673,
+    1790355525500751806
+  ],
+  "test/mesh_storage_task_board_test.dart": [
+    9741,
+    1790381575268022373
+  ],
+  "test/multiplayer_chat_sync_test.dart": [
+    9680,
+    1791501010339898466
+  ],
+  "test/parsers/hive_parser_test.dart": [
+    2650,
+    1790355525500909133
+  ],
+  "test/parsers/isar_branch_test.dart": [
+    2190,
+    1790355525501003130
+  ],
+  "test/parsers/isar_parser_test.dart": [
+    611,
+    1790355525501081377
+  ],
+  "test/parsers/isar_traverse_test.dart": [
+    1672,
+    1790355525501151291
+  ],
+  "test/parsers/parsers_unit_test.dart": [
+    1691,
+    1790355525501362575
+  ],
+  "test/permission_doc_routing_test.dart": [
+    15104,
+    1791500445379679383
+  ],
+  "test/settings/features/supervisor_service_test.dart": [
+    9455,
+    1791731118759063346
+  ],
+  "test/storage/storage_backends_checkbox_test.dart": [
+    7968,
+    1790355525501907387
+  ],
+  "test/storage/storage_backends_replication_test.dart": [
+    6223,
+    1790355525502133337
+  ],
+  "test/storage_backends_mesh_attach_test.dart": [
+    6721,
+    1791309335964051545
+  ],
+  "test/workbench/workbench_harness_tools_test.dart": [
+    2681,
+    1791815336257759303
+  ],
+  "test/workbench/workbench_owner_test.dart": [
+    7212,
+    1791817024950325207
+  ],
+  "test/workbench/workbench_screen_test.dart": [
+    5358,
+    1791816120375471093
+  ],
+  "tool/agent_fixture/main.dart": [
+    663,
+    1790355525502439534
+  ],
+  "tool/agent_persistence_check.dart": [
+    1188,
+    1790355525502520073
+  ],
+  "tool/bundle_meaning_runtime.dart": [
+    5720,
+    1791806409104195031
+  ],
+  "tool/gates/chat_cli_gate.dart": [
+    9640,
+    1790914254254017276
+  ],
+  "tool/gates/multiplayer_harness_gate.dart": [
+    39908,
+    1791501010349106971
+  ],
+  "tool/gates/paired_device_gate.dart": [
+    10986,
+    1791501010366081480
+  ],
+  "tool/gates/world_inspector_harness_gate.dart": [
+    20823,
+    1791501010388190533
+  ],
+  "tool/oka_endless_driver.dart": [
+    3397,
+    1791009067060762248
+  ],
+  "tool/oka_kernel_driver.dart": [
+    3117,
+    1791501010389492700
+  ],
+  "tool/oka_pipeline.dart": [
+    12766,
+    1791321217245890077
+  ],
+  "tool/phone_smoke.dart": [
+    3445,
+    1791501010396781496
+  ],
+  "tool/workbench_candidate/build.dart": [
+    3382,
+    1791831906708243672
+  ]
+}

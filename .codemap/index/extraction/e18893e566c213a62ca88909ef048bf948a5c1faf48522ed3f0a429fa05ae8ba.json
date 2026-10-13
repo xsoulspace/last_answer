@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e18893e566c213a62ca88909ef048bf948a5c1faf48522ed3f0a429fa05ae8ba",
+  "payload": [
+    [
+      "lib/agent_config/agent_config_settings_pane.dart::_ChatFields.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "e011f30d371c76609bad35de1dd5a3887d449ad794b93b51a91dfda33d289f0a",
+  "version": 2
+}

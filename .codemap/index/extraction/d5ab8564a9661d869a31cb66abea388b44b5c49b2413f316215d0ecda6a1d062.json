@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d5ab8564a9661d869a31cb66abea388b44b5c49b2413f316215d0ecda6a1d062",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_models.dart::ContentPriority.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "405cc0fb6bf63349bf6e74877bcd5e1706d68a1cf4f103473dabaa67ef4c0df2",
+  "version": 2
+}

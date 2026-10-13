@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "eaab87e7db441a351e82a072fab760347e8c79870a17e9eb6d4923e1e1434135",
+  "payload": [
+    [
+      "packages/server/lib/src/web/widgets/default_page_widget.dart::DefaultPageWidget.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "72fef30bfff636cd5531dc21087cd789963aa33e6eee6dada2e138314d437828",
+  "version": 2
+}

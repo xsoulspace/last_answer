@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f35bf4cf4c83703a80a19c62f75e1cd56113825ece34d98fcb007264ca344907",
+  "payload": [
+    [
+      "lib/home/tags/tags_screen_state.freezed.dart::__$$TagsScreenStateImplCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "db13d91a75bf07c4b22dbe9236ce495dc56d55b879b0bc5e43962e51aafedad5",
+  "version": 2
+}

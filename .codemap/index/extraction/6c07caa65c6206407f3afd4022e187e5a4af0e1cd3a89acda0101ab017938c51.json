@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6c07caa65c6206407f3afd4022e187e5a4af0e1cd3a89acda0101ab017938c51",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_panel.dart::_DayCell.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "3dddd6cb48f86c39d87670817719285534c99873d336e9d46e395ca7d1313ba5",
+  "version": 2
+}

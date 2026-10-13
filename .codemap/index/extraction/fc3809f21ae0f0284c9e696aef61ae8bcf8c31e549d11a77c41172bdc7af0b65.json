@@ -1,0 +1,54 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fc3809f21ae0f0284c9e696aef61ae8bcf8c31e549d11a77c41172bdc7af0b65",
+  "payload": {
+    "classes": [
+      "TagsLocalDataSource"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "TagsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "putAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 73,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "TagsLocalDataSource"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../data_models/data_models.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "dd3f9b6dfc4dddd765d0bb8a068bb75988b3b6b5a213413990175d046fd8c7c9",
+  "version": 2
+}

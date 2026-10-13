@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "dfece1e66fc2b292a085c1ecb922e821bf3610086f9360cbf9f6151875b351d1",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::LiveActor.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "f38665c1fdb501c376d5f4ca0e32cfbbf7829300e57be0b74e1ca6f26e5f0145",
+  "version": 2
+}

@@ -1,0 +1,15 @@
+{
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/agent_doc_surface.dart": "d1b594b65849cf97a40275d314f09785cb7a85167f7129a8d3c74fe41e66b0f1",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/agent_mcp_tools.dart": "d231455b614b852f07bdb5c4da4020d6250891c4dfe2cd7f8b153fa27dbf92d9",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/harness_host.dart": "456dcf30a698292760f8404bb6e9fb5d8cfbfa59443976a7ae83ad10fc3ded44",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/harness_session_controller.dart": "27233c5b760e333ab2c15f4dfec12623a7a4830aeaa1e32fd85d89d76cc31e89",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/meaning_experiment_controller.dart": "607c6c6906d613c43d08bf9a7feb8d2331e42c695ecd1fc4a86dbcec7472b2ee",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/meaning_experiment_view.dart": "6f802013c6f377255b7044ef445aa711d32dac2d0cc48d3450c7b6568f96fa97",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/meaning_greeting_binding.dart": "8ea81599dde030b094f2f34e6aa90623b3cf395218b97cb84298ecc2c9615947",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/meaning_greeting_binding_io.dart": "13babdff32a5d20be042be658714119f1806e6e008665e21a4af0e5aaa0dfead",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/coding_agent/meaning_greeting_binding_stub.dart": "ad5b41ce9be5541c68f049b66507fa2c6090dce6e2fcc7b367d54e0090616bb2",
+  "/Users/antonio/xs/storage_problem/last_answer/lib/mcp/app_mcp_tools.dart": "dfbe889aaddad597288bb5d0345c10c7d733cec3c981c2f324613de6be8dc052",
+  "/Users/antonio/xs/storage_problem/last_answer/pubspec.yaml": "c8c446d16f95f90b98eb52f019d793ca3a6aa423d406cee87dfcd28b84d6994e",
+  "/Users/antonio/xs/ecsai_harness/pkgs/xsoulspace_agentic_host/lib/src/meaning_span_tools.dart": "185ffde94187283d01d8f3bb50a8b3c827ada6b3bf071140125c692683e3d54b",
+  "/Users/antonio/xs/storage_problem/last_answer/test/coding_agent/meaning_experiment_restart_test.dart": "e88e156db5b8e02a0b0d074e955c1688fbf7f55a3035d1cb69ebef3944eb9264"
+}

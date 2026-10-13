@@ -1,0 +1,58 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b70b2ead1df53acf272a126895c4d140b55509d93174e5e2076e366c28efba3e",
+  "payload": {
+    "classes": [
+      "DefaultPageWidget"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 30,
+              "end_lineno": 6,
+              "lineno": 6
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 9,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "DefaultPageWidget"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:DefaultPageWidget"
+    ]
+  },
+  "payload_digest": "70c2514c868df0125987ff3d3f78ce075499897bc3c7901e35a68628063aa1a2",
+  "version": 2
+}

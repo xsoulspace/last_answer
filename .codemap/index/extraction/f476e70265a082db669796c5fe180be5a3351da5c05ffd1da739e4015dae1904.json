@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f476e70265a082db669796c5fe180be5a3351da5c05ffd1da739e4015dae1904",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.g.dart::_._$$PurchaseRequestDtoModelImplFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "647e1bbe8e872ad8da17358b706234abf44701a695432b80be50c244751b020d",
+  "version": 2
+}

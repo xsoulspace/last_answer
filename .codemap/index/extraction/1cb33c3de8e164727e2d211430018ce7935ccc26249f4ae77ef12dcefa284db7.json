@@ -1,0 +1,473 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1cb33c3de8e164727e2d211430018ce7935ccc26249f4ae77ef12dcefa284db7",
+  "payload": {
+    "classes": [
+      "ProjectTextField",
+      "_ProjectTextFieldState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 25,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "ProjectTextField"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_ProjectTextFieldState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 66,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 48,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "ProjectTextField"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "didUpdateWidget",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          }
+        ],
+        "name": "didUpdateWidget",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 62,
+          "lineno": 56
+        },
+        "static": false,
+        "unit": "_ProjectTextFieldState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "setMaxLength",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 73,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "_ProjectTextFieldState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setMaxLength",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 18,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addPostFrameCallback",
+            "receiver": "WidgetsBinding.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 84,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FocusNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 57,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 89,
+          "lineno": 75
+        },
+        "static": false,
+        "unit": "_ProjectTextFieldState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_keyboardFocusNode",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 32,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_textFieldFocusNode",
+            "receiver_constructor": null,
+            "receiver_type": "FocusNode",
+            "shadowed": true,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 63,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_controller",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 53,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 97,
+          "lineno": 91
+        },
+        "static": false,
+        "unit": "_ProjectTextFieldState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "OutlineInputBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 112,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 13,
+              "end_lineno": 111,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "context.colorScheme.primary",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 65,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useScrollController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 50,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useEffect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 125,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RightScrollbar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 175,
+              "lineno": 126
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FocusBubbleContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 174,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "KeyboardListener",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 173,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextFormField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 172,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InputDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 13,
+              "end_lineno": 171,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.fromLTRB",
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 64,
+              "end_lineno": 162,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 56,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "context.colorScheme.secondary",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 73,
+              "end_lineno": 167,
+              "lineno": 167
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 176,
+          "lineno": 104
+        },
+        "static": false,
+        "unit": "_ProjectTextFieldState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ProjectTextField",
+      "inheritance:_ProjectTextFieldState",
+      "field_initialization:_ProjectTextFieldState:1438",
+      "field_initialization:_ProjectTextFieldState:1503",
+      "field_initialization:_ProjectTextFieldState:1819",
+      "field_initialization:_ProjectTextFieldState:2748",
+      "closure:2258",
+      "closure:3343",
+      "closure:3696",
+      "closure:4386"
+    ]
+  },
+  "payload_digest": "21699c58d442d38808e4e823a2675f352359e2bf9dc8525aa478e46223f5adb1",
+  "version": 2
+}

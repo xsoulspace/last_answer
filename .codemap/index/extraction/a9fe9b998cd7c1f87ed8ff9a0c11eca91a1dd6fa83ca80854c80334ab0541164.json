@@ -1,0 +1,321 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a9fe9b998cd7c1f87ed8ff9a0c11eca91a1dd6fa83ca80854c80334ab0541164",
+  "payload": {
+    "classes": [
+      "InMemoryAgentConfigPersistence",
+      "_NoSecureStore"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 20,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 23,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MultiProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 1,
+              "end_lineno": 41,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "ListenableProvider<AgentConfigStore>",
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 60,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Provider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 34,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MaterialApp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 3,
+              "end_lineno": 40,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Scaffold",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 75,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AgentConfigSettingsPane",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 74,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "_wrap",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 41,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setUpAll",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 46,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 68,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 90,
+              "lineno": 70
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 91,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "_values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 62,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          }
+        ],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 97,
+          "lineno": 96
+        },
+        "static": false,
+        "unit": "_NoSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 100,
+          "lineno": 99
+        },
+        "static": false,
+        "unit": "_NoSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 103,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "_NoSecureStore"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_settings_pane.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/provider_configuration.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:InMemoryAgentConfigPersistence",
+      "closure:1273",
+      "closure:1650",
+      "closure:1820",
+      "closure:2381",
+      "inheritance:_NoSecureStore",
+      "field_initialization:_NoSecureStore:3090"
+    ]
+  },
+  "payload_digest": "5e0dd4f6a066ee74540330cc649f1980c4c7b12e78c39580a19b3659ec54dae1",
+  "version": 2
+}

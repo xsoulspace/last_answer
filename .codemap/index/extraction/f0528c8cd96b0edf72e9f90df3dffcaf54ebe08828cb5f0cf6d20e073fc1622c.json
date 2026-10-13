@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f0528c8cd96b0edf72e9f90df3dffcaf54ebe08828cb5f0cf6d20e073fc1622c",
+  "payload": [
+    [
+      "packages/core/lib/src/foundation/extensions/value_notifier.dart::LoadableStateNotifier.setState"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "b401030a49e3e70114649eefa2b861c2f853477f89b830c252a4ba34d93dc552",
+  "version": 2
+}

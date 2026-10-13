@@ -1,0 +1,42 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f39dd1e8da95a76c70ddb39c1bf942753849d435b2ec57f0e75341e7aba09bdc",
+  "payload": {
+    "diagnostic": {
+      "code": "graph.python.parameter_shadowed",
+      "details": {
+        "candidates": []
+      },
+      "excerpt": "debugger.GetDummyTarget",
+      "level": "warning",
+      "message": "function parameter shadows an imported receiver",
+      "node_kind": null,
+      "span": {
+        "col_offset": 13,
+        "end_col_offset": 38,
+        "end_lineno": 25,
+        "lineno": 25,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      },
+      "symbol": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module"
+    },
+    "edge": null,
+    "external": null,
+    "unresolved": {
+      "caller": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module",
+      "candidates": [],
+      "label": "debugger.GetDummyTarget",
+      "reason": "function parameter shadows an imported receiver",
+      "resolution": "unresolved",
+      "span": {
+        "col_offset": 13,
+        "end_col_offset": 38,
+        "end_lineno": 25,
+        "lineno": 25,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      }
+    }
+  },
+  "payload_digest": "f2744fee326e3f52df68e61ef3f1b473658b6e1679f3b474373aa03ab2ce099e",
+  "version": 2
+}

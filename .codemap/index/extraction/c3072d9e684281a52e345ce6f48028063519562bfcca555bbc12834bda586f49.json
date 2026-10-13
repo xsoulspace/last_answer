@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3072d9e684281a52e345ce6f48028063519562bfcca555bbc12834bda586f49",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.g.dart::_._$$AdsStateModelImplToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "4b89292767f0b0103e652ee0e03a1a04ebc8dae8d609886d06b46de058462fba",
+  "version": 2
+}

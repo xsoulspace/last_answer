@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f79f13ec1236574f61e603257da68b56b04f7afe26c607f8a2c1c3dafea7d1ac",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/interfaces/projects.dart::ProjectsLocalDataSource.getPaginated"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "fea68b5151204a81ec4bd2dff0c58fce70d2ee21cf29697e1689efbacded1df9",
+  "version": 2
+}

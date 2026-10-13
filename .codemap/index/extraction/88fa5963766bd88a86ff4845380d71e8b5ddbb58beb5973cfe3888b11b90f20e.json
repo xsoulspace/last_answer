@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "88fa5963766bd88a86ff4845380d71e8b5ddbb58beb5973cfe3888b11b90f20e",
+  "payload": [
+    [
+      "lib/_library/widgets/core/emoji_grid.dart::EmojiPopup.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c2c260a43dc90917bf0e38e002c8b511ca2749c9e1eb4afc38b1efa40c1e2bd0",
+  "version": 2
+}

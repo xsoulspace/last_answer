@@ -1,0 +1,132 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1ca89255ad7b30a98e6acd2095afac08ce818507e333f376321b412fbd36011a",
+  "payload": {
+    "classes": [
+      "FeedbackProvider",
+      "FeedbackButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 6,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "FeedbackProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 24,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "FeedbackProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 37,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "FeedbackButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Visibility",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 46,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 45,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 61,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 46,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "FeedbackButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:FeedbackProvider",
+      "inheritance:FeedbackButton",
+      "closure:1376"
+    ]
+  },
+  "payload_digest": "501e34f8aef580796ca5be39bde517228c42b70e8cd3784f760694fcb8634cd1",
+  "version": 2
+}

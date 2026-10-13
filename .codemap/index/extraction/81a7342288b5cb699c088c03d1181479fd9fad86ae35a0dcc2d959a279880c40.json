@@ -1,0 +1,10 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "81a7342288b5cb699c088c03d1181479fd9fad86ae35a0dcc2d959a279880c40",
+  "payload": [
+    [],
+    "lexical binding shadows declaration"
+  ],
+  "payload_digest": "2ed866298d748104cbc647d855239655dbcc96cf6c9d557a5444ecc4dbc3d437",
+  "version": 2
+}

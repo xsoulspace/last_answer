@@ -1,0 +1,230 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "555009a0f206dadc4f3e97205922244ad6591e6d68ebe51c5dfe937330fea27a",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ads_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "tags_notifier.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:collection/collection.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:go_router/go_router.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:ui_kit/ui_kit.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_state_utils/xsoulspace_state_utils.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../services/file_service/file_service_i.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "logic/logic.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user_remote_initializer.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "app_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "emoji_state_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "map_state_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "notifications_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "opened_project_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "projects_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "projects_paged_controller.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "projects_paged_requests_builder.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchases_notifier.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "state.freezed.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user_local_initializer.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user_notifier.dart"
+      }
+    ],
+    "unsupported": []
+  },
+  "payload_digest": "52c970fc9ea15b29b48b031835bf1496e7071c0128578c238b5b5807f1545e5c",
+  "version": 2
+}

@@ -1,0 +1,29 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "758a839226d6cae58cdebf52e9402f856500a4f9f53d09bc7f17b1daade9bedc",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "ideaQuestionsData"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:27"
+    ]
+  },
+  "payload_digest": "acb23ec2bb6b553dceb976f7d9b56bc9f22535812e8b65856b2f53ec40571ee1",
+  "version": 2
+}

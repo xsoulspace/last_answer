@@ -1,0 +1,440 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "96e633f9743e5e5a6de5852b6e38043eb222a33d076ed20762ae55f9a750c2af",
+  "payload": {
+    "classes": [
+      "_$CharacterLimitState",
+      "$CharacterLimitStateCopyWith",
+      "_$CharacterLimitStateCopyWithImpl",
+      "_$$CharacterLimitStateImplCopyWith",
+      "__$$CharacterLimitStateImplCopyWithImpl",
+      "_$CharacterLimitStateImpl",
+      "_CharacterLimitState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_$identity",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 34,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "value",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 20,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "_$CharacterLimitState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEditing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 21,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "_$CharacterLimitState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 25,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "_$CharacterLimitState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 33,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "$CharacterLimitStateCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 35,
+          "lineno": 34
+        },
+        "static": false,
+        "unit": "$CharacterLimitStateCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 41,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_then",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 63,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "_value",
+            "receiver_constructor": null,
+            "receiver_type": "$Val",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 11,
+              "end_lineno": 61,
+              "lineno": 52
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 73,
+          "lineno": 70
+        },
+        "static": false,
+        "unit": "_$$CharacterLimitStateImplCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 76,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "_$$CharacterLimitStateImplCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 86,
+          "lineno": 83
+        },
+        "static": false,
+        "unit": "__$$CharacterLimitStateImplCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_then",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 102,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_$CharacterLimitStateImpl",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 101,
+              "lineno": 92
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 103,
+          "lineno": 88
+        },
+        "static": false,
+        "unit": "__$$CharacterLimitStateImplCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 109,
+          "lineno": 109
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 121,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 33,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 42,
+              "end_lineno": 128,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 50,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          }
+        ],
+        "name": "==",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 131,
+          "lineno": 123
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateImpl"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "hash",
+            "receiver": "Object",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 64,
+              "end_lineno": 134,
+              "lineno": 134
+            }
+          }
+        ],
+        "name": "hashCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 134,
+          "lineno": 133
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateImpl"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "__$$CharacterLimitStateImplCopyWithImpl",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 143,
+              "lineno": 140
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 143,
+          "lineno": 136
+        },
+        "static": false,
+        "unit": "_$CharacterLimitStateImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 150,
+          "lineno": 147
+        },
+        "static": false,
+        "unit": "_CharacterLimitState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "value",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 153,
+          "lineno": 152
+        },
+        "static": false,
+        "unit": "_CharacterLimitState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEditing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 155,
+          "lineno": 154
+        },
+        "static": false,
+        "unit": "_CharacterLimitState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 159,
+          "lineno": 156
+        },
+        "static": false,
+        "unit": "_CharacterLimitState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_privateConstructorUsedError"
+    ],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:687",
+      "mixin_dispatch:_$CharacterLimitState",
+      "inheritance:_$CharacterLimitStateCopyWithImpl",
+      "inheritance:_$$CharacterLimitStateImplCopyWith",
+      "inheritance:__$$CharacterLimitStateImplCopyWithImpl",
+      "inheritance:_$CharacterLimitStateImpl",
+      "inheritance:_CharacterLimitState"
+    ]
+  },
+  "payload_digest": "2aae2f32617fae942b35aa42b3ffcf237449bebe602c1f59642fd94da8b03ef6",
+  "version": 2
+}

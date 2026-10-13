@@ -1,0 +1,10 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3e28df59328a37e28c0b07f92105a4dacb0fc1ce00591e8037ba7bbc21a68390",
+  "payload": [
+    [],
+    "receiver shadowed or type unknown"
+  ],
+  "payload_digest": "9c35feaf446d95217635b6292394617705d04cf87100a144228c2cfed11fe2de",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0e56a9706f884cdc47ada32b1f6bcbccc300d362a544f0770c7596b7bcb8bce4",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.freezed.dart::_._$PurchaseRequestDtoModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "7892403e5bcb11d219804a9940b4972542ea94cb52d418eefaefcd15e64651e0",
+  "version": 2
+}

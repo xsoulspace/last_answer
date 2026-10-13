@@ -1,0 +1,459 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "21f8142b09e44f4d2541eadf5836b698c5cbe8c2fc18af4954d9901e86609d25",
+  "payload": {
+    "classes": [
+      "ProjectRoute",
+      "_ProjectRouteState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 12,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "ProjectRoute"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_ProjectRouteState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 59,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 60,
+          "end_lineno": 19,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "ProjectRoute"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_path",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 33,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_active",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 12,
+          "end_lineno": 41,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "didChangeDependencies",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "GoRouter",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 39,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 34,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "removeListener",
+            "receiver": "_router?.routerDelegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 57,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addListener",
+            "receiver": "router.routerDelegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 52,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_restore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          }
+        ],
+        "name": "didChangeDependencies",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 60,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 64,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "_routeChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 69,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "didUpdateWidget",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_restore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 28,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          }
+        ],
+        "name": "didUpdateWidget",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 79,
+          "lineno": 71
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 56,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getById",
+            "receiver": "context.read<ProjectsRepository>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 7,
+              "end_lineno": 95,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 62,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProjectModelId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 30,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loaded",
+            "receiver": "LoadableContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 55,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "_restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 109,
+          "lineno": 81
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "removeListener",
+            "receiver": "_router?.routerDelegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 57,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 116,
+          "lineno": 111
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 59,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FutureBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 145,
+              "lineno": 126
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 146,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "_ProjectRouteState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ProjectRoute",
+      "inheritance:_ProjectRouteState",
+      "field_initialization:_ProjectRouteState:723",
+      "closure:1880",
+      "closure:3690"
+    ]
+  },
+  "payload_digest": "77a433590a81fa9bc5b878f9ebec341df6f6a1e9c14a3c7e6f33a8f8f14eedc9",
+  "version": 2
+}

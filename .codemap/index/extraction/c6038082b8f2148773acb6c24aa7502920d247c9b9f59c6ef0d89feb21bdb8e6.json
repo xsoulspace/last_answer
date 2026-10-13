@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c6038082b8f2148773acb6c24aa7502920d247c9b9f59c6ef0d89feb21bdb8e6",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/fractional_order.dart::_.fractionalBetween"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "31067e8944b7456d0e522933dcaa78168a89b8c941574dc546b2bd72188727b7",
+  "version": 2
+}

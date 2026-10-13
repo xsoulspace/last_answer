@@ -1,0 +1,34 @@
+{
+  "schema": "meaning_greeting.oracle.v1",
+  "baseline": [
+    {"name": "Ada", "value": "Hello, Ada!"},
+    {"name": "", "value": "Hello, !"},
+    {"name": "2", "value": "Hello, 2!"},
+    {"name": "a$b", "value": "Hello, a$b!"},
+    {"name": "x'y", "value": "Hello, x'y!"}
+  ],
+  "candidate": [
+    {"name": "Ada", "value": "Hello, Ada! — updated"},
+    {"name": "", "value": "Hello, ! — updated"},
+    {"name": "2", "value": "Hello, 2! — updated"},
+    {"name": "a$b", "value": "Hello, a$b! — updated"},
+    {"name": "x'y", "value": "Hello, x'y! — updated"}
+  ],
+  "changed_prefix_probe": {
+    "prefix": "Welcome",
+    "baseline": [
+      {"name": "Ada", "value": "Welcome, Ada!"},
+      {"name": "", "value": "Welcome, !"},
+      {"name": "2", "value": "Welcome, 2!"},
+      {"name": "a$b", "value": "Welcome, a$b!"},
+      {"name": "x'y", "value": "Welcome, x'y!"}
+    ],
+    "candidate": [
+      {"name": "Ada", "value": "Welcome, Ada! — updated"},
+      {"name": "", "value": "Welcome, ! — updated"},
+      {"name": "2", "value": "Welcome, 2! — updated"},
+      {"name": "a$b", "value": "Welcome, a$b! — updated"},
+      {"name": "x'y", "value": "Welcome, x'y! — updated"}
+    ]
+  }
+}

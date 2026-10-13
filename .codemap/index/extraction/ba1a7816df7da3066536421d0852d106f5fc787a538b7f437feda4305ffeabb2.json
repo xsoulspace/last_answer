@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ba1a7816df7da3066536421d0852d106f5fc787a538b7f437feda4305ffeabb2",
+  "payload": [
+    [
+      "test/mesh_storage_presence_roster_test.dart::_._keyPairOf"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "4d1f13b96f3601cee45764806b08e96fd6cf4d5a229d64aecebd6f0badbf2a2d",
+  "version": 2
+}

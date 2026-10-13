@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8af05586f5b5ed67af67965027d43cebdccc115ff37bb3adb90c822eefc2df9b",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/mutations.dart::_.runMutations"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "bdca9cff1fef81a02e8b8bd8df338b47f2fdfd86dc002e762fedee242de2a2b2",
+  "version": 2
+}

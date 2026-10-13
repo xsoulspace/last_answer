@@ -1,0 +1,39 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d9ab269058f07558790550d418955b605db9414e50b865f441fa7281482f940f",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "desiredCodingModel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 18,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_harness_binding.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "e0a44f917fc012990a7b3d64c60526894e8a8867229cb6253a405e3f15b799a8",
+  "version": 2
+}

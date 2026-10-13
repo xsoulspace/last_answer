@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b6347cd8145805fe6976752b5d9de71eabf27b63bb0895d67152ad3f1d5ccb97",
+  "payload": [
+    [
+      "tool/gates/multiplayer_harness_gate.dart::_CdpPeer._rectOf"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "c478ee54091e2228ecc04a329e199b4747e0daec4d12729b8798af0a7fc63a87",
+  "version": 2
+}

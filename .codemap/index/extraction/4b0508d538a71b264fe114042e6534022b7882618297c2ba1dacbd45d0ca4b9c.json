@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4b0508d538a71b264fe114042e6534022b7882618297c2ba1dacbd45d0ca4b9c",
+  "payload": [
+    [
+      "test/doc/acp_agent_runtime_test.dart::_RecordingSink.write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8ac0b3597bd8db398f903a024e8c4f8dbc3220a46a5f4080431596a2fd91d6a4",
+  "version": 2
+}

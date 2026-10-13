@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "792be81ed95a73150c8a1fc1bba806af77d107c10cc95f9870819ece551dbcce",
+  "payload": [
+    [
+      "lib/coding_agent/runtime_sha256.dart::_.runtimeSha256"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "689a06b5235e0b7492d3b2bc27e099b3f952ac9689f8939ea8f765a9c3b9322f",
+  "version": 2
+}

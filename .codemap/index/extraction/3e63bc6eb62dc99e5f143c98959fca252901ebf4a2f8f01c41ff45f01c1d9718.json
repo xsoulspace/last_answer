@@ -1,0 +1,127 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3e63bc6eb62dc99e5f143c98959fca252901ebf4a2f8f01c41ff45f01c1d9718",
+  "payload": {
+    "classes": [
+      "PurchasesAdsService"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 8,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "PurchasesAdsService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "onLoad",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onLoadingFailed",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "onLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 13,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "PurchasesAdsService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "prepareAdInstance",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 18,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "PurchasesAdsService"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ad_instance.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchases_ads_base.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PurchasesAdsService"
+    ]
+  },
+  "payload_digest": "214b3e0183c18f2b6a135aad24fc88dd74da8e87819f22614004b850a851da60",
+  "version": 2
+}

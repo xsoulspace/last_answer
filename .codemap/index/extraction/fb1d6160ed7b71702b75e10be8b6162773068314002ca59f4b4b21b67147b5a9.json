@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fb1d6160ed7b71702b75e10be8b6162773068314002ca59f4b4b21b67147b5a9",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/graphics/ui_progress.dart::UiCircularProgress.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "d78a5525d2e13bf061c9d2015821d3cd519f065b7ad958c87f76557eac7f6f9e",
+  "version": 2
+}

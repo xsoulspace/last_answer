@@ -1,0 +1,507 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d84e1453d9bc4658621275a80980d61244b94f93dd644b5acdfaa323d635d041",
+  "payload": {
+    "classes": [
+      "SettingsScreen",
+      "SpeedyPageViewScrollPhysics"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "SettingsScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 49,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 34,
+              "end_lineno": 14,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 68,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "GeneralSettingsView",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 33,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AgentSettingsView",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 31,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MyAccountViewRemoteImpl",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 41,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MyAccountViewLocalImpl",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 40,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TabBarView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 29,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SpeedyPageViewScrollPhysics",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 50,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 42,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CupertinoCloseButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 54,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FeedbackButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 38,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 40,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TabBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 9,
+              "end_lineno": 41,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Tab",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 61,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Tab",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 54,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Tab",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 71,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 49,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 71,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Center",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 9,
+              "end_lineno": 70,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConstrainedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 69,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 13,
+              "end_lineno": 58,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 68,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 65,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 38,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DefaultTabController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 71,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 74,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "SettingsScreen"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 78,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "SpeedyPageViewScrollPhysics"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SpeedyPageViewScrollPhysics",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 64,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "buildParent",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 63,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          }
+        ],
+        "name": "applyTo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 82,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "SpeedyPageViewScrollPhysics"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SpringDescription",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 67,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          }
+        ],
+        "name": "spring",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 86,
+          "lineno": 84
+        },
+        "static": false,
+        "unit": "SpeedyPageViewScrollPhysics"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/other/feedback.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/views/views.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SettingsScreen",
+      "nested_function:onBack",
+      "inheritance:SpeedyPageViewScrollPhysics"
+    ]
+  },
+  "payload_digest": "6597dffa820a43966b0f38c6e9d10111351af515e5d6bf1b79f6f32afbf93e09",
+  "version": 2
+}

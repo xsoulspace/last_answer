@@ -1,0 +1,104 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7c41cdb7421173eb89bae63b5236a2f4bf5b9c3d4a0eb2a5d918a5359eeb0f78",
+  "payload": {
+    "classes": [
+      "ScheduledFutureCall"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 8,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "ScheduledFutureCall"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "futureCallWithDelay",
+            "receiver": "serverpod",
+            "receiver_constructor": null,
+            "receiver_type": "Serverpod",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 70,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "scheduleCall",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 11,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "ScheduledFutureCall"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 67,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "scheduleDelayDuration",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "ScheduledFutureCall"
+      }
+    ],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "google_play_handler_future_call.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ScheduledFutureCall"
+    ]
+  },
+  "payload_digest": "eaaae6218f55dee31307c0a0fbebd4872afb5fd21e92f87bd0a046979a4907e7",
+  "version": 2
+}

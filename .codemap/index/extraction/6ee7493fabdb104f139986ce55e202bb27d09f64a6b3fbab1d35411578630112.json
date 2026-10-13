@@ -1,0 +1,53 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6ee7493fabdb104f139986ce55e202bb27d09f64a6b3fbab1d35411578630112",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "actor_roster.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "agent_doc_surface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "harness_host.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "harness_session_controller.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "turn_queue.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "8a5e19d7f57af70afa315accf85e8d38abf20b1699c13f11ee863a3ca99ff9b2",
+  "version": 2
+}

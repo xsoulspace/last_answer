@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b12a8942660f8ce235cfb58a32c59ae09cc38fa181db1c4168ed0693515c3fda",
+  "payload": [
+    [
+      "lib/_library/widgets/core/safe_areas.dart::BottomSafeArea.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "364569b62162a80749b8d9bbfc7e80a6d19757d627683515b100953711d2b224",
+  "version": 2
+}

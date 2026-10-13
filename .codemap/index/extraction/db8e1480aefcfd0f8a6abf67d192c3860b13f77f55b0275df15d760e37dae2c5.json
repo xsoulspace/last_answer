@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "db8e1480aefcfd0f8a6abf67d192c3860b13f77f55b0275df15d760e37dae2c5",
+  "payload": [
+    [
+      "lib/coding_agent/world_inspector/external_worlds_io.dart::_.buildWorldAnnouncement"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "e2c04d8d150ef031015c391b4ef56f9619e356ce0f490dbac266be25ff007576",
+  "version": 2
+}

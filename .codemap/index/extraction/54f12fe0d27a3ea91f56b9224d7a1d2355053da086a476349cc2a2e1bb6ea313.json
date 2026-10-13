@@ -1,0 +1,65 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "54f12fe0d27a3ea91f56b9224d7a1d2355053da086a476349cc2a2e1bb6ea313",
+  "payload": {
+    "classes": [
+      "RouteRoot"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DefaultPageWidget",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 25,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 7,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "RouteRoot"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:server/src/web/widgets/default_page_widget.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:RouteRoot"
+    ]
+  },
+  "payload_digest": "a67b6ad9ecd444c0ea85eae6492dd127d6ddf51ccd93f3aaf91a2a03aeec2d1e",
+  "version": 2
+}

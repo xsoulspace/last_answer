@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "90732ffbbde0d98a05f51d2eb86015e56c2d9733c6f4d3070c3e88f159293a87",
+  "payload": [
+    [
+      "lib/settings/features/storage_backends_state.dart::StorageBackendsNotifier.restoreNow"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "4cee7bf5ce4f8813056dccd8ca910179e1057d8664a5e10956a32ce4f09f8f7a",
+  "version": 2
+}

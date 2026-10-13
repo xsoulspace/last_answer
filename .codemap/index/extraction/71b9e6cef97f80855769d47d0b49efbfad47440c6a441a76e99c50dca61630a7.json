@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "71b9e6cef97f80855769d47d0b49efbfad47440c6a441a76e99c50dca61630a7",
+  "payload": [
+    [
+      "lib/settings/views/iap_views.dart::SubscriptionView.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "0a1ad6487f008486b8cf07d95046fa829f55764ad49dfe2350560aac9e8f5446",
+  "version": 2
+}

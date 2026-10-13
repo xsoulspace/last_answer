@@ -1,0 +1,154 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "df20ce47338786277c9e2b30b4aa24024e10a70e760be9a276db4cf566954937",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 114,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 47,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 115,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "http",
+        "show": [],
+        "uri": "package:http/http.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:http/testing.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_credentials.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_harness_binding.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/harness_host.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "SecureMemory",
+          "record"
+        ],
+        "uri": "chatgpt_credentials_test.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:683"
+    ]
+  },
+  "payload_digest": "2f48ed0d40e2cd8c099c6904d0eb5cdfb3f02edfd0e2123a12519a95bf8f4cc8",
+  "version": 2
+}

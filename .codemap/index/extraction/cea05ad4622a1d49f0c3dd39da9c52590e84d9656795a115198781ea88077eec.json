@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cea05ad4622a1d49f0c3dd39da9c52590e84d9656795a115198781ea88077eec",
+  "payload": [
+    [
+      "lib/workbench/workbench_screen.dart::_WorkbenchScreenState._stage"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "a40e467320daa409e1664c6295c0eaa45af43c0ac147d45eb8dcc1a0578c66bf",
+  "version": 2
+}

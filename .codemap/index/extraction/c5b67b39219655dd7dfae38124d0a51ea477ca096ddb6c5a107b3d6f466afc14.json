@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c5b67b39219655dd7dfae38124d0a51ea477ca096ddb6c5a107b3d6f466afc14",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_presets.dart::AIContextPresets.mobileSocial"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "3ae40a5b1ecf4d75d1899dc7ea3e44b251eef38fdeafe73eb457f363e69d7dde",
+  "version": 2
+}

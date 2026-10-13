@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "56b9552029d13d37f27943e1d3379464fc2e16009b60a70d639ee8d67b3906d4",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::SpatialConstraints.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "bf7b10281fecfbbb992cfa0e4d50df5bdd448b0d2372d023eaaf0f5da9362370",
+  "version": 2
+}

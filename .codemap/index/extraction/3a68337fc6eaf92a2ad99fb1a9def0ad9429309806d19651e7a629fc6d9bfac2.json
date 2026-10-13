@@ -1,0 +1,27 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3a68337fc6eaf92a2ad99fb1a9def0ad9429309806d19651e7a629fc6d9bfac2",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": true,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "supervisor_service_stub.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "conditional_namespace:0"
+    ]
+  },
+  "payload_digest": "c61caf3669319be55fcc80e765b282b0e414eda12a5b05325af8e75f90b85bdd",
+  "version": 2
+}

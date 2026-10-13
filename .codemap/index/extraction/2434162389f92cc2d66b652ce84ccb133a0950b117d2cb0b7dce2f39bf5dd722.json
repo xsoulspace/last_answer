@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2434162389f92cc2d66b652ce84ccb133a0950b117d2cb0b7dce2f39bf5dd722",
+  "payload": [
+    [
+      "lib/agent_config/agent_platform_config.dart::AgentPlatformConfig.copyWith"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "dc9c15831a4ab43cc989d0af56a542ed740d691564b7059f13b1987ea53cfef4",
+  "version": 2
+}

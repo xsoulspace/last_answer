@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "74224f982f541ad2a2f235b016580197b2d265a1ce9db332b93971844fa3591e",
+  "payload": [
+    [
+      "lib/_library/widgets/buttons/popup_button.dart::PopupButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "7bffef33bdff1f4f18d8ce8361f7d5c59ae30a2c5b0e0107b36fdf65602c4a2a",
+  "version": 2
+}

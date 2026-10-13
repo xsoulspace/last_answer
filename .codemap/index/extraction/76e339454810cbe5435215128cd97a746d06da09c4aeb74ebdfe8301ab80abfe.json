@@ -1,0 +1,23 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "76e339454810cbe5435215128cd97a746d06da09c4aeb74ebdfe8301ab80abfe",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "defaultBorderRadius",
+      "defaultPopupBorderRadius"
+    ],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:23",
+      "top_level_initialization:77"
+    ]
+  },
+  "payload_digest": "880a7f278558cadc7f01f2c40dff5ce063d657875d2d87e560806ad93612644f",
+  "version": 2
+}

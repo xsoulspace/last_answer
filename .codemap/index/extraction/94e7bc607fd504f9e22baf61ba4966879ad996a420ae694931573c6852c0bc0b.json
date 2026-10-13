@@ -1,0 +1,91 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "94e7bc607fd504f9e22baf61ba4966879ad996a420ae694931573c6852c0bc0b",
+  "payload": {
+    "classes": [
+      "DbSaveVersion",
+      "DbSaveModel"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 11,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "DbSaveModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$DbSaveModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 33,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 13,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "DbSaveModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "DbSaveModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 55,
+          "end_lineno": 16,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "DbSaveModel"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:DbSaveModel",
+      "field_initialization:DbSaveModel:456"
+    ]
+  },
+  "payload_digest": "adf58a4c7350de5202a4d7a8a4c8c882708a9f45b2b6fef8406bac67267af705",
+  "version": 2
+}

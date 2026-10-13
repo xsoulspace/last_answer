@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b37ec2d55a50e8a429b5d9323a7645d019a6cf0a7b3b01c5573bfece89d2d33c",
+  "payload": [
+    [
+      "lib/home/widgets/project_tile.dart::ProjectTile.createTitle"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "22b67166ad79d0665d727f3fe883af681f1cdb3dbc8f5bc0f35fe246f0b944d5",
+  "version": 2
+}

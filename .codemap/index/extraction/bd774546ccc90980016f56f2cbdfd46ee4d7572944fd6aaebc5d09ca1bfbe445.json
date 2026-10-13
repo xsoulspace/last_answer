@@ -1,0 +1,246 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bd774546ccc90980016f56f2cbdfd46ee4d7572944fd6aaebc5d09ca1bfbe445",
+  "payload": {
+    "classes": [
+      "LocaleLogic"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 16,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "LocaleLogic"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "findSystemLocale",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 52,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromSubtags",
+            "receiver": "Locale",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 17,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "systemLocaleStr",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 51,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "isSupported",
+            "receiver": "S.delegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 60,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "_defaultLocale",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 21,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "LocaleLogic"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 47,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "S.delegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 46,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "byLanguageCode",
+            "receiver": "Languages",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 71,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "byLanguage",
+            "receiver": "Locales",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 58,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "isSupported",
+            "receiver": "S.delegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 49,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 51,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "S.delegate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 50,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          }
+        ],
+        "name": "updateLocale",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "LocaleLogic"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": true,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:intl/intl_standalone.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "conditional_namespace:61"
+    ]
+  },
+  "payload_digest": "4eac804a9d23e220ad000417b4467ce4c57f383823645dd14b123701b0b5cd01",
+  "version": 2
+}

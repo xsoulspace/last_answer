@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "30f72b81b4383687bc6aaf70faacc5e3baf6398b6676edeecfdd972ba286a2de",
+  "payload": [
+    [
+      "lib/coding_agent/harness_host.dart::PendingPermission._answer"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "520c37b85e48bbb14cce666563d7d1c5b9233e9bdb2d58f6c5e022b31300ad0d",
+  "version": 2
+}

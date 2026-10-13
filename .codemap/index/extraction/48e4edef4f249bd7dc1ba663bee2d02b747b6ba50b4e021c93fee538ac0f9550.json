@@ -1,0 +1,437 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "48e4edef4f249bd7dc1ba663bee2d02b747b6ba50b4e021c93fee538ac0f9550",
+  "payload": {
+    "classes": [
+      "PurchasesLocalDataSourceImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 25,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 10,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "purchases",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 5,
+              "end_lineno": 20,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 40,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "increaseSupporterDaysCount",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 39,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "receiveAdVideoReward",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 23,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setItem",
+            "receiver": "db",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 31,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "setPurchases",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 33,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getItem",
+            "receiver": "db",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 41,
+              "lineno": 37
+            }
+          }
+        ],
+        "name": "getPurchases",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 43,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "purchases",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 5,
+              "end_lineno": 52,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 41,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          }
+        ],
+        "name": "increaseSupporterDaysCount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 54,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "purchases",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 78,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 41,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "consumeSupporterDay",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 63,
+          "lineno": 56
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getInt",
+            "receiver": "db",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 5,
+              "end_lineno": 69,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMillisecondsSinceEpoch",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 72,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setInt",
+            "receiver": "db",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 78,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "verifyDayRecord",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 81,
+          "lineno": 65
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "purchases",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 5,
+              "end_lineno": 88,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setPurchases",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 41,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          }
+        ],
+        "name": "increaseUsedDaysCount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 90,
+          "lineno": 83
+        },
+        "static": false,
+        "unit": "PurchasesLocalDataSourceImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PurchasesLocalDataSourceImpl",
+      "closure:963"
+    ]
+  },
+  "payload_digest": "5296c6d30822c7f7a27e07b37ed4941a13deddded52847b6d4084e1d42b20f1f",
+  "version": 2
+}

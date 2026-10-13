@@ -1,0 +1,456 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e5674c87c95b33b4f2639dfb20ae983c767ab9ea85d8193f96cacafadb649811",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 2,
+              "end_lineno": 12,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "_u32",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 3,
+          "end_lineno": 12,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "BytesBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 17,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 70,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 14,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_u32",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 29,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 54,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 29,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_u32",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 28,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 16,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toBytes",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 52,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Uint8List",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 34,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setAll",
+            "receiver": "Uint8List(pageSize)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 54,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "buildBranchPage",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 37,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "BytesBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 17,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 64,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 14,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "entries",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 52,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toBytes",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 52,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Uint8List",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 34,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setAll",
+            "receiver": "Uint8List(pageSize)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 54,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          }
+        ],
+        "name": "buildLeafPage",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 59,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 77,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 78,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/src/data_sources/mutations/parsers/isar_parser.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:1204",
+      "closure:1669"
+    ]
+  },
+  "payload_digest": "48d933e7882be510448da89b331508d6628048dc22b79b21e29c9afd426b1063",
+  "version": 2
+}

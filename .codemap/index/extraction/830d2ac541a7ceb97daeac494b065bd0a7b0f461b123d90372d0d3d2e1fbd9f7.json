@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "830d2ac541a7ceb97daeac494b065bd0a7b0f461b123d90372d0d3d2e1fbd9f7",
+  "payload": [
+    [
+      "lib/settings/views/my_account_view_remote_impl.dart::_UnauthorizedView.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "d700ba33b8afb065cf5b11ed164014d30011a88f518053ebd24cda6eae880e9a",
+  "version": 2
+}

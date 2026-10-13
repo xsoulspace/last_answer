@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "60dc78062dbf1670e7a48d1770fc857380a4e11e95820484d34c1d470b301175",
+  "payload": [
+    [
+      "lib/coding_agent/world_inspector/world_binding_sheet.dart::_WorldBindingSheet._row"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8b2e33051f3d5f1bcd0d5abd1a4760666821ac0f2fa2274bb877233123815628",
+  "version": 2
+}

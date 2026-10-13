@@ -1,0 +1,24 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bf12c5979cc4eeec9f4a694f2c3bf88cdfd9319a2f99f09f45ae84e1d5e85d0e",
+  "payload": {
+    "diagnostic": null,
+    "edge": null,
+    "external": {
+      "caller": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.handle_new_rx_page",
+      "kind": "external",
+      "label": "lldb.SBError",
+      "reason": "imported module path for lldb is outside the graph scope",
+      "span": {
+        "col_offset": 12,
+        "end_col_offset": 26,
+        "end_lineno": 18,
+        "lineno": 18,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      }
+    },
+    "unresolved": null
+  },
+  "payload_digest": "b5a49fcb5216928db85bbfdc0040ba5b68b2481f2533b559b3d47d6a44570e4a",
+  "version": 2
+}

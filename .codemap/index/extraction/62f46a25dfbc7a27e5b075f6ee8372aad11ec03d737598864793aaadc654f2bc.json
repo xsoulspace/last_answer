@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "62f46a25dfbc7a27e5b075f6ee8372aad11ec03d737598864793aaadc654f2bc",
+  "payload": [
+    [
+      "lib/coding_agent/provider_configuration.dart::FlutterSecureValueStore.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "bb6bec5695a58915871cc99e3f1f068a19ed9fff680812e89157e73fa9cb91be",
+  "version": 2
+}

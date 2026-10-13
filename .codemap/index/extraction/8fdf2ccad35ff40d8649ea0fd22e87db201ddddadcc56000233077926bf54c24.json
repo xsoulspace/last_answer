@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8fdf2ccad35ff40d8649ea0fd22e87db201ddddadcc56000233077926bf54c24",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.freezed.dart::_._$EmojiModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "58758d342699ab2fbea1415dfe7b67a2a3067eb416887b3915b4b1330022a5b7",
+  "version": 2
+}

@@ -1,0 +1,374 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a43750e9decd5351c1faafe7b3dc533c71f8546c441f8e5ef908c815b8d00402",
+  "payload": {
+    "classes": [
+      "ResponsiveNavigator",
+      "ResponsiveWidget",
+      "ScreenLayout"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 13,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "ResponsiveNavigator"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "from",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 55,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onLargeScreen",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 28,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "onMediumScreen",
+            "receiver_constructor": null,
+            "receiver_type": "PagesCallback?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 35,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onLargeScreen",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 54,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "onSmallScreen",
+            "receiver_constructor": null,
+            "receiver_type": "PagesCallback?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 34,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onLargeScreen",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 53,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "getPages",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 31,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "ResponsiveNavigator"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "LayoutBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 42,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 42,
+          "lineno": 33
+        },
+        "static": false,
+        "unit": "ResponsiveNavigator"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 51,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "ResponsiveWidget"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "LayoutBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 72,
+              "lineno": 58
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 72,
+          "lineno": 56
+        },
+        "static": false,
+        "unit": "ResponsiveWidget"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 10,
+          "end_lineno": 80,
+          "lineno": 76
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 46,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          }
+        ],
+        "name": "from",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 82,
+          "lineno": 81
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 38,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          }
+        ],
+        "name": "of",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 84,
+          "lineno": 83
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Size",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 64,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sizeOf",
+            "receiver": "MediaQuery",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 38,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          }
+        ],
+        "name": "size",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 99,
+          "lineno": 93
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "large",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 102,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "medium",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 79,
+          "end_lineno": 106,
+          "lineno": 106
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "small",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 109,
+          "lineno": 109
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "notSmall",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 110,
+          "lineno": 110
+        },
+        "static": false,
+        "unit": "ScreenLayout"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ResponsiveNavigator",
+      "closure:1216",
+      "inheritance:ResponsiveWidget",
+      "closure:1870",
+      "field_initialization:ScreenLayout:2890",
+      "field_initialization:ScreenLayout:2937",
+      "field_initialization:ScreenLayout:2984",
+      "field_initialization:ScreenLayout:3039"
+    ]
+  },
+  "payload_digest": "60f3db24e68bb2da355ffc6ca58e6e72c20d61f3a68aa484d728ea95ae512937",
+  "version": 2
+}

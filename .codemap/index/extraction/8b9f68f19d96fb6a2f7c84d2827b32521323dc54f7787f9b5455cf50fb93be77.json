@@ -1,0 +1,391 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8b9f68f19d96fb6a2f7c84d2827b32521323dc54f7787f9b5455cf50fb93be77",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "filesystemSupported",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 35,
+          "end_lineno": 12,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "gitOfflineSupported",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 46,
+          "end_lineno": 16,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 29,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "dir",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 23,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "dir",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 56,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileSystemStorageProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 46,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initWithConfig",
+            "receiver": "provider",
+            "receiver_constructor": "FileSystemStorageProvider",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 30,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileSystemConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 29,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "create",
+            "receiver": "FilePathConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 7,
+              "end_lineno": 28,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromDirectory",
+            "receiver": "MacOSBookmark",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 59,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 33,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "buildFilesystemService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 32,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "OfflineGitStorageProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 3,
+              "end_lineno": 38,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "GitCommitBatching",
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 45,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initWithConfig",
+            "receiver": "provider",
+            "receiver_constructor": "OfflineGitStorageProvider",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 45,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OfflineGitConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 44,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 33,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          }
+        ],
+        "name": "buildGitOfflineService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 47,
+          "lineno": 34
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "meshStorePathOverride",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 57,
+          "end_lineno": 52,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getExternalStorageDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 58,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "getApplicationDocumentsDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 57,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "defaultFilesystemPath",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 74,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "open",
+            "receiver": "MeshStorageService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 3,
+              "end_lineno": 85,
+              "lineno": 81
+            }
+          }
+        ],
+        "name": "buildMeshService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 87,
+          "lineno": 76
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_storage_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:path_provider/path_provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_filesystem/universal_storage_filesystem.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_git_offline/universal_storage_git_offline.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "b1b93f03cffbb354cc85c582d1894c0acdd27bbd14ee28fbb0e56bf25b5658c4",
+  "version": 2
+}

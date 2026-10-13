@@ -1,0 +1,245 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d0ad7084ffbddce7a914e0dc4bfd1ec1bb061532d6695c5e18ba56f44f25c640",
+  "payload": {
+    "classes": [
+      "AnswerFieldBubble"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 10,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "AnswerFieldBubble"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "FocusBubbleContainerConsts",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 57,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FocusBubbleContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 54,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Theme",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 53,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "theme",
+            "receiver_constructor": "Theme.of",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 9,
+              "end_lineno": 43,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "theme.inputDecorationTheme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 11,
+              "end_lineno": 42,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlineInputBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 13,
+              "end_lineno": 35,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 15,
+              "end_lineno": 34,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlineInputBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 13,
+              "end_lineno": 41,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 15,
+              "end_lineno": 40,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "context.colorScheme.onPrimaryContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 78,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "UiTextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 52,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "InputDecoration",
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 58,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "AnswerFieldBubble"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AnswerFieldBubble",
+      "nested_function:updateAnswer",
+      "closure:749"
+    ]
+  },
+  "payload_digest": "79b5f0473a47b40c42ed0e98782632bcb2cdb3502b1d0b138fa953f556f710bb",
+  "version": 2
+}

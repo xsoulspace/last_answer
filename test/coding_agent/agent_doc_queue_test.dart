@@ -61,6 +61,9 @@ void main() {
   ) async {
     final controller = HarnessSessionController(
       config: HarnessHostConfig(
+        // This queue fixture owns its scripted tool lane. Product workspace
+        // installation requires a platform application-support directory.
+        extraToolsWithContext: (_) => const [],
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
       ),
@@ -136,83 +139,87 @@ void main() {
     );
   }
 
-  testWidgets(
-    'steer default: submitting while running queues the message '
-    '(STEER + position), and the queue flushes IN ORDER when the '
-    "running turn's verdict lands (one verdict per turn)",
-    (final tester) async {
-      final docUpdates = <ProjectModelDoc>[];
-      final controller = await pumpSurface(tester, docUpdates);
+  testWidgets('steer default: submitting while running queues the message '
+      '(STEER + position), and the queue flushes IN ORDER when the '
+      "running turn's verdict lands (one verdict per turn)", (
+    final tester,
+  ) async {
+    final docUpdates = <ProjectModelDoc>[];
+    final controller = await pumpSurface(tester, docUpdates);
 
-      await bindAndDelegate(tester, controller, 'Fix main.dart.');
-      await pumpUntil(tester, () => controller.pendingPermission != null);
-      await tester.pump();
+    await bindAndDelegate(tester, controller, 'Fix main.dart.');
+    await pumpUntil(tester, () => controller.pendingPermission != null);
+    await tester.pump();
 
-      // The composer does not block: two submits join the queue.
-      await steerFromComposer(tester, 'second message');
-      await steerFromComposer(tester, 'third message');
-      await tester.pump();
+    expect(
+      controller.pendingPermission,
+      isNotNull,
+      reason: 'Task failed before permission: ${controller.error}',
+    );
 
-      expect(
-        find.textContaining('STEER 1'),
-        findsOneWidget,
-        reason: 'queued rows render with lane position (DESIGN §10)',
-      );
-      expect(find.textContaining('STEER 2'), findsOneWidget);
-      expect(find.text('second message'), findsOneWidget);
-      expect(find.text('third message'), findsOneWidget);
-      expect(controller.queue.openInLane().length, 2);
-      expect(
-        AgentDocSurface.debugState!.queue
-            .where((final q) => q.status == 'open')
-            .length,
-        2,
-        reason: 'the projection carries the same queue the human sees',
-      );
-      expect(
-        AgentDocSurface.debugState!.queue.first.position,
-        1,
-        reason: 'open steps carry their 1-based lane position',
-      );
+    // The composer does not block: two submits join the queue.
+    await steerFromComposer(tester, 'second message');
+    await steerFromComposer(tester, 'third message');
+    await tester.pump();
 
-      // The verdict of turn 1 lands → the queue flushes IN ORDER:
-      // second message becomes turn 2, third becomes turn 3.
-      await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
-      await drainTurns(tester, controller, want: 3);
-      await tester.pump();
+    expect(
+      find.textContaining('STEER 1'),
+      findsOneWidget,
+      reason: 'queued rows render with lane position (DESIGN §10)',
+    );
+    expect(find.textContaining('STEER 2'), findsOneWidget);
+    expect(find.text('second message'), findsOneWidget);
+    expect(find.text('third message'), findsOneWidget);
+    expect(controller.queue.openInLane().length, 2);
+    expect(
+      AgentDocSurface.debugState!.queue
+          .where((final q) => q.status == 'open')
+          .length,
+      2,
+      reason: 'the projection carries the same queue the human sees',
+    );
+    expect(
+      AgentDocSurface.debugState!.queue.first.position,
+      1,
+      reason: 'open steps carry their 1-based lane position',
+    );
 
-      final turns = controller.current!.turns;
-      expect(turns, hasLength(3));
-      expect(turns[1].taskSentence, 'second message');
-      expect(turns[2].taskSentence, 'third message');
-      expect(turns[1].verdictLine, contains('PASS'));
-      expect(turns[2].verdictLine, contains('PASS'));
-      expect(controller.queue.openInLane(), isEmpty);
-      expect(
-        controller.queue.steps.every(
-          (final s) => s.status == QueueStepStatus.delivered,
-        ),
-        isTrue,
-        reason: 'delivered steps stay queryable (never silently dropped)',
-      );
+    // The verdict of turn 1 lands → the queue flushes IN ORDER:
+    // second message becomes turn 2, third becomes turn 3.
+    await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
+    await drainTurns(tester, controller, want: 3);
+    await tester.pump();
 
-      // The durable copy lives in the doc payload (step-shaped).
-      final payloadBlocks = docUpdates.last.blocks
-          .where((final b) => b.id.value.startsWith('queue-lane-'))
-          .toList();
-      expect(payloadBlocks, hasLength(1));
-      final payload = jsonDecode(payloadBlocks.first.content)
-          as Map<String, Object?>;
-      expect(payload['from'], 'human');
-      expect(payload['to'], 'agent');
-      expect(
-        (payload['steps']! as List<Object?>).length,
-        2,
-        reason: 'the payload history keeps delivered steps queryable',
-      );
-    },
-    timeout: const Timeout(Duration(minutes: 4)),
-  );
+    final turns = controller.current!.turns;
+    expect(turns, hasLength(3));
+    expect(turns[1].taskSentence, 'second message');
+    expect(turns[2].taskSentence, 'third message');
+    expect(turns[1].verdictLine, contains('PASS'));
+    expect(turns[2].verdictLine, contains('PASS'));
+    expect(controller.queue.openInLane(), isEmpty);
+    expect(
+      controller.queue.steps.every(
+        (final s) => s.status == QueueStepStatus.delivered,
+      ),
+      isTrue,
+      reason: 'delivered steps stay queryable (never silently dropped)',
+    );
+
+    // The durable copy lives in the doc payload (step-shaped).
+    final payloadBlocks = docUpdates.last.blocks
+        .where((final b) => b.id.value.startsWith('queue-lane-'))
+        .toList();
+    expect(payloadBlocks, hasLength(1));
+    final payload =
+        jsonDecode(payloadBlocks.first.content) as Map<String, Object?>;
+    expect(payload['from'], 'human');
+    expect(payload['to'], 'agent');
+    expect(
+      (payload['steps']! as List<Object?>).length,
+      2,
+      reason: 'the payload history keeps delivered steps queryable',
+    );
+  }, timeout: const Timeout(Duration(minutes: 4)));
 
   testWidgets(
     'edit queued: the row re-opens in place (it is just text) and the '
@@ -252,61 +259,58 @@ void main() {
     timeout: const Timeout(Duration(minutes: 4)),
   );
 
-  testWidgets(
-    'cancel queued: the step is marked SUPERSEDED (queryable in the '
-    'projection AND the payload — never silently dropped) and is skipped '
-    'by the flush',
-    (final tester) async {
-      final docUpdates = <ProjectModelDoc>[];
-      final controller = await pumpSurface(tester, docUpdates);
+  testWidgets('cancel queued: the step is marked SUPERSEDED (queryable in the '
+      'projection AND the payload — never silently dropped) and is skipped '
+      'by the flush', (final tester) async {
+    final docUpdates = <ProjectModelDoc>[];
+    final controller = await pumpSurface(tester, docUpdates);
 
-      await bindAndDelegate(tester, controller, 'Fix main.dart.');
-      await pumpUntil(tester, () => controller.pendingPermission != null);
-      await steerFromComposer(tester, 'cancelled message');
-      await steerFromComposer(tester, 'kept message');
-      await tester.pump();
+    await bindAndDelegate(tester, controller, 'Fix main.dart.');
+    await pumpUntil(tester, () => controller.pendingPermission != null);
+    await steerFromComposer(tester, 'cancelled message');
+    await steerFromComposer(tester, 'kept message');
+    await tester.pump();
 
-      // Two queued rows carry cancel actions — target the FIRST row
-      // ('cancelled message', rendered furthest from the composer).
-      await tester.tap(_keyPrefix('coding_agent.queue.cancel.').last);
-      await tester.pump();
+    // Two queued rows carry cancel actions — target the FIRST row
+    // ('cancelled message', rendered furthest from the composer).
+    await tester.tap(_keyPrefix('coding_agent.queue.cancel.').last);
+    await tester.pump();
 
-      expect(find.textContaining('STEER 1'), findsOneWidget);
-      expect(find.text('cancelled message'), findsNothing);
-      expect(controller.queue.openInLane().map((final s) => s.text), [
-        'kept message',
-      ]);
-      expect(
-        controller.queue.steps
-            .where((final s) => s.status == QueueStepStatus.superseded)
-            .map((final s) => s.text),
-        ['cancelled message'],
-        reason: 'cancellation is superseded — queryable, not dropped',
-      );
+    expect(find.textContaining('STEER 1'), findsOneWidget);
+    expect(find.text('cancelled message'), findsNothing);
+    expect(controller.queue.openInLane().map((final s) => s.text), [
+      'kept message',
+    ]);
+    expect(
+      controller.queue.steps
+          .where((final s) => s.status == QueueStepStatus.superseded)
+          .map((final s) => s.text),
+      ['cancelled message'],
+      reason: 'cancellation is superseded — queryable, not dropped',
+    );
 
-      await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
-      await drainTurns(tester, controller, want: 2);
-      await tester.pump();
+    await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
+    await drainTurns(tester, controller, want: 2);
+    await tester.pump();
 
-      expect(controller.current!.turns[1].taskSentence, 'kept message');
-      expect(controller.current!.turns, hasLength(2));
-      final payload = jsonDecode(
-        docUpdates.last.blocks
-            .firstWhere((final b) => b.id.value.startsWith('queue-lane-'))
-            .content,
-      )
-          as Map<String, Object?>;
-      final statuses = (payload['steps']! as List<Object?>)
-          .cast<Map<String, Object?>>()
-          .map((final s) => s['status']);
-      expect(
-        statuses,
-        containsAll(<String>['superseded', 'delivered']),
-        reason: 'the payload keeps the superseded step queryable',
-      );
-    },
-    timeout: const Timeout(Duration(minutes: 4)),
-  );
+    expect(controller.current!.turns[1].taskSentence, 'kept message');
+    expect(controller.current!.turns, hasLength(2));
+    final payload =
+        jsonDecode(
+              docUpdates.last.blocks
+                  .firstWhere((final b) => b.id.value.startsWith('queue-lane-'))
+                  .content,
+            )
+            as Map<String, Object?>;
+    final statuses = (payload['steps']! as List<Object?>)
+        .cast<Map<String, Object?>>()
+        .map((final s) => s['status']);
+    expect(
+      statuses,
+      containsAll(<String>['superseded', 'delivered']),
+      reason: 'the payload keeps the superseded step queryable',
+    );
+  }, timeout: const Timeout(Duration(minutes: 4)));
 
   testWidgets(
     'send-now: rejects the pending permission FIRST → stops the running '
@@ -340,9 +344,13 @@ void main() {
 
       final interrupted = controller.current!.turns.first;
       expect(interrupted.interrupted, isTrue);
-      expect(interrupted.spend, isNull,
-          reason: 'no spend figures exist for a cancelled turn — the '
-              'surface must not fabricate them');
+      expect(
+        interrupted.spend,
+        isNull,
+        reason:
+            'no spend figures exist for a cancelled turn — the '
+            'surface must not fabricate them',
+      );
       expect(
         find.textContaining('INTERRUPTED'),
         findsWidgets,
@@ -422,8 +430,9 @@ void main() {
 
       // Per-turn edit history persists into the doc payload.
       expect(
-        docUpdates.last.blocks
-            .where((final b) => b.id.value == 'agent-turn-history'),
+        docUpdates.last.blocks.where(
+          (final b) => b.id.value == 'agent-turn-history',
+        ),
         hasLength(1),
       );
       final restored = controller.turnHistory;

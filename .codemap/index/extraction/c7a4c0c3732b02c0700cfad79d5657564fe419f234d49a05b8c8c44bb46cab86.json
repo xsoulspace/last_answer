@@ -1,0 +1,47 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c7a4c0c3732b02c0700cfad79d5657564fe419f234d49a05b8c8c44bb46cab86",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "models.g.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "network_requests.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "network_responses.dart"
+      }
+    ],
+    "unsupported": []
+  },
+  "payload_digest": "64e5f4c4d05a4c0daaa2b6b81814b8e69605296ab203a5b3aee833f652cf16b9",
+  "version": 2
+}

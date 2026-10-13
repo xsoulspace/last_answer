@@ -9,16 +9,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
+import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/coding_agent/desired_coding_model.dart';
 import 'package:lastanswer/coding_agent/device_decision_routes.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:lastanswer/coding_agent/meaning_experiment_preparation.dart';
+import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/coding_agent/product_coding_change_view.dart';
+import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
+import 'package:provider/provider.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show jevDecisionBinding, lfmTextBinding, qwenTextBinding;
+    show
+        InferenceClientBinding,
+        jevDecisionBinding,
+        lfmTextBinding,
+        qwenTextBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
     show LayaRuntimeState, LayaServeRuntime;
@@ -46,6 +59,8 @@ final class AgentDocSurface extends StatefulWidget {
     this.config,
     this.providerConfiguration,
     this.agentConfig,
+    this.workspaceTooling,
+    this.subscription,
     super.key,
   });
 
@@ -61,7 +76,11 @@ final class AgentDocSurface extends StatefulWidget {
   /// Optional host config override (tests inject the scripted seam; its
   /// backend/check are overridden by the doc payload).
   final HarnessHostConfig? config;
+
+  /// App-owned containment/check composition, never a user setup field.
+  final ProductWorkspaceTooling? workspaceTooling;
   final ProviderConfigurationStore? providerConfiguration;
+  final ChatGptSubscriptionController? subscription;
 
   /// Optional agent-config store override (tests inject an in-memory one;
   /// the app tree provides the file-backed one).
@@ -97,6 +116,8 @@ final class AgentDocSurface extends StatefulWidget {
   /// verb — a form fill cannot do it (Phase-1.5 measurement).
   static ProjectModelDoc Function()? createAgentProjectHook;
 
+  static Future<Map<String, Object?>> Function()? createMeaningExperimentHook;
+
   /// Task H — app wiring for the multiplayer seams, installed by the app
   /// shell in debug/profile builds (same guard as [createAgentProjectHook]).
   /// The live mesh replica is owned by `StorageBackendsNotifier`; this
@@ -129,6 +150,7 @@ abstract interface class AgentDocHandle implements SessionHandle {
   /// The live agent-doc projection — the same typed state the human
   /// screen renders (one state, many projections, DESIGN §5).
   AgentDocDebugState get debugState;
+  Future<Map<String, Object?>> meaningAction(String action);
 }
 
 class _AgentDocSurfaceState extends State<AgentDocSurface>
@@ -140,6 +162,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   late final ProviderConfigurationStore _providerConfiguration =
       widget.providerConfiguration ?? ProviderConfigurationStore();
   final _workspaceField = TextEditingController();
+  ProductWorkspaceToolBinding? _workspaceToolBinding;
   final _taskField = TextEditingController();
   final _keyField = TextEditingController();
   final _checkField = TextEditingController();
@@ -149,7 +172,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   bool _setupOpen = false;
   bool _profileOpen = false;
   String? _routingError;
+  bool _meaningAdmissionBusy = false;
   bool _hostedConsentGranted = false;
+  String? _subscriptionClientId;
+  String? _subscriptionModel;
+
+  ChatGptSubscriptionController? get _subscription =>
+      widget.subscription ?? context.read<ChatGptSubscriptionController?>();
 
   // Laya backend — the surface owns the runtime so the readiness probe
   // (attach-only, never spawns) has a stable object to answer through.
@@ -242,9 +271,12 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     // PLAN 9 — return-after-interruption reconstructs the queue (DESIGN
     // §10): the durable copy lives in the doc payload's reserved blocks.
     _restoreQueueFromDoc();
-    unawaited(() async {
-      if (await _syncConfigBeforeTurn()) await _controller.ensureStarted();
-    }());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(() async {
+        if (await _syncConfigBeforeTurn()) await _controller.ensureStarted();
+      }());
+    });
     // PLAN 9 — the queue must survive into the doc payload on EVERY
     // transition, including the flush pump's deliveries (controller-internal).
     _queueSignature = _controller.queue.signature;
@@ -286,7 +318,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   }
 
   HarnessHostConfig _configFor(final ProjectModelDoc doc) {
-    final base = widget.config ?? const HarnessHostConfig();
+    final base =
+        widget.config ??
+        HarnessHostConfig(
+          extraToolsWithContext: MeaningExperimentPreparation.instance.toolsFor(
+            doc.agent?.workspaces.firstOrNull ?? '',
+          ),
+        );
     final agent = doc.agent ?? const AgentDocModel();
     final external = agent.backend == 'external_acp'
         ? _resolveExternalAcp(agent)
@@ -341,6 +379,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     // A host-injected decision targets THIS doc — the device-local focus
     // follows the last interaction (ADR 0009 §Open questions 1).
     _markFocused();
+    if (_meaningAdmissionBusy) {
+      return (ok: false, message: 'a task is being prepared.');
+    }
     final current = _controller.current;
     if (current?.running ?? false) {
       return (ok: false, message: 'a task is already running.');
@@ -349,17 +390,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (workspace.isEmpty) {
       return (ok: false, message: 'no workspace bound to the doc yet.');
     }
-    unawaited(() async {
-      await _syncConfigBeforeTurn();
-      if (current == null || current.cwd != workspace) {
-        await _controller.createSession(workspace);
-      }
-      final agent = _doc.agent ?? const AgentDocModel();
-      if (!agent.workspaces.contains(workspace)) {
-        _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
-      }
-      await _controller.delegate(task);
-    }());
+    unawaited(_delegateText(task));
     return (ok: true, message: 'delegated: $task');
   }
 
@@ -400,6 +431,68 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// DESIGN §5).
   @override
   AgentDocDebugState get debugState => _projectState();
+
+  @override
+  Future<Map<String, Object?>> meaningAction(String action) async {
+    if (_meaningAdmissionBusy || _controller.isRunning) {
+      return {'ok': false, 'error': 'meaning_operation_busy'};
+    }
+    _setMeaningAdmissionBusy(true);
+    try {
+      if (await _prepareSession() == null) {
+        return {'ok': false, 'error': 'meaning_configuration_unavailable'};
+      }
+      return await _controller.meaning.action(action);
+    } finally {
+      _setMeaningAdmissionBusy(false);
+    }
+  }
+
+  Future<Map<String, Object?>> _productCodingAction(
+    String action,
+    Map<String, Object?> arguments,
+  ) async {
+    if (_meaningAdmissionBusy || _controller.isRunning) {
+      return {'ok': false, 'error': 'coding_operation_busy'};
+    }
+    _setMeaningAdmissionBusy(true);
+    try {
+      final prepared = await _prepareSession();
+      if (prepared == null) {
+        return {'ok': false, 'error': 'coding_configuration_unavailable'};
+      }
+      final session = prepared.id;
+      if (action == 'reviewSaved') {
+        final adopted = await _controller.host.conventionalAction(
+          session,
+          'adoptCandidate',
+          arguments,
+        );
+        if (adopted['ok'] != true) return adopted;
+        final proposal = adopted['proposal']! as Map;
+        // The ordinary native action now waits for its exact permission.
+        // The visible Apply/Reject buttons answer that request; no auto-consent.
+        return await _controller.host.conventionalAction(session, 'apply', {
+          'proposalId': proposal['proposalId'],
+        });
+      }
+      return await _controller.host.conventionalAction(
+        session,
+        action,
+        arguments,
+      );
+    } finally {
+      _setMeaningAdmissionBusy(false);
+    }
+  }
+
+  void _setMeaningAdmissionBusy(bool value) {
+    _meaningAdmissionBusy = value;
+    if (mounted) {
+      setState(() {});
+      AgentDocSurface.debugState = _projectState();
+    }
+  }
 
   @override
   SessionSnapshot get state {
@@ -552,7 +645,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   void _autoRunPendingRemoteTasks() {
     final wiring = AgentDocSurface.meshWiring;
     if (wiring == null || !wiring.autoRunRemoteTasks) return;
-    if (_autoRunInFlight || _controller.isRunning) return;
+    if (_autoRunInFlight || _meaningAdmissionBusy || _controller.isRunning) {
+      return;
+    }
     final board = wiring.taskBoard?.call();
     final selfPeerId = wiring.selfPeerId?.call();
     if (board == null || selfPeerId == null) return;
@@ -603,6 +698,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     final MeshTaskRecord record,
   ) async {
     _autoRunInFlight = true;
+    _setMeaningAdmissionBusy(true);
     Map<String, Object?> verdictOf({
       final AcpStopReason? stop,
       final HarnessTurn? turn,
@@ -619,15 +715,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       if (stop != null) 'stopReason': stop.name,
     };
     try {
-      final workspace = _workspaceField.text.trim();
-      if (workspace.isEmpty) {
+      if (_workspaceField.text.trim().isEmpty) {
         board.failTask(
           record.taskId,
           error: 'no workspace bound to the doc yet.',
         );
         return;
       }
-      if (!await _syncConfigBeforeTurn()) {
+      final session = await _prepareSession();
+      if (session == null) {
         board.failTask(
           record.taskId,
           error:
@@ -636,16 +732,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         );
         return;
       }
-      final session = _controller.current;
-      final turnIndex = session?.turns.length ?? 0;
-      if (session == null || session.cwd != workspace) {
-        await _controller.createSession(workspace);
-      }
+      final workspace = session.cwd;
+      final turnIndex = session.turns.length;
       final agent = _doc.agent ?? const AgentDocModel();
       if (!agent.workspaces.contains(workspace)) {
         _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
       }
-      final stop = await _controller.delegate(record.task);
+      final stop = await _controller.delegate(record.task, session: session);
       final turn = _controller.current?.turns.elementAtOrNull(turnIndex);
       final verdict = verdictOf(stop: stop, turn: turn);
       if (stop == null) {
@@ -673,6 +766,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       board.failTask(record.taskId, error: 'auto-run failed: $error');
     } finally {
       _autoRunInFlight = false;
+      _setMeaningAdmissionBusy(false);
       if (mounted) AgentDocSurface.debugState = _projectState();
     }
   }
@@ -734,6 +828,16 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       // PLAN 6.C — the task console rows for this doc (empty when no
       // board is attached): the same records the `mesh_tasks` verb reads.
       tasks: _tasksProjection(),
+      meaning: {
+        ...controller.meaning.toJson(),
+        'busy': _meaningAdmissionBusy || controller.meaning.busy,
+        'admissionBusy': _meaningAdmissionBusy,
+        'reviewProposal': controller.meaningReviewProposal,
+        'conventional': _workspaceToolBinding?.toJson(),
+        'preparation': MeaningExperimentPreparation.instance.receiptFor(
+          _workspaceField.text.trim(),
+        ),
+      },
     );
   }
 
@@ -767,10 +871,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (!trimmed.startsWith('/')) {
       return (ok: false, message: 'workspace must be an absolute path.');
     }
-    if (_controller.isRunning) {
+    if (_controller.isRunning || _meaningAdmissionBusy) {
       return (
         ok: false,
-        message: 'a task is running — binding is refused while a turn runs.',
+        message: 'a task is running or preparing — binding is refused.',
       );
     }
     final agent = _doc.agent ?? const AgentDocModel();
@@ -860,7 +964,12 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
     _controller.removeListener(_onControllerChanged);
-    if (_ownsController) _controller.dispose();
+    if (_ownsController) {
+      _controller.dispose();
+      (widget.workspaceTooling ?? ProductWorkspaceTooling.instance).forgetOwner(
+        _controller,
+      );
+    }
     _workspaceField.dispose();
     _taskField.dispose();
     _keyField.dispose();
@@ -887,105 +996,295 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// seam (injected handler) and strand the daemon on the wrong runtime
   /// (measured: the scripted mover vanished and the turn never started).
   /// The API key stays device-local — carried, never persisted.
-  Future<bool> _syncConfigBeforeTurn() async {
+  Future<bool>? _configSync;
+
+  Future<HarnessSessionView?> _prepareSession() async {
+    if (!await _syncConfigBeforeTurn() || !mounted) return null;
+    final signature = _configSignature();
+    final owner = _controller.host;
+    final workspace = _workspaceField.text.trim();
+    if (workspace.isEmpty) return null;
+    if (_controller.current?.cwd != workspace) {
+      await _controller.createSession(workspace);
+    }
+    if (!mounted ||
+        signature != _configSignature() ||
+        !identical(owner, _controller.host) ||
+        _controller.error != null ||
+        _controller.current?.cwd != workspace) {
+      return null;
+    }
+    return _controller.current;
+  }
+
+  Object _configSignature() {
+    final native = _doc.agent?.backend == chatGptBackend;
+    final subscription = native ? _subscription : null;
+    return (
+      _doc.agent,
+      _workspaceField.text.trim(),
+      _checkField.text,
+      _hostedConsentGranted,
+      subscription?.activeClientId,
+      subscription?.selectedModel,
+      subscription?.activeProfile?.signedIn,
+      subscription?.activeProfile?.planEnabled,
+      subscription?.activeProfile?.recoveryRequired,
+    );
+  }
+
+  Future<bool> _syncConfigBeforeTurn() => _configSync ??= _syncCurrentConfig()
+      .whenComplete(() => _configSync = null);
+
+  Future<bool> _syncCurrentConfig() async {
+    // Startup, preview and task dispatch share one host-configuration lane.
+    // If user inputs change during preparation, re-read before admitting work.
+    for (var attempt = 0; attempt < 3 && mounted; attempt++) {
+      final signature = _configSignature();
+      final result = await _syncConfigOnce();
+      if (!mounted) return false;
+      if (signature == _configSignature()) return result;
+    }
+    if (mounted) {
+      _controller.error =
+          'Agent settings changed during preparation. Try again.';
+      setState(() {});
+    }
+    return false;
+  }
+
+  String? _desiredModel(String backend) => desiredCodingModel(
+    backend: backend,
+    currentBackend: _controller.config.backend,
+    currentModel: _controller.config.model,
+    subscriptionModel: _subscription?.selectedModel,
+  );
+
+  Future<bool> _syncConfigOnce() async {
     if (_controller.isRunning) return false;
+    final workspaceBinding = _workspaceField.text.trim();
     final agent = _doc.agent;
     var apiKey = _controller.config.apiKey;
     final backend = agent?.backend ?? _controller.config.backend;
-    if (backend == 'open_router' || backend == 'jev') {
-      final workspace = _workspaceField.text.trim();
-      final config = await _providerConfiguration.resolveOpenRouter(
-        documentId: _doc.id.value,
-        model: _controller.config.model,
-        workspace: workspace,
+    InferenceClientBinding? inferenceBinding;
+    ({String clientId, String model})? subscriptionChoice;
+    try {
+      var inferenceModel = _desiredModel(backend);
+      if (backend == chatGptBackend) {
+        final subscription = _subscription;
+        if (subscription == null) {
+          _controller.error = context.l10n.chatGptSignInRequired;
+          if (mounted) setState(() {});
+          return false;
+        }
+        await subscription.load();
+        if (!mounted) {
+          if (_ownsController) {
+            (widget.workspaceTooling ?? ProductWorkspaceTooling.instance)
+                .forgetOwner(_controller);
+          }
+          return false;
+        }
+        final profile = subscription.activeProfile;
+        final selectedModel = subscription.selectedModel;
+        if (profile == null || !profile.signedIn || !profile.planEnabled) {
+          _controller.error = context.l10n.chatGptSignInRequired;
+          setState(() {});
+          return false;
+        }
+        if (selectedModel == null || selectedModel.isEmpty) {
+          _controller.error = context.l10n.chatGptModelRequired;
+          setState(() {});
+          return false;
+        }
+        final consent = await _providerConfiguration.consentGranted(
+          documentId: _doc.id.value,
+          provider: chatGptConsentProvider(profile.clientId),
+          model: selectedModel,
+          workspace: workspaceBinding,
+        );
+        if (!mounted) return false;
+        _hostedConsentGranted = consent;
+        if (!consent) {
+          _controller.error = context.l10n.chatGptDocumentConsentRequired;
+          setState(() {});
+          return false;
+        }
+        inferenceModel = selectedModel;
+        inferenceBinding =
+            _subscriptionClientId == profile.clientId &&
+                _subscriptionModel == selectedModel
+            ? _controller.config.inferenceBinding
+            : null;
+        inferenceBinding ??= chatGptHarnessBinding(
+          gateway: subscription.gateway,
+          clientId: profile.clientId,
+          model: selectedModel,
+        );
+        subscriptionChoice = (clientId: profile.clientId, model: selectedModel);
+        apiKey = null;
+      }
+      await MeaningExperimentPreparation.instance.restoreFor(workspaceBinding);
+      if (!mounted) {
+        if (!identical(inferenceBinding, _controller.config.inferenceBinding)) {
+          await inferenceBinding?.dispose();
+        }
+        return false;
+      }
+      final injectedTools =
+          widget.config?.extraToolsWithContext ??
+          widget.controller?.config.extraToolsWithContext;
+      var experimentTools =
+          injectedTools ??
+          MeaningExperimentPreparation.instance.toolsFor(workspaceBinding);
+      if (injectedTools == null && workspaceBinding.isNotEmpty) {
+        try {
+          final prepared =
+              await (widget.workspaceTooling ??
+                      ProductWorkspaceTooling.instance)
+                  .prepare(
+                    workspaceBinding,
+                    ownerKey: _controller,
+                    canReviewSaved: (context) =>
+                        _controller.host.admitsSavedCodeReview(context),
+                  );
+          if (!mounted) {
+            if (_ownsController) {
+              (widget.workspaceTooling ?? ProductWorkspaceTooling.instance)
+                  .forgetOwner(_controller);
+            }
+            return false;
+          }
+          experimentTools = prepared.compose(experimentTools);
+          _workspaceToolBinding = prepared;
+        } on Object catch (error) {
+          _controller.error = 'Workspace coding preparation failed: $error';
+          if (mounted) setState(() {});
+          return false;
+        }
+      }
+      if (backend == 'open_router' || backend == 'jev') {
+        final workspace = _workspaceField.text.trim();
+        final config = await _providerConfiguration.resolveOpenRouter(
+          documentId: _doc.id.value,
+          model: inferenceModel!,
+          workspace: workspace,
+        );
+        switch (config.readiness) {
+          case HostedDispatchReadiness.ready:
+            apiKey = config.apiKey;
+          case HostedDispatchReadiness.missingCredential:
+            _controller.error =
+                'OpenRouter credential is missing on this device.';
+            if (mounted) setState(() {});
+            return false;
+          case HostedDispatchReadiness.consentRequired:
+            _controller.error =
+                'Confirm cloud use for this document, model, and workspace '
+                'before sending.';
+            if (mounted) setState(() {});
+            return false;
+        }
+      }
+      final externalParams = backend == 'external_acp'
+          ? _resolveExternalAcp(agent ?? const AgentDocModel())
+          : null;
+      if (backend == 'external_acp' &&
+          (externalParams?.command == null ||
+              externalParams!.command!.isEmpty)) {
+        _controller.error =
+            'no external ACP server configured - pick one in SETUP '
+            '(register servers in agent settings).';
+        if (mounted) setState(() {});
+        return false;
+      }
+      if (backend == 'laya' && !await _ensureLayaReady()) {
+        _controller.error =
+            'no laya-serve answering at ${_layaEndpoint()} - start it '
+            '(LAYA_DECISION_ENDPOINT overrides the address).';
+        if (mounted) setState(() {});
+        return false;
+      }
+      if (!mounted) {
+        if (!identical(inferenceBinding, _controller.config.inferenceBinding)) {
+          await inferenceBinding?.dispose();
+        }
+        return false;
+      }
+      await _controller.switchBackend(
+        _controller.config.copyWith(
+          backend: backend,
+          model: inferenceModel,
+          inferenceBinding: inferenceBinding,
+          clearInferenceBinding: backend != chatGptBackend,
+          extraToolsWithContext: experimentTools,
+          clearExtraToolsWithContext: experimentTools == null,
+          apiKey: apiKey,
+          clearApiKey: apiKey == null,
+          jevBinding: backend == 'jev' && apiKey != null
+              ? _controller.config.backend == 'jev' &&
+                        _controller.config.apiKey == apiKey &&
+                        _controller.config.jevBinding != null
+                    ? _controller.config.jevBinding
+                    : jevDecisionBinding(apiKey: apiKey)
+              : null,
+          clearJevBinding: backend != 'jev',
+          layaBinding: backend == 'laya'
+              ? _controller.config.backend == 'laya' &&
+                        _controller.config.layaBinding != null
+                    ? _controller.config.layaBinding
+                    : layaBindingForDevice(
+                        platform: Platform.operatingSystem,
+                        runtime: _layaRuntimeForBinding,
+                        endpoint: _layaEndpoint(),
+                      )
+              : null,
+          clearLayaBinding: backend != 'laya',
+          // ADR 0059 — the local text casts: one binding per switch, kept
+          // while the backend stays (the engine must not reload per turn);
+          // macOS only.
+          lfmBinding: backend == 'lfm'
+              ? _controller.config.backend == 'lfm' &&
+                        _controller.config.lfmBinding != null
+                    ? _controller.config.lfmBinding
+                    : (Platform.isMacOS ? lfmTextBinding() : null)
+              : null,
+          clearLfmBinding: backend != 'lfm',
+          qwenBinding: backend == 'qwen'
+              ? _controller.config.backend == 'qwen' &&
+                        _controller.config.qwenBinding != null
+                    ? _controller.config.qwenBinding
+                    : (Platform.isMacOS ? qwenTextBinding() : null)
+              : null,
+          clearQwenBinding: backend != 'qwen',
+          checkCommand: agent == null || agent.checkCommand.isEmpty
+              ? const <String>[]
+              : agent.checkCommand,
+          externalAcpCommand: externalParams?.command,
+          externalAcpArguments: externalParams?.args,
+          externalAcpEnvironment: externalParams?.env,
+          externalAcpWorkingDirectory: backend == 'external_acp'
+              ? _workspaceField.text.trim()
+              : null,
+          externalAcpConversationKey:
+              _controller.config.externalAcpConversationKey ??
+              'lastanswer:${_doc.id.value}:external:'
+                  '${agent?.externalAcpServer ?? ''}',
+        ),
       );
-      switch (config.readiness) {
-        case HostedDispatchReadiness.ready:
-          apiKey = config.apiKey;
-        case HostedDispatchReadiness.missingCredential:
-          _controller.error =
-              'OpenRouter credential is missing on this device.';
-          if (mounted) setState(() {});
-          return false;
-        case HostedDispatchReadiness.consentRequired:
-          _controller.error =
-              'Confirm cloud use for this document, model, and workspace '
-              'before sending.';
-          if (mounted) setState(() {});
-          return false;
+      if (subscriptionChoice != null &&
+          identical(inferenceBinding, _controller.config.inferenceBinding)) {
+        // Identity describes the adopted binding, never a failed candidate.
+        _subscriptionClientId = subscriptionChoice.clientId;
+        _subscriptionModel = subscriptionChoice.model;
+      }
+      return _controller.error == null;
+    } finally {
+      if (inferenceBinding != null &&
+          !identical(inferenceBinding, _controller.config.inferenceBinding)) {
+        await inferenceBinding.dispose();
       }
     }
-    final externalParams = backend == 'external_acp'
-        ? _resolveExternalAcp(agent ?? const AgentDocModel())
-        : null;
-    if (backend == 'external_acp' &&
-        (externalParams?.command == null || externalParams!.command!.isEmpty)) {
-      _controller.error =
-          'no external ACP server configured - pick one in SETUP '
-          '(register servers in agent settings).';
-      if (mounted) setState(() {});
-      return false;
-    }
-    if (backend == 'laya' && !await _ensureLayaReady()) {
-      _controller.error =
-          'no laya-serve answering at ${_layaEndpoint()} - start it '
-          '(LAYA_DECISION_ENDPOINT overrides the address).';
-      if (mounted) setState(() {});
-      return false;
-    }
-    await _controller.switchBackend(
-      _controller.config.copyWith(
-        backend: backend,
-        apiKey: apiKey,
-        clearApiKey: apiKey == null,
-        jevBinding: backend == 'jev' && apiKey != null
-            ? _controller.config.backend == 'jev' &&
-                      _controller.config.apiKey == apiKey &&
-                      _controller.config.jevBinding != null
-                  ? _controller.config.jevBinding
-                  : jevDecisionBinding(apiKey: apiKey)
-            : null,
-        clearJevBinding: backend != 'jev',
-        layaBinding: backend == 'laya'
-            ? _controller.config.backend == 'laya' &&
-                      _controller.config.layaBinding != null
-                  ? _controller.config.layaBinding
-                  : layaBindingForDevice(
-                      platform: Platform.operatingSystem,
-                      runtime: _layaRuntimeForBinding,
-                      endpoint: _layaEndpoint(),
-                    )
-            : null,
-        clearLayaBinding: backend != 'laya',
-        // ADR 0059 — the local text casts: one binding per switch, kept
-        // while the backend stays (the engine must not reload per turn);
-        // macOS only.
-        lfmBinding: backend == 'lfm'
-            ? _controller.config.backend == 'lfm' &&
-                      _controller.config.lfmBinding != null
-                  ? _controller.config.lfmBinding
-                  : (Platform.isMacOS ? lfmTextBinding() : null)
-            : null,
-        clearLfmBinding: backend != 'lfm',
-        qwenBinding: backend == 'qwen'
-            ? _controller.config.backend == 'qwen' &&
-                      _controller.config.qwenBinding != null
-                  ? _controller.config.qwenBinding
-                  : (Platform.isMacOS ? qwenTextBinding() : null)
-            : null,
-        clearQwenBinding: backend != 'qwen',
-        checkCommand: agent == null || agent.checkCommand.isEmpty
-            ? const <String>[]
-            : agent.checkCommand,
-        externalAcpCommand: externalParams?.command,
-        externalAcpArguments: externalParams?.args,
-        externalAcpEnvironment: externalParams?.env,
-        externalAcpWorkingDirectory: backend == 'external_acp'
-            ? _workspaceField.text.trim()
-            : null,
-      ),
-    );
-    return true;
   }
 
   /// Persists the check override (whitespace-split argv — no shell, no
@@ -1036,23 +1335,30 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   }
 
   Future<void> _delegate() async {
-    final workspace = _workspaceField.text.trim();
     final task = _taskField.text.trim();
-    if (workspace.isEmpty || task.isEmpty) return;
+    if (_workspaceField.text.trim().isEmpty || task.isEmpty) return;
     // Messenger pattern: the sentence leaves the composer once accepted
     // (it renders as the turn's YOU row / queued row from here on).
     _taskField.clear();
-    final current = _controller.current;
-    await _syncConfigBeforeTurn();
-    if (current == null || current.cwd != workspace) {
-      await _controller.createSession(workspace);
+    await _delegateText(task);
+  }
+
+  Future<void> _delegateText(String task) async {
+    if (_meaningAdmissionBusy || _controller.isRunning) return;
+    _setMeaningAdmissionBusy(true);
+    try {
+      final session = await _prepareSession();
+      if (session == null) return;
+      final workspace = session.cwd;
+      // Pin the workspace into the doc payload (syncable doc data, ADR 0003).
+      final agent = _doc.agent ?? const AgentDocModel();
+      if (!agent.workspaces.contains(workspace)) {
+        _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
+      }
+      await _controller.delegate(task, session: session);
+    } finally {
+      _setMeaningAdmissionBusy(false);
     }
-    // Pin the workspace into the doc payload (syncable doc data, ADR 0003).
-    final agent = _doc.agent ?? const AgentDocModel();
-    if (!agent.workspaces.contains(workspace)) {
-      _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
-    }
-    await _controller.delegate(task);
   }
 
   // ---------------------------------------------------------------------
@@ -1219,6 +1525,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   });
 
   Future<void> _switchBackend(final String backend) async {
+    if (_meaningAdmissionBusy || _controller.isRunning) return;
     // Doc payload first (the doc is the source of truth for the binding —
     // ADR 0003): syncConfigBeforeTurn derives the daemon config from it.
     // Persisting after the async switch left a window where a concurrent
@@ -1228,30 +1535,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       _persist(agent.copyWith(backend: backend));
     }
     final entered = _keyField.text.trim();
+    _hostedConsentGranted = false;
     if ((backend == 'open_router' || backend == 'jev') && entered.isNotEmpty) {
       await _providerConfiguration.replaceOpenRouterCredential(entered);
       _keyField.clear();
     }
-    await _controller.switchBackend(
-      _controller.config.copyWith(
-        backend: backend,
-        model: backend == 'jev'
-            ? 'jev-1.13'
-            : backend == 'laya'
-            ? 'laya'
-            : 'deepseek/deepseek-v4-flash-0731',
-        clearApiKey: true,
-        clearJevBinding: backend != 'jev',
-        clearLayaBinding: backend != 'laya',
-        layaBinding: backend == 'laya' && _controller.config.layaBinding == null
-            ? layaBindingForDevice(
-                platform: Platform.operatingSystem,
-                runtime: _layaRuntimeForBinding,
-                endpoint: _layaEndpoint(),
-              )
-            : null,
-      ),
-    );
+    if (!mounted) return;
+    await _syncConfigBeforeTurn();
     // Switching to laya probes the endpoint right away so the LOCAL row
     // carries the honest snapshot instead of waiting for a first turn.
     if (backend == 'laya') unawaited(_ensureLayaReady());
@@ -1263,13 +1553,24 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       setState(() => _routingError = 'Bind a workspace before consenting.');
       return;
     }
+    final subscription = _subscription;
+    final backend = _doc.agent?.backend ?? _controller.config.backend;
+    final native = backend == chatGptBackend;
+    final clientId = subscription?.activeClientId;
+    final model = _desiredModel(backend);
+    if (native && (clientId == null || model == null || model.isEmpty)) {
+      setState(() => _routingError = context.l10n.chatGptModelRequired);
+      return;
+    }
     await _providerConfiguration.grantHostedConsent(
       documentId: _doc.id.value,
-      provider: 'open_router',
-      model: _controller.config.model,
+      provider: native ? chatGptConsentProvider(clientId!) : 'open_router',
+      model: model!,
       workspace: workspace,
     );
+    if (!mounted) return;
     setState(() => _hostedConsentGranted = true);
+    await _syncConfigBeforeTurn();
   }
 
   @override
@@ -1298,7 +1599,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _StatusRule(
-                    backend: controller.config.backend,
+                    backend: _doc.agent?.backend ?? controller.config.backend,
                     workspace: _workspaceField.text.trim(),
                     running: controller.isRunning,
                     turnCount: current?.turns.length ?? 0,
@@ -1325,8 +1626,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                         workspaceField: _workspaceField,
                         checkField: _checkField,
                         keyField: _keyField,
-                        backend: controller.config.backend,
-                        busy: controller.isRunning,
+                        backend:
+                            _doc.agent?.backend ?? controller.config.backend,
+                        busy: controller.isRunning || _meaningAdmissionBusy,
                         pickError: _pickError,
                         onPick: _pickWorkspace,
                         onBackend: (final b) => unawaited(_switchBackend(b)),
@@ -1354,6 +1656,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                           child: _Conversation(
                             key: const Key('coding_agent.transcript'),
                             controller: controller,
+                            workspaceToolBinding: _workspaceToolBinding,
+                            onProductCodingAction: _productCodingAction,
+                            onMeaningAction: meaningAction,
+                            meaningAdmissionBusy: _meaningAdmissionBusy,
                             docWorkspace: _workspaceField.text.trim(),
                             expandedBeats: _expandedBeats,
                             onToggleBeat: (final id) => setState(() {
@@ -1521,6 +1827,7 @@ class _StatusRule extends StatelessWidget {
               // stays one line on narrow grids; SETUP holds the picker.
               _TextToggle(
                 label: switch (backend) {
+                  chatGptBackend => 'ChatGPT',
                   'open_router' => 'OR',
                   'jev' => 'JEV',
                   'external_acp' => 'ACP',
@@ -1704,7 +2011,9 @@ class _SetupPane extends StatelessWidget {
               ),
             ],
           ),
-          if (backend == 'open_router' || backend == 'jev')
+          if (backend == 'open_router' ||
+              backend == 'jev' ||
+              backend == chatGptBackend)
             Row(
               children: [
                 SizedBox(width: 84, child: Text('CLOUD', style: _label(theme))),
@@ -1786,6 +2095,12 @@ class _SetupPane extends StatelessWidget {
                 onTap: busy ? () {} : () => onBackend('open_router'),
               ),
               _TextToggle(
+                label: 'ChatGPT',
+                active: backend == chatGptBackend,
+                onTap: busy ? () {} : () => onBackend(chatGptBackend),
+                toggleKey: const Key('coding_agent.chatgpt_backend'),
+              ),
+              _TextToggle(
                 label: 'Jev · decisions',
                 active: backend == 'jev',
                 onTap: busy ? () {} : () => onBackend('jev'),
@@ -1830,6 +2145,7 @@ class _SetupPane extends StatelessWidget {
                 ),
             ],
           ),
+          if (backend == chatGptBackend) const ChatGptSubscriptionPane(),
           if (backend == 'external_acp')
             Row(
               children: [
@@ -1889,6 +2205,8 @@ class _SetupPane extends StatelessWidget {
 class _Conversation extends StatelessWidget {
   const _Conversation({
     required this.controller,
+    required this.onMeaningAction,
+    required this.meaningAdmissionBusy,
     required this.docWorkspace,
     required this.expandedBeats,
     required this.onToggleBeat,
@@ -1905,10 +2223,17 @@ class _Conversation extends StatelessWidget {
     required this.turnEditField,
     required this.onBeginTurnEdit,
     required this.onCommitTurnEdit,
+    this.workspaceToolBinding,
+    this.onProductCodingAction,
     super.key,
   });
 
   final HarnessSessionController controller;
+  final ProductWorkspaceToolBinding? workspaceToolBinding;
+  final Future<Map<String, Object?>> Function(String, Map<String, Object?>)?
+  onProductCodingAction;
+  final Future<Map<String, Object?>> Function(String action) onMeaningAction;
+  final bool meaningAdmissionBusy;
   final String docWorkspace;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
@@ -1932,71 +2257,98 @@ class _Conversation extends StatelessWidget {
     final theme = Theme.of(context);
     final turns = current?.turns ?? const <HarnessTurn>[];
     final queued = controller.queue.openInLane().toList();
-    return ListView(
-      reverse: true,
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-      children: [
-        // PLAN 9 — the queue rides the frontier (ADR 0011): queued rows
-        // render as YOU rows with a dim STEER/NOW gutter annotation +
-        // position + age — visible, editable, cancellable (DESIGN §10:
-        // never "trusted to send"). Bottom-most, nearest the composer.
-        for (final step in queued.reversed)
-          _QueuedRow(
-            step: step,
-            position: controller.queue.positionOf(step),
-            editing: editingStepId == step.id,
-            editField: queueEditField,
-            onBeginEdit: () => onBeginQueuedEdit(step.id),
-            onCommitEdit: onCommitQueuedEdit,
-            onCancel: () => onCancelQueued(step.id),
-            onSendNow: () => onSendNowQueued(step.id),
-          ),
-        // PLAN 5c — remote permission rows (DESIGN §9): announced by the
-        // owning device, visible AND answerable from this peer's flow —
-        // same PERM row, same reject-first ordering, origin label in the
-        // gutter. Never a modal, never a separate pane.
-        for (final record in controller.remotePermissions)
-          _RemotePermRow(
-            record: record,
-            originLabel: controller.originLabelOf(record),
-            onAnswer: (final allow) => unawaited(
-              controller.answerRemotePermission(record.requestId, allow: allow),
+    return Semantics(
+      identifier: 'coding_agent.transcript',
+      container: true,
+      explicitChildNodes: true,
+      child: ListView(
+        reverse: true,
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+        children: [
+          // PLAN 9 — the queue rides the frontier (ADR 0011): queued rows
+          // render as YOU rows with a dim STEER/NOW gutter annotation +
+          // position + age — visible, editable, cancellable (DESIGN §10:
+          // never "trusted to send"). Bottom-most, nearest the composer.
+          for (final step in queued.reversed)
+            _QueuedRow(
+              step: step,
+              position: controller.queue.positionOf(step),
+              editing: editingStepId == step.id,
+              editField: queueEditField,
+              onBeginEdit: () => onBeginQueuedEdit(step.id),
+              onCommitEdit: onCommitQueuedEdit,
+              onCancel: () => onCancelQueued(step.id),
+              onSendNow: () => onSendNowQueued(step.id),
             ),
-          ),
-        if (controller.pendingPermission == null && (current?.running ?? false))
-          const _LiveRow(),
-        if (current?.hasVerdict ?? false)
-          _VerdictRow(turn: current!.turns.last, showCard: true),
-        for (final turn in turns.reversed) ...[
-          _TurnView(
-            turn: turn,
-            backend: backend,
-            expandedBeats: expandedBeats,
-            onToggleBeat: onToggleBeat,
-            editing: editingTurnKey == turn.startedAt.microsecondsSinceEpoch,
-            editField: turnEditField,
-            onBeginEdit: () => onBeginTurnEdit(turn),
-            onCommitEdit: () => onCommitTurnEdit(turn),
-            historyExpanded: expandedTurnHistory.contains(
-              turn.startedAt.microsecondsSinceEpoch,
+          if (workspaceToolBinding case final binding?)
+            ProductCodingChangeView(
+              binding: binding,
+              controller: controller,
+              onAction: onProductCodingAction,
+              busy: meaningAdmissionBusy,
             ),
-            onToggleHistory: () =>
-                onToggleTurnHistory(turn.startedAt.microsecondsSinceEpoch),
-          ),
-          const SizedBox(height: 14),
+          if (controller.config.extraToolsWithContext != null &&
+              (workspaceToolBinding == null ||
+                  MeaningExperimentPreparation.instance.receiptFor(
+                        docWorkspace,
+                      ) !=
+                      null))
+            MeaningExperimentView(
+              controller: controller.meaning,
+              onAction: onMeaningAction,
+              admissionBusy: meaningAdmissionBusy,
+            ),
+          // PLAN 5c — remote permission rows (DESIGN §9): announced by the
+          // owning device, visible AND answerable from this peer's flow —
+          // same PERM row, same reject-first ordering, origin label in the
+          // gutter. Never a modal, never a separate pane.
+          for (final record in controller.remotePermissions)
+            _RemotePermRow(
+              record: record,
+              originLabel: controller.originLabelOf(record),
+              onAnswer: (final allow) => unawaited(
+                controller.answerRemotePermission(
+                  record.requestId,
+                  allow: allow,
+                ),
+              ),
+            ),
+          if (controller.pendingPermission == null &&
+              (current?.running ?? false))
+            const _LiveRow(),
+          if (current?.hasVerdict ?? false)
+            _VerdictRow(turn: current!.turns.last, showCard: true),
+          for (final turn in turns.reversed) ...[
+            _TurnView(
+              turn: turn,
+              backend: backend,
+              expandedBeats: expandedBeats,
+              onToggleBeat: onToggleBeat,
+              editing: editingTurnKey == turn.startedAt.microsecondsSinceEpoch,
+              editField: turnEditField,
+              onBeginEdit: () => onBeginTurnEdit(turn),
+              onCommitEdit: () => onCommitTurnEdit(turn),
+              historyExpanded: expandedTurnHistory.contains(
+                turn.startedAt.microsecondsSinceEpoch,
+              ),
+              onToggleHistory: () =>
+                  onToggleTurnHistory(turn.startedAt.microsecondsSinceEpoch),
+            ),
+            const SizedBox(height: 14),
+          ],
+          if (docWorkspace.trim().isEmpty && turns.isEmpty)
+            const _EmptyStateGuide(key: Key('coding_agent.empty_state')),
+          if (turns.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                'conversations start here — the surface is text; every line '
+                'is a node you and the agent share.',
+                style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              ),
+            ),
         ],
-        if (docWorkspace.trim().isEmpty && turns.isEmpty)
-          const _EmptyStateGuide(key: Key('coding_agent.empty_state')),
-        if (turns.isEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Text(
-              'conversations start here — the surface is text; every line '
-              'is a node you and the agent share.',
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
-            ),
-          ),
-      ],
+      ),
     );
   }
 }
@@ -2155,6 +2507,7 @@ class _TurnView extends StatelessWidget {
   final VoidCallback onToggleHistory;
 
   String get _agentRole => switch (backend) {
+    chatGptBackend => 'GPT',
     'apple_foundation_afm' => 'AFM',
     'open_router' => 'OR',
     'laya' => 'Laya',
@@ -2616,51 +2969,81 @@ class _PendingPermission extends StatelessWidget {
   Widget build(final BuildContext context) {
     final pending = controller.pendingPermission!;
     final theme = Theme.of(context);
-    return Container(
-      key: const Key('coding_agent.permission'),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: theme.colorScheme.error),
-          bottom: BorderSide(color: theme.dividerColor, width: 0.6),
+    final review = controller.meaningReviewProposal;
+    final proposalId =
+        review?['proposalId'] ??
+        (review?['payload'] as Map?)?['proposalId'] ??
+        (review?['proposal'] as Map?)?['proposalId'];
+    return Semantics(
+      identifier: 'coding_agent.permission',
+      container: true,
+      explicitChildNodes: true,
+      child: Container(
+        key: const Key('coding_agent.permission'),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: theme.colorScheme.error),
+            bottom: BorderSide(color: theme.dividerColor, width: 0.6),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: _gutterWidth,
-            child: Text('PERM', style: _label(theme)),
-          ),
-          Expanded(
-            child: Text(
-              pending.request.title,
-              style: _mono(theme, color: theme.colorScheme.onSurface),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+        child: Row(
+          children: [
+            SizedBox(
+              width: _gutterWidth,
+              child: Text('PERM', style: _label(theme)),
             ),
-          ),
-          const SizedBox(width: 12),
-          TextButton(
-            key: const Key('coding_agent.permission.reject'),
-            style: TextButton.styleFrom(
-              foregroundColor: theme.colorScheme.onSurface,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              minimumSize: const Size(0, 30),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    pending.request.title,
+                    style: _mono(theme, color: theme.colorScheme.onSurface),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (pending.request.details case final exact?)
+                    MeaningEvidenceDetails(
+                      key: const Key('coding_agent.permission.exact_summary'),
+                      title: pending.request.toolCallId,
+                      body: exact,
+                    ),
+                  if (controller.meaningReviewProposal case final proposal?)
+                    MeaningEvidenceDetails(
+                      key: const Key('coding_agent.permission.proposal'),
+                      title: '${proposalId ?? ''}',
+                      body: const JsonEncoder.withIndent(
+                        '  ',
+                      ).convert(proposal),
+                    ),
+                ],
+              ),
             ),
-            onPressed: () => controller.answerPermission(allow: false),
-            child: Text('[reject]', style: _mono(theme)),
-          ),
-          const SizedBox(width: 6),
-          TextButton(
-            key: const Key('coding_agent.permission.allow'),
-            style: TextButton.styleFrom(
-              foregroundColor: theme.colorScheme.onSurface,
-              minimumSize: const Size(0, 30),
+            const SizedBox(width: 12),
+            TextButton(
+              key: const Key('coding_agent.permission.reject'),
+              style: TextButton.styleFrom(
+                foregroundColor: theme.colorScheme.onSurface,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                minimumSize: const Size(0, 30),
+              ),
+              onPressed: () => controller.answerPermission(allow: false),
+              child: Text('[reject]', style: _mono(theme)),
             ),
-            onPressed: () => controller.answerPermission(allow: true),
-            child: Text('[allow]', style: _mono(theme)),
-          ),
-        ],
+            const SizedBox(width: 6),
+            TextButton(
+              key: const Key('coding_agent.permission.allow'),
+              style: TextButton.styleFrom(
+                foregroundColor: theme.colorScheme.onSurface,
+                minimumSize: const Size(0, 30),
+              ),
+              onPressed: () => controller.answerPermission(allow: true),
+              child: Text('[allow]', style: _mono(theme)),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -3341,6 +3724,7 @@ final class AgentDocDebugState {
     this.queue = const [],
     this.tasks = const [],
     this.viewer = false,
+    this.meaning,
   });
 
   final String docId;
@@ -3406,6 +3790,7 @@ final class AgentDocDebugState {
   /// observes the shared doc and answers routed permissions — it binds no
   /// workspace and runs no daemon session.
   final bool viewer;
+  final Map<String, Object?>? meaning;
 
   Map<String, Object?> toJson() => {
     'docId': docId,
@@ -3427,6 +3812,7 @@ final class AgentDocDebugState {
     'queue': [for (final q in queue) q.toJson()],
     'tasks': tasks,
     'viewer': viewer,
+    'meaning': ?meaning,
     'transcriptTail': transcriptTail.length > 4000
         ? '${transcriptTail.substring(0, 4000)}…'
         : transcriptTail,

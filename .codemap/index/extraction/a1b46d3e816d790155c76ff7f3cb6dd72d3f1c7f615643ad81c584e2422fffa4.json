@@ -1,0 +1,250 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a1b46d3e816d790155c76ff7f3cb6dd72d3f1c7f615643ad81c584e2422fffa4",
+  "payload": {
+    "classes": [
+      "MeshQrScanPage",
+      "_MeshQrScanPageState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 9,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "MeshQrScanPage"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_MeshQrScanPageState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 63,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "MeshQrScanPage"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_controller",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 23,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "_MeshQrScanPageState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "pop",
+            "receiver": "Navigator.of(context)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 38,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Navigator",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "_onDetect",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 34,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_MeshQrScanPageState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 40,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 63,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 62,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MobileScanner",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 69,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 40,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "_MeshQrScanPageState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:mobile_scanner/mobile_scanner.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:MeshQrScanPage",
+      "inheritance:_MeshQrScanPageState",
+      "field_initialization:_MeshQrScanPageState:510",
+      "field_initialization:_MeshQrScanPageState:559"
+    ]
+  },
+  "payload_digest": "1b8a317ae647007eb1641f9aad752a910d1a7df50b7120002d85cd1b1dc445fb",
+  "version": 2
+}

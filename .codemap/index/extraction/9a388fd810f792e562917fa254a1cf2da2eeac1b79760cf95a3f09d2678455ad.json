@@ -1,0 +1,119 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9a388fd810f792e562917fa254a1cf2da2eeac1b79760cf95a3f09d2678455ad",
+  "payload": {
+    "classes": [
+      "Toasts"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScaffoldMessenger",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 70,
+              "end_lineno": 5,
+              "lineno": 5
+            }
+          }
+        ],
+        "name": "of",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "Toasts"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "showSnackBar",
+            "receiver": "_messanger",
+            "receiver_constructor": null,
+            "receiver_type": "ScaffoldMessengerState",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 11,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SnackBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 59,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 37,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          }
+        ],
+        "name": "showBottomToast",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 12,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "Toasts"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_animate/flutter_animate.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "8a81a99c7ddb8a43d43000788a676d8d45e3c89f53b3abb326dc55d74d35cbfb",
+  "version": 2
+}

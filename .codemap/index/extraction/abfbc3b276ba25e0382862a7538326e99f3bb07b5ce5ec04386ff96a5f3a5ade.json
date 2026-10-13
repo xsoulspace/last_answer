@@ -1,0 +1,25 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "abfbc3b276ba25e0382862a7538326e99f3bb07b5ce5ec04386ff96a5f3a5ade",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "create_idea_screen.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "f601765c8b469e594a22108033980dbee7d9d27dec81fabac6105b4702b1177c",
+  "version": 2
+}

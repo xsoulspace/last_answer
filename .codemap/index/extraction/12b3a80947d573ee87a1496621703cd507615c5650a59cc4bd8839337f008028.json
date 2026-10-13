@@ -1,0 +1,49 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "12b3a80947d573ee87a1496621703cd507615c5650a59cc4bd8839337f008028",
+  "payload": {
+    "classes": [
+      "ComplexLocalDb",
+      "MockComplexLocalDb"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "open",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 2,
+          "lineno": 2
+        },
+        "static": false,
+        "unit": "ComplexLocalDb"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "close",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 3,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "ComplexLocalDb"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:MockComplexLocalDb"
+    ]
+  },
+  "payload_digest": "e070c5e79c89e24e94fb7e1e8d6535dc569f5e5b186767f343c05a69d2d1dde6",
+  "version": 2
+}

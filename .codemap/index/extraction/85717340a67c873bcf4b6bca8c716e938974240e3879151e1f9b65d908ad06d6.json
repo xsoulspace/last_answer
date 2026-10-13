@@ -1,0 +1,3497 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "85717340a67c873bcf4b6bca8c716e938974240e3879151e1f9b65d908ad06d6",
+  "payload": {
+    "classes": [
+      "DocReplica"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ConvergenceDoc",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 45,
+              "lineno": 41
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 45,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 55,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          }
+        ],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 47,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "ConvergenceDoc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 65,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 69,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "DocReplica",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 37,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "Snapshot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 7,
+              "end_lineno": 71,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 72,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "_adoptSnapshot",
+            "receiver": "replica",
+            "receiver_constructor": "DocReplica._",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 78,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMillisecondsSinceEpoch",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 79,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "Hlc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 86,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 85,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "_observeIssued",
+            "receiver": "replica",
+            "receiver_constructor": "DocReplica._",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 50,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 100,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 36,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "at.toUtc()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 44,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "at",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 39,
+              "end_lineno": 157,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 39,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          }
+        ],
+        "name": "createNode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 160,
+          "lineno": 152
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_issueField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 56,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 55,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          }
+        ],
+        "name": "setNodeField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 169,
+          "lineno": 162
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_issueBlockField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 70,
+              "end_lineno": 181,
+              "lineno": 181
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 55,
+              "end_col_offset": 69,
+              "end_lineno": 181,
+              "lineno": 181
+            }
+          }
+        ],
+        "name": "setBlockField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 181,
+          "lineno": 171
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 186,
+              "lineno": 186
+            }
+          }
+        ],
+        "name": "blockFieldOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 186,
+          "lineno": 183
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_issueField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 70,
+              "end_lineno": 191,
+              "lineno": 191
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 55,
+              "end_col_offset": 69,
+              "end_lineno": 191,
+              "lineno": 191
+            }
+          }
+        ],
+        "name": "setAnchor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 192,
+          "lineno": 188
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 36,
+              "end_lineno": 202,
+              "lineno": 202
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_place",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 76,
+              "end_lineno": 203,
+              "lineno": 203
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 43,
+              "end_lineno": 203,
+              "lineno": 203
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 208,
+              "lineno": 208
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 47,
+              "end_lineno": 210,
+              "lineno": 210
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 46,
+              "end_lineno": 212,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 56,
+              "end_lineno": 214,
+              "lineno": 214
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 56,
+              "end_lineno": 216,
+              "lineno": 216
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 59,
+              "end_lineno": 218,
+              "lineno": 218
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 44,
+              "end_lineno": 220,
+              "lineno": 220
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 40,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "ops",
+            "receiver_constructor": "_place",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 232,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_insertTextOp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 231,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_lastLiveElementId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 45,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          }
+        ],
+        "name": "addBlock",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 235,
+          "lineno": 194
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_place",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 59,
+              "end_col_offset": 73,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          }
+        ],
+        "name": "placeChild",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 75,
+          "end_lineno": 247,
+          "lineno": 237
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "applyLocal",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 5,
+              "end_lineno": 259,
+              "lineno": 255
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_orderKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 38,
+              "end_lineno": 256,
+              "lineno": 256
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 257,
+              "lineno": 257
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_observeIssued",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          }
+        ],
+        "name": "removeBlock",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 262,
+          "lineno": 249
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_insertTextOp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 279,
+              "lineno": 274
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_lastLiveElementId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 42,
+              "end_lineno": 277,
+              "lineno": 277
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 278,
+              "lineno": 278
+            }
+          }
+        ],
+        "name": "appendText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 281,
+          "lineno": 264
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_visibleElementIds",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 301,
+              "lineno": 301
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "range",
+            "receiver": "RangeError",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 61,
+              "end_lineno": 303,
+              "lineno": 303
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_insertTextOp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 311,
+              "lineno": 306
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 310,
+              "lineno": 310
+            }
+          }
+        ],
+        "name": "insertTextAt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 313,
+          "lineno": 283
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_visibleElementIds",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 326,
+              "lineno": 326
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "range",
+            "receiver": "RangeError",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 79,
+              "end_lineno": 328,
+              "lineno": 328
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyLocal",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 5,
+              "end_lineno": 334,
+              "lineno": 330
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_textKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 331,
+              "lineno": 331
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "ids",
+            "receiver_constructor": "_visibleElementIds",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 74,
+              "end_lineno": 331,
+              "lineno": 331
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 332,
+              "lineno": 332
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_observeIssued",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 335,
+              "lineno": 335
+            }
+          }
+        ],
+        "name": "deleteTextRange",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 337,
+          "lineno": 315
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 36,
+              "end_lineno": 352,
+              "lineno": 352
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "PermRequestRecord",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 359,
+              "lineno": 353
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "at.toUtc()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 45,
+              "end_lineno": 358,
+              "lineno": 358
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "at",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 27,
+              "end_lineno": 358,
+              "lineno": 358
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 76,
+              "end_lineno": 360,
+              "lineno": 360
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_permKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 42,
+              "end_lineno": 360,
+              "lineno": 360
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 71,
+              "end_lineno": 360,
+              "lineno": 360
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "record",
+            "receiver_constructor": "PermRequestRecord",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 55,
+              "end_col_offset": 70,
+              "end_lineno": 360,
+              "lineno": 360
+            }
+          }
+        ],
+        "name": "announcePermRequest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 361,
+          "lineno": 339
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "permRequestOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 44,
+              "end_lineno": 378,
+              "lineno": 378
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 383,
+              "lineno": 380
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 36,
+              "end_lineno": 385,
+              "lineno": 385
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "answered",
+            "receiver": "request",
+            "receiver_constructor": "permRequestOf",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 5,
+              "end_lineno": 391,
+              "lineno": 386
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "at.toUtc()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 38,
+              "end_lineno": 390,
+              "lineno": 390
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "at",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 20,
+              "end_lineno": 390,
+              "lineno": 390
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 78,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_permKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 42,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 73,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "answered",
+            "receiver_constructor": "request.answered",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 55,
+              "end_col_offset": 72,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          }
+        ],
+        "name": "answerPermRequest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 393,
+          "lineno": 363
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "tryFromJson",
+            "receiver": "PermRequestRecord",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 401,
+              "lineno": 399
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_decodedPermValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 58,
+              "end_lineno": 400,
+              "lineno": 400
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_permKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 56,
+              "end_lineno": 400,
+              "lineno": 400
+            }
+          }
+        ],
+        "name": "permRequestOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 401,
+          "lineno": 395
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "key",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 40,
+              "end_lineno": 408,
+              "lineno": 408
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tryFromJson",
+            "receiver": "PermRequestRecord",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 7,
+              "end_lineno": 411,
+              "lineno": 409
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_decodedPermValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 42,
+              "end_lineno": 410,
+              "lineno": 410
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "records",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 45,
+              "end_lineno": 412,
+              "lineno": 412
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sort",
+            "receiver": "records",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 417,
+              "lineno": 414
+            }
+          }
+        ],
+        "name": "permRequests",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 419,
+          "lineno": 403
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 30,
+              "end_lineno": 426,
+              "lineno": 426
+            }
+          }
+        ],
+        "name": "_decodedPermValue",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 430,
+          "lineno": 421
+        },
+        "static": true,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_permKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 79,
+          "end_lineno": 432,
+          "lineno": 432
+        },
+        "static": true,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 51,
+              "end_lineno": 443,
+              "lineno": 443
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_absorbRemoteClock",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 54,
+              "end_lineno": 444,
+              "lineno": 444
+            }
+          }
+        ],
+        "name": "applyRemote",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 446,
+          "lineno": 438
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_absorbRemoteHlc",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 41,
+              "end_lineno": 462,
+              "lineno": 462
+            }
+          }
+        ],
+        "name": "_absorbRemoteClock",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 463,
+          "lineno": 448
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "zero",
+            "receiver": "Hlc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 49,
+              "end_lineno": 471,
+              "lineno": 471
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_observeIssued",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 63,
+              "end_lineno": 473,
+              "lineno": 473
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "receive",
+            "receiver": "base",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 62,
+              "end_lineno": 473,
+              "lineno": 473
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 61,
+              "end_lineno": 473,
+              "lineno": 473
+            }
+          }
+        ],
+        "name": "_absorbRemoteHlc",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 474,
+          "lineno": 465
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "orderedChildren",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 50,
+              "end_lineno": 482,
+              "lineno": 482
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 32,
+              "end_lineno": 485,
+              "lineno": 485
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "blocks",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 516,
+              "lineno": 486
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Block",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 515,
+              "lineno": 487
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_enumField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 11,
+              "end_lineno": 494,
+              "lineno": 489
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readText",
+            "receiver": "RgaTextStrategy",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 64,
+              "end_lineno": 495,
+              "lineno": 495
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_textKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 51,
+              "end_col_offset": 63,
+              "end_lineno": 495,
+              "lineno": 495
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_intField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 496,
+              "lineno": 496
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_optionalEnumField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 63,
+              "end_lineno": 497,
+              "lineno": 497
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 47,
+              "end_lineno": 498,
+              "lineno": 498
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 47,
+              "end_lineno": 499,
+              "lineno": 499
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 49,
+              "end_lineno": 500,
+              "lineno": 500
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 501,
+              "lineno": 501
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 45,
+              "end_lineno": 502,
+              "lineno": 502
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 503,
+              "lineno": 503
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 45,
+              "end_lineno": 504,
+              "lineno": 504
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 47,
+              "end_lineno": 505,
+              "lineno": 505
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 53,
+              "end_lineno": 506,
+              "lineno": 506
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 51,
+              "end_lineno": 507,
+              "lineno": 507
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_strField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 57,
+              "end_lineno": 508,
+              "lineno": 508
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_enumField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 11,
+              "end_lineno": 514,
+              "lineno": 509
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 52,
+              "end_lineno": 518,
+              "lineno": 518
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 48,
+              "end_lineno": 519,
+              "lineno": 519
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 542,
+              "lineno": 520
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 522,
+              "lineno": 522
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 37,
+              "end_lineno": 523,
+              "lineno": 523
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 67,
+              "end_lineno": 525,
+              "lineno": 525
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnchorSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 532,
+              "lineno": 528
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 44,
+              "end_lineno": 529,
+              "lineno": 529
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 55,
+              "end_lineno": 530,
+              "lineno": 530
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 55,
+              "end_lineno": 531,
+              "lineno": 531
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_enumField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 538,
+              "lineno": 533
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 45,
+              "end_lineno": 539,
+              "lineno": 539
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_timeField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 48,
+              "end_lineno": 540,
+              "lineno": 540
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_timeField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 48,
+              "end_lineno": 541,
+              "lineno": 541
+            }
+          }
+        ],
+        "name": "document",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 543,
+          "lineno": 476
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_docField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 44,
+              "end_lineno": 549,
+              "lineno": 549
+            }
+          }
+        ],
+        "name": "wasBorn",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 549,
+          "lineno": 545
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readText",
+            "receiver": "RgaTextStrategy",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 61,
+              "end_lineno": 553,
+              "lineno": 553
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_textKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 60,
+              "end_lineno": 553,
+              "lineno": 553
+            }
+          }
+        ],
+        "name": "blockText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 553,
+          "lineno": 551
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "key",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 33,
+              "end_lineno": 562,
+              "lineno": 562
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readValue",
+            "receiver": "LwwMapStrategy",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 56,
+              "end_lineno": 563,
+              "lineno": 563
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "entries",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 56,
+              "end_lineno": 565,
+              "lineno": 565
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "key",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 47,
+              "end_lineno": 565,
+              "lineno": 565
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sort",
+            "receiver": "entries",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 571,
+              "lineno": 567
+            }
+          }
+        ],
+        "name": "orderedChildren",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 573,
+          "lineno": 555
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readValue",
+            "receiver": "LwwMapStrategy",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 72,
+              "end_lineno": 578,
+              "lineno": 578
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_orderKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 71,
+              "end_lineno": 578,
+              "lineno": 578
+            }
+          }
+        ],
+        "name": "orderKeyOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 73,
+          "end_lineno": 578,
+          "lineno": 575
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "pendingOps",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 585,
+          "lineno": 584
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "opsSince",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 29,
+              "end_lineno": 591,
+              "lineno": 591
+            }
+          }
+        ],
+        "name": "pendingOpsSince",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 591,
+          "lineno": 587
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "versionVector",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 595,
+          "lineno": 593
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "needsSnapshotFor",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 606,
+              "lineno": 606
+            }
+          }
+        ],
+        "name": "needsSnapshotFor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 606,
+          "lineno": 601
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "snapshotFor",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 39,
+              "end_lineno": 613,
+              "lineno": 613
+            }
+          }
+        ],
+        "name": "snapshotFor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 616,
+          "lineno": 608
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_adoptSnapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 73,
+              "end_lineno": 629,
+              "lineno": 629
+            }
+          }
+        ],
+        "name": "adoptSnapshot",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 74,
+          "end_lineno": 629,
+          "lineno": 618
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "adoptSnapshot",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 48,
+              "end_lineno": 632,
+              "lineno": 632
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_absorbRemoteHlc",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 50,
+              "end_lineno": 635,
+              "lineno": 635
+            }
+          }
+        ],
+        "name": "_adoptSnapshot",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 637,
+          "lineno": 631
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "compact",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 34,
+              "end_lineno": 645,
+              "lineno": 645
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "snapshotFor",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 38,
+              "end_lineno": 646,
+              "lineno": 646
+            }
+          }
+        ],
+        "name": "compact",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 648,
+          "lineno": 639
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 24,
+              "end_lineno": 660,
+              "lineno": 660
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "_lastSnapshot!",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 66,
+              "end_lineno": 661,
+              "lineno": 661
+            }
+          }
+        ],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 662,
+          "lineno": 650
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 52,
+              "end_lineno": 672,
+              "lineno": 672
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_nodeKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 40,
+              "end_lineno": 672,
+              "lineno": 672
+            }
+          }
+        ],
+        "name": "_issueField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 672,
+          "lineno": 668
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 53,
+              "end_lineno": 679,
+              "lineno": 679
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_nodeKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 41,
+              "end_lineno": 679,
+              "lineno": 679
+            }
+          }
+        ],
+        "name": "_issueBlockField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 679,
+          "lineno": 674
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "applyLocal",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 5,
+              "end_lineno": 686,
+              "lineno": 682
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_observeIssued",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 687,
+              "lineno": 687
+            }
+          }
+        ],
+        "name": "_issueMeta",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 689,
+          "lineno": 681
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "applyLocal",
+            "receiver": "_doc",
+            "receiver_constructor": null,
+            "receiver_type": "ConvergenceDoc",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 5,
+              "end_lineno": 701,
+              "lineno": 697
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_textKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 698,
+              "lineno": 698
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_observeIssued",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 702,
+              "lineno": 702
+            }
+          }
+        ],
+        "name": "_insertTextOp",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 704,
+          "lineno": 691
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_observeIssued",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 709,
+          "lineno": 706
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_nodeKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 712,
+          "lineno": 711
+        },
+        "static": true,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_orderKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 715,
+          "lineno": 714
+        },
+        "static": true,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_textKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 718,
+          "lineno": 717
+        },
+        "static": true,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "orderedChildren(parentId.value).where((final id) => id != childId.value)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 55,
+              "end_lineno": 733,
+              "lineno": 731
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "orderedChildren(parentId.value)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 46,
+              "end_lineno": 733,
+              "lineno": 731
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orderedChildren",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 5,
+              "end_lineno": 733,
+              "lineno": 731
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 61,
+              "end_lineno": 737,
+              "lineno": 737
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 53,
+              "end_lineno": 742,
+              "lineno": 742
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fractionalBetween",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 748,
+              "lineno": 745
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orderKeyOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 56,
+              "end_lineno": 746,
+              "lineno": 746
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orderKeyOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 64,
+              "end_lineno": 747,
+              "lineno": 747
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 63,
+              "end_lineno": 747,
+              "lineno": 747
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 63,
+              "end_lineno": 750,
+              "lineno": 750
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_orderKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 53,
+              "end_lineno": 750,
+              "lineno": 750
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "insert",
+            "receiver": "[...siblings]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 67,
+              "end_lineno": 760,
+              "lineno": 760
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "freshKeys",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 43,
+              "end_lineno": 761,
+              "lineno": 761
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orderKeyOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 63,
+              "end_lineno": 764,
+              "lineno": 764
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 62,
+              "end_lineno": 764,
+              "lineno": 764
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "ops",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 768,
+              "lineno": 766
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_issueMeta",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 75,
+              "end_lineno": 767,
+              "lineno": 767
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_orderKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 60,
+              "end_lineno": 767,
+              "lineno": 767
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 59,
+              "end_lineno": 767,
+              "lineno": 767
+            }
+          }
+        ],
+        "name": "_place",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 772,
+          "lineno": 725
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_textKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 44,
+              "end_lineno": 784,
+              "lineno": 784
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "nodesRaw",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 800,
+              "lineno": 795
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sort",
+            "receiver": "list",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 815,
+              "lineno": 802
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "visit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 15,
+              "end_lineno": 827,
+              "lineno": 827
+            }
+          }
+        ],
+        "name": "_visibleElementIds",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 829,
+          "lineno": 778
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_visibleElementIds",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 832,
+              "lineno": 832
+            }
+          }
+        ],
+        "name": "_lastLiveElementId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 834,
+          "lineno": 831
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 62,
+              "end_lineno": 840,
+              "lineno": 840
+            }
+          }
+        ],
+        "name": "_docField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 840,
+          "lineno": 840
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 32,
+              "end_lineno": 846,
+              "lineno": 846
+            }
+          }
+        ],
+        "name": "_strField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 848,
+          "lineno": 842
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readValue",
+            "receiver": "LwwMapStrategy",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 62,
+              "end_lineno": 851,
+              "lineno": 851
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_nodeKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 61,
+              "end_lineno": 851,
+              "lineno": 851
+            }
+          }
+        ],
+        "name": "_field",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 851,
+          "lineno": 850
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 32,
+              "end_lineno": 854,
+              "lineno": 854
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "int",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 49,
+              "end_lineno": 855,
+              "lineno": 855
+            }
+          }
+        ],
+        "name": "_intField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 856,
+          "lineno": 853
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 47,
+              "end_lineno": 859,
+              "lineno": 859
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 40,
+              "end_lineno": 859,
+              "lineno": 859
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMillisecondsSinceEpoch",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 57,
+              "end_lineno": 860,
+              "lineno": 860
+            }
+          }
+        ],
+        "name": "_timeField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 860,
+          "lineno": 858
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 32,
+              "end_lineno": 868,
+              "lineno": 868
+            }
+          }
+        ],
+        "name": "_enumField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 874,
+          "lineno": 862
+        },
+        "static": false,
+        "unit": "DocReplica"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_field",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 32,
+              "end_lineno": 881,
+              "lineno": 881
+            }
+          }
+        ],
+        "name": "_optionalEnumField",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 887,
+          "lineno": 876
+        },
+        "static": false,
+        "unit": "DocReplica"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_convergence/universal_storage_convergence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "document_node.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "fractional_order.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "perm_request.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:DocReplica:4539",
+      "field_initialization:DocReplica:4900",
+      "field_initialization:DocReplica:5015",
+      "field_initialization:DocReplica:5138",
+      "field_initialization:DocReplica:5243",
+      "nested_function:field",
+      "closure:16623",
+      "closure:22800",
+      "closure:29178",
+      "closure:31856",
+      "closure:32137",
+      "nested_function:visit"
+    ]
+  },
+  "payload_digest": "689b47ec09629bbda89f328061867df45f963dac44ae82ee19f6f0598392c831",
+  "version": 2
+}

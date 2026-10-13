@@ -1,0 +1,239 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8441d33137f7d890bbc5158331e022359aada17683b00db15cbfe2ca76ee1f1a",
+  "payload": {
+    "classes": [
+      "User",
+      "_Undefined",
+      "_UserImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 20,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 17,
+          "end_lineno": 27,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "User",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 39,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i1.DateTimeJsonExtension",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 78,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i1.DateTimeJsonExtension",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 78,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 40,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 58,
+          "lineno": 53
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "createdAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "updatedAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          }
+        ],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 67,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "_i1.SerializationManager",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 48,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          }
+        ],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 72,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 10,
+          "end_lineno": 88,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "_UserImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "User",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 102,
+              "lineno": 97
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 103,
+          "lineno": 90
+        },
+        "static": false,
+        "unit": "_UserImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i1",
+        "show": [],
+        "uri": "package:serverpod_client/serverpod_client.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:User",
+      "inheritance:_UserImpl"
+    ]
+  },
+  "payload_digest": "74ea53df6cd1107ac9e5d5b77473a3309c16c297eb7d9e6875e3993acb8e372f",
+  "version": 2
+}

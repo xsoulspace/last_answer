@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "176bec12db6481f3009fd15ecd09f8dd707ef5c44e42d2a0377d7042d7120eaa",
+  "payload": [
+    [
+      "packages/core/lib/src/utils/color_extension.dart::ColorExt.tintColor"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "c6f6354ab3ee327089bc474a40430da16658f014385540632b0f89bc2df2ecc1",
+  "version": 2
+}

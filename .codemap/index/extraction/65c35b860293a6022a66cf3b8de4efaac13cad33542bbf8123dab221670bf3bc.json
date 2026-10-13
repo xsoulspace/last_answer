@@ -1,0 +1,69 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "65c35b860293a6022a66cf3b8de4efaac13cad33542bbf8123dab221670bf3bc",
+  "payload": {
+    "classes": [
+      "WorldSeatChannel"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "request",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 18,
+          "lineno": 12
+        },
+        "static": true,
+        "unit": "WorldSeatChannel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 80,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 81,
+          "end_lineno": 28,
+          "lineno": 20
+        },
+        "static": true,
+        "unit": "WorldSeatChannel"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/world_seat_lease.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "4f7524f06e74eb35eb1fcf8115c004c46bd57026a71940cc21f680c69fc9452b",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c0d78cf807234a38bb756fc4c3864c86ac8744dd42b97b958d01bf3a4315ee6d",
+  "payload": [
+    [
+      "packages/core/lib/src/state/user_notifier.dart::UserNotifierDto.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "b80ccb8c76c5944368e0f7c8083a3ce353c9190f1da97e5c3e2bdcb4fb07feb5",
+  "version": 2
+}

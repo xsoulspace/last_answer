@@ -1,0 +1,63 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ef09a5e6352eb18c29d98b808080a67fa2725454b59895bfae971a275e6a1f66",
+  "payload": {
+    "classes": [
+      "UnsplashImage"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "UnsplashImage"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 57,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 7,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "UnsplashImage"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:UnsplashImage"
+    ]
+  },
+  "payload_digest": "e69da009b4f71b5df2914b18e95f19849d35e8e24b7d308c2cd4dbdeb0fe4a21",
+  "version": 2
+}

@@ -1,0 +1,25 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7f3b2593361c852b0da1637ad293be0f6ea9499e583d08068b27425435e4b9ed",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "google_auth_provider.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "5ce0da6d3e8d9e0938c19fcb3dad631360b15ffb9d4e1eb499a0aa4bcbb7d770",
+  "version": 2
+}

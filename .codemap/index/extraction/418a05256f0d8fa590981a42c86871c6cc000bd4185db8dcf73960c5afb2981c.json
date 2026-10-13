@@ -1,0 +1,1454 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "418a05256f0d8fa590981a42c86871c6cc000bd4185db8dcf73960c5afb2981c",
+  "payload": {
+    "classes": [
+      "PaywallScreen",
+      "_PaywallScreenState",
+      "_SubscriptionPlans",
+      "_SubscriptionPlansState",
+      "_MessageCard",
+      "_SubscriptionActions",
+      "_SubscriptionActionsState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 18,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "PaywallScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_PaywallScreenState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 61,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 21,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "PaywallScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addPostFrameCallback",
+            "receiver": "WidgetsBinding.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 32,
+              "lineno": 28
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 33,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_PaywallScreenState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 68,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 56,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 55,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SafeArea",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 67,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SingleChildScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 66,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 59,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 65,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 25,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 51,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.titleMedium",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 50,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 24,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 58,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 25,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_SubscriptionPlans",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 38,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 25,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_SubscriptionActions",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 40,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 25,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 68,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_PaywallScreenState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 72,
+          "lineno": 72
+        },
+        "static": false,
+        "unit": "_SubscriptionPlans"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_SubscriptionPlansState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 70,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 75,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "_SubscriptionPlans"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addPostFrameCallback",
+            "receiver": "WidgetsBinding.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 91,
+              "lineno": 82
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 92,
+          "lineno": 79
+        },
+        "static": false,
+        "unit": "_SubscriptionPlansState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getSubscription",
+            "receiver": "context.read<AvailableSubscriptionsResource>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 28,
+              "end_lineno": 97,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 47,
+              "end_lineno": 96,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setSelectedProductId",
+            "receiver": "context.read<PaywallSelectedSubscriptionResource>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 102,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 55,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "_selectPlan",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 103,
+          "lineno": 94
+        },
+        "static": false,
+        "unit": "_SubscriptionPlansState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 49,
+              "end_lineno": 108,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 73,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 48,
+              "end_lineno": 112,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_MessageCard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 126,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_MessageCard",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 132,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Center",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 142,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 141,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "all",
+            "receiver": "EdgeInsets",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 37,
+              "end_lineno": 139,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CircularProgressIndicator",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 44,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_MessageCard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 154,
+              "lineno": 145
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 284,
+              "lineno": 245
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "planCard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 252,
+              "lineno": 248
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 253,
+              "lineno": 253
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "planCard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 258,
+              "lineno": 254
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 259,
+              "lineno": 259
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "planCard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 264,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 265,
+              "lineno": 265
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 282,
+              "lineno": 266
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 273,
+              "lineno": 269
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 36,
+              "end_lineno": 274,
+              "lineno": 274
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Flexible",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 280,
+              "lineno": 275
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 279,
+              "lineno": 276
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 285,
+          "lineno": 105
+        },
+        "static": false,
+        "unit": "_SubscriptionPlansState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 294,
+          "lineno": 289
+        },
+        "static": false,
+        "unit": "_MessageCard"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 314,
+              "lineno": 301
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.all",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 37,
+              "end_lineno": 302,
+              "lineno": 302
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 313,
+              "lineno": 303
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 62,
+              "end_lineno": 305,
+              "lineno": 305
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 306,
+              "lineno": 306
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 50,
+              "end_lineno": 307,
+              "lineno": 307
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 23,
+              "end_lineno": 309,
+              "lineno": 309
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlinedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 72,
+              "end_lineno": 310,
+              "lineno": 310
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 53,
+              "end_col_offset": 71,
+              "end_lineno": 310,
+              "lineno": 310
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 314,
+          "lineno": 300
+        },
+        "static": false,
+        "unit": "_MessageCard"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 318,
+          "lineno": 318
+        },
+        "static": false,
+        "unit": "_SubscriptionActions"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_SubscriptionActionsState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 74,
+              "end_lineno": 321,
+              "lineno": 321
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 75,
+          "end_lineno": 321,
+          "lineno": 320
+        },
+        "static": false,
+        "unit": "_SubscriptionActions"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 329,
+              "lineno": 329
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "listenResolvePendingThenRecheck",
+            "receiver": "PaywallFlow",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 332,
+              "lineno": 330
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 333,
+          "lineno": 327
+        },
+        "static": false,
+        "unit": "_SubscriptionActionsState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "_disposeListener",
+            "receiver_constructor": null,
+            "receiver_type": "VoidCallback?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 337,
+              "lineno": 337
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 338,
+              "lineno": 338
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 339,
+          "lineno": 335
+        },
+        "static": false,
+        "unit": "_SubscriptionActionsState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 52,
+              "end_lineno": 343,
+              "lineno": 342
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "subscribe",
+            "receiver": "context.read<MonetizationFoundation>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 67,
+              "end_lineno": 346,
+              "lineno": 346
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 48,
+              "end_lineno": 346,
+              "lineno": 346
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 59,
+              "end_lineno": 348,
+              "lineno": 348
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "checkSubscriptionStatus",
+            "receiver": "PaywallFlow",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 58,
+              "end_lineno": 348,
+              "lineno": 348
+            }
+          }
+        ],
+        "name": "_subscribe",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 349,
+          "lineno": 341
+        },
+        "static": false,
+        "unit": "_SubscriptionActionsState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 73,
+              "end_lineno": 353,
+              "lineno": 353
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 74,
+              "end_lineno": 354,
+              "lineno": 354
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 70,
+              "end_lineno": 355,
+              "lineno": 355
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 395,
+              "lineno": 359
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 372,
+              "lineno": 363
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 53,
+              "end_lineno": 364,
+              "lineno": 364
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 371,
+              "lineno": 365
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.bodySmall",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 369,
+              "lineno": 367
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FilledButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 380,
+              "lineno": 373
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 379,
+              "lineno": 377
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 381,
+              "lineno": 381
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlinedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 388,
+              "lineno": 382
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 48,
+              "end_lineno": 387,
+              "lineno": 387
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 389,
+              "lineno": 389
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 393,
+              "lineno": 390
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 44,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 396,
+          "lineno": 351
+        },
+        "static": false,
+        "unit": "_SubscriptionActionsState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_animate/flutter_animate.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:gap/gap.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/ui_pay/paywall_flow.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_installation_store/xsoulspace_installation_store.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PaywallScreen",
+      "inheritance:_PaywallScreenState",
+      "closure:1016",
+      "inheritance:_SubscriptionPlans",
+      "inheritance:_SubscriptionPlansState",
+      "closure:2615",
+      "closure:3972",
+      "closure:4890",
+      "nested_function:planCard",
+      "inheritance:_MessageCard",
+      "inheritance:_SubscriptionActions",
+      "inheritance:_SubscriptionActionsState",
+      "closure:12085",
+      "closure:12375",
+      "closure:12586"
+    ]
+  },
+  "payload_digest": "979902a9d1bff9002d1f843dca2600b2ac9f074aa0041c77f159e4a8746bbf6b",
+  "version": 2
+}

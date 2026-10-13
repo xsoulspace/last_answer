@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "782524331080f1d1276deef7093c27c7ee28d4cf0fb837b905e9a305fb8a29e6",
+  "payload": [
+    [
+      "lib/_library/widgets/core/hoverable_area.dart::HoverableArea.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1a12cbd9044cfd2c5b839e75e1ed8f9a10abde7a7537d85d5830274f183c2fd1",
+  "version": 2
+}

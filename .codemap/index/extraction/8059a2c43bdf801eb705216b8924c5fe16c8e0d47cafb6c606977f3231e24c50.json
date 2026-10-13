@@ -1,0 +1,317 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8059a2c43bdf801eb705216b8924c5fe16c8e0d47cafb6c606977f3231e24c50",
+  "payload": {
+    "classes": [
+      "IdeaView",
+      "IdeaViewBody"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 12,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "IdeaView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ChangeNotifierProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 24,
+              "lineno": 16
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 24,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "IdeaView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 28,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "IdeaViewBody"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 46,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 106,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BackTextUniversalAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 45,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 48,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProjectTitleField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 43,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 104,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 103,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 99,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "GestureDetector",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 98,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimatedList",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 97,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 21,
+              "end_lineno": 63,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnswerCreator",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 67,
+              "end_lineno": 100,
+              "lineno": 100
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BottomSafeArea",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 36,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 107,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "IdeaViewBody"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/home.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/idea_view_bloc.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/widgets/answer_creator.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/widgets/answer_tile.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:IdeaView",
+      "closure:563",
+      "closure:724",
+      "inheritance:IdeaViewBody",
+      "closure:1373",
+      "closure:1418",
+      "closure:1675",
+      "closure:2269"
+    ]
+  },
+  "payload_digest": "f12109b1138a28a0c57b1bfe42ae5d991b8bf49c0d7d76a06c8cfe0971be5200",
+  "version": 2
+}

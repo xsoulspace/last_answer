@@ -1,0 +1,371 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "53b850bfe8fec294c2609090e60c9a12703421f83da4a8c3049716cc8d699b06",
+  "payload": {
+    "classes": [
+      "AppIntentSpec"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 40,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "AppIntentSpec"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 55,
+          "lineno": 51
+        },
+        "static": false,
+        "unit": "AppIntentSpec"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "chatGptMcpEntries",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 5,
+              "end_col_offset": 24,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "workbenchMcpEntries",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 5,
+              "end_col_offset": 26,
+              "end_lineno": 317,
+              "lineno": 317
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "mcpToolkitTool",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 354,
+              "lineno": 318
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MCPToolDefinition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 353,
+              "lineno": 339
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMap",
+            "receiver": "ObjectSchema",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 8,
+              "end_lineno": 352,
+              "lineno": 347
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "mcpToolkitTool",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 410,
+              "lineno": 355
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MCPToolDefinition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 409,
+              "lineno": 391
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMap",
+            "receiver": "ObjectSchema",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 8,
+              "end_lineno": 408,
+              "lineno": 397
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "mcpToolkitTool",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 482,
+              "lineno": 411
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MCPToolDefinition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 481,
+              "lineno": 461
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMap",
+            "receiver": "ObjectSchema",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 8,
+              "end_lineno": 480,
+              "lineno": 468
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "mcpToolkitTool",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 547,
+              "lineno": 483
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MCPToolDefinition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 546,
+              "lineno": 524
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMap",
+            "receiver": "ObjectSchema",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 8,
+              "end_lineno": 545,
+              "lineno": 531
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "mcpToolkitTool",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 583,
+              "lineno": 548
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MCPToolDefinition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 582,
+              "lineno": 562
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMap",
+            "receiver": "ObjectSchema",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 8,
+              "end_lineno": 581,
+              "lineno": 570
+            }
+          }
+        ],
+        "name": "appMcpEntries",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 584,
+          "lineno": 310
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "appIntentCatalog"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/workbench/workbench_mcp_tools.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/agent_doc_surface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/device_capabilities.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/router.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/mcp/chatgpt_mcp_tools.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:mcp_toolkit/mcp_toolkit.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:2266",
+      "closure:9768",
+      "closure:11079",
+      "closure:12955",
+      "closure:15421",
+      "closure:17667"
+    ]
+  },
+  "payload_digest": "da04b00cd48ed27e4c673a9c2d6272e0fd449e3a7e57015f1b3b928ae3ceb979",
+  "version": 2
+}

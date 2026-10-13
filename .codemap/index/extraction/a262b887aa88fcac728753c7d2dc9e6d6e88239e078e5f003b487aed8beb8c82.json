@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a262b887aa88fcac728753c7d2dc9e6d6e88239e078e5f003b487aed8beb8c82",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::LiveCursor.toJson"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "cb47351dcafc16c462aa7b9bf892d3e000f1abd16a1f9e5351493c1149477e14",
+  "version": 2
+}

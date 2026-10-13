@@ -1,0 +1,53 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "850384811c706e98fde076bd61d758a9b58ed7abc83b65a9b82db3b1d1b2bb8f",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "app_info.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "intro_screen.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "last_answer_app.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "loading_screen.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "update_notification_dialog.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "d51c4b27d31d98bf13bc7ebb1a93631cf7945a8537bfa58113c36824c7c66607",
+  "version": 2
+}

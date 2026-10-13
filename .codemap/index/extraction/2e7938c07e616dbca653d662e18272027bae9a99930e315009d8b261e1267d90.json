@@ -1,0 +1,1484 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2e7938c07e616dbca653d662e18272027bae9a99930e315009d8b261e1267d90",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "runtime.newSession(cwd)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 77,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "newSession",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": "AcpAgentRuntime",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 40,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 76,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "any",
+            "receiver": "error.authMethods",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 5,
+              "end_lineno": 38,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 42,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "authenticate",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": "AcpAgentRuntime",
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 44,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 52,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "runtime.newSession(cwd)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 71,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "newSession",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": "AcpAgentRuntime",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 34,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 70,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          }
+        ],
+        "name": "newSessionOrAuth",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 57,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 44,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          }
+        ],
+        "name": "stage",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 45,
+          "end_lineno": 65,
+          "lineno": 64
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 68,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          }
+        ],
+        "name": "pass",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 69,
+          "end_lineno": 67,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 33,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 39,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          }
+        ],
+        "name": "fail",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 72,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "indexOf",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 39,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "_arg",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 78,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 36,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 56,
+              "end_col_offset": 75,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 31,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 25,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 37,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 46,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_arg",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 46,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 32,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "defaults",
+            "receiver": "AgentPlatformConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 47,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 102,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "config.providers.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 67,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 48,
+              "end_lineno": 105,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AcpInstallationService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 42,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "detectAll",
+            "receiver": "service",
+            "receiver_constructor": "AcpInstallationService",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 47,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "installations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 55,
+              "end_lineno": 114,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "catalog",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 46,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 127,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "catalog.map((e) => e.id)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 68,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "catalog",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 57,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 13,
+              "end_lineno": 128,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 134,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "command",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 64,
+              "end_lineno": 133,
+              "lineno": 133
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 13,
+              "end_lineno": 135,
+              "lineno": 135
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 62,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "command",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 52,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "run",
+            "receiver": "Process",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 141,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "command",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 24,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 146,
+              "lineno": 143
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 13,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "detectAll",
+            "receiver": "service",
+            "receiver_constructor": "AcpInstallationService",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 45,
+              "end_lineno": 149,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "installations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 57,
+              "end_lineno": 151,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 157,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 13,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 52,
+              "end_lineno": 160,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 70,
+              "end_lineno": 162,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 36,
+              "end_lineno": 166,
+              "lineno": 166
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AcpAgentRuntime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 167,
+              "lineno": 167
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "runtime.start(AcpRuntimeConfig.fromInstallation(selected, workingDirectory: cwd), onStderr: (final line) {agentStderr.add(line); if (agentStderr.length > 40) agentStderr.removeAt(0);})",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 182,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 9,
+              "end_lineno": 181,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromInstallation",
+            "receiver": "AcpRuntimeConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 76,
+              "end_lineno": 176,
+              "lineno": 176
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 44,
+              "end_lineno": 182,
+              "lineno": 182
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "newSessionOrAuth",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 64,
+              "end_lineno": 183,
+              "lineno": 183
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 184,
+              "lineno": 184
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 192,
+              "lineno": 186
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 193,
+              "lineno": 193
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 194,
+              "lineno": 194
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 202,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 207,
+              "lineno": 204
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "error.authMethods.map((m) => m.methodId)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 62,
+              "end_lineno": 206,
+              "lineno": 206
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "error.authMethods",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 51,
+              "end_lineno": 206,
+              "lineno": 206
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 209,
+              "lineno": 209
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 210,
+              "lineno": 210
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 215,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 216,
+              "lineno": 216
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 217,
+              "lineno": 217
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 36,
+              "end_lineno": 221,
+              "lineno": 221
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StringBuffer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 29,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Completer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 32,
+              "end_lineno": 224,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "listen",
+            "receiver": "runtime.send(prompt, sessionId: sessionId)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 3,
+              "end_lineno": 244,
+              "lineno": 231
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "send",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 59,
+              "end_lineno": 231,
+              "lineno": 231
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "done.future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 253,
+              "lineno": 245
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 246,
+              "lineno": 246
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "text.toString()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 38,
+              "end_lineno": 254,
+              "lineno": 254
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "text",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 31,
+              "end_lineno": 254,
+              "lineno": 254
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 256,
+              "lineno": 256
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 43,
+              "end_lineno": 258,
+              "lineno": 258
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "take",
+            "receiver": "agentStderr",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 44,
+              "end_lineno": 259,
+              "lineno": 259
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 79,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "line",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 66,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 263,
+              "lineno": 263
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 264,
+              "lineno": 264
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "fail",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 270,
+              "lineno": 267
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 24,
+              "end_lineno": 271,
+              "lineno": 271
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 272,
+              "lineno": 272
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 277,
+              "lineno": 274
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "reply",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 54,
+              "end_lineno": 276,
+              "lineno": 276
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 21,
+              "end_lineno": 280,
+              "lineno": 280
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "AcpAgentRuntime",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 22,
+              "end_lineno": 281,
+              "lineno": 281
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "pass",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 33,
+              "end_lineno": 282,
+              "lineno": 282
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 73,
+              "end_lineno": 283,
+              "lineno": 283
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 284,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_reset",
+      "_green",
+      "_red",
+      "_yellow"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:1521",
+      "top_level_initialization:2251",
+      "top_level_initialization:2277",
+      "top_level_initialization:2304",
+      "top_level_initialization:2329",
+      "closure:4264",
+      "closure:4440",
+      "closure:4650",
+      "closure:5386",
+      "closure:6310",
+      "closure:7431",
+      "nested_function:finish",
+      "closure:8138",
+      "closure:8337",
+      "closure:8489"
+    ]
+  },
+  "payload_digest": "8574e814273e3acd1f21e9207310f67bf7a4849b6c6f330b592a4ebf14a4742c",
+  "version": 2
+}

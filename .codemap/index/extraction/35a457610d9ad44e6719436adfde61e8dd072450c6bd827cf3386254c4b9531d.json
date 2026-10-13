@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "35a457610d9ad44e6719436adfde61e8dd072450c6bd827cf3386254c4b9531d",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_panel.dart::_AutomationRow._intervalText"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "4cf705889fcd97e76932aa20e853dde0323c66589e45e0ad1d29609c6a0dbb55",
+  "version": 2
+}

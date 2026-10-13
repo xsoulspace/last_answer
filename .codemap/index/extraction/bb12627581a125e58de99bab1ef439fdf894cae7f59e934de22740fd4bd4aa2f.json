@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bb12627581a125e58de99bab1ef439fdf894cae7f59e934de22740fd4bd4aa2f",
+  "payload": [
+    [
+      "lib/home/project_widgets/project_text_field.dart::ProjectTextField.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "aa7cbe76935cf76dde3bfe44d23619a8394ea4e9b66754164096ec53b1ad8fab",
+  "version": 2
+}

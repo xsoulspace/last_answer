@@ -1,0 +1,606 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "695507af2ddcb756832e62e986276a8344798e68e6b1f2c2200428575ff269b6",
+  "payload": {
+    "classes": [
+      "SupportAppView",
+      "_SubscribedCard",
+      "_PaywallEntry"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 9,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "SupportAppView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 44,
+              "end_lineno": 14,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 44,
+              "end_lineno": 17,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_SubscribedCard",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 36,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_PaywallEntry",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 32,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 24,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "SupportAppView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 28,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_SubscribedCard"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 72,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 39,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text('Thank you for supporting Last Answer!', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 26,
+              "end_lineno": 47,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text('Thank you for supporting Last Answer!', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 47,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 47,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.titleLarge",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 45,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ListenableBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 64,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 62,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlinedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 70,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 48,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 72,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "_SubscribedCard"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 76,
+          "lineno": 76
+        },
+        "static": false,
+        "unit": "_PaywallEntry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 111,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 76,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text('Unlock Last Answer Pro', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 26,
+              "end_lineno": 91,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text('Unlock Last Answer Pro', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 91,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 91,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.titleLarge",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 89,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 18,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "const Text('Agents, intentcall, ACP support, sync with Daily Budget Planner ' 'and more. The core app works offline for free — Pro unlocks the ' 'connected experience.', textAlign: TextAlign.center).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 39,
+              "end_lineno": 98,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "const Text('Agents, intentcall, ACP support, sync with Daily Budget Planner ' 'and more. The core app works offline for free — Pro unlocks the ' 'connected experience.', textAlign: TextAlign.center)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 98,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 98,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FilledButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 103,
+              "lineno": 100
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 38,
+              "end_lineno": 102,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 18,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 109,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 46,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 111,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "_PaywallEntry"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:intl/intl.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/ui_pay/paywall_flow.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/ui_pay/ui_pay.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SupportAppView",
+      "inheritance:_SubscribedCard",
+      "closure:1582",
+      "closure:2160",
+      "inheritance:_PaywallEntry",
+      "closure:3228",
+      "closure:3374"
+    ]
+  },
+  "payload_digest": "cb0f6c1533b062d2f3aa00f2c75998c5220e706fdbdc03985ec5308bb1ff40f9",
+  "version": 2
+}

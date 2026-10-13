@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a4b9eaf1e969fa2d985e7e82750b056a855cb3e20e170fc9d51ab09bfa6ec8db",
+  "payload": [
+    [
+      "packages/headless_core/test/doc_replica_store_test.dart::_MemoryStorageProvider._write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "a42bcbf7ae4574f25987eabaf0ea387390d2b746094c38307ebf111a98a945ac",
+  "version": 2
+}

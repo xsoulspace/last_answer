@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a6de1f3cc7d726ed239846a1071afe5d3d1fc94ddc72a1bc5d027fdd07e73341",
+  "payload": [
+    [
+      "lib/coding_agent/chatgpt_subscription_controller.dart::ChatGptSubscriptionController._run"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "f6ded253a0b5b27ba84cf693a0c162759473927b239b5e50cadab15468781acf",
+  "version": 2
+}

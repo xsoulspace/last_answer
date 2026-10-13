@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ec23c15e111b9a8ab56f584d7085ae5e2858c2e284b8945ac17a2e1a58ad7503",
+  "payload": [
+    [
+      "lib/coding_agent/provider_configuration.dart::ProviderConfigurationStore.consentGranted"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "40c57c7694dce1541726c349727c212980e45e2d5c92385330037c08348ff2a5",
+  "version": 2
+}

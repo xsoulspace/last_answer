@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bcd163ecdd282c89f8fb889a6b36b420d99446a2852c000c9eb7478634bd0152",
+  "payload": [
+    [
+      "packages/landing/lib/app.dart::OpenAppButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "f9bc9248a4a0a0c6edf402fcb11a477d4d00c5e59f7bff319f39ba69bf3e84e8",
+  "version": 2
+}

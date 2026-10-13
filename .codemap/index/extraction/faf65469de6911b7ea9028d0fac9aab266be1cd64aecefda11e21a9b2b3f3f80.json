@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "faf65469de6911b7ea9028d0fac9aab266be1cd64aecefda11e21a9b2b3f3f80",
+  "payload": [
+    [
+      "lib/_library/widgets/core/faded_rail_page.dart::_PageBasedFadedRailPageRoute.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "092b1471aa0be888a17ff63f09a354382ab212755f3c9b0fd7a269a7b9cc3dc3",
+  "version": 2
+}

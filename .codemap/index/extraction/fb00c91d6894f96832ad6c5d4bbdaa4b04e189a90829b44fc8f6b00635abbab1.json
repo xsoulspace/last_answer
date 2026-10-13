@@ -1,0 +1,32 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fb00c91d6894f96832ad6c5d4bbdaa4b04e189a90829b44fc8f6b00635abbab1",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "extensions/extensions.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "utils.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "da5da653d1a6068ae900fbfe463c1466e20083aa10e76d85771ee958f1c24a05",
+  "version": 2
+}

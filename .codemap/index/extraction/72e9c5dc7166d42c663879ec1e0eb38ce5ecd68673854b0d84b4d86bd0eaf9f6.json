@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "72e9c5dc7166d42c663879ec1e0eb38ce5ecd68673854b0d84b4d86bd0eaf9f6",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/doc_replica.dart::DocReplica._timeField"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "bb2257de4af18d612909d16aabef2ccce2d4f482fd2ea8eeb04da83fec80a83a",
+  "version": 2
+}

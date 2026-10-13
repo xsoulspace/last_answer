@@ -1,0 +1,75 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ce1814cd3c5f3cee878434a3a7ffa0ccf95e9b02c1a178c7070e7424af8a2ffc",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:collection/collection.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "emoji.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "models.freezed.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "models.g.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchase.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "remote_user.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user.dart"
+      }
+    ],
+    "unsupported": []
+  },
+  "payload_digest": "6b5afbf0af53fd0e6ddecb33c8223ecf97a68ff6197ba2efc6456bb3b9d6cfb8",
+  "version": 2
+}

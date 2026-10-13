@@ -1,0 +1,758 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8236f431a536a13a95a7d2f35fc2d6503ac32f687d615de62f39f39067261bc4",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "determineDbPaths",
+            "receiver": "path_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 59,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 34,
+              "end_lineno": 36,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "dir",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 25,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "whereType",
+            "receiver": "dir.listSync()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 57,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "listSync",
+            "receiver": "dir",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsBytes",
+            "receiver": "entity",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 48,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 34,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parseIsarFromBytes",
+            "receiver": "isar_parser",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 60,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "projects",
+            "receiver_constructor": null,
+            "receiver_type": "List<Map<String, dynamic>>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 60,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 59,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractJsonMaps",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 65,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 47,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "projects",
+            "receiver_constructor": null,
+            "receiver_type": "List<Map<String, dynamic>>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 58,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 57,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractJsonMaps",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 63,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 47,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 66,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "meta.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 63,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 34,
+              "end_lineno": 80,
+              "lineno": 80
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parseHiveFromBytes",
+            "receiver": "hive_parser",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 60,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "v",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 41,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "projects",
+            "receiver_constructor": null,
+            "receiver_type": "List<Map<String, dynamic>>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 75,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 74,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "v",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 48,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractJsonMaps",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 67,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 51,
+              "end_lineno": 102,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "any",
+            "receiver": "v.values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 15,
+              "end_lineno": 110,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "projects",
+            "receiver_constructor": null,
+            "receiver_type": "List<Map<String, dynamic>>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 60,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 59,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractJsonMaps",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 61,
+              "end_lineno": 117,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 45,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 58,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractAsciiStrings",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 11,
+              "end_lineno": 131,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 37,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "extractJsonMaps",
+            "receiver": "byte_utils",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 57,
+              "end_lineno": 133,
+              "lineno": 133
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 41,
+              "end_lineno": 134,
+              "lineno": 134
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 35,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 63,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          }
+        ],
+        "name": "parseOldFiles",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 145,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 21,
+              "end_lineno": 153,
+              "lineno": 153
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "f",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 23,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "p",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 27,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parseIsarFromBytes",
+            "receiver": "isar_parser",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 70,
+              "end_lineno": 156,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsBytesSync",
+            "receiver": "f",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 69,
+              "end_lineno": 156,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "out",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 40,
+              "end_lineno": 157,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "p",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 34,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parseHiveFromBytes",
+            "receiver": "hive_parser",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 70,
+              "end_lineno": 159,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsBytesSync",
+            "receiver": "f",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 69,
+              "end_lineno": 159,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "out",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 55,
+              "end_lineno": 160,
+              "lineno": 160
+            }
+          }
+        ],
+        "name": "parseProjectsFromPaths",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 164,
+          "lineno": 147
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:developer"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_io/io.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "path_utils",
+        "show": [],
+        "uri": "../../../state_di/path_utils.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "byte_utils",
+        "show": [],
+        "uri": "byte_utils.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "hive_parser",
+        "show": [],
+        "uri": "hive_parser.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "isar_parser",
+        "show": [],
+        "uri": "isar_parser.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:4757"
+    ]
+  },
+  "payload_digest": "cc0fc0d1399b308669f66aa02c1f9bde4bb3f7879240a3319066a86742d98c51",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "425abca921f1e71e40e34dbb23322982e33b86ecc1e5c61142f0e7cfd8543031",
+  "payload": [
+    [
+      "lib/settings/features/characters_limit_state.freezed.dart::_$CharacterLimitStateImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "18c3b864c043db001e1c54396ddbd053debfcee193edef819b473bd47443b84b",
+  "version": 2
+}

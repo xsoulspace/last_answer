@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f127e045b3914d9fc668b203be8ff41839918135e732b40217784cc9fa1ba43e",
+  "payload": [
+    [
+      "lib/settings/features/characters_limit_state.dart::CharactersLimitController.setLimit"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "ecf9b2fbd7c3a2d1e653495187d4a4e3165820683f49456df9fd08fcb40ccf26",
+  "version": 2
+}

@@ -1,0 +1,88 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5fa51a0e1036ef6291c1f6a18adb51906afa8ea7b662ba0bcf237532f9e8481e",
+  "payload": {
+    "classes": [
+      "ChatGptModelName"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "chatGptConsentProvider",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 78,
+          "end_lineno": 9,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "InferenceClientBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 1,
+              "end_lineno": 29,
+              "lineno": 15
+            }
+          }
+        ],
+        "name": "chatGptHarnessBinding",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 29,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "chatGptBackend"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_gateway_contract.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_core/xsoulspace_inference_core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:217",
+      "closure:653"
+    ]
+  },
+  "payload_digest": "39764a3ac95be4b15f52f301a6f89e888454fc162cc6adff09f6289c6afd2a04",
+  "version": 2
+}

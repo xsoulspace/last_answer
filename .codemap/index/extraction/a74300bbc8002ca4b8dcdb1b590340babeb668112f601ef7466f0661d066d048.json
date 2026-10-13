@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a74300bbc8002ca4b8dcdb1b590340babeb668112f601ef7466f0661d066d048",
+  "payload": [
+    [
+      "lib/home/tags/tags_screen.dart::_TagsListView.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "593211b0782b66c8bc078f9cadb18c6929c7616c70ec69435d8ab35e60752343",
+  "version": 2
+}

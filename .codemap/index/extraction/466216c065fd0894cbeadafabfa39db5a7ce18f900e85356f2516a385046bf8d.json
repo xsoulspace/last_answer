@@ -1,0 +1,496 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "466216c065fd0894cbeadafabfa39db5a7ce18f900e85356f2516a385046bf8d",
+  "payload": {
+    "classes": [
+      "FadedRailPage",
+      "_PageBasedFadedRailPageRoute",
+      "FadedRailRouteTransitionMixin",
+      "FadedRailTransition",
+      "RailMagnetController",
+      "RailMagnet"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 13,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "FadedRailPage"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_PageBasedFadedRailPageRoute",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 49,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "createRoute",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 26,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "FadedRailPage"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 37,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_page",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 39,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "buildContent",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 42,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "maintainState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 45,
+          "lineno": 44
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "fullscreenDialog",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 48,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "debugLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 51,
+          "lineno": 50
+        },
+        "static": false,
+        "unit": "_PageBasedFadedRailPageRoute"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "buildContent",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 57,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 70,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          }
+        ],
+        "name": "transitionDuration",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 60,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "barrierColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 63,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "barrierLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 66,
+          "lineno": 65
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "canTransitionTo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 76,
+          "lineno": 68
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "buildContent",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 47,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Semantics",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 90,
+              "lineno": 86
+            }
+          }
+        ],
+        "name": "buildPage",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 91,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FadedRailTransition",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 103,
+              "lineno": 100
+            }
+          }
+        ],
+        "name": "buildTransitions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 103,
+          "lineno": 93
+        },
+        "static": false,
+        "unit": "FadedRailRouteTransitionMixin"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 111,
+          "lineno": 107
+        },
+        "static": false,
+        "unit": "FadedRailTransition"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "chain",
+            "receiver": "Tween(begin: _minScale, end: _maxScale)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 5,
+              "end_lineno": 122,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Tween",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 57,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CurveTween",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 45,
+              "end_lineno": 121,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "drive",
+            "receiver": "animation",
+            "receiver_constructor": null,
+            "receiver_type": "Animation<double>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 50,
+              "end_lineno": 123,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Opacity",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 137,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "scale",
+            "receiver": "Transform",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 136,
+              "lineno": 133
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 138,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "FadedRailTransition"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 150,
+          "lineno": 147
+        },
+        "static": false,
+        "unit": "RailMagnet"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "useAnimationController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 5,
+              "end_lineno": 159,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useAnimation",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 55,
+              "end_lineno": 160,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 69,
+              "end_lineno": 161,
+              "lineno": 161
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "scale",
+            "receiver": "Transform",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 58,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 164,
+          "lineno": 154
+        },
+        "static": false,
+        "unit": "RailMagnet"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:FadedRailPage",
+      "inheritance:_PageBasedFadedRailPageRoute",
+      "mixin_dispatch:FadedRailRouteTransitionMixin",
+      "inheritance:FadedRailTransition",
+      "field_initialization:FadedRailTransition:2958",
+      "field_initialization:FadedRailTransition:2990",
+      "field_initialization:FadedRailTransition:3022",
+      "inheritance:RailMagnetController",
+      "inheritance:RailMagnet",
+      "field_initialization:RailMagnet:3913"
+    ]
+  },
+  "payload_digest": "728f1bc0c971f545dfd74f8e8a932b8472700e8bd85929eacc21c41afc6d1b1a",
+  "version": 2
+}

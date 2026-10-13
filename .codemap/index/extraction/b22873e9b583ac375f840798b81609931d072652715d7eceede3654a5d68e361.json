@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b22873e9b583ac375f840798b81609931d072652715d7eceede3654a5d68e361",
+  "payload": [
+    [
+      "packages/core/lib/src/generated/intl/S.dart::S.of"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "baefdfb5c5065b510bbd8e74d14b7bfd1e994bffab72b39df606855391d0ff80",
+  "version": 2
+}

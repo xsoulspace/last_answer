@@ -1,0 +1,364 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bc70d710793cbb2eeccd49f0c24ec084c4b8b88cfcda51576d8decfce9d936a1",
+  "payload": {
+    "classes": [
+      "FileAgentConfigPersistence"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "hasMatch",
+            "receiver": "RegExp(r'^[a-zA-Z0-9_.-]+\\.json$')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 66,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RegExp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 43,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ArgumentError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 68,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 16,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "FileAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "value",
+            "receiver": "Future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 55,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "dynamic",
+            "name": "() async {final support = await getApplicationSupportDirectory(); return '${support.path}${Platform.pathSeparator}$documentName';}",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 7,
+              "end_lineno": 30,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "_resolvePath",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 31,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "FileAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 43,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_resolvePath",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 26,
+              "end_lineno": 36,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsString",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 30,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          }
+        ],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 38,
+          "lineno": 33
+        },
+        "static": false,
+        "unit": "FileAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 43,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_resolvePath",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "create",
+            "receiver": "file.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createTemp",
+            "receiver": "file.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 73,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 60,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsString",
+            "receiver": "staged",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 55,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "rename",
+            "receiver": "staged",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 36,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "delete",
+            "receiver": "temporary",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 45,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          }
+        ],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "FileAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FileAgentConfigPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 60,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          }
+        ],
+        "name": "createPlatformAgentConfigPersistence",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 61,
+          "end_lineno": 57,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:path_provider/path_provider.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:FileAgentConfigPersistence",
+      "field_initialization:FileAgentConfigPersistence:644",
+      "closure:948"
+    ]
+  },
+  "payload_digest": "20e7364474484fb2aac5c86de9721a522cfa6e9eb0b8b75b8d097ef680cafd4e",
+  "version": 2
+}

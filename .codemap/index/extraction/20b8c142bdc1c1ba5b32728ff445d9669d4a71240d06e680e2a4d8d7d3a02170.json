@@ -1,0 +1,933 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "20b8c142bdc1c1ba5b32728ff445d9669d4a71240d06e680e2a4d8d7d3a02170",
+  "payload": {
+    "classes": [
+      "AILayoutPresets",
+      "AIContextPresets",
+      "LayoutThemePresets",
+      "ConstraintPresets",
+      "BehaviorPatternPresets"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "AILayoutPresets"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 79,
+          "lineno": 79
+        },
+        "static": false,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 94,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 79,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 54,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          }
+        ],
+        "name": "mobileArticle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 94,
+          "lineno": 81
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 118,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 107,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 49,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 112,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 49,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 9,
+              "end_lineno": 117,
+              "lineno": 114
+            }
+          }
+        ],
+        "name": "tabletGallery",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 118,
+          "lineno": 96
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 153,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 132,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 137,
+              "lineno": 133
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 44,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 77,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 141,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 146,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 152,
+              "lineno": 148
+            }
+          }
+        ],
+        "name": "desktopDashboard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 153,
+          "lineno": 120
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 64,
+              "end_col_offset": 3,
+              "end_lineno": 186,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 165,
+              "lineno": 161
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 39,
+              "end_lineno": 164,
+              "lineno": 164
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 170,
+              "lineno": 166
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 175,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 174,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 178,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 79,
+              "end_lineno": 179,
+              "lineno": 179
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 180,
+              "lineno": 180
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 185,
+              "lineno": 182
+            }
+          }
+        ],
+        "name": "mobileSocial",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 186,
+          "lineno": 155
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 219,
+              "lineno": 192
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 201,
+              "lineno": 197
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 200,
+              "lineno": 200
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 206,
+              "lineno": 202
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 39,
+              "end_lineno": 205,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 209,
+              "lineno": 209
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 79,
+              "end_lineno": 210,
+              "lineno": 210
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 79,
+              "end_lineno": 211,
+              "lineno": 211
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 216,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 54,
+              "end_lineno": 218,
+              "lineno": 218
+            }
+          }
+        ],
+        "name": "ecommerceBrowsing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 219,
+          "lineno": 188
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 261,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 234,
+              "lineno": 230
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 44,
+              "end_lineno": 233,
+              "lineno": 233
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 239,
+              "lineno": 235
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 238,
+              "lineno": 238
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UserBehaviorPattern",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 244,
+              "lineno": 240
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 243,
+              "lineno": 243
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 248,
+              "lineno": 248
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 253,
+              "lineno": 249
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 76,
+              "end_lineno": 254,
+              "lineno": 254
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 260,
+              "lineno": 256
+            }
+          }
+        ],
+        "name": "gamingInterface",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 261,
+          "lineno": 221
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 297,
+              "lineno": 268
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AccessibilityRequirements",
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 5,
+              "end_lineno": 278,
+              "lineno": 272
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AestheticPreferences",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 283,
+              "lineno": 279
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 77,
+              "end_lineno": 285,
+              "lineno": 285
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 290,
+              "lineno": 286
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ContentPriority",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 295,
+              "lineno": 291
+            }
+          }
+        ],
+        "name": "accessibilityFriendly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 297,
+          "lineno": 263
+        },
+        "static": true,
+        "unit": "AIContextPresets"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 304,
+          "lineno": 304
+        },
+        "static": false,
+        "unit": "LayoutThemePresets"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 343,
+          "lineno": 343
+        },
+        "static": false,
+        "unit": "ConstraintPresets"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 372,
+          "lineno": 372
+        },
+        "static": false,
+        "unit": "BehaviorPatternPresets"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ai_layout_models.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:AILayoutPresets:368",
+      "field_initialization:AILayoutPresets:611",
+      "field_initialization:AILayoutPresets:842",
+      "field_initialization:AILayoutPresets:1042",
+      "field_initialization:AILayoutPresets:1223",
+      "field_initialization:AILayoutPresets:1448",
+      "field_initialization:AILayoutPresets:1704",
+      "field_initialization:AILayoutPresets:1906",
+      "field_initialization:LayoutThemePresets:9538",
+      "field_initialization:LayoutThemePresets:9769",
+      "field_initialization:LayoutThemePresets:10032",
+      "field_initialization:LayoutThemePresets:10226",
+      "field_initialization:LayoutThemePresets:10315",
+      "field_initialization:ConstraintPresets:10741",
+      "field_initialization:ConstraintPresets:10850",
+      "field_initialization:ConstraintPresets:10960",
+      "field_initialization:ConstraintPresets:11107",
+      "field_initialization:ConstraintPresets:11204",
+      "field_initialization:ConstraintPresets:11303",
+      "field_initialization:BehaviorPatternPresets:11587",
+      "field_initialization:BehaviorPatternPresets:11947",
+      "field_initialization:BehaviorPatternPresets:12459",
+      "field_initialization:BehaviorPatternPresets:12962",
+      "field_initialization:BehaviorPatternPresets:13468"
+    ]
+  },
+  "payload_digest": "9006d1acfa8fafd17c7972475c37e9f5594a1feaff3140db4e9579760b106d58",
+  "version": 2
+}

@@ -1,0 +1,297 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ce3cacefa39394c33cec3c31968fdf530692c2dab8d090d5f4f431b2d27e65f5",
+  "payload": {
+    "classes": [
+      "AcpAgentConfig",
+      "AcpDocInferencePort"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 17,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "AcpAgentConfig"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "AcpDocInferencePort"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 74,
+              "end_lineno": 36,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AcpInferenceClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 42,
+              "lineno": 38
+            }
+          }
+        ],
+        "name": "_effectiveClient",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 43,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "AcpDocInferencePort"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "streamStructuredText",
+            "receiver": "_effectiveClient",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 49,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InferenceRequest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 54,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildPrompt",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 53,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "session",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          }
+        ],
+        "name": "chat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 61,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "AcpDocInferencePort"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StringBuffer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "write",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 29,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 22,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 34,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 19,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "trimRight",
+            "receiver": "buffer.toString()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 40,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 28,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "_buildPrompt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 73,
+          "lineno": 63
+        },
+        "static": true,
+        "unit": "AcpDocInferencePort"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_acp/xsoulspace_inference_acp.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [
+          "ChatMessage"
+        ],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_core/xsoulspace_inference_core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AcpDocInferencePort"
+    ]
+  },
+  "payload_digest": "bde48190ed09e35278db3cc042db4e0a0aa9d608008f2a38672d9c918c11276a",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bc794008b799281965412c6d6f3dd65168a8369ee52e1e84cc9c4893cee3b347",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/interfaces/ads.dart::AdsLocalDataSource.getState"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "4fe874fa704cbf5eb4b7b6f717b5e9c840eb49f34f3db8f9776d4112c5082c51",
+  "version": 2
+}

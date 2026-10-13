@@ -1,0 +1,26 @@
+{
+  "kind": "native-accessibility-article-journey",
+  "delivery": "synthetic_os_accessibility",
+  "project": "84d1aea5-f80a-47c2-bd78-7093ec286f7c",
+  "proposal": "proposal-1791829310034143-0",
+  "operation": "move_block",
+  "stagedOrder": [
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-title",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-claim",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-next",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-question"
+  ],
+  "candidateOrder": [
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-title",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-next",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-claim",
+    "84d1aea5-f80a-47c2-bd78-7093ec286f7c-question"
+  ],
+  "finalStatus": "undone",
+  "exactOriginalRestored": true,
+  "notes": [
+    "Native stage/adopt/undo buttons were used; no workbench_action invocation.",
+    "Adopted intermediate order was independently read from filesystem.",
+    "Window availability later failed; not a whole-product acceptance claim."
+  ]
+}

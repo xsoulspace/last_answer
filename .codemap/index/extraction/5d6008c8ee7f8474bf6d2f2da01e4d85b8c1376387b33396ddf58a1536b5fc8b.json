@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5d6008c8ee7f8474bf6d2f2da01e4d85b8c1376387b33396ddf58a1536b5fc8b",
+  "payload": [
+    [
+      "lib/other/feedback.dart::FeedbackButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "4f23497f167cf60a93bb4d7d695d5d4f521c1cdb761c7b997115a7039e97c989",
+  "version": 2
+}

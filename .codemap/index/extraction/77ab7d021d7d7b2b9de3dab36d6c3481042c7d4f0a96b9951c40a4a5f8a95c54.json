@@ -1,0 +1,32 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "77ab7d021d7d7b2b9de3dab36d6c3481042c7d4f0a96b9951c40a4a5f8a95c54",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "google_sign_in_button.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "vk_id_sign_in_button.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "c81293223e7cf9077a0b781380539d66830e0042a10b0c804c866f381c71ff17",
+  "version": 2
+}

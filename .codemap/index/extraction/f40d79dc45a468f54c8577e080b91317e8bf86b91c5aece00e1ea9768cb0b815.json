@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f40d79dc45a468f54c8577e080b91317e8bf86b91c5aece00e1ea9768cb0b815",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$UserModelToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "5f53655b45a1c44839c112babdf91904a256a717214293af5d28cc0c1a5e7eb7",
+  "version": 2
+}

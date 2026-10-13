@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
+import 'package:lastanswer/coding_agent/desired_coding_model.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,6 +70,49 @@ void main() {
     expect(accepted.apiKey, 'private-key');
     expect(changedModel.readiness, HostedDispatchReadiness.consentRequired);
     expect(copiedDocument.readiness, HostedDispatchReadiness.consentRequired);
+  });
+
+  test('transition consent checks the desired model before dispatch', () async {
+    await store.replaceOpenRouterCredential('private-key');
+    await store.grantHostedConsent(
+      documentId: 'doc-a',
+      provider: 'open_router',
+      model: 'old-model',
+      workspace: '/tmp/a',
+    );
+    final model = desiredCodingModel(
+      backend: 'jev',
+      currentBackend: 'open_router',
+      currentModel: 'old-model',
+    );
+    expect(model, 'jev-1.13');
+    final refused = await store.resolveOpenRouter(
+      documentId: 'doc-a',
+      model: model!,
+      workspace: '/tmp/a',
+    );
+    expect(refused.readiness, HostedDispatchReadiness.consentRequired);
+    await store.grantHostedConsent(
+      documentId: 'doc-a',
+      provider: 'open_router',
+      model: model,
+      workspace: '/tmp/a',
+    );
+    final accepted = await store.resolveOpenRouter(
+      documentId: 'doc-a',
+      model: model,
+      workspace: '/tmp/a',
+    );
+    expect(accepted.readiness, HostedDispatchReadiness.ready);
+    expect(
+      desiredCodingModel(
+        backend: chatGptBackend,
+        currentBackend: chatGptBackend,
+        currentModel: 'old-native',
+        subscriptionModel: 'selected-native',
+      ),
+      'selected-native',
+    );
   });
 
   test('credential removal makes a prior consent unusable', () async {

@@ -1,0 +1,676 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c09d0a3f254913385dfb9cca7ed8747cd1a160d9a49a83a5566d9556a8290a49",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "padRight",
+            "receiver": "status",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 36,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "padRight",
+            "receiver": "step",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 56,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 13,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsStringSync",
+            "receiver": "_stepsLog",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 63,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          }
+        ],
+        "name": "row",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 45,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 49,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "_stepsLog",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 28,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteSync",
+            "receiver": "_stepsLog",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 52,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scenario",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 4,
+              "end_lineno": 407,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "run",
+            "receiver": "scenario",
+            "receiver_constructor": "Scenario",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 410,
+              "lineno": 410
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "printSummary",
+            "receiver": "scenario.report",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 411,
+              "lineno": 411
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 413,
+              "lineno": 413
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 62,
+              "end_lineno": 415,
+              "lineno": 415
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 22,
+              "end_lineno": 416,
+              "lineno": 416
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 417,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "callExtension",
+            "receiver": "vm",
+            "receiver_constructor": null,
+            "receiver_type": "VmClient",
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 78,
+              "end_lineno": 430,
+              "lineno": 430
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cast",
+            "receiver": "parameters",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 45,
+              "end_lineno": 433,
+              "lineno": 433
+            }
+          }
+        ],
+        "name": "_verb",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 436,
+          "lineno": 423
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "take",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "HarnessContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 41,
+              "end_lineno": 443,
+              "lineno": 443
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "vm.callExtension('ext.mcp.toolkit.world_inspector_state')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 44,
+              "end_lineno": 447,
+              "lineno": 445
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "callExtension",
+            "receiver": "vm",
+            "receiver_constructor": "context.take",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 63,
+              "end_lineno": 446,
+              "lineno": 445
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 43,
+              "end_lineno": 447,
+              "lineno": 447
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "take",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "HarnessContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 54,
+              "end_lineno": 450,
+              "lineno": 450
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "connect",
+            "receiver": "VmClient",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 56,
+              "end_lineno": 451,
+              "lineno": 451
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ToolkitDriver",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 48,
+              "end_lineno": 453,
+              "lineno": 453
+            }
+          }
+        ],
+        "name": "_ensureAlive",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 455,
+          "lineno": 438
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_verb",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 32,
+              "end_lineno": 462,
+              "lineno": 462
+            }
+          }
+        ],
+        "name": "_verbSafe",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 466,
+          "lineno": 457
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "action",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 33,
+              "end_lineno": 474,
+              "lineno": 474
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "delayed",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 37,
+              "end_lineno": 476,
+              "lineno": 476
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TimeoutException",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 478,
+              "lineno": 478
+            }
+          }
+        ],
+        "name": "_retry",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 479,
+          "lineno": 468
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "onTick",
+            "receiver_constructor": null,
+            "receiver_type": "void Function(int attempt)?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 488,
+              "lineno": 488
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "action",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 22,
+              "end_lineno": 489,
+              "lineno": 489
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "delayed",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 37,
+              "end_lineno": 490,
+              "lineno": 490
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TimeoutException",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 70,
+              "end_lineno": 492,
+              "lineno": 492
+            }
+          }
+        ],
+        "name": "_pollUntil",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 493,
+          "lineno": 481
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "snapshot.roots",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 30,
+              "end_lineno": 505,
+              "lineno": 505
+            }
+          }
+        ],
+        "name": "_labelsOf",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 507,
+          "lineno": 495
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "screenshot",
+            "receiver": "driver",
+            "receiver_constructor": null,
+            "receiver_type": "ToolkitDriver",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 41,
+              "end_lineno": 510,
+              "lineno": 510
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 53,
+              "end_lineno": 511,
+              "lineno": 511
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsBytes",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 32,
+              "end_lineno": 512,
+              "lineno": 512
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 30,
+              "end_lineno": 513,
+              "lineno": 513
+            }
+          }
+        ],
+        "name": "_shot",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 514,
+          "lineno": 509
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_projectDir",
+      "_dartDefines",
+      "_tmp",
+      "_evidenceDir",
+      "_stepsLog",
+      "_meshStore"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_mcp_harness/flutter_mcp_harness.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_automation_interface/universal_automation_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:1502",
+      "top_level_initialization:1527",
+      "top_level_initialization:1601",
+      "top_level_initialization:1656",
+      "top_level_initialization:1759",
+      "top_level_initialization:1817",
+      "closure:2383",
+      "closure:4418",
+      "closure:5830",
+      "closure:6302",
+      "closure:8512",
+      "closure:9798",
+      "closure:10477",
+      "nested_function:walk"
+    ]
+  },
+  "payload_digest": "ab3de73adafaedffa15a9281e51d832040fd07e1d66624d64992c8498c5649fa",
+  "version": 2
+}

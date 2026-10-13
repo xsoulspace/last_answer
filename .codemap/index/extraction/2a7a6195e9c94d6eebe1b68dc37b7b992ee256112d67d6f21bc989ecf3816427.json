@@ -1,0 +1,153 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2a7a6195e9c94d6eebe1b68dc37b7b992ee256112d67d6f21bc989ecf3816427",
+  "payload": {
+    "classes": [
+      "ProjectsLocalDataSource"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "putAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 8,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "put",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 9,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "remove",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 69,
+          "end_lineno": 11,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getPaginated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 14,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getById",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 15,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getByIds",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 18,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getChildren",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 25,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "ProjectsLocalDataSource"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../data_models/data_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../state/state.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "685dd07ece4cb33c437f65c57b6c217841cc131a62b53b0d3869bd204f5d4692",
+  "version": 2
+}

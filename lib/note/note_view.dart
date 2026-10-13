@@ -16,7 +16,9 @@ class _NoteViewState extends State<NoteView>
   @override
   Widget build(final BuildContext context) => PopScope(
     onPopInvokedWithResult: (_, _) =>
-        context.read<OpenedProjectNotifier>().onPopProject(),
+        context.read<OpenedProjectNotifier>().onPopProject(
+          expectedProjectId: widget.note.id,
+        ),
     child: ChangeNotifierProvider(
       create: (final _) => NoteViewBloc(
         dto: NoteViewBlocDto(

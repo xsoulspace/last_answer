@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "32066cb93f26fcc20cd4695f94ad2e48f45b42e8cc72bdda1dcf666009ec424c",
+  "payload": [
+    [
+      "packages/core/lib/src/services/auth/widgets/google_sign_in_button.dart::ServerpodSignInWithGoogleButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c5dcd2b7f48ccec60519b369a9c60a42b1ac6f4baf1cd0a71c9e8708902b653b",
+  "version": 2
+}

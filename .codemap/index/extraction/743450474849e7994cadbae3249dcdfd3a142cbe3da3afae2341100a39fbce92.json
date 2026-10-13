@@ -1,0 +1,131 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "743450474849e7994cadbae3249dcdfd3a142cbe3da3afae2341100a39fbce92",
+  "payload": {
+    "classes": [
+      "UserModelId"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 9,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "UserModelId"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "UserModelId"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UserModelId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 34,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "UserModelId"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "UserModelId"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 15,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "UserModelId"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "parse",
+            "receiver": "int",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 33,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          }
+        ],
+        "name": "toInt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 16,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "UserModelId"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:UserModelId",
+      "field_initialization:UserModelId:353"
+    ]
+  },
+  "payload_digest": "dfa1b532990d823865740d5e2bf4bd96c5e3056d7780a9b5553491b452b3ae98",
+  "version": 2
+}

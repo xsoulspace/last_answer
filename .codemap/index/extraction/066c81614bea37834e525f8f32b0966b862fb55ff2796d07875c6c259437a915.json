@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "066c81614bea37834e525f8f32b0966b862fb55ff2796d07875c6c259437a915",
+  "payload": [
+    [
+      "test/doc/chat_document_view_test.dart::_KeyedSecureStore.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1e19ace7ebb281e20819cce28ee0854ed619462932989c896dc7e7a8e859f31f",
+  "version": 2
+}

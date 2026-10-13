@@ -1,0 +1,85 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2752138cc4a501dcf5874f6eae6cce9d239c0d048004bc610a9f3351392bbde1",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 69,
+              "lineno": 6
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 122,
+              "lineno": 71
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 123,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/meaning_experiment_view.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:265",
+      "closure:2414"
+    ]
+  },
+  "payload_digest": "eb09f5b051eba29f275d37eae4839db8fd8a1710329bf0df8e3e1fa8a299351b",
+  "version": 2
+}

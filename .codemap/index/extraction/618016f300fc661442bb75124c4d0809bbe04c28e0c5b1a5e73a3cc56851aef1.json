@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "618016f300fc661442bb75124c4d0809bbe04c28e0c5b1a5e73a3cc56851aef1",
+  "payload": [
+    [
+      "lib/coding_agent/meaning_experiment_controller.dart::MeaningExperimentController._record"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "f89f6cebd3bf95eeb1cc3116465a9edd31fdfec0ec382573fa1e3e3c5c2353b1",
+  "version": 2
+}

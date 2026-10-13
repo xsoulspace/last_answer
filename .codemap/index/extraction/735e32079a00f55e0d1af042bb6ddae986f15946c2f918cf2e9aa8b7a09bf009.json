@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "735e32079a00f55e0d1af042bb6ddae986f15946c2f918cf2e9aa8b7a09bf009",
+  "payload": [
+    [
+      "lib/settings/settings_screen.dart::SpeedyPageViewScrollPhysics.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "e4021f259e9eb9c6f8d90a2d19410ceaad4ba2fa416b59e794e0fd470579d691",
+  "version": 2
+}

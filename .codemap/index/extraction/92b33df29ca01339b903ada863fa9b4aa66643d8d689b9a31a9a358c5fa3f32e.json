@@ -1,0 +1,78 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "92b33df29ca01339b903ada863fa9b4aa66643d8d689b9a31a9a358c5fa3f32e",
+  "payload": {
+    "classes": [
+      "HeroIdTypes",
+      "HeroId"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 17,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "HeroId"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Hero",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 35,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Material",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 34,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 36,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "HeroId"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:HeroId"
+    ]
+  },
+  "payload_digest": "01fe1eb58f6f8af25a374bb59ab93c49e2ffe575486e7537ace31866bdf1af34",
+  "version": 2
+}

@@ -1,0 +1,466 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8921334891339b6120d6bb22ae0da0f501e6608aa91c2299dc90b3d64ffe22c6",
+  "payload": {
+    "classes": [
+      "PurchaseFlagsLocalApi",
+      "PaywallFlow"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "PurchaseFlagsLocalApi"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_combinedKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 18,
+          "lineno": 17
+        },
+        "static": true,
+        "unit": "PurchaseFlagsLocalApi"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getBool",
+            "receiver": "localDb",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 52,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_combinedKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 51,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "isPurchaseCongratsSeen",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 21,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "PurchaseFlagsLocalApi"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setBool",
+            "receiver": "localDb",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 67,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_combinedKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 53,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          }
+        ],
+        "name": "setPurchaseCongratsSeen",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 25,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "PurchaseFlagsLocalApi"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "isPurchaseCongratsSeen",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 69,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          }
+        ],
+        "name": "shouldShowCongrats",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 32,
+          "lineno": 27
+        },
+        "static": false,
+        "unit": "PurchaseFlagsLocalApi"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "push",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 31,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "pushPaywall",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 39,
+          "lineno": 38
+        },
+        "static": true,
+        "unit": "PaywallFlow"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "canPop",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 61,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pop",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 19,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          }
+        ],
+        "name": "passPaywall",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 48,
+          "lineno": 41
+        },
+        "static": true,
+        "unit": "PaywallFlow"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 73,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addListener",
+            "receiver": "subscriptionStatus",
+            "receiver_constructor": "context.read",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 44,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "listenResolvePendingThenRecheck",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 50
+        },
+        "static": true,
+        "unit": "PaywallFlow"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 61,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 73,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "canPop",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 28,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pop",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 43,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "canPop",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 26,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "debugPrint",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 63,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "debugPrint",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 68,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 53,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "checkActiveSubscription",
+            "receiver": "foundation",
+            "receiver_constructor": "context.read",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 52,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          }
+        ],
+        "name": "checkSubscriptionStatus",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 88,
+          "lineno": 66
+        },
+        "static": true,
+        "unit": "PaywallFlow"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:go_router/go_router.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:PurchaseFlagsLocalApi:561",
+      "field_initialization:PaywallFlow:1248",
+      "nested_function:listener",
+      "closure:2048"
+    ]
+  },
+  "payload_digest": "010cf234d1c2e44ef989a84867ee5c8c383da3db90aee4e6efa13780a84c3ea4",
+  "version": 2
+}

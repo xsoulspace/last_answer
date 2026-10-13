@@ -1,0 +1,345 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3ac143492cbf4b08e89d925bd6a51ecc723753e89b3ba58038e4953a60866594",
+  "payload": {
+    "classes": [
+      "ColorExt"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MaterialColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 4,
+              "end_lineno": 17,
+              "lineno": 6
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "toARGB32",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 57,
+              "end_col_offset": 67,
+              "end_lineno": 6,
+              "lineno": 6
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 29,
+              "end_lineno": 8,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 29,
+              "end_lineno": 9,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 29,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 29,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 27,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          }
+        ],
+        "name": "generateMaterialColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 17,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "ColorExt"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "max",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 66,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "min",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 65,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "round",
+            "receiver": "(value + ((255 - value) * factor))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 59,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          }
+        ],
+        "name": "tintValue",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 20,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "ColorExt"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromRGBO",
+            "receiver": "Color",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 61,
+              "end_col_offset": 3,
+              "end_lineno": 27,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 32,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tintValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          }
+        ],
+        "name": "tintColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 27,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "ColorExt"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:math"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "extension_dispatch:ColorExt"
+    ]
+  },
+  "payload_digest": "9b5247dee5cc86db0dad12f5d1b36b6c2cce8f41f1be8cba57ebcdeb06101815",
+  "version": 2
+}

@@ -1,0 +1,113 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "547747517f2ca4be9d2b585f4546797655f9e495866c3610e1a221f6495f8728",
+  "payload": {
+    "classes": [
+      "LocalRelayHost"
+    ],
+    "defs": [
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isRunning",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "LocalRelayHost"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "boundPort",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "LocalRelayHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 10,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "start",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 10,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "LocalRelayHost"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "stop",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "LocalRelayHost"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "canHostRelay",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 31,
+          "end_lineno": 16,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "detectAdvertiseAddress",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 52,
+          "end_lineno": 18,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "d981c703dde99b9e23a6b2079bca533f50a34c645e315bd7562a08ce4c9de5ef",
+  "version": 2
+}

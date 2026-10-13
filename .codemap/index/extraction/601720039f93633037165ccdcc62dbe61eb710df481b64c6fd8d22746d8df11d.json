@@ -1,0 +1,160 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "601720039f93633037165ccdcc62dbe61eb710df481b64c6fd8d22746d8df11d",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 81,
+              "lineno": 7
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 113,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 169,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 197,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 270,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 322,
+              "lineno": 272
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 346,
+              "lineno": 324
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 347,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/meaning_experiment_controller.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:256",
+      "closure:2748",
+      "closure:3827",
+      "closure:5871",
+      "closure:6848",
+      "closure:9582",
+      "closure:11451"
+    ]
+  },
+  "payload_digest": "e88d46595468f0a4a943300a58cee35a9275ed823971ecdd0667bf481ef26b09",
+  "version": 2
+}

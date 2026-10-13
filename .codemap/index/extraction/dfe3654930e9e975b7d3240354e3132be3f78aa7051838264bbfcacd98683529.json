@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "dfe3654930e9e975b7d3240354e3132be3f78aa7051838264bbfcacd98683529",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_node.dart::Block.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1e1639bdff1cd8d251a04a9fc372b297c08eadd26c9e2c3f7c94d336d7a0d1a7",
+  "version": 2
+}

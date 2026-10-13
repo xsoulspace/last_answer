@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "473861a7bb755dcfe071f24dc4c43d24840153461d60cc0a8e1446b9bc3c815b",
+  "payload": [
+    [
+      "lib/settings/features/mesh_storage_service.dart::MeshStorageService.open"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "09a66d7d85fb2b43757b4b122a828520df15842a40e11d42784996d2b605483b",
+  "version": 2
+}

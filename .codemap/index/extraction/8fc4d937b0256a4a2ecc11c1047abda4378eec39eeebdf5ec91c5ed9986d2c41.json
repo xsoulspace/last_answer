@@ -1,0 +1,78 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8fc4d937b0256a4a2ecc11c1047abda4378eec39eeebdf5ec91c5ed9986d2c41",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 70,
+              "lineno": 5
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 89,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 90,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:169",
+      "closure:2519"
+    ]
+  },
+  "payload_digest": "b343c0de22fdd16385f363b3cc4115995a883250ab4af644862d86959a6589dd",
+  "version": 2
+}

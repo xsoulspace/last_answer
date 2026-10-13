@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b731d9a1127a889dd026453af612458c387670dc8366a369572c090f96a6f7de",
+  "payload": [
+    [
+      "packages/core/lib/src/state/user_local_initializer.dart::LocalUserInitializer._onLoadData"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8befa44f854f8d80fe5adcd5469944f4732500114b5148b5a31e650655628762",
+  "version": 2
+}

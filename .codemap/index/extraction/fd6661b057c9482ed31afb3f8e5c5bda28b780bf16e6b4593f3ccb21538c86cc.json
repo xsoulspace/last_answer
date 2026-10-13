@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fd6661b057c9482ed31afb3f8e5c5bda28b780bf16e6b4593f3ccb21538c86cc",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::AILayoutEngine._generateFluidDashboard"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "230420a602b3cad0a475f5842d83e070140086b7cd26e01b6720b341a7e4b84d",
+  "version": 2
+}

@@ -121,3 +121,18 @@ one workspace owner while keeping the shared graph canonical (conversation
 remains a projection and code changes pass through the owner materializer),
 this direction is not implemented; revise this ADR rather than calling a
 conversation-only integration complete.
+
+## Addressed projection and action identity
+
+A document route resolves its saved ID and expected kind through the existing
+repository. The desktop shell must render the router navigator. Each mounted
+route retains its addressed project projection; singleton selection changes do
+not change another route's displayed or acted-on document. Missing IDs, wrong
+returned IDs and wrong kinds refuse restoration. Late lookup results may publish
+selection only for the active route.
+
+Persistence and delete target the explicit project passed by the view. Selection
+updates/reset and empty-project pop cleanup are guarded by matching IDs. This
+preserves background edits without redirecting them to a newly selected item.
+Route/widget and actual note/idea confirmation controls establish local contracts;
+they do not establish native actor reconstruction or human acceptance.

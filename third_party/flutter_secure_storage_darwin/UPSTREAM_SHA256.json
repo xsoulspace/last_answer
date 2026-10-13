@@ -1,0 +1,11 @@
+{
+  "CHANGELOG.md": "3fb2889e4444f1893fb668128ffe87bf62f20052a1f63a60e1f58590f82f66fd",
+  "LICENSE": "3754c516086c62307896512b68024837bee5d2bea42a55cfd03f7448b92b06c8",
+  "README.md": "d638e3c71bd0786b7215058ae6659fc9827c29b7fdda511de4d6008de6f6d9d6",
+  "darwin/flutter_secure_storage_darwin/Package.swift": "9bcb9f560a0cec8342bd2996c80114c66c5e3b54c2550db02f73604f86cd27ad",
+  "darwin/flutter_secure_storage_darwin/Sources/flutter_secure_storage_darwin/FlutterSecureStorage.swift": "fb8c88baf0b3986c78bb7131ad4f32760a28b9d8defd3a5f34f717b0f669e642",
+  "darwin/flutter_secure_storage_darwin/Sources/flutter_secure_storage_darwin/FlutterSecureStorageDarwinPlugin.swift": "0db006afdf979cbbe0f1633d76d0bb03e1bc4e10a4278f2f40b31ee7029f9ab4",
+  "darwin/flutter_secure_storage_darwin/Sources/flutter_secure_storage_darwin/Resources/PrivacyInfo.xcprivacy": "47226a29608df206ad0a110e6afeb5a77ff575ac1df9c76bfdb2d6dfb3fafed1",
+  "darwin/flutter_secure_storage_darwin.podspec": "9fc34f624b4871c33b4786e7e3b8ac27ba6803f82a27306aebafafbf5056b739",
+  "pubspec.yaml": "bc1ef9320909be1adcad418c9d6cc2d5dc42eebf6e34d9fc64581682622fd996"
+}

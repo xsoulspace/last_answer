@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "24add6d8f7a516cd72873d3c1d3101d8409b1cb563f3f59e06e91158893694a2",
+  "payload": [
+    [
+      "lib/idea/widgets/answer_creator.freezed.dart::__$$AnswerCreatorControllerStateImplCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "bd7e37bc3846dda681e1cebe6c2089935e22356585b63a2a60f4c68cfbb23650",
+  "version": 2
+}

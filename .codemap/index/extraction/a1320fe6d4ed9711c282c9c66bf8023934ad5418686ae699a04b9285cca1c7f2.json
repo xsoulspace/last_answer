@@ -1,0 +1,225 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a1320fe6d4ed9711c282c9c66bf8023934ad5418686ae699a04b9285cca1c7f2",
+  "payload": {
+    "classes": [
+      "NoteProjectSideActionBar"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 46,
+          "end_lineno": 8,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "NoteProjectSideActionBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 46,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 55,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "[const NoteSettingsButton(), SpecialEmojiButton(controller: specialEmojiController), SizedBox(height: 34, width: 48, child: IconShareButton(onTap: () {unawaited(ProjectSharer.of(context).share(bloc.note));})), EmojiPopup(controller: bloc.noteController, focusNode: bloc.focusNode), if (Platform.isAndroid || Platform.isIOS) AnimatedBuilder(animation: bloc.keyboardVisibilityController, builder: (final context, final child) => IconButton(onPressed: bloc.onSwitchKeyboard, icon: AnimatedSwitcher(duration: const Duration(milliseconds: 300), child: !bloc.keyboardVisibilityController.value ? const Icon(CupertinoIcons.keyboard) : const Icon(CupertinoIcons.keyboard_chevron_compact_down))))].map((final e) => Padding(padding: const EdgeInsets.only(top: 15), child: e))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 23,
+              "end_lineno": 54,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "[const NoteSettingsButton(), SpecialEmojiButton(controller: specialEmojiController), SizedBox(height: 34, width: 48, child: IconShareButton(onTap: () {unawaited(ProjectSharer.of(context).share(bloc.note));})), EmojiPopup(controller: bloc.noteController, focusNode: bloc.focusNode), if (Platform.isAndroid || Platform.isIOS) AnimatedBuilder(animation: bloc.keyboardVisibilityController, builder: (final context, final child) => IconButton(onPressed: bloc.onSwitchKeyboard, icon: AnimatedSwitcher(duration: const Duration(milliseconds: 300), child: !bloc.keyboardVisibilityController.value ? const Icon(CupertinoIcons.keyboard) : const Icon(CupertinoIcons.keyboard_chevron_compact_down))))]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 15,
+              "end_lineno": 53,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "NoteSettingsButton",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 42,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SpecialEmojiButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 70,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 29,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconShareButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 28,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "EmojiPopup",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 33,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimatedBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 48,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 56,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "NoteProjectSideActionBar"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/note/note_view_bloc.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/note/widgets/note_settings_button.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:NoteProjectSideActionBar",
+      "closure:907",
+      "closure:1383",
+      "closure:2010"
+    ]
+  },
+  "payload_digest": "d110ccac77568ff4dbeea0eb520a314c1484ee8b17e8a26816f9cca5a3cad0bd",
+  "version": 2
+}

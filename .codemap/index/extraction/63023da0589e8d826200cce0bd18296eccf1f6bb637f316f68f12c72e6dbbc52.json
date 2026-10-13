@@ -1,0 +1,804 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "63023da0589e8d826200cce0bd18296eccf1f6bb637f316f68f12c72e6dbbc52",
+  "payload": {
+    "classes": [
+      "App",
+      "RoutePaths",
+      "BuildContextX",
+      "AppNavigator",
+      "HeaderAppBar",
+      "FotterBottomBar",
+      "AppBarBurgerButton",
+      "OpenAppButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Router",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 38,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ShellRoute",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 36,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Route",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 28,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Route",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 34,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 39,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "App"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Router",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 43,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          }
+        ],
+        "name": "router",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 48,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "BuildContextX"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 55,
+          "end_lineno": 52,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "AppNavigator"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "body",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 60,
+              "end_lineno": 62,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 63,
+              "end_lineno": 61,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HeaderAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 22,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 50,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FotterBottomBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 25,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 63,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "AppNavigator"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 67,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "HeaderAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "header",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 36,
+              "end_lineno": 115,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 114,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 51,
+              "end_lineno": 109,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "x",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 27,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LinkButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 81,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "LiLinkButtonDecoration.stone900",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 15,
+              "end_lineno": 78,
+              "lineno": 76
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "x",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 27,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 61,
+              "end_lineno": 101,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "nav",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 60,
+              "end_lineno": 98,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ul",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 45,
+              "end_lineno": 97,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "[(title: 'Download', url: RoutePaths.download)]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 19,
+              "end_lineno": 96,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "x",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 27,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OpenAppButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 107,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "x",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 27,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 116,
+          "lineno": 68
+        },
+        "static": false,
+        "unit": "HeaderAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 173,
+          "lineno": 173
+        },
+        "static": false,
+        "unit": "FotterBottomBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "footer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 52,
+              "end_lineno": 207,
+              "lineno": 176
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 49,
+              "end_lineno": 206,
+              "lineno": 177
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "section",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 10,
+              "end_lineno": 205,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "nav",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 77,
+              "end_lineno": 198,
+              "lineno": 179
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "_bottomLinks",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 13,
+              "end_lineno": 197,
+              "lineno": 180
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 25,
+              "end_lineno": 199,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "hr",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 14,
+              "end_lineno": 200,
+              "lineno": 200
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "p",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 62,
+              "end_lineno": 204,
+              "lineno": 202
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 70,
+              "end_lineno": 203,
+              "lineno": 203
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 208,
+          "lineno": 174
+        },
+        "static": false,
+        "unit": "FotterBottomBar"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 212,
+          "lineno": 212
+        },
+        "static": false,
+        "unit": "AppBarBurgerButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 36,
+              "end_lineno": 217,
+              "lineno": 215
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "button",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 51,
+              "end_lineno": 216,
+              "lineno": 216
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 36,
+              "end_lineno": 216,
+              "lineno": 216
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 218,
+          "lineno": 213
+        },
+        "static": false,
+        "unit": "AppBarBurgerButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 226,
+          "lineno": 222
+        },
+        "static": false,
+        "unit": "OpenAppButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "LinkButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 238,
+              "lineno": 231
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "p",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 38,
+              "end_lineno": 236,
+              "lineno": 233
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 29,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 50,
+              "end_lineno": 235,
+              "lineno": 235
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 239,
+          "lineno": 229
+        },
+        "static": false,
+        "unit": "OpenAppButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_bottomLinks"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/dom.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/jaspr.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr_router/jaspr_router.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "sections/sections.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ui_kit/ui_kit.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:App",
+      "closure:421",
+      "closure:823",
+      "closure:1042",
+      "field_initialization:RoutePaths:1163",
+      "field_initialization:RoutePaths:1202",
+      "extension_dispatch:BuildContextX",
+      "inheritance:AppNavigator",
+      "inheritance:HeaderAppBar",
+      "closure:2648",
+      "top_level_initialization:3615",
+      "inheritance:FotterBottomBar",
+      "closure:5270",
+      "inheritance:AppBarBurgerButton",
+      "inheritance:OpenAppButton"
+    ]
+  },
+  "payload_digest": "3782ee8ce63df5072b883bd82071e95ed04cce5e4865967aec17574596ca1e59",
+  "version": 2
+}

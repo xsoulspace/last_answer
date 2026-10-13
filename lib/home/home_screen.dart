@@ -4,10 +4,10 @@ import 'package:headless_core/headless_core.dart' as hc;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/chat_document_view.dart';
-import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/home/tags/tags.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
@@ -67,6 +67,8 @@ class HomeScreen extends StatelessWidget {
   final Widget navigator;
   @override
   Widget build(final BuildContext context) {
+    AgentDocSurface.createMeaningExperimentHook = () =>
+        openMeaningExperiment(context);
     assert(() {
       // R9.a — the `agent_doc_create` intent routes create+open through the
       // app's own path (OpenedProjectNotifier.createAgentProject, including
@@ -120,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    child: const ProjectView(),
+                    child: navigator,
                   ),
                 ),
               ),

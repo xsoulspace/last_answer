@@ -1,0 +1,1885 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ad90e064572c6d0d90e3f73af7e8b09d33c8493f734a6bd00666723b080e8cdd",
+  "payload": {
+    "classes": [
+      "TagsScreen",
+      "TagsScreenBody",
+      "_TagsListView",
+      "EditableTagListTile",
+      "_ManageTagView",
+      "SelectableProjectListTile",
+      "ClosableProjectListTile",
+      "_AddProjectsView",
+      "DialogTopBar"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 9,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "TagsScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ChangeNotifierProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 15,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 15,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "TagsScreen"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 19,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "TagsScreenBody"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "select",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 25,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "switch (screenType) {TagsScreenType.allTags => const _TagsListView(), TagsScreenType.editingTag => const _ManageTagView(), TagsScreenType.addProjects => const _AddProjectsView()}.animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 24,
+              "end_lineno": 30,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "switch (screenType) {TagsScreenType.allTags => const _TagsListView(), TagsScreenType.editingTag => const _ManageTagView(), TagsScreenType.addProjects => const _AddProjectsView()}",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 15,
+              "end_lineno": 30,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_TagsListView",
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 53,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_ManageTagView",
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 57,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_AddProjectsView",
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 60,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 31,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "TagsScreenBody"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 35,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_TagsListView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 46,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "select",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 5,
+              "end_lineno": 42,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 66,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 118,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Flexible",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 94,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CustomScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 93,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "DialogTopBar(title: l10n.folders)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 56,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DialogTopBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 47,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "Card(child: Padding(padding: const EdgeInsets.all(8), child: RichText(text: TextSpan(style: textTheme.bodyMedium, children: [TextSpan(text: l10n.useFoldersForNotes), TextSpan(style: textTheme.bodySmall, text: l10n.youCanCreateUpTo(foldersLimit))]))))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 24,
+              "end_lineno": 73,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Card",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 73,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 72,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.all",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 50,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RichText",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 71,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 21,
+              "end_lineno": 70,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 63,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 25,
+              "end_lineno": 68,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "youCanCreateUpTo",
+            "receiver": "l10n",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 67,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 33,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "SliverList",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 90,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 32,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Divider",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 23,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 115,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 103,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 102,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 40,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 113,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tonal",
+            "receiver": "FilledButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 112,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 111,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 116,
+              "lineno": 116
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 119,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "_TagsListView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 128,
+          "lineno": 123
+        },
+        "static": false,
+        "unit": "EditableTagListTile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ListTile",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 142,
+              "lineno": 134
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 26,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 5,
+              "end_lineno": 141,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 44,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 142,
+          "lineno": 133
+        },
+        "static": false,
+        "unit": "EditableTagListTile"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 146,
+          "lineno": 146
+        },
+        "static": false,
+        "unit": "_ManageTagView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 61,
+              "end_lineno": 149,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Form",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 245,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 244,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 222,
+              "lineno": 164
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CustomScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 221,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "DialogTopBar(title: '${tagId.isEmpty ? l10n.create : l10n.edit} ${l10n.folder}', onClose: stateNotifier.onCloseTagManagement, isBottomBorderVisible: false)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 173,
+              "lineno": 167
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DialogTopBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 173,
+              "lineno": 167
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 34,
+              "end_lineno": 174,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: UiTextField(decoration: InputDecoration(labelText: l10n.folderName), maxLength: 12, value: selectedTag.value.title, onChanged: stateNotifier.onFolderTitleChanged, validator: FormBuilderValidators.compose([FormBuilderValidators.required()])))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 186,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 186,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 69,
+              "end_lineno": 176,
+              "lineno": 176
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "UiTextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 185,
+              "lineno": 177
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InputDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 75,
+              "end_lineno": 178,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "compose",
+            "receiver": "FormBuilderValidators",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 22,
+              "end_lineno": 184,
+              "lineno": 182
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "required",
+            "receiver": "FormBuilderValidators",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 54,
+              "end_lineno": 183,
+              "lineno": 183
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 35,
+              "end_lineno": 187,
+              "lineno": 187
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "const Divider(thickness: 8)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 52,
+              "end_lineno": 188,
+              "lineno": 188
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Divider",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 188,
+              "lineno": 188
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 35,
+              "end_lineno": 189,
+              "lineno": 189
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Text(l10n.projects, style: textTheme.titleMedium))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 193,
+              "lineno": 190
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 193,
+              "lineno": 190
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 69,
+              "end_lineno": 191,
+              "lineno": 191
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 74,
+              "end_lineno": 192,
+              "lineno": 192
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 35,
+              "end_lineno": 194,
+              "lineno": 194
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: FilledButton.icon(onPressed: stateNotifier.onOpenAddProjects, icon: const Icon(Icons.add), label: Text(l10n.addProjects)))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 26,
+              "end_lineno": 202,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 202,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 68,
+              "end_lineno": 196,
+              "lineno": 196
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "icon",
+            "receiver": "FilledButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 201,
+              "lineno": 197
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 47,
+              "end_lineno": 199,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 49,
+              "end_lineno": 200,
+              "lineno": 200
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 35,
+              "end_lineno": 203,
+              "lineno": 203
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sliver",
+            "receiver": "const UiCircularProgress()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 53,
+              "end_lineno": 205,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 44,
+              "end_lineno": 205,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "SliverList",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 218,
+              "lineno": 207
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SliverGap",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 35,
+              "end_lineno": 219,
+              "lineno": 219
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Divider",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 25,
+              "end_lineno": 223,
+              "lineno": 223
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 241,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 231,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 230,
+              "lineno": 227
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 42,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 239,
+              "lineno": 232
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tonal",
+            "receiver": "FilledButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 238,
+              "lineno": 233
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 50,
+              "end_lineno": 236,
+              "lineno": 236
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 69,
+              "end_lineno": 237,
+              "lineno": 237
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 22,
+              "end_lineno": 242,
+              "lineno": 242
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 246,
+          "lineno": 147
+        },
+        "static": false,
+        "unit": "_ManageTagView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 255,
+          "lineno": 250
+        },
+        "static": false,
+        "unit": "SelectableProjectListTile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ListTile",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 271,
+              "lineno": 261
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 262,
+              "lineno": 262
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getTitle",
+            "receiver": "project",
+            "receiver_constructor": null,
+            "receiver_type": "ProjectModel",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 262,
+              "lineno": 262
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 5,
+              "end_lineno": 269,
+              "lineno": 264
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 271,
+          "lineno": 260
+        },
+        "static": false,
+        "unit": "SelectableProjectListTile"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 279,
+          "lineno": 275
+        },
+        "static": false,
+        "unit": "ClosableProjectListTile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ListTile",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 290,
+              "lineno": 283
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 55,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getTitle",
+            "receiver": "project",
+            "receiver_constructor": null,
+            "receiver_type": "ProjectModel",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 5,
+              "end_lineno": 289,
+              "lineno": 285
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 44,
+              "end_lineno": 288,
+              "lineno": 288
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 290,
+          "lineno": 282
+        },
+        "static": false,
+        "unit": "ClosableProjectListTile"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 294,
+          "lineno": 294
+        },
+        "static": false,
+        "unit": "_AddProjectsView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 66,
+              "end_lineno": 298,
+              "lineno": 298
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 367,
+              "lineno": 301
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 353,
+              "lineno": 303
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CustomScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 352,
+              "lineno": 304
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SliverAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 316,
+              "lineno": 306
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoundedRectangleBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 309,
+              "lineno": 307
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "circular",
+            "receiver": "BorderRadius",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 57,
+              "end_lineno": 308,
+              "lineno": 308
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 45,
+              "end_lineno": 312,
+              "lineno": 312
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CloseButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 79,
+              "end_lineno": 314,
+              "lineno": 314
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "PagingListener",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 350,
+              "lineno": 317
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SearchBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 365,
+              "lineno": 354
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BackButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 72,
+              "end_lineno": 356,
+              "lineno": 356
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "WidgetStatePropertyAll",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 52,
+              "end_lineno": 358,
+              "lineno": 358
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "WidgetStatePropertyAll",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 11,
+              "end_lineno": 363,
+              "lineno": 361
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "symmetric",
+            "receiver": "EdgeInsets",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 48,
+              "end_lineno": 362,
+              "lineno": 362
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 368,
+          "lineno": 296
+        },
+        "static": false,
+        "unit": "_AddProjectsView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 377,
+          "lineno": 372
+        },
+        "static": false,
+        "unit": "DialogTopBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 399,
+              "lineno": 384
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 396,
+              "lineno": 387
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 69,
+              "end_lineno": 388,
+              "lineno": 388
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 395,
+              "lineno": 389
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Flexible",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 71,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 70,
+              "end_lineno": 392,
+              "lineno": 392
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CloseButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 45,
+              "end_lineno": 393,
+              "lineno": 393
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Divider",
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 50,
+              "end_lineno": 397,
+              "lineno": 397
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 400,
+          "lineno": 381
+        },
+        "static": false,
+        "unit": "DialogTopBar"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:form_builder_validators/form_builder_validators.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:infinite_scroll_pagination/infinite_scroll_pagination.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/tags/tags.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/tags/tags_screen_state.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:TagsScreen",
+      "closure:558",
+      "inheritance:TagsScreenBody",
+      "closure:845",
+      "inheritance:_TagsListView",
+      "closure:1389",
+      "closure:2666",
+      "closure:3401",
+      "inheritance:EditableTagListTile",
+      "inheritance:_ManageTagView",
+      "closure:7122",
+      "closure:8021",
+      "inheritance:SelectableProjectListTile",
+      "closure:9004",
+      "inheritance:ClosableProjectListTile",
+      "closure:9474",
+      "inheritance:_AddProjectsView",
+      "closure:10525",
+      "inheritance:DialogTopBar"
+    ]
+  },
+  "payload_digest": "28fdb115b8c5e74a83c23f1fa43964a6a3e1d0c1568b69a094c7529a666fd24f",
+  "version": 2
+}

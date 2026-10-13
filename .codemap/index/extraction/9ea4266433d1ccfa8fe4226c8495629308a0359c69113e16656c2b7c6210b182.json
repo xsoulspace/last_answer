@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9ea4266433d1ccfa8fe4226c8495629308a0359c69113e16656c2b7c6210b182",
+  "payload": [
+    [
+      "lib/doc/chat_document_view.dart::_._nextNodeId"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "5668264fc9b3c5dd91d17591621a143f7a690c06feb9cd806d4b0ff813855bde",
+  "version": 2
+}

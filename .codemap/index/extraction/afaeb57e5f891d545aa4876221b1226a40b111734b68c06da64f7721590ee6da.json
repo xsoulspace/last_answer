@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "afaeb57e5f891d545aa4876221b1226a40b111734b68c06da64f7721590ee6da",
+  "payload": [
+    [
+      "lib/idea/idea_answer_screen.dart::IdeaAnswerScreen.open"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "5c477aeeeb540a37f829a531e8a63715f6ba4004334726a52cc0e3469cd82ad2",
+  "version": 2
+}

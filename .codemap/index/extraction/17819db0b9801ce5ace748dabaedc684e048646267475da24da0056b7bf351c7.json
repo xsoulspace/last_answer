@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "17819db0b9801ce5ace748dabaedc684e048646267475da24da0056b7bf351c7",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/doc_replica.dart::DocReplica._orderKey"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "7cc16e6f6dad6c63a8a5d38f6e649ec0a4429286d53f3538562f31518bdd7169",
+  "version": 2
+}

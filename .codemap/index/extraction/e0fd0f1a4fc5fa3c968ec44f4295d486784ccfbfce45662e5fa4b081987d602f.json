@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e0fd0f1a4fc5fa3c968ec44f4295d486784ccfbfce45662e5fa4b081987d602f",
+  "payload": [
+    [
+      "lib/agent_config/agent_config_settings_pane.dart::_AgentConfigSettingsPaneState._chatSection"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "0cc35ff9e867785c41ab815af643a73436bba6a3b040386b4bd8cc95a16cff28",
+  "version": 2
+}

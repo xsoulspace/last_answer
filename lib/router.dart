@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home_screen.dart';
+import 'package:lastanswer/home/project_route.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
 import 'package:lastanswer/ui_pay/paywall_flow.dart';
 import 'package:lastanswer/ui_pay/paywall_screen.dart';
+import 'package:lastanswer/workbench/workbench_screen.dart';
 
 final appRouter = GoRouter(
   redirect: _handleRootRedirect,
@@ -20,10 +22,55 @@ final appRouter = GoRouter(
           builder: (final context, final state, final navigator) =>
               ScreenScaffold(navigator: HomeScreen(navigator: navigator)),
           routes: [
-            AppRoute(ScreenPaths.home, (final _) => const ProjectsListScreen()),
-            AppRoute('/home/n/:noteId', (final _) => const ProjectView()),
-            AppRoute('/home/d/:docId', (final _) => const ProjectView()),
-            AppRoute('/home/i/:ideaId', (final _) => const ProjectView()),
+            AppRoute(
+              ScreenPaths.home,
+              (final _) => Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Builder(
+                      builder: (context) => TextButton(
+                        key: const ValueKey('home-open-workbench'),
+                        onPressed: () => context.push('/home/workbench'),
+                        child: const Text('Workbench'),
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: ProjectsListScreen()),
+                ],
+              ),
+            ),
+            AppRoute(
+              '/home/workbench',
+              (final state) => WorkbenchScreen(
+                project: state.uri.queryParameters['project'],
+                collaboration: true,
+              ),
+            ),
+            AppRoute(
+              '/home/n/:noteId',
+              (final state) => ProjectRoute(
+                projectId: state.pathParameters['noteId']!,
+                projectType: ProjectTypes.note,
+                builder: (_, project) => ProjectView(project: project),
+              ),
+            ),
+            AppRoute(
+              '/home/d/:docId',
+              (final state) => ProjectRoute(
+                projectId: state.pathParameters['docId']!,
+                projectType: ProjectTypes.doc,
+                builder: (_, project) => ProjectView(project: project),
+              ),
+            ),
+            AppRoute(
+              '/home/i/:ideaId',
+              (final state) => ProjectRoute(
+                projectId: state.pathParameters['ideaId']!,
+                projectType: ProjectTypes.idea,
+                builder: (_, project) => ProjectView(project: project),
+              ),
+            ),
             AppRoute(ScreenPaths.changelog, (final _) => const ProjectView()),
             AppRoute(
               PaywallFlow.paywallPath,

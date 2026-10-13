@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c66c497d9ebe6c6dc854d334954565fa089f5071122daa9e4a58e6e2220c65f3",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/mesh_aware_document_repository.dart::MeshAwareDocumentRepository._replicaRepo"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "65d163ef0bc540615406c8df8deb167eaf4139e65e6474d6a9031436226cfb4c",
+  "version": 2
+}

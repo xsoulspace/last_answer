@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "137ab5940eab9cdf1a4c51fcb54e4ea474ffb4adcba9ebade630d2bf44bf8103",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/local/projects_web.dart::ProjectsLocalDataSourceLocalDbImpl._saveFullCache"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "0bae189911940fccc95ac2ef721e95215c3a38ca557c64953b6337999cf5db84",
+  "version": 2
+}

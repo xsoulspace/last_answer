@@ -1,0 +1,58 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ba32232d23b632af0ba14b897f32b9750ead25b3dca1705a06b960b44f945f7b",
+  "payload": {
+    "classes": [
+      "GoogleAuthProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnimplementedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 30,
+              "end_lineno": 8,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "getCredentials",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 32,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "GoogleAuthProvider"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:GoogleAuthProvider"
+    ]
+  },
+  "payload_digest": "d5e4a9b820f28e87bec5dfb964da249b1bf09887245a87ef627437d11808fa68",
+  "version": 2
+}

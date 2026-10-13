@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f2ac2ea689b7002d53eb7e3aca1c1f3bd40a7a8a592087566a2e2679fafc69c7",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::AILayoutEngine._calculateVisualWeight"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8971da3f2e026168a3012692783b068afd170854c918ed673a02a1dfebd13a72",
+  "version": 2
+}

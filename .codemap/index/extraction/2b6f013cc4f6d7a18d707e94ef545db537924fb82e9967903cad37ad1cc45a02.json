@@ -1,0 +1,148 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2b6f013cc4f6d7a18d707e94ef545db537924fb82e9967903cad37ad1cc45a02",
+  "payload": {
+    "classes": [
+      "SharedModelsStringExtension"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "callback",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 37,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "onNotEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 7,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "SharedModelsStringExtension"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 34,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "uriSchemes",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 43,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          }
+        ],
+        "name": "isUrl",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 14,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "SharedModelsStringExtension"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getNullable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 17,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "SharedModelsStringExtension"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "murmur3a",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 51,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          }
+        ],
+        "name": "getHashcode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 19,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "SharedModelsStringExtension"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:murmur3/murmur3.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "extension_dispatch:SharedModelsStringExtension"
+    ]
+  },
+  "payload_digest": "c8d5eaa3c2648f6a62100a83527800e164d297c3a5113499e6cdfa672b9ee0ac",
+  "version": 2
+}

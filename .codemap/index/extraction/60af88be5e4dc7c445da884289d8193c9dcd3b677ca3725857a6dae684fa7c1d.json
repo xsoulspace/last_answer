@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "60af88be5e4dc7c445da884289d8193c9dcd3b677ca3725857a6dae684fa7c1d",
+  "payload": [
+    [
+      "packages/core/lib/src/services/share_service.dart::Sharable.toShareString"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "709153efe18226e31df7c91cbf1aa017de239b11e876447db8264cab454d8d92",
+  "version": 2
+}

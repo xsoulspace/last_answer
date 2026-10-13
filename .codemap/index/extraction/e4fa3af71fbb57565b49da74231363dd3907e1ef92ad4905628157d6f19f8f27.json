@@ -1,0 +1,10 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e4fa3af71fbb57565b49da74231363dd3907e1ef92ad4905628157d6f19f8f27",
+  "payload": {
+    "defs": [],
+    "error": "Expected an identifier.; Expected to find ':'.; Expected an identifier."
+  },
+  "payload_digest": "ae4acc2b9d6fb93d003228e36a378f201de7d7aede0900a647537863fa93e83d",
+  "version": 2
+}

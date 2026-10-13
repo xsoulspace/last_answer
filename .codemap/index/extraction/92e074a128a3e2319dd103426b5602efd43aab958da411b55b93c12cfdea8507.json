@@ -1,0 +1,410 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "92e074a128a3e2319dd103426b5602efd43aab958da411b55b93c12cfdea8507",
+  "payload": {
+    "classes": [
+      "NotificationsNotifierState",
+      "NotificationsNotifier"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 9,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "NotificationsNotifierState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 46,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "NotificationsNotifierState",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 46,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 17,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 53,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 52,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setLastReadTime",
+            "receiver": "_notificationRepository",
+            "receiver_constructor": null,
+            "receiver_type": "NotificationsRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 51,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          }
+        ],
+        "name": "readAllUpdates",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 24,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "updates",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "hasUnreadUpdates",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 27,
+          "lineno": 27
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getLastReadDateTime",
+            "receiver": "_notificationRepository",
+            "receiver_constructor": null,
+            "receiver_type": "NotificationsRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 76,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 54,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 53,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 57,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 56,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "compareTo",
+            "receiver": "updates.firstOrNull?.created.toUtc()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 70,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "updates.firstOrNull?.created",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 46,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 73,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 72,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "determineUnreadUpdates",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 42,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getUpdatesNotifications",
+            "receiver": "_notificationRepository",
+            "receiver_constructor": null,
+            "receiver_type": "NotificationsRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 34,
+              "end_lineno": 47,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "determineUnreadUpdates",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 34,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 52,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getSystemChangelogFromNotifications",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 5,
+              "end_lineno": 56,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "put",
+            "receiver": "_projectsRepository",
+            "receiver_constructor": null,
+            "receiver_type": "ProjectsRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 51,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          }
+        ],
+        "name": "onLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 58,
+          "lineno": 44
+        },
+        "static": false,
+        "unit": "NotificationsNotifier"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:NotificationsNotifierState",
+      "inheritance:NotificationsNotifier"
+    ]
+  },
+  "payload_digest": "7c9bda37052546f1c8fa94afeb75be4a61a742f229529e46e61c4b2c695118f1",
+  "version": 2
+}

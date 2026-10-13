@@ -1,0 +1,75 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7f789edc46a976e41718e326af3d89e46081c9e15f7cd9e3e46aa4eaafdfa6d7",
+  "payload": {
+    "classes": [
+      "SupportAppView"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "SupportAppView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SupportAppBaseView",
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 10,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 10,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "SupportAppView"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/views/supporter_view/supporter_base_view.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SupportAppView"
+    ]
+  },
+  "payload_digest": "8919c9ccc34ba2920e660b47cbc92752f88050d7db21c9dbdcbaad265fb0f5fa",
+  "version": 2
+}

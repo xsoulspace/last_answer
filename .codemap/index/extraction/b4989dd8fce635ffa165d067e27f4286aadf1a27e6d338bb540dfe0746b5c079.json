@@ -1,0 +1,42 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b4989dd8fce635ffa165d067e27f4286aadf1a27e6d338bb540dfe0746b5c079",
+  "payload": {
+    "diagnostic": {
+      "code": "graph.call_unresolved",
+      "details": {
+        "candidates": []
+      },
+      "excerpt": "target.BreakpointCreateByRegex.SetScriptCallbackFunction",
+      "level": "warning",
+      "message": "unsupported receiver inference for method SetScriptCallbackFunction",
+      "node_kind": null,
+      "span": {
+        "col_offset": 4,
+        "end_col_offset": 74,
+        "end_lineno": 30,
+        "lineno": 30,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      },
+      "symbol": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module"
+    },
+    "edge": null,
+    "external": null,
+    "unresolved": {
+      "caller": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module",
+      "candidates": [],
+      "label": "target.BreakpointCreateByRegex.SetScriptCallbackFunction",
+      "reason": "unsupported receiver inference for method SetScriptCallbackFunction",
+      "resolution": "unresolved",
+      "span": {
+        "col_offset": 4,
+        "end_col_offset": 74,
+        "end_lineno": 30,
+        "lineno": 30,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      }
+    }
+  },
+  "payload_digest": "a6cdc1512461349609470f55c9941168a867c9434e2166447d6ba97a07db6e43",
+  "version": 2
+}

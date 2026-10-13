@@ -1,0 +1,124 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "80817a32229e8d24a117827ca8936a5af29d6c8e3433c1dc8804699f0bbe6eb5",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "value",
+            "receiver": "ArgumentError",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 55,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "migrateFromHiveAndIsar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "debugPrint",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "e",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 27,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateLocalDbVersion",
+            "receiver": "userNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 65,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "runMutations",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 29,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "migrate_from_hive_isar.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "1ffaed9e46085a442008e8106f75c21c3a64c12dc7d1190d8b878fa4633cabd2",
+  "version": 2
+}

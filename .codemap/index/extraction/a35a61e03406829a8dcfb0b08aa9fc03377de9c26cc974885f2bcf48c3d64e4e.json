@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a35a61e03406829a8dcfb0b08aa9fc03377de9c26cc974885f2bcf48c3d64e4e",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.g.dart::_._$$EmojiModelImplToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "4886e4e354ae50197bc2fc91206cbdfea585316e5c5600b3c3e4c17edb8f6f90",
+  "version": 2
+}

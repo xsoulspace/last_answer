@@ -1,0 +1,103 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3eb00a4d2119da891e8330f013220121966f70b3cce111ed9eb7bff38840da9f",
+  "payload": {
+    "classes": [
+      "LoadableWidget",
+      "_LoadableWidgetState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 14,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "LoadableWidget"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_LoadableWidgetState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 63,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 18,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "LoadableWidget"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "widget",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 31,
+              "lineno": 25
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 31,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_LoadableWidgetState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:LoadableWidget",
+      "inheritance:_LoadableWidgetState",
+      "field_initialization:_LoadableWidgetState:517",
+      "closure:642"
+    ]
+  },
+  "payload_digest": "e7d86bba938068dd003aea2f20b2d098bb2caa8fdeea89246327b3584e74b523",
+  "version": 2
+}

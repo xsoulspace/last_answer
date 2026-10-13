@@ -1,0 +1,40 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d7625b6f461164ec82983c3e6672387762ccf2ce52336fc5331d7e2a40407f09",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "use_keyboard_visibility.dart"
+      }
+    ],
+    "unsupported": []
+  },
+  "payload_digest": "e838b9440f2bc152368c584cfbe15d2a0b9ade0482312496c78c64fb10381211",
+  "version": 2
+}

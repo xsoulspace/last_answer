@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "436d3c677b6231d1f16f6254fb99382a6aaf7b52a8a5b3e99fcce7b123352d00",
+  "payload": [
+    [
+      "lib/agent_config/agent_platform_config.dart::ChatConfig.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "a37c2d0efaff4de2374b45493c9483af5d8bd0208cf1e2541db01b058ab5462b",
+  "version": 2
+}

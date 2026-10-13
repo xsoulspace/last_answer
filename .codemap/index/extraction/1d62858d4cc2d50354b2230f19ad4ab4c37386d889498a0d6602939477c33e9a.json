@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1d62858d4cc2d50354b2230f19ad4ab4c37386d889498a0d6602939477c33e9a",
+  "payload": [
+    [
+      "lib/coding_agent/product_workspace_tooling.dart::ProductWorkspaceTooling._supported"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "836fb367eac049f91c9c3758507f0beee9e92c7e83d36c2b85bdfcb387705f83",
+  "version": 2
+}

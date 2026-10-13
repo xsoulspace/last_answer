@@ -1,0 +1,59 @@
+{
+  "schema": "meaning_greeting.fixture.v1",
+  "task": {
+    "id": "meaning_greeting/suffix-v1",
+    "operation": "workspace/replace_member_body",
+    "subject": "lib/greeting.dart::greeting",
+    "suffix": " — updated",
+    "original_behavior": "Hello, <name>!",
+    "desired_behavior": "original complete return expression followed by exact suffix"
+  },
+  "mapping": {
+    "kind": "explicit_fixture_binding",
+    "runtime_subject": "meaning_greeting/runtime/greeting-output",
+    "source_subject": "lib/greeting.dart::greeting",
+    "source_revision_kind": "source_sha256",
+    "source_sha256": "8e9ae44506195092f75388e6d16eccb23d6321204daa2f7fb55b1f03cd6fc33f",
+    "dependencies": [
+      "lib/greeting.dart::greeting",
+      "lib/greeting.dart::kGreeting"
+    ],
+    "scope": "this fixture only; no automatic UI/source correspondence"
+  },
+  "baseline_workspace_suite": "intentionally_red_for_desired_behavior",
+  "assets": [
+    {
+      "fixture_path": "pubspec.yaml",
+      "workspace_path": "pubspec.yaml",
+      "sha256": "ad7a4a06fe9a4090477432843f37575c01580a8daaf8e9c39f41805291f172b9"
+    },
+    {
+      "fixture_path": "lib/greeting.dart.fixture",
+      "workspace_path": "lib/greeting.dart",
+      "sha256": "8e9ae44506195092f75388e6d16eccb23d6321204daa2f7fb55b1f03cd6fc33f"
+    },
+    {
+      "fixture_path": "test/greeting_test.dart.fixture",
+      "workspace_path": "test/greeting_test.dart",
+      "sha256": "b1d3cc0924f9d313c4084b44e54fb76d1a776d7700f30c2695a0f54024eca402"
+    },
+    {
+      "fixture_path": "tool/observe.dart.fixture",
+      "workspace_path": "tool/observe.dart",
+      "sha256": "b1f8e8815340b713cd4090533fcdf96620f63a7bdd7e9751f8879642f64296ab"
+    },
+    {
+      "fixture_path": "oracle.json",
+      "workspace_path": "oracle.json",
+      "sha256": "c4b94c1aa2e8e0830e6a80338f3932d1d70ac857589d5f0c7dabd64e07a14f4b"
+    }
+  ],
+  "diagnostics": [
+    {
+      "fixture_path": "diagnostics/derive_coverage.dart.fixture",
+      "sha256": "7504d99ebbc2fc7e59c31d9167d9dbe45344b99d685e3da58114762b59c523db",
+      "execution_packages": "harness workspace package_config.json",
+      "materialized_into_fixture": false
+    }
+  ]
+}

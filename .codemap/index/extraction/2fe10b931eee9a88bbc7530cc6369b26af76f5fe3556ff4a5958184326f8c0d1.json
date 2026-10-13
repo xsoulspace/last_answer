@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2fe10b931eee9a88bbc7530cc6369b26af76f5fe3556ff4a5958184326f8c0d1",
+  "payload": [
+    [
+      "lib/_library/widgets/core/dismissible_tile.dart::DismissibleTile.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "8c92bba20809d6afd5497ef21ae5499fac3903b10269cdb59cddb6b3c9d0c2b3",
+  "version": 2
+}

@@ -1,0 +1,107 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1e515a47c8141cc3f5cf890f218a6f7b0fcb1c8f8e56cf1b5b70bf3031ba2a20",
+  "payload": {
+    "classes": [
+      "MapStateNotifier"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "MapStateNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "filterKeyword",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 15,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "MapStateNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "notifyListeners",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "filterKeyword=",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 22,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "MapStateNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "retainWhere",
+            "receiver": "list",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 65,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          }
+        ],
+        "name": "filteredValues",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 34,
+          "lineno": 27
+        },
+        "static": false,
+        "unit": "MapStateNotifier"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:MapStateNotifier",
+      "field_initialization:MapStateNotifier:284",
+      "field_initialization:MapStateNotifier:360",
+      "closure:934"
+    ]
+  },
+  "payload_digest": "6a12592d850a4e7c4376450ffee88734256dae4cccd8b4b023c2112c86c4a544",
+  "version": 2
+}

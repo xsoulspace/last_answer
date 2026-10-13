@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ccfe7e5ef0c72b6325694a3a16198abed2aaf83dbe32a67dd61388eb90193732",
+  "payload": [
+    [
+      "lib/coding_agent/meaning_greeting_binding.dart::_.meaningGreetingTools"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "7aad7142215ddbf6ca20259fb6ecce85be1ca72da3b746a96f4a1fcf9d62e474",
+  "version": 2
+}

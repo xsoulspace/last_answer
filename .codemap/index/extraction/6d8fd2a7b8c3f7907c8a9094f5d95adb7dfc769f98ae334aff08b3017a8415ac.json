@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6d8fd2a7b8c3f7907c8a9094f5d95adb7dfc769f98ae334aff08b3017a8415ac",
+  "payload": [
+    [
+      "lib/agent_config/agent_config_persistence.dart::AgentConfigStore.save"
+    ],
+    "immutable constructor receiver"
+  ],
+  "payload_digest": "67984a04bead9fb126cade8e1441a19eb571a8b1068a065e3b6a7b6bee3f9fba",
+  "version": 2
+}

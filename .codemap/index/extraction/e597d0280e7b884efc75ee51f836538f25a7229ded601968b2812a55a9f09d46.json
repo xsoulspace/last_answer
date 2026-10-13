@@ -1,0 +1,204 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e597d0280e7b884efc75ee51f836538f25a7229ded601968b2812a55a9f09d46",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DocReplica",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 48,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          }
+        ],
+        "name": "_replica",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 49,
+          "end_lineno": 23,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Block",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 70,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 24,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "_para",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 71,
+          "end_lineno": 26,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "replica",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplica",
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 39,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "_deliver",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 32,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 80,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 472,
+              "lineno": 82
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 473,
+          "lineno": 34
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_docId",
+      "_now",
+      "_later"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:math"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:test/test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_convergence/universal_storage_convergence.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:212",
+      "top_level_initialization:765",
+      "top_level_initialization:808",
+      "closure:1390",
+      "closure:2941"
+    ]
+  },
+  "payload_digest": "9909fea079977cced6686ea13311b1f1db67573a73813c65948fdfb999817e73",
+  "version": 2
+}

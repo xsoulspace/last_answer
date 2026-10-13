@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6822f02ea67b495e36c4992a5be84ad26f9e594b7804c5216311d290f8cbad02",
+  "payload": [
+    [
+      "lib/agent_config/agent_config_persistence_io.dart::FileAgentConfigPersistence.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c554e728d592f1e318f8ec4b483bfddb74f210627a37fb77d815a2092eebed53",
+  "version": 2
+}

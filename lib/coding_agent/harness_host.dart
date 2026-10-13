@@ -1,18 +1,23 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 // ADR 0036: composition root is xsoulspace_agentic_afm; the FFI client
 // stays in xsoulspace_inference_apple_foundation.
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
-    show JevClientBinding, NativeTextClientBinding, appleFoundationBinding;
+    show
+        InferenceClientBinding,
+        JevClientBinding,
+        NativeTextClientBinding,
+        appleFoundationBinding;
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 // ADR 0026: the in-process ACP transport lives in the HOST package
 // (HarnessEmbed); this module keeps product-side policy only: config
 // (backend switching, check override) + consent (PendingPermission).
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_acp/xsoulspace_inference_acp.dart'
-    show AcpInferenceClient;
+    show AcpInferenceClient, AcpSessionPersistence;
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart'
     show OpenRouterInferenceClient, OpenRouterModelNames;
 
@@ -43,8 +48,12 @@ final class HarnessHost {
   final HarnessHostConfig config;
 
   HarnessEmbed? _embed;
+  HarnessAcpBackend? _backend;
+  final _meaningTasks = <String, Map<String, Object?>>{};
+  int _meaningRequest = 0;
   final _permissionController = StreamController<PendingPermission>.broadcast();
   Completer<PendingPermission>? _permissionSeen;
+  final _pendingPermissions = <PendingPermission>{};
 
   /// Whether the in-process daemon is running and initialized.
   bool get isRunning => _embed?.isRunning ?? false;
@@ -59,6 +68,7 @@ final class HarnessHost {
   Future<void> start() async {
     if (isRunning) return;
     final backend = config.buildBackend();
+    _backend = backend;
     _embed = await HarnessEmbed.start(
       backend: backend,
       permissionHandler: _handlePermission,
@@ -81,21 +91,214 @@ final class HarnessHost {
     final void Function(String delta)? onText,
     final void Function(String title)? onToolCall,
     final void Function(CodingHostUpdate update)? onHostUpdate,
-  }) => _requireEmbed().delegateTask(
-    sessionId,
-    task,
-    onText: onText,
-    onToolCall: onToolCall,
-    onHostUpdate: onHostUpdate,
-  );
+  }) async {
+    try {
+      return await _requireEmbed().delegateTask(
+        sessionId,
+        task,
+        onText: onText,
+        onToolCall: onToolCall,
+        onHostUpdate: onHostUpdate,
+      );
+    } finally {
+      _retireSettledPermissions(sessionId);
+    }
+  }
 
   /// Cancels in-flight work for a session (real: aborts generation).
   void cancel(final String sessionId) => _embed?.cancel(sessionId);
 
+  Map<String, Object?>? meaningReviewProposal(String sessionId) =>
+      _backend?.registry.sessions[sessionId]?.state.reviewProposal;
+
+  /// The bounded experiment uses the existing installed-action SDK and pump.
+  /// Display JSON supplies no authority; the host retains the issued proposal.
+  Future<Map<String, Object?>> meaningAction(
+    final String sessionId,
+    final String action,
+    final Map<String, Object?> arguments,
+  ) async {
+    try {
+      return await _invokeMeaningAction(sessionId, action, arguments);
+    } finally {
+      _retireSettledPermissions(sessionId);
+    }
+  }
+
+  /// Conventional candidates use the same actor admission, installed-action
+  /// pump and exact native consent as semantic changes. This adapter never
+  /// receives a filesystem writer or reconstructs authority from display JSON.
+  Future<Map<String, Object?>> conventionalAction(
+    final String sessionId,
+    final String action,
+    final Map<String, Object?> arguments,
+  ) async {
+    try {
+      return await _invokeMeaningAction(
+        sessionId,
+        action,
+        arguments,
+        toolName: 'conventional_change',
+      );
+    } finally {
+      _retireSettledPermissions(sessionId);
+    }
+  }
+
+  /// Native admission held by this product host, never a task ID accepted from
+  /// a displayed receipt. The extension still checks its caller, project,
+  /// artifact/journal provenance, revisions and exact consent independently.
+  bool admitsSavedCodeReview(HostToolExtensionContext context) {
+    if (!isRunning ||
+        _backend == null ||
+        !context.isCurrent ||
+        !context.isCallerBound) {
+      return false;
+    }
+    return _meaningTasks.entries.any(
+      (entry) =>
+          entry.key.startsWith('conventional_change:') &&
+          entry.value['taskId'] == context.taskId,
+    );
+  }
+
+  Future<Map<String, Object?>> _invokeMeaningAction(
+    final String sessionId,
+    final String action,
+    final Map<String, Object?> arguments, {
+    final String toolName = 'meaning_span_change',
+  }) async {
+    final backend = _backend;
+    if (backend == null || !isRunning) {
+      return {'ok': false, 'error': 'meaning_session_unavailable'};
+    }
+    final tools = HarnessAgentTools(backend: backend);
+    final conventional = toolName == 'conventional_change';
+    final actor = conventional
+        ? 'lastanswer-human-coding-$sessionId'
+        : 'lastanswer-human-meaning-$sessionId';
+    final identity = <String, Object?>{'docId': sessionId, 'actor': actor};
+    final taskKey = conventional ? '$toolName:$sessionId' : sessionId;
+    var task = _meaningTasks[taskKey];
+    if (task == null) {
+      final joined = await tools.context({...identity, 'op': 'join'});
+      if (joined['ok'] != true) return joined;
+      final oriented = await tools.context({
+        ...identity,
+        'op': 'orient',
+        'query': conventional
+            ? 'Inspect the admitted code workspace and reversible candidate.'
+            : 'Inspect the explicitly bound greeting experiment.',
+      });
+      if (oriented['ok'] != true) return oriented;
+      task = conventional
+          ? await backend.admitExternalTaskFromSentence(
+              sessionId,
+              actorId: actor,
+              requestId: 'meaning-enroll-${++_meaningRequest}',
+              task:
+                  'Review the admitted code candidate, verify it, '
+                  'request exact consent and preserve native Undo. '
+                  'No live shell authoring.',
+              eagerMeaningScan: false,
+            )
+          : await tools.taskAdmitExternal({
+              ...identity,
+              'requestId': 'meaning-enroll-${++_meaningRequest}',
+              'task':
+                  'Append the selected greeting suffix using an executed '
+                  'preview; preserve exact native rollback.',
+            });
+      if (task['ok'] != true) return task;
+      _meaningTasks[taskKey] = task;
+    }
+    Future<Map<String, Object?>> invoke(
+      String name,
+      Map<String, Object?> args,
+    ) async {
+      final actions = await tools.participation({
+        ...identity,
+        'op': 'actions',
+        'toolDetail': true,
+        'toolLimit': 128,
+      });
+      if (actions['ok'] != true) return actions;
+      final menu = actions['toolMenu']! as Map;
+      if (!(menu['tools'] as List).any(
+        (entry) => (entry as Map)['name'] == name,
+      )) {
+        return {'ok': false, 'error': 'meaning_tool_unavailable', 'tool': name};
+      }
+      final receipt = await tools.participation({
+        ...identity,
+        'op': 'tool_action',
+        'taskId': task!['taskId'],
+        'thread': task['admissionBeatId'],
+        'requestId': 'meaning-action-${++_meaningRequest}',
+        'toolName': name,
+        'toolRevision': menu['revision'],
+        'arguments': args,
+      });
+      if (receipt['ok'] != true) return receipt;
+      Object? output = receipt['output'];
+      if (receipt['outputOmitted'] == true) {
+        final read = await tools.context({
+          ...identity,
+          'op': 'read',
+          'beat': receipt['resultBeat'],
+          'limit': 32768,
+        });
+        if (read['ok'] != true) return read;
+        output = (read['toolResult'] as Map?)?['output'];
+      }
+      if (output is! String) {
+        return {
+          'ok': false,
+          'error': 'meaning_receipt_payload_unavailable',
+          'receipt': receipt,
+        };
+      }
+      final decoded = jsonDecode(output);
+      if (decoded is! Map) {
+        return {
+          'ok': false,
+          'error': 'meaning_receipt_invalid',
+          'receipt': receipt,
+        };
+      }
+      return {...Map<String, Object?>.from(decoded), 'receipt': receipt};
+    }
+
+    if (!conventional && action == 'ground') {
+      final scan = await invoke('repo_etl', {'action': 'scan'});
+      if (scan['ok'] != true) return scan;
+      final ground = await invoke('meaning_span_change', {'action': action});
+      if (ground['ok'] != true) return ground;
+      final binding = ground['binding']! as Map;
+      final read = await invoke('meaning_program', {
+        'ops': [
+          {
+            'op': 'read',
+            'focusId': binding['symbolId'] ?? binding['symbol_id'],
+            'budget': 2048,
+          },
+        ],
+      });
+      if (read['ok'] != true) return read;
+      return ground;
+    }
+    return invoke(toolName, {...arguments, 'action': action});
+  }
+
   /// Stops the daemon (closes both channel ends) and the client.
   Future<void> stop() async {
+    for (final pending in [..._pendingPermissions]) {
+      pending.reject();
+    }
     final embed = _embed;
     _embed = null;
+    _backend = null;
+    _meaningTasks.clear();
     await embed?.stop();
     await config.jevBinding?.dispose();
     await config.layaBinding?.dispose();
@@ -128,9 +331,24 @@ final class HarnessHost {
     final AcpPermissionRequest request,
   ) {
     final pending = PendingPermission._(request);
+    _pendingPermissions.add(pending);
+    unawaited(pending.future.then((_) => _pendingPermissions.remove(pending)));
     _permissionSeen?.complete(pending);
     _permissionController.add(pending);
     return pending.future;
+  }
+
+  // Native gates own cancellation/deadlines. Retire a terminal operation's
+  // unanswered client round-trip, never a newer active native wait.
+  void _retireSettledPermissions(String sessionId) {
+    if (_backend?.hasPendingPermission(sessionId) == true) {
+      return;
+    }
+    for (final pending in [..._pendingPermissions]) {
+      if (pending.request.sessionId == sessionId && !pending.isAnswered) {
+        pending.reject();
+      }
+    }
   }
 }
 
@@ -170,12 +388,20 @@ final class HarnessHostConfig {
     this.layaBinding,
     this.lfmBinding,
     this.qwenBinding,
+    this.inferenceBinding,
     this.apiKey,
     this.checkCommand,
     this.externalAcpCommand,
     this.externalAcpArguments = const [],
     this.externalAcpEnvironment,
     this.externalAcpWorkingDirectory,
+    this.externalAcpClientServices,
+    this.externalAcpConversationKey,
+    this.externalAcpClientFactory,
+    this.externalAcpMcpServers,
+    this.externalAcpSessionPersistence,
+    this.externalAcpProviderIdentity,
+    this.extraToolsWithContext,
   });
 
   /// `apple_foundation_afm`, `open_router`, opt-in `jev`, opt-in local
@@ -204,6 +430,9 @@ final class HarnessHostConfig {
   final NativeTextClientBinding? lfmBinding;
   final NativeTextClientBinding? qwenBinding;
 
+  /// Device-owned request provider, scoped to this host/session lifetime.
+  final InferenceClientBinding? inferenceBinding;
+
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
   final String? apiKey;
@@ -214,7 +443,19 @@ final class HarnessHostConfig {
   final String? externalAcpCommand;
   final List<String> externalAcpArguments;
   final Map<String, String>? externalAcpEnvironment;
+  final List<ToolDef> Function(HostToolExtensionContext context)?
+  extraToolsWithContext;
   final String? externalAcpWorkingDirectory;
+  final AcpClientServices? externalAcpClientServices;
+
+  /// Explicit document/participant conversation identity. Transport restarts
+  /// resume this conversation; provider/model names never stand in for it.
+  final String? externalAcpConversationKey;
+  final Future<AcpClient> Function()? externalAcpClientFactory;
+  final List<Map<String, Object?>> Function(ToolRegistry registry)?
+  externalAcpMcpServers;
+  final AcpSessionPersistence? externalAcpSessionPersistence;
+  final String? externalAcpProviderIdentity;
 
   /// Explicit verification criterion overriding the D8 workspace
   /// convention (the doc binding's `--check`, ADR 0003). Empty/null → the
@@ -302,15 +543,22 @@ final class HarnessHostConfig {
     final externalCommand = externalAcpCommand;
     if (backend == 'external_acp' && (externalCommand?.isNotEmpty ?? false)) {
       final command = externalAcpCommand!;
+      final client = AcpInferenceClient(
+        command: command,
+        arguments: externalAcpArguments,
+        workingDirectory: externalAcpWorkingDirectory,
+        environment: externalAcpEnvironment,
+        clientServices: externalAcpClientServices,
+        conversationKey: externalAcpConversationKey,
+        clientFactory: externalAcpClientFactory,
+        boundMcpServers: externalAcpMcpServers,
+        sessionPersistence: externalAcpSessionPersistence,
+        providerIdentity: externalAcpProviderIdentity,
+      );
       final router =
           ModelRouter(
               inferenceClientsBuilders: {
-                ExternalAcpModelNames.externalAcp: () => AcpInferenceClient(
-                  command: command,
-                  arguments: externalAcpArguments,
-                  workingDirectory: externalAcpWorkingDirectory,
-                  environment: externalAcpEnvironment,
-                ),
+                ExternalAcpModelNames.externalAcp: () => client,
               },
             )
             ..models[const ModelId('harnessd')] = const Model(
@@ -320,22 +568,31 @@ final class HarnessHostConfig {
       bindings['external_acp'] = HarnessBackendBinding(
         defaultModel: model,
         buildRouter: ({required model, apiKey}) => router,
+        cancelActiveGeneration: client.cancelActive,
       );
     }
     return HarnessAcpBackend(
+      // The trusted product composition injects this provider; document
+      // backend labels carry no credential or execution authority.
       backend: backend,
-      bindings: bindings,
+      bindings: {
+        ...bindings,
+        if (inferenceBinding != null) backend: inferenceBinding!.binding,
+      },
       model: model,
       meaningProfile: meaningProfile,
       scripted: scripted,
       handlerFactory: handlerFactory,
       apiKey: apiKey,
       checkCommand: checkCommand,
+      extraToolsWithContext: extraToolsWithContext,
     );
   }
 
   /// Backend-switch support: same mover surface, new backend/key/check.
   HarnessHostConfig copyWith({
+    List<ToolDef> Function(HostToolExtensionContext)? extraToolsWithContext,
+    bool clearExtraToolsWithContext = false,
     String? backend,
     String? model,
     String? apiKey,
@@ -344,16 +601,24 @@ final class HarnessHostConfig {
     bool clearLayaBinding = false,
     bool clearLfmBinding = false,
     bool clearQwenBinding = false,
+    bool clearInferenceBinding = false,
     List<String>? checkCommand,
     bool? meaningProfile,
     JevClientBinding? jevBinding,
     JevClientBinding? layaBinding,
     NativeTextClientBinding? lfmBinding,
     NativeTextClientBinding? qwenBinding,
+    InferenceClientBinding? inferenceBinding,
     String? externalAcpCommand,
     List<String>? externalAcpArguments,
     Map<String, String>? externalAcpEnvironment,
     String? externalAcpWorkingDirectory,
+    AcpClientServices? externalAcpClientServices,
+    String? externalAcpConversationKey,
+    Future<AcpClient> Function()? externalAcpClientFactory,
+    List<Map<String, Object?>> Function(ToolRegistry)? externalAcpMcpServers,
+    AcpSessionPersistence? externalAcpSessionPersistence,
+    String? externalAcpProviderIdentity,
   }) => HarnessHostConfig(
     backend: backend ?? this.backend,
     model: model ?? this.model,
@@ -364,6 +629,9 @@ final class HarnessHostConfig {
     layaBinding: clearLayaBinding ? null : layaBinding ?? this.layaBinding,
     lfmBinding: clearLfmBinding ? null : lfmBinding ?? this.lfmBinding,
     qwenBinding: clearQwenBinding ? null : qwenBinding ?? this.qwenBinding,
+    inferenceBinding: clearInferenceBinding
+        ? null
+        : inferenceBinding ?? this.inferenceBinding,
     apiKey: clearApiKey ? null : apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
     externalAcpCommand: externalAcpCommand ?? this.externalAcpCommand,
@@ -372,5 +640,19 @@ final class HarnessHostConfig {
         externalAcpEnvironment ?? this.externalAcpEnvironment,
     externalAcpWorkingDirectory:
         externalAcpWorkingDirectory ?? this.externalAcpWorkingDirectory,
+    externalAcpClientServices:
+        externalAcpClientServices ?? this.externalAcpClientServices,
+    externalAcpConversationKey:
+        externalAcpConversationKey ?? this.externalAcpConversationKey,
+    externalAcpClientFactory:
+        externalAcpClientFactory ?? this.externalAcpClientFactory,
+    externalAcpMcpServers: externalAcpMcpServers ?? this.externalAcpMcpServers,
+    externalAcpSessionPersistence:
+        externalAcpSessionPersistence ?? this.externalAcpSessionPersistence,
+    externalAcpProviderIdentity:
+        externalAcpProviderIdentity ?? this.externalAcpProviderIdentity,
+    extraToolsWithContext: clearExtraToolsWithContext
+        ? null
+        : extraToolsWithContext ?? this.extraToolsWithContext,
   );
 }

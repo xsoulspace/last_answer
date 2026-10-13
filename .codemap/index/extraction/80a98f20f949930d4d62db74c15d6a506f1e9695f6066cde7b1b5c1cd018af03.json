@@ -1,0 +1,203 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "80a98f20f949930d4d62db74c15d6a506f1e9695f6066cde7b1b5c1cd018af03",
+  "payload": {
+    "classes": [
+      "BlockedSecureStore"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "complete",
+            "receiver": "readStarted",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 56,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 20,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "BlockedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 55,
+          "end_lineno": 23,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "BlockedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 25,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "BlockedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 60,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 89,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 116,
+              "lineno": 91
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 117,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_credentials.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_gateway_io.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/provider_configuration.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_core/xsoulspace_inference_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_openai/chatgpt_auth.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "SecureMemory"
+        ],
+        "uri": "chatgpt_credentials_test.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:BlockedSecureStore",
+      "field_initialization:BlockedSecureStore:559",
+      "field_initialization:BlockedSecureStore:600",
+      "closure:1001",
+      "closure:2256",
+      "closure:3073"
+    ]
+  },
+  "payload_digest": "b0cfe0e81cbeb83fe5d7885b0d98953ede4ee90c77fe6527a59bb898fb84c39b",
+  "version": 2
+}

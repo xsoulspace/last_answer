@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7581f506b717e456aedd30adfd0ddf422f0ddec31a74bc86a5a1a019d2bc9a86",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/headless_agent_harness.dart::HeadlessAgentHarness.newSession"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8545aa86a38871cdd0a5f238afff12bb0c306b3f102faffb601eacdc3bc010a9",
+  "version": 2
+}

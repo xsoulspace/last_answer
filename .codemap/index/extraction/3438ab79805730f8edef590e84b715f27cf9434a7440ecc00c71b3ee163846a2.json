@@ -1,0 +1,487 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3438ab79805730f8edef590e84b715f27cf9434a7440ecc00c71b3ee163846a2",
+  "payload": {
+    "classes": [
+      "_NoopStorageProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "initWithConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 60,
+          "end_lineno": 23,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "isAuthenticated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 26,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnimplementedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 40,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "createFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 33,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 36,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnimplementedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 40,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          }
+        ],
+        "name": "updateFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 43,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnimplementedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 40,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          }
+        ],
+        "name": "deleteFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 49,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "listDirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 52,
+          "lineno": 51
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 55,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 13,
+          "end_lineno": 61,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 64,
+          "lineno": 63
+        },
+        "static": false,
+        "unit": "_NoopStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "fractionalBetween",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 46,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          }
+        ],
+        "name": "rootLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 70,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DocReplica",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 3,
+              "end_lineno": 76,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "NodeId",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 42,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          }
+        ],
+        "name": "replicaLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 79,
+          "lineno": 72
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DocReplicaStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 3,
+              "end_lineno": 85,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_NoopStorageProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 50,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          }
+        ],
+        "name": "storeLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 87,
+          "lineno": 81
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "stdout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 43,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "rootLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 40,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "stdout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 46,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "replicaLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 43,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeln",
+            "receiver": "stdout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 44,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "storeLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 41,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 30,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "periodic",
+            "receiver": "Timer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 99,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 45,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 101,
+          "lineno": 89
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_NoopStorageProvider",
+      "closure:2916"
+    ]
+  },
+  "payload_digest": "aac7a8cc15ad5f3b1a567519fd8e57bd2745cdaf5ca18f7f151bd347f05db026",
+  "version": 2
+}

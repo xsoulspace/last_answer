@@ -1,0 +1,211 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8f1477a0c8f22ac207a739402c9020372cbf15803e137187ee8cdb44ddc687c4",
+  "payload": {
+    "classes": [
+      "EmojiLocalDataSourceImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 12,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "EmojiLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "loadString",
+            "receiver": "assetBundle",
+            "receiver_constructor": null,
+            "receiver_type": "AssetBundle",
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 5,
+              "end_lineno": 21,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "castFrom",
+            "receiver": "List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 5,
+              "end_lineno": 24,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "emojiList",
+            "receiver_constructor": "List.castFrom",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 45,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "getAllEmoji",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 27,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "EmojiLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "loadString",
+            "receiver": "assetBundle",
+            "receiver_constructor": null,
+            "receiver_type": "AssetBundle",
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 76,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "castFrom",
+            "receiver": "List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 5,
+              "end_lineno": 34,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "emojiList",
+            "receiver_constructor": "List.castFrom",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 45,
+              "end_lineno": 36,
+              "lineno": 36
+            }
+          }
+        ],
+        "name": "getSpecialEmoji",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 37,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "EmojiLocalDataSourceImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../generated/generated.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../interfaces/interfaces.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:EmojiLocalDataSourceImpl"
+    ]
+  },
+  "payload_digest": "0381b758d013491f46f7ae6ab457f9590fc8ab1dd81718363f770d441ef62410",
+  "version": 2
+}

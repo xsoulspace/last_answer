@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a534a0bab8c9f4b35e44ba46bd7555043226b99b1ea2d44a66d7911808074e23",
+  "payload": [
+    [
+      "lib/coding_agent/device_capabilities.dart::DeviceCapabilitySnapshot.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1cba0acf399037bcda304c1f698268de375733760d807a56c6e30723879266bb",
+  "version": 2
+}

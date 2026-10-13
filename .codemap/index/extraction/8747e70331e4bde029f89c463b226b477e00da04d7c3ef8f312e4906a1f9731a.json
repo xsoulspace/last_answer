@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8747e70331e4bde029f89c463b226b477e00da04d7c3ef8f312e4906a1f9731a",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/parsers/byte_utils.dart::_.readUint32LE"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "ed8779fb65e9873f946a51c2d7e8cd633f7072d5cb7ff3570fd14a11279898a6",
+  "version": 2
+}

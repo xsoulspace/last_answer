@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9272a810def866e5e8b834fcf153b558154fe8ff74bc97f266a5c867d2f61ae3",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/project.dart::AgentDocModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "20f922edd16522447c0693dc9048f7855812e2223f70dc26cf765d9d234137ea",
+  "version": 2
+}

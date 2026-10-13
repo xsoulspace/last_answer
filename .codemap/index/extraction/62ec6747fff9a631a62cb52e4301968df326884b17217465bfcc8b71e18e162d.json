@@ -1,0 +1,820 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "62ec6747fff9a631a62cb52e4301968df326884b17217465bfcc8b71e18e162d",
+  "payload": {
+    "classes": [
+      "Protocol"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 15,
+          "end_lineno": 24,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i4.PurchaseAction",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 226,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i5.UserPurchaseInfo",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i6.User",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 36,
+              "end_lineno": 232,
+              "lineno": 232
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 47,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i4.PurchaseAction",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 62,
+              "end_lineno": 235,
+              "lineno": 235
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 49,
+              "end_lineno": 237,
+              "lineno": 237
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i5.UserPurchaseInfo",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 64,
+              "end_lineno": 238,
+              "lineno": 238
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 37,
+              "end_lineno": 240,
+              "lineno": 240
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i6.User",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 52,
+              "end_lineno": 241,
+              "lineno": 241
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i7.RemoteUserModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 47,
+              "end_lineno": 244,
+              "lineno": 244
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i7.PurchaseActionModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 249,
+              "lineno": 249
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i7.RemoteUserModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 63,
+              "end_lineno": 250,
+              "lineno": 250
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 52,
+              "end_lineno": 252,
+              "lineno": 252
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i7.PurchaseActionModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 67,
+              "end_lineno": 253,
+              "lineno": 253
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deserialize",
+            "receiver": "_i3.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 257,
+              "lineno": 257
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i3",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 257,
+              "lineno": 257
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deserialize",
+            "receiver": "_i2.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "super",
+            "name": "deserialize",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 40,
+              "end_lineno": 262,
+              "lineno": 262
+            }
+          }
+        ],
+        "name": "deserialize",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 263,
+          "lineno": 219
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "getClassNameForObject",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 57,
+              "end_lineno": 267,
+              "lineno": 267
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getClassNameForObject",
+            "receiver": "_i2.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 58,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 30,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getClassNameForObject",
+            "receiver": "_i3.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 58,
+              "end_lineno": 288,
+              "lineno": 288
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i3",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 30,
+              "end_lineno": 288,
+              "lineno": 288
+            }
+          }
+        ],
+        "name": "getClassNameForObject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 293,
+          "lineno": 265
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "deserializeByClassName",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 47,
+              "end_lineno": 299,
+              "lineno": 299
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "deserialize",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 59,
+              "end_lineno": 302,
+              "lineno": 302
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "deserialize",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 63,
+              "end_lineno": 305,
+              "lineno": 305
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "deserialize",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 58,
+              "end_lineno": 308,
+              "lineno": 308
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "deserialize",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 60,
+              "end_lineno": 311,
+              "lineno": 311
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "deserialize",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 314,
+              "lineno": 314
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "dataClassName",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 46,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "dataClassName",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 53,
+              "end_lineno": 317,
+              "lineno": 317
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deserializeByClassName",
+            "receiver": "_i2.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 56,
+              "end_lineno": 318,
+              "lineno": 318
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 318,
+              "lineno": 318
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "dataClassName",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 51,
+              "end_lineno": 320,
+              "lineno": 320
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "dataClassName",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 53,
+              "end_lineno": 321,
+              "lineno": 321
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deserializeByClassName",
+            "receiver": "_i3.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 56,
+              "end_lineno": 322,
+              "lineno": 322
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i3",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 27,
+              "end_lineno": 322,
+              "lineno": 322
+            }
+          },
+          {
+            "kind": "super",
+            "name": "deserializeByClassName",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 45,
+              "end_lineno": 324,
+              "lineno": 324
+            }
+          }
+        ],
+        "name": "deserializeByClassName",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 325,
+          "lineno": 295
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getTableForType",
+            "receiver": "_i3.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 51,
+              "end_lineno": 330,
+              "lineno": 330
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i3",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 32,
+              "end_lineno": 330,
+              "lineno": 330
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getTableForType",
+            "receiver": "_i2.Protocol()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 51,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Protocol",
+            "receiver": "_i2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 32,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          }
+        ],
+        "name": "getTableForType",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 350,
+          "lineno": 327
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getTargetTableDefinitions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 354,
+          "lineno": 352
+        },
+        "static": false,
+        "unit": "Protocol"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getModuleName",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 357,
+          "lineno": 356
+        },
+        "static": false,
+        "unit": "Protocol"
+      }
+    ],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchase.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchases.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i1",
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i2",
+        "show": [],
+        "uri": "package:serverpod/protocol.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i3",
+        "show": [],
+        "uri": "package:serverpod_auth_server/serverpod_auth_server.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i4",
+        "show": [],
+        "uri": "purchase.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i5",
+        "show": [],
+        "uri": "purchases.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i6",
+        "show": [],
+        "uri": "user.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i7",
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:Protocol",
+      "field_initialization:Protocol:952",
+      "field_initialization:Protocol:1003"
+    ]
+  },
+  "payload_digest": "c8da773f9a0120bee8869ffb17c4b08a9aa261f67053795748d76e2aca58060d",
+  "version": 2
+}

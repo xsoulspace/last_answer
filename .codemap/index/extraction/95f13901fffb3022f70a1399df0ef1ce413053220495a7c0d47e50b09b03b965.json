@@ -1,0 +1,898 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "95f13901fffb3022f70a1399df0ef1ce413053220495a7c0d47e50b09b03b965",
+  "payload": {
+    "classes": [
+      "MeshTaskConsoleView",
+      "_MeshTaskConsoleViewState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "MeshTaskConsoleView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_MeshTaskConsoleViewState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 73,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 74,
+          "end_lineno": 32,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "MeshTaskConsoleView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "periodic",
+            "receiver": "Timer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 6,
+              "end_lineno": 49,
+              "lineno": 47
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 50,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "cancel",
+            "receiver": "_refresh",
+            "receiver_constructor": null,
+            "receiver_type": "Timer?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_taskField",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 24,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 57,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_wiring",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 59,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "_wiring?.taskBoard",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 57,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          }
+        ],
+        "name": "_board",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 61,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "_wiring?.selfPeerId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 56,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          }
+        ],
+        "name": "_selfPeerId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 63,
+          "lineno": 63
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "_taskField.text",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 39,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "requestTask",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 79,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "_taskField",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 24,
+              "end_lineno": 80,
+              "lineno": 80
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ensureMeshService",
+            "receiver": "StorageBackendsNotifier.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 30,
+              "end_lineno": 82,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sync",
+            "receiver": "service",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "StorageBackendsNotifier.onSyncCycle",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 49,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 55,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          }
+        ],
+        "name": "_dispatch",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 92,
+          "lineno": 65
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox.shrink",
+            "span": {
+              "col_offset": 52,
+              "end_col_offset": 75,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tasksFor",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 45,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 159,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ValueKey",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 46,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 55,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 7,
+              "end_lineno": 107,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Border",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 66,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 65,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.fromLTRB",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 54,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SingleChildScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 158,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DefaultTextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 157,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "TextStyle",
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 75,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 156,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 119,
+              "lineno": 116
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 75,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 39,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 145,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 136,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 21,
+              "end_lineno": 135,
+              "lineno": 124
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ValueKey",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 60,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "InputDecoration",
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 23,
+              "end_lineno": 133,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 42,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 143,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ValueKey",
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 61,
+              "end_lineno": 139,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 58,
+              "end_lineno": 142,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 154,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 56,
+              "end_lineno": 148,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 153,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_rowLine",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 33,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ValueKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 64,
+              "end_lineno": 151,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 50,
+              "end_lineno": 152,
+              "lineno": 152
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 160,
+          "lineno": 94
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StringBuffer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 62,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "write",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 65,
+              "end_lineno": 172,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "split",
+            "receiver": "headline",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 56,
+              "end_lineno": 172,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 28,
+              "end_lineno": 175,
+              "lineno": 175
+            }
+          }
+        ],
+        "name": "_rowLine",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 176,
+          "lineno": 162
+        },
+        "static": false,
+        "unit": "_MeshTaskConsoleViewState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/agent_doc_surface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_board.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/storage_backends_state.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:MeshTaskConsoleView",
+      "inheritance:_MeshTaskConsoleViewState",
+      "field_initialization:_MeshTaskConsoleViewState:1575",
+      "field_initialization:_MeshTaskConsoleViewState:1650",
+      "field_initialization:_MeshTaskConsoleViewState:1696",
+      "closure:2055",
+      "closure:2628",
+      "closure:3462",
+      "closure:5245",
+      "closure:5540"
+    ]
+  },
+  "payload_digest": "bab80ed720685b00dd3b67cb08ba63db6a79305a4a62a798f2cc2ee3314c9867",
+  "version": 2
+}

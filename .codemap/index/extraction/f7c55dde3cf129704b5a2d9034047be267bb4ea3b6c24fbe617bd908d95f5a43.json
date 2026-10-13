@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f7c55dde3cf129704b5a2d9034047be267bb4ea3b6c24fbe617bd908d95f5a43",
+  "payload": [
+    [
+      "lib/settings/features/storage_backends_button.dart::_StorageBackendsButtonState._meshSection"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "e8e97d09c660be5995e3ed3b7bc935143eccdb02e9ee91c77af4c5faf094e44f",
+  "version": 2
+}

@@ -1,0 +1,61 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7e78b6572baea4caeb9ccf68fb2edaa4cab36cb3bb54e92b072b9218ddac1675",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "bootstrap",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 34,
+              "end_lineno": 5,
+              "lineno": 5
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 35,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/bootstrap.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "4d477299e9d98bae69eda4479068021535bfa79ce3e659c399065837a944c835",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f496e47ab26a072dc3df9ce3fa272660654580c2ccb57fd788aba46cf77a46da",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_agent_service.dart::DocumentAgentDelta.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1d3cdfbf9fc6be4c7db122287ba1bf252115a2b4260fd2a436f4c31aee7bd28a",
+  "version": 2
+}

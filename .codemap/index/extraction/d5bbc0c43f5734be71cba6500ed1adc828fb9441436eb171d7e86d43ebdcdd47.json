@@ -1,0 +1,467 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d5bbc0c43f5734be71cba6500ed1adc828fb9441436eb171d7e86d43ebdcdd47",
+  "payload": {
+    "classes": [
+      "_$AppException",
+      "$AppExceptionCopyWith",
+      "_$AppExceptionCopyWithImpl",
+      "_$$CancelExceptionImplCopyWith",
+      "__$$CancelExceptionImplCopyWithImpl",
+      "_$CancelExceptionImpl",
+      "CancelException"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_$identity",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 34,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "when",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 23,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "whenOrNull",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 28,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "maybeWhen",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 34,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "map",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 39,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "mapOrNull",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 44,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "maybeMap",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 50,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "_$AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 57,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "$AppExceptionCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 63,
+          "lineno": 63
+        },
+        "static": false,
+        "unit": "_$AppExceptionCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 75,
+          "lineno": 73
+        },
+        "static": false,
+        "unit": "_$$CancelExceptionImplCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 84,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "__$$CancelExceptionImplCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 90,
+          "lineno": 90
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 92
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 33,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "==",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 101,
+          "lineno": 97
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "hashCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 104,
+          "lineno": 103
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "cancel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 19,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          }
+        ],
+        "name": "when",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 112,
+          "lineno": 106
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "cancel",
+            "receiver_constructor": null,
+            "receiver_type": "TResult? Function()?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 25,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          }
+        ],
+        "name": "whenOrNull",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 120,
+          "lineno": 114
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "cancel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 21,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orElse",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 19,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          }
+        ],
+        "name": "maybeWhen",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 132,
+          "lineno": 122
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "cancel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 23,
+              "end_lineno": 139,
+              "lineno": 139
+            }
+          }
+        ],
+        "name": "map",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 140,
+          "lineno": 134
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "cancel",
+            "receiver_constructor": null,
+            "receiver_type": "TResult? Function(CancelException value)?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 29,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          }
+        ],
+        "name": "mapOrNull",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 148,
+          "lineno": 142
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "cancel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 25,
+              "end_lineno": 157,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orElse",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 19,
+              "end_lineno": 159,
+              "lineno": 159
+            }
+          }
+        ],
+        "name": "maybeMap",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 160,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "_$CancelExceptionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 164,
+          "lineno": 164
+        },
+        "static": false,
+        "unit": "CancelException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 165,
+          "lineno": 165
+        },
+        "static": false,
+        "unit": "CancelException"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_privateConstructorUsedError"
+    ],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:675",
+      "mixin_dispatch:_$AppException",
+      "inheritance:_$AppExceptionCopyWithImpl",
+      "inheritance:__$$CancelExceptionImplCopyWithImpl",
+      "inheritance:_$CancelExceptionImpl",
+      "inheritance:CancelException"
+    ]
+  },
+  "payload_digest": "defd805510ce06efe2ef9a14bb25e24350aa607ce25cf68305333f99764be3b1",
+  "version": 2
+}

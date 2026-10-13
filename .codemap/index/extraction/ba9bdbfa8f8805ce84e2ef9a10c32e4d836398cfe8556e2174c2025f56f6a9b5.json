@@ -1,0 +1,42 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ba9bdbfa8f8805ce84e2ef9a10c32e4d836398cfe8556e2174c2025f56f6a9b5",
+  "payload": {
+    "diagnostic": {
+      "code": "graph.call_unresolved",
+      "details": {
+        "candidates": []
+      },
+      "excerpt": "debugger.GetDummyTarget.BreakpointCreateByRegex",
+      "level": "warning",
+      "message": "unsupported receiver inference for method BreakpointCreateByRegex",
+      "node_kind": null,
+      "span": {
+        "col_offset": 9,
+        "end_col_offset": 75,
+        "end_lineno": 29,
+        "lineno": 29,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      },
+      "symbol": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module"
+    },
+    "edge": null,
+    "external": null,
+    "unresolved": {
+      "caller": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.__lldb_init_module",
+      "candidates": [],
+      "label": "debugger.GetDummyTarget.BreakpointCreateByRegex",
+      "reason": "unsupported receiver inference for method BreakpointCreateByRegex",
+      "resolution": "unresolved",
+      "span": {
+        "col_offset": 9,
+        "end_col_offset": 75,
+        "end_lineno": 29,
+        "lineno": 29,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      }
+    }
+  },
+  "payload_digest": "a338979dce3faa9880f1e309ae617704d6e23242573486f142347f774f1dff3e",
+  "version": 2
+}

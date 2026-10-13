@@ -1,0 +1,175 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "52de1e91ee2a3c9455b5a81dcb27e4fdccfa7fe44d4c0bd10a6d52a8d72c6801",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "filesystemSupported",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 36,
+          "end_lineno": 9,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "gitOfflineSupported",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 36,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 72,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          }
+        ],
+        "name": "buildFilesystemService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 73,
+          "end_lineno": 16,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 73,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          }
+        ],
+        "name": "buildGitOfflineService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 74,
+          "end_lineno": 20,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "buildMeshService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 42,
+          "end_lineno": 27,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 74,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "_buildMeshService",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 75,
+          "end_lineno": 33,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "meshStorePathOverride",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 37,
+          "end_lineno": 36,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "defaultFilesystemPath",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 51,
+          "end_lineno": 39,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "947b23e80e219094cdfe4db420a9cc598610e266b0064b77614537b5ca372a32",
+  "version": 2
+}

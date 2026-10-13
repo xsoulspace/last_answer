@@ -32,8 +32,11 @@ class OpenedProjectNotifier
     unawaited(context.push(path));
   }
 
-  void onPopProject() {
+  void onPopProject({final ProjectModelId? expectedProjectId}) {
     if (value.isLoading) return;
+    if (expectedProjectId != null && value.value.id != expectedProjectId) {
+      return;
+    }
 
     /// deleting current project, if its empty
     value.value.map(
@@ -58,7 +61,9 @@ class OpenedProjectNotifier
   }
 
   void updateProject(final ProjectModel item) {
-    setValue(value.copyWith(value: item));
+    // A background/addressed page may save while another item is selected.
+    // Persistence belongs to its explicit ID; it must not steal selection.
+    if (value.value.id == item.id) setValue(value.copyWith(value: item));
     dto.projectsNotifier.updateEditingProject(item);
   }
 
@@ -106,10 +111,12 @@ class OpenedProjectNotifier
     loadProject(context: context, project: ProjectModel.emptyChat());
   }
 
-  void deleteProject() {
-    if (value.isLoading) return;
-    final item = value.value;
-    setValue(LoadableContainer(value: ProjectModel.emptyNote));
+  void deleteProject({final ProjectModel? project}) {
+    if (project == null && value.isLoading) return;
+    final item = project ?? value.value;
+    if (value.value.id == item.id) {
+      setValue(LoadableContainer(value: ProjectModel.emptyNote));
+    }
     dto.projectsNotifier.deleteProject(item);
   }
 }

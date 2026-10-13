@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f195fe487921957101fdb3d6161747f4766532caea5b3a4fd1f1b999034be33e",
+  "payload": [
+    [
+      "packages/server/lib/src/endpoints/modules/google_play_client.dart::GooglePlayClient.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "24865a10b09ba8c55845c8384ac650bc184bf522a484183ce66a475df389bae2",
+  "version": 2
+}

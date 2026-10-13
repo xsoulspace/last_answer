@@ -1,0 +1,551 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ca52e75a5b5d0666892adcaa0f8e1b17c25656c47427859f58c2e384f55f2f05",
+  "payload": {
+    "classes": [
+      "_FakeProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "initWithConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 37,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "isAuthenticated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 40,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          }
+        ],
+        "name": "createFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 47,
+          "lineno": 42
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          }
+        ],
+        "name": "updateFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 54,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          }
+        ],
+        "name": "_write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 59,
+          "lineno": 56
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 62,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "files",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          }
+        ],
+        "name": "deleteFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 71,
+          "lineno": 64
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 76,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileEntry",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 53,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          }
+        ],
+        "name": "listDirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 80,
+          "lineno": 73
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 83,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supportsSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 86,
+          "lineno": 85
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "syncLog",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 36,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "delayed",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 43,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "files",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "incoming",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 20,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          }
+        ],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 99,
+          "lineno": 88
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 102,
+          "lineno": 101
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "forTest",
+            "receiver": "MeshStorageService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 1,
+              "end_lineno": 111,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 35,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachTaskBoard",
+            "receiver": "MeshStorageService.forTest(storage: StorageService(provider), selfId: selfId)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 1,
+              "end_col_offset": 52,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeshTaskBoard",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 51,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          }
+        ],
+        "name": "_service",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 53,
+          "end_lineno": 111,
+          "lineno": 105
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 161,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 223,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 250,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 270,
+              "lineno": 252
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 271,
+          "lineno": 113
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_boardFile"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_board.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_storage_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:289",
+      "inheritance:_FakeProvider",
+      "field_initialization:_FakeProvider:1176",
+      "field_initialization:_FakeProvider:1216",
+      "field_initialization:_FakeProvider:1252",
+      "field_initialization:_FakeProvider:1399",
+      "closure:2644",
+      "closure:3631",
+      "closure:5540",
+      "closure:7825",
+      "closure:9006"
+    ]
+  },
+  "payload_digest": "4206618ef009f39d69f28f79427d5425a31f2bde10c31e767a9a6567fd94fc74",
+  "version": 2
+}

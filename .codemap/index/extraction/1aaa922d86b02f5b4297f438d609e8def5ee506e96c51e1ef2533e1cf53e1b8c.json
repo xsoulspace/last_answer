@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1aaa922d86b02f5b4297f438d609e8def5ee506e96c51e1ef2533e1cf53e1b8c",
+  "payload": [
+    [
+      "packages/core/lib/src/state/user_notifier.dart::UserNotifier.resetRemoteUser"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "74fa18dfe9cda6c76739ffc7006d3c6cdf64a9836638221896fbfcc0a96a974d",
+  "version": 2
+}

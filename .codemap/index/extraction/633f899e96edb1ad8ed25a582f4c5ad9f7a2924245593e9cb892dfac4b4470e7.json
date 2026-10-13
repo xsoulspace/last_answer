@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "633f899e96edb1ad8ed25a582f4c5ad9f7a2924245593e9cb892dfac4b4470e7",
+  "payload": [
+    [
+      "lib/note/widgets/note_settings_button.dart::NoteSettingsButton.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "5494c1ec1fbe351c54539ac0883fe0fbe43752e683c043e3e6c70c2985493e23",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "72dd07693416f0246e521762a691d028d81752d53882441d66acdd1972657eac",
+  "payload": [
+    [
+      "lib/home/tags/tags_screen_state.dart::TagsScreenNotifier._updateProjects"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "a90a2b2a13bf4b5fdf4e503f29c21286ff1ae1fd6bb03961e311b679599aa521",
+  "version": 2
+}

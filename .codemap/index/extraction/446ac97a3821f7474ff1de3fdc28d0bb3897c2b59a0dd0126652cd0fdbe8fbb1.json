@@ -1,0 +1,1812 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "446ac97a3821f7474ff1de3fdc28d0bb3897c2b59a0dd0126652cd0fdbe8fbb1",
+  "payload": {
+    "classes": [
+      "_SpyOpenedProject",
+      "_ScriptedPort",
+      "_FailOncePort",
+      "InMemoryAgentConfigPersistence",
+      "_NullPersistence",
+      "_FakeAcpAgent",
+      "_RecordingSink",
+      "_KeyedSecureStore"
+    ],
+    "defs": [
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "loaded",
+            "receiver": "LoadableContainer<ProjectModel>",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 35,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "emptyChat",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 32,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          }
+        ],
+        "name": "value",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 35,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "_SpyOpenedProject"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_updates",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "notifyListeners",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "updateProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 41,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "_SpyOpenedProject"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "noSuchMethod",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 36,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          }
+        ],
+        "name": "noSuchMethod",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 45,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "_SpyOpenedProject"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 49,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "_ScriptedPort"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "chat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "_ScriptedPort"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 42,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          }
+        ],
+        "name": "chat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 69,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "_FailOncePort"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 76,
+          "lineno": 75
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 79,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AgentConfigStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 79,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InMemoryAgentConfigPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 78,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "store",
+            "receiver_constructor": "AgentConfigStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 95,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AgentPlatformConfig",
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 94,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProviderConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 9,
+              "end_lineno": 91,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChatConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 54,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          }
+        ],
+        "name": "_configStore",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 97,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AgentConfigStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 79,
+              "end_lineno": 102,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InMemoryAgentConfigPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 78,
+              "end_lineno": 102,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "store",
+            "receiver_constructor": "AgentConfigStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 120,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AgentPlatformConfig",
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 119,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProviderConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 9,
+              "end_lineno": 110,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChatConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 54,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AgentServerConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 9,
+              "end_lineno": 117,
+              "lineno": 114
+            }
+          }
+        ],
+        "name": "_configStoreWithAcpAgent",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 122,
+          "lineno": 99
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "InMemoryDocumentRepository",
+            "receiver": "hc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 69,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pumpWidget",
+            "receiver": "tester",
+            "receiver_constructor": null,
+            "receiver_type": "WidgetTester",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 169,
+              "lineno": 132
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MultiProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 168,
+              "lineno": 133
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Provider<hc.DocumentRepository>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 67,
+              "end_lineno": 135,
+              "lineno": 135
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Provider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 138,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Provider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 141,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Provider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 146,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "ListenableProvider<AgentConfigStore>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 70,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Provider<ChatInferenceResolver>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 62,
+              "end_lineno": 148,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "ChangeNotifierProvider<OpenedProjectNotifier>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 151,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_SpyOpenedProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 36,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MaterialApp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 167,
+              "lineno": 153
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 9,
+              "end_lineno": 166,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChatDocumentView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 11,
+              "end_lineno": 165,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProjectModelDoc",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 13,
+              "end_lineno": 164,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ProjectModelId",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 50,
+              "end_lineno": 159,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DateTime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 160,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DateTime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 161,
+              "lineno": 161
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pumpAndSettle",
+            "receiver": "tester",
+            "receiver_constructor": null,
+            "receiver_type": "WidgetTester",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 30,
+              "end_lineno": 170,
+              "lineno": 170
+            }
+          }
+        ],
+        "name": "_pumpChat",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 171,
+          "lineno": 124
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setUpAll",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 176,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 210,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 249,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 304,
+              "lineno": 251
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "only",
+            "receiver": "TargetPlatformVariant",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 61,
+              "end_lineno": 255,
+              "lineno": 255
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 352,
+              "lineno": 306
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "only",
+            "receiver": "TargetPlatformVariant",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 61,
+              "end_lineno": 309,
+              "lineno": 309
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 466,
+              "lineno": 354
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "only",
+            "receiver": "TargetPlatformVariant",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 61,
+              "end_lineno": 357,
+              "lineno": 357
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 514,
+              "lineno": 468
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "only",
+            "receiver": "TargetPlatformVariant",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 61,
+              "end_lineno": 471,
+              "lineno": 471
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 515,
+          "lineno": 173
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ChatInferenceResolver",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 1,
+              "end_lineno": 525,
+              "lineno": 518
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AgentConfigStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 64,
+              "end_lineno": 519,
+              "lineno": 519
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_NullPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 63,
+              "end_lineno": 519,
+              "lineno": 519
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProviderConfigurationStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 3,
+              "end_lineno": 523,
+              "lineno": 520
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_KeyedSecureStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 521,
+              "lineno": 521
+            }
+          }
+        ],
+        "name": "_acpOnlyResolver",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 525,
+          "lineno": 517
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 529,
+          "lineno": 528
+        },
+        "static": false,
+        "unit": "_NullPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 46,
+          "end_lineno": 531,
+          "lineno": 530
+        },
+        "static": false,
+        "unit": "_NullPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 541,
+          "lineno": 539
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AcpClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 66,
+              "end_col_offset": 3,
+              "end_lineno": 563,
+              "lineno": 559
+            }
+          }
+        ],
+        "name": "buildClient",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 563,
+          "lineno": 559
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "_output",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 25,
+              "end_lineno": 566,
+              "lineno": 566
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 567,
+          "lineno": 565
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_send",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 59,
+              "end_lineno": 570,
+              "lineno": 570
+            }
+          }
+        ],
+        "name": "respond",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 60,
+          "end_lineno": 570,
+          "lineno": 569
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 36,
+              "end_lineno": 573,
+              "lineno": 573
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "respond",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 53,
+              "end_lineno": 579,
+              "lineno": 579
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "respond",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 57,
+              "end_lineno": 582,
+              "lineno": 582
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 43,
+              "end_lineno": 585,
+              "lineno": 585
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_runPrompt",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 42,
+              "end_lineno": 585,
+              "lineno": 585
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "message",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 50,
+              "end_lineno": 592,
+              "lineno": 592
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cast",
+            "receiver": "(message['result'] as Map)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 71,
+              "end_lineno": 593,
+              "lineno": 593
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "complete",
+            "receiver": "_permissionAnswer",
+            "receiver_constructor": null,
+            "receiver_type": "Completer<Map<String, Object?>>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 41,
+              "end_lineno": 596,
+              "lineno": 596
+            }
+          }
+        ],
+        "name": "_handleClientMessage",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 598,
+          "lineno": 572
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Completer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 54,
+              "end_lineno": 603,
+              "lineno": 603
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_send",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 622,
+              "lineno": 605
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_update",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 55,
+              "end_lineno": 626,
+              "lineno": 626
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_chunk",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 54,
+              "end_lineno": 626,
+              "lineno": 626
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_update",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 38,
+              "end_lineno": 627,
+              "lineno": 627
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_chunk",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 627,
+              "lineno": 627
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "respond",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 50,
+              "end_lineno": 628,
+              "lineno": 628
+            }
+          }
+        ],
+        "name": "_runPrompt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 629,
+          "lineno": 600
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_send",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 74,
+              "end_lineno": 632,
+              "lineno": 632
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "delayed",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 633,
+              "lineno": 633
+            }
+          }
+        ],
+        "name": "_update",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 634,
+          "lineno": 631
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_chunk",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 642,
+          "lineno": 636
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_output",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 58,
+              "end_lineno": 645,
+              "lineno": 645
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 57,
+              "end_lineno": 645,
+              "lineno": 645
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 52,
+              "end_lineno": 645,
+              "lineno": 645
+            }
+          }
+        ],
+        "name": "_send",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 645,
+          "lineno": 644
+        },
+        "static": false,
+        "unit": "_FakeAcpAgent"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 20,
+              "end_lineno": 656,
+              "lineno": 656
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "lines",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 20,
+              "end_lineno": 657,
+              "lineno": 657
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "_onLine",
+            "receiver_constructor": null,
+            "receiver_type": "void Function(String line)?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 24,
+              "end_lineno": 658,
+              "lineno": 658
+            }
+          }
+        ],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 659,
+          "lineno": 653
+        },
+        "static": false,
+        "unit": "_RecordingSink"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 65,
+              "end_lineno": 662,
+              "lineno": 662
+            }
+          }
+        ],
+        "name": "writeln",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 662,
+          "lineno": 661
+        },
+        "static": false,
+        "unit": "_RecordingSink"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 38,
+              "end_lineno": 668,
+              "lineno": 668
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "objects",
+            "receiver_constructor": null,
+            "receiver_type": "Iterable<Object?>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 37,
+              "end_lineno": 668,
+              "lineno": 668
+            }
+          }
+        ],
+        "name": "writeAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 668,
+          "lineno": 664
+        },
+        "static": false,
+        "unit": "_RecordingSink"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 42,
+              "end_lineno": 672,
+              "lineno": 672
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromCharCode",
+            "receiver": "String",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 41,
+              "end_lineno": 672,
+              "lineno": 672
+            }
+          }
+        ],
+        "name": "writeCharCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 672,
+          "lineno": 670
+        },
+        "static": false,
+        "unit": "_RecordingSink"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 676,
+          "lineno": 676
+        },
+        "static": false,
+        "unit": "_KeyedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "_values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 62,
+              "end_lineno": 680,
+              "lineno": 680
+            }
+          }
+        ],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 680,
+          "lineno": 679
+        },
+        "static": false,
+        "unit": "_KeyedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 683,
+          "lineno": 682
+        },
+        "static": false,
+        "unit": "_KeyedSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 686,
+          "lineno": 685
+        },
+        "static": false,
+        "unit": "_KeyedSecureStore"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:dart_acp_toolkit/dart_acp_toolkit.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "hc",
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/agent_doc_surface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_board.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/provider_configuration.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime_registry.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/chat_document_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/chat_inference_resolver.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../coding_agent/pump_until.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_SpyOpenedProject",
+      "field_initialization:_SpyOpenedProject:1370",
+      "inheritance:_ScriptedPort",
+      "inheritance:_FailOncePort",
+      "field_initialization:_FailOncePort:2126",
+      "inheritance:InMemoryAgentConfigPersistence",
+      "closure:4343",
+      "closure:4473",
+      "closure:4597",
+      "closure:5526",
+      "closure:5694",
+      "closure:7016",
+      "closure:8722",
+      "closure:10738",
+      "closure:12345",
+      "closure:16327",
+      "closure:18288",
+      "closure:18348",
+      "inheritance:_NullPersistence",
+      "field_initialization:_FakeAcpAgent:19231",
+      "field_initialization:_FakeAcpAgent:19280",
+      "field_initialization:_FakeAcpAgent:19313",
+      "field_initialization:_FakeAcpAgent:19340",
+      "field_initialization:_FakeAcpAgent:19363",
+      "field_initialization:_FakeAcpAgent:19495",
+      "inheritance:_RecordingSink",
+      "field_initialization:_RecordingSink:22404",
+      "inheritance:_KeyedSecureStore",
+      "field_initialization:_KeyedSecureStore:23050"
+    ]
+  },
+  "payload_digest": "2d503db1e679c3de274fbc37fcf535ecf009f65e4dc570b2d1e704dab5e079bb",
+  "version": 2
+}

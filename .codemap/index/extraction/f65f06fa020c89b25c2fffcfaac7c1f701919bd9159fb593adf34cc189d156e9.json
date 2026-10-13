@@ -1,0 +1,213 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f65f06fa020c89b25c2fffcfaac7c1f701919bd9159fb593adf34cc189d156e9",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DocumentNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 1,
+              "end_lineno": 20,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Block",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 77,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 26,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnchorSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 42,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "utc",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 31,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "utc",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 31,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          }
+        ],
+        "name": "_child",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 20,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 47,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 66,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 77,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 90,
+              "lineno": 79
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 91,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:test/test.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:566",
+      "closure:1258",
+      "closure:1800",
+      "closure:2180"
+    ]
+  },
+  "payload_digest": "34f0953c70ab43b9a1260de9c2fddf5533ed7db0fa0a4250f2fa04a793219c96",
+  "version": 2
+}

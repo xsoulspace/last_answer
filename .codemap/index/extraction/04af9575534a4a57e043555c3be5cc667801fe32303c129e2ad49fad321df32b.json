@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "04af9575534a4a57e043555c3be5cc667801fe32303c129e2ad49fad321df32b",
+  "payload": [
+    [
+      "packages/core/lib/src/services/auth/auth_provider.dart::ProviderResponseModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "34e39a0fd07bced50c652ef3d79fc83877879e286004beb66244f4bad08bca8e",
+  "version": 2
+}

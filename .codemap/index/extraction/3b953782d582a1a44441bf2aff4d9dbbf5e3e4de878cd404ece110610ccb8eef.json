@@ -1,0 +1,630 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3b953782d582a1a44441bf2aff4d9dbbf5e3e4de878cd404ece110610ccb8eef",
+  "payload": {
+    "classes": [
+      "SavedProjects",
+      "SelectedProject",
+      "ViewProbe",
+      "_ViewProbeState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "value",
+            "receiver": "Future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 41,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          }
+        ],
+        "name": "getById",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 10,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "SavedProjects"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "noSuchMethod",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 79,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "noSuchMethod",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "SavedProjects"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "loaded",
+            "receiver": "LoadableContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 76,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 78,
+          "end_lineno": 17,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "SelectedProject"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "onPopProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 19,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "SelectedProject"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "noSuchMethod",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 79,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "noSuchMethod",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 21,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "SelectedProject"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "(ProjectModel.emptyAgent() as ProjectModelDoc)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 32,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "emptyAgent",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 5,
+              "end_col_offset": 30,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProjectModelId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AgentDocModel",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 31,
+              "lineno": 28
+            }
+          }
+        ],
+        "name": "saved",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 6,
+          "end_lineno": 32,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "GoRouter",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 3,
+              "end_lineno": 54,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "GoRoute",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 67,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "GoRoute",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 52,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pumpWidget",
+            "receiver": "tester",
+            "receiver_constructor": null,
+            "receiver_type": "WidgetTester",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 63,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MultiProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 62,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Provider<ProjectsRepository>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 58,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "ChangeNotifierProvider<OpenedProjectNotifier>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "router",
+            "receiver": "MaterialApp",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 53,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "addTearDown",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 29,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "addTearDown",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 29,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          }
+        ],
+        "name": "mount",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 67,
+          "lineno": 34
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 89,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 102,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 111,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 124,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 144,
+              "lineno": 126
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 161,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 179,
+              "lineno": 163
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 180,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 74,
+          "end_lineno": 183,
+          "lineno": 183
+        },
+        "static": false,
+        "unit": "ViewProbe"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_ViewProbeState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 53,
+              "end_lineno": 187,
+              "lineno": 187
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 187,
+          "lineno": 186
+        },
+        "static": false,
+        "unit": "ViewProbe"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "onDispose",
+            "receiver": "widget",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 193,
+              "lineno": 193
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 194,
+              "lineno": 194
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 195,
+          "lineno": 191
+        },
+        "static": false,
+        "unit": "_ViewProbeState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 69,
+              "end_lineno": 198,
+              "lineno": 198
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 198,
+          "lineno": 197
+        },
+        "static": false,
+        "unit": "_ViewProbeState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/project_route.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SavedProjects",
+      "field_initialization:SavedProjects:273",
+      "inheritance:SelectedProject",
+      "closure:1479",
+      "closure:1574",
+      "closure:2275",
+      "closure:2953",
+      "closure:3448",
+      "closure:3890",
+      "closure:4434",
+      "closure:5240",
+      "closure:5849",
+      "inheritance:ViewProbe",
+      "inheritance:_ViewProbeState"
+    ]
+  },
+  "payload_digest": "f72278be888d472ff9190a1afd6e818d984b9e2d45b39e40d3e309963c9826b9",
+  "version": 2
+}

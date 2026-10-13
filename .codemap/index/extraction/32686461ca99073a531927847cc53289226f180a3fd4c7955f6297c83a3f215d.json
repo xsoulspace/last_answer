@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "32686461ca99073a531927847cc53289226f180a3fd4c7955f6297c83a3f215d",
+  "payload": [
+    [
+      "lib/_library/widgets/core/macos_appbar.dart::BackTextUniversalAppBar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "698f4259a7a169ea750b3097873f111147da4cbfcf612494930fe48dc9aa6a2c",
+  "version": 2
+}

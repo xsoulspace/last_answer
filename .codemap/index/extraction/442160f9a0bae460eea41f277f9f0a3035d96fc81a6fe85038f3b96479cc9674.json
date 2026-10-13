@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "442160f9a0bae460eea41f277f9f0a3035d96fc81a6fe85038f3b96479cc9674",
+  "payload": [
+    [
+      "lib/_library/widgets/core/faded_rail_page.dart::FadedRailRouteTransitionMixin.buildContent"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "4dc2cc48a8be03c495af8f17a742e8d724a386bd5976cd373cc672ab1894d996",
+  "version": 2
+}

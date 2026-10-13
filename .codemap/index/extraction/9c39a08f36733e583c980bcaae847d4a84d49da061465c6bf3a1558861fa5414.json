@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9c39a08f36733e583c980bcaae847d4a84d49da061465c6bf3a1558861fa5414",
+  "payload": [
+    [
+      "lib/workbench/workbench_scene.dart::_WorkLayer.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "7059e0c68fc33777fad61cde36c743461c6970aa742a91337622416d7df6782e",
+  "version": 2
+}

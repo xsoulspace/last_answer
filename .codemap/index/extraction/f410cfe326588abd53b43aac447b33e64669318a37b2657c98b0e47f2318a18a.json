@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f410cfe326588abd53b43aac447b33e64669318a37b2657c98b0e47f2318a18a",
+  "payload": [
+    [
+      "packages/core/lib/src/generated/intl/S.dart::S.supervisorScheduleDailyAt"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "a7ae6512dff8cc9cbbea9c691e391724ddaaf79b73a7a5541a56a396d028f05c",
+  "version": 2
+}

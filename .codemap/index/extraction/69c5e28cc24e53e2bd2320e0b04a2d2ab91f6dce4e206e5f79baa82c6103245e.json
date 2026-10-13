@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "69c5e28cc24e53e2bd2320e0b04a2d2ab91f6dce4e206e5f79baa82c6103245e",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/foundation/network/models/models.g.dart::_._$nullableGenericFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "e3e571f0ee3597ae7c787c5d38fbb2fabaea86ca0894cffef995179dfc519a86",
+  "version": 2
+}

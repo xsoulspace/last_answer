@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b25239c6cd57c9059fd53b9d635b1bec34c6480f410ae35e8dbee3e0b8569a82",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/interfaces/projects.dart::ProjectsLocalDataSource.put"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "13306a42975cdee02b159aa78641261cffa1067edb8787ba65a5af62a6c341f3",
+  "version": 2
+}

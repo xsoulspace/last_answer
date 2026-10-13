@@ -1,0 +1,204 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "64e78e2a9af8343b5773f252103d4fe07004652134622aa9938261434cee3efb",
+  "payload": {
+    "classes": [
+      "NoteView",
+      "_NoteViewState",
+      "NoteViewBody"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 8,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "NoteView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_NoteViewState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 51,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 11,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "NoteView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "PopScope",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 32,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChangeNotifierProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 31,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 32,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "_NoteViewState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 36,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "NoteViewBody"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 46,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SpecialEmojiKeyboardProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 81,
+              "lineno": 42
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 82,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "NoteViewBody"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/home.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/note/note_view_bloc.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/note/widgets/note_project_side_actionbar.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:NoteView",
+      "inheritance:_NoteViewState",
+      "closure:655",
+      "closure:830",
+      "closure:1018",
+      "inheritance:NoteViewBody",
+      "closure:1472"
+    ]
+  },
+  "payload_digest": "1846f4e3cfb9da27866e1a2af16f3ba53f73e4c746bcd3d14422e1eceab3e897",
+  "version": 2
+}

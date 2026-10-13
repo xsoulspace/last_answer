@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "06492f0b42a243c50fa8447db379d91bdb38f348adee98b7af045c1e7d8440ed",
+  "payload": [
+    [
+      "lib/idea/idea_view_bloc.freezed.dart::_$IdeaViewBlocStateImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "80b35d276b2755d7d22fff9f02cf4d920655a35799060cd34ee3f39cc031d020",
+  "version": 2
+}

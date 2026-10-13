@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8108e171308b264a349e5151e5d1623431b920bd024c2b7f43cbda6de24eeb3c",
+  "payload": [
+    [
+      "test/permission_doc_routing_test.dart::_FakeProvider._write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8fbc2361fd8ac63e861bf334311711b660237584e245ff3826253cc7ea97868e",
+  "version": 2
+}

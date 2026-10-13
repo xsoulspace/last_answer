@@ -1,0 +1,420 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fb339000f1bf67ebe1428893bc6a5799d7f5cbb13e8a0cab5deeb6c24d4eb15a",
+  "payload": {
+    "classes": [
+      "_FakeProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "initWithConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 21,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "isAuthenticated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 24,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "createFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 31,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          }
+        ],
+        "name": "updateFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 38,
+          "lineno": 33
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          }
+        ],
+        "name": "_write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 43,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 46,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "files",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          }
+        ],
+        "name": "deleteFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 76,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileEntry",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 53,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "listDirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 67,
+          "lineno": 66
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supportsSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 70,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "syncLog",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 36,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          }
+        ],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 78,
+          "lineno": 72
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 81,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 123,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 168,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 216,
+              "lineno": 170
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 217,
+          "lineno": 84
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_docId",
+      "_now"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_storage_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:253",
+      "top_level_initialization:547",
+      "inheritance:_FakeProvider",
+      "field_initialization:_FakeProvider:790",
+      "field_initialization:_FakeProvider:830",
+      "closure:2004",
+      "closure:2574",
+      "closure:3718",
+      "closure:5103"
+    ]
+  },
+  "payload_digest": "2f6557088b22521951f02dc42c6c277f0e0a1d14a35ab7f4fd65cf12e1870440",
+  "version": 2
+}

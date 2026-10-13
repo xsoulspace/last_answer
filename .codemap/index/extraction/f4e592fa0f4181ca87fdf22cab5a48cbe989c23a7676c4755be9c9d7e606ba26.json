@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f4e592fa0f4181ca87fdf22cab5a48cbe989c23a7676c4755be9c9d7e606ba26",
+  "payload": [
+    [
+      "packages/tg_last_answer_bot/services/telegram_bot_service.dart::TelegramBotService.onLoad"
+    ],
+    "immutable constructor receiver"
+  ],
+  "payload_digest": "3e9c0f6c2f35702d326ce928761c9e4e9069d6f2b33e95f76cbb054f4dfbe424",
+  "version": 2
+}

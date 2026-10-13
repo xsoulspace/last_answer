@@ -1,0 +1,42 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e02c65e51a12cf8036cd8c5b15833a62650d7a1d26808b34dbeeee7e3fbb8e8b",
+  "payload": {
+    "diagnostic": {
+      "code": "graph.call_unresolved",
+      "details": {
+        "candidates": []
+      },
+      "excerpt": "WriteMemory",
+      "level": "warning",
+      "message": "dynamic receiver call is not modeled",
+      "node_kind": null,
+      "span": {
+        "col_offset": 4,
+        "end_col_offset": 65,
+        "end_lineno": 19,
+        "lineno": 19,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      },
+      "symbol": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.handle_new_rx_page"
+    },
+    "edge": null,
+    "external": null,
+    "unresolved": {
+      "caller": "ios/Flutter/ephemeral/flutter_lldb_helper.py::_.handle_new_rx_page",
+      "candidates": [],
+      "label": "WriteMemory",
+      "reason": "dynamic receiver call is not modeled",
+      "resolution": "unresolved",
+      "span": {
+        "col_offset": 4,
+        "end_col_offset": 65,
+        "end_lineno": 19,
+        "lineno": 19,
+        "path": "ios/Flutter/ephemeral/flutter_lldb_helper.py"
+      }
+    }
+  },
+  "payload_digest": "20a3aafe99d2bd0e9e89f319772d857f338b57d03b0710f31f3edf7cad80e5a8",
+  "version": 2
+}

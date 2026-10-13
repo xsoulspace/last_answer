@@ -1,3 +1,4 @@
+import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/mesh_task_console_view.dart';
@@ -11,7 +12,10 @@ import 'package:lastanswer/settings/views/changelog_view.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class ProjectView extends StatelessWidget {
-  const ProjectView({super.key});
+  const ProjectView({this.project, super.key});
+
+  /// An addressed route retains its projection when another page is opened.
+  final ProjectModel? project;
 
   @override
   Widget build(final BuildContext context) {
@@ -19,12 +23,13 @@ class ProjectView extends StatelessWidget {
         .select<OpenedProjectNotifier, LoadableContainer<ProjectModel>>(
           (final c) => c.value,
         );
-    if (projectContainer.isLoading) {
+    if (project == null && projectContainer.isLoading) {
       return const UiCircularProgress();
     }
 
-    final id = projectContainer.value.id;
-    return projectContainer.value.map(
+    final selected = project ?? projectContainer.value;
+    final id = selected.id;
+    return selected.map(
       idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
       note: (final note) => _AdaptiveView(
         appBar: const _ProjectViewAppBar(),
@@ -80,7 +85,7 @@ class ProjectView extends StatelessWidget {
               ),
             ],
           ),
-          _ => DocView(doc: doc, key: ValueKey(id)),
+          _ => _WorkbenchDocumentHost(doc: doc, key: ValueKey(id)),
         },
       ),
     );
@@ -225,5 +230,59 @@ class _ChangelogViewAppBar extends StatelessWidget {
     onBack: () => context.go(ScreenPaths.home),
     titleStr: context.l10n.changeLog,
     useBackButton: true,
+  );
+}
+
+class _WorkbenchDocumentHost extends StatefulWidget {
+  const _WorkbenchDocumentHost({required this.doc, super.key});
+  final ProjectModelDoc doc;
+  @override
+  State<_WorkbenchDocumentHost> createState() => _WorkbenchDocumentHostState();
+}
+
+class _WorkbenchDocumentHostState extends State<_WorkbenchDocumentHost> {
+  int epoch = 0;
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      Align(
+        alignment: Alignment.centerRight,
+        child: TextButton(
+          key: const ValueKey('open-workbench'),
+          onPressed: () async {
+            final doc = widget.doc;
+            final repo = context.read<hc.DocumentRepository>();
+            final existing = await repo.get(hc.NodeId(doc.id.value));
+            if (existing is hc.DocNotFound) {
+              await repo.save(
+                hc.DocumentNode(
+                  id: hc.NodeId(doc.id.value),
+                  createdAt: doc.createdAt,
+                  updatedAt: doc.updatedAt,
+                  blocks: [
+                    for (final block in doc.blocks)
+                      hc.Block(
+                        id: hc.NodeId(block.id.value),
+                        type: hc.BlockType.values.byName(block.type.name),
+                        content: block.content,
+                        level: block.level,
+                      ),
+                  ],
+                ),
+              );
+            }
+            if (!context.mounted) return;
+            await context.push(
+              '/home/workbench?project=${Uri.encodeComponent(doc.id.value)}',
+            );
+            if (mounted) setState(() => epoch++);
+          },
+          child: const Text('Workbench'),
+        ),
+      ),
+      Expanded(
+        child: DocView(doc: widget.doc, refreshEpoch: epoch),
+      ),
+    ],
   );
 }

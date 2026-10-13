@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bfeb1c977b145b7ba6aa8832ff16f60bae28e78c5ff2df0289e4bf21aafba5ed",
+  "payload": [
+    [
+      "packages/core/lib/src/state_di/global_states_provider.dart::GlobalStatesProvider.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "aaccf4ac3c5ca24066eb21a1a9f61fdd8229dff7006fd607f0e67cb4160fdb1e",
+  "version": 2
+}

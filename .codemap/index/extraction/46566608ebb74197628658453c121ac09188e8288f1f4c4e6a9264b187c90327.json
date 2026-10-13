@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "46566608ebb74197628658453c121ac09188e8288f1f4c4e6a9264b187c90327",
+  "payload": [
+    [
+      "lib/ui_pay/paywall_flow.dart::PurchaseFlagsLocalApi.isPurchaseCongratsSeen"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "8c7a7fad5b6d92ff40158ff147aebc8239025c6f8b8acf4f01a1e616a21655b0",
+  "version": 2
+}

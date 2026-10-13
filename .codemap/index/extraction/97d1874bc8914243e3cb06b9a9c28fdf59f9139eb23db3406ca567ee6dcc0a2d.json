@@ -1,0 +1,444 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "97d1874bc8914243e3cb06b9a9c28fdf59f9139eb23db3406ca567ee6dcc0a2d",
+  "payload": {
+    "classes": [
+      "StyledButtonDecoration",
+      "StyledButton",
+      "LiLinkButtonDecoration",
+      "LiLinkButton",
+      "LinkButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 11,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "StyledButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "[edgeInsets, classes, textStyle, 'cursor-pointer']",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 66,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          }
+        ],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 32,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "StyledButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StyledButtonDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 39,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 39,
+          "lineno": 34
+        },
+        "static": false,
+        "unit": "StyledButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 49,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "StyledButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "button",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 60,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "decoration",
+            "receiver_constructor": null,
+            "receiver_type": "StyledButtonDecoration",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 61,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "StyledButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 71,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "LiLinkButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "LiLinkButtonDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 77,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 78,
+          "end_lineno": 87,
+          "lineno": 86
+        },
+        "static": false,
+        "unit": "LiLinkButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "join",
+            "receiver": "[classes, textStyle, transitions]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 66,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          }
+        ],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 90,
+          "lineno": 89
+        },
+        "static": false,
+        "unit": "LiLinkButtonDecoration"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 98,
+          "lineno": 94
+        },
+        "static": false,
+        "unit": "LiLinkButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "li",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 6,
+              "end_lineno": 112,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LinkButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 111,
+              "lineno": 106
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 113,
+          "lineno": 103
+        },
+        "static": false,
+        "unit": "LiLinkButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 125,
+          "lineno": 117
+        },
+        "static": false,
+        "unit": "LinkButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "raw",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 134,
+          "lineno": 126
+        },
+        "static": false,
+        "unit": "LinkButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "(liDecoration ?? styledDecoration)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 54,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "url",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 34,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "url",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 63,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 56,
+              "end_lineno": 152,
+              "lineno": 152
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "a",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 160,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "button",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 166,
+              "lineno": 162
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 168,
+          "lineno": 142
+        },
+        "static": false,
+        "unit": "LinkButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/client.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/dom.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:landing/app.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:StyledButtonDecoration:316",
+      "field_initialization:StyledButtonDecoration:491",
+      "field_initialization:StyledButtonDecoration:824",
+      "inheritance:StyledButton",
+      "field_initialization:LiLinkButtonDecoration:2041",
+      "field_initialization:LiLinkButtonDecoration:2171",
+      "field_initialization:LiLinkButtonDecoration:2298",
+      "field_initialization:LiLinkButtonDecoration:2378",
+      "inheritance:LiLinkButton",
+      "inheritance:LinkButton",
+      "closure:4608"
+    ]
+  },
+  "payload_digest": "78d24048c5dc57bae0e8af4805763a12a1fb3b12440321077d09a045aa87e671",
+  "version": 2
+}

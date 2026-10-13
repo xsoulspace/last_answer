@@ -1,0 +1,87 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7aeb254aceaf4c40a71ccb61a0cb2f7e310be2a96e245dc8e91006b71674c152",
+  "payload": {
+    "classes": [
+      "_MockRequestContext"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 22,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 23,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:dart_frog/dart_frog.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:mocktail/mocktail.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:test/test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "route",
+        "show": [],
+        "uri": "../../routes/index.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_MockRequestContext",
+      "closure:281"
+    ]
+  },
+  "payload_digest": "f492e8e99caaf66dace47ab4740dab67b96d5429960f5beb6e3df866ff79ae3d",
+  "version": 2
+}

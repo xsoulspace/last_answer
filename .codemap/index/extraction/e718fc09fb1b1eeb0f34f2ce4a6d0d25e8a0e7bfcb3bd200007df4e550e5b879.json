@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e718fc09fb1b1eeb0f34f2ce4a6d0d25e8a0e7bfcb3bd200007df4e550e5b879",
+  "payload": [
+    [
+      "test/doc/acp_agent_runtime_test.dart::_ForwardSink.write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "e9cda01d7faf0524a1823eb863ebdd594971a1eaa175a1a7b77c0e4735ef256e",
+  "version": 2
+}

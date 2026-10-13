@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "147d78d1da64b229502b1c478e1920454a068d30406f418419b8bb534f0967d9",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::AILayoutEngine._calculateAttention"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "16988d23a31f18c14b48bb283406c8cb651786f8ffffa8ca46cde5ecbcdce52f",
+  "version": 2
+}

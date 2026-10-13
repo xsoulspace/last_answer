@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6d32f6731e326d3bdb910b16aaa16fda3d97dbe3c971d74f94499d0b2f9ce130",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::_ProjectTagModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "9f52c05f9ac48d8787cd529f29a48d0940aaa7755ba0728ead723714f9629ddb",
+  "version": 2
+}

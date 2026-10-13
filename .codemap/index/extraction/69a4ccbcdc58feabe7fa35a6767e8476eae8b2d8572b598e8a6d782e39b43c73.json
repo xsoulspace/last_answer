@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "69a4ccbcdc58feabe7fa35a6767e8476eae8b2d8572b598e8a6d782e39b43c73",
+  "payload": [
+    [
+      "packages/core/lib/src/state/projects_paged_requests_builder.dart::RequestProjectsDto.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "1866b5335bcdf65374ddfafbb46a1fefd74682b5335d4d715186bdcf0b740963",
+  "version": 2
+}

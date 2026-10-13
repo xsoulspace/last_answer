@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c2598a6126ffb5fa04da583583540d19fea3b5be6a6386cf90758e8ea87d93a7",
+  "payload": [
+    [
+      "lib/_library/widgets/buttons/cupertino_close_button.dart::CupertinoCloseButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "fd20425188404fd0456fd16096296663452b505fa47604eac1dbe51e5c46ac37",
+  "version": 2
+}

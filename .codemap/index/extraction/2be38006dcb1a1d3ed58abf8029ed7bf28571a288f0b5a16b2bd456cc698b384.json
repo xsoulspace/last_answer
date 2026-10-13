@@ -1,0 +1,10 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2be38006dcb1a1d3ed58abf8029ed7bf28571a288f0b5a16b2bd456cc698b384",
+  "payload": [
+    [],
+    "dynamic or inherited dispatch is outside exact profile"
+  ],
+  "payload_digest": "4a3a303950f50a96047d03b7a7f9be51685015efe4eaf2310932a3ca1ce8b7a7",
+  "version": 2
+}

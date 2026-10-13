@@ -1,0 +1,542 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6d0f884c54dc9ce73574757838bc965301b8334009a2ba6904e39d88dbbc3d5d",
+  "payload": {
+    "classes": [
+      "HomeScreen"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "HomeScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 6,
+              "end_lineno": 171,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 50,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "section",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 49,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 55,
+              "end_lineno": 21,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "h1",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 20,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 59,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 36,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "p",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 31,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 27,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 36,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StyledButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 43,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "StyledButtonDecoration.filled",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 15,
+              "end_lineno": 37,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 46,
+              "end_lineno": 41,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 48,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 58,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 27,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 57,
+              "end_lineno": 132,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "section",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 80,
+              "end_lineno": 131,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BentoGrid",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 130,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "[(title: '- Wait, another note app? 👀', description: 'Yes 😉. You know, sometimes, it\\'s not that hard to get inspiration, ' 'but tooo much waiting for the right app will be open. ' 'And in that moment - thoughts forgotten and time is lost. ' 'So, with Last Answer we\\'ve made it. '), (title: 'Start writing before data is loaded', description: 'Last Answer mission is to reduce any delays between ' 'thought and writing - if you see the buttons ' 'to create a Note or an Idea - you can instantly ⚡️ use ' 'them without waiting.'), (title: 'Offline-first 🏡, your ideas has priority', description: 'To give you fast access to your Notes and Ideas the app loads them as fast as possible, and only then, it loads theme, settings and other preferences. All your data stored in your device.'), (title: 'Make Note', description: 'To convert quickly thoughts to words.'), (title: 'Write Post ', description: 'You can write draft of post in Last Answer by using character limits specific to social networks. For example Discord has limit 2000:)'), (title: 'Brainstorm Idea', description: 'You can use various technics, such as 5 why, six sigmas or similar. Just try it'), (title: 'Share it! ', description: 'Every note is simple plain text which can be easily copied to any app. Ideas a little bit more complex, but they are also support sharing as simple text.'), (title: \"Read Flow\", description: \"We write everyday in messangers, and they have certain flow - to read a chat your eye goes from bottom to up, the same way as you would write on typewriter machine - so as the LastAnswer. Every Note or Idea, designed to feel like a focused chat.\"), (title: 'Updates goes down -& up (if needed)', description: 'Last Answer has auto sorting function - you will see most recent notes are which you edited. Just like in messangers:)'), (title: 'Configurable', description: 'You can change direction of Notes and Ideas in settings. As the Theme and Language.'), (title: 'Backup & Restore', description: 'You can always save all data to one single file and restore from it.')]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 15,
+              "end_lineno": 128,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "section",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 170,
+              "lineno": 134
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 53,
+              "end_lineno": 145,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "h1",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 144,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "text",
+            "receiver": "Component",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 74,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 146,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 66,
+              "end_lineno": 163,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OpenAppButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 154,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "StyledButtonDecoration.filled",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 15,
+              "end_lineno": 152,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "x",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 37,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LinkButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 162,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "LiLinkButtonDecoration.emeraldNormal",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 15,
+              "end_lineno": 161,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "y",
+            "receiver": "TwSpacer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 172,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "HomeScreen"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/dom.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/jaspr.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:landing/app.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:landing/ui_kit/ui_kit.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:HomeScreen",
+      "closure:1515",
+      "closure:5107"
+    ]
+  },
+  "payload_digest": "2e7918426d81130d2115adbb6ee116c15b18ac052b6d1b5b03d4493945562a7c",
+  "version": 2
+}

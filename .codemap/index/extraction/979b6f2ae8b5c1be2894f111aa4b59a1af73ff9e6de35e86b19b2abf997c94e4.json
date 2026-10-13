@@ -1,0 +1,180 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "979b6f2ae8b5c1be2894f111aa4b59a1af73ff9e6de35e86b19b2abf997c94e4",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readAsStringSync",
+            "receiver": "File('lib/home/project_view.dart')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 67,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 48,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "group",
+            "receiver": "RegExp(r'DocFormatIds\\.agent[\\s\\S]{0,400}').firstMatch(src)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 29,
+              "end_lineno": 14,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "firstMatch",
+            "receiver": "RegExp(r'DocFormatIds\\.agent[\\s\\S]{0,400}')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 19,
+              "end_lineno": 14,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RegExp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 3,
+              "end_lineno": 14,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "agentBranch",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 52,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "agentBranch",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 43,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 23,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "exit",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 65,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 28,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "673037beb14dc15eb06f22331a577b80bccf435f6eb3fea2a5f3043e60071827",
+  "version": 2
+}

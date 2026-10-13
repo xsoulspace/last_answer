@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b41a092dbe42f50e1289d99ff32424aa7c589809f76757952541c8b92fde8768",
+  "payload": [
+    [
+      "lib/ui_pay/paywall_screen.dart::_MessageCard.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "ae6d84c9d17d8211b79abd2a3edbbd65787d78c9efd515e96394b88ed1af0d0f",
+  "version": 2
+}

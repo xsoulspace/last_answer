@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e269c78e27b9bd8a2c35e94955443a9a629fd547967163b3673b4f235fa30b31",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_agent_service.dart::DocumentAgentCompleted.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c6ecc028e19c549b3009a869a3a8f2d3bf2da2b57002a1c8d346969be870a2ea",
+  "version": 2
+}

@@ -1,0 +1,124 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "517694aa381fddcf3d48f08274fe37c087e935af026dec82815ebc30d05a7708",
+  "payload": {
+    "classes": [
+      "RemoteUserInitializer"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "GlobalStatesInitializerDto",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 56,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 13,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "RemoteUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "onRemoteUserLoad",
+            "receiver": "dto.purchasesNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 50,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "onUserLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 19,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "RemoteUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_onSessionChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 27,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "RemoteUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 31,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "RemoteUserInitializer"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "77acb404a95c8c355850adee0d3c0131d09d2068f8108b5242e03e876c7595ee",
+  "version": 2
+}

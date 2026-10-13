@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b3081ae89b229c8f4e0182bd6d7dcf9722ed623b5d95ceee473ffa3e117bb4e8",
+  "payload": [
+    [
+      "lib/_library/widgets/core/special_emoji_keyboard.freezed.dart::_$SpecialEmojisKeyboardControllerStateImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "43f97e30d95da76c1029844a5d2a29a6075ef5060a9fc700364b8263d99d5819",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4f3d00a552ea9820b7ceed4040f38cee4dfdc6d6872143bd363a2725a7d5ba49",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/modals/modals.dart::Modals.showActionDialog"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "36f153452b9e210950b5cbaf68eba9f426e926d0ae4323f0606b204ab11041b0",
+  "version": 2
+}

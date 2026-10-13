@@ -1,0 +1,41 @@
+{
+  "project": "2bab96b1-9799-462a-aa65-0d8e92892612",
+  "behaviour": null,
+  "proposals": [
+    {
+      "id": "proposal-1791831471316297-0",
+      "status": "undone",
+      "operation": "return_behaviour",
+      "baseBehaviour": null,
+      "candidate": {
+        "restore": false,
+        "focus": true,
+        "width": 720.0
+      }
+    }
+  ],
+  "observations": [
+    {
+      "event": "leave",
+      "kind": "fresh_execution",
+      "position": {
+        "selected": "project_open",
+        "editor": "2bab96b1-9799-462a-aa65-0d8e92892612-title",
+        "inspect": true,
+        "offset": 0.0,
+        "cursor": -1,
+        "extent": -1,
+        "projection": "document",
+        "revision": "be2666ffca23c7bad84c882a3218ad126f6a0e041ebd6ebf29176d6e6548d73a",
+        "content": "A place to think and build"
+      },
+      "at": "2026-10-12T18:57:52.095936Z"
+    },
+    {
+      "event": "open",
+      "kind": "observed",
+      "restored": false,
+      "at": "2026-10-12T18:57:52.126998Z"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "82547d82b4b2f1d61858582323a17159f1fbfc673e465551ae87c978672a0287",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::$LocalizedTextModelCopyWith.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "818d994b5290b5eb3fbd99d5552531473f53dd103cd618105cd44650ad8638f3",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e43bf976818af75a8fdbd2eedb11d1ba9af162d63ca6e3a7bd4903bb7bb80e37",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/interfaces/user.dart::UserLocalDataSource.getUser"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "685c70c0c52bdad243fc84950d1ab4de3528d80d04a0b216a0a34661727beffb",
+  "version": 2
+}

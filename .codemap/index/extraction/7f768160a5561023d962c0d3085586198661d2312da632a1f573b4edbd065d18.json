@@ -1,0 +1,25 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7f768160a5561023d962c0d3085586198661d2312da632a1f573b4edbd065d18",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "session.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "fdda8c4133c86107e35c3bdc2cbdda74d2d884834838acd6405c6ece968bce89",
+  "version": 2
+}

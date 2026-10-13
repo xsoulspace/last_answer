@@ -1,0 +1,71 @@
+sessions:
+  candidate:
+    transport: osAccessibility
+    uri: ax://bundle/dev.xsoulspace.workbenchCandidate
+scenarios:
+  navigation:
+    steps:
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Open sample article}
+      - act:
+          click: {role: button, name: Open sample article}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Project opening connection}
+      - act:
+          click: {role: button, name: Project opening connection}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Remove restoration}
+      - act:
+          click: {role: button, name: Remove restoration}
+      - wait:
+          timeout: 5
+          checks:
+            - exists: {role: button, name: Cancel connection}
+      - act:
+          click: {role: button, name: Cancel connection}
+      - verify:
+          - absent: {role: button, name: Adopt}
+      - act:
+          click: {role: button, name: Remove restoration}
+      - act:
+          click:
+            role: button
+            name: "Project opening edge. Insert or remove restoration.\nopen → restore → focus"
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Adopt}
+      - act:
+          click: {role: button, name: Adopt}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Undo}
+      - act:
+          click: {role: button, name: Leave (save position)}
+      - act:
+          click: {role: button, name: Reopen with candidate}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Inspect}
+      - act:
+          click: {role: button, name: Project opening connection}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Undo}
+      - act:
+          click: {role: button, name: Undo}
+      - wait:
+          timeout: 10
+          checks:
+            - exists:
+                role: button
+                name: "Project opening edge. Insert or remove restoration.\nopen → restore → focus"

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "be08d8b7e1def228412a61d1e95f1fb4164098ef3f1b641daf28f3f93ab45fa0",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/parsers/byte_utils.dart::_.readVarUint"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "eae3e318e8beeb3f14e46db011d0aed77fdbd27cc732e0a1d829c95c847959c1",
+  "version": 2
+}

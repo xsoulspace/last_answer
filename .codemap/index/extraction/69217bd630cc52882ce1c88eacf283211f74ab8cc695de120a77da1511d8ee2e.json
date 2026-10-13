@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "69217bd630cc52882ce1c88eacf283211f74ab8cc695de120a77da1511d8ee2e",
+  "payload": [
+    [
+      "lib/coding_agent/provider_configuration.dart::SecureValueStore.delete"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "7f45d079c02f078ce7a02f3bc2815d4811bab064530ade1ff8ec0fd1e7b398e9",
+  "version": 2
+}

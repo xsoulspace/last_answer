@@ -1,0 +1,43 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4b42b5ff10a1d01a9118ebdb9949e8f0297bbcd96b2f340e3d0ea3afccfadd86",
+  "payload": {
+    "classes": [
+      "StateInitializer"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "StateInitializer"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:StateInitializer"
+    ]
+  },
+  "payload_digest": "a43c8936b04fa188bcf232f76e194dfce945bb2031712bd4430cdb410a5a8985",
+  "version": 2
+}

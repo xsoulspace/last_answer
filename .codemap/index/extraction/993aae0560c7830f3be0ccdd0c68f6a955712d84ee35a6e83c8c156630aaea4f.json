@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "993aae0560c7830f3be0ccdd0c68f6a955712d84ee35a6e83c8c156630aaea4f",
+  "payload": [
+    [
+      "lib/settings/features/github_sync_state.dart::GithubSyncNotifier._withTarget"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "1b5e995f5f5855a507340bbfc4ef8bc76429e0cbc0365a997f8dad1e366166de",
+  "version": 2
+}

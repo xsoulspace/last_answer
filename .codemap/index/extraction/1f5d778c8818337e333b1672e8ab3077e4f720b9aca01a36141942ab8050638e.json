@@ -1,0 +1,360 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1f5d778c8818337e333b1672e8ab3077e4f720b9aca01a36141942ab8050638e",
+  "payload": {
+    "classes": [
+      "DeviceCapabilitySnapshot"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 32,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "DeviceCapabilitySnapshot"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "detectAll",
+            "receiver": "installationService",
+            "receiver_constructor": null,
+            "receiver_type": "AcpInstallationService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 74,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 60,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_probeLaya",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 64,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DeviceCapabilitySnapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 73,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "endpoint",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 39,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "DateTime.now()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "gather",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 74,
+          "lineno": 34
+        },
+        "static": true,
+        "unit": "DeviceCapabilitySnapshot"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "Client",
+            "receiver": "http",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 46,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "replace",
+            "receiver": "endpoint",
+            "receiver_constructor": null,
+            "receiver_type": "Uri",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 54,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "client.get(health)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 46,
+              "end_lineno": 88,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "get",
+            "receiver": "client",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 22,
+              "end_lineno": 87,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 45,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "client",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 44,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          }
+        ],
+        "name": "_probeLaya",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 76
+        },
+        "static": true,
+        "unit": "DeviceCapabilitySnapshot"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "sampledAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 44,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          }
+        ],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 121,
+          "lineno": 110
+        },
+        "static": false,
+        "unit": "DeviceCapabilitySnapshot"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 47,
+              "end_lineno": 123,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "toJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 46,
+              "end_lineno": 123,
+              "lineno": 123
+            }
+          }
+        ],
+        "name": "toJsonString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 123,
+          "lineno": 123
+        },
+        "static": false,
+        "unit": "DeviceCapabilitySnapshot"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "http",
+        "show": [],
+        "uri": "package:http/http.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/storage_backends_state.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_io/io.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "00eee31c82cd6d14c7109b661a89e6983cc6680cc631239a9f53196a77301b70",
+  "version": 2
+}

@@ -1,0 +1,357 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "09e896f92d7c607157aefb0eac67edaee792b398dd1e7ef74826d2a2eead460a",
+  "payload": {
+    "classes": [
+      "MeaningExperimentEntry",
+      "_MeaningExperimentEntryState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "meaningExperimentEntryLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 8,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "meaningExperimentRefusalLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 36,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "prepare",
+            "receiver": "MeaningExperimentPreparation.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 71,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "(ProjectModel.emptyAgent() as ProjectModelDoc)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 3,
+              "end_lineno": 54,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "emptyAgent",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 40,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "meaningExperimentEntryLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 49,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "localeOf",
+            "receiver": "Localizations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AgentDocModel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 53,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateEditingProject",
+            "receiver": "context.read<ProjectsNotifier>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 60,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 34,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loadProject",
+            "receiver": "context.read<OpenedProjectNotifier>()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 59,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 39,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          }
+        ],
+        "name": "openMeaningExperiment",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 66,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 69,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "MeaningExperimentEntry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_MeaningExperimentEntryState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 79,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 71,
+          "lineno": 70
+        },
+        "static": false,
+        "unit": "MeaningExperimentEntry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 3,
+              "end_lineno": 112,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Key",
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 45,
+              "end_lineno": 79,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 111,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "localeOf",
+            "receiver": "Localizations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 51,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "meaningExperimentEntryLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 110,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "localeOf",
+            "receiver": "Localizations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 45,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 112,
+          "lineno": 77
+        },
+        "static": false,
+        "unit": "_MeaningExperimentEntryState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/meaning_experiment_preparation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:MeaningExperimentEntry",
+      "inheritance:_MeaningExperimentEntryState",
+      "field_initialization:_MeaningExperimentEntryState:2916",
+      "closure:3102"
+    ]
+  },
+  "payload_digest": "2e6dd8d02e544ba900c9e1460203688b0a4861db7c1162462f7aaf53d954cf1b",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7558dbb9a55412ba9b5cf3a2634ddee3928d42949e51b2546e9d5d5cfa771f60",
+  "payload": [
+    [
+      "lib/doc/doc_view.dart::_._stubToNode"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "337b70afff41ad3eb745501c4ed5e1f6f2e001cef40e4d3eb34a268ab7c38df5",
+  "version": 2
+}

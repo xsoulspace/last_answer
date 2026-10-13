@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "404782dc5b44e0d3b9a949f589087bd86427db6c9245695d8c10eb1f9f2973ed",
+  "payload": [
+    [
+      "lib/other/last_answer_app.dart::_AppScaffoldState._initStorageBackends"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "232607ea047428046bf71295fb4844ebcba322e681ca7670316c9385ed94377e",
+  "version": 2
+}

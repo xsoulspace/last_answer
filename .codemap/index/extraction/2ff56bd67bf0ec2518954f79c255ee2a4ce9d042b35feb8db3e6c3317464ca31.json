@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2ff56bd67bf0ec2518954f79c255ee2a4ce9d042b35feb8db3e6c3317464ca31",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::LiveCursor.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "169e897d638dc52ee2261516efcf2cd27932cdc2c6f33d2700bc7a3fe962cfbf",
+  "version": 2
+}

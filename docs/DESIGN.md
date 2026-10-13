@@ -211,3 +211,13 @@ rules below are therapeutic before they are aesthetic.
   rebuild the widget — validation happens in the action path; measured).
 - Untranslatable visuals: anything the debugState projection cannot
   express is invisible to the agent — split it or drop it.
+
+## Editable workbench projections (ADR 0015)
+
+The workbench connects authoritative project objects, typed relationships and
+supported operations. Documents are editable projections, not conversation containers.
+Direct manipulation exposes endpoints, layers and executable behaviour. Every handle
+changes supported project state or an identified candidate. Personal arrangement
+stays separate. Trackpad, keyboard, touch, Vosges and agent actions converge on the
+same product handlers, with input origin retained. Scene text stays readable and
+all manipulation has an accessible control alternative.

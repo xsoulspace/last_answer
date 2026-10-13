@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e2503349b35e51e886c55b71e0d842ba8bf71f21a64f043670c5112fef1b073e",
+  "payload": [
+    [
+      "packages/core/lib/src/router_paths.dart::ScreenPaths.idea"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "eddf7a3ccca0674244e1899e68f2ae13bad158260398f45c3a5ac2611e22fc01",
+  "version": 2
+}

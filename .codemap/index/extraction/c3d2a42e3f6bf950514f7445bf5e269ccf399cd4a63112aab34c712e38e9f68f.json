@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3d2a42e3f6bf950514f7445bf5e269ccf399cd4a63112aab34c712e38e9f68f",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::$IdeaProjectAnswerModelCopyWith.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "93c6baadf314a89d061d80aed59739e83e4fc652b65110cbed98b22e83ee9a09",
+  "version": 2
+}

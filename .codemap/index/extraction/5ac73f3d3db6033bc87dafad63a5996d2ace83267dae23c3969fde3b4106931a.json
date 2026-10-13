@@ -1,0 +1,222 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5ac73f3d3db6033bc87dafad63a5996d2ace83267dae23c3969fde3b4106931a",
+  "payload": {
+    "classes": [
+      "AppInfoScreen",
+      "_AppInfoScreenState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "AppInfoScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_AppInfoScreenState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 61,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 14,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "AppInfoScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 44,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 125,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 40,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BackTextUniversalAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 28,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Align",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 124,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConstrainedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 123,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 11,
+              "end_lineno": 34,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FutureBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 122,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 126,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "_AppInfoScreenState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:package_info_plus/package_info_plus.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "url_launcher",
+        "show": [],
+        "uri": "package:url_launcher/url_launcher.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AppInfoScreen",
+      "field_initialization:AppInfoScreen:316",
+      "field_initialization:AppInfoScreen:421",
+      "inheritance:_AppInfoScreenState",
+      "field_initialization:_AppInfoScreenState:661",
+      "closure:997",
+      "closure:1336"
+    ]
+  },
+  "payload_digest": "e7b995eca93e8676e6284a31ca8d11b6c728708d71842592dda2ce3f41f51dfd",
+  "version": 2
+}

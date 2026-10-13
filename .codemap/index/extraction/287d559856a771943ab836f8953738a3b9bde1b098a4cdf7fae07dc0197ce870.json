@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "287d559856a771943ab836f8953738a3b9bde1b098a4cdf7fae07dc0197ce870",
+  "payload": [
+    [
+      "lib/settings/features/storage_backends_state.dart::StorageOperationReport.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "8ef8abc014589877a0295e4d935ec7335274e009c584e628e711d469b64844a4",
+  "version": 2
+}

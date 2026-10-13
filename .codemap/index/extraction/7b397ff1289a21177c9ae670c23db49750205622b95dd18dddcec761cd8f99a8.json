@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7b397ff1289a21177c9ae670c23db49750205622b95dd18dddcec761cd8f99a8",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/storage_document_repository.dart::StorageDocumentRepository._removeFromIndex"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "39dd969e62ba93b257d4d77be3b3e79aadb6732487962d22fb6d8107ed1abab6",
+  "version": 2
+}

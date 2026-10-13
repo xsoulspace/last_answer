@@ -1,0 +1,198 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "554af16b283d5c58ca9460739d9ac1af4b023640acee1c6f6f1645ea577f15e6",
+  "payload": {
+    "classes": [
+      "AcpAgentRuntimeRegistry"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "AcpAgentRuntimeRegistry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "putIfAbsent",
+            "receiver": "_runtimes",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, AcpAgentRuntime>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 3,
+              "end_lineno": 21,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "forDoc",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 21,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "AcpAgentRuntimeRegistry"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "maybe",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 24,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "AcpAgentRuntimeRegistry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "forDoc",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 33,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": "forDoc",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "runtime",
+            "receiver_constructor": "forDoc",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 33,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "ensureStarted",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 44,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "AcpAgentRuntimeRegistry"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "_runtimes",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, AcpAgentRuntime>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "_startedAgentKeys",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          }
+        ],
+        "name": "disposeAll",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 53,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "AcpAgentRuntimeRegistry"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_agent_runtime.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:AcpAgentRuntimeRegistry:576",
+      "field_initialization:AcpAgentRuntimeRegistry:629",
+      "closure:820"
+    ]
+  },
+  "payload_digest": "cbd985bd76a0c45124d48a9320416972c4e871352616ff51d2b711e74153f65d",
+  "version": 2
+}

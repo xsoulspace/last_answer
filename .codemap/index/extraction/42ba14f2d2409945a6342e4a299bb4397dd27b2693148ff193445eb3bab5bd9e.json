@@ -1,0 +1,711 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "42ba14f2d2409945a6342e4a299bb4397dd27b2693148ff193445eb3bab5bd9e",
+  "payload": {
+    "classes": [
+      "DocSyncParticipant",
+      "RosterParticipant",
+      "TaskBoardParticipant"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 21,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "DocSyncParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "flush",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 54,
+              "end_col_offset": 67,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "flush",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 26,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "DocSyncParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "absorbRemote",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 55,
+              "end_col_offset": 75,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "absorb",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 29,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "DocSyncParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "compactAll",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 24,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "compact",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 33,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "DocSyncParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 39,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "RosterParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 51,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 33,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "roster",
+            "receiver_constructor": null,
+            "receiver_type": "ActorRoster",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 32,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          }
+        ],
+        "name": "flush",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "RosterParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "listDirectory",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 59,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "entry.name",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 60,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 69,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_opsOfLog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 47,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "roster",
+            "receiver_constructor": null,
+            "receiver_type": "ActorRoster",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 29,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          }
+        ],
+        "name": "absorb",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 68,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "RosterParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "compact",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 71,
+          "lineno": 70
+        },
+        "static": false,
+        "unit": "RosterParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 81,
+          "lineno": 81
+        },
+        "static": false,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 94,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 32,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": "MeshTaskBoard",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          }
+        ],
+        "name": "flush",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 88
+        },
+        "static": false,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 44,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_boardJsonOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 34,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "adoptSnapshot",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": "MeshTaskBoard",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 109,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "Snapshot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 68,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 67,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": "MeshTaskBoard",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 44,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_boardOpsOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 43,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "flush",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 37,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          }
+        ],
+        "name": "absorb",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 116,
+          "lineno": 97
+        },
+        "static": false,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "compact",
+            "receiver": "board",
+            "receiver_constructor": null,
+            "receiver_type": "MeshTaskBoard",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 23,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "flush",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 49,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          }
+        ],
+        "name": "compact",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 123,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 31,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          }
+        ],
+        "name": "_boardJsonOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 134,
+          "lineno": 125
+        },
+        "static": true,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_opsFromList",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 28,
+              "end_lineno": 143,
+              "lineno": 143
+            }
+          }
+        ],
+        "name": "_boardOpsOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 144,
+          "lineno": 136
+        },
+        "static": true,
+        "unit": "TaskBoardParticipant"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 29,
+              "end_lineno": 151,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_opsFromList",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 26,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          }
+        ],
+        "name": "_opsOfLog",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 159,
+          "lineno": 147
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "OpRecord",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 73,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 72,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          }
+        ],
+        "name": "_opsFromList",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 164,
+          "lineno": 161
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/actor_roster.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_board.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_convergence/universal_storage_convergence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_mesh/universal_storage_mesh.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:DocSyncParticipant",
+      "inheritance:RosterParticipant",
+      "field_initialization:RosterParticipant:1637",
+      "inheritance:TaskBoardParticipant"
+    ]
+  },
+  "payload_digest": "e310582d93dfae1b4345e598914e1cfede0940dd41badd7cb6e406ec3914f6fc",
+  "version": 2
+}

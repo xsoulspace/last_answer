@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "723c3b822a2ae6af31471562e952bd2a7fd6e6986b0d0c5591dc581691d9d40e",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/interfaces/notifications.dart::NotificationsDataSource.setLastReadTime"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "edea48ddb3e120089508ae2cb25c8fa97f2eb4176f80f536331002f336d59d8b",
+  "version": 2
+}

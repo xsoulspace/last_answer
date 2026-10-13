@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e7dfb59dc796c7c9b174003dbedf0e8ba2d50f9a3420cdce2b67d11face4fdd9",
+  "payload": [
+    [
+      "tool/gates/world_inspector_harness_gate.dart::_.row"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "8b930f732409b87b75cd77dc3e70fe7ae3aeac36169efed7cbe4badb681b3768",
+  "version": 2
+}

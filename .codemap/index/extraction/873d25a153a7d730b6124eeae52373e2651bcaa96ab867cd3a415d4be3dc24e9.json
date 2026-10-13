@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "873d25a153a7d730b6124eeae52373e2651bcaa96ab867cd3a415d4be3dc24e9",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_service_io.dart::_._atMinutes"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "01e7b38dd6306df554bceef77b1e7d3bb64f6763daa9fc382e59412b6bb83738",
+  "version": 2
+}

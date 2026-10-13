@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "673666186dce8889c1487ecc56261920cc3d5cd6af54faf5283bc6be1cd7a4e2",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::LiveActor.toJson"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "fab9b201921bf27fbcb88cc028da4f448f380e08d04062dca47bcd075d7dab9d",
+  "version": 2
+}

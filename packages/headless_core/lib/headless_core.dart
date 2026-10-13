@@ -18,3 +18,5 @@ export 'src/mesh_aware_document_repository.dart';
 export 'src/perm_request.dart';
 export 'src/replica_document_repository.dart';
 export 'src/storage_document_repository.dart';
+
+export 'src/workbench.dart';

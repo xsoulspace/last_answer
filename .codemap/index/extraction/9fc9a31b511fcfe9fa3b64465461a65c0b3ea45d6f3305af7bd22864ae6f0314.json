@@ -1,0 +1,572 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9fc9a31b511fcfe9fa3b64465461a65c0b3ea45d6f3305af7bd22864ae6f0314",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 64,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "bytes",
+            "receiver_constructor": null,
+            "receiver_type": "Uint8List",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 49,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "bytes",
+            "receiver_constructor": null,
+            "receiver_type": "Uint8List",
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 67,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint64LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 54,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint64LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 54,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 39,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "floor",
+            "receiver": "(bytes.length / defaultPageSize)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 56,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "extractAsciiStrings",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 44,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "trimLeft",
+            "receiver": "s",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 28,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "t",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 27,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "t",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 48,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "extractJsonMaps(t)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 53,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "extractJsonMaps",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 62,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "log",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 69,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "traverseBTree",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 7,
+              "end_lineno": 85,
+              "lineno": 81
+            }
+          }
+        ],
+        "name": "parseIsarFromBytes",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 93,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "bytes",
+            "receiver_constructor": null,
+            "receiver_type": "Uint8List",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 63,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 40,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "page",
+            "receiver_constructor": "bytes.sublist",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 48,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 40,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sublist",
+            "receiver": "page",
+            "receiver_constructor": "bytes.sublist",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 48,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "decodeToStringOrHex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 67,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 66,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "decodeValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 61,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 60,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 41,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "children",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 27,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "readUint32LE",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 40,
+              "end_lineno": 157,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "children",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 27,
+              "end_lineno": 160,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "children",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 25,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "traverseBTree",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 63,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "aggregated",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 40,
+              "end_lineno": 172,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "from",
+            "receiver": "Map",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 39,
+              "end_lineno": 172,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 50,
+              "end_lineno": 179,
+              "lineno": 179
+            }
+          }
+        ],
+        "name": "traverseBTree",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 181,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:developer"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "byte_utils.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "6425c37bc8e1985ec8aaa9f2725d2ad093928f9ce3b8d509816ae58adda8774c",
+  "version": 2
+}

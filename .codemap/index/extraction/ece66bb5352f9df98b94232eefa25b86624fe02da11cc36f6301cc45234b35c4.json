@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ece66bb5352f9df98b94232eefa25b86624fe02da11cc36f6301cc45234b35c4",
+  "payload": [
+    [
+      "lib/settings/features/mesh_relay_host_io.dart::LocalRelayHost.stop"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "9e5f5f226ea5327a499e73d398326003d8beab8a943071c35780fb9ffd24529f",
+  "version": 2
+}

@@ -1,0 +1,207 @@
+{
+  "schema": "automation.job/v1",
+  "id": "job-1791833039447-0",
+  "plan": "/Users/antonio/xs/storage_problem/last_answer/docs/evidence/workbench-2026-10-12/background-navigation-plan.yaml",
+  "scenario": "navigation",
+  "out": "/Users/antonio/xs/storage_problem/last_answer/docs/evidence/workbench-2026-10-12/background-fresh-run",
+  "submittedAt": "2026-10-12T19:23:59.447248Z",
+  "startedAt": "2026-10-12T22:23:59.451525",
+  "finishedAt": "2026-10-12T22:24:03.990019",
+  "status": "succeeded",
+  "report": {
+    "schema": "automation.run/v1",
+    "scenario": "navigation",
+    "startedAt": "2026-10-12T22:23:59.758896",
+    "finishedAt": "2026-10-12T22:24:03.989914",
+    "ok": true,
+    "steps": [
+      {
+        "index": 0,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 887,
+        "detail": {
+          "checks": 1,
+          "polls": 1
+        }
+      },
+      {
+        "index": 1,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 36
+      },
+      {
+        "index": 2,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 744,
+        "detail": {
+          "checks": 1,
+          "polls": 2
+        }
+      },
+      {
+        "index": 3,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 8
+      },
+      {
+        "index": 4,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 169,
+        "detail": {
+          "checks": 1,
+          "polls": 1
+        }
+      },
+      {
+        "index": 5,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 1
+      },
+      {
+        "index": 6,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 86,
+        "detail": {
+          "checks": 1,
+          "polls": 1
+        }
+      },
+      {
+        "index": 7,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 1
+      },
+      {
+        "index": 8,
+        "kind": "verify",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 76,
+        "detail": {
+          "checks": 1,
+          "revision": 6
+        }
+      },
+      {
+        "index": 9,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 0
+      },
+      {
+        "index": 10,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 0
+      },
+      {
+        "index": 11,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 220,
+        "detail": {
+          "checks": 1,
+          "polls": 1
+        }
+      },
+      {
+        "index": 12,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 6
+      },
+      {
+        "index": 13,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 553,
+        "detail": {
+          "checks": 1,
+          "polls": 2
+        }
+      },
+      {
+        "index": 14,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 1
+      },
+      {
+        "index": 15,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 1
+      },
+      {
+        "index": 16,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 658,
+        "detail": {
+          "checks": 1,
+          "polls": 2
+        }
+      },
+      {
+        "index": 17,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 2
+      },
+      {
+        "index": 18,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 153,
+        "detail": {
+          "checks": 1,
+          "polls": 1
+        }
+      },
+      {
+        "index": 19,
+        "kind": "act",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 1
+      },
+      {
+        "index": 20,
+        "kind": "wait",
+        "session": "candidate",
+        "ok": true,
+        "durationMs": 617,
+        "detail": {
+          "checks": 1,
+          "polls": 2
+        }
+      }
+    ]
+  }
+}

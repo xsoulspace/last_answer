@@ -1,0 +1,105 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "eb8c8b13abafa0bc9d67a1cfe84ebca3a43a400abef649acc8cf3ecda4c2e6a7",
+  "payload": {
+    "classes": [
+      "ButtonPopup"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 10,
+          "end_lineno": 16,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "ButtonPopup"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 43,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "MediaQuery",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 36,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stack",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 42,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 40,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 43,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "ButtonPopup"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ButtonPopup"
+    ]
+  },
+  "payload_digest": "492b2ea23986ed384a94770d1e8f9ad068dfed1bb6a90bea4d62c72d930c914a",
+  "version": 2
+}

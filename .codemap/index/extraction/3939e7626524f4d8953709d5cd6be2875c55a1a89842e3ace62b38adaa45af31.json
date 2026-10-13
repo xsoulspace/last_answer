@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3939e7626524f4d8953709d5cd6be2875c55a1a89842e3ace62b38adaa45af31",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::__$AnchorSpanModelCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "9424267a7307852f1a01ce05d1883251e51f9758a978ede38b6f8743a3cab52b",
+  "version": 2
+}

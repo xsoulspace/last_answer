@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7b4e022ebb4a03b093e3d2d5efd0a93acf2903bbd6770c49c618fbbeb5a4b5e5",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/local/doc_body_storage.dart::_.docBodyFromJson"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "cc6802a8e4dc1870ecb0885593a002a672308fa88b453063a792fc5105046d13",
+  "version": 2
+}

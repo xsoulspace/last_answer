@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "087b509b78c5c119e780e4168de06d7c328e8c9dee57b07b1c70fc20ed9f2c6c",
+  "payload": [
+    [
+      "lib/coding_agent/product_dart_runtime.dart::ProductDartRuntime.forApplication"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "950648da0c4d03159e90b6a278a75e1334e7175e675aa6b36d614fa95b5e4978",
+  "version": 2
+}

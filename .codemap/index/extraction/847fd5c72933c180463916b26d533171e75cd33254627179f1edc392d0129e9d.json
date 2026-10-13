@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "847fd5c72933c180463916b26d533171e75cd33254627179f1edc392d0129e9d",
+  "payload": [
+    [
+      "packages/core/lib/src/state/notifications_notifier.dart::NotificationsNotifier.determineUnreadUpdates"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "78dd5ea8e52dde08d567e3256fbadfea325e39dd3f1f6b025b02c3bdd66ca270",
+  "version": 2
+}

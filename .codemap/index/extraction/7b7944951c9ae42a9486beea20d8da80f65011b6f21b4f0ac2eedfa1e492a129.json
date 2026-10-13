@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7b7944951c9ae42a9486beea20d8da80f65011b6f21b4f0ac2eedfa1e492a129",
+  "payload": [
+    [
+      "packages/landing/lib/app.dart::FotterBottomBar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "8fd354eb17610b36dd93ce99c29feed176b2b82604614514db9005d8b00e7f64",
+  "version": 2
+}

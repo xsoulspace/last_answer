@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e2442288b2b587e82d4505b24d86e0fff67e96f99b33672e223a357eebce12f4",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/project.dart::DocBlockModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "70980b263fa5e6ee903ac664280ba0ac8f93eb2dbfa656ef51a6914af17896bb",
+  "version": 2
+}

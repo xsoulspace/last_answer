@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2cb972b47328fbc1f3d4f988c8dc6ba329c6d2e51b17417e169c336aafcca209",
+  "payload": [
+    [
+      "lib/home/widgets/home_app_bar.dart::HomeAppBar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "5fb7d945ec48a6157cb4d53af5ae40b02bc16e2523237a3716297781f5502ce6",
+  "version": 2
+}

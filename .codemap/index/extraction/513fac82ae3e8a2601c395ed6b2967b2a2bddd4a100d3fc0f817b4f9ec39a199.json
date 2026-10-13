@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "513fac82ae3e8a2601c395ed6b2967b2a2bddd4a100d3fc0f817b4f9ec39a199",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/project.dart::_._getTitle"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "d1ece086a5049662ba5486f237e054910a55921cbb7fc504016981e3e3bae690",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "766e3f78280e2b5db2800950cc72ea2dbbda77394a53f32a24b34018230ba628",
+  "payload": [
+    [
+      "lib/home/project_route.dart::_ProjectRouteState._restore"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "a018d4656fa2b558da02dae6b7a3b421658fc2a3a1355fb4f4468d1a0d8aaf13",
+  "version": 2
+}

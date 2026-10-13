@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f3f7d58f239e0b0a9cacf1e9630160c59413f70060df45b95d02c36689c3e3b3",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$LocalizedTextModelToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "ce3c6bc69351d4628a96a53c76ea78b89bda05616d6683d316ce162252db2c83",
+  "version": 2
+}

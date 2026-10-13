@@ -1,0 +1,542 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2785efbc096b25fb113900e6ab92b849cf8409d5ad9b89be02fcb5742399d64c",
+  "payload": {
+    "classes": [
+      "ScriptedSessionHandle"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 23,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "ScriptedSessionHandle"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "unmodifiable",
+            "receiver": "List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 58,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "beats",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 39,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "ScriptedSessionHandle"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SessionSnapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 3,
+              "end_lineno": 53,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "unmodifiable",
+            "receiver": "List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 36,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          }
+        ],
+        "name": "state",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 53,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "ScriptedSessionHandle"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "task",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 32,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_beats",
+            "receiver_constructor": null,
+            "receiver_type": "List<SessionBeat>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 55,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SessionBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 54,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_beats",
+            "receiver_constructor": null,
+            "receiver_type": "List<SessionBeat>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 68,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SessionBeat",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 67,
+              "lineno": 64
+            }
+          }
+        ],
+        "name": "delegateTask",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "ScriptedSessionHandle"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_beats",
+            "receiver_constructor": null,
+            "receiver_type": "List<SessionBeat>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 70,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SessionBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 69,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "replaceAll",
+            "receiver": "title",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 66,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          }
+        ],
+        "name": "answerPermission",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 77
+        },
+        "static": false,
+        "unit": "ScriptedSessionHandle"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "DateTime.fromMillisecondsSinceEpoch(0, isUtc: true)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 109,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromMillisecondsSinceEpoch",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 55,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 32,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          }
+        ],
+        "name": "_seedTime",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 6,
+          "end_lineno": 109,
+          "lineno": 103
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "subtract",
+            "receiver": "DateTime.now().toUtc()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 63,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "DateTime.now()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 18,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 62,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          }
+        ],
+        "name": "_seedPermissionSince",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 64,
+          "end_lineno": 115,
+          "lineno": 111
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SessionBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 1,
+              "end_lineno": 127,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedTime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 26,
+              "end_lineno": 126,
+              "lineno": 126
+            }
+          }
+        ],
+        "name": "_seedBeat",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 127,
+          "lineno": 117
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ScriptedSessionHandle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 3,
+              "end_lineno": 158,
+              "lineno": 134
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 144,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 150,
+              "lineno": 145
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 156,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ScriptedSessionHandle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 3,
+              "end_lineno": 185,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SessionSpend",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 167,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 177,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_seedBeat",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 183,
+              "lineno": 178
+            }
+          }
+        ],
+        "name": "seedScriptedSessions",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 186,
+          "lineno": 129
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "seededMessageSuffix"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ScriptedSessionHandle",
+      "field_initialization:ScriptedSessionHandle:1221",
+      "top_level_initialization:3000"
+    ]
+  },
+  "payload_digest": "d9b2f8d287815100aa15a446c5e6b8c957f54aadeae169c391ef56982542289b",
+  "version": 2
+}

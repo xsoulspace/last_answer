@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bce4c7c63952a6e8a7c3ab0dad6e7d6ab25925e79befcbdfbd573cd4c38c0fb9",
+  "payload": [
+    [
+      "packages/server/lib/src/endpoints/modules/modules.dart::Modules.createModules"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "e7d1fd9d252e02626825939959b533081a960bb055738455ab0c16dd3e85d777",
+  "version": 2
+}

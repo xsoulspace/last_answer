@@ -1,0 +1,78 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "71d856ab81a1da19ffe70df71953f58a92aa8a4b141e5c21446fad7fec51ffe0",
+  "payload": {
+    "classes": [
+      "ProviderResponseModel",
+      "AuthProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 8,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 13,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "AuthProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getCredentials",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "AuthProvider"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "auth_provider.freezed.dart"
+      }
+    ],
+    "unsupported": [
+      "inheritance:ProviderResponseModel"
+    ]
+  },
+  "payload_digest": "9c0c1b093f08835f760b77e622233c4c1c0ca563d6e51688f600182057ec41d3",
+  "version": 2
+}

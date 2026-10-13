@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
+import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';
@@ -10,8 +12,12 @@ class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});
   @override
   Widget build(final BuildContext context) => FeedbackProvider(
-    child: GlobalStatesProvider(
-      builder: (final context) => const Portal(child: _AppScaffold()),
+    child: ChangeNotifierProvider<ChatGptSubscriptionController>(
+      create: (_) =>
+          ChatGptSubscriptionController(credentials: ChatGptCredentials()),
+      child: GlobalStatesProvider(
+        builder: (final context) => const Portal(child: _AppScaffold()),
+      ),
     ),
   );
 }
@@ -44,9 +50,7 @@ class _AppScaffoldState extends State<_AppScaffold> {
       StorageBackendsNotifier.payloadBuilder = () async => jsonEncode(
         DbSaveModel(
           projects: await context.read<ProjectsRepository>().getAll(),
-          tags: (await context.read<TagsRepository>().getAll())
-              .values
-              .toList(),
+          tags: (await context.read<TagsRepository>().getAll()).values.toList(),
         ).toJson(),
       );
       StorageBackendsNotifier.restoreApplier = (final jsonPayload) async {

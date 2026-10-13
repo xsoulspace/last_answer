@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "255b2b7add79af35f0d09d68ac4d8c97d87b89bf3f4ef8cd74ededea6d89b592",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::AILayoutEngine._generateAlternatives"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "d6696e86dbdec10946ac030908d08c54cf5751260152ef5baade06c802d1fc99",
+  "version": 2
+}

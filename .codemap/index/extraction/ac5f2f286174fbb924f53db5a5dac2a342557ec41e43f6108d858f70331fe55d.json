@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ac5f2f286174fbb924f53db5a5dac2a342557ec41e43f6108d858f70331fe55d",
+  "payload": [
+    [
+      "lib/other/update_notification_dialog.dart::ChangelogBody.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "76c45386026f0ea82aa9a21a4ae4960954de7f46ef592c9770626c68643b8b57",
+  "version": 2
+}

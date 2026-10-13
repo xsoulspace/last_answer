@@ -1,0 +1,14 @@
+sessions:
+  candidate:
+    transport: osAccessibility
+    uri: ax://bundle/dev.xsoulspace.workbenchCandidate
+scenarios:
+  inspect:
+    steps:
+      - verify:
+          - exists: {role: button, name: Inspect}
+      - act:
+          click: {role: button, name: Inspect}
+          returnState: true
+      - verify:
+          - exists: {role: button, name: Move down}

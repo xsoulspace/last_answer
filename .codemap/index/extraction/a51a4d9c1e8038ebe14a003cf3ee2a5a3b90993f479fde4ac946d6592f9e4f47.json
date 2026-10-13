@@ -1,0 +1,92 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a51a4d9c1e8038ebe14a003cf3ee2a5a3b90993f479fde4ac946d6592f9e4f47",
+  "payload": {
+    "classes": [
+      "CupertinoIconButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 13,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "CupertinoIconButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "CupertinoButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 28,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 47,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 28,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "CupertinoIconButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:CupertinoIconButton"
+    ]
+  },
+  "payload_digest": "e19da454e70f73bf663f61410f1bfb52420120882f01379780bba94ab2eb384a",
+  "version": 2
+}

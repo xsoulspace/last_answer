@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "feae4ca56a3b8979a4a592ee6e8a8a9c4f2a3b523a62c3fabfbac2997895e95f",
+  "payload": [
+    [
+      "lib/doc/acp_agent_runtime_registry.dart::AcpAgentRuntimeRegistry.forDoc"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "cc9872f2394f20ecd820735eec2d24ae957345bae41931f5e324094910c0d827",
+  "version": 2
+}

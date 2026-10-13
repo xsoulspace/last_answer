@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4c0727c7cc62b0cee8d49af926a20a3e74e3aa0a251bc99d9dc3430e2a142f39",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::_AnchorSpanModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "2d96d6f70b82c705cd92be490a17ab9a637ed41850e5b31ae6d6edb6efae6a41",
+  "version": 2
+}

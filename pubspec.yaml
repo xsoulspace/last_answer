@@ -25,6 +25,16 @@ workspace:
 
 # to update use flutter pub upgrade --major-versions
 dependencies:
+  ecsly: ^0.1.0
+  ecsly_flutter_scene:
+    path: ../../ecsly/plugins/ecsly_flutter_scene
+  universal_automation_interface: ^0.2.0
+  xsoulspace_meaning_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_meaning_core
+  xsoulspace_tooling_runtime:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_tooling_runtime
+  universal_storage_live_apply:
+    path: ../dart_flutter_packages/pkgs/universal_storage_live_apply
   animations: ^2.2.0
   blur: ^4.0.2
   collection: ^1.19.1
@@ -58,6 +68,7 @@ dependencies:
   life_hooks: ^0.3.0
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6
+  crypto: ^3.0.7
   path_to_regexp: ^0.4.0
   provider: ^6.1.5+1
   quiver: ^3.2.2
@@ -98,6 +109,8 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  xsoulspace_inference_openai:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openai
   # The local laya-serve runtime the agent doc's laya backend probes —
   # composed through afm's layaDecisionBinding (local dev train).
   xsoulspace_inference_laya:
@@ -202,6 +215,9 @@ dev_dependencies:
 
   web: any
 dependency_overrides:
+  # Atomic protected-record replacement: no deletion after failed Keychain update.
+  flutter_secure_storage_darwin:
+    path: third_party/flutter_secure_storage_darwin
   # Oka and the ACP seat share the same composition contract as the harness.
   # Keep one local source across their transitive version constraints.
   resource_composition:
@@ -403,6 +419,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/meaning_greeting/
+    - assets/meaning_greeting/lib/
+    - assets/meaning_greeting/test/
+    - assets/meaning_greeting/tool/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

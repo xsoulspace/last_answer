@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "586a91e07b03b5111596d242075a29d3847a9cbebf3d6b677d1d690aaef3d952",
+  "payload": [
+    [
+      "lib/doc/acp_agent_runtime.dart::AcpAgentRuntime.stop"
+    ],
+    "immutable constructor receiver"
+  ],
+  "payload_digest": "59f19ecff892c352f33de0781f7fb73fa26b3e586090a67f0533efe838b5d7ec",
+  "version": 2
+}

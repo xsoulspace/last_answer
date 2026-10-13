@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_binding_sheet.dart';
 import 'package:lastanswer/common_imports.dart';
 
@@ -54,43 +55,60 @@ class HomeAppBar extends StatelessWidget {
     //   );
     // }
 
-    return AppBar(
-      title: SelectableText(
-        greeting.current,
-        style: context.textTheme.labelSmall,
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppBar(
+            title: SelectableText(
+              greeting.current,
+              style: context.textTheme.labelSmall,
+              maxLines: 1,
+            ),
+            actions:
+                [
+                      IconButton(
+                        onPressed: () => context
+                            .read<OpenedProjectNotifier>()
+                            .createChatProject(context),
+                        tooltip: context.l10n.chat,
+                        icon: const Icon(Icons.forum_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () => unawaited(_newAgentDoc(context)),
+                        tooltip: 'New agent doc',
+                        icon: const Icon(Icons.smart_toy_outlined),
+                      ),
+                      IconButton(
+                        onPressed: onInfoTap,
+                        tooltip: 'Info',
+                        icon: const Icon(Icons.info_outline),
+                      ),
+                      IconButton(
+                        onPressed: onSettingsTap,
+                        tooltip: 'Settings',
+                        icon: const Icon(CupertinoIcons.gear),
+                      ),
+                    ]
+                    .map(
+                      (final child) => Padding(
+                        padding: EdgeInsets.only(
+                          right: constraints.maxWidth < 360 ? 0 : 18,
+                        ),
+                        child: child,
+                      ),
+                    )
+                    .toList(),
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: MeaningExperimentEntry(),
+            ),
+          ),
+        ],
       ),
-      actions:
-          [
-                IconButton(
-                  onPressed: () => context
-                      .read<OpenedProjectNotifier>()
-                      .createChatProject(context),
-                  tooltip: context.l10n.chat,
-                  icon: const Icon(Icons.forum_outlined),
-                ),
-                IconButton(
-                  onPressed: () => unawaited(_newAgentDoc(context)),
-                  tooltip: 'New agent doc',
-                  icon: const Icon(Icons.smart_toy_outlined),
-                ),
-                IconButton(
-                  onPressed: onInfoTap,
-                  tooltip: 'Info',
-                  icon: const Icon(Icons.info_outline),
-                ),
-                IconButton(
-                  onPressed: onSettingsTap,
-                  tooltip: 'Settings',
-                  icon: const Icon(CupertinoIcons.gear),
-                ),
-              ]
-              .map(
-                (final child) => Padding(
-                  padding: const EdgeInsets.only(right: 18),
-                  child: child,
-                ),
-              )
-              .toList(),
     );
   }
 }

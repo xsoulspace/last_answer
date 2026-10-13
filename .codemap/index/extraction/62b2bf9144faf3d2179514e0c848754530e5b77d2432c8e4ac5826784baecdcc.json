@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "62b2bf9144faf3d2179514e0c848754530e5b77d2432c8e4ac5826784baecdcc",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::HumanLivePresence._publish"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "2fd2b85c4128203b0e57cfbdee096b31f6feaa6011c8e136e9ef6a78bb9aa42d",
+  "version": 2
+}

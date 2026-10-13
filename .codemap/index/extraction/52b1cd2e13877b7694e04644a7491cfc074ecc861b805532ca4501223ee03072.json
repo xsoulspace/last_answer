@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "52b1cd2e13877b7694e04644a7491cfc074ecc861b805532ca4501223ee03072",
+  "payload": [
+    [
+      "lib/settings/features/mesh_sync_participants.dart::_._opsOfLog"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "79b067129d732c110609a7090140b59cf03875995ba2788cf824af7869500654",
+  "version": 2
+}

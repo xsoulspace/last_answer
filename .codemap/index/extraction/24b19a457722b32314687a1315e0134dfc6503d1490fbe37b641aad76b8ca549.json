@@ -1,0 +1,288 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "24b19a457722b32314687a1315e0134dfc6503d1490fbe37b641aad76b8ca549",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 78,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "_u16",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 79,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 2,
+              "end_lineno": 13,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "_u32",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 3,
+          "end_lineno": 13,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "BytesBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 26,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 17,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 31,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_u16",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 30,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "BytesBuilder()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 14,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forEach",
+            "receiver": "entries",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 30,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toBytes",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Exception",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 52,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Uint8List",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 34,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "setAll",
+            "receiver": "Uint8List(pageSize)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 54,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "buildLeafPage",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 37,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 55,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 56,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/src/data_sources/mutations/parsers/isar_parser.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:653",
+      "closure:1109"
+    ]
+  },
+  "payload_digest": "79038ed9c4055de064f32e4f3f2f722698a6ef1e769ff1d1941a8f4254ea0814",
+  "version": 2
+}

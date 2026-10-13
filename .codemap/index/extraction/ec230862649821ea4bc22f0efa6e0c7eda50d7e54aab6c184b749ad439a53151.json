@@ -1,0 +1,33 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ec230862649821ea4bc22f0efa6e0c7eda50d7e54aab6c184b749ad439a53151",
+  "payload": {
+    "classes": [
+      "WorldSeatLease"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "WorldSeatLease"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "9e42cd6a83767691b577117b737a2760e6f7d537911a9c9cddb76c2e95752961",
+  "version": 2
+}

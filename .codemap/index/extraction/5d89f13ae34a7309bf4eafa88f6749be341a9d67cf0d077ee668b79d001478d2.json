@@ -1,0 +1,328 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5d89f13ae34a7309bf4eafa88f6749be341a9d67cf0d077ee668b79d001478d2",
+  "payload": {
+    "classes": [
+      "RemoteUserModel",
+      "PurchasesModel",
+      "AdsStateModel"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 10,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$RemoteUserModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "fromRawJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$RemoteUserModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 14,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 15,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 17,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isNotEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 18,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "RemoteUserModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 45,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$PurchasesModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 36,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 47,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 48,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "isAfter",
+            "receiver": "subscriptionEndDate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 50,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 49,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          }
+        ],
+        "name": "hasActiveSubscription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 52,
+          "lineno": 50
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isActive",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 54,
+          "lineno": 53
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "isAfter",
+            "receiver": "thisDate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "PurchasesModel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 74,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "mergeWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "PurchasesModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 82,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "AdsStateModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$AdsStateModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 35,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 84,
+          "lineno": 83
+        },
+        "static": false,
+        "unit": "AdsStateModel"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:RemoteUserModel",
+      "field_initialization:RemoteUserModel:546",
+      "inheritance:PurchasesModel",
+      "field_initialization:PurchasesModel:1740",
+      "inheritance:AdsStateModel"
+    ]
+  },
+  "payload_digest": "77d19d260317b1c4b37afe5de7676dbec1b89aec373682cea21f5d086f3d57e4",
+  "version": 2
+}

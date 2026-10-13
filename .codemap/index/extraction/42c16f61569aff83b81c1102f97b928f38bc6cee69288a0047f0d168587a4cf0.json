@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "42c16f61569aff83b81c1102f97b928f38bc6cee69288a0047f0d168587a4cf0",
+  "payload": [
+    [
+      "lib/home/home_screen.dart::_ProjectsListView.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "05d236c0facf40ad80ed0015c5bc0e02c5b77cc8a3123ae0482c8628c8f9bc48",
+  "version": 2
+}

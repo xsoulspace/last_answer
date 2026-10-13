@@ -1,0 +1,299 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d3b0d721db0a4c5e9c75d105e196ddb90b2e0427297fc51eb8d59d0a2e088661",
+  "payload": {
+    "classes": [
+      "FocusBubbleContainerConsts",
+      "FocusBubbleContainer"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "FocusBubbleContainerConsts",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 52,
+              "end_lineno": 6,
+              "lineno": 6
+            }
+          }
+        ],
+        "name": "of",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 6,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 42,
+              "end_lineno": 8,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "theme",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 8,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "brightness",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "withValues",
+            "receiver": "theme.cardColor",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 46,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          }
+        ],
+        "name": "defaultFillColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 14,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "defaultFillFocusColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 16,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "FocusBubbleContainerConsts"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 29,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "FocusBubbleContainer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "FocusBubbleContainerConsts",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 57,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 57,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "getDefaultColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 56,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useValueChanged",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 46,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Focus",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 70,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimatedContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 69,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 9,
+              "end_lineno": 64,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 51,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 71,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "FocusBubbleContainer"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:FocusBubbleContainer",
+      "nested_function:getDefaultColor",
+      "closure:1405",
+      "closure:1525"
+    ]
+  },
+  "payload_digest": "370bc17adcabe33f079b64c7fb68deb6ffe83b8bb0a0d99da80b07720de3c273",
+  "version": 2
+}

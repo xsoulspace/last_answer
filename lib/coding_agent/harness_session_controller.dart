@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +7,7 @@ import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
@@ -179,6 +181,25 @@ final class HarnessSessionController extends ChangeNotifier {
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
   HarnessHost host;
+  final _meaningSessions =
+      <HarnessHost, Map<String, MeaningExperimentController>>{};
+  late final _unboundMeaning = MeaningExperimentController(
+    invoke: (_, _) async => {
+      'ok': false,
+      'error': 'meaning_workspace_required',
+    },
+  )..addListener(notifyListeners);
+
+  MeaningExperimentController get meaning {
+    final session = current;
+    if (session == null) return _unboundMeaning;
+    final owner = host;
+    return (_meaningSessions[owner] ??=
+        {})[session.id] ??= MeaningExperimentController(
+      invoke: (action, arguments) =>
+          owner.meaningAction(session.id, action, arguments),
+    )..addListener(notifyListeners);
+  }
 
   /// PLAN 5c — the doc channel for remote permission routing (ADR 0005
   /// §5). Null until the app wiring attaches one
@@ -225,15 +246,53 @@ final class HarnessSessionController extends ChangeNotifier {
   PendingPermission? pendingPermission;
   String? error;
   bool _started = false;
+  bool _disposed = false;
+  Future<void>? _startOperation;
+  Future<void> _configLane = Future.value();
   Completer<PendingPermission>? _permissionArrived;
   StreamSubscription<PendingPermission>? _permissionSub;
 
-  bool get isRunning => current?.running ?? false;
+  bool get isRunning => (current?.running ?? false) || meaning.busy;
+  Map<String, Object?>? get meaningReviewProposal {
+    final session = current;
+    final pending = pendingPermission;
+    if (session == null ||
+        pending == null ||
+        pending.request.sessionId != session.id) {
+      return null;
+    }
+    final update = host.meaningReviewProposal(session.id);
+    if (update == null) return null;
+    try {
+      final exact = jsonDecode(pending.request.details ?? '') as Map;
+      final payload = update['payload'] as Map?;
+      if (exact['proposalId'] == null ||
+          payload?['proposalId'] != exact['proposalId'] ||
+          payload?['effectDigest'] != exact['effectDigest']) {
+        return null;
+      }
+      return update;
+    } on Object {
+      return null;
+    }
+  }
 
   /// Idempotently starts the daemon and subscribes to its permission
   /// round-trips.
   Future<void> ensureStarted() async {
-    if (_started) return;
+    while (!_disposed) {
+      final lane = _configLane;
+      await lane;
+      if (_disposed) return;
+      await (_startOperation ??= _startOnce().whenComplete(
+        () => _startOperation = null,
+      ));
+      if (identical(lane, _configLane)) return;
+    }
+  }
+
+  Future<void> _startOnce() async {
+    if (_started || _disposed) return;
     if (!_config.openRouterKeyResolvable) {
       error =
           'OpenRouter needs an API key: enter one below or set '
@@ -241,43 +300,126 @@ final class HarnessSessionController extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    _started = true;
+    final owner = host;
     try {
-      _permissionSub = host.permissionRequests.listen(_onPermissionRequest);
-      await host.start();
+      _permissionSub = owner.permissionRequests.listen(_onPermissionRequest);
+      await owner.start();
+      if (_disposed) {
+        await owner.stop();
+        return;
+      }
+      _started = true;
     } on Object catch (e) {
       error = '$e';
       _started = false;
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   /// Switches the backend (AFM on-device ↔ OpenRouter) and restarts the
   /// daemon. Sessions of the old backend are dropped; the NEXT session for
   /// a known workspace RESTORES its world from the per-workspace snapshot
   /// store (R7c `loadSession`) — work continues across the switch.
-  Future<void> switchBackend(final HarnessHostConfig config) async {
+  Future<void> switchBackend(final HarnessHostConfig config) {
+    final operation = _configLane.then((_) => _switchBackendOnce(config));
+    _configLane = operation.then<void>(
+      (_) {},
+      onError: (Object error, StackTrace stack) {},
+    );
+    return operation;
+  }
+
+  Future<void> _switchBackendOnce(final HarnessHostConfig config) async {
+    await _startOperation;
+    if (_disposed) {
+      if (!identical(config.inferenceBinding, _config.inferenceBinding)) {
+        await config.inferenceBinding?.dispose();
+      }
+      return;
+    }
     if (isRunning) {
       error = 'a task is running — cancel it before switching backends.';
       notifyListeners();
       return;
     }
-    if (config.backend == _config.backend &&
+    if (identical(
+          config.extraToolsWithContext,
+          _config.extraToolsWithContext,
+        ) &&
+        config.backend == _config.backend &&
+        config.model == _config.model &&
+        config.meaningProfile == _config.meaningProfile &&
+        config.scripted == _config.scripted &&
+        identical(config.handlerFactory, _config.handlerFactory) &&
+        identical(config.jevBinding, _config.jevBinding) &&
+        identical(config.layaBinding, _config.layaBinding) &&
+        identical(config.lfmBinding, _config.lfmBinding) &&
+        identical(config.qwenBinding, _config.qwenBinding) &&
+        identical(config.inferenceBinding, _config.inferenceBinding) &&
         config.apiKey == _config.apiKey &&
+        config.externalAcpCommand == _config.externalAcpCommand &&
+        _sameList(config.externalAcpArguments, _config.externalAcpArguments) &&
+        mapEquals(
+          config.externalAcpEnvironment,
+          _config.externalAcpEnvironment,
+        ) &&
+        config.externalAcpWorkingDirectory ==
+            _config.externalAcpWorkingDirectory &&
+        config.externalAcpConversationKey ==
+            _config.externalAcpConversationKey &&
+        identical(
+          config.externalAcpClientServices,
+          _config.externalAcpClientServices,
+        ) &&
+        identical(
+          config.externalAcpClientFactory,
+          _config.externalAcpClientFactory,
+        ) &&
+        identical(
+          config.externalAcpMcpServers,
+          _config.externalAcpMcpServers,
+        ) &&
+        identical(
+          config.externalAcpSessionPersistence,
+          _config.externalAcpSessionPersistence,
+        ) &&
+        config.externalAcpProviderIdentity ==
+            _config.externalAcpProviderIdentity &&
         _sameList(config.checkCommand, _config.checkCommand)) {
+      return;
+    }
+    final oldBinding = _config.inferenceBinding;
+    final oldHost = host;
+    await oldHost.stop();
+    if (_disposed) {
+      if (!identical(config.inferenceBinding, oldBinding)) {
+        await config.inferenceBinding?.dispose();
+      }
+      return;
+    }
+    if (oldBinding != null) {
+      if (identical(oldBinding, config.inferenceBinding)) {
+        await oldBinding.releaseSessions();
+      } else {
+        await oldBinding.dispose();
+      }
+    }
+    if (_disposed) {
+      if (!identical(config.inferenceBinding, oldBinding)) {
+        await config.inferenceBinding?.dispose();
+      }
       return;
     }
     _config = config;
     error = null;
     _started = false;
     await _permissionSub?.cancel();
+    if (_disposed) return;
     _permissionSub = null;
     pendingPermission = null;
     current = null;
     workspaces.clear();
-    final oldHost = host;
     host = HarnessHost(config: config);
-    unawaited(oldHost.stop());
     notifyListeners();
   }
 
@@ -285,17 +427,20 @@ final class HarnessSessionController extends ChangeNotifier {
   /// selects it. The world for [cwd] is continued, never duplicated.
   Future<void> createSession(final String cwd) async {
     await ensureStarted();
+    if (_disposed) return;
     if (error != null) {
       notifyListeners();
       return;
     }
     try {
-      final id = await host.newSession(cwd);
+      final owner = host;
+      final id = await owner.newSession(cwd);
+      if (_disposed || !identical(owner, host)) return;
       _adoptSession(cwd, id);
     } on Object catch (e) {
       error = '$e';
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   /// ADR 0006 — opens a NEW session projection on [cwd]'s world. Several
@@ -305,17 +450,20 @@ final class HarnessSessionController extends ChangeNotifier {
   /// hidden.
   Future<void> openNewSession(final String cwd) async {
     await ensureStarted();
+    if (_disposed) return;
     if (error != null) {
       notifyListeners();
       return;
     }
     try {
-      final id = await host.newSession(cwd);
+      final owner = host;
+      final id = await owner.newSession(cwd);
+      if (_disposed || !identical(owner, host)) return;
       _adoptSession(cwd, id, forceNew: true);
     } on Object catch (e) {
       error = '$e';
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   HarnessWorkspaceView _workspace(final String cwd) {
@@ -722,6 +870,23 @@ final class HarnessSessionController extends ChangeNotifier {
 
   void _onPermissionRequest(final PendingPermission pending) {
     pendingPermission = pending;
+    unawaited(
+      pending.future.then((outcome) {
+        if (_disposed) return;
+        final allowed = outcome == AcpPermissionOutcome.allow;
+        final logged = _permissionTurns[pending];
+        final wasUndecided = logged?.allowed == null;
+        if (wasUndecided) logged?.allowed = allowed;
+        if (identical(pendingPermission, pending)) {
+          pendingPermission = null;
+          notifyListeners();
+        }
+        final routed = _routedPermissionIds[pending];
+        if (wasUndecided && routed != null) {
+          unawaited(_answerThroughDoc(routed, allowed));
+        }
+      }),
+    );
     // Project into the open turn's permission log (same state the UI and
     // the agent projection read — one truth, two renderings).
     final open = current?.openTurn;
@@ -788,8 +953,26 @@ final class HarnessSessionController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
+    pendingPermission = null;
+    for (final projection in [
+      _unboundMeaning,
+      for (final sessions in _meaningSessions.values) ...sessions.values,
+    ]) {
+      projection
+        ..removeListener(notifyListeners)
+        ..dispose();
+    }
     unawaited(_permissionSub?.cancel());
-    unawaited(host.stop());
+    unawaited(() async {
+      try {
+        await _configLane;
+        await _startOperation;
+        await host.stop();
+      } finally {
+        await _config.inferenceBinding?.dispose();
+      }
+    }());
     super.dispose();
   }
 

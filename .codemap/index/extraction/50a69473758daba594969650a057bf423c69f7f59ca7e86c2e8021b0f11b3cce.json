@@ -1,0 +1,107 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "50a69473758daba594969650a057bf423c69f7f59ca7e86c2e8021b0f11b3cce",
+  "payload": {
+    "classes": [
+      "UserLocalDataSourceImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 6,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "UserLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getItem",
+            "receiver": "localDbDataSource",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 3,
+              "end_lineno": 13,
+              "lineno": 9
+            }
+          }
+        ],
+        "name": "getUser",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 13,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "UserLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setItem",
+            "receiver": "localDbDataSource",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 21,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "putUser",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 22,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "UserLocalDataSourceImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:UserLocalDataSourceImpl",
+      "closure:644"
+    ]
+  },
+  "payload_digest": "5947ad6e05c05d335cb070711f193ec761771b067e6c867815a56a738ed7fd94",
+  "version": 2
+}

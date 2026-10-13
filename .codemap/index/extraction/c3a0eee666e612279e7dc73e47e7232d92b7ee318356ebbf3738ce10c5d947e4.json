@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3a0eee666e612279e7dc73e47e7232d92b7ee318356ebbf3738ce10c5d947e4",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/foundation/network/models/network_responses.dart::PaginatedPageResponseModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "2c42656e238c2b6670c5d864570090ba7a29b515bb1a15ddd3ac30747a4a3e9f",
+  "version": 2
+}

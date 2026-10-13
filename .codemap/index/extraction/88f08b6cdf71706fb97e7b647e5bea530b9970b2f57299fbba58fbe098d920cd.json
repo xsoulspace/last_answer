@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "88f08b6cdf71706fb97e7b647e5bea530b9970b2f57299fbba58fbe098d920cd",
+  "payload": [
+    [
+      "lib/mcp/chatgpt_mcp_tools.dart::_.chatGptMcpEntries"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "a5e6b97a3bf029304d81a8f2a51a14239e66e29998f4ea7521e8f6bebd5c79a1",
+  "version": 2
+}

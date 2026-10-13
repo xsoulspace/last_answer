@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8dd5596fd0a6683c138ad5100a2e428c6c5c75579c91508ed7de2fdcb520a4f8",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/fractional_order.dart::_.freshKeys"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "aa490366f7f6bf4820a56c7d7ac9abed254eb7d4803e43a48ec2c0964be1c420",
+  "version": 2
+}

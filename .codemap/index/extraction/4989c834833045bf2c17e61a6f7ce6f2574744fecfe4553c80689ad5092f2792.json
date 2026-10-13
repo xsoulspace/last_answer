@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4989c834833045bf2c17e61a6f7ce6f2574744fecfe4553c80689ad5092f2792",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.g.dart::_._$$RemoteUserModelImplToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "c04ba2b754b45d79516aaaa1a697f8ce422c487d283ee4028aecb0f142130b3e",
+  "version": 2
+}

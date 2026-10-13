@@ -1,0 +1,188 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "78c518a4323a0a33f833b7bf1796c289fe54d5861f6ad455051f526b59cf10c7",
+  "payload": {
+    "classes": [
+      "SoftKeyboard"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "FocusScope",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 60,
+              "end_lineno": 9,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "unfocus",
+            "receiver": "currentFocus",
+            "receiver_constructor": "FocusScope.of",
+            "receiver_type": "FocusScopeNode",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 33,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "SoftKeyboard",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 32,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          }
+        ],
+        "name": "closeKeyboard",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 14,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 17,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "SoftKeyboard"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "invokeMethod",
+            "receiver": "SystemChannels.textInput",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 68,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "close",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 24,
+          "lineno": 18
+        },
+        "static": true,
+        "unit": "SoftKeyboard"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "invokeMethod",
+            "receiver": "SystemChannels.textInput",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 68,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "open",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 32,
+          "lineno": 26
+        },
+        "static": true,
+        "unit": "SoftKeyboard"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/services.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "966be82fe91f46fc501dccf09c63ac96a20749407c23d11ad8367d86d81c3ace",
+  "version": 2
+}

@@ -1,0 +1,1010 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "63291c5db35b2bab7285ecb2f1b8ae26cf7dddc46ddb15aba3fff06f45069f36",
+  "payload": {
+    "classes": [
+      "User",
+      "_Undefined",
+      "_UserImpl",
+      "UserTable",
+      "UserInclude",
+      "UserIncludeList",
+      "UserRepository"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 20,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 17,
+          "end_lineno": 27,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "User",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 39,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i1.DateTimeJsonExtension",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 78,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i1.DateTimeJsonExtension",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 78,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 40,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "table",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 56,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 63,
+          "lineno": 58
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "createdAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "updatedAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          }
+        ],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 72,
+          "lineno": 64
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "createdAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 79,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "updatedAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 61,
+              "end_lineno": 80,
+              "lineno": 80
+            }
+          }
+        ],
+        "name": "toJsonForProtocol",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 82,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "UserInclude",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 26,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          }
+        ],
+        "name": "include",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 86,
+          "lineno": 84
+        },
+        "static": true,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "UserIncludeList",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 105,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderBy",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderByList",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByListBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 44,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          }
+        ],
+        "name": "includeList",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 106,
+          "lineno": 88
+        },
+        "static": true,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "_i1.SerializationManager",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 48,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          }
+        ],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 111,
+          "lineno": 108
+        },
+        "static": false,
+        "unit": "User"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 10,
+          "end_lineno": 127,
+          "lineno": 117
+        },
+        "static": false,
+        "unit": "_UserImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "User",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 141,
+              "lineno": 136
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 142,
+          "lineno": 129
+        },
+        "static": false,
+        "unit": "_UserImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "ColumnInt",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 5,
+              "end_lineno": 150,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ColumnDateTime",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 154,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ColumnDateTime",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 158,
+              "lineno": 155
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 159,
+          "lineno": 146
+        },
+        "static": false,
+        "unit": "UserTable"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "columns",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 173,
+          "lineno": 167
+        },
+        "static": false,
+        "unit": "UserTable"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 177,
+          "lineno": 177
+        },
+        "static": false,
+        "unit": "UserInclude"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "includes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 180,
+          "lineno": 179
+        },
+        "static": false,
+        "unit": "UserInclude"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "table",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 183,
+          "lineno": 182
+        },
+        "static": false,
+        "unit": "UserInclude"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "where",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.WhereExpressionBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 196,
+              "lineno": 196
+            }
+          }
+        ],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 197,
+          "lineno": 187
+        },
+        "static": false,
+        "unit": "UserIncludeList"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "includes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 200,
+          "lineno": 199
+        },
+        "static": false,
+        "unit": "UserIncludeList"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "table",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 203,
+          "lineno": 202
+        },
+        "static": false,
+        "unit": "UserIncludeList"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 207,
+          "lineno": 207
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "find",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 227,
+              "lineno": 219
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "where",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.WhereExpressionBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 32,
+              "end_lineno": 220,
+              "lineno": 220
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderBy",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 221,
+              "lineno": 221
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderByList",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByListBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 44,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          }
+        ],
+        "name": "find",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 228,
+          "lineno": 209
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "findFirstRow",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 246,
+              "lineno": 239
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "where",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.WhereExpressionBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 32,
+              "end_lineno": 240,
+              "lineno": 240
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderBy",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 241,
+              "lineno": 241
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "orderByList",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.OrderByListBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 44,
+              "end_lineno": 242,
+              "lineno": 242
+            }
+          }
+        ],
+        "name": "findFirstRow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 247,
+          "lineno": 230
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "findById",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 257,
+              "lineno": 254
+            }
+          }
+        ],
+        "name": "findById",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 258,
+          "lineno": 249
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "insert",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 268,
+              "lineno": 265
+            }
+          }
+        ],
+        "name": "insert",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 269,
+          "lineno": 260
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "insertRow",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 279,
+              "lineno": 276
+            }
+          }
+        ],
+        "name": "insertRow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 280,
+          "lineno": 271
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "update",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 292,
+              "lineno": 288
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "columns",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.ColumnSelections<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 290,
+              "lineno": 290
+            }
+          }
+        ],
+        "name": "update",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 293,
+          "lineno": 282
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "updateRow",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 305,
+              "lineno": 301
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "columns",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.ColumnSelections<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 303,
+              "lineno": 303
+            }
+          }
+        ],
+        "name": "updateRow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 306,
+          "lineno": 295
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "delete",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 316,
+              "lineno": 313
+            }
+          }
+        ],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 317,
+          "lineno": 308
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "deleteRow",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 327,
+              "lineno": 324
+            }
+          }
+        ],
+        "name": "deleteRow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 328,
+          "lineno": 319
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "deleteWhere",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 338,
+              "lineno": 335
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "where",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 26,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          }
+        ],
+        "name": "deleteWhere",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 339,
+          "lineno": 330
+        },
+        "static": false,
+        "unit": "UserRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "count",
+            "receiver": "session.db",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 351,
+              "lineno": 347
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "where",
+            "receiver_constructor": null,
+            "receiver_type": "_i1.WhereExpressionBuilder<UserTable>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 32,
+              "end_lineno": 348,
+              "lineno": 348
+            }
+          }
+        ],
+        "name": "count",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 352,
+          "lineno": 341
+        },
+        "static": false,
+        "unit": "UserRepository"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i1",
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:User",
+      "field_initialization:User:1291",
+      "field_initialization:User:1324",
+      "inheritance:_UserImpl",
+      "inheritance:UserTable",
+      "inheritance:UserInclude",
+      "inheritance:UserIncludeList"
+    ]
+  },
+  "payload_digest": "dc4e95f410289b245c02611f318ea5be90a0279146a1dc12557a43f507f85b8a",
+  "version": 2
+}

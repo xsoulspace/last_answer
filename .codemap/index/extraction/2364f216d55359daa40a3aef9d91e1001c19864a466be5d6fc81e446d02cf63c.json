@@ -1,0 +1,225 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2364f216d55359daa40a3aef9d91e1001c19864a466be5d6fc81e446d02cf63c",
+  "payload": {
+    "classes": [
+      "SupervisorService"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Future<SupervisorService>",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 15,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisorService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 65,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Object",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 45,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Object",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 56,
+              "end_col_offset": 64,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "forDevice",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 15,
+          "lineno": 12
+        },
+        "static": true,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Future<SupervisorView>",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 68,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisorView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 67,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 69,
+          "end_lineno": 18,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "error",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 74,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "saveAutomation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 21,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "error",
+            "receiver": "Future<void>",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 77,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "UnsupportedError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 76,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "deleteAutomation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 78,
+          "end_lineno": 26,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/supervisor_view.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "7e3cd068bb6551eae5b6f2015fdca6da165e3f449f9ccf3c82e322ddaa728c1a",
+  "version": 2
+}

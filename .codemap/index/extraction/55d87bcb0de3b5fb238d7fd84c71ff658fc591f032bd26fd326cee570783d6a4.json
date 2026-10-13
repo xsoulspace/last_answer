@@ -1,0 +1,30 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "55d87bcb0de3b5fb238d7fd84c71ff658fc591f032bd26fd326cee570783d6a4",
+  "payload": {
+    "classes": [
+      "Envs"
+    ],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:Envs:34",
+      "field_initialization:Envs:114"
+    ]
+  },
+  "payload_digest": "6126fd37b517da11f2319bc6a1f219724c85cab8ee0a6d6a984c3e12c3230a8f",
+  "version": 2
+}

@@ -1,0 +1,971 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "13286f15c57f16d1244f062ed94fa7a730d9e0f3caa13af6a25f2cce75c3e445",
+  "payload": {
+    "classes": [
+      "AgentDocumentRole",
+      "AgentDocumentContext",
+      "DocumentAgentRequest",
+      "DocumentAgentEvent",
+      "DocumentAgentDelta",
+      "DocumentAgentCompleted",
+      "DocumentAgentFailed",
+      "DocumentAgentAnswer",
+      "DocumentAgentService"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 15,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "AgentDocumentContext"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 30,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "DocumentAgentRequest"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 39,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "DocumentAgentEvent"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 43,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "DocumentAgentDelta"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 49,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "DocumentAgentCompleted"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 55,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "DocumentAgentFailed"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 75,
+          "end_lineno": 67,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "DocumentAgentAnswer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 81,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_loadNodeWithOptionalParent",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 68,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_complete",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 102,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentAgentRequest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 101,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_contextFor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 57,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_contextFor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 75,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "answerQuestion",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 103,
+          "lineno": 86
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 47,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 74,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 49,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "blockById",
+            "receiver": "parentResult.node",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 78,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 120,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_complete",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 139,
+              "lineno": 123
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentAgentRequest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 138,
+              "lineno": 124
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AgentDocumentContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 135,
+              "lineno": 130
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_contextFor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 64,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          }
+        ],
+        "name": "proposeParentRewrite",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 140,
+          "lineno": 105
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 49,
+              "end_lineno": 151,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "blockById",
+            "receiver": "parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 49,
+              "end_lineno": 153,
+              "lineno": 153
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 74,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 54,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "DateTime.now()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 50,
+              "end_lineno": 161,
+              "lineno": 161
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 42,
+              "end_lineno": 161,
+              "lineno": 161
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 5,
+              "end_lineno": 179,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NodeId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 72,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnchorSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 52,
+              "end_lineno": 167,
+              "lineno": 167
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Block",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 175,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "NodeId",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "repository",
+            "receiver_constructor": null,
+            "receiver_type": "DocumentRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 32,
+              "end_lineno": 180,
+              "lineno": 180
+            }
+          }
+        ],
+        "name": "openDiscussion",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 182,
+          "lineno": 142
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 57,
+              "end_lineno": 192,
+              "lineno": 192
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 74,
+              "end_lineno": 196,
+              "lineno": 196
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 59,
+              "end_lineno": 199,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "dynamic",
+            "name": "() {replaced = true; return block.copyWith(content: rewrittenText);}",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 13,
+              "end_lineno": 207,
+              "lineno": 204
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 73,
+              "end_lineno": 212,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withBlocks",
+            "receiver": "parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 79,
+              "end_lineno": 214,
+              "lineno": 214
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toUtc",
+            "receiver": "DateTime.now()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 56,
+              "end_col_offset": 78,
+              "end_lineno": 214,
+              "lineno": 214
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 56,
+              "end_col_offset": 70,
+              "end_lineno": 214,
+              "lineno": 214
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "repository",
+            "receiver_constructor": null,
+            "receiver_type": "DocumentRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 34,
+              "end_lineno": 215,
+              "lineno": 215
+            }
+          }
+        ],
+        "name": "applyParentRewrite",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 217,
+          "lineno": 184
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 40,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_require",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 43,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          }
+        ],
+        "name": "_loadNodeWithOptionalParent",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 226,
+          "lineno": 219
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "get",
+            "receiver": "repository",
+            "receiver_constructor": null,
+            "receiver_type": "DocumentRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 43,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocFound",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 29,
+              "end_lineno": 232,
+              "lineno": 232
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 50,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 68,
+              "end_lineno": 236,
+              "lineno": 236
+            }
+          }
+        ],
+        "name": "_require",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 238,
+          "lineno": 228
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AgentDocumentContext",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 247,
+              "lineno": 241
+            }
+          }
+        ],
+        "name": "_contextFor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 247,
+          "lineno": 240
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StringBuffer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 251,
+              "lineno": 251
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "inference",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 48,
+              "end_lineno": 252,
+              "lineno": 252
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "events",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 23,
+              "end_lineno": 253,
+              "lineno": 253
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "write",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 256,
+              "lineno": 256
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentAgentAnswer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 67,
+              "end_lineno": 258,
+              "lineno": 258
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 56,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "buffer",
+            "receiver_constructor": "StringBuffer",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 34,
+              "end_lineno": 263,
+              "lineno": 263
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 60,
+              "end_lineno": 265,
+              "lineno": 265
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocumentAgentAnswer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 61,
+              "end_lineno": 267,
+              "lineno": 267
+            }
+          }
+        ],
+        "name": "_complete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 268,
+          "lineno": 249
+        },
+        "static": false,
+        "unit": "DocumentAgentService"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "document_node.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "document_repository.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:DocumentAgentDelta",
+      "inheritance:DocumentAgentCompleted",
+      "inheritance:DocumentAgentFailed",
+      "closure:6357"
+    ]
+  },
+  "payload_digest": "0f2215735d44e650d07fcbadb701ab3e5c4d8a577af0299a49fb875795bead69",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "128d3100d0dd4df0ceaa0fd0dcd4f43a03e5a9dc42ef59620e11c9f6aad904e3",
+  "payload": [
+    [
+      "packages/core/lib/src/state_di/path_utils.dart::_.determineDbPaths"
+    ],
+    "import prefix declaration"
+  ],
+  "payload_digest": "4454257d3636e23c2d1ea652effeb6ddca10412a63be9f396b2abe8fa0b82d02",
+  "version": 2
+}

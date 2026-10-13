@@ -1,0 +1,401 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e8bbc5cbd3361e997812f64c1479233528cecdd130f938afc163bbe0c574cabc",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "buildSemanticSnapshot",
+            "receiver": "SemanticSnapshotService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 65,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pump",
+            "receiver": "tester",
+            "receiver_constructor": null,
+            "receiver_type": "WidgetTester",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pump",
+            "receiver": "tester",
+            "receiver_constructor": null,
+            "receiver_type": "WidgetTester",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsStringSync",
+            "receiver": "File('/tmp/meaning-semantic-regions-$receipt.snapshot.json')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 41,
+              "end_lineno": 24,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 24,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 40,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cast",
+            "receiver": "(result['nodes']! as List)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 64,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          }
+        ],
+        "name": "_snapshot",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 26,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "walk",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 14,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          }
+        ],
+        "name": "_descendants",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 44,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "expect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 51,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "closeTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 50,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "expect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 49,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "closeTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 48,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "expect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 53,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "closeTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 52,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "expect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 55,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "closeTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 54,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          }
+        ],
+        "name": "_bounds",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 52,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 131,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 213,
+              "lineno": 133
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 214,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/coding_agent.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:mcp_toolkit/mcp_toolkit.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "pump_until.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "scripted_write_mover.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "nested_function:walk",
+      "closure:1655",
+      "closure:4530"
+    ]
+  },
+  "payload_digest": "6a68d649724ccceda9d1d5ec7f5a23bcecd0cf337c3b527a26474379c1066e35",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "43b26cf35e0725fdc83510c2bd9975870260789997a0d0ebec492f921d098324",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$DbSaveModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "bf9036a94c064dc1aafecb2190a81df4e98ab86c263e5ba99543ba8c333b5f19",
+  "version": 2
+}

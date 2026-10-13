@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5c42a679c6e0d3edf5f117f406859b5a09150e3f01dfc8815f7f473996f0cc34",
+  "payload": [
+    [
+      "lib/_library/widgets/core/macos_appbar.dart::_AppBarLeading.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "030daa092edc733fb200008942c44c7c5f2eeb591ab3073278c429240e626972",
+  "version": 2
+}

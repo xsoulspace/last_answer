@@ -1,0 +1,227 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "71812f3c338d6c1a0bb3900bf6976dd0a68a31716e8e101582c4d513e2a0ec25",
+  "payload": {
+    "classes": [
+      "LocalUserInitializer"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "GlobalStatesInitializerDto",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 56,
+              "end_lineno": 5,
+              "lineno": 5
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 5,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "LocalUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "runMutations",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 27,
+              "end_lineno": 8,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_onLoadData",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 27,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "onUserLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 12,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "LocalUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "onReset",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "delayed",
+            "receiver": "Future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 52,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 51,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onLocalUserLoad",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 48,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onLocalUserLoad",
+            "receiver": "dto.tagsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 44,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onLocalUserLoad",
+            "receiver": "dto.purchasesNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 49,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "_onLoadData",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 23,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "LocalUserInitializer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "onReset",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          }
+        ],
+        "name": "onUserReset",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 27,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "LocalUserInitializer"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "8145906ab7bbcab8c4a6649823efaace69eed627a6410001e353207d78e63cd1",
+  "version": 2
+}

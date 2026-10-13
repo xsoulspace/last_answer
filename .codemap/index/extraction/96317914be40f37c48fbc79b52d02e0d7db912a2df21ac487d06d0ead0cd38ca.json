@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "96317914be40f37c48fbc79b52d02e0d7db912a2df21ac487d06d0ead0cd38ca",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_view.dart::SupervisorAutomationView.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "08f88779186de369be88d5dacdef68037a39bb1e4b4ae9eda0d860febbaa73ad",
+  "version": 2
+}

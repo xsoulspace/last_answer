@@ -1,0 +1,941 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "135a4d195c323bc2333634e08eae12db120416dd8f5500a62099b2c9dd60c23c",
+  "payload": {
+    "classes": [
+      "PopupButton",
+      "_PopupButtonState",
+      "MobilePopupButtonDialog",
+      "RemoveActionButton",
+      "OutlinedPrimaryButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 14,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "PopupButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_PopupButtonState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 57,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 24,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "PopupButton"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "popupVisible",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 30,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 32,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "widget.onWebClose",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 31,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addPostFrameCallback",
+            "receiver": "WidgetsBinding.instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 44,
+              "lineno": 41
+            }
+          }
+        ],
+        "name": "popupVisible=",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 45,
+          "lineno": 32
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "popupHovered",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 49,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 32,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          }
+        ],
+        "name": "popupHovered=",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 51
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "showAdaptiveDialog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 81,
+              "lineno": 71
+            }
+          }
+        ],
+        "name": "onOpenPopup",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 82,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 49,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 100,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 29,
+              "end_lineno": 105,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MenuAnchor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 134,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Offset",
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 46,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MouseRegion",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 120,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "widget",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 40,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 135,
+          "lineno": 84
+        },
+        "static": false,
+        "unit": "_PopupButtonState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 145,
+          "lineno": 139
+        },
+        "static": false,
+        "unit": "MobilePopupButtonDialog"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 152,
+              "lineno": 152
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RemoveActionButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 74,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "NavigatorPopHandler",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 190,
+              "lineno": 156
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Dialog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 189,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 188,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 11,
+              "end_lineno": 169,
+              "lineno": 164
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 11,
+              "end_lineno": 187,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 77,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 186,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 49,
+              "end_lineno": 174,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "builder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 47,
+              "end_lineno": 174,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Divider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 180,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 184,
+              "lineno": 181
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlinedPrimaryButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 79,
+              "end_lineno": 183,
+              "lineno": 183
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 191,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "MobilePopupButtonDialog"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 202,
+          "lineno": 195
+        },
+        "static": false,
+        "unit": "RemoveActionButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ElevatedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 226,
+              "lineno": 212
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "styleFrom",
+            "receiver": "ElevatedButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 218,
+              "lineno": 213
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.all",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 43,
+              "end_lineno": 216,
+              "lineno": 216
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoundedRectangleBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 79,
+              "end_lineno": 217,
+              "lineno": 217
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 40,
+              "end_lineno": 221,
+              "lineno": 221
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 225,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 40,
+              "end_lineno": 224,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 245,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "styleFrom",
+            "receiver": "TextButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 235,
+              "lineno": 231
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoundedRectangleBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 77,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 38,
+              "end_lineno": 237,
+              "lineno": 237
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 52,
+              "end_lineno": 239,
+              "lineno": 239
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 244,
+              "lineno": 240
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 38,
+              "end_lineno": 242,
+              "lineno": 242
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 246,
+          "lineno": 208
+        },
+        "static": false,
+        "unit": "RemoveActionButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 254,
+          "lineno": 250
+        },
+        "static": false,
+        "unit": "OutlinedPrimaryButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 259,
+              "lineno": 259
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlinedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 277,
+              "lineno": 263
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "styleFrom",
+            "receiver": "OutlinedButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 269,
+              "lineno": 264
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoundedRectangleBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 78,
+              "end_lineno": 267,
+              "lineno": 267
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "circular",
+            "receiver": "BorderRadius",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 52,
+              "end_col_offset": 77,
+              "end_lineno": 267,
+              "lineno": 267
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 45,
+              "end_lineno": 268,
+              "lineno": 268
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 35,
+              "end_lineno": 272,
+              "lineno": 272
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 276,
+              "lineno": 273
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "theme.textTheme.titleLarge",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 78,
+              "end_lineno": 275,
+              "lineno": 275
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 278,
+          "lineno": 257
+        },
+        "static": false,
+        "unit": "OutlinedPrimaryButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PopupButton",
+      "inheritance:_PopupButtonState",
+      "field_initialization:_PopupButtonState:704",
+      "field_initialization:_PopupButtonState:1165",
+      "closure:920",
+      "closure:1060",
+      "closure:1369",
+      "nested_function:close",
+      "closure:1913",
+      "nested_function:onClose",
+      "closure:2507",
+      "closure:2754",
+      "closure:2938",
+      "closure:3016",
+      "closure:3127",
+      "inheritance:MobilePopupButtonDialog",
+      "closure:4072",
+      "closure:4983",
+      "inheritance:RemoveActionButton",
+      "closure:5529",
+      "inheritance:OutlinedPrimaryButton"
+    ]
+  },
+  "payload_digest": "bd08e24c2bf7899547bd679c169d72774261ab71086a1a28de82e1ba10d494fb",
+  "version": 2
+}

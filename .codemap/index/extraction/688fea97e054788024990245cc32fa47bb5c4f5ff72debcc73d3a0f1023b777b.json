@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "688fea97e054788024990245cc32fa47bb5c4f5ff72debcc73d3a0f1023b777b",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$NotificationMessageModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "d20fb516042aef38371e888ed41b45ba6877034329c88f717d8b4d4bdfe58d36",
+  "version": 2
+}

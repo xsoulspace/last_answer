@@ -1,0 +1,211 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "55adca90860711aa525b404ffa1d4182d4dec101050d04a4bc5e2bd850b8f3f8",
+  "payload": {
+    "classes": [
+      "PurchaseAction",
+      "_Undefined",
+      "_PurchaseActionImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 21,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 29,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "PurchaseAction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 39,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "_i1.DateTimeJsonExtension",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 76,
+              "end_lineno": 38,
+              "lineno": 38
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 40,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 61,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "createdAt",
+            "receiver_constructor": null,
+            "receiver_type": "DateTime",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 37,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "toJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 71,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "_i1.SerializationManager",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 48,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "toString",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 76,
+          "lineno": 73
+        },
+        "static": false,
+        "unit": "PurchaseAction"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 10,
+          "end_lineno": 94,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "_PurchaseActionImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "PurchaseAction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 110,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 111,
+          "lineno": 96
+        },
+        "static": false,
+        "unit": "_PurchaseActionImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i1",
+        "show": [],
+        "uri": "package:serverpod_client/serverpod_client.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PurchaseAction",
+      "inheritance:_PurchaseActionImpl"
+    ]
+  },
+  "payload_digest": "56c588f778f99b7d595f475635eec37748f0dc38c053eeb8d656bd93b3a0e23d",
+  "version": 2
+}

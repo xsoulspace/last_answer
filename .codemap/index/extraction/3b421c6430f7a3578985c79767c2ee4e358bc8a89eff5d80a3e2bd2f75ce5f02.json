@@ -1,0 +1,223 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3b421c6430f7a3578985c79767c2ee4e358bc8a89eff5d80a3e2bd2f75ce5f02",
+  "payload": {
+    "classes": [
+      "_MapSecureStore",
+      "InMemoryAgentConfigPersistence"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "_values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 62,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 12,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "_MapSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 15,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_MapSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 19,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "_MapSecureStore"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 27,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 30,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "InMemoryAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setUpAll",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 36,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 88,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 102,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 141,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 142,
+          "lineno": 33
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/provider_configuration.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/chat_inference_resolver.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_MapSecureStore",
+      "field_initialization:_MapSecureStore:444",
+      "inheritance:InMemoryAgentConfigPersistence",
+      "closure:1002",
+      "nested_function:buildResolver",
+      "closure:1939",
+      "closure:2827",
+      "closure:3168"
+    ]
+  },
+  "payload_digest": "b6f5e4e92017b42854e9930dbd22767af2bb030e575a56f2ca6ec7eb26170ef0",
+  "version": 2
+}

@@ -1,0 +1,792 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2cc2f1b1b53b139ba749c1c418df616505b963b44a12dd8d8ed81cf1bda856cf",
+  "payload": {
+    "classes": [
+      "IdeaViewBlocDto",
+      "IdeaViewBlocState",
+      "IdeaViewBloc"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 46,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 41,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 15,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "IdeaViewBlocDto"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 26,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "IdeaViewBlocState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "IdeaViewBlocState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 54,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 31,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "idea",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 46,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value.idea",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 72,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          }
+        ],
+        "name": "_onChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 51,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "showRemoveTitleDialog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 57,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 58,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          }
+        ],
+        "name": "onDeleteIdea",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 60,
+          "lineno": 53
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "open",
+            "receiver": "IdeaAnswerScreen",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 5,
+              "end_lineno": 72,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onAnswerChanged",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          }
+        ],
+        "name": "onExpandAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "removeItem",
+            "receiver": "listKey.currentState!",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 95,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "removeAt",
+            "receiver": "[...idea.answers]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 61,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "idea",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 62,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "onDeleteAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 100,
+          "lineno": 77
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "idea",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 62,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          }
+        ],
+        "name": "onAnswerChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 110,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "dto.initialIdea.draftAnswer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 9,
+              "end_lineno": 118,
+              "lineno": 116
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IdeaProjectAnswerModel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 123,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generate",
+            "receiver": "IdeaProjectAnswerModelId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 49,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 35,
+              "end_lineno": 121,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "idea",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 5,
+              "end_lineno": 126,
+              "lineno": 124
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "draftAnswer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 51,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 127,
+              "lineno": 127
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 127,
+              "lineno": 127
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 128,
+              "lineno": 128
+            }
+          }
+        ],
+        "name": "onUpdateDraftAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 129,
+          "lineno": 112
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "idea",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 62,
+              "end_lineno": 138,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 139,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 139,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProject",
+            "receiver": "dto.openedProjectNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 56,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "insertItem",
+            "receiver": "listKey.currentState!",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 39,
+              "end_lineno": 141,
+              "lineno": 141
+            }
+          }
+        ],
+        "name": "onCreateAnswerFromDraft",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 142,
+          "lineno": 131
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "draftAnswerController",
+            "receiver_constructor": null,
+            "receiver_type": "AnswerCreatorController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 35,
+              "end_lineno": 146,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "removeListener",
+            "receiver": "titleController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 34,
+              "end_lineno": 148,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "titleController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 149,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 151,
+              "lineno": 151
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 152,
+          "lineno": 144
+        },
+        "static": false,
+        "unit": "IdeaViewBloc"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/idea_answer_screen.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/widgets/answer_creator.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/widgets/answer_tile.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "idea_view_bloc.freezed.dart"
+      }
+    ],
+    "unsupported": [
+      "inheritance:IdeaViewBlocState",
+      "inheritance:IdeaViewBloc",
+      "field_initialization:IdeaViewBloc:1071",
+      "field_initialization:IdeaViewBloc:1285",
+      "field_initialization:IdeaViewBloc:1365",
+      "closure:2577"
+    ]
+  },
+  "payload_digest": "dfe3f8fe09ada0956deaa7c697b3fa03d23fc7a4e3e17d08255eec11779509e0",
+  "version": 2
+}

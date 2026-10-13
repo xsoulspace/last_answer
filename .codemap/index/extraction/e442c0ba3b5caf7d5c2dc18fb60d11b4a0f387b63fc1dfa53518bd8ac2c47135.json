@@ -1,0 +1,438 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e442c0ba3b5caf7d5c2dc18fb60d11b4a0f387b63fc1dfa53518bd8ac2c47135",
+  "payload": {
+    "classes": [
+      "_FakeProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "initWithConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 23,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "isAuthenticated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 26,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "createFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 33,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "updateFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 40,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          }
+        ],
+        "name": "_write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 45,
+          "lineno": 42
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 48,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "files",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          }
+        ],
+        "name": "deleteFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 57,
+          "lineno": 50
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 76,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileEntry",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 74,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 53,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          }
+        ],
+        "name": "listDirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 66,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 69,
+          "lineno": 68
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supportsSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 72,
+          "lineno": 71
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 13,
+          "end_lineno": 78,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 81,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "_FakeProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "ensureInitialized",
+            "receiver": "TestWidgetsFlutterBinding",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 47,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setUp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 89,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tearDown",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 94,
+              "lineno": 91
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 154,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 208,
+              "lineno": 156
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 209,
+          "lineno": 84
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_now"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/actor_roster.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_storage_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/storage_backends_state.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:449",
+      "inheritance:_FakeProvider",
+      "field_initialization:_FakeProvider:1038",
+      "closure:2177",
+      "closure:2685",
+      "closure:2756",
+      "closure:3011",
+      "closure:5037"
+    ]
+  },
+  "payload_digest": "a75cd97ce12c3aa75be8399d89f32610c2d4eb2c5a71d5e2ba3b79cf7ebba0bf",
+  "version": 2
+}

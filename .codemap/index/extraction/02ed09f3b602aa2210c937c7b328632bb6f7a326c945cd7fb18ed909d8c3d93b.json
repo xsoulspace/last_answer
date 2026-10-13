@@ -1,0 +1,58 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "02ed09f3b602aa2210c937c7b328632bb6f7a326c945cd7fb18ed909d8c3d93b",
+  "payload": {
+    "classes": [
+      "GoRouterExtension"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "matchList.uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 52,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "location",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 16,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "GoRouterExtension"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:go_router/go_router.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "extension_dispatch:GoRouterExtension"
+    ]
+  },
+  "payload_digest": "99eb83aac69aac45c153c630ff70bccb80f4f8b70ccef6524c254516c4e78052",
+  "version": 2
+}

@@ -1,0 +1,206 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3be7f84f61484705851dac8f4dceed53c8c452072d228fe299d17a0aff7f894",
+  "payload": {
+    "classes": [
+      "AILayoutContext",
+      "AILayoutConfig",
+      "AILayoutResult",
+      "LayoutContentType",
+      "DeviceType",
+      "AILayoutStyle",
+      "PerformanceMode",
+      "UserBehaviorPattern",
+      "InteractionType",
+      "ContentPriority",
+      "AestheticPreferences",
+      "SpacingPreference",
+      "TypographyPreference",
+      "LayoutDensity",
+      "AnimationPreference",
+      "AccessibilityRequirements",
+      "ColorBlindnessType",
+      "LayoutTree",
+      "LayoutNode",
+      "LayoutNodeType",
+      "LayoutConstraints",
+      "LayoutMetadata",
+      "PerformanceMetrics"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 20,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "AILayoutContext"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 61,
+          "lineno": 53
+        },
+        "static": false,
+        "unit": "AILayoutConfig"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 96,
+          "lineno": 88
+        },
+        "static": false,
+        "unit": "AILayoutResult"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 157,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "UserBehaviorPattern"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 187,
+          "lineno": 182
+        },
+        "static": false,
+        "unit": "ContentPriority"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 205,
+          "lineno": 198
+        },
+        "static": false,
+        "unit": "AestheticPreferences"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 238,
+          "lineno": 230
+        },
+        "static": false,
+        "unit": "AccessibilityRequirements"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 69,
+          "end_lineno": 256,
+          "lineno": 255
+        },
+        "static": false,
+        "unit": "LayoutTree"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 274,
+          "lineno": 266
+        },
+        "static": false,
+        "unit": "LayoutNode"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 309,
+          "lineno": 300
+        },
+        "static": false,
+        "unit": "LayoutConstraints"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 331,
+          "lineno": 324
+        },
+        "static": false,
+        "unit": "LayoutMetadata"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 351,
+          "lineno": 344
+        },
+        "static": false,
+        "unit": "PerformanceMetrics"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "debd3ff396e03aea58f6169e90fc886df0efdb0147fcf7ea118ac9198a2eb032",
+  "version": 2
+}

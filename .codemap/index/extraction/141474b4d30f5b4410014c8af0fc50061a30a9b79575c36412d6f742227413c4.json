@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "141474b4d30f5b4410014c8af0fc50061a30a9b79575c36412d6f742227413c4",
+  "payload": [
+    [
+      "lib/agent_config/agent_platform_config.dart::_._stringList"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "9da3a21448c94faa77da6b50f2871c05f43b11bbef149bc0c5bb1ec4046c51ad",
+  "version": 2
+}

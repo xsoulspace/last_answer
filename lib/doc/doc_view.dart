@@ -14,7 +14,8 @@ import 'package:uuid/uuid.dart';
 /// full node bodies live in headless_core storage; the root's stub stays in
 /// ProjectsRepository for listing/routing only.
 class DocView extends StatefulWidget {
-  const DocView({required this.doc, super.key});
+  const DocView({required this.doc, this.refreshEpoch = 0, super.key});
+  final int refreshEpoch;
   final ProjectModelDoc doc;
 
   /// Debug-only snapshot of the open recursive document, published for
@@ -106,6 +107,8 @@ class _DocViewState extends State<DocView> {
   /// Root first, currently open document last.
   late List<hc.DocumentNode> _path;
   int? _lastFocusedBlockIndex;
+  bool _loadingRoot = true;
+  String? _rootReadError;
 
   /// Open/collapsed discussion children of the current node, by anchor block.
   Map<hc.NodeId, List<hc.DocumentNode>> _childrenByBlock = {};
@@ -119,14 +122,16 @@ class _DocViewState extends State<DocView> {
   void initState() {
     super.initState();
     _path = [_stubToNode(widget.doc)];
-    unawaited(_reloadChildren());
+    unawaited(_loadRoot());
   }
 
   @override
   void didUpdateWidget(final DocView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.doc != widget.doc && _path.length == 1) {
-      setState(() => _path[0] = _stubToNode(widget.doc));
+    if ((oldWidget.doc != widget.doc ||
+            oldWidget.refreshEpoch != widget.refreshEpoch) &&
+        _path.length == 1) {
+      unawaited(_loadRoot());
     }
   }
 
@@ -141,6 +146,25 @@ class _DocViewState extends State<DocView> {
   }
 
   hc.DocumentNode get _current => _path.last;
+
+  Future<void> _loadRoot() async {
+    _loadingRoot = true;
+    _rootReadError = null;
+    final result = await _docRepo.get(hc.NodeId(widget.doc.id.value));
+    if (!mounted) return;
+    if (result is hc.DocFound) {
+      setState(() => _path[0] = result.node);
+    } else if (result is hc.DocError) {
+      // Do not turn a failed authoritative read into an empty replacement.
+      setState(() {
+        _loadingRoot = false;
+        _rootReadError = result.message;
+      });
+      return;
+    }
+    setState(() => _loadingRoot = false);
+    await _reloadChildren();
+  }
 
   Future<void> _reloadChildren() async {
     final children = await _docRepo.childrenOf(_current.id);
@@ -364,6 +388,9 @@ class _DocViewState extends State<DocView> {
 
   @override
   Widget build(final BuildContext context) {
+    if (_loadingRoot) return const Center(child: CircularProgressIndicator());
+    if (_rootReadError != null)
+      return Center(child: Text('Document read failed: $_rootReadError'));
     final isRoot = _path.length == 1;
     assert(() {
       DocView.debugDocState = DocDebugState(
@@ -383,7 +410,9 @@ class _DocViewState extends State<DocView> {
       canPop: isRoot,
       onPopInvokedWithResult: (final didPop, final _) {
         if (didPop) {
-          context.read<OpenedProjectNotifier>().onPopProject();
+          context.read<OpenedProjectNotifier>().onPopProject(
+            expectedProjectId: widget.doc.id,
+          );
           return;
         }
         unawaited(_climbUp());
@@ -495,7 +524,9 @@ class _BreadcrumbBar extends StatelessWidget {
                         Icon(
                           Icons.chevron_right,
                           size: 16,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.4,
+                          ),
                         ),
                       InkWell(
                         borderRadius: BorderRadius.circular(6),
@@ -578,15 +609,18 @@ class _SelectionToolbar extends StatelessWidget {
                 label: const Text('Ask AI'),
               ),
             ),
-            if (onApplyConclusion == null) const SizedBox.shrink() else Tooltip(
-                    message:
-                        'Rewrite the head span from this discussion and collapse',
-                    child: TextButton.icon(
-                      onPressed: onApplyConclusion,
-                      icon: const Icon(Icons.auto_awesome, size: 18),
-                      label: const Text('Apply conclusion'),
-                    ),
-                  ),
+            if (onApplyConclusion == null)
+              const SizedBox.shrink()
+            else
+              Tooltip(
+                message:
+                    'Rewrite the head span from this discussion and collapse',
+                child: TextButton.icon(
+                  onPressed: onApplyConclusion,
+                  icon: const Icon(Icons.auto_awesome, size: 18),
+                  label: const Text('Apply conclusion'),
+                ),
+              ),
             TextButton.icon(
               onPressed: onExpand,
               icon: const Icon(Icons.unfold_more, size: 18),

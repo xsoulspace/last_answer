@@ -1,0 +1,2269 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2be79b2e54bc7b8e6c71a48fb15c8ea55c229b13af25900be5761d0f2016da73",
+  "payload": {
+    "classes": [
+      "AILayoutBuilder",
+      "_AILayoutBuilderState",
+      "AILayoutRenderer"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 26,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "AILayoutBuilder"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_AILayoutBuilderState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 65,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 50,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "AILayoutBuilder"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AILayoutEngine",
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 53,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimationController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 5,
+              "end_lineno": 71,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 49,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimationController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 76,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 49,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 32,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_generateLayout",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 31,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 79,
+          "lineno": 63
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "didUpdateWidget",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 34,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_generateLayout",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 33,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          }
+        ],
+        "name": "didUpdateWidget",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 89,
+          "lineno": 81
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_fadeController",
+            "receiver_constructor": null,
+            "receiver_type": "AnimationController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_scaleController",
+            "receiver_constructor": null,
+            "receiver_type": "AnimationController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 96,
+          "lineno": 91
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 6,
+              "end_lineno": 104,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generateLayout",
+            "receiver": "_engine",
+            "receiver_constructor": null,
+            "receiver_type": "AILayoutEngine",
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 65,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 10,
+              "end_lineno": 113,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "widget.onLayoutGenerated",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 46,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 44,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forward",
+            "receiver": "_fadeController",
+            "receiver_constructor": null,
+            "receiver_type": "AnimationController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 43,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 45,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forward",
+            "receiver": "_scaleController",
+            "receiver_constructor": null,
+            "receiver_type": "AnimationController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 44,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 10,
+              "end_lineno": 127,
+              "lineno": 124
+            }
+          }
+        ],
+        "name": "_generateLayout",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 130,
+          "lineno": 98
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "widget.errorBuilder",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 56,
+              "end_lineno": 135,
+              "lineno": 135
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildDefaultError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 30,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "call",
+            "receiver": "widget.loadingBuilder",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 49,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildDefaultLoading",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 53,
+              "end_col_offset": 75,
+              "end_lineno": 140,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnimatedBuilder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 152,
+              "lineno": 143
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "merge",
+            "receiver": "Listenable",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 70,
+              "end_lineno": 144,
+              "lineno": 144
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 153,
+          "lineno": 132
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AILayoutRenderer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 76,
+              "end_lineno": 156,
+              "lineno": 156
+            }
+          }
+        ],
+        "name": "_buildAILayout",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 156,
+          "lineno": 155
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Center",
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 3,
+              "end_lineno": 167,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 166,
+              "lineno": 159
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CircularProgressIndicator",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 35,
+              "end_lineno": 162,
+              "lineno": 162
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 39,
+              "end_lineno": 164,
+              "lineno": 164
+            }
+          }
+        ],
+        "name": "_buildDefaultLoading",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 167,
+          "lineno": 158
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Center",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 3,
+              "end_lineno": 180,
+              "lineno": 169
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 179,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 68,
+              "end_lineno": 173,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 34,
+              "end_lineno": 174,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 47,
+              "end_lineno": 175,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 33,
+              "end_lineno": 176,
+              "lineno": 176
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ElevatedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 78,
+              "end_lineno": 177,
+              "lineno": 177
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 58,
+              "end_col_offset": 77,
+              "end_lineno": 177,
+              "lineno": 177
+            }
+          }
+        ],
+        "name": "_buildDefaultError",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 180,
+          "lineno": 169
+        },
+        "static": false,
+        "unit": "_AILayoutBuilderState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 192,
+          "lineno": 187
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Stack",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 206,
+              "lineno": 201
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildLayoutNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 43,
+              "end_lineno": 203,
+              "lineno": 203
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildDebugOverlay",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 57,
+              "end_lineno": 204,
+              "lineno": 204
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 206,
+          "lineno": 200
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_createWidgetForNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 45,
+              "end_lineno": 209,
+              "lineno": 209
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Positioned",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 217,
+              "lineno": 211
+            }
+          }
+        ],
+        "name": "_buildLayoutNode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 218,
+          "lineno": 208
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_createBaseWidget",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 46,
+              "end_lineno": 221,
+              "lineno": 221
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "node.properties",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 47,
+              "end_lineno": 226,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "rotate",
+            "receiver": "Transform",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 7,
+              "end_lineno": 231,
+              "lineno": 228
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "node.properties",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 44,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "scale",
+            "receiver": "Transform",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 7,
+              "end_lineno": 239,
+              "lineno": 236
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "node.properties",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 48,
+              "end_lineno": 243,
+              "lineno": 243
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Material",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 7,
+              "end_lineno": 249,
+              "lineno": 245
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 44,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          }
+        ],
+        "name": "_createWidgetForNode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 253,
+          "lineno": 220
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_buildContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 36,
+              "end_lineno": 258,
+              "lineno": 258
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildText",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 31,
+              "end_lineno": 260,
+              "lineno": 260
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildImage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 32,
+              "end_lineno": 262,
+              "lineno": 262
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 33,
+              "end_lineno": 264,
+              "lineno": 264
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildInput",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 32,
+              "end_lineno": 266,
+              "lineno": 266
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildList",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 31,
+              "end_lineno": 268,
+              "lineno": 268
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildGrid",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 31,
+              "end_lineno": 270,
+              "lineno": 270
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildCustom",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 33,
+              "end_lineno": 272,
+              "lineno": 272
+            }
+          }
+        ],
+        "name": "_createBaseWidget",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 274,
+          "lineno": 255
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 51,
+              "end_col_offset": 3,
+              "end_lineno": 284,
+              "lineno": 276
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 281,
+              "lineno": 277
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBackgroundColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 38,
+              "end_lineno": 278,
+              "lineno": 278
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 42,
+              "end_lineno": 279,
+              "lineno": 279
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 30,
+              "end_lineno": 280,
+              "lineno": 280
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getPadding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 30,
+              "end_lineno": 282,
+              "lineno": 282
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stack",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 72,
+              "end_lineno": 283,
+              "lineno": 283
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "node.children.map(_buildLayoutNode)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 71,
+              "end_lineno": 283,
+              "lineno": 283
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "node.children",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 62,
+              "end_lineno": 283,
+              "lineno": 283
+            }
+          }
+        ],
+        "name": "_buildContainer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 284,
+          "lineno": 276
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 300,
+              "lineno": 286
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getAlignment",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 34,
+              "end_lineno": 287,
+              "lineno": 287
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 299,
+              "lineno": 288
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 295,
+              "lineno": 290
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getTextAlign",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 36,
+              "end_lineno": 296,
+              "lineno": 296
+            }
+          }
+        ],
+        "name": "_buildText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 300,
+          "lineno": 286
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DecoratedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 3,
+              "end_lineno": 318,
+              "lineno": 302
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 306,
+              "lineno": 303
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 42,
+              "end_lineno": 304,
+              "lineno": 304
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ClipRRect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 317,
+              "lineno": 307
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 42,
+              "end_lineno": 308,
+              "lineno": 308
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "network",
+            "receiver": "Image",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 315,
+              "lineno": 310
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_buildImagePlaceholder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 36,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          }
+        ],
+        "name": "_buildImage",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 318,
+          "lineno": 302
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 3,
+              "end_lineno": 323,
+              "lineno": 320
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Center",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 69,
+              "end_lineno": 322,
+              "lineno": 322
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 68,
+              "end_lineno": 322,
+              "lineno": 322
+            }
+          }
+        ],
+        "name": "_buildImagePlaceholder",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 323,
+          "lineno": 320
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ElevatedButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 3,
+              "end_lineno": 338,
+              "lineno": 325
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "styleFrom",
+            "receiver": "ElevatedButton",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 333,
+              "lineno": 329
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBackgroundColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 48,
+              "end_lineno": 330,
+              "lineno": 330
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoundedRectangleBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 73,
+              "end_lineno": 332,
+              "lineno": 332
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 72,
+              "end_lineno": 332,
+              "lineno": 332
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 337,
+              "lineno": 334
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 78,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          }
+        ],
+        "name": "_buildButton",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 338,
+          "lineno": 325
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "TextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 3,
+              "end_lineno": 347,
+              "lineno": 340
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InputDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 346,
+              "lineno": 341
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "OutlineInputBorder",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 70,
+              "end_lineno": 343,
+              "lineno": 343
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 69,
+              "end_lineno": 343,
+              "lineno": 343
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBackgroundColor",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 42,
+              "end_lineno": 345,
+              "lineno": 345
+            }
+          }
+        ],
+        "name": "_buildInput",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 347,
+          "lineno": 340
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "ListView",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 356,
+              "lineno": 349
+            }
+          }
+        ],
+        "name": "_buildList",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 356,
+          "lineno": 349
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "builder",
+            "receiver": "GridView",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 370,
+              "lineno": 361
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SliverGridDelegateWithFixedCrossAxisCount",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 7,
+              "end_lineno": 366,
+              "lineno": 362
+            }
+          }
+        ],
+        "name": "_buildGrid",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 371,
+          "lineno": 358
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DecoratedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 3,
+              "end_lineno": 380,
+              "lineno": 373
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 378,
+              "lineno": 374
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_getBorderRadius",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 42,
+              "end_lineno": 376,
+              "lineno": 376
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "all",
+            "receiver": "Border",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 44,
+              "end_lineno": 377,
+              "lineno": 377
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Center",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 53,
+              "end_lineno": 379,
+              "lineno": 379
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 52,
+              "end_lineno": 379,
+              "lineno": 379
+            }
+          }
+        ],
+        "name": "_buildCustom",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 380,
+          "lineno": 373
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Positioned",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 3,
+              "end_lineno": 411,
+              "lineno": 382
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 410,
+              "lineno": 385
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.all",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 38,
+              "end_lineno": 386,
+              "lineno": 386
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 7,
+              "end_lineno": 390,
+              "lineno": 387
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "circular",
+            "receiver": "BorderRadius",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 46,
+              "end_lineno": 389,
+              "lineno": 389
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 409,
+              "lineno": 391
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 398,
+              "lineno": 395
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 78,
+              "end_lineno": 397,
+              "lineno": 397
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 402,
+              "lineno": 399
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_countNodes",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 54,
+              "end_lineno": 400,
+              "lineno": 400
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "TextStyle",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 57,
+              "end_lineno": 401,
+              "lineno": 401
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 407,
+              "lineno": 403
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "layoutTree.metadata.generatedAt.toString()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 86,
+              "end_lineno": 405,
+              "lineno": 405
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "layoutTree.metadata.generatedAt",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 68,
+              "end_lineno": 405,
+              "lineno": 405
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "TextStyle",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 57,
+              "end_lineno": 406,
+              "lineno": 406
+            }
+          }
+        ],
+        "name": "_buildDebugOverlay",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 411,
+          "lineno": 382
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fold",
+            "receiver": "node.children",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 418,
+              "lineno": 415
+            }
+          }
+        ],
+        "name": "_countNodes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 418,
+          "lineno": 413
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_getBackgroundColor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 422,
+          "lineno": 421
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "circular",
+            "receiver": "BorderRadius",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 40,
+              "end_lineno": 426,
+              "lineno": 426
+            }
+          }
+        ],
+        "name": "_getBorderRadius",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 427,
+          "lineno": 424
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "all",
+            "receiver": "Border",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 63,
+              "end_lineno": 434,
+              "lineno": 434
+            }
+          }
+        ],
+        "name": "_getBorder",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 437,
+          "lineno": 429
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "all",
+            "receiver": "EdgeInsets",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 57,
+              "end_lineno": 442,
+              "lineno": 442
+            }
+          }
+        ],
+        "name": "_getPadding",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 444,
+          "lineno": 439
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_getAlignment",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 462,
+          "lineno": 446
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_getTextAlign",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 476,
+          "lineno": 464
+        },
+        "static": false,
+        "unit": "AILayoutRenderer"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ai_layout_engine.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "ai_layout_models.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AILayoutBuilder",
+      "inheritance:_AILayoutBuilderState",
+      "field_initialization:_AILayoutBuilderState:1532",
+      "closure:2516",
+      "closure:2695",
+      "closure:3078",
+      "closure:3605",
+      "inheritance:AILayoutRenderer",
+      "closure:8528",
+      "closure:8920",
+      "closure:9919",
+      "closure:10382",
+      "closure:11801"
+    ]
+  },
+  "payload_digest": "fac01fd827508a04bfbb59e6b812291a24b378ea12bbf6b6c19e225679aa0dda",
+  "version": 2
+}

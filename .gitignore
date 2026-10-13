@@ -74,3 +74,6 @@ configs/envs/local.json
 
 # Derived kernel-driver kernels (oka_artifacts store owns warm starts, ADR-0043)
 tool/*.dill
+
+# Frozen product experiment dependency lock.
+!assets/meaning_greeting/pubspec.lock

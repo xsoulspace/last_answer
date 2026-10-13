@@ -1,0 +1,369 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fce47d3d9d5fe2c69af5cffd2321ec8a285ceda21efe71c8ebe83919a39249be",
+  "payload": {
+    "classes": [
+      "_WorkLayer",
+      "WorkbenchScene",
+      "_WorkbenchSceneState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 6,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "_WorkLayer"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 19,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "WorkbenchScene"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_WorkbenchSceneState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 63,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 24,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "WorkbenchScene"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "World",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 19,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "registerObjectComponent",
+            "receiver": "world.components",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 58,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "spawnComponents",
+            "receiver": "world",
+            "receiver_constructor": null,
+            "receiver_type": "World",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 38,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_WorkLayer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 69,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toDouble",
+            "receiver": "i",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 56,
+              "end_col_offset": 68,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "flush",
+            "receiver": "world",
+            "receiver_constructor": null,
+            "receiver_type": "World",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 17,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SceneMapping",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 28,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "SceneMapping()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 51,
+              "lineno": 42
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "_WorkbenchSceneState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SizedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 3,
+              "end_lineno": 79,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stack",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 78,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "EcsSceneView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 68,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 41,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "IgnorePointer",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 76,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 75,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "all",
+            "receiver": "EdgeInsets",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 39,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 74,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 79,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "_WorkbenchSceneState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:ecsly/ecsly.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:ecsly_flutter_scene/ecsly_flutter_scene.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_WorkLayer",
+      "inheritance:WorkbenchScene",
+      "inheritance:_WorkbenchSceneState",
+      "closure:1281",
+      "closure:1905",
+      "closure:1961",
+      "closure:2030"
+    ]
+  },
+  "payload_digest": "0a24ebbfe937a60700e91eb6fcebf73b905674d1255cb6ba0ba991d50ad05eaa",
+  "version": 2
+}

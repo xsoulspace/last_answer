@@ -1,0 +1,170 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d45a097274f813a34db1b5ce0f6f57a66d232a7c4ed8ffe28a549b966a495274",
+  "payload": {
+    "classes": [
+      "QuestionDropdown"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 9,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "QuestionDropdown"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 62,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "questions.map((final question) => DropdownMenuEntry<IdeaProjectQuestionModel>(value: question, labelWidget: Text(question.title.localize(context), style: textStyle?.copyWith(color: textStyle.color?.withOpacity(0.8))), label: question.title.localize(context)))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 17,
+              "end_lineno": 32,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "questions",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 9,
+              "end_lineno": 31,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DropdownMenu",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 51,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Icon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 7,
+              "end_lineno": 43,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "context.colorScheme.tertiaryContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 69,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 44,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 36,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "QuestionDropdown"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "defaultDropdownMenuStyle",
+      "defaultDropdownMenuInputTheme"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:QuestionDropdown",
+      "closure:662",
+      "closure:1598",
+      "top_level_initialization:1734",
+      "top_level_initialization:1883"
+    ]
+  },
+  "payload_digest": "47f5376071a0e519923462ccb497ce77ffe3a2ed7385248e4aac4db2af9dddc5",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f8c93bfacb209661614595e1cf7b4a8840f75f6db0f6619e881307f599acacfd",
+  "payload": [
+    [
+      "packages/core/lib/src/state/projects_notifier.dart::ProjectsNotifierX._setFileLoading"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "da47bf97dcfd7058793e0aeb9d58ef638cd348e77b983c09b11d7cac0477c533",
+  "version": 2
+}

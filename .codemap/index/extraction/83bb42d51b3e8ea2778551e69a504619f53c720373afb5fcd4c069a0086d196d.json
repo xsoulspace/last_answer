@@ -1,0 +1,163 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "83bb42d51b3e8ea2778551e69a504619f53c720373afb5fcd4c069a0086d196d",
+  "payload": {
+    "classes": [
+      "LoadingScreen"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 6,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "LoadingScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Directionality",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 24,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ColoredBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 23,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Center",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 22,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 21,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 42,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "S",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 34,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 24,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "LoadingScreen"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:LoadingScreen"
+    ]
+  },
+  "payload_digest": "c9df6c85317f1014aecf5d149747a9234a0a6855e043327c50e28e1386d3b854",
+  "version": 2
+}

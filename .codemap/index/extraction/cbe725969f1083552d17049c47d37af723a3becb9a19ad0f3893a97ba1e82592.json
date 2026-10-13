@@ -1,0 +1,80 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cbe725969f1083552d17049c47d37af723a3becb9a19ad0f3893a97ba1e82592",
+  "payload": {
+    "classes": [
+      "DoubleExtension",
+      "IntExtension"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "callback",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 3,
+              "lineno": 3
+            }
+          }
+        ],
+        "name": "onPositive",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 3,
+          "lineno": 2
+        },
+        "static": false,
+        "unit": "DoubleExtension"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "callback",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 8,
+              "lineno": 8
+            }
+          }
+        ],
+        "name": "onPositive",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 8,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "IntExtension"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "extension_dispatch:DoubleExtension",
+      "extension_dispatch:IntExtension"
+    ]
+  },
+  "payload_digest": "54aeecad5685862608da3312563027fe508d014ad8107424efe732d715545942",
+  "version": 2
+}

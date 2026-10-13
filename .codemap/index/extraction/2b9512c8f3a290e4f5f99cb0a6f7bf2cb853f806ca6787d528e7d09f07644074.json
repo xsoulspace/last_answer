@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2b9512c8f3a290e4f5f99cb0a6f7bf2cb853f806ca6787d528e7d09f07644074",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$AnchorSpanModelToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "c11844b158cc37d4995cd78b3fcb0f78891aae76f3a4916355521ba0fb615bf8",
+  "version": 2
+}

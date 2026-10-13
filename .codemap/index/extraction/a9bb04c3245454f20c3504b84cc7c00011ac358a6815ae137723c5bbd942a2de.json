@@ -1,0 +1,1877 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a9bb04c3245454f20c3504b84cc7c00011ac358a6815ae137723c5bbd942a2de",
+  "payload": {
+    "classes": [
+      "MeshStorageService"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MeshWorldSession",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 68,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 44,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MeshWorldSession",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 68,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "forTest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "canHostRelay",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 77,
+          "lineno": 75
+        },
+        "static": true,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "onCycle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 91,
+          "lineno": 89
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "onCycle=",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 92,
+          "lineno": 92
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "presenceConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 98,
+          "lineno": 96
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "presenceConfig=",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 100,
+          "lineno": 99
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isHosting",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 105,
+          "lineno": 105
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isConnected",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 107,
+          "lineno": 107
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "connectedEndpoint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 110,
+          "lineno": 109
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "peers",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 115,
+          "lineno": 112
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MeshStorageProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 42,
+              "end_lineno": 126,
+              "lineno": 126
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initWithConfig",
+            "receiver": "provider",
+            "receiver_constructor": "MeshStorageProvider",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 133,
+              "lineno": 127
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeshStorageConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 132,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "MeshStorageService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 7,
+              "end_lineno": 140,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 41,
+              "end_lineno": 138,
+              "lineno": 138
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "_openClient(selfId: peerId, endpoint: relayEndpoint)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 48,
+              "end_lineno": 145,
+              "lineno": 144
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_openClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 78,
+              "end_lineno": 144,
+              "lineno": 144
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 47,
+              "end_lineno": 145,
+              "lineno": 145
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachTransport",
+            "receiver": "provider",
+            "receiver_constructor": "MeshStorageProvider",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 43,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachRelayPresenceLink",
+            "receiver": "service._session",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 59,
+              "end_lineno": 148,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 51,
+              "end_lineno": 153,
+              "lineno": 153
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "MeshStorageService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 161,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 43,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          }
+        ],
+        "name": "open",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 162,
+          "lineno": 117
+        },
+        "static": true,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "AddressedRelayClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 75,
+              "end_lineno": 168,
+              "lineno": 168
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "openRelay",
+            "receiver": "client",
+            "receiver_constructor": "AddressedRelayClient",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          }
+        ],
+        "name": "_openClient",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 171,
+          "lineno": 164
+        },
+        "static": true,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "_relayHost",
+            "receiver_constructor": null,
+            "receiver_type": "relay_host.LocalRelayHost",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 59,
+              "end_lineno": 177,
+              "lineno": 177
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "detectAdvertiseAddress",
+            "receiver": "relay_host",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 58,
+              "end_lineno": 178,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 69,
+              "end_lineno": 179,
+              "lineno": 179
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "connectTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 33,
+              "end_lineno": 180,
+              "lineno": 180
+            }
+          }
+        ],
+        "name": "startHosting",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 182,
+          "lineno": 173
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "_relayHost",
+            "receiver_constructor": null,
+            "receiver_type": "relay_host.LocalRelayHost",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 27,
+              "end_lineno": 185,
+              "lineno": 185
+            }
+          }
+        ],
+        "name": "stopHosting",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 187,
+          "lineno": 184
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 27,
+              "end_lineno": 195,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "old",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 26,
+              "end_lineno": 195,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "_openClient(selfId: selfId, endpoint: endpoint)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 46,
+              "end_lineno": 202,
+              "lineno": 201
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_openClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 74,
+              "end_lineno": 201,
+              "lineno": 201
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 45,
+              "end_lineno": 202,
+              "lineno": 202
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachTransport",
+            "receiver": "provider",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 75,
+              "end_lineno": 205,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachRelayPresenceLink",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 46,
+              "end_lineno": 206,
+              "lineno": 206
+            }
+          }
+        ],
+        "name": "connectTo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 211,
+          "lineno": 189
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "(advertisedEndpoint ?? _transport?.endpoint)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 73,
+              "end_lineno": 221,
+              "lineno": 221
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeshPairingSession",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 227,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_ensureIdentity",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 46,
+              "end_lineno": 224,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "base64Encode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 64,
+              "end_lineno": 228,
+              "lineno": 228
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createQrPayload",
+            "receiver": "_advertisement!",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 63,
+              "end_lineno": 228,
+              "lineno": 228
+            }
+          }
+        ],
+        "name": "createPairingCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 229,
+          "lineno": 213
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "decodePairingCode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 43,
+              "end_lineno": 235,
+              "lineno": 235
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeshPairingSession",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 5,
+              "end_lineno": 239,
+              "lineno": 236
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_ensureIdentity",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 46,
+              "end_lineno": 238,
+              "lineno": 238
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "acceptQrPayload",
+            "receiver": "session",
+            "receiver_constructor": "MeshPairingSession",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 55,
+              "end_lineno": 240,
+              "lineno": 240
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 40,
+              "end_lineno": 248,
+              "lineno": 248
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "storeAnnouncement",
+            "receiver": "PairedWorlds",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 11,
+              "end_lineno": 252,
+              "lineno": 250
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 57,
+              "end_lineno": 261,
+              "lineno": 261
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "registerPeer",
+            "receiver": "provider",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 37,
+              "end_lineno": 263,
+              "lineno": 263
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_registerPeerIdentityKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 34,
+              "end_lineno": 264,
+              "lineno": 264
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 266,
+              "lineno": 266
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "connectTo",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 28,
+              "end_lineno": 270,
+              "lineno": 270
+            }
+          }
+        ],
+        "name": "acceptPairingCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 274,
+          "lineno": 231
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 57,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeshPeerRecord",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 290,
+              "lineno": 286
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "registerPeer",
+            "receiver": "provider",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 39,
+              "end_lineno": 291,
+              "lineno": 291
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_registerPeerIdentityKey",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 292,
+              "lineno": 292
+            }
+          }
+        ],
+        "name": "registerPeer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 294,
+          "lineno": 276
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 70,
+              "end_lineno": 297,
+              "lineno": 297
+            }
+          }
+        ],
+        "name": "backup",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 297,
+          "lineno": 296
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readFile",
+            "receiver": "storage",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 58,
+              "end_lineno": 299,
+              "lineno": 299
+            }
+          }
+        ],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 299,
+          "lineno": 299
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "attachParticipant",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 57,
+              "end_lineno": 308,
+              "lineno": 308
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocSyncParticipant",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 56,
+              "end_lineno": 308,
+              "lineno": 308
+            }
+          }
+        ],
+        "name": "attachDocSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 309,
+          "lineno": 301
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "forceReplicaId",
+            "receiver": "roster",
+            "receiver_constructor": null,
+            "receiver_type": "ActorRoster",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "attachParticipant",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 57,
+              "end_lineno": 317,
+              "lineno": 317
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RosterParticipant",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 56,
+              "end_lineno": 317,
+              "lineno": 317
+            }
+          }
+        ],
+        "name": "attachRoster",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 318,
+          "lineno": 311
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "attachParticipant",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 59,
+              "end_lineno": 326,
+              "lineno": 326
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TaskBoardParticipant",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 58,
+              "end_lineno": 326,
+              "lineno": 326
+            }
+          }
+        ],
+        "name": "attachTaskBoard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 327,
+          "lineno": 320
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "taskBoard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 332,
+          "lineno": 331
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "joinDoc",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 69,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          }
+        ],
+        "name": "joinDoc",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 336,
+          "lineno": 334
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "leaveDoc",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 71,
+              "end_lineno": 339,
+              "lineno": 339
+            }
+          }
+        ],
+        "name": "leaveDoc",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 72,
+          "end_lineno": 339,
+          "lineno": 338
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "notifyPresenceActivity",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 44,
+              "end_lineno": 344,
+              "lineno": 344
+            }
+          }
+        ],
+        "name": "notifyPresenceActivity",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 344,
+          "lineno": 341
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "presence",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 42,
+              "end_lineno": 351,
+              "lineno": 351
+            }
+          }
+        ],
+        "name": "presence",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 351,
+          "lineno": 346
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "rejectedPresenceFrameCount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 356,
+          "lineno": 353
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "presenceFrameRejections",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 361,
+          "lineno": 358
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "sync",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 39,
+              "end_lineno": 369,
+              "lineno": 369
+            }
+          }
+        ],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 369,
+          "lineno": 363
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setInterest",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 34,
+              "end_lineno": 375,
+              "lineno": 375
+            }
+          }
+        ],
+        "name": "setInterest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 375,
+          "lineno": 371
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "startPeriodicPulse",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 55,
+              "end_lineno": 384,
+              "lineno": 384
+            }
+          }
+        ],
+        "name": "startPeriodicSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 384,
+          "lineno": 379
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "stopPeriodicPulse",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 57,
+              "end_lineno": 386,
+              "lineno": 386
+            }
+          }
+        ],
+        "name": "stopPeriodicSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 386,
+          "lineno": 386
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isPeriodicSyncRunning",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 390,
+          "lineno": 388
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "attachPresenceLink",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 44,
+              "end_lineno": 397,
+              "lineno": 397
+            }
+          }
+        ],
+        "name": "attachPresenceTransport",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 397,
+          "lineno": 392
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "registerPeerIdentityKey",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 409,
+              "lineno": 406
+            }
+          }
+        ],
+        "name": "registerPeerIdentityKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 409,
+          "lineno": 399
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "registerPeerIdentityKey",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 415,
+              "lineno": 412
+            }
+          }
+        ],
+        "name": "_registerPeerIdentityKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 416,
+          "lineno": 411
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_session",
+            "receiver_constructor": null,
+            "receiver_type": "MeshWorldSession",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 421,
+              "lineno": 421
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "stopHosting",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 23,
+              "end_lineno": 422,
+              "lineno": 422
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 425,
+              "lineno": 425
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "transport",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 32,
+              "end_lineno": 425,
+              "lineno": 425
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "provider",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 65,
+              "end_lineno": 427,
+              "lineno": 427
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 428,
+          "lineno": 418
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "value",
+            "receiver": "Future<SimpleKeyPair>",
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 70,
+              "end_lineno": 434,
+              "lineno": 434
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "then",
+            "receiver": "PairingService.newIdentityKeyPair()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 6,
+              "end_lineno": 439,
+              "lineno": 435
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "newIdentityKeyPair",
+            "receiver": "PairingService",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 66,
+              "end_lineno": 435,
+              "lineno": 435
+            }
+          }
+        ],
+        "name": "_ensureIdentity",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 440,
+          "lineno": 430
+        },
+        "static": false,
+        "unit": "MeshStorageService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "replaceAll",
+            "receiver": "code.trim()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 60,
+              "end_lineno": 446,
+              "lineno": 446
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "code",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 446,
+              "lineno": 446
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RegExp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 55,
+              "end_lineno": 446,
+              "lineno": 446
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "cleaned",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 40,
+              "end_lineno": 447,
+              "lineno": 447
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 51,
+              "end_lineno": 448,
+              "lineno": 448
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 50,
+              "end_lineno": 448,
+              "lineno": 448
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "base64Decode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 450,
+              "lineno": 450
+            }
+          }
+        ],
+        "name": "decodePairingCode",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 451,
+          "lineno": 443
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:cryptography/cryptography.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "visibleForTesting"
+        ],
+        "uri": "package:flutter/foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "DocReplicaStore"
+        ],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/actor_roster.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_board.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/paired_worlds.dart"
+      },
+      {
+        "conditional": true,
+        "hide": [],
+        "prefix": "relay_host",
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_relay_host_stub.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/mesh_sync_participants.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_mesh/universal_storage_mesh.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_mesh_transport/universal_storage_mesh_transport.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_world/universal_storage_world.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:MeshStorageService:3490",
+      "field_initialization:MeshStorageService:3723",
+      "closure:17485",
+      "conditional_namespace:457"
+    ]
+  },
+  "payload_digest": "dfd0aec781695cb2913a50bb6022178f11b994a49281891c9f604203b7e79541",
+  "version": 2
+}

@@ -1,0 +1,19 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0fbe022552efbbe37c0702aeda165f7b1e35f5f55cdea19437dd6479b843f790",
+  "payload": {
+    "classes": [
+      "DictionariesLocalDataSource"
+    ],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "9b3165a92cb3effcdd8613a755b03d82dd34c42669259f4e8347ef78035c7d68",
+  "version": 2
+}

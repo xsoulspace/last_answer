@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6bae376c57ba0541e5ed93c10dd259b93d27cbaefbfedc8bc6719e72bbbd63de",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/material_icons.dart::IconSpan.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "9855d722dd16423c9f47f324a8f63fcc0878c217509c2a947949757443d45a08",
+  "version": 2
+}

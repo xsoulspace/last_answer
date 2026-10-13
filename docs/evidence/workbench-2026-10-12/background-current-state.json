@@ -1,0 +1,23 @@
+{
+  "kind": "independent-filesystem-check-after-native-actions",
+  "project": "5a44ba4a-e29e-4d31-a9c0-edf31f60d2c5",
+  "proposals": [
+    {
+      "id": "proposal-1791833041802057-0",
+      "operation": "return_behaviour",
+      "status": "undone"
+    },
+    {
+      "id": "proposal-1791833073631947-1",
+      "operation": "move_block",
+      "status": "rejected"
+    },
+    {
+      "id": "proposal-1791833074131295-2",
+      "operation": "move_block",
+      "status": "undone"
+    }
+  ],
+  "exactOriginalRestored": true,
+  "behaviour": null
+}

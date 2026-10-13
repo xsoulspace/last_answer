@@ -20,12 +20,15 @@
 /// channel, so intent authority never ships to a store build).
 library;
 
+import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
+
 import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/device_capabilities.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/router.dart';
+import 'package:lastanswer/mcp/chatgpt_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// One published intent, as data — the vocabulary a controller reads.
@@ -56,6 +59,32 @@ final class AppIntentSpec {
 /// below (plus the long-standing families) may appear — a controller
 /// builds on this list, so renames are contract changes.
 const List<AppIntentSpec> appIntentCatalog = [
+  AppIntentSpec(name: 'chatgpt_account_state', group: 'account',
+    summary: 'Read safe device-local ChatGPT account and model state.'),
+  AppIntentSpec(name: 'chatgpt_account_action', group: 'account',
+    summary: 'Operate the ChatGPT account pane through its product controller.'),
+  AppIntentSpec(
+    name: 'workbench_state',
+    group: 'workbench',
+    summary: 'Read project work and candidate state.',
+  ),
+  AppIntentSpec(
+    name: 'workbench_action',
+    group: 'workbench',
+    summary: 'Operate the editable project workbench.',
+  ),
+  AppIntentSpec(
+    name: 'agent_meaning_experiment_create',
+    group: 'doc',
+    summary: 'Prepare and open a reversible change experiment.',
+  ),
+  AppIntentSpec(
+    name: 'agent_meaning_change',
+    group: 'doc',
+    summary:
+        'Preview, apply or roll back the explicitly bound greeting experiment.',
+  ),
+
   // App shell — where the user IS and what the screen focuses. The
   // catalog publishes ITSELF (a controller's first call is a tool too).
   AppIntentSpec(
@@ -265,13 +294,15 @@ const List<AppIntentSpec> appIntentCatalog = [
   AppIntentSpec(
     name: 'device_capabilities',
     group: 'inspector',
-    summary: 'What this device can host for the fleet: ACP agents, AFM '
+    summary:
+        'What this device can host for the fleet: ACP agents, AFM '
         'lane, probed laya-serve, hosted credential, LAN mesh state.',
   ),
   AppIntentSpec(
     name: 'world_inspector_seat_probe',
     group: 'inspector',
-    summary: 'DEBUG ONLY — request this device\'s seat from the host '
+    summary:
+        'DEBUG ONLY — request this device\'s seat from the host '
         'seat channel and drive agent_doc_state over it (ADR 0072 §5).',
   ),
 ];
@@ -282,6 +313,8 @@ const List<AppIntentSpec> appIntentCatalog = [
 /// (where the user is, what the keyboard focus is, whether the
 /// workbench is open).
 Set<AgentCallEntry> appMcpEntries() => {
+  ...chatGptMcpEntries(),
+  ...workbenchMcpEntries(),
   mcpToolkitTool(
     handler: (final parameters) {
       final group = parameters['group'];

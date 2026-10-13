@@ -1,0 +1,23 @@
+import 'package:meaning_greeting_fixture/greeting.dart';
+import 'package:test/test.dart';
+
+/// Desired behavior is frozen before any candidate implementation. The
+/// original source intentionally fails these tests; assertions never switch
+/// according to source state or transaction status.
+void main() {
+  test('greeting preserves Ada and adds the exact suffix', () {
+    expect(greeting('Ada'), 'Hello, Ada! — updated');
+  });
+  test('greeting preserves an empty name and adds the exact suffix', () {
+    expect(greeting(''), 'Hello, ! — updated');
+  });
+  test('greeting preserves digit text and adds the exact suffix', () {
+    expect(greeting('2'), 'Hello, 2! — updated');
+  });
+  test('greeting preserves a dollar name and adds the exact suffix', () {
+    expect(greeting(r'a$b'), r'Hello, a$b! — updated');
+  });
+  test('greeting preserves a quote name and adds the exact suffix', () {
+    expect(greeting('x\'y'), 'Hello, x\'y! — updated');
+  });
+}

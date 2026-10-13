@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f6ef41f58c5580c47ba4723231fb5c42aeeecbfb7166afe47078827732d28e8a",
+  "payload": [
+    [
+      "lib/settings/widgets/settings_list_container.dart::SettingsListContainer.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "cfe15956b4931773b40c1d4ef24873faff95fdf3b50542c3a4de32dc01f763c2",
+  "version": 2
+}

@@ -1,0 +1,17 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "adecaa76d15d37b0b3c0c36a7f491411dfb0c9fee9ea108186ca6ace701f1ee3",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "40b925e9b7ffeb38830d937e51050d80c072f28b3af43eecb626fb988d5595d7",
+  "version": 2
+}

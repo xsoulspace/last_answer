@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "590686ff0fab0d79fb5b18b0b4a8efbe5bd9a925646d2543210babb310f7e5ee",
+  "payload": [
+    [
+      "lib/coding_agent/mesh_task_console_view.dart::_MeshTaskConsoleViewState._rowLine"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "6d819e6144a444e8f0e856ddfc717fed7edfcc40e42e35d55b7f56f0096fc2cb",
+  "version": 2
+}

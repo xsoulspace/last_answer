@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a6c93692969acce5396af8d3b7cd2c64adaad94f36ac9ef74bdfe8840ce5f386",
+  "payload": [
+    [
+      "lib/settings/features/mesh_storage_service.dart::MeshStorageService.attachTaskBoard"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "d4164cae294b51d1fa8fc5e87d54fd56733b8766dd6d40422a1836fb5aec3af9",
+  "version": 2
+}

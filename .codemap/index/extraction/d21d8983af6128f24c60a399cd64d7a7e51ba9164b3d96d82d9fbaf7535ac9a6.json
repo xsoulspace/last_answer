@@ -1,0 +1,168 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d21d8983af6128f24c60a399cd64d7a7e51ba9164b3d96d82d9fbaf7535ac9a6",
+  "payload": {
+    "classes": [
+      "Modules"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 13,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "Modules"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "GooglePlayClient",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 58,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Modules",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 25,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "createModules",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 26,
+          "lineno": 16
+        },
+        "static": true,
+        "unit": "Modules"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "registerFutureCall",
+            "receiver": "pod",
+            "receiver_constructor": null,
+            "receiver_type": "Serverpod",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 57,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 42,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "scheduleCall",
+            "receiver": "futureCall",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 41,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          }
+        ],
+        "name": "onLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 36,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "Modules"
+      }
+    ],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "google_play_client.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:server/src/endpoints/modules/google_play_client.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:server/src/future_calls/future_calls.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "a46e28e56d97e1828fe8d50fb84500579f06deb9d89c80358a545f16fb2866ac",
+  "version": 2
+}

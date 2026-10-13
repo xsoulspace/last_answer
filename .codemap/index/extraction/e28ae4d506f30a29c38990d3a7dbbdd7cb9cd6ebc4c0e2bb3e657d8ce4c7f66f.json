@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e28ae4d506f30a29c38990d3a7dbbdd7cb9cd6ebc4c0e2bb3e657d8ce4c7f66f",
+  "payload": [
+    [
+      "lib/_library/widgets/core/hoverable_list_tile.dart::HovarableListTile.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "574102144a2b6fc5d5aab261cdda2d9d9d33a2c138fce8a74c857ef304e7f3d8",
+  "version": 2
+}

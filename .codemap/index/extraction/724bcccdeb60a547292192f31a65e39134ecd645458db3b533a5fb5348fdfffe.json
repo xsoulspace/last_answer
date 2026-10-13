@@ -1,0 +1,84 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "724bcccdeb60a547292192f31a65e39134ecd645458db3b533a5fb5348fdfffe",
+  "payload": {
+    "classes": [
+      "EmojiStateNotifier",
+      "LastEmojiStateNotifier",
+      "SpecialEmojiStateNotifier"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 10,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "EmojiStateNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 46,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 17,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "LastEmojiStateNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 24,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "SpecialEmojiStateNotifier"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:EmojiStateNotifier",
+      "closure:234",
+      "closure:274",
+      "inheritance:LastEmojiStateNotifier",
+      "closure:589",
+      "inheritance:SpecialEmojiStateNotifier",
+      "closure:836"
+    ]
+  },
+  "payload_digest": "b038742bc14cb8199a8ea5349424c0155af2ed20a6cabb131f8088814d818fc5",
+  "version": 2
+}

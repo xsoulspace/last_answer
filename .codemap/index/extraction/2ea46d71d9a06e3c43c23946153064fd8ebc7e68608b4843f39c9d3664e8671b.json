@@ -1,0 +1,469 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2ea46d71d9a06e3c43c23946153064fd8ebc7e68608b4843f39c9d3664e8671b",
+  "payload": {
+    "classes": [
+      "FileService",
+      "FileServiceMobile",
+      "FileServiceDesktop"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "openFile",
+            "receiver": "_instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 65,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "openFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 17,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "FileService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "_instance",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 58,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "saveFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 22,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "FileService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "clearTemporaryFiles",
+            "receiver": "FilePicker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 42,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pickFiles",
+            "receiver": "FilePicker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 47,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsStringSync",
+            "receiver": "File(file.path!)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 55,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 36,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 30,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "openFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 36,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "FileServiceMobile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "openAppSettings",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 29,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "request",
+            "receiver": "Permission.storage",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 53,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          }
+        ],
+        "name": "requestPermissions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "FileServiceMobile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getDirectoryPath",
+            "receiver": "FilePicker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 69,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 31,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "dir",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 25,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "dir",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 43,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "saveFileData",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 64,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          }
+        ],
+        "name": "saveFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "FileServiceMobile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "pickFiles",
+            "receiver": "FilePicker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 84,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsStringSync",
+            "receiver": "File(result.files.single.path!)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 70,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 51,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 30,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          }
+        ],
+        "name": "openFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 91,
+          "lineno": 79
+        },
+        "static": false,
+        "unit": "FileServiceDesktop"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "FilePicker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 5,
+              "end_lineno": 104,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromList",
+            "receiver": "Uint8List",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 35,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "saveFileData",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 55,
+              "end_lineno": 105,
+              "lineno": 105
+            }
+          }
+        ],
+        "name": "saveFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 106,
+          "lineno": 93
+        },
+        "static": false,
+        "unit": "FileServiceDesktop"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:typed_data"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:file_picker/file_picker.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:permission_handler/permission_handler.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_io/io.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "file_service_i.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:FileService",
+      "field_initialization:FileService:304",
+      "inheritance:FileServiceMobile",
+      "inheritance:FileServiceDesktop"
+    ]
+  },
+  "payload_digest": "e295df552846635092ff128ed0f55433c2e3f5819dbe8f3208546bbbee80a446",
+  "version": 2
+}

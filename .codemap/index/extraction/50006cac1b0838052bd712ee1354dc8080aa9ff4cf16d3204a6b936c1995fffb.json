@@ -1,0 +1,58 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "50006cac1b0838052bd712ee1354dc8080aa9ff4cf16d3204a6b936c1995fffb",
+  "payload": {
+    "classes": [
+      "WidgetX"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SliverToBoxAdapter",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 64,
+              "end_lineno": 4,
+              "lineno": 4
+            }
+          }
+        ],
+        "name": "sliver",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "WidgetX"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "extension_dispatch:WidgetX"
+    ]
+  },
+  "payload_digest": "b94d53f542f2ffa423c15a5e693d5b5474e71bcc4f8c10a544d1381166b8a36b",
+  "version": 2
+}

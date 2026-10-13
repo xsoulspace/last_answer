@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8c51a8682f857a448052a269251196bceec9d8cff242b3bc02a7bae3436b1ef6",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.freezed.dart::_$PurchasesModelImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c69fcffeb41b6949ed4e2b45c2ecd2160a4237ff029a24edfb1e919e24671221",
+  "version": 2
+}

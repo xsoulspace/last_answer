@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "64de75810c62f0d298cb78d15547b029303730b3108758c2645b5056e23af7bf",
+  "payload": [
+    [
+      "lib/home/widgets/vertical_projects_bar.dart::VerticalProjectsBar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "69ba200379db8f7d1e27a3cd631a8ca83dc1c5a07149c680b3f1b0785785aea4",
+  "version": 2
+}

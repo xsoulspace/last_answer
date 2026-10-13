@@ -1,0 +1,897 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "98f312f5aa858ebe96c84b11cdbd0338e947681d82f3f26c25d8867553c191b0",
+  "payload": {
+    "classes": [
+      "ChatGptProfile",
+      "ChatGptCredentials"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 21,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "ChatGptProfile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "chatGptSecureValueStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 63,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 37,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "action",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 27,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ChatGptAuthException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 70,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChatGptAuthException",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 57,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "abs",
+            "receiver": "status",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 41,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          }
+        ],
+        "name": "_protected",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 59,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_protected",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 5,
+              "end_lineno": 65,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 36,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 37,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ChatGptAuthException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 66,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          }
+        ],
+        "name": "_snapshot",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 80,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Completer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "then",
+            "receiver": "_tail",
+            "receiver_constructor": null,
+            "receiver_type": "Future<void>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 6,
+              "end_lineno": 96,
+              "lineno": 84
+            }
+          }
+        ],
+        "name": "_transaction",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 98,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 4,
+              "end_lineno": 106,
+              "lineno": 100
+            }
+          }
+        ],
+        "name": "ensureHostId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 106,
+          "lineno": 100
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_snapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 38,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_pending",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 36,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ChatGptAuthException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 70,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_account",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 39,
+              "end_lineno": 115,
+              "lineno": 115
+            }
+          }
+        ],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 116,
+          "lineno": 108
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "(snapshot['pending_mutations'] as Map?)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 68,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          }
+        ],
+        "name": "_pending",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 78,
+          "end_lineno": 119,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "containsKey",
+            "receiver": "(snapshot['unconfirmed_cleanup'] as Map?)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 70,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          }
+        ],
+        "name": "_cleanupUnconfirmed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 122,
+          "lineno": 121
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, dynamic>",
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 5,
+              "end_lineno": 130,
+              "lineno": 128
+            }
+          }
+        ],
+        "name": "_retainCleanupUncertainty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 133,
+          "lineno": 124
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromStorageJson",
+            "receiver": "ChatGptAccount",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 7,
+              "end_lineno": 142,
+              "lineno": 140
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cast",
+            "receiver": "(credentials as Map)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 52,
+              "end_lineno": 141,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 37,
+              "end_lineno": 146,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ChatGptAuthException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 66,
+              "end_lineno": 150,
+              "lineno": 150
+            }
+          }
+        ],
+        "name": "_account",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 152,
+          "lineno": 135
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 171,
+              "lineno": 156
+            }
+          }
+        ],
+        "name": "beginMutation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 9,
+          "end_lineno": 171,
+          "lineno": 154
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 186,
+              "lineno": 175
+            }
+          }
+        ],
+        "name": "cancelMutation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 9,
+          "end_lineno": 186,
+          "lineno": 173
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 4,
+              "end_lineno": 202,
+              "lineno": 193
+            }
+          }
+        ],
+        "name": "finishMutation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 202,
+          "lineno": 188
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 4,
+              "end_lineno": 221,
+              "lineno": 205
+            }
+          }
+        ],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 221,
+          "lineno": 204
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 4,
+              "end_lineno": 234,
+              "lineno": 224
+            }
+          }
+        ],
+        "name": "removeTokens",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 234,
+          "lineno": 223
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 4,
+              "end_lineno": 242,
+              "lineno": 236
+            }
+          }
+        ],
+        "name": "selectAccount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 242,
+          "lineno": 236
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_transaction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 61,
+              "end_col_offset": 4,
+              "end_lineno": 254,
+              "lineno": 244
+            }
+          }
+        ],
+        "name": "selectModel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 254,
+          "lineno": 244
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_snapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 258,
+              "lineno": 258
+            }
+          }
+        ],
+        "name": "activeClientId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 259,
+          "lineno": 256
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_snapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 30,
+              "end_lineno": 263,
+              "lineno": 263
+            }
+          }
+        ],
+        "name": "hasUnconfirmedCleanup",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 265,
+          "lineno": 261
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_snapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 38,
+              "end_lineno": 271,
+              "lineno": 271
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChatGptRegistration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 283,
+              "lineno": 275
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_pending",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 47,
+              "end_lineno": 280,
+              "lineno": 280
+            }
+          }
+        ],
+        "name": "registration",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 284,
+          "lineno": 267
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_snapshot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 38,
+              "end_lineno": 288,
+              "lineno": 288
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "registrations.entries.map((entry) {final value = entry.value as Map; final credential = value['credentials'] as Map?; final scopes = credential?['scopes'] as List? ?? const []; return ChatGptProfile(clientId: entry.key, subject: value['subject'] as String, email: value['email'] as String?, signedIn: credential != null && !_pending(snapshot, entry.key), planEnabled: scopes.contains('chatgpt.tokens.use.direct') && !_pending(snapshot, entry.key), recoveryRequired: _pending(snapshot, entry.key), cleanupUnconfirmed: _cleanupUnconfirmed(snapshot, entry.key), model: value['model'] as String?);})",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 32,
+              "end_lineno": 308,
+              "lineno": 290
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "registrations.entries",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 10,
+              "end_lineno": 307,
+              "lineno": 290
+            }
+          }
+        ],
+        "name": "profiles",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 309,
+          "lineno": 286
+        },
+        "static": false,
+        "unit": "ChatGptCredentials"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/services.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_secure_storage.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/provider_configuration.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_openai/chatgpt_auth.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ChatGptCredentials",
+      "field_initialization:ChatGptCredentials:1368",
+      "field_initialization:ChatGptCredentials:1475",
+      "closure:2233",
+      "closure:2890",
+      "closure:3343",
+      "closure:5248",
+      "closure:6016",
+      "closure:6616",
+      "closure:7116",
+      "closure:7797",
+      "closure:8252",
+      "closure:8622",
+      "closure:10355"
+    ]
+  },
+  "payload_digest": "79a396ffd3892c216351c6eb5a478407a515b08880f25b8cb5d246c028f23aef",
+  "version": 2
+}

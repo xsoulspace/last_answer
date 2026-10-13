@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b12823ed02e03bf6284777493a266cc2628bd954a456efc2270673f5cbf07b4b",
+  "payload": [
+    [
+      "lib/_library/widgets/core/focus_bubble_container.dart::FocusBubbleContainer.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "73934b97abbadfe829010c6ff7f63d94fe179fafa3f909087d7d0bc37aef754d",
+  "version": 2
+}

@@ -1,0 +1,49 @@
+sessions:
+  candidate:
+    transport: osAccessibility
+    uri: ax://bundle/dev.xsoulspace.workbenchCandidate
+scenarios:
+  article:
+    steps:
+      - act:
+          click: {role: button, name: "Inspect object\nProject opening behaviour"}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {name: "2. Keep the work close. Let the rest recede. A document is an editable projection of project work."}
+      - act:
+          click: {name: "2. Keep the work close. Let the rest recede. A document is an editable projection of project work."}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Move down}
+      - act:
+          click: {role: button, name: Move down}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Reject}
+      - act:
+          click: {role: button, name: Reject}
+      - wait:
+          timeout: 10
+          checks:
+            - absent: {role: button, name: Adopt}
+      - act:
+          click: {role: button, name: Move down}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Adopt}
+      - act:
+          click: {role: button, name: Adopt}
+      - wait:
+          timeout: 10
+          checks:
+            - exists: {role: button, name: Undo}
+      - act:
+          click: {role: button, name: Undo}
+      - wait:
+          timeout: 10
+          checks:
+            - absent: {role: button, name: Undo}

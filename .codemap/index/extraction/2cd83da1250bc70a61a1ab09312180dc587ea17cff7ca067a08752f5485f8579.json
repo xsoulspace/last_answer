@@ -1,0 +1,53 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2cd83da1250bc70a61a1ab09312180dc587ea17cff7ca067a08752f5485f8579",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "interfaces/interfaces.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "local/local.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "mocks/mocks.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "mutations/mutations.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "remote/serverpod_client.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "93944e3a241a2a84b3b4ffa066f7ef0bc36d5708e79e0660cb1e05c1636b59a2",
+  "version": 2
+}

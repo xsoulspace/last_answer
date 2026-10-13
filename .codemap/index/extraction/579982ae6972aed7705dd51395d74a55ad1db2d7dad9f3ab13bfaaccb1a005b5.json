@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "579982ae6972aed7705dd51395d74a55ad1db2d7dad9f3ab13bfaaccb1a005b5",
+  "payload": [
+    [
+      "lib/doc/acp_agent_runtime.dart::AcpAgentRuntime._requireClient"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "122a78797d802dce6ba10d7d093e66fdc719cdad61cf104011e1f99367332a7e",
+  "version": 2
+}

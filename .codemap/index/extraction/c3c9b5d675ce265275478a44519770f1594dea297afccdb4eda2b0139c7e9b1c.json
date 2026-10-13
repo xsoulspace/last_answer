@@ -1,0 +1,535 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3c9b5d675ce265275478a44519770f1594dea297afccdb4eda2b0139c7e9b1c",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 57,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 65,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parseOldFiles",
+            "receiver": "parsers",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 48,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecodeString",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 44,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "whenEmptyUse",
+            "receiver": "jsonDecodeString(p['runtimeType'])",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 33,
+              "end_lineno": 38,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecodeString",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 9,
+              "end_lineno": 38,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "unique.values.map((final e) {final type = idTypeMap[e['id']]; if (type == 'changelog') return null; if (e['question'] != null) {final answer = IdeaProjectAnswerModel.fromJson(e); allAnswers.add(answer); return null;} return e..['type'] = type..['runtimeType'] = type;}).nonNulls.map(ProjectModel.fromJson)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 32,
+              "end_lineno": 60,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "unique.values.map((final e) {final type = idTypeMap[e['id']]; if (type == 'changelog') return null; if (e['question'] != null) {final answer = IdeaProjectAnswerModel.fromJson(e); allAnswers.add(answer); return null;} return e..['type'] = type..['runtimeType'] = type;}).nonNulls",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 35,
+              "end_lineno": 59,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "unique.values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 10,
+              "end_lineno": 57,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getById",
+            "receiver": "projectsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 73,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "project",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 45,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "oldProject",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 51,
+              "end_col_offset": 71,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 62,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "put",
+            "receiver": "projectsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 59,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "put",
+            "receiver": "projectsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 78,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "idea",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 9,
+              "end_lineno": 77,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generate",
+            "receiver": "ProjectModelId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 39,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 35,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 35,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getAll",
+            "receiver": "tagsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 54,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toMap",
+            "receiver": "parsedProjects.expand((final p) => p.tagsIds).toSet().indexed",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 9,
+              "end_lineno": 96,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toSet",
+            "receiver": "parsedProjects.expand((final p) => p.tagsIds)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 16,
+              "end_lineno": 84,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "expand",
+            "receiver": "parsedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 39,
+              "end_lineno": 83,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "putAll",
+            "receiver": "tagsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 31,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "migrateFromHiveAndIsar",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 102,
+          "lineno": 16
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "parseOldFiles",
+            "receiver": "parsers",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 46,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 59,
+              "end_col_offset": 72,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 26,
+              "end_lineno": 116,
+              "lineno": 116
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "unique.values.map(ProjectModel.fromJson)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 30,
+              "end_lineno": 121,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "unique.values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 33,
+              "end_lineno": 120,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "putAll",
+            "receiver": "repository",
+            "receiver_constructor": null,
+            "receiver_type": "ProjectsRepository",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 45,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          }
+        ],
+        "name": "migrateWithRepository",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 123,
+          "lineno": 104
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:from_json_to_json/from_json_to_json.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:is_dart_empty_or_not/is_dart_empty_or_not.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:provider/provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../data_models/data_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../data_repositories/data_repositories.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "parsers",
+        "show": [],
+        "uri": "parsers/parsers.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:1789",
+      "closure:2999",
+      "closure:3090",
+      "closure:3128"
+    ]
+  },
+  "payload_digest": "17f6a518258d3e606a1b46b062ba81ea5d1d993d1d9ab64872f66d76d0d50d18",
+  "version": 2
+}

@@ -1,0 +1,54 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7beca682bb8e120922677442dd7855409a7eba02506274f5c73a26ba9142aaec",
+  "payload": {
+    "classes": [
+      "WindowX"
+    ],
+    "defs": [
+      {
+        "callable": false,
+        "calls": [],
+        "name": "yaContextCb",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 40,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "WindowX"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:js_interop"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:web/web.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "ExtensionTypeDeclarationImpl",
+      "ExtensionTypeDeclarationImpl",
+      "ExtensionTypeDeclarationImpl",
+      "ExtensionTypeDeclarationImpl",
+      "extension_dispatch:WindowX"
+    ]
+  },
+  "payload_digest": "ab6fb80ccf10441e018372d0eb42b57a7f092aa864d5aecce5e141e0b70be069",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "832d402c503f4b82cf455a7ff1587b97073ed49a51d97f24fad5cfd57071a6e7",
+  "payload": [
+    [
+      "lib/settings/features/mesh_sync_participants.dart::TaskBoardParticipant.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "c15b9b3d9d24b959425472cbb6c5ea4360ca4b8245e1c2d01f22ad5cd87a7cbb",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "188aa8238e2716456aa2ddb663ba132432991d1be9b2ea84798bcd6a36e4508a",
+  "payload": [
+    [
+      "packages/core/lib/src/state/user_notifier.dart::UserNotifier.updateLocale"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "376c8bbf3d09089caa8d05d069908d7110a9833f6dc890c9a16f37a1190acb02",
+  "version": 2
+}

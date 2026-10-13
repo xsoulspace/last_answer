@@ -1,0 +1,54 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "64a495cf2337604bd02334e4a64bff331a1fbcb85e90a82da673e93710d9450f",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Response",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 48,
+              "end_lineno": 4,
+              "lineno": 4
+            }
+          }
+        ],
+        "name": "onRequest",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 5,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:dart_frog/dart_frog.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "9c722809b1b0c002df64e556469375d674fbe580517c01b4c4f7d8d5cf66e6c0",
+  "version": 2
+}

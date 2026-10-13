@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f6f49228f0eb8a64f8f23b71db87e9501d2aeef6dcc644b56e8b07cd650e8aea",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/parsers/hive_parser.dart::_.parseHiveFromBytes"
+    ],
+    "import prefix declaration"
+  ],
+  "payload_digest": "d038f4dce02fcd902bd789d7a381d1226a95993282c90411757eddf16376ac32",
+  "version": 2
+}

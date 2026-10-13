@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1733ec6ea0b1d36ada365f8fc8a578e7186840fc713050d486102f388a821d67",
+  "payload": [
+    [
+      "lib/_library/widgets/core/hero_id.dart::HeroId.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "6758fe43462969c3b406604c8e3dcaa37f80da6f264c8c1b66029a367230e5ca",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d60e14f90b87e9e706cf688bbb48c767aa854275ee079bc09ed50951c488b2d4",
+  "payload": [
+    [
+      "packages/core/lib/src/utils/close_keyboard.dart::SoftKeyboard.close"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "698530bd829d43faf136b359b1e6701d27f29a98518f4cb02b2d1f27fbda20e5",
+  "version": 2
+}

@@ -1,0 +1,854 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cbd078687c5081b848989df82c18cbe9add2cc247f49a307f7a025fd786b44d9",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "rootBundle",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 54,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "asUint8List",
+            "receiver": "data.buffer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 72,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          }
+        ],
+        "name": "_asset",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 16,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getApplicationSupportDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 58,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "create",
+            "receiver": "Directory('${support.path}/meaning_experiments')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 29,
+              "end_lineno": 27,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 27,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_asset",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 55,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 62,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "decode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 61,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_asset",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 60,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "sha256.convert(manifestBytes)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 48,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "convert",
+            "receiver": "sha256",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 37,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 70,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 59,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "decode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 58,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_asset",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 65,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "sha256.convert(bytes)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 42,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "convert",
+            "receiver": "sha256",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 31,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 69,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "relative",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 34,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "relative.split('/')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 72,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "split",
+            "receiver": "relative",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 57,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 67,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_asset",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 45,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "sha256.convert(lock)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 39,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "convert",
+            "receiver": "sha256",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 66,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createTemp",
+            "receiver": "parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 54,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 57,
+              "end_lineno": 56,
+              "lineno": 56
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "create",
+            "receiver": "file.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 47,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsBytes",
+            "receiver": "file",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 55,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsBytes",
+            "receiver": "File('${workspace.path}/.meaning-fixture-manifest.json')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 46,
+              "end_lineno": 62,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 62,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "prepareWorkspace",
+            "receiver": "ProductDartRuntime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 5,
+              "end_lineno": 66,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "resolveSymbolicLinks",
+            "receiver": "workspace",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 57,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "dynamic",
+            "name": "() async {await prior; final file = File('${parent.path}/registry.json'); final registered = file.existsSync() ? Map<String, Object?>.from(jsonDecode(await file.readAsString()) as Map) : <String, Object?>{}; registered[receipt['workspace']! as String] = receipt; final temporary = File('${file.path}.tmp'); await temporary.writeAsString(jsonEncode(registered), flush: true); await temporary.rename(file.path);}",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 7,
+              "end_lineno": 87,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "prepareMeaningExperiment",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 100,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "workspace",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 34,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "getApplicationSupportDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 58,
+              "end_lineno": 105,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 67,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 57,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "registry",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 30,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "resolveSymbolicLinks",
+            "receiver": "Directory(workspace)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 71,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 48,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "resolveSymbolicLinks",
+            "receiver": "parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 43,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 64,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsString",
+            "receiver": "registry",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 63,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 68,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 62,
+              "end_lineno": 121,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "decode",
+            "receiver": "utf8",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 61,
+              "end_lineno": 121,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_asset",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 60,
+              "end_lineno": 121,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "sha256.convert(await marker.readAsBytes())",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 61,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "convert",
+            "receiver": "sha256",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 50,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsBytes",
+            "receiver": "marker",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 49,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, Object?>",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 41,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          }
+        ],
+        "name": "restoreMeaningExperiment",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 133,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_assets",
+      "_registryQueue"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:crypto/crypto.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/services.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/product_dart_runtime.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:path_provider/path_provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/meaning_span_preview.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:307",
+      "top_level_initialization:350",
+      "closure:3006"
+    ]
+  },
+  "payload_digest": "ab519a611d2b9cd808d50ece21368bc75e34525e89b7806e4c75ce22928b2c74",
+  "version": 2
+}

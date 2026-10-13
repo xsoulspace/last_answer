@@ -1,0 +1,23 @@
+{
+  "lib/coding_agent/meaning_experiment_preparation.dart": "581b66539d2adecf341ad756c8902959f7caa5daf6fd1e9a9cfa08753adb82a7",
+  "lib/coding_agent/meaning_experiment_preparation_io.dart": "c6f4f1431404efc90cb34e2b4ea1bd8898c088b95971765a798669e8ed9f818d",
+  "lib/coding_agent/meaning_experiment_preparation_stub.dart": "a38365481625696fb081dd43870c8163436f4b0c7ebb8dea83aa3670227bff5a",
+  "lib/coding_agent/meaning_experiment_entry.dart": "cdbdcd8a2816c67a20d9a0df3c729dcecdb47cff3b9d35b050831ce613009e39",
+  "lib/home/home_screen.dart": "16278dca2e71cb5324c258fa2824a4370b8cec950095df632b564e818e6d1e75",
+  "lib/home/widgets/home_app_bar.dart": "58fa772f487f7a514c93f83de74022b5e636a5cf47e82216846997308fe422da",
+  "lib/coding_agent/agent_doc_surface.dart": "d7439c70e31359a5116b71fd96a651ee444029c20fa404e8ec03a299d9773b6f",
+  "lib/coding_agent/harness_host.dart": "e7b61ab5edadf7bbd6b923d706a554ca2a76483d971ca1a5a3f2b8500d9df806",
+  "lib/coding_agent/harness_session_controller.dart": "cad9d14514d4933027e4d7955a57163ae9d423dbc63629961415c0dcaf94b9d1",
+  "lib/coding_agent/agent_mcp_tools.dart": "86618befc03b22504b306c056da634770d1b0cd0488a2921cacd6e09456bf585",
+  "lib/mcp/app_mcp_tools.dart": "4741a7b3ed33362b403887e4f52f24b156a288d2125660cee8e26ceb401b10ec",
+  "test/coding_agent/meaning_fixture_delivery_test.dart": "90c29f8bebabdef604f4992877983f0f9d5806411470e826f374adfc8fe43498",
+  "pubspec.yaml": "af1d22e2b285d86bc8d0351d6863ca068b9e848cee02817a2213697c63a0eb24",
+  "assets/meaning_greeting/delivery.json": "5ab89c3ea0c6d50ba178acb4d66dae3efda5cc8e60cecb5407fb3365bd692cb2",
+  "assets/meaning_greeting/pubspec.lock": "84905b2e218d01d6fbecf969cf80209adb9bbc9dba3788fde49f01c92eb7f422",
+  "assets/meaning_greeting/oracle.json": "c4b94c1aa2e8e0830e6a80338f3932d1d70ac857589d5f0c7dabd64e07a14f4b",
+  "assets/meaning_greeting/pubspec.yaml": "ad7a4a06fe9a4090477432843f37575c01580a8daaf8e9c39f41805291f172b9",
+  "assets/meaning_greeting/manifest.json": "557fd096536620ee36e4e9c48858fa80bd7705bdb987226083e74dc8d0fd244c",
+  "assets/meaning_greeting/test/greeting_test.dart.fixture": "b1d3cc0924f9d313c4084b44e54fb76d1a776d7700f30c2695a0f54024eca402",
+  "assets/meaning_greeting/lib/greeting.dart.fixture": "8e9ae44506195092f75388e6d16eccb23d6321204daa2f7fb55b1f03cd6fc33f",
+  "assets/meaning_greeting/tool/observe.dart.fixture": "b1f8e8815340b713cd4090533fcdf96620f63a7bdd7e9751f8879642f64296ab"
+}

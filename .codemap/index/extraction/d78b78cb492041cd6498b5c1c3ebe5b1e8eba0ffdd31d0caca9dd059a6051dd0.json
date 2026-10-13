@@ -1,0 +1,225 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d78b78cb492041cd6498b5c1c3ebe5b1e8eba0ffdd31d0caca9dd059a6051dd0",
+  "payload": {
+    "classes": [
+      "WorldSeatChannel"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 36,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessSeatWsClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 31,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "client.requestSeat(actor: actor)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 45,
+              "end_lineno": 34,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "requestSeat",
+            "receiver": "client",
+            "receiver_constructor": "HarnessSeatWsClient",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 34,
+              "end_lineno": 33,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 44,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "WorldSeatLease",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 73,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "request",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 36,
+          "lineno": 15
+        },
+        "static": true,
+        "unit": "WorldSeatChannel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "Uri",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 36,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 52,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessSeatWsClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 54,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "client.callTool(name, args)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 75,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "callTool",
+            "receiver": "client",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 38,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 74,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 58,
+          "lineno": 38
+        },
+        "static": true,
+        "unit": "WorldSeatChannel"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/world_seat_lease.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/src/harness_seat_ws.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "cecc4e1fa0cc813723aa23e7afdd4f91370743c3362dcedd03f5eb9fc43dab0c",
+  "version": 2
+}

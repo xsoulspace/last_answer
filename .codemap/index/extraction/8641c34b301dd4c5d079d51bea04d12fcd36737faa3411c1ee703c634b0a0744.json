@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8641c34b301dd4c5d079d51bea04d12fcd36737faa3411c1ee703c634b0a0744",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/local/last_used_emoji.dart::LastUsedEmojiLocalDataSourceImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "ad60a62e3f83d8394f51476b67edb6dd7b47095195e1606e208df3f8caf0feef",
+  "version": 2
+}

@@ -872,7 +872,8 @@ class SRu extends S {
   String get supervisorSectionArgs => 'Аргументы';
 
   @override
-  String get supervisorSectionCommandHint => 'Только десктоп, напр. /usr/bin/backup';
+  String get supervisorSectionCommandHint =>
+      'Только десктоп, напр. /usr/bin/backup';
 
   @override
   String get supervisorSectionSchedule => 'Расписание';
@@ -888,7 +889,8 @@ class SRu extends S {
   }
 
   @override
-  String get supervisorSectionAuthorHint => 'Сохранено как план на этом устройстве. Запускается при конвергенции супервизора.';
+  String get supervisorSectionAuthorHint =>
+      'Сохранено как план на этом устройстве. Запускается при конвергенции супервизора.';
 
   @override
   String get storageMeshNotSharing => 'Сейчас ничего не раздаётся';
@@ -966,8 +968,76 @@ class SRu extends S {
   String get supervisorSectionStateIdle => 'Ещё не запускалась';
 
   @override
-  String get storageMeshPermissionBlocked => 'macOS заблокировал доступ к папке с заметками. Разрешите Last Answer в Системных настройках → Конфиденциальность и безопасность → Файлы и папки, затем повторите.';
+  String get storageMeshPermissionBlocked =>
+      'macOS заблокировал доступ к папке с заметками. Разрешите Last Answer в Системных настройках → Конфиденциальность и безопасность → Файлы и папки, затем повторите.';
 
   @override
   String get storageMeshRetrySharing => 'Повторить';
+
+  @override
+  String get agentCodeChange => 'Изменение кода';
+
+  @override
+  String get chatGptSubscriptionTitle => 'План ChatGPT';
+
+  @override
+  String get chatGptContinue => 'Продолжить с ChatGPT';
+
+  @override
+  String get chatGptSignOut => 'Выйти';
+
+  @override
+  String get chatGptUsage => 'Использование и доступ приложений';
+
+  @override
+  String get chatGptChooseAccount => 'Выберите аккаунт';
+
+  @override
+  String get chatGptAccount => 'Аккаунт';
+
+  @override
+  String get chatGptChooseModel => 'Выберите модель';
+
+  @override
+  String get chatGptRefreshModels => 'Обновить модели';
+
+  @override
+  String get chatGptVerifyAccess => 'Проверить доступ к модели';
+
+  @override
+  String get chatGptAccessUnchecked =>
+      'Аккаунт подключён. Доступ к модели ещё не проверен.';
+
+  @override
+  String get chatGptAccessVerified => 'Доступ к модели проверен.';
+
+  @override
+  String get chatGptPlanPermissionRequired =>
+      'Разрешите приложению использовать ваш план в настройках ChatGPT.';
+
+  @override
+  String get chatGptWorking => 'Выполняется…';
+
+  @override
+  String get chatGptRevocationUnconfirmed =>
+      'Удалённый выход не подтверждён. Отключите приложение в настройках ChatGPT.';
+
+  @override
+  String get chatGptConnectionError =>
+      'Не удалось подключиться к ChatGPT. Повторите попытку или проверьте доступ приложения в настройках ChatGPT.';
+
+  @override
+  String get chatGptDesktopOnly =>
+      'Вход в ChatGPT доступен в приложении для компьютера.';
+
+  @override
+  String get chatGptSignInRequired =>
+      'Подключите аккаунт ChatGPT и разрешите доступ к плану перед отправкой.';
+
+  @override
+  String get chatGptModelRequired => 'Выберите модель ChatGPT перед отправкой.';
+
+  @override
+  String get chatGptDocumentConsentRequired =>
+      'Подтвердите использование облака для документа, аккаунта, модели и рабочего пространства перед отправкой.';
 }

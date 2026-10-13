@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9e6e09527003e969f30cea0d10c5364cb33228a9725cdf476cffc8fcdddbbfb2",
+  "payload": [
+    [
+      "tool/gates/chat_cli_gate.dart::_.fail"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "57b9dfb81eac5ecf0729770bb845f70e26f5733053eeeb0fc01df0e6f61aa916",
+  "version": 2
+}

@@ -1,0 +1,32 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "739978a60db3344bd8965c2d8baf34958817e8ff3dd9b8f582193e5c355d8982",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "idea_questions.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "locales.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "d835569c1fbcaad10fde94236466519c0d98b1605960af40b43600692fd98e43",
+  "version": 2
+}

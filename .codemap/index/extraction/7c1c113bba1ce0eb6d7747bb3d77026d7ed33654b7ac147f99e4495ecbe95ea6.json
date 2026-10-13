@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7c1c113bba1ce0eb6d7747bb3d77026d7ed33654b7ac147f99e4495ecbe95ea6",
+  "payload": [
+    [
+      "lib/settings/features/storage_backends_button.dart::_StorageBackendsButtonState._needsPath"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "2f5f34388973f6c1eb9239fb043189d158400dc807a4c4e27e89b05bbeefc107",
+  "version": 2
+}

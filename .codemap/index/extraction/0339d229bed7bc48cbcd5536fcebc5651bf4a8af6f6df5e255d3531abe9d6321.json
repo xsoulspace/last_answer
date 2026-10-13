@@ -1,0 +1,64 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0339d229bed7bc48cbcd5536fcebc5651bf4a8af6f6df5e255d3531abe9d6321",
+  "payload": {
+    "classes": [
+      "AppException"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "cancel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 11,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "AppException"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "AppException"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "exceptions.freezed.dart"
+      }
+    ],
+    "unsupported": [
+      "inheritance:AppException"
+    ]
+  },
+  "payload_digest": "5284265cb9e4dbceb818718b5df0cc076f6a08fc48a15bbeb3974e6d689e4c1a",
+  "version": 2
+}

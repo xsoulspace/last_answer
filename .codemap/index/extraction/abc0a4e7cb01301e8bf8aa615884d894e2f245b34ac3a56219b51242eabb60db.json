@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "abc0a4e7cb01301e8bf8aa615884d894e2f245b34ac3a56219b51242eabb60db",
+  "payload": [
+    [
+      "lib/doc/chat_document_view.dart::_ChatDocumentViewState._policyToggle"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "99afcddf023049d4c0dcb66030dc840761005f8f22b9cc2589ca9c5e49b58c85",
+  "version": 2
+}

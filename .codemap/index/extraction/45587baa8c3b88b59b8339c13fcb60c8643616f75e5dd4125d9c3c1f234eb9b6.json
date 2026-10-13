@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "45587baa8c3b88b59b8339c13fcb60c8643616f75e5dd4125d9c3c1f234eb9b6",
+  "payload": [
+    [
+      "lib/_library/widgets/buttons/icon_share_button.dart::IconShareButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "e13f02b9aae870af143c42daff7e14873bd1da81a85ecd764eefc88908d6a296",
+  "version": 2
+}

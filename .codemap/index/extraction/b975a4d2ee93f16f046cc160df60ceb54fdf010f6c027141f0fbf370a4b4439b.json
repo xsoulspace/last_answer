@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b975a4d2ee93f16f046cc160df60ceb54fdf010f6c027141f0fbf370a4b4439b",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/buttons.dart::LinkButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "7e920fc159cbbcfdbd906d1c39357c7257d3fc519b887f336add1f3a2008da80",
+  "version": 2
+}

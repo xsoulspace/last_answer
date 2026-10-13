@@ -1,0 +1,465 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "7cf721c244eb71265e0a07d1443b1dfc4ec761aa4936986094fbde2121e9b908",
+  "payload": {
+    "classes": [
+      "AgentConfigPersistence",
+      "AgentConfigStore"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 13,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "AgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "AgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "createPlatformAgentConfigPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 75,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 23,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "expandEnv",
+            "receiver": "config",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 75,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          }
+        ],
+        "name": "expandEnv",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 37,
+          "lineno": 32
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "config",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 43,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "lastError",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 47,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isLoaded",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 48,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "_persistence",
+            "receiver_constructor": null,
+            "receiver_type": "AgentConfigPersistence",
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 48,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "defaults",
+            "receiver": "AgentPlatformConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 42,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "decode",
+            "receiver": "AgentPlatformConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 48,
+              "end_lineno": 55,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "defaults",
+            "receiver": "AgentPlatformConfig",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 46,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "error",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 35,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "notifyListeners",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 23,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          }
+        ],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 50
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "write",
+            "receiver": "_persistence",
+            "receiver_constructor": null,
+            "receiver_type": "AgentConfigPersistence",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "encode",
+            "receiver": "config",
+            "receiver_constructor": null,
+            "receiver_type": "AgentPlatformConfig",
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 44,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "notifyListeners",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          }
+        ],
+        "name": "save",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 71,
+          "lineno": 66
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "save",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 81,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "_config",
+            "receiver_constructor": null,
+            "receiver_type": "AgentPlatformConfig",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 80,
+              "lineno": 78
+            }
+          }
+        ],
+        "name": "putAgentServer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 82,
+          "lineno": 73
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "{..._config.agentServers}",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 45,
+              "end_col_offset": 57,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "save",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 55,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "_config",
+            "receiver_constructor": null,
+            "receiver_type": "AgentPlatformConfig",
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 54,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          }
+        ],
+        "name": "removeAgentServer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 87,
+          "lineno": 84
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "save",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 92,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "_config",
+            "receiver_constructor": null,
+            "receiver_type": "AgentPlatformConfig",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 73,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          }
+        ],
+        "name": "putProvider",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 92,
+          "lineno": 89
+        },
+        "static": false,
+        "unit": "AgentConfigStore"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/foundation.dart"
+      },
+      {
+        "conditional": true,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "createPlatformAgentConfigPersistence"
+        ],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence_prefs.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_platform_config.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AgentConfigStore",
+      "field_initialization:AgentConfigStore:1646",
+      "field_initialization:AgentConfigStore:1732",
+      "conditional_namespace:42"
+    ]
+  },
+  "payload_digest": "088b26d97811543dcc6488e3c9499d1ce6be33bdcfe09fbccf66c110265a9a2c",
+  "version": 2
+}

@@ -1,0 +1,1325 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e1dcb52320da3ad18863af723015da52aec4321c9d20a2b2b987b78ea107354b",
+  "payload": {
+    "classes": [
+      "TagsScreenType",
+      "TagsScreenState",
+      "TagsScreenNotifier",
+      "TagsNotifierXAddProjectsView",
+      "TagsNotifierXNavigation",
+      "TagsNotifierXFolderEditing"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 19,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "TagsScreenState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "TagsScreenNotifierDto",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 45,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "TagsScreenState",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 35,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 40,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_addProjectsSearchUpdatesController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 53,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          }
+        ],
+        "name": "onSearchAddProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 53,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "selectedTag",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 54,
+          "lineno": 54
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_appWideSelectedTagId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 56,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_isEditingAppWideTag",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 75,
+          "end_lineno": 57,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 58,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "_addProjectsSearchUpdatesController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 57,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "folderFieldFormHelper",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 35,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "addProjectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 40,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 65,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "removeWhere",
+            "receiver": "[...projects]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 52,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_removedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "_removeProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 73,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 78,
+              "lineno": 76
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loaded",
+            "receiver": "LoadableContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 76,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "updatedProjects.toSet()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 75,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toSet",
+            "receiver": "updatedProjects",
+            "receiver_constructor": null,
+            "receiver_type": "List<ProjectModel>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 66,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          }
+        ],
+        "name": "_updateProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 78,
+          "lineno": 75
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "_removedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 38,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 57,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_removeProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 29,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          }
+        ],
+        "name": "onSelectedProjectChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 91,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 54,
+              "end_col_offset": 3,
+              "end_lineno": 96,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value.selectedTag",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 65,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          }
+        ],
+        "name": "setTagLoading",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 96,
+          "lineno": 94
+        },
+        "static": false,
+        "unit": "TagsScreenNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 53,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "refresh",
+            "receiver": "addProjectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loadFirstPage",
+            "receiver": "addProjectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 23,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "_updateAddProjectsSearch",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 105,
+          "lineno": 100
+        },
+        "static": false,
+        "unit": "TagsNotifierXAddProjectsView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "onEditTagManagement",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 64,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          }
+        ],
+        "name": "onCreateTagManagement",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 109,
+          "lineno": 109
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 5,
+              "end_lineno": 115,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FieldContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 70,
+              "end_lineno": 113,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "LoadableContainer",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 50,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 35,
+              "end_lineno": 117,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_loadTagProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 34,
+              "end_lineno": 117,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 25,
+              "end_lineno": 119,
+              "lineno": 119
+            }
+          }
+        ],
+        "name": "onEditTagManagement",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 121,
+          "lineno": 110
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getAll",
+            "receiver": "dto._.projectsRepository",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 5,
+              "end_lineno": 126,
+              "lineno": 124
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RequestProjectsDto",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 52,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 32,
+              "end_lineno": 127,
+              "lineno": 127
+            }
+          }
+        ],
+        "name": "_loadTagProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 128,
+          "lineno": 123
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 3,
+              "end_lineno": 134,
+              "lineno": 130
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FieldContainer",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 67,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "LoadableContainer",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 48,
+              "end_lineno": 133,
+              "lineno": 133
+            }
+          }
+        ],
+        "name": "onCloseTagManagement",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 134,
+          "lineno": 130
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 66,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loadFirstPage",
+            "receiver": "addProjectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 46,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          }
+        ],
+        "name": "onOpenAddProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 138,
+          "lineno": 135
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 5,
+              "end_lineno": 144,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "refresh",
+            "receiver": "addProjectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 40,
+              "end_lineno": 145,
+              "lineno": 145
+            }
+          }
+        ],
+        "name": "onCloseAddProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 146,
+          "lineno": 140
+        },
+        "static": false,
+        "unit": "TagsNotifierXNavigation"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "showWarningDialog",
+            "receiver": "Modals.of(context)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 5,
+              "end_lineno": 161,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Modals",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 52,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "_removedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 49,
+              "end_lineno": 168,
+              "lineno": 168
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 23,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_assignTagToProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 37,
+              "end_lineno": 170,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "dto._.tagsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateDto",
+            "receiver": "dto._.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 177,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateDto",
+            "receiver": "dto._.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 181,
+              "lineno": 179
+            }
+          }
+        ],
+        "name": "onDeleteTag",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 184,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "TagsNotifierXFolderEditing"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setTagLoading",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 23,
+              "end_lineno": 187,
+              "lineno": 187
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "validate",
+            "receiver": "folderFieldFormHelper",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 54,
+              "end_lineno": 189,
+              "lineno": 189
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "tag",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 60,
+              "end_lineno": 194,
+              "lineno": 194
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generate",
+            "receiver": "ProjectTagModelId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 59,
+              "end_lineno": 194,
+              "lineno": 194
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "upsert",
+            "receiver": "dto._.tagsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 36,
+              "end_lineno": 197,
+              "lineno": 197
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_assignTagToProjects",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 39,
+              "end_lineno": 198,
+              "lineno": 198
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "onCloseTagManagement",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 28,
+              "end_lineno": 199,
+              "lineno": 199
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setTagLoading",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 26,
+              "end_lineno": 201,
+              "lineno": 201
+            }
+          }
+        ],
+        "name": "onSaveTag",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 203,
+          "lineno": 186
+        },
+        "static": false,
+        "unit": "TagsNotifierXFolderEditing"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 62,
+              "end_col_offset": 3,
+              "end_lineno": 209,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value.selectedTag",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 5,
+              "end_lineno": 208,
+              "lineno": 206
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value.selectedTag.value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 62,
+              "end_lineno": 207,
+              "lineno": 207
+            }
+          }
+        ],
+        "name": "onFolderTitleChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 209,
+          "lineno": 205
+        },
+        "static": false,
+        "unit": "TagsNotifierXFolderEditing"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toSet",
+            "receiver": "value.projects.value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 49,
+              "end_lineno": 211,
+              "lineno": 211
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "projects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 7,
+              "end_lineno": 217,
+              "lineno": 215
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProjects",
+            "receiver": "dto._.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 222,
+              "lineno": 219
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "difference",
+            "receiver": "_removedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 66,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "projectsToRemove",
+            "receiver_constructor": "_removedProjects.difference",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 5,
+              "end_lineno": 228,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateProjects",
+            "receiver": "dto._.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 232,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toMap",
+            "receiver": "updatedRemovedProjects",
+            "receiver_constructor": "projectsToRemove.map",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 7,
+              "end_lineno": 237,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteItemsWhere",
+            "receiver": "dto._.projectsNotifier.projectsPagedController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 240,
+              "lineno": 238
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "_removedProjects",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 243,
+              "lineno": 243
+            }
+          }
+        ],
+        "name": "_assignTagToProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 244,
+          "lineno": 210
+        },
+        "static": false,
+        "unit": "TagsNotifierXFolderEditing"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:life_hooks/life_hooks.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "tags_screen_state.freezed.dart"
+      }
+    ],
+    "unsupported": [
+      "inheritance:TagsScreenState",
+      "ExtensionTypeDeclarationImpl",
+      "inheritance:TagsScreenNotifier",
+      "field_initialization:TagsScreenNotifier:1406",
+      "field_initialization:TagsScreenNotifier:1452",
+      "field_initialization:TagsScreenNotifier:1497",
+      "field_initialization:TagsScreenNotifier:1778",
+      "closure:2625",
+      "extension_dispatch:TagsNotifierXAddProjectsView",
+      "extension_dispatch:TagsNotifierXNavigation",
+      "extension_dispatch:TagsNotifierXFolderEditing",
+      "closure:5942",
+      "closure:6071",
+      "closure:7070",
+      "closure:7426",
+      "closure:7711",
+      "closure:7747",
+      "closure:7851"
+    ]
+  },
+  "payload_digest": "f42093419a4d620a83b70973d55fb811c29f9b2a8b950602c72037727f2b1348",
+  "version": 2
+}

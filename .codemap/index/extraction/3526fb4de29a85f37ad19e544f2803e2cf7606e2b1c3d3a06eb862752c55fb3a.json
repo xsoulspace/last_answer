@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3526fb4de29a85f37ad19e544f2803e2cf7606e2b1c3d3a06eb862752c55fb3a",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/containers.dart::Card.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "aded824224e2ada0f38e2c21adb81851ba1ab3acb32991ec23e18e847b4e5598",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "eef3c8b3dc466266f336973c4e1239b92c700f1ac6714114effb2c49a1a3076d",
+  "payload": [
+    [
+      "lib/coding_agent/harness_host.dart::HarnessHost._invokeMeaningAction"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "03580d7789ddc8f44cbb2ab99bd78a8d03129e0a4944b1032887cf7c28a1629e",
+  "version": 2
+}

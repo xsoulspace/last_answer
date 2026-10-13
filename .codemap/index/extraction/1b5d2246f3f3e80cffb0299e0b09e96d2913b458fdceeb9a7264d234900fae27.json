@@ -1,0 +1,853 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1b5d2246f3f3e80cffb0299e0b09e96d2913b458fdceeb9a7264d234900fae27",
+  "payload": {
+    "classes": [
+      "SupervisorService"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 18,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "getApplicationSupportDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 58,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisorService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 33,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 62,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "forDevice",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 34,
+          "lineno": 28
+        },
+        "static": true,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SupervisorView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 48,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SpecStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 34,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "view.plans",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "names",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 35,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 40,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "specs",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 25,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "view.corruptRecords",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 71,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "view.automations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 88,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisorAutomationView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 87,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "describe",
+            "receiver": "spec.trigger",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 42,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_atMinutes",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 58,
+              "end_col_offset": 72,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "forMachine",
+            "receiver": "MachineRegistry",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 38,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MachineRegistry",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "snapshot",
+            "receiver": "registry",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 71,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "scopeFor",
+            "receiver": "registry",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 70,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "view.corruptRecords",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 53,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "projectStatus",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 5,
+              "end_lineno": 104,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DesiredState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 41,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisorAutomationView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 7,
+              "end_lineno": 127,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "view.automations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 15,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "addAll",
+            "receiver": "view.automations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          }
+        ],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 134,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SpecStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 38,
+              "end_lineno": 143,
+              "lineno": 143
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_specOf",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 144,
+              "lineno": 144
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "store",
+            "receiver_constructor": "SpecStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "DesiredState",
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 61,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "any",
+            "receiver": "existing.specs",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 72,
+              "end_lineno": 148,
+              "lineno": 148
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "store",
+            "receiver_constructor": "SpecStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 52,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DesiredState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 51,
+              "end_lineno": 154,
+              "lineno": 154
+            }
+          }
+        ],
+        "name": "saveAutomation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 155,
+          "lineno": 136
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SpecStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 38,
+              "end_lineno": 163,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "store",
+            "receiver_constructor": "SpecStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 37,
+              "end_lineno": 164,
+              "lineno": 164
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "delete",
+            "receiver": "store",
+            "receiver_constructor": "SpecStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 24,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "save",
+            "receiver": "store",
+            "receiver_constructor": "SpecStore",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 50,
+              "end_lineno": 173,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DesiredState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 49,
+              "end_lineno": 173,
+              "lineno": 173
+            }
+          }
+        ],
+        "name": "deleteAutomation",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 175,
+          "lineno": 157
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "draft.id",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 30,
+              "end_lineno": 179,
+              "lineno": 179
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "draft.id",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 31,
+              "end_lineno": 180,
+              "lineno": 180
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "FormatException",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 77,
+              "end_lineno": 181,
+              "lineno": 181
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "NoTrigger",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 27,
+              "end_lineno": 185,
+              "lineno": 185
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IntervalTrigger",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 189,
+              "lineno": 186
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 45,
+              "end_lineno": 187,
+              "lineno": 187
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_atLabel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 75,
+              "end_lineno": 188,
+              "lineno": 188
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ComponentSpec",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 212,
+              "lineno": 190
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SupervisionPolicy",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 198,
+              "lineno": 193
+            }
+          }
+        ],
+        "name": "_specOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 213,
+          "lineno": 177
+        },
+        "static": false,
+        "unit": "SupervisorService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "parseAnchor",
+            "receiver": "IntervalTrigger",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 60,
+              "end_lineno": 218,
+              "lineno": 218
+            }
+          }
+        ],
+        "name": "_atMinutes",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 220,
+          "lineno": 216
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "padLeft",
+            "receiver": "(minutes ~/ 60).toString()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 57,
+              "end_lineno": 224,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "(minutes ~/ 60)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 41,
+              "end_lineno": 224,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "padLeft",
+            "receiver": "(minutes % 60).toString()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 58,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "(minutes % 60)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 42,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          }
+        ],
+        "name": "_atLabel",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 227,
+          "lineno": 222
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/supervisor_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:oka_supervisor/oka_supervisor.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:path_provider/path_provider.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:5604"
+    ]
+  },
+  "payload_digest": "aa19ef955ebccf2afaee7a3a20e705a1f9e706a155f023e7d6f5cfad3caf547d",
+  "version": 2
+}

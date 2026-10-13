@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "14f9ed7a5e89e4c35304da101b99fbb8caa340d97b5e74ff7a77bd1f1ec48d89",
+  "payload": [
+    [
+      "packages/core/lib/src/utils/greetings.dart::Greeting._nextRandom"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "dfbb71382e25efc6aba89110caf191884497d44f1e067688efb212a222875082",
+  "version": 2
+}

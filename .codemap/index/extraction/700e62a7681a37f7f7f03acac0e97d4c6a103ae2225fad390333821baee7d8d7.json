@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "700e62a7681a37f7f7f03acac0e97d4c6a103ae2225fad390333821baee7d8d7",
+  "payload": [
+    [
+      "lib/workbench/workbench_strings.dart::_.workbenchText"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "cebbd50b31ebb834439b3abf2b0bd94820ed7e332555479ef56bcb1fc5f850cb",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fb173f34fa7b6f48798b37a693ce89408621ba201ee5467543387c6e492cf4bb",
+  "payload": [
+    [
+      "lib/agent_config/agent_config_settings_pane.dart::AgentConfigSettingsPane.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "ea596dbfd16f2344996f17b615790e0b2f04d4f39f3ce50c1ec3564c8b288473",
+  "version": 2
+}

@@ -1,0 +1,85 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "80cc80a6be5db82ac91276229cba5f5905ec15bcece99700257362b97eb010a1",
+  "payload": {
+    "classes": [
+      "SettingsText"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 7,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "SettingsText"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 13,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 32,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 13,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "SettingsText"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SettingsText"
+    ]
+  },
+  "payload_digest": "46a2ad492fe9f72dbb491edc4ba62d8f3f91b5f1f92e7b808f8181dea75689f4",
+  "version": 2
+}

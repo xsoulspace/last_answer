@@ -1,0 +1,389 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cf700e722defe3e4d2178c07857b9b07f386849909d5521f435b205bf89d089c",
+  "payload": {
+    "classes": [
+      "ProductDartCandidateVerifier"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 13,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "ProductDartCandidateVerifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ConventionalCheck",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 24,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "runtime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 33,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "inspect",
+            "receiver": "toolchain",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 42,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConventionalCheck",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 40,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "File('${candidate.path}/main.dart')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 58,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 45,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "Directory('${candidate.path}/bin')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 57,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 44,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "listSync",
+            "receiver": "Directory('${candidate.path}/bin')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 72,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 61,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "file.path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 57,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "file.path",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 58,
+              "end_lineno": 47,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sort",
+            "receiver": "[if (File('${candidate.path}/main.dart').existsSync()) 'main.dart', if (Directory('${candidate.path}/bin').existsSync()) for (final file in Directory('${candidate.path}/bin').listSync()) if (file is File && file.path.endsWith('.dart')) file.path.substring(candidate.path.length + 1)]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 5,
+              "end_col_offset": 13,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ConventionalCheck",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 57,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ConventionalCheck",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 67,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 80,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "Directory('${candidate.path}/.dart_tool/coding_verification')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 35,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "verifyCandidate",
+            "receiver": "verifier",
+            "receiver_constructor": null,
+            "receiver_type": "MacOsCandidateVerifier",
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 7,
+              "end_lineno": 87,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 45,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "checks",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 96,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConventionalCheck",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 109,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConventionalCheck",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 125,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "every",
+            "receiver": "checks",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 7,
+              "end_lineno": 116,
+              "lineno": 114
+            }
+          }
+        ],
+        "name": "verifyCandidate",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 126,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "ProductDartCandidateVerifier"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/product_dart_runtime.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/conventional_change.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_tooling_runtime/xsoulspace_tooling_runtime.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:ProductDartCandidateVerifier:635",
+      "closure:4081"
+    ]
+  },
+  "payload_digest": "12d5faa5ad4a815be59559f711dfe94d05d19ea226dff8cc22ef55ffa0565e55",
+  "version": 2
+}

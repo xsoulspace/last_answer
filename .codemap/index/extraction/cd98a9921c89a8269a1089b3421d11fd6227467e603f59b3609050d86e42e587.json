@@ -1,0 +1,731 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cd98a9921c89a8269a1089b3421d11fd6227467e603f59b3609050d86e42e587",
+  "payload": {
+    "classes": [
+      "StorageDocumentRepository"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_path",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 21,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 46,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_path",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 45,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 44,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocNotFound",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 43,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocFound",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 35,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "DocumentNode",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 70,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 45,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 45,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          }
+        ],
+        "name": "get",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 39,
+          "lineno": 23
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "InvariantViolation",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 46,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 52,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_path",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 20,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 31,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "node",
+            "receiver_constructor": null,
+            "receiver_type": "DocumentNode",
+            "shadowed": true,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 30,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_updateIndex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 28,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          }
+        ],
+        "name": "save",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 54,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "removeFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 67,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_path",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 39,
+              "end_lineno": 58,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_removeFromIndex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 30,
+              "end_lineno": 59,
+              "lineno": 59
+            }
+          }
+        ],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 60,
+          "lineno": 56
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_loadIndex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 36,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "ids.map(NodeId.new)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 39,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "ids",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 30,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          }
+        ],
+        "name": "childrenOf",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 67,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "listDirectory",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 58,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "entries.where((e) => !e.isDirectory && e.name.endsWith('.json')).where((e) => e.name != 'index.json').map((e) => NodeId(e.name.replaceAll('.json', '')))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 17,
+              "end_lineno": 76,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "entries.where((e) => !e.isDirectory && e.name.endsWith('.json')).where((e) => e.name != 'index.json')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 59,
+              "end_lineno": 75,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "entries.where((e) => !e.isDirectory && e.name.endsWith('.json'))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 45,
+              "end_lineno": 74,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "entries",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 65,
+              "end_lineno": 73,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "allIds",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 77,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "readFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 51,
+              "end_lineno": 80,
+              "lineno": 80
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 37,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "decoded",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 75,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          }
+        ],
+        "name": "_loadIndex",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 88,
+          "lineno": 79
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_loadIndex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 36,
+              "end_lineno": 92,
+              "lineno": 92
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "List<String>",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 70,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "children",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 41,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "children",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 70,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "entry.value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 61,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 58,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 57,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "_updateIndex",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 100,
+          "lineno": 90
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_loadIndex",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 36,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "entry.value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 38,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "saveFile",
+            "receiver": "_service",
+            "receiver_constructor": null,
+            "receiver_type": "StorageService",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 71,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 53,
+              "end_col_offset": 70,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          }
+        ],
+        "name": "_removeFromIndex",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 109,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "StorageDocumentRepository"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../headless_core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:StorageDocumentRepository",
+      "field_initialization:StorageDocumentRepository:613",
+      "field_initialization:StorageDocumentRepository:647",
+      "closure:2125",
+      "closure:2191",
+      "closure:2235",
+      "closure:2546"
+    ]
+  },
+  "payload_digest": "e321af7d2d29ba2c8941dd5999759d2cad936a0a7dfe7c291c9676a1bf696106",
+  "version": 2
+}

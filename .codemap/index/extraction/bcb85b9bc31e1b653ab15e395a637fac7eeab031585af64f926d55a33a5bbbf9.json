@@ -1,0 +1,178 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bcb85b9bc31e1b653ab15e395a637fac7eeab031585af64f926d55a33a5bbbf9",
+  "payload": {
+    "classes": [
+      "GeneralSettingsBlocDto",
+      "GeneralSettingsBloc"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 36,
+              "end_lineno": 7,
+              "lineno": 7
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 7,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "GeneralSettingsBlocDto"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 15,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "GeneralSettingsBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "updateCharactersLimitForNewNotes",
+            "receiver": "dto.userNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 25,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "tryParse",
+            "receiver": "int",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 50,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "_onChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 26,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "GeneralSettingsBloc"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "removeListener",
+            "receiver": "characterLimitController",
+            "receiver_constructor": null,
+            "receiver_type": "CharactersLimitController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 34,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "characterLimitController",
+            "receiver_constructor": null,
+            "receiver_type": "CharactersLimitController",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 17,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 34,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "GeneralSettingsBloc"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/features.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:GeneralSettingsBloc",
+      "field_initialization:GeneralSettingsBloc:405"
+    ]
+  },
+  "payload_digest": "2c3e25e379601cff0474ad202f52833a92b00af6bcc1d81b36dfdda5b96f237e",
+  "version": 2
+}

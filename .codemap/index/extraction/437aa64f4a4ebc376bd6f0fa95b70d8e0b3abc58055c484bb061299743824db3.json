@@ -1,0 +1,498 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "437aa64f4a4ebc376bd6f0fa95b70d8e0b3abc58055c484bb061299743824db3",
+  "payload": {
+    "classes": [
+      "CreateIdeaProjectScreen",
+      "_CreateIdeaProjectScreenState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "CreateIdeaProjectScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_CreateIdeaProjectScreenState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 9,
+              "lineno": 9
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 9,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "CreateIdeaProjectScreen"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_textController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 18,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_CreateIdeaProjectScreenState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 65,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "context.colorScheme.onBackground",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 68,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 94,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 40,
+              "end_lineno": 36,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BackTextUniversalAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 67,
+              "end_lineno": 37,
+              "lineno": 37
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 93,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 58,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Center",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 92,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SingleChildScrollView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 11,
+              "end_lineno": 91,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConstrainedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 90,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 15,
+              "end_lineno": 45,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 89,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconIdeaButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 53,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withOpacity",
+            "receiver": "color",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 49,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 31,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 61,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.displaySmall",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 21,
+              "end_lineno": 59,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 31,
+              "end_lineno": 62,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 87,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 23,
+              "end_lineno": 80,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextFormField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 25,
+              "end_lineno": 79,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "context.textTheme.displaySmall",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 27,
+              "end_lineno": 74,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "InputDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 27,
+              "end_lineno": 78,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UnderlineInputBorder",
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 64,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 34,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 23,
+              "end_lineno": 85,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 52,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "_CreateIdeaProjectScreenState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:CreateIdeaProjectScreen",
+      "inheritance:_CreateIdeaProjectScreenState",
+      "field_initialization:_CreateIdeaProjectScreenState:398",
+      "nested_function:onBack",
+      "nested_function:onCreate",
+      "closure:1682",
+      "closure:2383"
+    ]
+  },
+  "payload_digest": "3d64b0fb23222eb9a7687493c159e8103a3c830523da50a5c0406eef1d4d8c08",
+  "version": 2
+}

@@ -1,0 +1,35 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f6921bc5111a16c655d43ce273590cb906ab39025661969d8f2788c8c080fbcb",
+  "payload": {
+    "classes": [
+      "ProjectsPagedController"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 5,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "ProjectsPagedController"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ProjectsPagedController"
+    ]
+  },
+  "payload_digest": "1f3640cde492ed7e2b7e3ba7c1c6db39b8daa1fe370f35564a105296bac29c8e",
+  "version": 2
+}

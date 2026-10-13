@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d733c38f102726533206479807b6333bfd19c7e3a6b684c30ed9e910618b4811",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_panel.dart::_SupervisorPanelState._delete"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "32fa2ad4c447629a425188afec9276c89a022535f6c969ff92d3fc214cbde83a",
+  "version": 2
+}

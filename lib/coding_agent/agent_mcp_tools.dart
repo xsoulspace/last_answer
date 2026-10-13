@@ -26,6 +26,50 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 /// and storage entries.
 Set<AgentCallEntry> agentMcpEntries() => {
   mcpToolkitTool(
+    handler: (parameters) async {
+      try {
+        final handle = _resolveSession(parameters);
+        if (handle is! AgentDocHandle) {
+          return MCPCallResult(
+            message: 'Open the owning agent document.',
+            parameters: {
+              'ok': false,
+              'error': 'meaning_owner_surface_required',
+            },
+          );
+        }
+        final result = await handle.meaningAction(
+          parameters['action']!,
+        );
+        return MCPCallResult(
+          message: '${result['error'] ?? 'Meaning experiment receipt'}',
+          parameters: result,
+        );
+      } on SessionResolutionException catch (error) {
+        return _resolutionError(error);
+      }
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_meaning_change',
+      description:
+          'Preview, apply, rollback or finalize the explicitly bound greeting '
+          'experiment through the owning document session.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'docId': {'type': 'string'},
+          'action': {
+            'type': 'string',
+            'enum': ['preview', 'apply', 'rollback', 'finalize', 'status'],
+          },
+        },
+        'required': ['action'],
+        'additionalProperties': false,
+      }),
+    ),
+  ),
+
+  mcpToolkitTool(
     handler: (final parameters) {
       try {
         // D1 — the REGISTRY is the source of truth: the resolved handle
@@ -166,6 +210,25 @@ Set<AgentCallEntry> agentMcpEntries() => {
           'rejected. With several docs open, pass docId to address one '
           'exactly; absent, the focused doc resolves.',
       inputSchema: ObjectSchema.fromMap(harnessPermissionAnswerSchema),
+    ),
+  ),
+  mcpToolkitTool(
+    handler: (parameters) async {
+      final hook = AgentDocSurface.createMeaningExperimentHook;
+      final result = hook == null
+          ? <String, Object?>{'ok': false, 'error': 'meaning_entry_unavailable'}
+          : await hook();
+      return MCPCallResult(
+        message: result['ok'] == true
+            ? 'Prepared and opened reversible change experiment.'
+            : '${result['error']}',
+        parameters: result,
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'agent_meaning_experiment_create',
+      description: 'Prepare and open the app-owned reversible change experiment.',
+      inputSchema: ObjectSchema.fromMap(_emptySchema()),
     ),
   ),
   mcpToolkitTool(

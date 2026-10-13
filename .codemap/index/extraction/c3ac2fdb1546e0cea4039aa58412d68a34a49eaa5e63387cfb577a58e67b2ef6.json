@@ -1,0 +1,4349 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c3ac2fdb1546e0cea4039aa58412d68a34a49eaa5e63387cfb577a58e67b2ef6",
+  "payload": {
+    "classes": [
+      "S",
+      "_SDelegate"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "canonicalizedLocale",
+            "receiver": "intl.Intl",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 67,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toString",
+            "receiver": "locale",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 66,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 68,
+          "end_lineno": 67,
+          "lineno": 66
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Localizations",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "of",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 73,
+          "lineno": 71
+        },
+        "static": true,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "language",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 106,
+          "lineno": 102
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "search",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 112,
+          "lineno": 108
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "writeAnAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 118,
+          "lineno": 114
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "writeANote",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 124,
+          "lineno": 120
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "subscription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 130,
+          "lineno": 126
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "freeSubscription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 136,
+          "lineno": 132
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "patronSubscription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 142,
+          "lineno": 138
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "myAccount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 148,
+          "lineno": 144
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "changeLog",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 154,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "username",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 160,
+          "lineno": 156
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "email",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 166,
+          "lineno": 162
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "deleteMyAccount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 172,
+          "lineno": 168
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "danger",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 178,
+          "lineno": 174
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "loading",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 184,
+          "lineno": 180
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "esc",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 17,
+          "end_lineno": 190,
+          "lineno": 186
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "generalSettingsFullTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 196,
+          "lineno": 192
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "generalSettingsShortTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 202,
+          "lineno": 198
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "charactersLimit",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 208,
+          "lineno": 204
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "charactersLimitForNewNotesDesription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 214,
+          "lineno": 210
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "charactersUnlimited",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 220,
+          "lineno": 216
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "madeWithLoveAndFlutter",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 226,
+          "lineno": 222
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "feedbackTextWithEmail",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 232,
+          "lineno": 228
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "niceDayWish",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 238,
+          "lineno": 234
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "privacyPolicy",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 244,
+          "lineno": 240
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "termsAndConditions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 250,
+          "lineno": 246
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "joinDiscord",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 256,
+          "lineno": 252
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "pleaseNotice",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 262,
+          "lineno": 258
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "appInfo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 268,
+          "lineno": 264
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "appVersion",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 274,
+          "lineno": 270
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "frequentlyUsed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 280,
+          "lineno": 276
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "theme",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 286,
+          "lineno": 282
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "themeSystem",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 292,
+          "lineno": 288
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "themeDark",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 298,
+          "lineno": 294
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "themeLight",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 304,
+          "lineno": 300
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "projectsDirection",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 310,
+          "lineno": 306
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "settings",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 316,
+          "lineno": 312
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "noteSettings",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 322,
+          "lineno": 318
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "wordNew",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 328,
+          "lineno": 324
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "yes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 17,
+          "end_lineno": 334,
+          "lineno": 330
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "no",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 16,
+          "end_lineno": 340,
+          "lineno": 336
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "noProjectsYet",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 346,
+          "lineno": 342
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "createIdeaHelperText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 352,
+          "lineno": 348
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "whatsYourIdea",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 358,
+          "lineno": 354
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "lastAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 364,
+          "lineno": 360
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "idea",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 370,
+          "lineno": 366
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "note",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 376,
+          "lineno": 372
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 382,
+          "lineno": 378
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "answer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 388,
+          "lineno": 384
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "cancel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 394,
+          "lineno": 390
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "close",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 400,
+          "lineno": 396
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "about",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 406,
+          "lineno": 402
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "aboutAbstractWhatFor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 412,
+          "lineno": 408
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "delete",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 418,
+          "lineno": 414
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "deleteThisNote",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 424,
+          "lineno": 420
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "areYouSure",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 430,
+          "lineno": 426
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "willBeLost",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 436,
+          "lineno": 432
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyInspirationTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 442,
+          "lineno": 438
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractWhatElse",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 448,
+          "lineno": 444
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractFiveWhyesWhat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 454,
+          "lineno": 450
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractFiveWhyesWhy",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 460,
+          "lineno": 456
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractPDSAWhy",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 466,
+          "lineno": 462
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractPDSAWhat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 472,
+          "lineno": 468
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractSixSigmaWhy",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 478,
+          "lineno": 474
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "philosophyAbstractSixSigmaWhat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 484,
+          "lineno": 480
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "aboutAbstractWhatForDescription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 490,
+          "lineno": 486
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "aboutAbstractHowDescription",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 496,
+          "lineno": 492
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "aboutAbstractIdeasImprovementsBugs",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 502,
+          "lineno": 498
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supporterDaysLeft",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 508,
+          "lineno": 504
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "youCanSupportAppDevelopment",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 514,
+          "lineno": 510
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "youUsedThisAppFor",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 520,
+          "lineno": 516
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "days",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 526,
+          "lineno": 522
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "andHaveSupported",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 532,
+          "lineno": 528
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "unfortunatelyThisPlatformHasNoAbilitiesToSupport",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 538,
+          "lineno": 534
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "butYouCanGoTo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 544,
+          "lineno": 540
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "toTheWebsite",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 550,
+          "lineno": 546
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "whatSupporterDaysMeans",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 556,
+          "lineno": 552
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supporterDaysAre",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 562,
+          "lineno": 558
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supporterDaysMainFunctionality",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 568,
+          "lineno": 564
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "toGetSupporterDays",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 574,
+          "lineno": 570
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "watchAd",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 580,
+          "lineno": 576
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "adPleaseNote",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 586,
+          "lineno": 582
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "exportImportData",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 592,
+          "lineno": 588
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "fileSaved",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 598,
+          "lineno": 594
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 604,
+          "lineno": 600
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "confirm",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 610,
+          "lineno": 606
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "confirmProjectsOwerwrite",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 616,
+          "lineno": 612
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "projectsFromFileRestored",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 622,
+          "lineno": 618
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "beCarefulItsInreversableAction",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 628,
+          "lineno": 624
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "byLoadingFileWarning",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 634,
+          "lineno": 630
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "rewardForAdThankYou",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 640,
+          "lineno": 636
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "yourProjectWasCopiedToClipboard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 646,
+          "lineno": 642
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "allProjectsWereCopiedToClipboard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 46,
+          "end_lineno": 652,
+          "lineno": 648
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "applyTimestamp",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 658,
+          "lineno": 654
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "restoreFromFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 664,
+          "lineno": 660
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "saveToFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 670,
+          "lineno": 666
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "copyAllProjectsToClipboard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 676,
+          "lineno": 672
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "getAllProjectsFromClipboard",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 682,
+          "lineno": 678
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "searchProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 688,
+          "lineno": 684
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "addProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 694,
+          "lineno": 690
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "create",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 700,
+          "lineno": 696
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "edit",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 706,
+          "lineno": 702
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "folder",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 712,
+          "lineno": 708
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "folderName",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 718,
+          "lineno": 714
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "projects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 724,
+          "lineno": 720
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "folders",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 730,
+          "lineno": 726
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "save",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 736,
+          "lineno": 732
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "limitReached",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 742,
+          "lineno": 738
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "createFolder",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 748,
+          "lineno": 744
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "deleteFolder",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 754,
+          "lineno": 750
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "folderDeletionWillNotDeleteProjects",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 760,
+          "lineno": 756
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "useFoldersForNotes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 766,
+          "lineno": 762
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "youCanCreateUpTo",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 772,
+          "lineno": 768
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "clickToEditFolders",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 778,
+          "lineno": 774
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "all",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 17,
+          "end_lineno": 784,
+          "lineno": 780
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "githubSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 790,
+          "lineno": 786
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "connectGithub",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 796,
+          "lineno": 792
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "disconnectGithub",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 802,
+          "lineno": 798
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "githubConnected",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 808,
+          "lineno": 804
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "githubConnectFailed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 814,
+          "lineno": 810
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chooseRepository",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 820,
+          "lineno": 816
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "createNewRepository",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 826,
+          "lineno": 822
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "repoNameHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 832,
+          "lineno": 828
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "subdirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 838,
+          "lineno": 834
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "backupToGithub",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 844,
+          "lineno": 840
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "restoreFromGithub",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 850,
+          "lineno": 846
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "githubBackupDone",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 856,
+          "lineno": 852
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "githubRestoreDone",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 862,
+          "lineno": 858
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "pasteTokenInstead",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 868,
+          "lineno": 864
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenGuideTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 874,
+          "lineno": 870
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenStep1",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 880,
+          "lineno": 876
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenStep2",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 886,
+          "lineno": 882
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenStep3",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 892,
+          "lineno": 888
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenStep4",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 898,
+          "lineno": 894
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenStep5",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 24,
+          "end_lineno": 904,
+          "lineno": 900
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenFieldLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 910,
+          "lineno": 906
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "connectWithToken",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 916,
+          "lineno": 912
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "openGithubTokens",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 922,
+          "lineno": 918
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "manageTokens",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 928,
+          "lineno": 924
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storage",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 934,
+          "lineno": 930
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageSectionHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 940,
+          "lineno": 936
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageLocalDb",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 946,
+          "lineno": 942
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageLocalDbHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 952,
+          "lineno": 948
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageFilesystem",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 958,
+          "lineno": 954
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageFilesystemHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 964,
+          "lineno": 960
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageGitOffline",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 970,
+          "lineno": 966
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageGitOfflineHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 976,
+          "lineno": 972
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageGithubOption",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 982,
+          "lineno": 978
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageGithubOptionHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 988,
+          "lineno": 984
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storagePrimary",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 994,
+          "lineno": 990
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageSetAsPrimary",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1000,
+          "lineno": 996
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageFolderPathLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1006,
+          "lineno": 1002
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageGitPathLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1012,
+          "lineno": 1008
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storagePathHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 1018,
+          "lineno": 1014
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageBackupNow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 1024,
+          "lineno": 1020
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageRestoreNow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 1030,
+          "lineno": 1026
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageBackupDone",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 1036,
+          "lineno": 1032
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageRestoreDone",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1042,
+          "lineno": 1038
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageNoBackupFound",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1048,
+          "lineno": 1044
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageOperationFailed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1054,
+          "lineno": 1050
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageOpenGithubSetup",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1060,
+          "lineno": 1056
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageNotAvailable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1066,
+          "lineno": 1062
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 1072,
+          "lineno": 1068
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 1078,
+          "lineno": 1074
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshBecomeMain",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1084,
+          "lineno": 1080
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshJoinWithCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1090,
+          "lineno": 1086
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "storageMeshWaitingHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 53,
+          "end_lineno": 1096,
+          "lineno": 1092
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshCopyCode",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1102,
+          "lineno": 1098
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshCodeCopied",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1108,
+          "lineno": 1104
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshPasteTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1114,
+          "lineno": 1110
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshScanQr",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 1120,
+          "lineno": 1116
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshConnectButton",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1126,
+          "lineno": 1122
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshMainBadge",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1132,
+          "lineno": 1128
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshJoinedStatus",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1138,
+          "lineno": 1134
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "storageMeshConnectedCount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 46,
+          "end_lineno": 1144,
+          "lineno": 1140
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshSyncNow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1150,
+          "lineno": 1146
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshSyncDone",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1156,
+          "lineno": 1152
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "storageMeshPairingFailed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 1162,
+          "lineno": 1158
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshAdvanced",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1168,
+          "lineno": 1164
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "liveSharingTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 1174,
+          "lineno": 1170
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "liveSharingSubtitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1180,
+          "lineno": 1176
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshUnpair",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 1186,
+          "lineno": 1182
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "tokenSafety",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 1192,
+          "lineno": 1188
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "allow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 1198,
+          "lineno": 1194
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "deny",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 1204,
+          "lineno": 1200
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "reject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 20,
+          "end_lineno": 1210,
+          "lineno": 1206
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "retry",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 19,
+          "end_lineno": 1216,
+          "lineno": 1212
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "copy",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 18,
+          "end_lineno": 1222,
+          "lineno": 1218
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "discuss",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 1228,
+          "lineno": 1224
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "desktopOnly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 25,
+          "end_lineno": 1234,
+          "lineno": 1230
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentSettingsTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1240,
+          "lineno": 1236
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "agentConfigUnreadable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 1246,
+          "lineno": 1242
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServersSection",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1252,
+          "lineno": 1248
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerAdd",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 1258,
+          "lineno": 1254
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServersEmptyHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1264,
+          "lineno": 1260
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerNameHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1270,
+          "lineno": 1266
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerCommandHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1276,
+          "lineno": 1272
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerRemove",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 1282,
+          "lineno": 1278
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerArgsHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1288,
+          "lineno": 1284
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentServerEnvHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1294,
+          "lineno": 1290
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProvidersSection",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1300,
+          "lineno": 1296
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderKeyStored",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1306,
+          "lineno": 1302
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderKeyHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1312,
+          "lineno": 1308
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderKeyRemove",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1318,
+          "lineno": 1314
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderEnvHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1324,
+          "lineno": 1320
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderBaseUrlHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1330,
+          "lineno": 1326
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderModelsHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1336,
+          "lineno": 1332
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentProviderDefaultModelHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 1342,
+          "lineno": 1338
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatDefaultsSection",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1348,
+          "lineno": 1344
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatProviderHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1354,
+          "lineno": 1350
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatModelHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1360,
+          "lineno": 1356
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatSystemPromptHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1366,
+          "lineno": 1362
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatNoTransport",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1372,
+          "lineno": 1368
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatAcpDesktopOnly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1378,
+          "lineno": 1374
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatNoAgentDetected",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1384,
+          "lineno": 1380
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatMissingKey",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1390,
+          "lineno": 1386
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatConsentDeclined",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1396,
+          "lineno": 1392
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatConsentTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1402,
+          "lineno": 1398
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "agentChatConsentBody",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 1408,
+          "lineno": 1404
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatSystemPromptTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 1414,
+          "lineno": 1410
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "agentChatCloudLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 1420,
+          "lineno": 1416
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatStatusReady",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1426,
+          "lineno": 1422
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatStatusStarting",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1432,
+          "lineno": 1428
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatStatusError",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1438,
+          "lineno": 1434
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatStatusStopped",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1444,
+          "lineno": 1440
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatStatusIdle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1450,
+          "lineno": 1446
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatPickTransport",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1456,
+          "lineno": 1452
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatUseLocalExecutable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 1462,
+          "lineno": 1458
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatInstallTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1468,
+          "lineno": 1464
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatRecheck",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 1474,
+          "lineno": 1470
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatExecutableNotFound",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 1480,
+          "lineno": 1476
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatAuthRequired",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1486,
+          "lineno": 1482
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingSheetTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1492,
+          "lineno": 1488
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingEmbedded",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1498,
+          "lineno": 1494
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingEmbeddedSubtitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1504,
+          "lineno": 1500
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingNoWorlds",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1510,
+          "lineno": 1506
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingManual",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1516,
+          "lineno": 1512
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingManualHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1522,
+          "lineno": 1518
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingEndpointLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1528,
+          "lineno": 1524
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingInvalidEndpoint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 1534,
+          "lineno": 1530
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingSeat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 1540,
+          "lineno": 1536
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "worldBindingReadOnly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1546,
+          "lineno": 1542
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatWorkspaceTooltip",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1552,
+          "lineno": 1548
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatPickWorkspace",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1558,
+          "lineno": 1554
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentChatContextReset",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1564,
+          "lineno": 1560
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1570,
+          "lineno": 1566
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1576,
+          "lineno": 1572
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionUnsupported",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1582,
+          "lineno": 1578
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionRefresh",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1588,
+          "lineno": 1584
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionDrifted",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1594,
+          "lineno": 1590
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionAdd",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1600,
+          "lineno": 1596
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionEdit",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1606,
+          "lineno": 1602
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionName",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1612,
+          "lineno": 1608
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionKindService",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1618,
+          "lineno": 1614
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionKindJob",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1624,
+          "lineno": 1620
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionOnDemand",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1630,
+          "lineno": 1626
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionRepeating",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 1636,
+          "lineno": 1632
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionEvery",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1642,
+          "lineno": 1638
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionUnitMinutes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1648,
+          "lineno": 1644
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionUnitHours",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 1654,
+          "lineno": 1650
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionUnitDays",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1660,
+          "lineno": 1656
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionCommand",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1666,
+          "lineno": 1662
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionArgs",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1672,
+          "lineno": 1668
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionCommandHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1678,
+          "lineno": 1674
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionSchedule",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1684,
+          "lineno": 1680
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorSectionNextRun",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 1690,
+          "lineno": 1686
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorSectionDeleteWarn",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 1696,
+          "lineno": 1692
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionAuthorHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 41,
+          "end_lineno": 1702,
+          "lineno": 1698
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshNotSharing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1708,
+          "lineno": 1704
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshStartSharing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1714,
+          "lineno": 1710
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorGroupServices",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1720,
+          "lineno": 1716
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorGroupSchedules",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1726,
+          "lineno": 1722
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorGroupAgents",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1732,
+          "lineno": 1728
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionKindCommand",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1738,
+          "lineno": 1734
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionKindAgent",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 1744,
+          "lineno": 1740
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionInstructions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 1750,
+          "lineno": 1746
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionInstructionsHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 1756,
+          "lineno": 1752
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionAnchorAt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1762,
+          "lineno": 1758
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionTimeHint",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 1768,
+          "lineno": 1764
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorScheduleDaily",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1774,
+          "lineno": 1770
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorScheduleDailyAt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 1780,
+          "lineno": 1776
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorScheduleWeekly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1786,
+          "lineno": 1782
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorScheduleEveryDays",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 1792,
+          "lineno": 1788
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorScheduleEveryHours",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 1798,
+          "lineno": 1794
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorScheduleEveryMinutes",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 1804,
+          "lineno": 1800
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorScheduleAt",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 1810,
+          "lineno": 1806
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "supervisorSectionStats",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 1816,
+          "lineno": 1812
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionStateActive",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1822,
+          "lineno": 1818
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supervisorSectionStateIdle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 1828,
+          "lineno": 1824
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshPermissionBlocked",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1834,
+          "lineno": 1830
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "storageMeshRetrySharing",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 1840,
+          "lineno": 1836
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "agentCodeChange",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 1846,
+          "lineno": 1842
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptSubscriptionTitle",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 1852,
+          "lineno": 1848
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptContinue",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 1858,
+          "lineno": 1854
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptSignOut",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 1864,
+          "lineno": 1860
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptUsage",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 1870,
+          "lineno": 1866
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptChooseAccount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1876,
+          "lineno": 1872
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptAccount",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 1882,
+          "lineno": 1878
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptChooseModel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1888,
+          "lineno": 1884
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptRefreshModels",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1894,
+          "lineno": 1890
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptVerifyAccess",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 1900,
+          "lineno": 1896
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptAccessUnchecked",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1906,
+          "lineno": 1902
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptAccessVerified",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1912,
+          "lineno": 1908
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptPlanPermissionRequired",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 43,
+          "end_lineno": 1918,
+          "lineno": 1914
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptWorking",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 28,
+          "end_lineno": 1924,
+          "lineno": 1920
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptRevocationUnconfirmed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 1930,
+          "lineno": 1926
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptConnectionError",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 1936,
+          "lineno": 1932
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptDesktopOnly",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 1942,
+          "lineno": 1938
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptSignInRequired",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 1948,
+          "lineno": 1944
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptModelRequired",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 1954,
+          "lineno": 1950
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "chatGptDocumentConsentRequired",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 1960,
+          "lineno": 1956
+        },
+        "static": false,
+        "unit": "S"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 1964,
+          "lineno": 1964
+        },
+        "static": false,
+        "unit": "_SDelegate"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SynchronousFuture",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 48,
+              "end_lineno": 1968,
+              "lineno": 1968
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "lookupS",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 47,
+              "end_lineno": 1968,
+              "lineno": 1968
+            }
+          }
+        ],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 1969,
+          "lineno": 1966
+        },
+        "static": false,
+        "unit": "_SDelegate"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "<String>['en', 'it', 'ru']",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 62,
+              "end_lineno": 1973,
+              "lineno": 1973
+            }
+          }
+        ],
+        "name": "isSupported",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 1973,
+          "lineno": 1971
+        },
+        "static": false,
+        "unit": "_SDelegate"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "shouldReload",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 1976,
+          "lineno": 1975
+        },
+        "static": false,
+        "unit": "_SDelegate"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "SEn",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 18,
+              "end_lineno": 1983,
+              "lineno": 1983
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SIt",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 18,
+              "end_lineno": 1985,
+              "lineno": 1985
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SRu",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 18,
+              "end_lineno": 1987,
+              "lineno": 1987
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FlutterError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 1995,
+              "lineno": 1990
+            }
+          }
+        ],
+        "name": "lookupS",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 1996,
+          "lineno": 1979
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_localizations/flutter_localizations.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "intl",
+        "show": [],
+        "uri": "package:intl/intl.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "S_en.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "S_it.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "S_ru.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:S:2303",
+      "field_initialization:S:2369",
+      "field_initialization:S:3168",
+      "inheritance:_SDelegate"
+    ]
+  },
+  "payload_digest": "9dd55a90009e442b9601a0e0fe308be61571257e21293fdb9fc39625fb18cede",
+  "version": 2
+}

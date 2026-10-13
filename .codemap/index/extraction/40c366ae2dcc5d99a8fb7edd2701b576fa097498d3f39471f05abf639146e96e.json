@@ -1,0 +1,46 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "40c366ae2dcc5d99a8fb7edd2701b576fa097498d3f39471f05abf639146e96e",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "home_app_bar.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "project_direction_switch.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "project_tile.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "vertical_projects_bar.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "5771064f5eaba5a674d14d5447256f5fdf61b4f5368250e2c5e6148e67f1d3a8",
+  "version": 2
+}

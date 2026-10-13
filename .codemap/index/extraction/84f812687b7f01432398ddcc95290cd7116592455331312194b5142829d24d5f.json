@@ -1,0 +1,51 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "84f812687b7f01432398ddcc95290cd7116592455331312194b5142829d24d5f",
+  "payload": {
+    "classes": [
+      "Envs"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 11,
+          "end_lineno": 6,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "Envs"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:Envs:115",
+      "field_initialization:Envs:178",
+      "field_initialization:Envs:239",
+      "field_initialization:Envs:290",
+      "field_initialization:Envs:355",
+      "field_initialization:Envs:403",
+      "field_initialization:Envs:471",
+      "field_initialization:Envs:533",
+      "field_initialization:Envs:606"
+    ]
+  },
+  "payload_digest": "ce0263f3d080580eb460b5a950a02fabaafb984198bbe4d3ca5f622eca022983",
+  "version": 2
+}

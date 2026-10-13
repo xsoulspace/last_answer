@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4b0499afd097ad29a63d88c7040591ededf3cced6a72880fd6d216a18070a63c",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/chat_document_service.dart::ChatDocumentService.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "4652b3d49c2e8731cd434113901eed38094f554d9ada6c9903646955851ec7b1",
+  "version": 2
+}

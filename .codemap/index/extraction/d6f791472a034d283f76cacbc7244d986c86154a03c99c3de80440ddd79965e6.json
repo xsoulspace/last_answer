@@ -1,0 +1,255 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d6f791472a034d283f76cacbc7244d986c86154a03c99c3de80440ddd79965e6",
+  "payload": {
+    "classes": [
+      "PermissionDocRouter"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 33,
+          "lineno": 29
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toRadixString",
+            "receiver": "DateTime.now().microsecondsSinceEpoch",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 69,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 28,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          }
+        ],
+        "name": "nextRequestId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 22,
+          "end_lineno": 53,
+          "lineno": 48
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "nextRequestId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 37,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "edit",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 74,
+              "lineno": 65
+            }
+          }
+        ],
+        "name": "announceRequest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 76,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "edit",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 98,
+              "lineno": 89
+            }
+          }
+        ],
+        "name": "answerRequest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 99,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "permRequests",
+            "receiver": "store.replicaOf(docId)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 44,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "replicaOf",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 28,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          }
+        ],
+        "name": "entries",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 57,
+          "end_lineno": 103,
+          "lineno": 101
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "entries",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 34,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          }
+        ],
+        "name": "pendingRemote",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 112,
+          "lineno": 105
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "entries",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 34,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          }
+        ],
+        "name": "remoteEntries",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 120,
+          "lineno": 114
+        },
+        "static": false,
+        "unit": "PermissionDocRouter"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:PermissionDocRouter:2086",
+      "closure:2867",
+      "closure:3657"
+    ]
+  },
+  "payload_digest": "e7d840de98784b2b762a2efc8baea5299b9ed743cc3f5fdd7900d219983fb0ed",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "dacb1c71884215f44f852f1738ff6b4b06d0f063fb9ec34ae1837c49cc26a418",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_node.freezed.dart::$AnchorSpanCopyWith.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "0397df3c28c2012d7cfba5de0e6dccec3ab87dd88c64a14774fc8bab0ea02f73",
+  "version": 2
+}

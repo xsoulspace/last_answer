@@ -1,0 +1,64 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0997369df587c599b7fbaff7624355bd3f0df5919c93d3a33feeb76731780206",
+  "payload": {
+    "classes": [
+      "ScrollKeyboardCloser"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 9,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "ScrollKeyboardCloser"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "NotificationListener",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 24,
+              "lineno": 14
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 24,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "ScrollKeyboardCloser"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ScrollKeyboardCloser",
+      "closure:427"
+    ]
+  },
+  "payload_digest": "1624864da101e2936a35881d7050dc38e3e85af1c23d1dae57e55309bedfbab0",
+  "version": 2
+}

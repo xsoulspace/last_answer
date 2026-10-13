@@ -1,0 +1,117 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "783b34804065a000286aa4762ccc817327835eb1616517838729fddc2809e05e",
+  "payload": {
+    "classes": [
+      "DismissibleTile"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 11,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "DismissibleTile"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "Slidable",
+            "receiver": "slidable",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 38,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ActionPane",
+            "receiver": "slidable",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 9,
+              "end_lineno": 36,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "slidable.BehindMotion",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 47,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "SlidableAction",
+            "receiver": "slidable",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 34,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "withValues",
+            "receiver": "AppColors.accent2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 71,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 38,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "DismissibleTile"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:DismissibleTile",
+      "closure:1012"
+    ]
+  },
+  "payload_digest": "dd240dc3e2aaf97e731ee0a38df2618e08a64a98bf473cc7e999c017d04aeaec",
+  "version": 2
+}

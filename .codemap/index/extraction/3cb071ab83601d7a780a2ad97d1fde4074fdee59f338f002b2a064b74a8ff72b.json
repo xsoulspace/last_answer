@@ -1,0 +1,419 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3cb071ab83601d7a780a2ad97d1fde4074fdee59f338f002b2a064b74a8ff72b",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "emptyAgent",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 56,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "_agentDoc",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 76,
+          "end_lineno": 22,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "byWidgetPredicate",
+            "receiver": "find",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 1,
+              "end_lineno": 29,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "_keyPrefix",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 29,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "byWidgetPredicate",
+            "receiver": "find",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 42,
+              "end_col_offset": 1,
+              "end_lineno": 38,
+              "lineno": 33
+            }
+          }
+        ],
+        "name": "_rowAction",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 38,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setUp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 48,
+              "lineno": 43
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tearDown",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 56,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 50,
+              "end_lineno": 222,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 49,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 48,
+              "end_lineno": 222,
+              "lineno": 222
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 260,
+              "lineno": 224
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 259,
+              "lineno": 259
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 47,
+              "end_lineno": 259,
+              "lineno": 259
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 50,
+              "end_lineno": 313,
+              "lineno": 262
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 49,
+              "end_lineno": 313,
+              "lineno": 313
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 48,
+              "end_lineno": 313,
+              "lineno": 313
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 382,
+              "lineno": 315
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 381,
+              "lineno": 381
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 47,
+              "end_lineno": 381,
+              "lineno": 381
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "testWidgets",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 3,
+              "end_lineno": 443,
+              "lineno": 384
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Timeout",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 48,
+              "end_lineno": 442,
+              "lineno": 442
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Duration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 47,
+              "end_lineno": 442,
+              "lineno": 442
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 444,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "LogicalKeyboardKey"
+        ],
+        "uri": "package:flutter/services.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/coding_agent.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "pump_until.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "scripted_write_mover.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:1014",
+      "closure:1330",
+      "closure:1514",
+      "closure:1748",
+      "nested_function:pumpSurface",
+      "nested_function:bindAndDelegate",
+      "nested_function:steerFromComposer",
+      "nested_function:drainTurns",
+      "closure:4850",
+      "closure:7800",
+      "closure:9177",
+      "closure:11370",
+      "closure:13841"
+    ]
+  },
+  "payload_digest": "25ed87ec2110eb80f6356ba8a1195812d58617abd26c7655156ab4379ffb67f3",
+  "version": 2
+}

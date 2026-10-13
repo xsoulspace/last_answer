@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bf066f127b478c39749acab6505d2d9eb3431c1713d6c7d9cb6714a34a1aa640",
+  "payload": [
+    [
+      "packages/core_server_client/lib/src/protocol/client.dart::EndpointUser.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "6ea18d504d1f22a341c40a931e3c38d545deffa1665fd3757033f6ac01e9f12c",
+  "version": 2
+}

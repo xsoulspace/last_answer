@@ -1,0 +1,205 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c83080bd13aaead25f212b0d6566535c56e52ea349d8e573e7aad5f39695f4b6",
+  "payload": {
+    "classes": [
+      "MonetizationProducts",
+      "MonetizationProductsDisclosure"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 46,
+          "end_lineno": 17,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "MonetizationProducts"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "PurchaseProductId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 75,
+              "end_lineno": 19,
+              "lineno": 19
+            }
+          }
+        ],
+        "name": "productId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 19,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "MonetizationProducts"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "subscriptionsForBuild",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 27,
+          "lineno": 26
+        },
+        "static": true,
+        "unit": "MonetizationProducts"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "MonetizationProducts.subscriptions",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 61,
+              "end_lineno": 31,
+              "lineno": 31
+            }
+          }
+        ],
+        "name": "productTypeChecker",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 13,
+          "end_lineno": 33,
+          "lineno": 29
+        },
+        "static": true,
+        "unit": "MonetizationProducts"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "fromProductId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 40,
+          "lineno": 35
+        },
+        "static": true,
+        "unit": "MonetizationProducts"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "title",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 50,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "MonetizationProductsDisclosure"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "lengthLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 57,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "MonetizationProductsDisclosure"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "perPeriodLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 64,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "MonetizationProductsDisclosure"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "monetizationStoreTarget",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 74,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "rustoreApplicationId",
+      "appDeeplinkScheme"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_installation_store/xsoulspace_installation_store.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../envs.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:MonetizationProducts:606",
+      "extension_dispatch:MonetizationProductsDisclosure",
+      "top_level_initialization:2550",
+      "top_level_initialization:2630"
+    ]
+  },
+  "payload_digest": "af9f1c343352e5dc9421507c5c3e5a7fc8fdc4744665742b2560398357ccc6a3",
+  "version": 2
+}

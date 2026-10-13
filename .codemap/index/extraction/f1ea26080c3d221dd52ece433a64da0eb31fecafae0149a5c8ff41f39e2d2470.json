@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f1ea26080c3d221dd52ece433a64da0eb31fecafae0149a5c8ff41f39e2d2470",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/containers.dart::BentoGrid.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "26a2f99234b471c7bc3496554815f7658f3c542969dc9dbf6f23a479dec5ab7b",
+  "version": 2
+}

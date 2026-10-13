@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "107d7631b90f9b72d4c52ab9cebd9d5bb209baa57f7350e2d2701c4bf358c470",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::_._decodeCursors"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "241623e5cbd09101c971672be60323b559b2990731abd89c75020701ab19c476",
+  "version": 2
+}

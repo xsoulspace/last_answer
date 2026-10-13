@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5ec2585f9fb7cb898e92b70d9e10e1c998dd5c6f25ea926f6470bb01cba4f523",
+  "payload": [
+    [
+      "lib/idea/idea_answer_screen_bloc.dart::IdeaAnswerScreenBloc.setValue"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "334dd544f6270a465e3632ed677b19bc500c643ae9b1dd3fa97dd53d2fe8971b",
+  "version": 2
+}

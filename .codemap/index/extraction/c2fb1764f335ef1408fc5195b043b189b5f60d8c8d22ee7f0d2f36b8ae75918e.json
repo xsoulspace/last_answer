@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c2fb1764f335ef1408fc5195b043b189b5f60d8c8d22ee7f0d2f36b8ae75918e",
+  "payload": [
+    [
+      "packages/core/lib/src/generated/assets.gen.dart::SvgGenImage.svg"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "6f3c8af82a81a0eaf21dcf80882e478a9d0dac54862fd41c433e08136a6da1ab",
+  "version": 2
+}

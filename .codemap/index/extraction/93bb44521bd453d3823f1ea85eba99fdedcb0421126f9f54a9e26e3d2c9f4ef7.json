@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "93bb44521bd453d3823f1ea85eba99fdedcb0421126f9f54a9e26e3d2c9f4ef7",
+  "payload": [
+    [
+      "lib/settings/features/mesh_sync_participants.dart::RosterParticipant.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "f8d36deab8d53d4556b3efdd9a6c47aa412f70668093409e5c6c03a1fd0368cd",
+  "version": 2
+}

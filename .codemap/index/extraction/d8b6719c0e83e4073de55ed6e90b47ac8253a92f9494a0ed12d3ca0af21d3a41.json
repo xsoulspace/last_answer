@@ -1,0 +1,46 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d8b6719c0e83e4073de55ed6e90b47ac8253a92f9494a0ed12d3ca0af21d3a41",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 60,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 13,
+          "lineno": 1
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "331d7666703f1db6e75068f420e072998233a4ee6d09dbbd21121445ba8b220e",
+  "version": 2
+}

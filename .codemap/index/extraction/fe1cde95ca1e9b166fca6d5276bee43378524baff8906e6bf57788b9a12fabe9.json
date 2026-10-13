@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fe1cde95ca1e9b166fca6d5276bee43378524baff8906e6bf57788b9a12fabe9",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/user.dart::UserModelId.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "2ab1acef42929f2c6e754ed63e7b1c81d9126e2ce93f0860ebe94da350b02f52",
+  "version": 2
+}

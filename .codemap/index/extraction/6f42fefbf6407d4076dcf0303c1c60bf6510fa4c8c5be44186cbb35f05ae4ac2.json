@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6f42fefbf6407d4076dcf0303c1c60bf6510fa4c8c5be44186cbb35f05ae4ac2",
+  "payload": [
+    [
+      "lib/_library/widgets/buttons/app_icon_button.dart::HoverableButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "4de3a0c3e4428612a89182839d882c83dac1518e1bcab0133e6d38660e266437",
+  "version": 2
+}

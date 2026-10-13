@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8fa76bb6001458ce0418846770c8aacdbf1a68290649fdc654aa94fe1b939e6f",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_service_io.dart::_._atLabel"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "33b8f5b97cc2a226f422a76a5209b56761f14e3348cf500d5b6699978d2bc9af",
+  "version": 2
+}

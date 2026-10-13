@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3f2037041eb2cfe20ee9fa533481224ce5323772febf823d81828c2de34e1cb7",
+  "payload": [
+    [
+      "lib/coding_agent/chatgpt_gateway_contract.dart::ChatGptGateway.cancelSignIn"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "1ac0b72e3bc835c76a6bbd3d40a4873915ec2dd88fb72ff7e82a853e862eda6c",
+  "version": 2
+}

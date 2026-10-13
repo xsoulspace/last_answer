@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "84e1ec0874495ea92b7f9ce4ed4c2947178bb2fd2c176911983889b6cadc2d24",
+  "payload": [
+    [
+      "lib/settings/features/live_mesh_service.dart::LiveMeshService.open"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "b70c395e04f397ba30203512ff5b77fb2e1e6b1c57a4a4c4994148b915067c7a",
+  "version": 2
+}

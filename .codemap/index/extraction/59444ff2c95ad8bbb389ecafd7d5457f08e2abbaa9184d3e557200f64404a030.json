@@ -1,0 +1,53 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "59444ff2c95ad8bbb389ecafd7d5457f08e2abbaa9184d3e557200f64404a030",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "auth/auth.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "doc_inference_port.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "file_service/file_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "share_service.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "telegram/bot_telegram_service.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "8ee040d027994782b4e02cec5fe76fe8b378cf4bdddc7dd9c39c35d3c47e6e84",
+  "version": 2
+}

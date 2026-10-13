@@ -1,0 +1,292 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "37d8cf4422a357b9c7b9b4e4555def1e5a9c4ed807a020b30eaeaeb84894b316",
+  "payload": {
+    "classes": [
+      "PurchasePaymentProvider",
+      "OneTimePurchaseStatus",
+      "SubscriptionStatus",
+      "PurchasePeriod",
+      "AdVideoLengthType",
+      "IAPId",
+      "PurchaseRequestDtoModel",
+      "PurchaseType",
+      "PurchaseActionModel"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 24,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "IAPId"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "firstWhereOrNull",
+            "receiver": "IAPId.values",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 74,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "value",
+            "receiver": "ArgumentError",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 61,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          }
+        ],
+        "name": "byId",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 31,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "IAPId"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 43,
+          "lineno": 39
+        },
+        "static": false,
+        "unit": "PurchaseRequestDtoModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromRawJson",
+            "receiver": "PurchaseRequestDtoModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 48,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 49,
+          "end_lineno": 48,
+          "lineno": 44
+        },
+        "static": false,
+        "unit": "PurchaseRequestDtoModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$PurchaseRequestDtoModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 46,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          }
+        ],
+        "name": "fromRawJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 51,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "PurchaseRequestDtoModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 52,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "PurchaseRequestDtoModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "videoAward",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 65,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 66,
+          "lineno": 66
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fromRawJson",
+            "receiver": "PurchaseActionModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 43,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          }
+        ],
+        "name": "fromJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 44,
+          "end_lineno": 68,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$PurchaseActionModelFromJson",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 41,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          }
+        ],
+        "name": "fromRawJson",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 70,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "id",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 74,
+          "end_lineno": 73,
+          "lineno": 73
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 58,
+          "end_lineno": 74,
+          "lineno": 74
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isNotEmpty",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 75,
+          "lineno": 75
+        },
+        "static": false,
+        "unit": "PurchaseActionModel"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:IAPId:918",
+      "closure:717",
+      "inheritance:PurchaseRequestDtoModel",
+      "inheritance:PurchaseActionModel",
+      "field_initialization:PurchaseActionModel:2415"
+    ]
+  },
+  "payload_digest": "fa3aa7ca41f715a8db74c42d3ef9878addba4b3eb1e7514cab8fdf2fb81bb95e",
+  "version": 2
+}

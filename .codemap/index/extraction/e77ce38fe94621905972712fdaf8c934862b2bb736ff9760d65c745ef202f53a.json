@@ -1,0 +1,52 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e77ce38fe94621905972712fdaf8c934862b2bb736ff9760d65c745ef202f53a",
+  "payload": {
+    "classes": [
+      "AppColors"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 16,
+          "end_lineno": 10,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "AppColors"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:AppColors:411",
+      "field_initialization:AppColors:468",
+      "field_initialization:AppColors:527",
+      "field_initialization:AppColors:586",
+      "field_initialization:AppColors:646",
+      "field_initialization:AppColors:706",
+      "field_initialization:AppColors:766",
+      "field_initialization:AppColors:826",
+      "field_initialization:AppColors:883",
+      "field_initialization:AppColors:945",
+      "field_initialization:AppColors:1002",
+      "field_initialization:AppColors:1059",
+      "field_initialization:AppColors:1116",
+      "field_initialization:AppColors:1173",
+      "field_initialization:AppColors:1232",
+      "field_initialization:AppColors:1291",
+      "field_initialization:AppColors:1350",
+      "field_initialization:AppColors:1409"
+    ]
+  },
+  "payload_digest": "2906872c353f55352754aca5fd22e157ca2a42b5e36f44aedf72d055a687694a",
+  "version": 2
+}

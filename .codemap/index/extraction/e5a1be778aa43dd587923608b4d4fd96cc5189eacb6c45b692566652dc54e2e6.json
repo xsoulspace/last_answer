@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e5a1be778aa43dd587923608b4d4fd96cc5189eacb6c45b692566652dc54e2e6",
+  "payload": [
+    [
+      "lib/idea/widgets/question_dropdown.dart::QuestionDropdown.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "70932dc66b85a0da707d7cb6525657eb4d85058a1f51e0ee0e1a3d0f8fe32d84",
+  "version": 2
+}

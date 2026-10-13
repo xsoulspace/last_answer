@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9b9ec6b4f23086743f6430c88e2a0f6ee57170d93d3f107f68ade7bbe129cc9b",
+  "payload": [
+    [
+      "lib/home/tags/tags_screen.dart::DialogTopBar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "dfac02df07cb0fb2c82cde6f867b36445635c915b9702829de8287e4c697d4e0",
+  "version": 2
+}

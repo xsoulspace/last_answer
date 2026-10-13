@@ -1,0 +1,673 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cae76919100fc91dfe36df88434d814e558ddc91ac3dfc83f1f2c53c8aad81eb",
+  "payload": {
+    "classes": [
+      "_MemoryStorageProvider"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "_write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 30,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "initWithConfig",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 33,
+          "lineno": 32
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "isAuthenticated",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 36,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 43,
+              "lineno": 43
+            }
+          }
+        ],
+        "name": "createFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 43,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_write",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          }
+        ],
+        "name": "updateFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 50,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 53,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "files",
+            "receiver_constructor": null,
+            "receiver_type": "Map<String, String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 22,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileOperationResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 42,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          }
+        ],
+        "name": "deleteFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 62,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "endsWith",
+            "receiver": "directoryPath",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 49,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "substring",
+            "receiver": "directoryPath",
+            "receiver_constructor": null,
+            "receiver_type": "String",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 62,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "files.keys.where((final path) => path.startsWith(prefix)).map((final path) => path.substring(prefix.length))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 17,
+              "end_lineno": 72,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "files.keys.where((final path) => path.startsWith(prefix))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 59,
+              "end_lineno": 71,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "where",
+            "receiver": "files.keys",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 55,
+              "end_lineno": 70,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sort",
+            "receiver": "files.keys.where((final path) => path.startsWith(prefix)).map((final path) => path.substring(prefix.length)).toList()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 14,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FileEntry",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 73,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "listDirectory",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 77,
+          "lineno": 64
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "restore",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 80,
+          "lineno": 79
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supportsSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 83,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "sync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 13,
+          "end_lineno": 89,
+          "lineno": 85
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 92,
+          "lineno": 91
+        },
+        "static": false,
+        "unit": "_MemoryStorageProvider"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "DocReplicaStore",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 74,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StorageService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 55,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          }
+        ],
+        "name": "_store",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 75,
+          "end_lineno": 98,
+          "lineno": 95
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "edit",
+            "receiver": "store",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 5,
+              "end_col_offset": 1,
+              "end_lineno": 110,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "_addBlock",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 110,
+          "lineno": 100
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "pendingOpsSince",
+            "receiver": "a",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 3,
+              "end_lineno": 123,
+              "lineno": 120
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "versionVectorOf",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "shuffle",
+            "receiver": "[...ops]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 47,
+              "end_lineno": 124,
+              "lineno": 124
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 33,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "pendingOpsSince",
+            "receiver": "b",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 3,
+              "end_lineno": 130,
+              "lineno": 127
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "versionVectorOf",
+            "receiver": "a",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 129,
+              "lineno": 129
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "shuffle",
+            "receiver": "[...back]",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 49,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyRemote",
+            "receiver": "a",
+            "receiver_constructor": null,
+            "receiver_type": "DocReplicaStore",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 34,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          }
+        ],
+        "name": "_exchange",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 133,
+          "lineno": 112
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "group",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 349,
+              "lineno": 136
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 350,
+          "lineno": 135
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 65,
+              "end_lineno": 353,
+              "lineno": 353
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toJson",
+            "receiver": "doc",
+            "receiver_constructor": null,
+            "receiver_type": "DocumentNode",
+            "shadowed": true,
+            "span": {
+              "col_offset": 52,
+              "end_col_offset": 64,
+              "end_lineno": 353,
+              "lineno": 353
+            }
+          }
+        ],
+        "name": "jsonOf",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 66,
+          "end_lineno": 353,
+          "lineno": 352
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_docId",
+      "_now",
+      "_later"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:math"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:test/test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_convergence/universal_storage_convergence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_storage_interface/universal_storage_interface.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:291",
+      "top_level_initialization:676",
+      "top_level_initialization:719",
+      "inheritance:_MemoryStorageProvider",
+      "field_initialization:_MemoryStorageProvider:1044",
+      "field_initialization:_MemoryStorageProvider:1084",
+      "closure:2315",
+      "closure:2369",
+      "closure:3184",
+      "closure:4015"
+    ]
+  },
+  "payload_digest": "b3a283051cf2d2187373dfc070ac4651690f4ec78c3daa7e279e32aeda6629bf",
+  "version": 2
+}

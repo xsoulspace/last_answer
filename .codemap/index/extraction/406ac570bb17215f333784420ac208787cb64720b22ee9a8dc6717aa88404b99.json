@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "406ac570bb17215f333784420ac208787cb64720b22ee9a8dc6717aa88404b99",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/foundation/network/models/models.g.dart::_._$PaginatedPageResponseModelToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "ebf0df21363fd1c962ea47b00a0da18c560721d46333e8578d6e56eb90879e09",
+  "version": 2
+}

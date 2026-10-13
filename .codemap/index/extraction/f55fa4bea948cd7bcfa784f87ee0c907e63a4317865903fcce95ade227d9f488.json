@@ -1,0 +1,117 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f55fa4bea948cd7bcfa784f87ee0c907e63a4317865903fcce95ade227d9f488",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "okaRun",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 1,
+              "end_lineno": 131,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Oka",
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 3,
+              "end_lineno": 130,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AndroidPipeline",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 123,
+              "lineno": 116
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "FlutterBuild",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 69,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 131,
+          "lineno": 112
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_androidBuild",
+      "_androidOverrides",
+      "playPublishTarget",
+      "huaweiPublishTarget"
+    ],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:oka_android/oka_android.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:oka_huawei/oka_huawei.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:oka_play/oka_play.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:1422",
+      "top_level_initialization:1838",
+      "top_level_initialization:5688",
+      "top_level_initialization:8920"
+    ]
+  },
+  "payload_digest": "4e92d2a301505fedddd2605404bb1eccfad69d2ce752254fd7d976543b0459d3",
+  "version": 2
+}

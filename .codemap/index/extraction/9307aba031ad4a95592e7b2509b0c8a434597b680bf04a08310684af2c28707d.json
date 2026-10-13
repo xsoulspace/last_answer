@@ -1,0 +1,680 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9307aba031ad4a95592e7b2509b0c8a434597b680bf04a08310684af2c28707d",
+  "payload": {
+    "classes": [
+      "_$ProviderResponseModel",
+      "$ProviderResponseModelCopyWith",
+      "_$ProviderResponseModelCopyWithImpl",
+      "ProviderResponseModelPatterns",
+      "_ProviderResponseModel",
+      "_$ProviderResponseModelCopyWith",
+      "__$ProviderResponseModelCopyWithImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_$identity",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 34,
+          "end_lineno": 14,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "token",
+        "span": {
+          "col_offset": 1,
+          "end_col_offset": 18,
+          "end_lineno": 18,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModel"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_$ProviderResponseModelCopyWithImpl",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 70,
+              "end_col_offset": 171,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 172,
+          "end_lineno": 23,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 31,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 103,
+              "end_col_offset": 132,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "==",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 30,
+          "lineno": 27
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModel"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "hash",
+            "receiver": "Object",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 50,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          }
+        ],
+        "name": "hashCode",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 51,
+          "end_lineno": 34,
+          "lineno": 33
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toString",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 39,
+          "lineno": 36
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 152,
+          "end_lineno": 46,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "$ProviderResponseModelCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "call",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 3,
+          "end_lineno": 50,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "$ProviderResponseModelCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 59,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModelCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_then",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 4,
+              "end_lineno": 70,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProviderResponseModel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 3,
+              "end_lineno": 70,
+              "lineno": 67
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 71,
+          "lineno": 64
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModelCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 22,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orElse",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 17,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          }
+        ],
+        "name": "maybeMap",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 98,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 22,
+              "end_lineno": 116,
+              "lineno": 116
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 41,
+              "end_lineno": 117,
+              "lineno": 117
+            }
+          }
+        ],
+        "name": "map",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 120,
+          "lineno": 99
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 22,
+              "end_lineno": 137,
+              "lineno": 137
+            }
+          }
+        ],
+        "name": "mapOrNull",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 141,
+          "lineno": 121
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 28,
+              "end_lineno": 157,
+              "lineno": 157
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "orElse",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 17,
+              "end_lineno": 158,
+              "lineno": 158
+            }
+          }
+        ],
+        "name": "maybeWhen",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 161,
+          "lineno": 142
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 28,
+              "end_lineno": 178,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 41,
+              "end_lineno": 179,
+              "lineno": 179
+            }
+          }
+        ],
+        "name": "when",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 182,
+          "lineno": 162
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "$default",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 7,
+              "end_col_offset": 28,
+              "end_lineno": 198,
+              "lineno": 198
+            }
+          }
+        ],
+        "name": "whenOrNull",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 202,
+          "lineno": 183
+        },
+        "static": false,
+        "unit": "ProviderResponseModelPatterns"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 210,
+          "lineno": 210
+        },
+        "static": false,
+        "unit": "_ProviderResponseModel"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "__$ProviderResponseModelCopyWithImpl",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 72,
+              "end_col_offset": 150,
+              "end_lineno": 219,
+              "lineno": 219
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 151,
+          "end_lineno": 219,
+          "lineno": 215
+        },
+        "static": false,
+        "unit": "_ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 31,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 104,
+              "end_col_offset": 133,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          }
+        ],
+        "name": "==",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 226,
+          "lineno": 223
+        },
+        "static": false,
+        "unit": "_ProviderResponseModel"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "hash",
+            "receiver": "Object",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 50,
+              "end_lineno": 230,
+              "lineno": 230
+            }
+          }
+        ],
+        "name": "hashCode",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 51,
+          "end_lineno": 230,
+          "lineno": 229
+        },
+        "static": false,
+        "unit": "_ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "toString",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 235,
+          "lineno": 232
+        },
+        "static": false,
+        "unit": "_ProviderResponseModel"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 156,
+          "end_lineno": 242,
+          "lineno": 242
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModelCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "call",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 3,
+          "end_lineno": 246,
+          "lineno": 243
+        },
+        "static": false,
+        "unit": "_$ProviderResponseModelCopyWith"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 255,
+          "lineno": 255
+        },
+        "static": false,
+        "unit": "__$ProviderResponseModelCopyWithImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_then",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 4,
+              "end_lineno": 266,
+              "lineno": 263
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_ProviderResponseModel",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 3,
+              "end_lineno": 266,
+              "lineno": 263
+            }
+          }
+        ],
+        "name": "call",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 267,
+          "lineno": 260
+        },
+        "static": false,
+        "unit": "__$ProviderResponseModelCopyWithImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "mixin_dispatch:_$ProviderResponseModel",
+      "inheritance:_$ProviderResponseModelCopyWithImpl",
+      "extension_dispatch:ProviderResponseModelPatterns",
+      "inheritance:_ProviderResponseModel",
+      "inheritance:_$ProviderResponseModelCopyWith",
+      "inheritance:__$ProviderResponseModelCopyWithImpl"
+    ]
+  },
+  "payload_digest": "4cb13f7aa6f3af0293d1fa4c35ad88b2ca469369a97b6a96d34655cdc1749ef6",
+  "version": 2
+}

@@ -1,0 +1,183 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8ffcbefadfa01872f5999c67c89b36295be915bbf8cc6f552af47ac0378d5533",
+  "payload": {
+    "classes": [
+      "_FakeHandle"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setUp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 52,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "tearDown",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 57,
+              "lineno": 54
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 108,
+              "lineno": 59
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 109,
+          "lineno": 21
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SessionSnapshot",
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 3,
+              "end_lineno": 118,
+              "lineno": 113
+            }
+          }
+        ],
+        "name": "state",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 118,
+          "lineno": 112
+        },
+        "static": false,
+        "unit": "_FakeHandle"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "delegateTask",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 122,
+          "lineno": 120
+        },
+        "static": false,
+        "unit": "_FakeHandle"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "answerPermission",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 126,
+          "lineno": 124
+        },
+        "static": false,
+        "unit": "_FakeHandle"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": true,
+        "hide": [],
+        "prefix": "external_worlds",
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/paired_worlds.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:1212",
+      "closure:2071",
+      "closure:2231",
+      "inheritance:_FakeHandle",
+      "conditional_namespace:648"
+    ]
+  },
+  "payload_digest": "3f86a3962082730b62aa300ccba8b51eb9ebbd28775aa68fc3c31100fa35464f",
+  "version": 2
+}

@@ -870,7 +870,8 @@ class SIt extends S {
   String get supervisorSectionArgs => 'Argomenti';
 
   @override
-  String get supervisorSectionCommandHint => 'Solo desktop, es. /usr/bin/backup';
+  String get supervisorSectionCommandHint =>
+      'Solo desktop, es. /usr/bin/backup';
 
   @override
   String get supervisorSectionSchedule => 'Pianificazione';
@@ -882,11 +883,12 @@ class SIt extends S {
 
   @override
   String supervisorSectionDeleteWarn(String name) {
-    return 'Rimuovere "$name" dai piani di questo dispositivo?';
+    return 'Rimuovere \"$name\" dai piani di questo dispositivo?';
   }
 
   @override
-  String get supervisorSectionAuthorHint => 'Salvato come piano su questo dispositivo. Viene eseguito quando il supervisor converge.';
+  String get supervisorSectionAuthorHint =>
+      'Salvato come piano su questo dispositivo. Viene eseguito quando il supervisor converge.';
 
   @override
   String get storageMeshNotSharing => 'Condivisione non attiva';
@@ -964,8 +966,77 @@ class SIt extends S {
   String get supervisorSectionStateIdle => 'Non ancora eseguita';
 
   @override
-  String get storageMeshPermissionBlocked => 'macOS ha bloccato l\'accesso alla cartella note. Consenti a Last Answer in Impostazioni di sistema → Privacy e sicurezza → File e cartelle, quindi riprova.';
+  String get storageMeshPermissionBlocked =>
+      'macOS ha bloccato l\'accesso alla cartella note. Consenti a Last Answer in Impostazioni di sistema → Privacy e sicurezza → File e cartelle, quindi riprova.';
 
   @override
   String get storageMeshRetrySharing => 'Riprova';
+
+  @override
+  String get agentCodeChange => 'Modifica al codice';
+
+  @override
+  String get chatGptSubscriptionTitle => 'Piano ChatGPT';
+
+  @override
+  String get chatGptContinue => 'Continua con ChatGPT';
+
+  @override
+  String get chatGptSignOut => 'Esci';
+
+  @override
+  String get chatGptUsage => 'Utilizzo e accesso delle app';
+
+  @override
+  String get chatGptChooseAccount => 'Scegli un account';
+
+  @override
+  String get chatGptAccount => 'Account';
+
+  @override
+  String get chatGptChooseModel => 'Scegli un modello';
+
+  @override
+  String get chatGptRefreshModels => 'Aggiorna modelli';
+
+  @override
+  String get chatGptVerifyAccess => 'Verifica accesso al modello';
+
+  @override
+  String get chatGptAccessUnchecked =>
+      'Account connesso. Accesso al modello non ancora verificato.';
+
+  @override
+  String get chatGptAccessVerified => 'Accesso al modello verificato.';
+
+  @override
+  String get chatGptPlanPermissionRequired =>
+      'Consenti a questa app di usare il tuo piano nelle impostazioni di ChatGPT.';
+
+  @override
+  String get chatGptWorking => 'Operazione in corso…';
+
+  @override
+  String get chatGptRevocationUnconfirmed =>
+      'Disconnessione remota non confermata. Disconnetti l’app nelle impostazioni di ChatGPT.';
+
+  @override
+  String get chatGptConnectionError =>
+      'Connessione a ChatGPT non completata. Riprova o controlla l’accesso dell’app nelle impostazioni di ChatGPT.';
+
+  @override
+  String get chatGptDesktopOnly =>
+      'L’accesso a ChatGPT è disponibile nell’app desktop.';
+
+  @override
+  String get chatGptSignInRequired =>
+      'Collega un account ChatGPT e abilita l’accesso al piano prima di inviare.';
+
+  @override
+  String get chatGptModelRequired =>
+      'Scegli un modello ChatGPT prima di inviare.';
+
+  @override
+  String get chatGptDocumentConsentRequired =>
+      'Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.';
 }

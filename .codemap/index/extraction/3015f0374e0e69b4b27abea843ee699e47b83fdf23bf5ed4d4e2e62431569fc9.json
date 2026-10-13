@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3015f0374e0e69b4b27abea843ee699e47b83fdf23bf5ed4d4e2e62431569fc9",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/parsers/parsers.dart::_.parseOldFiles"
+    ],
+    "import prefix declaration"
+  ],
+  "payload_digest": "54521085b224fb797f0f767851f5636b466ff168310efc768946a30be5caad45",
+  "version": 2
+}

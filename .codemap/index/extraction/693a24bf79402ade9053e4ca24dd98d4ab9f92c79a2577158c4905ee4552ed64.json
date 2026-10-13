@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "693a24bf79402ade9053e4ca24dd98d4ab9f92c79a2577158c4905ee4552ed64",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/buttons.dart::StyledButton.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "9bdfd4918026f13833479f5066e298a8e2547c01b2817c6a756f128deb06e604",
+  "version": 2
+}

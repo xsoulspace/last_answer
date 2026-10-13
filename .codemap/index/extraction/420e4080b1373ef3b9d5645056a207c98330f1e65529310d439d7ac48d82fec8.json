@@ -1,0 +1,325 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "420e4080b1373ef3b9d5645056a207c98330f1e65529310d439d7ac48d82fec8",
+  "payload": {
+    "classes": [
+      "_FakeSession",
+      "_FakeStreamingClient"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 13,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "_FakeSession"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "events",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 18,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "_FakeSession"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "ok",
+            "receiver": "InferenceResult",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "InferenceResponse",
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 74,
+              "end_lineno": 22,
+              "lineno": 22
+            }
+          }
+        ],
+        "name": "result",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 22,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "_FakeSession"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "cancel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 25,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_FakeSession"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 28,
+          "lineno": 27
+        },
+        "static": false,
+        "unit": "_FakeSession"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 32,
+          "lineno": 32
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "id",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 26,
+          "end_lineno": 38,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "supportedTasks",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 41,
+          "lineno": 40
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isAvailable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 44,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "refreshAvailability",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 47,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "load",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 30,
+          "end_lineno": 50,
+          "lineno": 49
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "resetAvailabilityCache",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 34,
+          "end_lineno": 53,
+          "lineno": 52
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "ok",
+            "receiver": "InferenceResult",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 75,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "InferenceResponse",
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 74,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          }
+        ],
+        "name": "infer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 76,
+          "end_lineno": 60,
+          "lineno": 55
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "streamStructuredText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 68,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "_FakeStreamingClient"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "test",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 2,
+              "end_col_offset": 4,
+              "end_lineno": 107,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 108,
+          "lineno": 71
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:core/core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_test/flutter_test.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/acp_doc_inference_port.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [
+          "ChatMessage"
+        ],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_core/xsoulspace_inference_core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_FakeSession",
+      "inheritance:_FakeStreamingClient",
+      "closure:1969"
+    ]
+  },
+  "payload_digest": "f00d53505daa4e92dcb34cf80ca7b869c8f76fc2d642bc299c10221bb9d8db6b",
+  "version": 2
+}

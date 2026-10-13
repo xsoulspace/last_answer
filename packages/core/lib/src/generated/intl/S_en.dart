@@ -863,7 +863,8 @@ class SEn extends S {
   String get supervisorSectionArgs => 'Arguments';
 
   @override
-  String get supervisorSectionCommandHint => 'Desktop only, e.g. /usr/bin/backup';
+  String get supervisorSectionCommandHint =>
+      'Desktop only, e.g. /usr/bin/backup';
 
   @override
   String get supervisorSectionSchedule => 'Schedule';
@@ -875,11 +876,12 @@ class SEn extends S {
 
   @override
   String supervisorSectionDeleteWarn(String name) {
-    return 'Remove "$name" from this device\'s plans?';
+    return 'Remove \"$name\" from this device\'s plans?';
   }
 
   @override
-  String get supervisorSectionAuthorHint => 'Saved as a plan on this device. It runs when the supervisor converges.';
+  String get supervisorSectionAuthorHint =>
+      'Saved as a plan on this device. It runs when the supervisor converges.';
 
   @override
   String get storageMeshNotSharing => 'Not sharing right now';
@@ -957,8 +959,76 @@ class SEn extends S {
   String get supervisorSectionStateIdle => 'Not running yet';
 
   @override
-  String get storageMeshPermissionBlocked => 'macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.';
+  String get storageMeshPermissionBlocked =>
+      'macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.';
 
   @override
   String get storageMeshRetrySharing => 'Try again';
+
+  @override
+  String get agentCodeChange => 'Code change';
+
+  @override
+  String get chatGptSubscriptionTitle => 'ChatGPT plan';
+
+  @override
+  String get chatGptContinue => 'Continue with ChatGPT';
+
+  @override
+  String get chatGptSignOut => 'Sign out';
+
+  @override
+  String get chatGptUsage => 'Usage and app access';
+
+  @override
+  String get chatGptChooseAccount => 'Choose an account';
+
+  @override
+  String get chatGptAccount => 'Account';
+
+  @override
+  String get chatGptChooseModel => 'Choose a model';
+
+  @override
+  String get chatGptRefreshModels => 'Refresh models';
+
+  @override
+  String get chatGptVerifyAccess => 'Check model access';
+
+  @override
+  String get chatGptAccessUnchecked =>
+      'Account connected. Model access has not been checked.';
+
+  @override
+  String get chatGptAccessVerified => 'Model access verified.';
+
+  @override
+  String get chatGptPlanPermissionRequired =>
+      'Allow this app to use your ChatGPT plan in ChatGPT settings.';
+
+  @override
+  String get chatGptWorking => 'Working…';
+
+  @override
+  String get chatGptRevocationUnconfirmed =>
+      'Remote sign-out could not be confirmed. Disconnect the app in ChatGPT settings.';
+
+  @override
+  String get chatGptConnectionError =>
+      'The ChatGPT connection could not be completed. Try again or check app access in ChatGPT settings.';
+
+  @override
+  String get chatGptDesktopOnly =>
+      'ChatGPT sign-in is available in the desktop app.';
+
+  @override
+  String get chatGptSignInRequired =>
+      'Connect a ChatGPT account and enable plan access before sending.';
+
+  @override
+  String get chatGptModelRequired => 'Choose a ChatGPT model before sending.';
+
+  @override
+  String get chatGptDocumentConsentRequired =>
+      'Confirm cloud use for this document, account, model and workspace before sending.';
 }

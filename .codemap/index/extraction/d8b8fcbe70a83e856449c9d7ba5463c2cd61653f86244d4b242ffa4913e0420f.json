@@ -1,0 +1,63 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d8b8fcbe70a83e856449c9d7ba5463c2cd61653f86244d4b242ffa4913e0420f",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "showCupertinoDialog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 5,
+              "end_lineno": 25,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "showDialog",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 3,
+              "end_lineno": 54,
+              "lineno": 28
+            }
+          }
+        ],
+        "name": "showRemoveTitleDialog",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 55,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "closure:257",
+      "closure:874"
+    ]
+  },
+  "payload_digest": "b098775278b2db67a658c0bced6418cc8dee2be454fd4fc7da93f6cfa3525938",
+  "version": 2
+}

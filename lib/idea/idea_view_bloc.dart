@@ -56,7 +56,7 @@ class IdeaViewBloc extends ValueNotifier<IdeaViewBlocState> {
       context: context,
     );
     if (!remove) return;
-    dto.openedProjectNotifier.deleteProject();
+    dto.openedProjectNotifier.deleteProject(project: idea);
   }
 
   Future<void> onExpandAnswer({

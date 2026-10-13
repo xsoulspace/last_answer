@@ -1,0 +1,321 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9a41cd2d946804e35cefc82d2c27b685835ab67fa454bf0dbab5e64f52a25ece",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_Block",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 53,
+              "end_col_offset": 1,
+              "end_lineno": 29,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "$enumDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 53,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toInt",
+            "receiver": "(json['level'] as num?)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 41,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "$enumDecodeNullable",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 60,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "$enumDecodeNullable",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 65,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "_$BlockFromJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 29,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_$BlockToJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 49,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_AnchorSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 63,
+              "end_col_offset": 1,
+              "end_lineno": 73,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "_$AnchorSpanFromJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 2,
+          "end_lineno": 73,
+          "lineno": 69
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_$AnchorSpanToJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 6,
+          "end_lineno": 80,
+          "lineno": 75
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_DocumentNode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 102,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parse",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 60,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "parse",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 60,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "(json['blocks'] as List<dynamic>?)?.map((e) => Block.fromJson(e as Map<String, dynamic>))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 23,
+              "end_lineno": 92,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "(json['blocks'] as List<dynamic>?)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 69,
+              "end_lineno": 91,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fromJson",
+            "receiver": "AnchorSpan",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 75,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "$enumDecodeNullable",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 70,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          }
+        ],
+        "name": "_$DocumentNodeFromJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 6,
+          "end_lineno": 102,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "instance.createdAt",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 55,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toIso8601String",
+            "receiver": "instance.updatedAt",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 55,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          }
+        ],
+        "name": "_$DocumentNodeToJson",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 6,
+          "end_lineno": 116,
+          "lineno": 104
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_$BlockTypeEnumMap",
+      "_$ChatRoleEnumMap",
+      "_$MessageStatusEnumMap",
+      "_$DocumentStatusEnumMap"
+    ],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:1830",
+      "top_level_initialization:1989",
+      "top_level_initialization:2081",
+      "closure:3063",
+      "top_level_initialization:4063"
+    ]
+  },
+  "payload_digest": "6cd4aa9048b88c2b9953dd1f3de1b0a482759696a966280ffeb0801b1b63eece",
+  "version": 2
+}

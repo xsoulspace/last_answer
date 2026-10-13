@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4688908d51ceb6907ba1d002e5782681307c7e15ae01d5386a586ac356e51867",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/notification.dart::NotificationMessageModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "d34c814ba753bb1e42f6fe9e66a8dda04f9427dcab7085bfbb40c0d7f8d36ef3",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f0fd518bf8c1da7a833682f0d191e168f6aa94bc8d9b1b65ba165c321e63e352",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_builder.dart::AILayoutRenderer._getBackgroundColor"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "995ab03570c2b9ca805bb1318eed2eb10eeb19e9a935d0c162035962db29f8f2",
+  "version": 2
+}

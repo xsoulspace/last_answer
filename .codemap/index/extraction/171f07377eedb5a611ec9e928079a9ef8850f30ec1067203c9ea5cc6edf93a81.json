@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "171f07377eedb5a611ec9e928079a9ef8850f30ec1067203c9ea5cc6edf93a81",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_repository.dart::DocumentRepository.allIds"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "54433cb5587bb87035447bd89190c6251f6ecc2e540a35feb0860efdebbcd28a",
+  "version": 2
+}

@@ -59,7 +59,7 @@ class NoteViewBloc extends ValueNotifier<ProjectModelNote> {
       context: context,
     );
     if (!remove) return;
-    dto.openedProjectNotifier.deleteProject();
+    dto.openedProjectNotifier.deleteProject(project: note);
   }
 
   Future<void> onSwitchKeyboard() async {

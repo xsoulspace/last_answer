@@ -1,0 +1,67 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9709e6c24397b05e3dfcbc205fb3492d101d876ef5efc945dde193bc9f6e9b66",
+  "payload": {
+    "classes": [
+      "NotificationsDataSource"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getLastReadDateTime",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 4,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "NotificationsDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "setLastReadTime",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "NotificationsDataSource"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "getUpdatesNotifications",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 6,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "NotificationsDataSource"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "dce91ba98973e8a29cc1b94606dc65e3528bb98222bb3e6bb0539284e8f30644",
+  "version": 2
+}

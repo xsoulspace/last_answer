@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "392387fa99634cf1be4dc400c220924fc3ce9e15d526acdce809ea7bd3bb9b88",
+  "payload": [
+    [
+      "lib/mcp/doc_mcp_tools.dart::_._emptySchema"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "0d5c6d6bb132f46ed84a23fc97b08f1f5848e0118494338762ff7defd75156ba",
+  "version": 2
+}

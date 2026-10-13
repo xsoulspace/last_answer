@@ -1692,7 +1692,7 @@ abstract class S {
   /// No description provided for @supervisorSectionDeleteWarn.
   ///
   /// In en, this message translates to:
-  /// **'Remove "{name}" from this device\'s plans?'**
+  /// **'Remove \"{name}\" from this device\'s plans?'**
   String supervisorSectionDeleteWarn(String name);
 
   /// No description provided for @supervisorSectionAuthorHint.
@@ -1838,6 +1838,126 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Try again'**
   String get storageMeshRetrySharing;
+
+  /// No description provided for @agentCodeChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Code change'**
+  String get agentCodeChange;
+
+  /// No description provided for @chatGptSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT plan'**
+  String get chatGptSubscriptionTitle;
+
+  /// No description provided for @chatGptContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with ChatGPT'**
+  String get chatGptContinue;
+
+  /// No description provided for @chatGptSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get chatGptSignOut;
+
+  /// No description provided for @chatGptUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage and app access'**
+  String get chatGptUsage;
+
+  /// No description provided for @chatGptChooseAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an account'**
+  String get chatGptChooseAccount;
+
+  /// No description provided for @chatGptAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get chatGptAccount;
+
+  /// No description provided for @chatGptChooseModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a model'**
+  String get chatGptChooseModel;
+
+  /// No description provided for @chatGptRefreshModels.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh models'**
+  String get chatGptRefreshModels;
+
+  /// No description provided for @chatGptVerifyAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check model access'**
+  String get chatGptVerifyAccess;
+
+  /// No description provided for @chatGptAccessUnchecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Account connected. Model access has not been checked.'**
+  String get chatGptAccessUnchecked;
+
+  /// No description provided for @chatGptAccessVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Model access verified.'**
+  String get chatGptAccessVerified;
+
+  /// No description provided for @chatGptPlanPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow this app to use your ChatGPT plan in ChatGPT settings.'**
+  String get chatGptPlanPermissionRequired;
+
+  /// No description provided for @chatGptWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working…'**
+  String get chatGptWorking;
+
+  /// No description provided for @chatGptRevocationUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote sign-out could not be confirmed. Disconnect the app in ChatGPT settings.'**
+  String get chatGptRevocationUnconfirmed;
+
+  /// No description provided for @chatGptConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'The ChatGPT connection could not be completed. Try again or check app access in ChatGPT settings.'**
+  String get chatGptConnectionError;
+
+  /// No description provided for @chatGptDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT sign-in is available in the desktop app.'**
+  String get chatGptDesktopOnly;
+
+  /// No description provided for @chatGptSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect a ChatGPT account and enable plan access before sending.'**
+  String get chatGptSignInRequired;
+
+  /// No description provided for @chatGptModelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a ChatGPT model before sending.'**
+  String get chatGptModelRequired;
+
+  /// No description provided for @chatGptDocumentConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
+  String get chatGptDocumentConsentRequired;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

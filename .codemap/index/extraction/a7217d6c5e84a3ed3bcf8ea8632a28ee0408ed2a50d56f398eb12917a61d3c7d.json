@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "a7217d6c5e84a3ed3bcf8ea8632a28ee0408ed2a50d56f398eb12917a61d3c7d",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/chat_document_service.dart::ChatDocumentService.createChat"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "0b5c715f7cf2632a4fbd0aa47031cfa5ca0d59739f85692684ccfde7d7ee0d62",
+  "version": 2
+}

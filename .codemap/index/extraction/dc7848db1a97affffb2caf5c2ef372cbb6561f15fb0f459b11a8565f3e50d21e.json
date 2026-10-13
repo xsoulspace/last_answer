@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "dc7848db1a97affffb2caf5c2ef372cbb6561f15fb0f459b11a8565f3e50d21e",
+  "payload": [
+    [
+      "packages/core/lib/src/generated/assets.gen.dart::AssetGenImage.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "a6a1b79d56eae03b8b4c9512b1c6ecb64d19fa94753ce0dc42770718539a0a2f",
+  "version": 2
+}

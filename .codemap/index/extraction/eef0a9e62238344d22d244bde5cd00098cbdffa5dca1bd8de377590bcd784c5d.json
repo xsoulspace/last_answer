@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "eef0a9e62238344d22d244bde5cd00098cbdffa5dca1bd8de377590bcd784c5d",
+  "payload": [
+    [
+      "test/agent_doc_mesh_wiring_test.dart::_FakeProvider._write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "a740bc06ac370e87a2fcc1a6d6309ccc8fadb98502cc7fdbc4900ba78b387b9c",
+  "version": 2
+}

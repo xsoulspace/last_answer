@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5ea5f6064555f912da2709fb3b99f818712275436778dde6c0e8c67045c88c65",
+  "payload": [
+    [
+      "lib/coding_agent/chatgpt_credentials.dart::ChatGptCredentials._snapshot"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "188de4948e3957ab13e6ec5ccca1c35ced0b65c4e82aaf13426182861ed6f481",
+  "version": 2
+}

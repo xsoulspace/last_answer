@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "890ee40a46d78c2d42a206906fc41bf740c617cf96bf14e824ae660e980d80ba",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_models.dart::AestheticPreferences.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "d0a70fe1ff28f1aa99d6602fcb3f1935f92609e637e75d688ef4ded18e3b844e",
+  "version": 2
+}

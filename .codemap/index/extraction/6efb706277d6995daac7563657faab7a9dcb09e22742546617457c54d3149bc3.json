@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6efb706277d6995daac7563657faab7a9dcb09e22742546617457c54d3149bc3",
+  "payload": [
+    [
+      "lib/idea/idea_answer_screen.dart::IdeaAnswerBody.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "7511cc725dc66210e7a80b0a33b9f95e4b118a355e220b7de5f1406ff3de3e2e",
+  "version": 2
+}

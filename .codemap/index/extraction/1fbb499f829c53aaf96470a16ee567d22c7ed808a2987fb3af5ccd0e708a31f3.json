@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1fbb499f829c53aaf96470a16ee567d22c7ed808a2987fb3af5ccd0e708a31f3",
+  "payload": [
+    [
+      "lib/doc/acp_doc_inference_port.dart::AcpDocInferencePort._buildPrompt"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "3148c7ca70244d297ea567e4da53978ecf75e5a25429433717d8d7548338af0d",
+  "version": 2
+}

@@ -1,0 +1,25 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "191cdbe65c7c653dd59dc1ce9568fa7190b7f79a698f0ec585513a4ddfaeab5d",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "src/headless_agent_harness.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "a5e424b4c22ad25ca1c694e0a69e3fbf64f9eed2f8f02bb792cb3d773d0f4c9c",
+  "version": 2
+}

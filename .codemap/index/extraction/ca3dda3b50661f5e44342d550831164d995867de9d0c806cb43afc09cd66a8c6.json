@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ca3dda3b50661f5e44342d550831164d995867de9d0c806cb43afc09cd66a8c6",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_builder.dart::AILayoutRenderer._getBorderRadius"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "5653d86e65966ca8565c011db95d28d2c49b83e88e0115089889ffdb3d49d588",
+  "version": 2
+}

@@ -1,0 +1,116 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0c1c41f4251b2a374a5cb5cda2efe05ff1c2f1d2b0f122baf918ba27fa17050e",
+  "payload": {
+    "classes": [
+      "ThemeToUse",
+      "ThemeDefiner"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "of",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "ThemeDefiner"
+      },
+      {
+        "callable": false,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 32,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "effectiveTheme",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 23,
+          "lineno": 14
+        },
+        "static": false,
+        "unit": "ThemeDefiner"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "themeToUse",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 39,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "ThemeDefiner"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "useDarkTheme",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 41,
+          "lineno": 41
+        },
+        "static": false,
+        "unit": "ThemeDefiner"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "useContextTheme",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 43,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "ThemeDefiner"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/material.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../../core.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "a2b61300f3494d38fbb028f9b69b3deaaa8920cb418f8682701e5d4afd8c358d",
+  "version": 2
+}

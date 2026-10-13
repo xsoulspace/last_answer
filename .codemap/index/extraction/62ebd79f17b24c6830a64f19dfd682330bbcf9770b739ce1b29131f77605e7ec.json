@@ -1,0 +1,1774 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "62ebd79f17b24c6830a64f19dfd682330bbcf9770b739ce1b29131f77605e7ec",
+  "payload": {
+    "classes": [
+      "ProductDartRuntime"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 18,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 79,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 56,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "getApplicationSupportDirectory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 78,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 33,
+              "lineno": 31
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "putIfAbsent",
+            "receiver": "_applications",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 41,
+              "lineno": 35
+            }
+          }
+        ],
+        "name": "forApplication",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 42,
+          "lineno": 25
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "forApplication",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 52,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "inspect",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 43,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 50,
+              "end_lineno": 50,
+              "lineno": 50
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "lock",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 26,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_digest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 27,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 55,
+              "lineno": 53
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "execute",
+            "receiver": "runtime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 75,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 62,
+              "lineno": 59
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_digest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 27,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 79,
+              "end_lineno": 65,
+              "lineno": 65
+            }
+          }
+        ],
+        "name": "prepareWorkspace",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 68,
+          "lineno": 44
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "execute",
+            "receiver": "(await forApplication())",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 79,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "forApplication",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 29,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          }
+        ],
+        "name": "run",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 80,
+          "end_lineno": 75,
+          "lineno": 70
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 34,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 43,
+              "end_lineno": 78,
+              "lineno": 78
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 65,
+              "end_lineno": 79,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "manifestFile",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 34,
+              "end_lineno": 80,
+              "lineno": 80
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 73,
+              "end_lineno": 81,
+              "lineno": 81
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonDecode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 62,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsString",
+            "receiver": "manifestFile",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 61,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 75,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 75,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 56,
+              "end_lineno": 95,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 51,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "File('${sdk.path}/version')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 49,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 36,
+              "end_lineno": 97,
+              "lineno": 97
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "executable",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 32,
+              "end_lineno": 98,
+              "lineno": 98
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "trim",
+            "receiver": "(await File('${sdk.path}/version').readAsString())",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 65,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsString",
+            "receiver": "File('${sdk.path}/version')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 57,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 42,
+              "end_lineno": 99,
+              "lineno": 99
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 71,
+              "end_lineno": 101,
+              "lineno": 101
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 32,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 41,
+              "end_lineno": 103,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "run",
+            "receiver": "Isolate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 71,
+              "end_lineno": 105,
+              "lineno": 105
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 71,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 63,
+              "end_lineno": 110,
+              "lineno": 110
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "from",
+            "receiver": "Map<String, Object?>",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 74,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_digest",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 52,
+              "end_lineno": 112,
+              "lineno": 112
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 5,
+              "end_lineno": 115,
+              "lineno": 113
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "putIfAbsent",
+            "receiver": "_inspections",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 124,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 35,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 44,
+              "end_lineno": 125,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "identical",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 56,
+              "end_lineno": 130,
+              "lineno": 130
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "remove",
+            "receiver": "_inspections",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 44,
+              "end_lineno": 131,
+              "lineno": 131
+            }
+          }
+        ],
+        "name": "inspect",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 152,
+          "lineno": 77
+        },
+        "static": false,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 163,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 36,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 45,
+              "end_lineno": 165,
+              "lineno": 165
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "inspect",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 35,
+              "end_lineno": 166,
+              "lineno": 166
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "of",
+            "receiver": "List<String>",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 43,
+              "end_lineno": 168,
+              "lineno": 168
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 37,
+              "end_lineno": 170,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 60,
+              "end_lineno": 170,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "contains",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 46,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 48,
+              "end_col_offset": 78,
+              "end_lineno": 171,
+              "lineno": 171
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 36,
+              "end_lineno": 173,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 45,
+              "end_lineno": 173,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "runBounded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 188,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 43,
+              "end_lineno": 187,
+              "lineno": 187
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "awaitProcessSettlement",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 50,
+              "end_lineno": 190,
+              "lineno": 190
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 204,
+              "lineno": 193
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 203,
+              "lineno": 194
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "toList",
+            "receiver": "args.take(2)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 40,
+              "end_lineno": 196,
+              "lineno": 196
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "take",
+            "receiver": "args",
+            "receiver_constructor": null,
+            "receiver_type": "List<String>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 31,
+              "end_lineno": 196,
+              "lineno": 196
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 210,
+              "lineno": 207
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProcessResult",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 217,
+              "lineno": 212
+            }
+          }
+        ],
+        "name": "execute",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 218,
+          "lineno": 154
+        },
+        "static": false,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 36,
+              "end_lineno": 225,
+              "lineno": 225
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Directory",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 38,
+              "end_lineno": 226,
+              "lineno": 226
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 227,
+              "lineno": 227
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 38,
+              "end_lineno": 227,
+              "lineno": 227
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_verifyFilesSync",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 53,
+              "end_lineno": 228,
+              "lineno": 228
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 33,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 42,
+              "end_lineno": 229,
+              "lineno": 229
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "cache",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 27,
+              "end_lineno": 231,
+              "lineno": 231
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "cache.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 46,
+              "end_lineno": 233,
+              "lineno": 233
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createTempSync",
+            "receiver": "cache.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 58,
+              "end_lineno": 234,
+              "lineno": 234
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 63,
+              "end_lineno": 237,
+              "lineno": 237
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "destination.parent",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 56,
+              "end_lineno": 238,
+              "lineno": 238
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copySync",
+            "receiver": "File('${seed.path}/$relative')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 67,
+              "end_lineno": 239,
+              "lineno": 239
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 40,
+              "end_lineno": 239,
+              "lineno": 239
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "renameSync",
+            "receiver": "staging",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 40,
+              "end_lineno": 242,
+              "lineno": 242
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "cache",
+            "receiver_constructor": "Directory",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 33,
+              "end_lineno": 244,
+              "lineno": 244
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "staging",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 32,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteSync",
+            "receiver": "staging",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 69,
+              "end_lineno": 247,
+              "lineno": 247
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_verifyFilesSync",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 55,
+              "end_lineno": 251,
+              "lineno": 251
+            }
+          }
+        ],
+        "name": "_prepareAndVerify",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 259,
+          "lineno": 220
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "root",
+            "receiver_constructor": null,
+            "receiver_type": "Directory",
+            "shadowed": true,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 26,
+              "end_lineno": 265,
+              "lineno": 265
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 73,
+              "end_lineno": 266,
+              "lineno": 266
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 29,
+              "end_lineno": 268,
+              "lineno": 268
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 38,
+              "end_lineno": 268,
+              "lineno": 268
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "resolveSymbolicLinksSync",
+            "receiver": "root",
+            "receiver_constructor": null,
+            "receiver_type": "Directory",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 53,
+              "end_lineno": 273,
+              "lineno": 273
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 35,
+              "end_lineno": 275,
+              "lineno": 275
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 44,
+              "end_lineno": 275,
+              "lineno": 275
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "startsWith",
+            "receiver": "entry.key",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 277,
+              "lineno": 277
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "any",
+            "receiver": "entry.key.split('/')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 77,
+              "end_lineno": 278,
+              "lineno": 278
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "split",
+            "receiver": "entry.key",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 30,
+              "end_lineno": 278,
+              "lineno": 278
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "MeaningPreviewRefusal",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 77,
+              "end_lineno": 279,
+              "lineno": 279
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 52,
+              "end_lineno": 281,
+              "lineno": 281
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "file",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 28,
+              "end_lineno": 282,
+              "lineno": 282
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "isLinkSync",
+            "receiver": "FileSystemEntity",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 48,
+              "end_lineno": 283,
+              "lineno": 283
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "resolveSymbolicLinksSync",
+            "receiver": "file",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 41,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 9,
+              "end_lineno": 288,
+              "lineno": 285
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_digestMeasured",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 49,
+              "end_lineno": 291,
+              "lineno": 291
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 9,
+              "end_lineno": 299,
+              "lineno": 296
+            }
+          }
+        ],
+        "name": "_verifyFilesSync",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 310,
+          "lineno": 261
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 33,
+              "end_lineno": 313,
+              "lineno": 313
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 42,
+              "end_lineno": 313,
+              "lineno": 313
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "readAsBytesSync",
+            "receiver": "File(path)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 46,
+              "end_lineno": 314,
+              "lineno": 314
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 28,
+              "end_lineno": 314,
+              "lineno": 314
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Stopwatch",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 33,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "Stopwatch()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 42,
+              "end_lineno": 316,
+              "lineno": 316
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "runtimeSha256",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 35,
+              "end_lineno": 319,
+              "lineno": 319
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MeaningPreviewRefusal",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 7,
+              "end_lineno": 324,
+              "lineno": 321
+            }
+          }
+        ],
+        "name": "_digestMeasured",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 332,
+          "lineno": 312
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "run",
+            "receiver": "Isolate",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 67,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          }
+        ],
+        "name": "_digest",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 338,
+          "lineno": 334
+        },
+        "static": true,
+        "unit": "ProductDartRuntime"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:isolate"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/runtime_sha256.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:path_provider/path_provider.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_harness/src/lifecycle/bounded_process.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/meaning_span_preview.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:ProductDartRuntime:754",
+      "field_initialization:ProductDartRuntime:817",
+      "closure:1447",
+      "closure:3962",
+      "closure:4868",
+      "closure:9993",
+      "closure:11821"
+    ]
+  },
+  "payload_digest": "4ef673a5fe7c0eef24d67632d00f32f6b3615e1a2027bf762ae49467e3367829",
+  "version": 2
+}

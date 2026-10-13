@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b3d42246446a22a87acfc4c654d853f15544abd6735fff37c0e24a257db71fef",
+  "payload": [
+    [
+      "lib/_library/widgets/core/right_scrollbar.dart::RightScrollbar.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "fb5448fd25f0a8b259267b82d56bc416a6346058ae9901448f72ad6434208d80",
+  "version": 2
+}

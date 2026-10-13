@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "6666dc344964cd948118a2c75d6dcd29c3c7c581e8f86d1b0f33262df7bde15d",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/local/tags.dart::TagsLocalDataSourceImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "8e1081750943736ce71753fd05a402a0698a08475809cf9bcc502174a31ff586",
+  "version": 2
+}

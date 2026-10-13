@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c500b4ae8325cfa1856539281f5cfcb202ca6459b447c2c5f4546c648d350559",
+  "payload": [
+    [
+      "lib/settings/features/mesh_storage_service.dart::MeshStorageService.attachDocSync"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "e7ec4a2218fa904e8397dcbfcbe4889ff56e98b16db2ec79dc11498ffedd514c",
+  "version": 2
+}

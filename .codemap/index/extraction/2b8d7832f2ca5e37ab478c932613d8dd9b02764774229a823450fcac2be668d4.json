@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2b8d7832f2ca5e37ab478c932613d8dd9b02764774229a823450fcac2be668d4",
+  "payload": [
+    [
+      "lib/other/last_answer_app.dart::LastAnswerApp.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "7ead99e86bbbd90a4c7e6d3f51aecdc6cea4a139570fe8c06ca709de69dd4e7d",
+  "version": 2
+}

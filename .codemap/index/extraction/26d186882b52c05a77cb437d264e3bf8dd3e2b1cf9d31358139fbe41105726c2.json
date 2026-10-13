@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "26d186882b52c05a77cb437d264e3bf8dd3e2b1cf9d31358139fbe41105726c2",
+  "payload": [
+    [
+      "test/doc/acp_agent_runtime_test.dart::_FakeAgent._runPrompt"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "1682b6b3e6e6aaba767287309d4935592d5058807e96c0c3c8b92f4221fde871",
+  "version": 2
+}

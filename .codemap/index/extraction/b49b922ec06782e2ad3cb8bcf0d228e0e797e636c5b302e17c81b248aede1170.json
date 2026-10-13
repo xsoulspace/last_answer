@@ -1,0 +1,86 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b49b922ec06782e2ad3cb8bcf0d228e0e797e636c5b302e17c81b248aede1170",
+  "payload": {
+    "classes": [
+      "HoverableButton"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 11,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "HoverableButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "HoverableArea",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 36,
+              "lineno": 20
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 37,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "HoverableButton"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:HoverableButton",
+      "closure:590"
+    ]
+  },
+  "payload_digest": "7bc63f2f1f7cbd0fbd04f9a8ccda831d002c5c92ed66d5f117502a7457bd231a",
+  "version": 2
+}

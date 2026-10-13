@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0aeaa23bbc9e657bd33e0e799db9979ab82cbf9ff830428214b157251742d9d4",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_panel.dart::_ScheduleStrip._clockOf"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "db2d3fa1e9ba96784819f71221daa31d8eba062ad7e812435e8d39e17132ba9d",
+  "version": 2
+}

@@ -1,0 +1,891 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "401fb0462e84edea27df5939fb0c25a03cafbe95ebb8c5676b1fffac87f681de",
+  "payload": {
+    "classes": [
+      "ProjectView",
+      "_AdaptiveView",
+      "_WorldInspectorRegion",
+      "_WorldInspectorFullScreenPage",
+      "_ProjectViewAppBar",
+      "_ChangelogViewAppBar",
+      "_WorkbenchDocumentHost",
+      "_WorkbenchDocumentHostState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 47,
+          "end_lineno": 15,
+          "lineno": 15
+        },
+        "static": false,
+        "unit": "ProjectView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "select",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 9,
+              "end_lineno": 25,
+              "lineno": 22
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 39,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "selected",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 91,
+              "lineno": 32
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 92,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "ProjectView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 96,
+          "lineno": 96
+        },
+        "static": false,
+        "unit": "_AdaptiveView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 49,
+              "end_lineno": 102,
+              "lineno": 102
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 109,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 57,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 30,
+              "end_lineno": 107,
+              "lineno": 107
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 110,
+          "lineno": 100
+        },
+        "static": false,
+        "unit": "_AdaptiveView"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 122,
+          "lineno": 118
+        },
+        "static": false,
+        "unit": "_WorldInspectorRegion"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "push",
+            "receiver": "Navigator.of(context)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 136,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Navigator",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 27,
+              "end_lineno": 128,
+              "lineno": 128
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "MaterialPageRoute",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 135,
+              "lineno": 129
+            }
+          }
+        ],
+        "name": "_openFullScreen",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 8,
+          "end_lineno": 136,
+          "lineno": 127
+        },
+        "static": false,
+        "unit": "_WorldInspectorRegion"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 157,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 154,
+              "lineno": 143
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 152,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Key",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 61,
+              "end_lineno": 147,
+              "lineno": 147
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 56,
+              "end_lineno": 149,
+              "lineno": 149
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "WorldInspectorPane",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 78,
+              "end_lineno": 155,
+              "lineno": 155
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 157,
+          "lineno": 138
+        },
+        "static": false,
+        "unit": "_WorldInspectorRegion"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 167,
+          "lineno": 164
+        },
+        "static": false,
+        "unit": "_WorldInspectorFullScreenPage"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Scaffold",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 211,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "SafeArea",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 210,
+              "lineno": 174
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 209,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 200,
+              "lineno": 178
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Padding",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 190,
+              "lineno": 180
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "only",
+            "receiver": "EdgeInsets",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 50,
+              "end_lineno": 181,
+              "lineno": 181
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 17,
+              "end_lineno": 189,
+              "lineno": 182
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextStyle",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 188,
+              "lineno": 184
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Spacer",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 28,
+              "end_lineno": 191,
+              "lineno": 191
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 15,
+              "end_lineno": 197,
+              "lineno": 192
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Key",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 66,
+              "end_lineno": 193,
+              "lineno": 193
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 55,
+              "end_lineno": 195,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 26,
+              "end_lineno": 198,
+              "lineno": 198
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 207,
+              "lineno": 201
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "WorldInspectorPane",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 206,
+              "lineno": 202
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 211,
+          "lineno": 172
+        },
+        "static": false,
+        "unit": "_WorldInspectorFullScreenPage"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 29,
+          "end_lineno": 215,
+          "lineno": 215
+        },
+        "static": false,
+        "unit": "_ProjectViewAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "BackTextUniversalAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 222,
+              "lineno": 218
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 222,
+          "lineno": 217
+        },
+        "static": false,
+        "unit": "_ProjectViewAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 31,
+          "end_lineno": 226,
+          "lineno": 226
+        },
+        "static": false,
+        "unit": "_ChangelogViewAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "BackTextUniversalAppBar",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 233,
+              "lineno": 229
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 233,
+          "lineno": 228
+        },
+        "static": false,
+        "unit": "_ChangelogViewAppBar"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 237,
+          "lineno": 237
+        },
+        "static": false,
+        "unit": "_WorkbenchDocumentHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_WorkbenchDocumentHostState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 49,
+              "end_col_offset": 78,
+              "end_lineno": 240,
+              "lineno": 240
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 79,
+          "end_lineno": 240,
+          "lineno": 239
+        },
+        "static": false,
+        "unit": "_WorkbenchDocumentHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 40,
+              "end_col_offset": 3,
+              "end_lineno": 287,
+              "lineno": 246
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Align",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 282,
+              "lineno": 248
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 281,
+              "lineno": 250
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ValueKey",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 47,
+              "end_lineno": 251,
+              "lineno": 251
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Text",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 40,
+              "end_lineno": 280,
+              "lineno": 280
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 7,
+              "end_lineno": 285,
+              "lineno": 283
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DocView",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 60,
+              "end_lineno": 284,
+              "lineno": 284
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 287,
+          "lineno": 245
+        },
+        "static": false,
+        "unit": "_WorkbenchDocumentHostState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "hc",
+        "show": [],
+        "uri": "package:headless_core/headless_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/agent_doc_surface.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/mesh_task_console_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/chat_document_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/doc/doc_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/idea_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/note/note_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/views/changelog_view.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:ProjectView",
+      "closure:1097",
+      "closure:1356",
+      "closure:1425",
+      "closure:1582",
+      "closure:1716",
+      "inheritance:_AdaptiveView",
+      "inheritance:_WorldInspectorRegion",
+      "closure:5241",
+      "closure:5927",
+      "inheritance:_WorldInspectorFullScreenPage",
+      "closure:7403",
+      "inheritance:_ProjectViewAppBar",
+      "closure:7939",
+      "inheritance:_ChangelogViewAppBar",
+      "closure:8207",
+      "inheritance:_WorkbenchDocumentHost",
+      "inheritance:_WorkbenchDocumentHostState",
+      "field_initialization:_WorkbenchDocumentHostState:8632",
+      "closure:8875"
+    ]
+  },
+  "payload_digest": "b6bbeac8b4c71a754b233dc5ef8bf8b730584ff70e5e5aa4d5c7d8c64ffbec4f",
+  "version": 2
+}

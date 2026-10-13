@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ab287215335ab3101ce1903bf9aec84db0f61531d96d27ef16709090917a7d6c",
+  "payload": [
+    [
+      "tool/oka_endless_driver.dart::_._bootState"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "ded27d86862260efa008be6b6fe5e463f526dcbd6a13861363f46f4bd6e02b2b",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "68e476c36b8910e09416ff34fbbf21017f4ff9d3694bcba48896d91e785a9b6b",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/perm_request.dart::PermRequestRecord.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "e7b88c1d527ce215e876daa8cfe3c0fa6abc351648372063d38d36c7e2e98264",
+  "version": 2
+}

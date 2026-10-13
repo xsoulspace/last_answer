@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fca91abf2e9de5e0636db5387b5b524e9fddaf33fd74c34371f9ccbc3454e0d2",
+  "payload": [
+    [
+      "tool/gates/multiplayer_harness_gate.dart::_.row"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "62c6a8bf20987c8aed1f1d745b538eb80e65545e1caec46ee1117206871eb812",
+  "version": 2
+}

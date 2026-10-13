@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b6ea8b0bc576512bbe53a39386a8a042f3d60138a05754d96db1fe8b515d6780",
+  "payload": [
+    [
+      "lib/mcp/app_mcp_tools.dart::_.appMcpEntries"
+    ],
+    "import-scoped top-level binding"
+  ],
+  "payload_digest": "baaa4725ed3566fb58f21c55480d59a17b36faea8e18ffe58d20d763c3765a6c",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1e59f2ed40468979c73e3461b9ae4cc56f8bbff53ece068a20c955942e27ae08",
+  "payload": [
+    [
+      "packages/core/lib/src/state/state.freezed.dart::__$RequestProjectsDtoCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "401e3ac71cffe515cf0369a6022413c73354714b5b1910e97882aed92eb9d479",
+  "version": 2
+}

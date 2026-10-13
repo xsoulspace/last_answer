@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "677f971485f5ca2713947c2fe842941b80a3df21fed815a578d8095e1de75d4b",
+  "payload": [
+    [
+      "test/mesh_storage_task_board_test.dart::_FakeProvider._write"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "257b40a2cf205464381608e2b817e4b66713dd8f4be7177674a55d46f6d6d240",
+  "version": 2
+}

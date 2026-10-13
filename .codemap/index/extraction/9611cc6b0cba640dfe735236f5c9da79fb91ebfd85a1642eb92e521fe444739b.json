@@ -1,0 +1,573 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9611cc6b0cba640dfe735236f5c9da79fb91ebfd85a1642eb92e521fe444739b",
+  "payload": {
+    "classes": [
+      "CharactersLimitSetting",
+      "CharactersLimitButton",
+      "ImageGenIcon"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "CharactersLimitSetting"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 50,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useListenable",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HoverableButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 19,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 51,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 7,
+              "end_lineno": 49,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Flexible",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 43,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "UiTextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 42,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "const InputDecoration().applyDefaults(theme.inputDecorationTheme)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 19,
+              "end_lineno": 41,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "applyDefaults",
+            "receiver": "const InputDecoration()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 60,
+              "end_lineno": 36,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "InputDecoration",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 49,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 67,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HoverableButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 47,
+              "lineno": 44
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 61,
+              "end_lineno": 46,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Wrap",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 123,
+              "lineno": 58
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CharactersLimitButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 78,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "image",
+            "receiver": "(controller.isInstagramLimit ? Assets.icons.instagramLogoColorful : Assets.icons.instagramLogoBlack)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 21,
+              "end_lineno": 77,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CharactersLimitButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 91,
+              "lineno": 80
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ImageGenIcon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 90,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CharactersLimitButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 103,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ImageGenIcon",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 102,
+              "lineno": 95
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CharactersLimitButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 113,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "svg",
+            "receiver": "switch (controller.isDiscordLimit) {true => Assets.icons.discordLogoBlue, false => dark ? Assets.icons.discordLogoWhite : Assets.icons.discordLogoBlack}",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 38,
+              "end_lineno": 112,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "CharactersLimitButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 120,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "svg",
+            "receiver": "switch (controller.isVkLimit) {true => Assets.icons.vkLogoBlue, false => dark ? Assets.icons.vkLogoWhite : Assets.icons.vkLogoBlack}",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 38,
+              "end_lineno": 119,
+              "lineno": 116
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 124,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "CharactersLimitSetting"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 132,
+          "lineno": 128
+        },
+        "static": false,
+        "unit": "CharactersLimitButton"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Card",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 146,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HoverableButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 145,
+              "lineno": 139
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 144,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 71,
+              "end_lineno": 142,
+              "lineno": 142
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 146,
+          "lineno": 136
+        },
+        "static": false,
+        "unit": "CharactersLimitButton"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 155,
+          "lineno": 150
+        },
+        "static": false,
+        "unit": "ImageGenIcon"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 167,
+              "lineno": 160
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 5,
+              "end_lineno": 166,
+              "lineno": 163
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "DecorationImage",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 56,
+              "end_lineno": 164,
+              "lineno": 164
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "provider",
+            "receiver": "genImage",
+            "receiver_constructor": null,
+            "receiver_type": "AssetGenImage",
+            "shadowed": true,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 55,
+              "end_lineno": 164,
+              "lineno": 164
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 167,
+          "lineno": 159
+        },
+        "static": false,
+        "unit": "ImageGenIcon"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/characters_limit_state.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:CharactersLimitSetting",
+      "closure:688",
+      "inheritance:CharactersLimitButton",
+      "inheritance:ImageGenIcon"
+    ]
+  },
+  "payload_digest": "11e1309b7da45713576d36a636cb1e820d36c725a75aabea058c4e03144c9b94",
+  "version": 2
+}

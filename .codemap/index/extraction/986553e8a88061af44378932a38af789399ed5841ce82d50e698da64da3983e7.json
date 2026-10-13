@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "986553e8a88061af44378932a38af789399ed5841ce82d50e698da64da3983e7",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/save.dart::DbSaveModel.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "7f5b07a245d9b67e3d34bd861e84d3a9328402d9900a65761e13a0f731ff49d2",
+  "version": 2
+}

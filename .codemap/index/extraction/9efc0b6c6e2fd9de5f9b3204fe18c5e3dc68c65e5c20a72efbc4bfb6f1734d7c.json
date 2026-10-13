@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9efc0b6c6e2fd9de5f9b3204fe18c5e3dc68c65e5c20a72efbc4bfb6f1734d7c",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$AgentDocModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "fbb84410d6cda3709ce8b2a696604fa280811d8c6c7fe1fb634d9fde8669070b",
+  "version": 2
+}

@@ -1,0 +1,178 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "54c01706fdbb60399767e99602e7897906095c67f0f1da6df7ac8f3efb9d0aec",
+  "payload": {
+    "classes": [
+      "Row",
+      "Card",
+      "BentoGrid"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 9,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "Row"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 21,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Styles",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 7,
+              "end_lineno": 19,
+              "lineno": 15
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 22,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "Row"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 60,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "Card"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 38,
+              "lineno": 32
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 39,
+          "lineno": 30
+        },
+        "static": false,
+        "unit": "Card"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 52,
+          "end_lineno": 43,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "BentoGrid"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "div",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 51,
+              "lineno": 47
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 52,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "BentoGrid"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/dom.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:jaspr/jaspr.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:Row",
+      "inheritance:Card",
+      "inheritance:BentoGrid"
+    ]
+  },
+  "payload_digest": "e8c24abc9d1568845bbc1ede5cd84e6750c69b55dcd3594d6c10534c0fbec11c",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "4bf77648ebb4ea68c3f055e30472a6eb7b009a95b33d410006851afef64c6822",
+  "payload": [
+    [
+      "lib/idea/widgets/answer_field_bubble.dart::AnswerFieldBubble.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "6da625936dd25ca1d7dcbdaadf2f74a7e53d5f2bafb8078bf6a7ae28ea406fb9",
+  "version": 2
+}

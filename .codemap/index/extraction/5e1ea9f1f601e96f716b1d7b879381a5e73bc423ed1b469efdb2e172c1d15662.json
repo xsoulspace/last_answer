@@ -1,0 +1,656 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5e1ea9f1f601e96f716b1d7b879381a5e73bc423ed1b469efdb2e172c1d15662",
+  "payload": {
+    "classes": [
+      "OpenedProjectNotifierDto",
+      "OpenedProjectNotifier"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 39,
+              "end_lineno": 5,
+              "lineno": 5
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "read",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 35,
+              "end_lineno": 6,
+              "lineno": 6
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 6,
+          "lineno": 4
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifierDto"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "OpenedProjectNotifierDto",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 45,
+              "end_lineno": 14,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LoadableContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 60,
+              "end_lineno": 15,
+              "lineno": 15
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 62,
+          "end_lineno": 15,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "onPopProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 18,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 47,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "loaded",
+            "receiver": "LoadableContainer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 46,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "note",
+            "receiver": "ScreenPaths",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 63,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "idea",
+            "receiver": "ScreenPaths",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 63,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "doc",
+            "receiver": "ScreenPaths",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 60,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "push",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 32,
+              "end_lineno": 32,
+              "lineno": 32
+            }
+          }
+        ],
+        "name": "loadProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 33,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "map",
+            "receiver": "value.value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 60,
+              "lineno": 42
+            }
+          }
+        ],
+        "name": "onPopProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 61,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 35,
+              "end_col_offset": 72,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 44,
+              "end_col_offset": 71,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateEditingProject",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 51,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          }
+        ],
+        "name": "updateProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 68,
+          "lineno": 63
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_tagsIds",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 79,
+          "end_lineno": 70,
+          "lineno": 70
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ProjectModelNote",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 5,
+              "end_lineno": 78,
+              "lineno": 72
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generate",
+            "receiver": "ProjectModelId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 73,
+              "lineno": 73
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 74,
+              "lineno": 74
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "loadProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 48,
+              "end_lineno": 79,
+              "lineno": 79
+            }
+          }
+        ],
+        "name": "createNoteProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 80,
+          "lineno": 71
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ProjectModelIdea",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 5,
+              "end_lineno": 92,
+              "lineno": 86
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "generate",
+            "receiver": "ProjectModelId",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 87,
+              "lineno": 87
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 88,
+              "lineno": 88
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "now",
+            "receiver": "DateTime",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 89,
+              "lineno": 89
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "updateEditingProject",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 73,
+              "end_lineno": 93,
+              "lineno": 93
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "loadProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 48,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          }
+        ],
+        "name": "createIdeaProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 95,
+          "lineno": 82
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "loadProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 5,
+              "end_lineno": 107,
+              "lineno": 104
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "emptyAgent",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 66,
+              "end_lineno": 106,
+              "lineno": 106
+            }
+          }
+        ],
+        "name": "createAgentProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 108,
+          "lineno": 97
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "loadProject",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 68,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "emptyChat",
+            "receiver": "ProjectModel",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 43,
+              "end_col_offset": 67,
+              "end_lineno": 111,
+              "lineno": 111
+            }
+          }
+        ],
+        "name": "createChatProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 112,
+          "lineno": 110
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 64,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LoadableContainer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 63,
+              "end_lineno": 118,
+              "lineno": 118
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteProject",
+            "receiver": "dto.projectsNotifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 44,
+              "end_lineno": 120,
+              "lineno": 120
+            }
+          }
+        ],
+        "name": "deleteProject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 121,
+          "lineno": 114
+        },
+        "static": false,
+        "unit": "OpenedProjectNotifier"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:OpenedProjectNotifier",
+      "closure:1357",
+      "closure:1513",
+      "closure:1646",
+      "closure:1698"
+    ]
+  },
+  "payload_digest": "3e374f9a5114f6bc5744bee031cfedd70249d8c7b11cda30cea58839da7a5680",
+  "version": 2
+}

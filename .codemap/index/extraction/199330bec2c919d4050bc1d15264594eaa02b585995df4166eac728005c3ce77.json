@@ -1,0 +1,206 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "199330bec2c919d4050bc1d15264594eaa02b585995df4166eac728005c3ce77",
+  "payload": {
+    "classes": [
+      "TelegramBotService"
+    ],
+    "defs": [
+      {
+        "callable": false,
+        "calls": [],
+        "name": "_isInitializable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 64,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "TelegramBotService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Bot",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 49,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "bot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 21,
+              "end_lineno": 12,
+              "lineno": 12
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "settings",
+            "receiver": "bot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 54,
+              "end_lineno": 16,
+              "lineno": 16
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "help",
+            "receiver": "bot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 46,
+              "end_lineno": 18,
+              "lineno": 18
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "hears",
+            "receiver": "bot",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 8,
+              "end_lineno": 23,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RegExp",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 36,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "onLoad",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 45,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "TelegramBotService"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "print",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 37,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "_bot",
+            "receiver_constructor": null,
+            "receiver_type": "Bot?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 16,
+              "end_lineno": 49,
+              "lineno": 49
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 50,
+          "lineno": 47
+        },
+        "static": false,
+        "unit": "TelegramBotService"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:televerse/televerse.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../envs.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "closure:388",
+      "closure:484",
+      "closure:755"
+    ]
+  },
+  "payload_digest": "539d8be92f1a1c794a3b584c5cc34a066921bd97603f6278e45ff0735aa5e7f2",
+  "version": 2
+}

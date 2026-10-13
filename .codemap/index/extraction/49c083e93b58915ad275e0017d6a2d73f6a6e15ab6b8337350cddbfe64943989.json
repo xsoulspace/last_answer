@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "49c083e93b58915ad275e0017d6a2d73f6a6e15ab6b8337350cddbfe64943989",
+  "payload": [
+    [
+      "packages/core/lib/src/data_sources/mutations/parsers/isar_parser.dart::_.parseIsarFromBytes"
+    ],
+    "import prefix declaration"
+  ],
+  "payload_digest": "7985154ec7e22a39ac1aba482306a731fbd8d4355c6056a8e4aa9105af0e3ba1",
+  "version": 2
+}

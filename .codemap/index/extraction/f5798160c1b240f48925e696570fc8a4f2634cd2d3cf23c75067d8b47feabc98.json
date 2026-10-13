@@ -1,0 +1,125 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "f5798160c1b240f48925e696570fc8a4f2634cd2d3cf23c75067d8b47feabc98",
+  "payload": {
+    "classes": [
+      "AdsLocalDataSourceImpl"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "AdsLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setItem",
+            "receiver": "localDb",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 5,
+              "end_lineno": 16,
+              "lineno": 12
+            }
+          }
+        ],
+        "name": "saveState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 17,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "AdsLocalDataSourceImpl"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getItem",
+            "receiver": "localDb",
+            "receiver_constructor": null,
+            "receiver_type": "LocalDbI",
+            "shadowed": true,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 25,
+              "lineno": 21
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "AdsStateModel",
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 41,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "getState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 27,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "AdsLocalDataSourceImpl"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_foundation/xsoulspace_foundation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "../data_sources.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:AdsLocalDataSourceImpl",
+      "closure:467"
+    ]
+  },
+  "payload_digest": "b4c67c30910f164765e518e78801b325397e53121673a95439f677b677baa3a1",
+  "version": 2
+}

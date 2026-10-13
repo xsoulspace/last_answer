@@ -1,0 +1,29 @@
+{
+  "buildMs": 23377.4,
+  "currentAtPublication": true,
+  "generation": "a4c2c546fa18613f9b996052c96db371",
+  "inputRevision": "ce05be6e6ea087441c70c3d1c53a4ba28ef234b55e31a18549934d92dd0c5706",
+  "pid": 53004,
+  "publishedRevision": "cefed7e393df601e2ad15a2e06d14807b03cbff5b323bb9720ef28cf13b74dea",
+  "recoveryAttempts": 0,
+  "requestId": "56546-1791911963057258000",
+  "scope": {
+    "exts": [
+      ".cs",
+      ".dart",
+      ".ex",
+      ".js",
+      ".py",
+      ".rs",
+      ".ts",
+      ".zig"
+    ],
+    "ignore_prefixes": [],
+    "package_closure": false,
+    "root": "/Users/antonio/xs/storage_problem/last_answer",
+    "scope_profile": "workspace"
+  },
+  "sourceRevision": "cefed7e393df601e2ad15a2e06d14807b03cbff5b323bb9720ef28cf13b74dea",
+  "status": "complete",
+  "transport": "rust"
+}

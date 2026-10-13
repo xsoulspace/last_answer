@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "22f17b927830c53987c8678354cb90f03cd6b6db2cd984253a0cc4044ee64c2f",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/document_node.g.dart::_._$AnchorSpanFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "821c5db6fc1a032e8bd3dc3646efe566add466c69421f558fe7848cb1c28be61",
+  "version": 2
+}

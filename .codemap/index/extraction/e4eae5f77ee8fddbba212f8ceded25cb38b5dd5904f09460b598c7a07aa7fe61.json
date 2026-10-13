@@ -1,0 +1,1294 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e4eae5f77ee8fddbba212f8ceded25cb38b5dd5904f09460b598c7a07aa7fe61",
+  "payload": {
+    "classes": [
+      "ExternalAcpModelNames",
+      "HarnessHost",
+      "PendingPermission",
+      "HarnessHostConfig"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 46,
+          "lineno": 46
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isRunning",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 59,
+          "lineno": 58
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "permissionRequests",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 65,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "buildBackend",
+            "receiver": "config",
+            "receiver_constructor": null,
+            "receiver_type": "HarnessHostConfig",
+            "shadowed": true,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 41,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "start",
+            "receiver": "HarnessEmbed",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 75,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "start",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 76,
+          "lineno": 67
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "newSession",
+            "receiver": "_requireEmbed()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 37,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_requireEmbed",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 21,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          }
+        ],
+        "name": "newSession",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 38,
+          "end_lineno": 83,
+          "lineno": 78
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "delegateTask",
+            "receiver": "_requireEmbed()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 7,
+              "end_lineno": 102,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_requireEmbed",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 34,
+              "end_lineno": 96,
+              "lineno": 96
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_retireSettledPermissions",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 42,
+              "end_lineno": 104,
+              "lineno": 104
+            }
+          }
+        ],
+        "name": "delegateTask",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 106,
+          "lineno": 85
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "cancel",
+            "receiver": "_embed",
+            "receiver_constructor": null,
+            "receiver_type": "HarnessEmbed?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 41,
+              "end_col_offset": 66,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          }
+        ],
+        "name": "cancel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 109,
+          "lineno": 108
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "meaningReviewProposal",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 67,
+          "end_lineno": 112,
+          "lineno": 111
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_invokeMeaningAction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 69,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_retireSettledPermissions",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 42,
+              "end_lineno": 124,
+              "lineno": 124
+            }
+          }
+        ],
+        "name": "meaningAction",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 126,
+          "lineno": 114
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_invokeMeaningAction",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 7,
+              "end_lineno": 142,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_retireSettledPermissions",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 42,
+              "end_lineno": 144,
+              "lineno": 144
+            }
+          }
+        ],
+        "name": "conventionalAction",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 146,
+          "lineno": 128
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "any",
+            "receiver": "_meaningTasks.entries",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 162,
+              "lineno": 158
+            }
+          }
+        ],
+        "name": "admitsSavedCodeReview",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 163,
+          "lineno": 148
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "HarnessAgentTools",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 53,
+              "end_lineno": 175,
+              "lineno": 175
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "context",
+            "receiver": "tools",
+            "receiver_constructor": "HarnessAgentTools",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 69,
+              "end_lineno": 184,
+              "lineno": 184
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "context",
+            "receiver": "tools",
+            "receiver_constructor": "HarnessAgentTools",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 8,
+              "end_lineno": 192,
+              "lineno": 186
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "admitExternalTaskFromSentence",
+            "receiver": "backend",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 13,
+              "end_lineno": 204,
+              "lineno": 195
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "taskAdmitExternal",
+            "receiver": "tools",
+            "receiver_constructor": "HarnessAgentTools",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 14,
+              "end_lineno": 211,
+              "lineno": 205
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "invoke",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 63,
+              "end_lineno": 273,
+              "lineno": 273
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "invoke",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 76,
+              "end_lineno": 275,
+              "lineno": 275
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "invoke",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 8,
+              "end_lineno": 286,
+              "lineno": 278
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "invoke",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 61,
+              "end_lineno": 290,
+              "lineno": 290
+            }
+          }
+        ],
+        "name": "_invokeMeaningAction",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 291,
+          "lineno": 165
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "reject",
+            "receiver": "pending",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 22,
+              "end_lineno": 296,
+              "lineno": 296
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "_meaningTasks",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 25,
+              "end_lineno": 301,
+              "lineno": 301
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "stop",
+            "receiver": "embed",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 23,
+              "end_lineno": 302,
+              "lineno": 302
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "config.jevBinding",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 38,
+              "end_lineno": 303,
+              "lineno": 303
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "config.layaBinding",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 39,
+              "end_lineno": 304,
+              "lineno": 304
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "config.lfmBinding",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 32,
+              "end_lineno": 305,
+              "lineno": 305
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "config.qwenBinding",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 33,
+              "end_lineno": 306,
+              "lineno": 306
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "_permissionController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 76,
+              "end_lineno": 307,
+              "lineno": 307
+            }
+          }
+        ],
+        "name": "stop",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 308,
+          "lineno": 293
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "StateError",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 73,
+              "end_lineno": 313,
+              "lineno": 313
+            }
+          }
+        ],
+        "name": "_requireEmbed",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 316,
+          "lineno": 310
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "Completer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 52,
+              "end_lineno": 325,
+              "lineno": 325
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "timeout",
+            "receiver": "completer.future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 44,
+              "end_lineno": 327,
+              "lineno": 327
+            }
+          }
+        ],
+        "name": "nextPermission",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 328,
+          "lineno": 318
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "_",
+            "receiver": "PendingPermission",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 48,
+              "end_lineno": 333,
+              "lineno": 333
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_pendingPermissions",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 334,
+              "lineno": 334
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 78,
+              "end_lineno": 335,
+              "lineno": 335
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "then",
+            "receiver": "pending.future",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 77,
+              "end_lineno": 335,
+              "lineno": 335
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "complete",
+            "receiver": "_permissionSeen",
+            "receiver_constructor": null,
+            "receiver_type": "Completer<PendingPermission>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 38,
+              "end_lineno": 336,
+              "lineno": 336
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_permissionController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 38,
+              "end_lineno": 337,
+              "lineno": 337
+            }
+          }
+        ],
+        "name": "_handlePermission",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 339,
+          "lineno": 330
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "hasPendingPermission",
+            "receiver": "_backend",
+            "receiver_constructor": null,
+            "receiver_type": "HarnessAcpBackend?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 49,
+              "end_lineno": 344,
+              "lineno": 344
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "reject",
+            "receiver": "pending",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 24,
+              "end_lineno": 349,
+              "lineno": 349
+            }
+          }
+        ],
+        "name": "_retireSettledPermissions",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 352,
+          "lineno": 343
+        },
+        "static": false,
+        "unit": "HarnessHost"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 36,
+          "end_lineno": 358,
+          "lineno": 358
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "future",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 63,
+          "end_lineno": 364,
+          "lineno": 364
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "isAnswered",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 48,
+          "end_lineno": 365,
+          "lineno": 365
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_answer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 53,
+              "end_lineno": 367,
+              "lineno": 367
+            }
+          }
+        ],
+        "name": "allow",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 54,
+          "end_lineno": 367,
+          "lineno": 367
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_answer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 55,
+              "end_lineno": 368,
+              "lineno": 368
+            }
+          }
+        ],
+        "name": "reject",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 56,
+          "end_lineno": 368,
+          "lineno": 368
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "complete",
+            "receiver": "_completer",
+            "receiver_constructor": null,
+            "receiver_type": "Completer<AcpPermissionOutcome>",
+            "shadowed": true,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 61,
+              "end_lineno": 371,
+              "lineno": 371
+            }
+          }
+        ],
+        "name": "_answer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 372,
+          "lineno": 370
+        },
+        "static": false,
+        "unit": "PendingPermission"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 405,
+          "lineno": 381
+        },
+        "static": false,
+        "unit": "HarnessHostConfig"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "openRouterKeyResolvable",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 486,
+          "lineno": 476
+        },
+        "static": false,
+        "unit": "HarnessHostConfig"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "ModelRouter",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 13,
+              "end_lineno": 504,
+              "lineno": 499
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ModelId",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 46,
+              "end_lineno": 505,
+              "lineno": 505
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Model",
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 13,
+              "end_lineno": 508,
+              "lineno": 505
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ModelId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 506,
+              "lineno": 506
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessBackendBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 7,
+              "end_lineno": 512,
+              "lineno": 509
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "appleFoundationBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 42,
+              "end_lineno": 515,
+              "lineno": 515
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessBackendBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 529,
+              "lineno": 525
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AcpInferenceClient",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 7,
+              "end_lineno": 557,
+              "lineno": 546
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ModelRouter",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 13,
+              "end_lineno": 563,
+              "lineno": 559
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "ModelId",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 46,
+              "end_lineno": 564,
+              "lineno": 564
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Model",
+            "span": {
+              "col_offset": 50,
+              "end_col_offset": 13,
+              "end_lineno": 567,
+              "lineno": 564
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ModelId",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 37,
+              "end_lineno": 565,
+              "lineno": 565
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessBackendBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 7,
+              "end_lineno": 572,
+              "lineno": 568
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "HarnessAcpBackend",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 589,
+              "lineno": 574
+            }
+          }
+        ],
+        "name": "buildBackend",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 590,
+          "lineno": 488
+        },
+        "static": false,
+        "unit": "HarnessHostConfig"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "HarnessHostConfig",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 3,
+              "end_lineno": 657,
+              "lineno": 622
+            }
+          }
+        ],
+        "name": "copyWith",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 657,
+          "lineno": 592
+        },
+        "static": false,
+        "unit": "HarnessHostConfig"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:async"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:dart_acp_toolkit/dart_acp_toolkit.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "InferenceClientBinding",
+          "JevClientBinding",
+          "NativeTextClientBinding",
+          "appleFoundationBinding"
+        ],
+        "uri": "package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "AcpInferenceClient",
+          "AcpSessionPersistence"
+        ],
+        "uri": "package:xsoulspace_inference_acp/xsoulspace_inference_acp.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [
+          "OpenRouterInferenceClient",
+          "OpenRouterModelNames"
+        ],
+        "uri": "package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:HarnessHost:2409",
+      "field_initialization:HarnessHost:2467",
+      "field_initialization:HarnessHost:2494",
+      "field_initialization:HarnessHost:2624",
+      "closure:6322",
+      "nested_function:invoke",
+      "closure:12461",
+      "field_initialization:PendingPermission:13312",
+      "closure:19652",
+      "closure:20045",
+      "closure:22221",
+      "closure:22544"
+    ]
+  },
+  "payload_digest": "4854969bf2ab64adc9a2f893d7506486eb44deda27fc9e01c6502338d48a6a19",
+  "version": 2
+}

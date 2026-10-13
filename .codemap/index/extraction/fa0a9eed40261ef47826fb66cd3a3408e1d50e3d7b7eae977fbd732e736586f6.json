@@ -1,0 +1,379 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fa0a9eed40261ef47826fb66cd3a3408e1d50e3d7b7eae977fbd732e736586f6",
+  "payload": {
+    "classes": [
+      "Endpoints"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "AuthEndpoint",
+            "receiver": "_i2",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 32,
+              "end_lineno": 23,
+              "lineno": 23
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initialize",
+            "receiver": "_i2.AuthEndpoint()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 28,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "PurchasesEndpoint",
+            "receiver": "_i3",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 42,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initialize",
+            "receiver": "_i3.PurchasesEndpoint()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 34,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "UserEndpoint",
+            "receiver": "_i4",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 32,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initialize",
+            "receiver": "_i4.UserEndpoint()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 40,
+              "lineno": 36
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "EndpointConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 74,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 9,
+              "end_lineno": 63,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ParameterDescription",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 13,
+              "end_lineno": 53,
+              "lineno": 49
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 41,
+              "end_lineno": 51,
+              "lineno": 51
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 9,
+              "end_lineno": 72,
+              "lineno": 64
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "EndpointConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 5,
+              "end_lineno": 89,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 9,
+              "end_lineno": 87,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "EndpointConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 5,
+              "end_lineno": 131,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 9,
+              "end_lineno": 102,
+              "lineno": 94
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 9,
+              "end_lineno": 120,
+              "lineno": 103
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "ParameterDescription",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 13,
+              "end_lineno": 110,
+              "lineno": 106
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "getType",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 56,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "MethodConnector",
+            "receiver": "_i1",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 9,
+              "end_lineno": 129,
+              "lineno": 121
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "Endpoints",
+            "receiver": "_i6",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 32,
+              "end_col_offset": 47,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "initializeEndpoints",
+            "receiver": "_i6.Endpoints()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 76,
+              "end_lineno": 132,
+              "lineno": 132
+            }
+          }
+        ],
+        "name": "initializeEndpoints",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 133,
+          "lineno": 20
+        },
+        "static": false,
+        "unit": "Endpoints"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i1",
+        "show": [],
+        "uri": "package:serverpod/serverpod.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i2",
+        "show": [],
+        "uri": "../endpoints/auth_endpoint.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i3",
+        "show": [],
+        "uri": "../endpoints/purchases_endpoint.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i4",
+        "show": [],
+        "uri": "../endpoints/user_endpoint.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i5",
+        "show": [],
+        "uri": "package:shared_models/src/models/models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "_i6",
+        "show": [],
+        "uri": "package:serverpod_auth_server/serverpod_auth_server.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:Endpoints",
+      "closure:1730",
+      "closure:2085",
+      "closure:2536",
+      "closure:2975",
+      "closure:3488",
+      "closure:3852"
+    ]
+  },
+  "payload_digest": "adf507c79d98f0ca8dc41002582292628fa2e1129550a3a5d44601f2cd192f99",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2ec88650c9c0bbcf8ce3e29a89e6d9caadfa5ab2a3c2a6c852d5c6e1a923851a",
+  "payload": [
+    [
+      "packages/core_server_client/lib/src/protocol/client.dart::EndpointAuth.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "270d8960fd69b39ee145159146003ebd94fd449f97ad8d46a12c3fce0474020d",
+  "version": 2
+}

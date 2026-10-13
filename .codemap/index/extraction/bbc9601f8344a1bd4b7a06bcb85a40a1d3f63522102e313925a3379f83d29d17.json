@@ -1,0 +1,27 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "bbc9601f8344a1bd4b7a06bcb85a40a1d3f63522102e313925a3379f83d29d17",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [],
+    "globals": [
+      "_lightBase",
+      "lightThemeData",
+      "_darkBase",
+      "darkThemeData"
+    ],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "top_level_initialization:23",
+      "top_level_initialization:176",
+      "top_level_initialization:408",
+      "top_level_initialization:601"
+    ]
+  },
+  "payload_digest": "5080a23917381ec942e9e1517372be35221a3aeaaf50a5dd275dd714b1c4e8e0",
+  "version": 2
+}

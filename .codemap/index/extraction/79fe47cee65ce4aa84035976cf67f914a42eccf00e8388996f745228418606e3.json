@@ -1,0 +1,54 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "79fe47cee65ce4aa84035976cf67f914a42eccf00e8388996f745228418606e3",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "run",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 52,
+              "end_col_offset": 61,
+              "end_lineno": 5,
+              "lineno": 5
+            }
+          }
+        ],
+        "name": "main",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 62,
+          "end_lineno": 5,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:server/server.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "ad3b88d18b011773788cc662f612de808adf2eb0d25b5b99f85179d7d239555b",
+  "version": 2
+}

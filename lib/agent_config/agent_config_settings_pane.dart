@@ -1,4 +1,5 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/common_imports.dart';
 
@@ -123,6 +124,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const ChatGptSubscriptionPane(),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
           child: Row(

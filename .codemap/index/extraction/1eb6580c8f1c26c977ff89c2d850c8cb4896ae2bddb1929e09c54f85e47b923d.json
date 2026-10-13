@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "1eb6580c8f1c26c977ff89c2d850c8cb4896ae2bddb1929e09c54f85e47b923d",
+  "payload": [
+    [
+      "lib/settings/features/supervisor_panel.dart::_PlannedSchedule.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "a5a8af796dc472be4ee75a697aa49940a2fcc561dce3f34806fbdc4316cb6132",
+  "version": 2
+}

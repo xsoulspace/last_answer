@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "d2226b345d12d9442d782b55f4bfa26a8d2fb96977134012c605b66970692f18",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.g.dart::_._$$PurchaseActionModelVideoAwardImplToJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "a3285da6f8465f90bc64d8d4a510ea2af0fd793a25a0e2a90127bbaba7bc3d08",
+  "version": 2
+}

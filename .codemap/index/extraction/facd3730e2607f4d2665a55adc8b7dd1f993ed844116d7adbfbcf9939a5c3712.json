@@ -1,0 +1,1110 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "facd3730e2607f4d2665a55adc8b7dd1f993ed844116d7adbfbcf9939a5c3712",
+  "payload": {
+    "classes": [
+      "AnswerCreatorControllerState",
+      "AnswerCreatorControllerDto",
+      "AnswerCreatorController",
+      "AnswerCreator"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 37,
+          "end_lineno": 15,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "AnswerCreatorControllerState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 22,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "AnswerCreatorControllerDto"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "initialQuestion",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 36,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "AnswerCreatorControllerDto"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "initialText",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 38,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "AnswerCreatorControllerDto"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_initializeTextUpdates",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "AnswerCreatorControllerState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 71,
+              "end_lineno": 44,
+              "lineno": 44
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 46,
+          "lineno": 43
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "listen",
+            "receiver": "_textUpdatesController.stream.sampleTime(const Duration(milliseconds: 200))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 22,
+              "end_lineno": 54,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "sampleTime",
+            "receiver": "_textUpdatesController.stream",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 31,
+              "end_col_offset": 54,
+              "end_lineno": 53,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Duration",
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 53,
+              "end_lineno": 53,
+              "lineno": 53
+            }
+          }
+        ],
+        "name": "_initializeTextUpdates",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 51
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "add",
+            "receiver": "_textUpdatesController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 76,
+              "end_lineno": 57,
+              "lineno": 57
+            }
+          }
+        ],
+        "name": "_addTextUpdate",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 57,
+          "lineno": 57
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "share",
+            "receiver": "ProjectSharer.of(context)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 64,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ProjectSharer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          }
+        ],
+        "name": "onShare",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 64,
+          "lineno": 62
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 62,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_save",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          }
+        ],
+        "name": "changeQuestion",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 70,
+          "lineno": 66
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_save",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 11,
+              "end_lineno": 75,
+              "lineno": 75
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "clear",
+            "receiver": "answerController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 28,
+              "end_lineno": 76,
+              "lineno": 76
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onCreateAnswerFromDraft",
+            "receiver": "dto.ideaViewBloc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 46,
+              "end_lineno": 77,
+              "lineno": 77
+            }
+          }
+        ],
+        "name": "onCreateAnswer",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 78,
+          "lineno": 72
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "focusNode",
+            "receiver_constructor": null,
+            "receiver_type": "FocusNode",
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 23,
+              "end_lineno": 82,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "answerController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 83,
+              "lineno": 83
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 48,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cancel",
+            "receiver": "_textUpdatesSubscription",
+            "receiver_constructor": null,
+            "receiver_type": "StreamSubscription",
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 47,
+              "end_lineno": 84,
+              "lineno": 84
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 45,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "close",
+            "receiver": "_textUpdatesController",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 44,
+              "end_lineno": 85,
+              "lineno": 85
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 86,
+              "lineno": 86
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 87,
+          "lineno": 80
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "copyWith",
+            "receiver": "value",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 68,
+              "end_lineno": 90,
+              "lineno": 90
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "setValue",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 91,
+              "lineno": 91
+            }
+          }
+        ],
+        "name": "updateIsQuestionsOpened",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 92,
+          "lineno": 89
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "updateIsQuestionsOpened",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 20,
+              "end_col_offset": 59,
+              "end_lineno": 94,
+              "lineno": 94
+            }
+          }
+        ],
+        "name": "onFocus",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 60,
+          "end_lineno": 94,
+          "lineno": 94
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "onUnfocus",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 21,
+          "end_lineno": 95,
+          "lineno": 95
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "onUpdateDraftAnswer",
+            "receiver": "dto.ideaViewBloc",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 38,
+              "end_col_offset": 3,
+              "end_lineno": 100,
+              "lineno": 97
+            }
+          }
+        ],
+        "name": "_save",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 100,
+          "lineno": 97
+        },
+        "static": false,
+        "unit": "AnswerCreatorController"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 61,
+          "end_lineno": 104,
+          "lineno": 104
+        },
+        "static": false,
+        "unit": "AnswerCreator"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "Theme",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 35,
+              "end_lineno": 108,
+              "lineno": 108
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "useListenable",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 109,
+              "lineno": 109
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "of",
+            "receiver": "ScreenLayout",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 49,
+              "end_lineno": 114,
+              "lineno": 114
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RotatedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 5,
+              "end_lineno": 124,
+              "lineno": 115
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 123,
+              "lineno": 117
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Icon",
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 36,
+              "end_lineno": 122,
+              "lineno": 122
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Hero",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 5,
+              "end_lineno": 128,
+              "lineno": 125
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Key",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 35,
+              "end_lineno": 126,
+              "lineno": 126
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "IconShareButton",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 76,
+              "end_lineno": 127,
+              "lineno": 127
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Container",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 201,
+              "lineno": 130
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BoxDecoration",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 7,
+              "end_lineno": 135,
+              "lineno": 131
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Border",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 9,
+              "end_lineno": 134,
+              "lineno": 132
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "BorderSide",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 71,
+              "end_lineno": 133,
+              "lineno": 133
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 44,
+              "end_lineno": 136,
+              "lineno": 136
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 200,
+              "lineno": 137
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Padding(padding: const EdgeInsets.only(bottom: 2, right: 10, left: 10), child: Row(children: [Expanded(child: QuestionsChips(onChange: controller.changeQuestion, value: selectedQuestion)), Padding(padding: const EdgeInsets.only(left: 14), child: Column(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [shareButton, EmojiPopup(controller: controller.answerController, focusNode: controller.focusNode)]))])).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 32,
+              "end_lineno": 167,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Padding(padding: const EdgeInsets.only(bottom: 2, right: 10, left: 10), child: Row(children: [Expanded(child: QuestionsChips(onChange: controller.changeQuestion, value: selectedQuestion)), Padding(padding: const EdgeInsets.only(left: 14), child: Column(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [shareButton, EmojiPopup(controller: controller.answerController, focusNode: controller.focusNode)]))]))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 23,
+              "end_lineno": 167,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 12,
+              "end_col_offset": 13,
+              "end_lineno": 167,
+              "lineno": 141
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 76,
+              "end_lineno": 142,
+              "lineno": 142
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 15,
+              "end_lineno": 166,
+              "lineno": 143
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 150,
+              "lineno": 145
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "QuestionsChips",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 21,
+              "end_lineno": 149,
+              "lineno": 146
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 18,
+              "end_col_offset": 19,
+              "end_lineno": 164,
+              "lineno": 151
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.only",
+            "span": {
+              "col_offset": 29,
+              "end_col_offset": 60,
+              "end_lineno": 152,
+              "lineno": 152
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 27,
+              "end_col_offset": 21,
+              "end_lineno": 163,
+              "lineno": 153
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "EmojiPopup",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 25,
+              "end_lineno": 161,
+              "lineno": 158
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Padding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 11,
+              "end_lineno": 197,
+              "lineno": 168
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 63,
+              "end_lineno": 169,
+              "lineno": 169
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Row",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 13,
+              "end_lineno": 196,
+              "lineno": 170
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Expanded",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 193,
+              "lineno": 172
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ProjectTextField",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 25,
+              "end_col_offset": 19,
+              "end_lineno": 192,
+              "lineno": 173
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 27,
+              "end_lineno": 180,
+              "lineno": 177
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "EdgeInsets.symmetric",
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 27,
+              "end_lineno": 184,
+              "lineno": 181
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "SizedBox",
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 35,
+              "end_lineno": 198,
+              "lineno": 198
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 202,
+          "lineno": 106
+        },
+        "static": false,
+        "unit": "AnswerCreator"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:freezed_annotation/freezed_annotation.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/_library/widgets/widgets.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/home/home.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/idea_view_bloc.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/idea/widgets/questions_chips.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "answer_creator.freezed.dart"
+      }
+    ],
+    "unsupported": [
+      "inheritance:AnswerCreatorControllerState",
+      "inheritance:AnswerCreatorController",
+      "field_initialization:AnswerCreatorController:1556",
+      "field_initialization:AnswerCreatorController:1938",
+      "field_initialization:AnswerCreatorController:2050",
+      "inheritance:AnswerCreator",
+      "closure:4136"
+    ]
+  },
+  "payload_digest": "0e23f62963c63c2ae6ce072f4daffd782fdc1478333dbf8efe3e540dd2fa06f4",
+  "version": 2
+}

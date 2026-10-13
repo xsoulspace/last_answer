@@ -1,0 +1,7 @@
+name: meaning_greeting_fixture
+description: Frozen desired-behavior fixture for the bounded MEAN-3 experiment.
+publish_to: none
+environment:
+  sdk: ^3.12.0
+dev_dependencies:
+  test: ^1.31.2

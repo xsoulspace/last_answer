@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "8d2dfb4a901c7510ed6039933ceedb5966646abc5f808336b1fdd36be050c286",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.g.dart::_._$WorldBindingModelFromJson"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "fe0c7cfe30649bb29226374c7e0cc337e8455765f1d596c01affc7ed5729706a",
+  "version": 2
+}

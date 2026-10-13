@@ -1,0 +1,179 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "5fbc10fece2c59341a95120604e465354501362431cd0e02a1e80b76407efc7c",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "deviceHostsLocalLaya",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 8,
+          "end_lineno": 23,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "deviceHostsLocalLaya",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 53,
+              "end_lineno": 42,
+              "lineno": 42
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LayaServeRuntime",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 74,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "replace",
+            "receiver": "endpoint",
+            "receiver_constructor": null,
+            "receiver_type": "Uri?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 73,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "layaDecisionBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 53,
+              "lineno": 47
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "LayaLocalDecisionProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 3,
+              "end_lineno": 62,
+              "lineno": 55
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "JevClientBinding",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 3,
+              "end_lineno": 70,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RoutedDecisionProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 5,
+              "end_lineno": 67,
+              "lineno": 64
+            }
+          }
+        ],
+        "name": "layaBindingForDevice",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 71,
+          "lineno": 25
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": "http",
+        "show": [],
+        "uri": "package:http/http.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_io/io.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_core/xsoulspace_inference_core.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "06d719bd722dc24b20fa3c734fe41fe06abe7bc9ace82d06344b2c4d571e826c",
+  "version": 2
+}

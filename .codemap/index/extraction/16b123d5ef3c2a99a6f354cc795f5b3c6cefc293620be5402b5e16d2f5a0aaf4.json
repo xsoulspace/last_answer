@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "16b123d5ef3c2a99a6f354cc795f5b3c6cefc293620be5402b5e16d2f5a0aaf4",
+  "payload": [
+    [
+      "packages/landing/lib/ui_kit/buttons.dart::StyledButtonDecoration.toString"
+    ],
+    "parser-declared receiver type"
+  ],
+  "payload_digest": "3a85ac3bc3dfac1ecdd9555e8d272c0d2cd2645d9f3980492d6298674c6b3ffe",
+  "version": 2
+}

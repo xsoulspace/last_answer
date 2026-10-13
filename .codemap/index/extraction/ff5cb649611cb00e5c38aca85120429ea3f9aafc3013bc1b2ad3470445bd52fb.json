@@ -1,0 +1,110 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ff5cb649611cb00e5c38aca85120429ea3f9aafc3013bc1b2ad3470445bd52fb",
+  "payload": {
+    "classes": [],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "TelegramBotService",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 21,
+              "end_col_offset": 41,
+              "end_lineno": 9,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onLoad",
+            "receiver": "botService",
+            "receiver_constructor": "TelegramBotService",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 27,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "serve",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 9,
+              "end_col_offset": 33,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "whenComplete",
+            "receiver": "serve(handler, ip, port)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 33,
+              "end_col_offset": 67,
+              "end_lineno": 17,
+              "lineno": 17
+            }
+          }
+        ],
+        "name": "run",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 1,
+          "end_lineno": 18,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:io"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:dart_frog/dart_frog.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "services/services.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "64b5258a2d645dabfd0dcbf65e14d41fa1d38367a5057f284de84174f3ff9c87",
+  "version": 2
+}

@@ -1,0 +1,383 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e6f0591e3c5f3ab6b9c3eac73700d17e4744cb242e11a1a411ffe9d74a03e631",
+  "payload": {
+    "classes": [
+      "_KeyboardVisiblityHook",
+      "_KeyboardVisiblityHookState",
+      "KeyboardController"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "use",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 39,
+              "end_lineno": 4,
+              "lineno": 4
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "_KeyboardVisiblityHook",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 38,
+              "end_lineno": 4,
+              "lineno": 4
+            }
+          }
+        ],
+        "name": "useKeyboardVisibility",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 40,
+          "end_lineno": 4,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "_"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 33,
+          "end_lineno": 7,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHook"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_KeyboardVisiblityHookState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 76,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 77,
+          "end_lineno": 10,
+          "lineno": 9
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHook"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initHook",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 20,
+              "end_lineno": 21,
+              "lineno": 21
+            }
+          }
+        ],
+        "name": "initHook",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 22,
+          "lineno": 17
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 45,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cancel",
+            "receiver": "keyboardSubscription",
+            "receiver_constructor": null,
+            "receiver_type": "StreamSubscription<bool>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 44,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "dispose",
+            "receiver": "_state",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 20,
+              "end_lineno": 27,
+              "lineno": 27
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 28,
+          "lineno": 24
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "onKeyboardVisibiltyChange",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 33,
+          "lineno": 31
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 66,
+          "end_lineno": 36,
+          "lineno": 35
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "setState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          }
+        ],
+        "name": "_listener",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 40,
+          "lineno": 38
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "debugValue",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 39,
+          "end_lineno": 43,
+          "lineno": 42
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": false,
+        "calls": [],
+        "name": "debugLabel",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 45,
+          "end_lineno": 46,
+          "lineno": 45
+        },
+        "static": false,
+        "unit": "_KeyboardVisiblityHookState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "KeyboardVisibilityController",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 53,
+              "end_lineno": 52,
+              "lineno": 52
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "listen",
+            "receiver": "controller.onChange",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 28,
+              "end_col_offset": 75,
+              "end_lineno": 54,
+              "lineno": 54
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 55,
+          "lineno": 50
+        },
+        "static": false,
+        "unit": "KeyboardController"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "_onVisiblityChanged",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 70,
+          "end_lineno": 59,
+          "lineno": 59
+        },
+        "static": false,
+        "unit": "KeyboardController"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 46,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "cancel",
+            "receiver": "_keyboardSubscription",
+            "receiver_constructor": null,
+            "receiver_type": "StreamSubscription<bool>?",
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 45,
+              "end_lineno": 63,
+              "lineno": 63
+            }
+          },
+          {
+            "kind": "super",
+            "name": "dispose",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 19,
+              "end_lineno": 64,
+              "lineno": 64
+            }
+          }
+        ],
+        "name": "dispose",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 65,
+          "lineno": 61
+        },
+        "static": false,
+        "unit": "KeyboardController"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": true,
+    "parts": [],
+    "unsupported": [
+      "inheritance:_KeyboardVisiblityHook",
+      "inheritance:_KeyboardVisiblityHookState",
+      "field_initialization:_KeyboardVisiblityHookState:410",
+      "closure:1028",
+      "inheritance:KeyboardController"
+    ]
+  },
+  "payload_digest": "07f5886a2bcd3ab39ff582fed9d571dd4328c22c47495f5c012f5dfdd3728d71",
+  "version": 2
+}

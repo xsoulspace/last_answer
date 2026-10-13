@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "3939e874b9e443f7a0bc2f0cec1b09a6d6f85802d5743f0ad80b9883fae86713",
+  "payload": [
+    [
+      "packages/core/lib/src/data/locales.dart::Locales.byLanguage"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "df2654bb8cff73634025ce0d89fa344a974d47a12e767d4b233cb211e205ff30",
+  "version": 2
+}

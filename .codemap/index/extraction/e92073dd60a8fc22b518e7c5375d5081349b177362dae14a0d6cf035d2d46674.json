@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e92073dd60a8fc22b518e7c5375d5081349b177362dae14a0d6cf035d2d46674",
+  "payload": [
+    [
+      "packages/headless_core/lib/src/perm_request.dart::PermRequestRecord.tryFromJson"
+    ],
+    "unknown receiver or static declaration"
+  ],
+  "payload_digest": "bfd2c229b190f0549777efe2cba4242fe38333560d0439bd5472ef8edd2bc7c3",
+  "version": 2
+}

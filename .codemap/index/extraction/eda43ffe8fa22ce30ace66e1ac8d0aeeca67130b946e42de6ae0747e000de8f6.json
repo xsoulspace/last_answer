@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "eda43ffe8fa22ce30ace66e1ac8d0aeeca67130b946e42de6ae0747e000de8f6",
+  "payload": [
+    [
+      "packages/core_server_client/lib/src/protocol/purchase.dart::PurchaseAction.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "ba6bd747fed1bc413b8b46bb2e2d03b7745712ff552f909ae07dafd3b4963637",
+  "version": 2
+}

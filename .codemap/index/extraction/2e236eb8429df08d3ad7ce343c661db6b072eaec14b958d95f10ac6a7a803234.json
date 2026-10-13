@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2e236eb8429df08d3ad7ce343c661db6b072eaec14b958d95f10ac6a7a803234",
+  "payload": [
+    [
+      "lib/coding_agent/permission_doc_router.dart::PermissionDocRouter.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "cbabb0bea36da1464d5e47465be47b8beb14f03f902c43d3d6321e6647c7fa88",
+  "version": 2
+}

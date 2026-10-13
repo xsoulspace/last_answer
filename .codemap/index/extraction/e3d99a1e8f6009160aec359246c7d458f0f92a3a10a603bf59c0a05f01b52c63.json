@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "e3d99a1e8f6009160aec359246c7d458f0f92a3a10a603bf59c0a05f01b52c63",
+  "payload": [
+    [
+      "test/parsers/hive_parser_test.dart::_._u32"
+    ],
+    "library declaration"
+  ],
+  "payload_digest": "654579055b1e0ec911d52748ecc82d70b9a0d4d7e806328600bff9f61540be11",
+  "version": 2
+}

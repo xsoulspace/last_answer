@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9aa1344fc63c4f0983b258271c95b427360577cf728d182f1db5b5922e0afdca",
+  "payload": [
+    [
+      "packages/core/lib/src/state_di/global_states_initializer.dart::GlobalStatesInitializer._initMonetization"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "c4a26ef049c89bda43bc167432ca0254239b3b7d8d5e313a6b5b123283b067b6",
+  "version": 2
+}

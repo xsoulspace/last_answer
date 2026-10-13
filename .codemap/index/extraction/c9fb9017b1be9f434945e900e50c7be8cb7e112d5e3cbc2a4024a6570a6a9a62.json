@@ -1,0 +1,47 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "c9fb9017b1be9f434945e900e50c7be8cb7e112d5e3cbc2a4024a6570a6a9a62",
+  "payload": {
+    "classes": [
+      "ChatMessage",
+      "DocInferencePort"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 65,
+          "end_lineno": 3,
+          "lineno": 3
+        },
+        "static": false,
+        "unit": "ChatMessage"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "chat",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 50,
+          "end_lineno": 14,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "DocInferencePort"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "577d17e30edbf4950797057c91c19623b7d10c2b8b15668d944ccbbbf4690936",
+  "version": 2
+}

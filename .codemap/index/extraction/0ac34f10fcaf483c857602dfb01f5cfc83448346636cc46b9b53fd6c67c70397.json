@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0ac34f10fcaf483c857602dfb01f5cfc83448346636cc46b9b53fd6c67c70397",
+  "payload": [
+    [
+      "lib/doc/doc_view.dart::_DocViewState._openChild"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "f7dcebd3b67989b4b75321ad91737098e83e2ea40d1c9e1bcffd52eae8b66a10",
+  "version": 2
+}

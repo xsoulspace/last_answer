@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ac43df8522506a05a131dec6af48d008a3bb2c53e8c4a7e40079def4e944058d",
+  "payload": [
+    [
+      "packages/core/lib/src/generated/assets.gen.dart::SvgGenImage.new"
+    ],
+    "explicit constructor declaration"
+  ],
+  "payload_digest": "c1a5622d2e6fa0a4b8c7cdcc33a404ac907711f3b041cf7baf2877a7ad9729e4",
+  "version": 2
+}

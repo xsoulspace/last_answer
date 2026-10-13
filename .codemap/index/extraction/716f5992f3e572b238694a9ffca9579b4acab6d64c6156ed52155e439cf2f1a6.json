@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "716f5992f3e572b238694a9ffca9579b4acab6d64c6156ed52155e439cf2f1a6",
+  "payload": [
+    [
+      "packages/core/lib/src/state/state.freezed.dart::__$NotificationsNotifierStateCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "4d7fb0af02311e9330fb11fe822a17f1b99282890bdef4b1a092aa9e5cc2f2b5",
+  "version": 2
+}

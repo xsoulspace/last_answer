@@ -1,0 +1,183 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "00cd66bc338b4ed53b1b584411500b2ccdb5702ac312d7daf644a0f44778e432",
+  "payload": {
+    "classes": [
+      "FileServiceI",
+      "FileServiceIX"
+    ],
+    "defs": [
+      {
+        "callable": false,
+        "calls": [],
+        "name": "filenameWithTimestamp",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 51,
+          "end_lineno": 8,
+          "lineno": 7
+        },
+        "static": true,
+        "unit": "FileServiceI"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "openFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 42,
+          "end_lineno": 10,
+          "lineno": 10
+        },
+        "static": false,
+        "unit": "FileServiceI"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "saveFile",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 14,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "FileServiceI"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "File",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 31,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "existsSync",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 25,
+              "end_lineno": 25,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "deleteSync",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 23,
+              "end_lineno": 26,
+              "lineno": 26
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "createSync",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 20,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "writeAsStringSync",
+            "receiver": "file",
+            "receiver_constructor": "File",
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 43,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "jsonEncode",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 26,
+              "end_col_offset": 42,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          }
+        ],
+        "name": "saveFileData",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 32,
+          "lineno": 18
+        },
+        "static": false,
+        "unit": "FileServiceIX"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_models/shared_models.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:universal_io/io.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "field_initialization:FileServiceI:254",
+      "extension_dispatch:FileServiceIX"
+    ]
+  },
+  "payload_digest": "51f2bfeed79fd9d7b09cb6178864fba28b0548e8162587063b1203062861a9b1",
+  "version": 2
+}

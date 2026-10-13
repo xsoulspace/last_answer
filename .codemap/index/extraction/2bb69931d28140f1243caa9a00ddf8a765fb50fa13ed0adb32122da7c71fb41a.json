@@ -1,0 +1,479 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "2bb69931d28140f1243caa9a00ddf8a765fb50fa13ed0adb32122da7c71fb41a",
+  "payload": {
+    "classes": [
+      "SupportAppBaseView"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 5,
+          "end_lineno": 9,
+          "lineno": 6
+        },
+        "static": false,
+        "unit": "SupportAppBaseView"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "watch",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 30,
+              "end_col_offset": 64,
+              "end_lineno": 13,
+              "lineno": 13
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Column",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 74,
+              "lineno": 25
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "UiCircularProgress",
+            "span": {
+              "col_offset": 47,
+              "end_col_offset": 73,
+              "end_lineno": 28,
+              "lineno": 28
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text('${l10n.youUsedThisAppFor} ${state.usedDaysCount} ${l10n.days}${supporterDaysCount > 0 ? ' ${l10n.andHaveSupported} $supporterDaysCount ${l10n.days}!' : ''}').animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 28,
+              "end_lineno": 32,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text('${l10n.youUsedThisAppFor} ${state.usedDaysCount} ${l10n.days}${supporterDaysCount > 0 ? ' ${l10n.andHaveSupported} $supporterDaysCount ${l10n.days}!' : ''}')",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 19,
+              "end_lineno": 32,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 32,
+              "lineno": 29
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 33,
+              "lineno": 33
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 31,
+              "end_lineno": 34,
+              "lineno": 34
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 35,
+              "lineno": 35
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "RichText",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 16,
+              "end_col_offset": 17,
+              "end_lineno": 57,
+              "lineno": 38
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 24,
+              "end_col_offset": 19,
+              "end_lineno": 56,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 23,
+              "end_lineno": 44,
+              "lineno": 41
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 56,
+              "end_lineno": 45,
+              "lineno": 45
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TextSpan",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 23,
+              "end_lineno": 54,
+              "lineno": 46
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "TapGestureRecognizer",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 36,
+              "end_col_offset": 58,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Divider",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 23,
+              "end_lineno": 60,
+              "lineno": 60
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 61,
+              "lineno": 61
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 9,
+              "end_lineno": 65,
+              "lineno": 62
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 66,
+              "lineno": 66
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text(l10n.supporterDaysAre).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 54,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text(l10n.supporterDaysAre)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 45,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 35,
+              "end_lineno": 67,
+              "lineno": 67
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 68,
+              "lineno": 68
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text(l10n.supporterDaysMainFunctionality).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 68,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text(l10n.supporterDaysMainFunctionality)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 59,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 49,
+              "end_lineno": 69,
+              "lineno": 69
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 70,
+              "lineno": 70
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Text(l10n.toGetSupporterDays).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 56,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Text(l10n.toGetSupporterDays)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 47,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Text",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 37,
+              "end_lineno": 71,
+              "lineno": 71
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "Gap",
+            "span": {
+              "col_offset": 8,
+              "end_col_offset": 21,
+              "end_lineno": 72,
+              "lineno": 72
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 11
+        },
+        "static": false,
+        "unit": "SupportAppBaseView"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/gestures.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:url_launcher/url_launcher_string.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:SupportAppBaseView",
+      "closure:1866"
+    ]
+  },
+  "payload_digest": "39e9ef141001e8f5778faa1e3562e473660262101fda4a074ec425d38d8b7524",
+  "version": 2
+}

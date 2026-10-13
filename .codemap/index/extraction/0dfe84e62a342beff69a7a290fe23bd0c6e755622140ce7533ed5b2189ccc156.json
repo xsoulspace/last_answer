@@ -1,0 +1,150 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "0dfe84e62a342beff69a7a290fe23bd0c6e755622140ce7533ed5b2189ccc156",
+  "payload": {
+    "classes": [
+      "PrefsAgentConfigPersistence"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getInstance",
+            "receiver": "SharedPreferences",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 37,
+              "end_col_offset": 68,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 32,
+          "end_lineno": 12,
+          "lineno": 8
+        },
+        "static": false,
+        "unit": "PrefsAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "getString",
+            "receiver": "(await _preferences)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 34,
+              "end_col_offset": 70,
+              "end_lineno": 20,
+              "lineno": 20
+            }
+          }
+        ],
+        "name": "read",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 71,
+          "end_lineno": 20,
+          "lineno": 19
+        },
+        "static": false,
+        "unit": "PrefsAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "setString",
+            "receiver": "(await _preferences)",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 10,
+              "end_col_offset": 56,
+              "end_lineno": 24,
+              "lineno": 24
+            }
+          }
+        ],
+        "name": "write",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 25,
+          "lineno": 22
+        },
+        "static": false,
+        "unit": "PrefsAgentConfigPersistence"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "PrefsAgentConfigPersistence",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 6,
+              "end_col_offset": 76,
+              "end_lineno": 30,
+              "lineno": 30
+            }
+          }
+        ],
+        "name": "createPlatformAgentConfigPersistence",
+        "span": {
+          "col_offset": 0,
+          "end_col_offset": 77,
+          "end_lineno": 30,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/agent_config/agent_config_persistence.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:shared_preferences/shared_preferences.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:PrefsAgentConfigPersistence",
+      "field_initialization:PrefsAgentConfigPersistence:595"
+    ]
+  },
+  "payload_digest": "15c1faaf87e99b4950d31e34934fb6082eadc0ff917b67ea342ceccbf46b4afc",
+  "version": 2
+}

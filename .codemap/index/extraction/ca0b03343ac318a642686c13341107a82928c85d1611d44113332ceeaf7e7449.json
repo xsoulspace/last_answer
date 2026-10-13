@@ -1,0 +1,142 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "ca0b03343ac318a642686c13341107a82928c85d1611d44113332ceeaf7e7449",
+  "payload": {
+    "classes": [
+      "UiCircularProgress"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 40,
+          "end_lineno": 5,
+          "lineno": 5
+        },
+        "static": false,
+        "unit": "UiCircularProgress"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "fadeIn",
+            "receiver": "Center(child: ConstrainedBox(constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24), child: const CupertinoActivityIndicator())).animate()",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 26,
+              "end_lineno": 13,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "animate",
+            "receiver": "Center(child: ConstrainedBox(constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24), child: const CupertinoActivityIndicator()))",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 17,
+              "end_lineno": 13,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "Center",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 7,
+              "end_lineno": 13,
+              "lineno": 8
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ConstrainedBox",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 15,
+              "end_col_offset": 9,
+              "end_lineno": 12,
+              "lineno": 9
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "BoxConstraints",
+            "span": {
+              "col_offset": 23,
+              "end_col_offset": 72,
+              "end_lineno": 10,
+              "lineno": 10
+            }
+          },
+          {
+            "kind": "constructor",
+            "name": "new",
+            "receiver": "CupertinoActivityIndicator",
+            "span": {
+              "col_offset": 17,
+              "end_col_offset": 51,
+              "end_lineno": 11,
+              "lineno": 11
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 27,
+          "end_lineno": 13,
+          "lineno": 7
+        },
+        "static": false,
+        "unit": "UiCircularProgress"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter/cupertino.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_animate/flutter_animate.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:UiCircularProgress"
+    ]
+  },
+  "payload_digest": "ba7e888a052af43e3232a9f9ea89a12e8ddabaa6d0d2ef9eeefa039b49962a61",
+  "version": 2
+}

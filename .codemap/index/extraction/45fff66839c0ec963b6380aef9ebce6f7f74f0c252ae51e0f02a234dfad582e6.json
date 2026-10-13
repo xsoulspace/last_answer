@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "45fff66839c0ec963b6380aef9ebce6f7f74f0c252ae51e0f02a234dfad582e6",
+  "payload": [
+    [
+      "packages/shared_models/lib/src/models/models.freezed.dart::_$RemoteUserModelImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "6f6d224c7f7e0bd63b8e06361a827fe9d7532fdad8967e0674f886244896d755",
+  "version": 2
+}

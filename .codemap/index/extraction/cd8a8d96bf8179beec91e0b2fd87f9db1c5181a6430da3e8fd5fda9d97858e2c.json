@@ -1,0 +1,46 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "cd8a8d96bf8179beec91e0b2fd87f9db1c5181a6430da3e8fd5fda9d97858e2c",
+  "payload": {
+    "classes": [],
+    "defs": [],
+    "error": null,
+    "exports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "auth.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "purchases.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "serverpod_client.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "user.dart"
+      }
+    ],
+    "globals": [],
+    "imports": [],
+    "part_of": false,
+    "parts": [],
+    "unsupported": []
+  },
+  "payload_digest": "ba8e37bc976d04dddf55a630db6556aaa758353e8310cda2aaa95216db46e084",
+  "version": 2
+}

@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "b7128c5ac4f5f772b0ecb732b1a6f8d759906bfa30280c11af5f1d080096528c",
+  "payload": [
+    [
+      "packages/ui_kit/lib/src/ai_layouts/ai_layout_engine.dart::AILayoutEngine._calculateRootPadding"
+    ],
+    "same class declaration"
+  ],
+  "payload_digest": "1559213d3a5f11adcbdca1e947bb88c81bbc9c5982b4f21b709a1b7355dfcfcd",
+  "version": 2
+}

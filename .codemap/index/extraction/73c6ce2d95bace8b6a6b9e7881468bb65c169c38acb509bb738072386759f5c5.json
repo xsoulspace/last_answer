@@ -1,0 +1,378 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "73c6ce2d95bace8b6a6b9e7881468bb65c169c38acb509bb738072386759f5c5",
+  "payload": {
+    "classes": [
+      "LastAnswerApp",
+      "_AppScaffold",
+      "_AppScaffoldState"
+    ],
+    "defs": [
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 35,
+          "end_lineno": 12,
+          "lineno": 12
+        },
+        "static": false,
+        "unit": "LastAnswerApp"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "FeedbackProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 46,
+              "end_col_offset": 3,
+              "end_lineno": 22,
+              "lineno": 14
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "ChangeNotifierProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 21,
+              "lineno": 15
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "GlobalStatesProvider",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 13,
+              "end_col_offset": 7,
+              "end_lineno": 20,
+              "lineno": 18
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 4,
+          "end_lineno": 22,
+          "lineno": 13
+        },
+        "static": false,
+        "unit": "LastAnswerApp"
+      },
+      {
+        "callable": true,
+        "calls": [],
+        "name": "new",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 23,
+          "end_lineno": 26,
+          "lineno": 26
+        },
+        "static": false,
+        "unit": "_AppScaffold"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "_AppScaffoldState",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 39,
+              "end_col_offset": 58,
+              "end_lineno": 29,
+              "lineno": 29
+            }
+          }
+        ],
+        "name": "createState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 59,
+          "end_lineno": 29,
+          "lineno": 28
+        },
+        "static": false,
+        "unit": "_AppScaffold"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "super",
+            "name": "initState",
+            "receiver": "super",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 21,
+              "end_lineno": 39,
+              "lineno": 39
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 36,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "onLoad",
+            "receiver": "_initializer",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 35,
+              "end_lineno": 40,
+              "lineno": 40
+            }
+          },
+          {
+            "kind": "implicit",
+            "name": "_initStorageBackends",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 26,
+              "end_lineno": 41,
+              "lineno": 41
+            }
+          }
+        ],
+        "name": "initState",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 42,
+          "lineno": 37
+        },
+        "static": false,
+        "unit": "_AppScaffoldState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "implicit",
+            "name": "unawaited",
+            "receiver": null,
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "load",
+            "receiver": "notifier",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": true,
+            "span": {
+              "col_offset": 14,
+              "end_col_offset": 29,
+              "end_lineno": 48,
+              "lineno": 48
+            }
+          },
+          {
+            "kind": "dynamic",
+            "name": "() {StorageBackendsNotifier.payloadBuilder = () async => jsonEncode(DbSaveModel(projects: await context.read<ProjectsRepository>().getAll(), tags: (await context.read<TagsRepository>().getAll()).values.toList()).toJson()); StorageBackendsNotifier.restoreApplier = (final jsonPayload) async {if (!mounted) return; final dbSave = DbSaveModel.fromJson(jsonDecode(jsonPayload) as Map<String, dynamic>); if (dbSave.isEmpty) return; final uiContext = appRouter.routerDelegate.navigatorKey.currentContext; if (uiContext == null) return; await uiContext.read<AppNotifier>().restoreFromDbSave(dbSave: dbSave, context: uiContext);}; return true;}",
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 7,
+              "end_lineno": 74,
+              "lineno": 49
+            }
+          }
+        ],
+        "name": "_initStorageBackends",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 75,
+          "lineno": 44
+        },
+        "static": false,
+        "unit": "_AppScaffoldState"
+      },
+      {
+        "callable": true,
+        "calls": [
+          {
+            "kind": "receiver",
+            "name": "select",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 19,
+              "end_col_offset": 5,
+              "end_lineno": 81,
+              "lineno": 79
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "select",
+            "receiver": "context",
+            "receiver_constructor": null,
+            "receiver_type": "BuildContext",
+            "shadowed": true,
+            "span": {
+              "col_offset": 22,
+              "end_col_offset": 5,
+              "end_lineno": 84,
+              "lineno": 82
+            }
+          },
+          {
+            "kind": "receiver",
+            "name": "router",
+            "receiver": "MaterialApp",
+            "receiver_constructor": null,
+            "receiver_type": null,
+            "shadowed": false,
+            "span": {
+              "col_offset": 11,
+              "end_col_offset": 5,
+              "end_lineno": 107,
+              "lineno": 85
+            }
+          }
+        ],
+        "name": "build",
+        "span": {
+          "col_offset": 2,
+          "end_col_offset": 3,
+          "end_lineno": 108,
+          "lineno": 77
+        },
+        "static": false,
+        "unit": "_AppScaffoldState"
+      }
+    ],
+    "error": null,
+    "exports": [],
+    "globals": [],
+    "imports": [
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "dart:convert"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:flutter_localizations/flutter_localizations.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_credentials.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/coding_agent/chatgpt_subscription_controller.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/common_imports.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/other/feedback.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/router.dart"
+      },
+      {
+        "conditional": false,
+        "hide": [],
+        "prefix": null,
+        "show": [],
+        "uri": "package:lastanswer/settings/features/features.dart"
+      }
+    ],
+    "part_of": false,
+    "parts": [],
+    "unsupported": [
+      "inheritance:LastAnswerApp",
+      "closure:676",
+      "closure:811",
+      "inheritance:_AppScaffold",
+      "inheritance:_AppScaffoldState",
+      "field_initialization:_AppScaffoldState:1091",
+      "closure:1624",
+      "closure:2847",
+      "closure:2952",
+      "closure:3638"
+    ]
+  },
+  "payload_digest": "189ab1f59bf3b0be8a5a89ed37a1132dbffe7434ab952b095306f81c746fddfb",
+  "version": 2
+}

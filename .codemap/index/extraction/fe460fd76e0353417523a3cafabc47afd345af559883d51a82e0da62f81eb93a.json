@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "fe460fd76e0353417523a3cafabc47afd345af559883d51a82e0da62f81eb93a",
+  "payload": [
+    [
+      "lib/workbench/behaviour_connection.dart::BehaviourConnection.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "05b1ddf81b0e17d7da9ea77fcb989f47ebc9676cd3a642814d464d21a97f4063",
+  "version": 2
+}

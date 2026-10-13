@@ -1,0 +1,12 @@
+{
+  "contract": "codemap.index.cache",
+  "input_key": "9015e3932b256e8f4de1bdaf3e1f5762a27a43dc05b880134ff541d61500f89c",
+  "payload": [
+    [
+      "packages/core/lib/src/data_models/data_models.freezed.dart::_$AgentDocModelCopyWithImpl.new"
+    ],
+    "implicit constructor binding"
+  ],
+  "payload_digest": "a42f07b0935ceee30aedc8d29142c0f8a2c1a98d55b3dbf249c006011911b74a",
+  "version": 2
+}
